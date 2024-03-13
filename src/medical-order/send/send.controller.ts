@@ -1,11 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Inject } from '@nestjs/common';
 import { SendService } from './send.service';
 import { CreateSendDto } from './dto/create-send.dto';
 import { UpdateSendDto } from './dto/update-send.dto';
 
 @Controller('send')
 export class SendController {
-  constructor(private readonly sendService: SendService) {}
+  constructor(
+    @Inject(SendService) private readonly sendService: SendService
+  ) { }
 
   @Post()
   create(@Body() createSendDto: CreateSendDto) {
@@ -14,12 +16,12 @@ export class SendController {
 
   @Get()
   findAll() {
-    return this.sendService.findAll();
+    return this.sendService.readAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.sendService.findOne(+id);
+    return this.sendService.readOneByID(+id);
   }
 
   @Patch(':id')

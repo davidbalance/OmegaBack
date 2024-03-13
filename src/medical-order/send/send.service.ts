@@ -1,26 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateSendDto } from './dto/create-send.dto';
 import { UpdateSendDto } from './dto/update-send.dto';
+import { SendRepository } from './send.repository';
+import { Send } from './entities/send.entity';
 
 @Injectable()
 export class SendService {
-  create(createSendDto: CreateSendDto) {
-    return 'This action adds a new send';
+
+  constructor(
+    @Inject(SendRepository) private readonly repository: SendRepository
+  ) { }
+
+  async create(createSendDto: CreateSendDto): Promise<Send> {
+    return await this.repository.create(createSendDto);
   }
 
-  findAll() {
-    return `This action returns all send`;
+  async readAll(): Promise<Send[]> {
+    return await this.repository.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} send`;
+  async readOneByID(id: number): Promise<Send> {
+    return await this.repository.findOne({ id });
   }
 
-  update(id: number, updateSendDto: UpdateSendDto) {
-    return `This action updates a #${id} send`;
+  async update(id: number, updateSendDto: UpdateSendDto): Promise<Send> {
+    return await this.repository.findOneAndUpdate({ id }, updateSendDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} send`;
+  async remove(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id });
   }
 }
