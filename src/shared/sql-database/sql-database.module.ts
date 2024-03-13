@@ -7,18 +7,19 @@ import Joi from 'joi';
 @Module({
     imports: [
         ConfigModule.forRoot({
-            validationSchema: {
+            validationSchema: Joi.object({
                 "database.sql.type": Joi.string().required(),
                 "database.sql.host": Joi.string().required(),
                 "database.sql.port": Joi.number().required(),
                 "database.sql.username": Joi.string().required(),
                 "database.sql.password": Joi.string().required(),
                 "database.sql.database": Joi.string().required(),
-                "app.enviroment": Joi.options("production", "development").required(),
-            }, cache: true
+                "app.enviroment": Joi.string().required(),
+            }),
+            cache: true,
+            isGlobal: true
         }),
         TypeOrmModule.forRootAsync({
-            inject: [ConfigService],
             useFactory: async (config: ConfigService) => ({
                 type: config.get<any>("database.sql.type"),
                 host: config.get<string>("database.sql.host"),
@@ -28,7 +29,8 @@ import Joi from 'joi';
                 database: config.get<string>("database.sql.database"),
                 synchronize: config.get<"production" | "development">("app.enviroment") === 'production',
                 autoLoadEntities: true
-            })
+            }),
+            inject: [ConfigService],
         })
     ]
 })
