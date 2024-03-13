@@ -14,12 +14,12 @@ export class ResultController {
 
   @Get()
   findAll() {
-    return this.resultService.findAll();
+    return this.resultService.readAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.resultService.findOne(+id);
+    return this.resultService.readOneByID(+id);
   }
 
   @Patch(':id')

@@ -21,5 +21,5 @@ export class Result extends AbstractEntity<number> {
         joinColumn: { referencedColumnName: 'id', name: 'RESULT_ID' },
         inverseJoinColumn: { referencedColumnName: 'id', name: 'SEND_ID' },
     })
-    public sends: Send;
+    public sends: Send[];
 }

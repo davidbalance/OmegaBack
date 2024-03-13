@@ -1,26 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateResultDto } from './dto/create-result.dto';
 import { UpdateResultDto } from './dto/update-result.dto';
+import { ResultRepository } from './result.repository';
+import { Result } from './entities/result.entity';
+import { Send } from '../send/entities/send.entity';
 
 @Injectable()
 export class ResultService {
-  create(createResultDto: CreateResultDto) {
-    return 'This action adds a new result';
+
+  constructor(
+    @Inject(ResultRepository) private readonly repository: ResultRepository
+  ) { }
+
+  async create(createResultDto: CreateResultDto): Promise<Result> {
+    return await this.repository.create(createResultDto);
   }
 
-  findAll() {
-    return `This action returns all result`;
+  async readAll(): Promise<Result[]> {
+    return await this.repository.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} result`;
+  async readOneByID(id: number): Promise<Result> {
+    return await this.repository.findOne({ id });
   }
 
-  update(id: number, updateResultDto: UpdateResultDto) {
-    return `This action updates a #${id} result`;
+  async send(id: number, sends: Send[]): Promise<Result> {
+    const send = await this.repository.findOne({ id }, { sends: true });
+    const filterSends = send.sends.filter(e => !sends.includes(e));
+    // Here goes send logic for each send item
+    return this.repository.findOneAndSend({ id }, filterSends);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} result`;
+  async update(id: number, updateResultDto: UpdateResultDto): Promise<Result> {
+    return await this.repository.findOneAndUpdate({ id }, updateResultDto);
+  }
+
+  async remove(id: number): Promise<void> {
+    this.repository.findOneAndDelete({ id });
   }
 }
