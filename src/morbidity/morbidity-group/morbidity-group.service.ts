@@ -1,26 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateMorbidityGroupDto } from './dto/create-morbidity-group.dto';
 import { UpdateMorbidityGroupDto } from './dto/update-morbidity-group.dto';
+import { MorbidityGroupRepository } from './morbidity-group.repository';
+import { MorbidityGroup } from './entities/morbidity-group.entity';
 
 @Injectable()
 export class MorbidityGroupService {
-  create(createMorbidityGroupDto: CreateMorbidityGroupDto) {
-    return 'This action adds a new morbidityGroup';
+
+  constructor(
+    @Inject(MorbidityGroupRepository) private readonly repository: MorbidityGroupRepository
+  ) { }
+
+  async create(createMorbidityGroupDto: CreateMorbidityGroupDto): Promise<MorbidityGroup> {
+    return await this.repository.create(createMorbidityGroupDto);
   }
 
-  findAll() {
-    return `This action returns all morbidityGroup`;
+  async readAll(): Promise<MorbidityGroup[]> {
+    return await this.repository.find({ status: true });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} morbidityGroup`;
+  async readOneByID(id: number): Promise<MorbidityGroup> {
+    return await this.repository.findOne({ id });
   }
 
-  update(id: number, updateMorbidityGroupDto: UpdateMorbidityGroupDto) {
-    return `This action updates a #${id} morbidityGroup`;
+  async update(id: number, updateMorbidityGroupDto: UpdateMorbidityGroupDto): Promise<MorbidityGroup> {
+    return await this.repository.findOneAndUpdate({ id }, updateMorbidityGroupDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} morbidityGroup`;
+  async remove(id: number): Promise<void> {
+    await this.repository.findOneAndUpdate({ id }, { status: false });
   }
 }
