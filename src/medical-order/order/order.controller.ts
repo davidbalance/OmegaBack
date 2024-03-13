@@ -13,13 +13,13 @@ export class OrderController {
   }
 
   @Get()
-  findAll() {
-    return this.orderService.findAll();
+  readAll() {
+    return this.orderService.readAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
+    return this.orderService.readOneByID(+id);
   }
 
   @Patch(':id')

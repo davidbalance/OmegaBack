@@ -5,7 +5,9 @@ import { SqlDatabaseModule } from 'src/shared';
 import { Send } from './entities/send.entity';
 
 @Module({
-  imports: [SqlDatabaseModule.forFeature([Send])],
+  imports: [
+    SqlDatabaseModule.forFeature([Send])
+  ],
   controllers: [SendController],
   providers: [SendService]
 })

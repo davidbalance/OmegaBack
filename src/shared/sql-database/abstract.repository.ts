@@ -2,7 +2,12 @@ import { DeepPartial, FindOptionsRelations, FindOptionsWhere, Repository } from 
 import { AbstractEntity } from "./abstract.entity";
 import { Logger, NotFoundException } from "@nestjs/common";
 
-export abstract class AbstractRepository<TEntity extends AbstractEntity> {
+/**
+ * Abstract repository with the basics methods for a repository
+ * @template K Primary key type
+ * @template TEntity Entity type
+ */
+export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
 
     protected abstract logger: Logger;
 

@@ -1,6 +1,13 @@
 import { BeforeUpdate, Column } from "typeorm";
 
+/**
+ * Base class for entities
+ * @template K Primary key type
+ */
 export abstract class AbstractEntity<K> {
+    /**
+     * Primary key
+     */
     public abstract id: K;
 
     @Column({ name: "CREATE_AT", type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', nullable: false })
@@ -9,6 +16,6 @@ export abstract class AbstractEntity<K> {
     public updateAt: Date;
 
     @BeforeUpdate()
-    updatedAt = () => this.updateAt = new Date();
+    private updatedAt = () => this.updateAt = new Date();
 
 }

@@ -1,6 +1,7 @@
+import { Result } from "src/medical-order/result/entities/result.entity";
 import { Send } from "src/medical-order/send/entities/send.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'ORDERS' })
 export class Order extends AbstractEntity<number> {
@@ -10,6 +11,9 @@ export class Order extends AbstractEntity<number> {
     public filename: string;
     @Column({ name: 'ORDER_PATH' })
     public path: string;
+
+    @OneToMany(() => Result, result => result.order, { eager: false })
+    public results: Result[];
 
     @ManyToMany(() => Send, { eager: false })
     @JoinTable({
