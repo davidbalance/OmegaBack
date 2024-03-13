@@ -1,6 +1,6 @@
 import { Morbidity } from "src/morbidity/morbidity/entities/morbidity.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'MORBIDITY_GROUPS' })
 export class MorbidityGroup extends AbstractEntity<number>{

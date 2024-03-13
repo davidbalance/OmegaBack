@@ -1,26 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateMorbidityDto } from './dto/create-morbidity.dto';
 import { UpdateMorbidityDto } from './dto/update-morbidity.dto';
+import { MorbidityRepository } from './morbidity.repository';
+import { Morbidity } from './entities/morbidity.entity';
+import { find } from 'rxjs';
 
 @Injectable()
 export class MorbidityService {
-  create(createMorbidityDto: CreateMorbidityDto) {
-    return 'This action adds a new morbidity';
+
+  constructor(
+    @Inject(MorbidityRepository) private readonly repository: MorbidityRepository
+  ) { }
+
+  async create(createMorbidityDto: CreateMorbidityDto): Promise<Morbidity> {
+    return await this.repository.create(createMorbidityDto);
   }
 
-  findAll() {
-    return `This action returns all morbidity`;
+  async readAll(): Promise<Morbidity[]> {
+    return await this.repository.find({ status: true });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} morbidity`;
+  async readOneByID(id: number): Promise<Morbidity> {
+    return await this.repository.findOne({ id });
   }
 
-  update(id: number, updateMorbidityDto: UpdateMorbidityDto) {
-    return `This action updates a #${id} morbidity`;
+  async update(id: number, updateMorbidityDto: UpdateMorbidityDto): Promise<Morbidity> {
+    return await this.repository.findOneAndUpdate({ id }, updateMorbidityDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} morbidity`;
+  async remove(id: number): Promise<void> {
+    await this.repository.findOneAndUpdate({ id }, { status: false });
   }
 }

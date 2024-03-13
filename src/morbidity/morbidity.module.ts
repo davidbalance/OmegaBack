@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { MorbidityModule } from './morbidity/morbidity.module';
+import { MorbidityModule as MorbiditySubModule } from './morbidity/morbidity.module';
 import { MorbidityGroupModule } from './morbidity-group/morbidity-group.module';
 
 @Module({
-  imports: [MorbidityModule, MorbidityGroupModule]
+  imports: [MorbiditySubModule, MorbidityGroupModule]
 })
-export class MorbidityModule {}
+export class MorbidityModule { }
