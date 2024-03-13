@@ -7,6 +7,7 @@ import { MorbidityModule } from './morbidity/morbidity.module';
 import { ExamModule } from './exam/exam.module';
 import { ReportModule } from './report/report.module';
 import { PatientModule } from './patient/patient.module';
+import { DoctorModule } from './doctor/doctor.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { PatientModule } from './patient/patient.module';
     ExamModule,
     ReportModule,
     PatientModule,
+    DoctorModule,
   ],
   controllers: [AppController],
   providers: [AppService],
