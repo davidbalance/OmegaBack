@@ -1,3 +1,4 @@
+import { Doctor } from "src/doctor/entities/doctor.entity";
 import { Exam } from "src/exam/entities/exam.entity";
 import { Order } from "src/medical-order/order/entities/order.entity";
 import { Send } from "src/medical-order/send/entities/send.entity";
@@ -14,10 +15,14 @@ export class Result extends AbstractEntity<number> {
     @Column({ name: 'RESULT_PATH', type: 'varchar', length: 256, nullable: false })
     public path: string;
 
+    @ManyToOne(() => Doctor, doctor => doctor.results, { eager: false })
+    @JoinColumn({ name: 'DOCTOR_ID', referencedColumnName: 'id' })
+    public doctor: Doctor;
+
     @ManyToOne(() => Morbidity, morbidity => morbidity.results, { eager: false })
     @JoinColumn({ name: 'MORBIDITY_ID', referencedColumnName: 'id' })
-    public morbidity: Morbidity    
-    
+    public morbidity: Morbidity
+
     @ManyToOne(() => Exam, exam => exam.results, { eager: false })
     @JoinColumn({ name: 'EXAM_ID', referencedColumnName: 'id' })
     public exam: Exam
