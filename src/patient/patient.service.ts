@@ -1,26 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
+import { PatientRepository } from './patient.repository';
+import { Patient } from './entities/patient.entity';
 
 @Injectable()
 export class PatientService {
-  create(createPatientDto: CreatePatientDto) {
-    return 'This action adds a new patient';
+
+  constructor(
+    @Inject(PatientRepository) private readonly repository: PatientRepository
+  ) { }
+
+  async create(createPatientDto: CreatePatientDto): Promise<Patient> {
+    return await this.repository.create(createPatientDto);
   }
 
-  findAll() {
-    return `This action returns all patient`;
+  async readAll(): Promise<Patient[]> {
+    return await this.repository.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} patient`;
+  async readOneByID(id: number): Promise<Patient> {
+    return await this.repository.findOne({ id });
   }
 
-  update(id: number, updatePatientDto: UpdatePatientDto) {
-    return `This action updates a #${id} patient`;
+  async update(id: number, updatePatientDto: UpdatePatientDto): Promise<Patient> {
+    return await this.repository.findOneAndUpdate({ id }, updatePatientDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} patient`;
+  async remove(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id });
   }
 }

@@ -19,7 +19,7 @@ export class ReportValueService {
     return await this.repository.find({});
   }
 
-  async findOne(id: number): Promise<ReportValue> {
+  async readOneByID(id: number): Promise<ReportValue> {
     return await this.repository.findOne({ id });
   }
 
