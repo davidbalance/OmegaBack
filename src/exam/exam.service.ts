@@ -1,26 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateExamDto } from './dto/create-exam.dto';
 import { UpdateExamDto } from './dto/update-exam.dto';
+import { ExamRepository } from './exam.repository';
+import { Exam } from './entities/exam.entity';
 
 @Injectable()
 export class ExamService {
-  create(createExamDto: CreateExamDto) {
-    return 'This action adds a new exam';
+
+  constructor(
+    @Inject(ExamRepository) private readonly repository: ExamRepository
+  ) { }
+
+  async create(createExamDto: CreateExamDto): Promise<Exam> {
+    return await this.repository.create(createExamDto);
   }
 
-  findAll() {
-    return `This action returns all exam`;
+  async readAll(): Promise<Exam[]> {
+    return await this.repository.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} exam`;
+  async readOneByID(id: number): Promise<Exam> {
+    return await this.repository.findOne({ id });
   }
 
-  update(id: number, updateExamDto: UpdateExamDto) {
-    return `This action updates a #${id} exam`;
+  async update(id: number, updateExamDto: UpdateExamDto): Promise<Exam> {
+    return await this.repository.findOneAndUpdate({ id }, updateExamDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} exam`;
+  async remove(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id });
   }
 }

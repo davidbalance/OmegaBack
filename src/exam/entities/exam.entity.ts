@@ -5,6 +5,6 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 export class Exam extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: "EXAM_ID" })
     public id: number;
-    @Column({ name: 'EXAM_NAME', type: 'varchar', length: 256 })
+    @Column({ name: 'EXAM_NAME', type: 'varchar', length: 256, unique: true })
     public name: string;
 }

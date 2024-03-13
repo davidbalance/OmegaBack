@@ -14,12 +14,12 @@ export class ExamController {
 
   @Get()
   findAll() {
-    return this.examService.findAll();
+    return this.examService.readAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.examService.findOne(+id);
+    return this.examService.readOneByID(+id);
   }
 
   @Patch(':id')
