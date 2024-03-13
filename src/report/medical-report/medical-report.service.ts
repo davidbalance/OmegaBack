@@ -1,26 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateMedicalReportDto } from './dto/create-medical-report.dto';
 import { UpdateMedicalReportDto } from './dto/update-medical-report.dto';
+import { MedicalReportRepository } from './medical-report.repository';
+import { MedicalReport } from './entities/medical-report.entity';
 
 @Injectable()
 export class MedicalReportService {
-  create(createMedicalReportDto: CreateMedicalReportDto) {
-    return 'This action adds a new medicalReport';
+
+  constructor(
+    @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository
+  ) { }
+
+  async create(createMedicalReportDto: CreateMedicalReportDto): Promise<MedicalReport> {
+    return await this.repository.create(createMedicalReportDto);
   }
 
-  findAll() {
-    return `This action returns all medicalReport`;
+  async readAll(): Promise<MedicalReport[]> {
+    return await this.repository.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} medicalReport`;
+  async readOneByID(id: number): Promise<MedicalReport> {
+    return await this.repository.findOne({ id });
   }
 
-  update(id: number, updateMedicalReportDto: UpdateMedicalReportDto) {
-    return `This action updates a #${id} medicalReport`;
+  async update(id: number, updateMedicalReportDto: UpdateMedicalReportDto): Promise<MedicalReport> {
+    return await this.repository.findOneAndUpdate({ id }, updateMedicalReportDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} medicalReport`;
+  async remove(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id });
   }
 }

@@ -5,7 +5,7 @@ import { UpdateMedicalReportDto } from './dto/update-medical-report.dto';
 
 @Controller('medical-report')
 export class MedicalReportController {
-  constructor(private readonly medicalReportService: MedicalReportService) {}
+  constructor(private readonly medicalReportService: MedicalReportService) { }
 
   @Post()
   create(@Body() createMedicalReportDto: CreateMedicalReportDto) {
@@ -14,12 +14,12 @@ export class MedicalReportController {
 
   @Get()
   findAll() {
-    return this.medicalReportService.findAll();
+    return this.medicalReportService.readAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.medicalReportService.findOne(+id);
+    return this.medicalReportService.readOneByID(+id);
   }
 
   @Patch(':id')
