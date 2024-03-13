@@ -14,12 +14,12 @@ export class ReportElementController {
 
   @Get()
   findAll() {
-    return this.reportElementService.findAll();
+    return this.reportElementService.readAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.reportElementService.findOne(+id);
+    return this.reportElementService.readOneByID(+id);
   }
 
   @Patch(':id')

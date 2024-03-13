@@ -1,26 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateReportElementDto } from './dto/create-report-element.dto';
 import { UpdateReportElementDto } from './dto/update-report-element.dto';
+import { ReportElementRepository } from './report-element.repository';
+import { ReportElement } from './entities/report-element.entity';
 
 @Injectable()
 export class ReportElementService {
-  create(createReportElementDto: CreateReportElementDto) {
-    return 'This action adds a new reportElement';
+
+  constructor(
+    @Inject(ReportElementRepository) private readonly repository: ReportElementRepository
+  ) { }
+
+  async create(createReportElementDto: CreateReportElementDto): Promise<ReportElement> {
+    return await this.repository.create(createReportElementDto);
   }
 
-  findAll() {
-    return `This action returns all reportElement`;
+  async readAll(): Promise<ReportElement[]> {
+    return await this.repository.find({ status: false });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reportElement`;
+  async readOneByID(id: number): Promise<ReportElement> {
+    return await this.repository.findOne({ id });
   }
 
-  update(id: number, updateReportElementDto: UpdateReportElementDto) {
-    return `This action updates a #${id} reportElement`;
+  async update(id: number, updateReportElementDto: UpdateReportElementDto): Promise<ReportElement> {
+    return await this.repository.findOneAndUpdate({ id }, updateReportElementDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reportElement`;
+  async remove(id: number): Promise<void> {
+    await this.repository.findOneAndUpdate({ id }, { status: false });
   }
 }
