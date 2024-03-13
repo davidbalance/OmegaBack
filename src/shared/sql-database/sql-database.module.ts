@@ -27,7 +27,7 @@ import Joi from 'joi';
                 username: config.get<string>("database.sql.username"),
                 password: config.get<string>("database.sql.password"),
                 database: config.get<string>("database.sql.database"),
-                synchronize: config.get<"production" | "development">("app.enviroment") === 'production',
+                synchronize: config.get<"production" | "development">("app.enviroment") !== 'production',
                 autoLoadEntities: true
             }),
             inject: [ConfigService],

@@ -1,6 +1,7 @@
+import { Result } from "src/medical-order/result/entities/result.entity";
 import { MorbidityGroup } from "src/morbidity/morbidity-group/entities/morbidity-group.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'MORBIDITY' })
 export class Morbidity extends AbstractEntity<number> {
@@ -14,4 +15,7 @@ export class Morbidity extends AbstractEntity<number> {
     @ManyToOne(() => MorbidityGroup, group => group.morbidities, { eager: false })
     @JoinColumn({ referencedColumnName: 'id', name: 'MORBIDITY_GROUP_ID' })
     public group: MorbidityGroup;
+
+    @OneToMany(() => Result, result => result.morbidity, { eager: false })
+    public results: Result[];
 }
