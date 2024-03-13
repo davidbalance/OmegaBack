@@ -1,3 +1,4 @@
+import { Exam } from "src/exam/entities/exam.entity";
 import { Order } from "src/medical-order/order/entities/order.entity";
 import { Send } from "src/medical-order/send/entities/send.entity";
 import { Morbidity } from "src/morbidity/morbidity/entities/morbidity.entity";
@@ -15,7 +16,11 @@ export class Result extends AbstractEntity<number> {
 
     @ManyToOne(() => Morbidity, morbidity => morbidity.results, { eager: false })
     @JoinColumn({ name: 'MORBIDITY_ID', referencedColumnName: 'id' })
-    public morbidity: Morbidity
+    public morbidity: Morbidity    
+    
+    @ManyToOne(() => Exam, exam => exam.results, { eager: false })
+    @JoinColumn({ name: 'EXAM_ID', referencedColumnName: 'id' })
+    public exam: Exam
 
     @ManyToOne(() => Order, order => order.results, { eager: false })
     @JoinColumn({ name: 'ORDER_ID', referencedColumnName: 'id' })
