@@ -3,10 +3,11 @@ import { CityService } from './city.service';
 import { CityController } from './city.controller';
 import { City } from './entities/city.entity';
 import { SqlDatabaseModule } from 'src/shared';
+import { CityRepository } from './city.repository';
 
 @Module({
   imports: [SqlDatabaseModule.forFeature([City])],
   controllers: [CityController],
-  providers: [CityService]
+  providers: [CityService, CityRepository]
 })
 export class CityModule { }
