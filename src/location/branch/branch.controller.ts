@@ -5,7 +5,7 @@ import { UpdateBranchDto } from './dto/update-branch.dto';
 
 @Controller('branch')
 export class BranchController {
-  constructor(private readonly branchService: BranchService) {}
+  constructor(private readonly branchService: BranchService) { }
 
   @Post()
   create(@Body() createBranchDto: CreateBranchDto) {
@@ -14,12 +14,12 @@ export class BranchController {
 
   @Get()
   findAll() {
-    return this.branchService.findAll();
+    return this.branchService.readAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.branchService.findOne(+id);
+    return this.branchService.readOneByID(+id);
   }
 
   @Patch(':id')
