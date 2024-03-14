@@ -1,5 +1,6 @@
+import { Permission } from "src/authorization/permission/entities/permission.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'ROLES' })
 export class Role extends AbstractEntity<number> {
@@ -7,4 +8,12 @@ export class Role extends AbstractEntity<number> {
     public id: number;
     @Column({ name: 'ROLE_NAME', type: 'varchar', length: 64, unique: true, nullable: false })
     public name: string;
+
+    @ManyToMany(() => Permission)
+    @JoinTable({
+        name: 'ROLES_PERMISSIONS',
+        joinColumn: { name: 'ROLE_ID', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'PERMISSION_ID', referencedColumnName: 'id' }
+    })
+    public permissions: Permission[];
 }
