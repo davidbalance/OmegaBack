@@ -5,7 +5,7 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 
 @Controller('role')
 export class RoleController {
-  constructor(private readonly roleService: RoleService) {}
+  constructor(private readonly roleService: RoleService) { }
 
   @Post()
   create(@Body() createRoleDto: CreateRoleDto) {
@@ -14,12 +14,12 @@ export class RoleController {
 
   @Get()
   findAll() {
-    return this.roleService.findAll();
+    return this.roleService.readAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.roleService.findOne(+id);
+    return this.roleService.readOneByID(+id);
   }
 
   @Patch(':id')

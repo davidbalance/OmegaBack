@@ -1,26 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { RoleRepository } from './role.repository';
+import { Role } from './entities/role.entity';
 
 @Injectable()
 export class RoleService {
-  create(createRoleDto: CreateRoleDto) {
-    return 'This action adds a new role';
+  constructor(
+    @Inject(RoleRepository) private readonly repository: RoleRepository
+  ) { }
+
+  async create(createRoleDto: CreateRoleDto): Promise<Role> {
+    return await this.repository.create(createRoleDto);
   }
 
-  findAll() {
-    return `This action returns all role`;
+  async readAll(): Promise<Role[]> {
+    return await this.repository.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} role`;
+  async readOneByID(id: number): Promise<Role> {
+    return await this.repository.findOne({ id });
   }
 
-  update(id: number, updateRoleDto: UpdateRoleDto) {
-    return `This action updates a #${id} role`;
+  async update(id: number, updateRoleDto: UpdateRoleDto): Promise<Role> {
+    return await this.repository.findOneAndUpdate({ id }, updateRoleDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} role`;
+  async remove(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id });
   }
 }
