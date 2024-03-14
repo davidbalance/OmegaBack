@@ -5,7 +5,7 @@ import { UpdateStateDto } from './dto/update-state.dto';
 
 @Controller('state')
 export class StateController {
-  constructor(private readonly stateService: StateService) {}
+  constructor(private readonly stateService: StateService) { }
 
   @Post()
   create(@Body() createStateDto: CreateStateDto) {
@@ -14,12 +14,12 @@ export class StateController {
 
   @Get()
   findAll() {
-    return this.stateService.findAll();
+    return this.stateService.readAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.stateService.findOne(+id);
+    return this.stateService.readOneByID(+id);
   }
 
   @Patch(':id')
