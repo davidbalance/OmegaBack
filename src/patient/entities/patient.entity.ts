@@ -1,7 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PatientGenderEnum } from "../common/enums";
 import { AbstractEntity } from "src/shared";
 import { Order } from "src/medical-order/order/entities/order.entity";
+import { User } from "src/user/entities/user.entity";
 
 @Entity({ name: "PATIENTS" })
 export class Patient extends AbstractEntity<number> {
@@ -16,4 +17,8 @@ export class Patient extends AbstractEntity<number> {
 
     @OneToMany(() => Order, order => order.patient, { eager: false })
     public orders: Order[];
+
+    @OneToOne(() => User, { eager: false })
+    @JoinColumn({ referencedColumnName: 'id', name: 'USER_ID' })
+    public user: User;
 }

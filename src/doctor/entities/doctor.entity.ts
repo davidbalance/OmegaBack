@@ -1,6 +1,7 @@
 import { Result } from "src/medical-order/result/entities/result.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/user/entities/user.entity";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'DOCTORS' })
 export class Doctor extends AbstractEntity<number> {
@@ -11,4 +12,8 @@ export class Doctor extends AbstractEntity<number> {
 
     @OneToMany(() => Result, result => result.doctor, { eager: false })
     public results: Result[];
+
+    @OneToOne(() => User, { eager: false })
+    @JoinColumn({ referencedColumnName: 'id', name: 'USER_ID' })
+    public user: User;
 }
