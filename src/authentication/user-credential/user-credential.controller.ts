@@ -14,12 +14,12 @@ export class UserCredentialController {
 
   @Get()
   findAll() {
-    return this.userCredentialService.findAll();
+    return this.userCredentialService.readAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userCredentialService.findOne(+id);
+    return this.userCredentialService.readOneByID(+id);
   }
 
   @Patch(':id')

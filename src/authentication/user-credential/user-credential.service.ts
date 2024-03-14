@@ -1,26 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserCredentialDto } from './dto/create-user-credential.dto';
 import { UpdateUserCredentialDto } from './dto/update-user-credential.dto';
+import { UserCredentialRepository } from './user-credential.repository';
+import { UserCredential } from './entities/user-credential.entity';
 
 @Injectable()
 export class UserCredentialService {
-  create(createUserCredentialDto: CreateUserCredentialDto) {
-    return 'This action adds a new userCredential';
+
+  constructor(
+    @Inject(UserCredentialRepository) private readonly repository: UserCredentialRepository
+  ) { }
+
+  async create(createUserCredentialDto: CreateUserCredentialDto): Promise<UserCredential> {
+    return await this.repository.create(createUserCredentialDto);
   }
 
-  findAll() {
-    return `This action returns all userCredential`;
+  async readAll(): Promise<UserCredential[]> {
+    return await this.repository.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} userCredential`;
+  async readOneByID(id: number): Promise<UserCredential> {
+    return await this.repository.findOne({ id });
   }
 
-  update(id: number, updateUserCredentialDto: UpdateUserCredentialDto) {
-    return `This action updates a #${id} userCredential`;
+  async update(id: number, updateUserCredentialDto: UpdateUserCredentialDto): Promise<UserCredential> {
+    return await this.repository.findOneAndUpdate({ id }, updateUserCredentialDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} userCredential`;
+  async remove(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id });
   }
 }
