@@ -1,3 +1,4 @@
+import { Branch } from "src/location/branch/entities/branch.entity";
 import { Result } from "src/medical-order/result/entities/result.entity";
 import { Send } from "src/medical-order/send/entities/send.entity";
 import { Patient } from "src/patient/entities/patient.entity";
@@ -15,6 +16,10 @@ export class Order extends AbstractEntity<number> {
 
     @OneToMany(() => Result, result => result.order, { eager: false })
     public results: Result[];
+
+    @ManyToOne(() => Branch, branch => branch.orders, { eager: false })
+    @JoinColumn({ name: 'BRANCH_ID', referencedColumnName: 'id' })
+    public branch: Branch;
 
     @ManyToOne(() => Patient, patient => patient.orders, { eager: false })
     @JoinColumn({ name: 'PATIENT_ID', referencedColumnName: 'id' })

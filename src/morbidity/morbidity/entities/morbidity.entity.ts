@@ -3,7 +3,7 @@ import { MorbidityGroup } from "src/morbidity/morbidity-group/entities/morbidity
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'MORBIDITY' })
+@Entity({ name: 'MORBIDITIES' })
 export class Morbidity extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'MORBIDITY_ID' })
     public id: number;
