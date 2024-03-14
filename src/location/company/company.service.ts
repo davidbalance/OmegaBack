@@ -1,26 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { CompanyRepository } from './company.repository';
+import { Company } from './entities/company.entity';
 
 @Injectable()
 export class CompanyService {
-  create(createCompanyDto: CreateCompanyDto) {
-    return 'This action adds a new company';
+
+  constructor(
+    @Inject(CompanyRepository) private readonly repository: CompanyRepository
+  ) { }
+
+  async create(createCompanyDto: CreateCompanyDto): Promise<Company> {
+    return await this.repository.create(createCompanyDto);
   }
 
-  findAll() {
-    return `This action returns all company`;
+  async readAll(): Promise<Company[]> {
+    return await this.repository.find({ status: true });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} company`;
+  async readOneByID(id: number): Promise<Company> {
+    return await this.repository.findOne({ status: false });
   }
 
-  update(id: number, updateCompanyDto: UpdateCompanyDto) {
-    return `This action updates a #${id} company`;
+  async update(id: number, updateCompanyDto: UpdateCompanyDto): Promise<Company> {
+    return await this.repository.findOneAndUpdate({ id }, updateCompanyDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} company`;
+  async remove(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id });
   }
 }

@@ -14,12 +14,12 @@ export class CompanyController {
 
   @Get()
   findAll() {
-    return this.companyService.findAll();
+    return this.companyService.readAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.companyService.findOne(+id);
+    return this.companyService.readOneByID(+id);
   }
 
   @Patch(':id')
