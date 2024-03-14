@@ -1,26 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateCorporativeGroupDto } from './dto/create-corporative-group.dto';
 import { UpdateCorporativeGroupDto } from './dto/update-corporative-group.dto';
+import { CorporativeGroupRepository } from './corporative-group.repository';
+import { CorporativeGroup } from './entities/corporative-group.entity';
 
 @Injectable()
 export class CorporativeGroupService {
-  create(createCorporativeGroupDto: CreateCorporativeGroupDto) {
-    return 'This action adds a new corporativeGroup';
+
+  constructor(
+    @Inject(CorporativeGroupRepository) private readonly repository: CorporativeGroupRepository
+  ) { }
+
+  async create(createCorporativeGroupDto: CreateCorporativeGroupDto): Promise<CorporativeGroup> {
+    return await this.repository.create(createCorporativeGroupDto);
   }
 
-  findAll() {
-    return `This action returns all corporativeGroup`;
+  async readAll(): Promise<CorporativeGroup[]> {
+    return await this.repository.find({ status: true });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} corporativeGroup`;
+  async readOneByID(id: number): Promise<CorporativeGroup> {
+    return await this.repository.findOne({ id });
   }
 
-  update(id: number, updateCorporativeGroupDto: UpdateCorporativeGroupDto) {
-    return `This action updates a #${id} corporativeGroup`;
+  async update(id: number, updateCorporativeGroupDto: UpdateCorporativeGroupDto): Promise<CorporativeGroup> {
+    return await this.repository.findOneAndUpdate({ id }, updateCorporativeGroupDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} corporativeGroup`;
+  async remove(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id });
   }
 }

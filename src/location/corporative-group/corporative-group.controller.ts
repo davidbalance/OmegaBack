@@ -5,7 +5,7 @@ import { UpdateCorporativeGroupDto } from './dto/update-corporative-group.dto';
 
 @Controller('corporative-group')
 export class CorporativeGroupController {
-  constructor(private readonly corporativeGroupService: CorporativeGroupService) {}
+  constructor(private readonly corporativeGroupService: CorporativeGroupService) { }
 
   @Post()
   create(@Body() createCorporativeGroupDto: CreateCorporativeGroupDto) {
@@ -14,12 +14,12 @@ export class CorporativeGroupController {
 
   @Get()
   findAll() {
-    return this.corporativeGroupService.findAll();
+    return this.corporativeGroupService.readAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.corporativeGroupService.findOne(+id);
+    return this.corporativeGroupService.readOneByID(+id);
   }
 
   @Patch(':id')
