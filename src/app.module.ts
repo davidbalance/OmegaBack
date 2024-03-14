@@ -11,6 +11,7 @@ import { DoctorModule } from './doctor/doctor.module';
 import { LocationModule } from './location/location.module';
 import { UserModule } from './user/user.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { AuthorizationModule } from './authorization/authorization.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
     LocationModule,
     UserModule,
     AuthenticationModule,
+    AuthorizationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
