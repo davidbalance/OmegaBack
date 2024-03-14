@@ -1,26 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateTokenDto } from './dto/create-token.dto';
 import { UpdateTokenDto } from './dto/update-token.dto';
+import { TokenRepository } from './token.repository';
+import { Token } from './entities/token.entity';
 
 @Injectable()
 export class TokenService {
-  create(createTokenDto: CreateTokenDto) {
-    return 'This action adds a new token';
+
+  constructor(
+    @Inject(TokenRepository) private readonly repository: TokenRepository
+  ) { }
+
+  async create(createTokenDto: CreateTokenDto): Promise<Token> {
+    return await this.repository.create(createTokenDto);
   }
 
-  findAll() {
-    return `This action returns all token`;
+  async findAll(): Promise<Token[]> {
+    return await this.repository.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} token`;
+  async findOne(id: number): Promise<Token> {
+    return await this.repository.findOne({ id })
   }
 
-  update(id: number, updateTokenDto: UpdateTokenDto) {
-    return `This action updates a #${id} token`;
+  async update(id: number, updateTokenDto: UpdateTokenDto): Promise<Token> {
+    return await this.repository.findOneAndUpdate({ id }, updateTokenDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} token`;
+  async remove(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id });
   }
 }
