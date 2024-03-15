@@ -11,13 +11,13 @@ interface DoctorServiceExtensions {
    * Creates a doctor using the given values
    * @param doctor 
    */
-  create(doctor: CreateDoctorRequestDTO): Promise<Doctor>;
+  create(doctor: CreateDoctorRequestDTO, signature: Express.Multer.File): Promise<Doctor>;
   /**
    * Creates a doctor using the given values
    * @param doctor 
    * @param user 
    */
-  create(doctor: CreateDoctorRequestDTO, user: number): Promise<Doctor>;
+  create(doctor: CreateDoctorRequestDTO, signature: Express.Multer.File, user: number): Promise<Doctor>;
   /**
    * Find all the doctors that have an active user
    */
@@ -32,7 +32,7 @@ interface DoctorServiceExtensions {
    * @param id 
    * @param doctor 
    */
-  update(id: number, doctor: UpdateDoctorRequestDTO): Promise<Doctor>;
+  update(id: number, signature: Express.Multer.File, doctor: UpdateDoctorRequestDTO): Promise<Doctor>;
 }
 
 @Injectable()
@@ -44,9 +44,9 @@ export class DoctorService implements DoctorServiceExtensions {
     @Inject(UserService) private readonly userService: UserService
   ) { }
 
-  create(doctor: CreateDoctorRequestDTO): Promise<Doctor>;
-  create(doctor: CreateDoctorRequestDTO, user: number): Promise<Doctor>;
-  async create(doctor: CreateDoctorRequestDTO, userOrUndefined?: number): Promise<Doctor> {
+  create(doctor: CreateDoctorRequestDTO, signature: Express.Multer.File): Promise<Doctor>;
+  create(doctor: CreateDoctorRequestDTO, signature: Express.Multer.File, user: number): Promise<Doctor>;
+  async create(doctor: CreateDoctorRequestDTO, signature: Express.Multer.File, userOrUndefined?: number): Promise<Doctor> {
     let user: User = null;
     if (userOrUndefined) {
       user = await this.userService.readOneByID(userOrUndefined);
@@ -65,7 +65,7 @@ export class DoctorService implements DoctorServiceExtensions {
     return await this.repository.findOne({ id, user: { status: true } }, { user: true })
   }
 
-  async update(id: number, doctor: UpdateDoctorRequestDTO): Promise<Doctor> {
+  async update(id: number, signature: Express.Multer.File, doctor: UpdateDoctorRequestDTO): Promise<Doctor> {
     const currentDoctor = await this.repository.findOne({ id }, { user: true });
     await this.userService.update(currentDoctor.user.id, doctor);
     if (doctor.email) {

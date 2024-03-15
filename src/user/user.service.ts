@@ -19,6 +19,11 @@ interface UserServiceExtensions<K> {
    */
   readOneByID(id: K): Promise<User>;
   /**
+   * Retrive one active user by its given DNI
+   * @param dni 
+   */
+  readOneByDNI(dni: string): Promise<User>;
+  /**
    * Updates user by its given values
    * @param id 
    * @param user 
@@ -59,6 +64,10 @@ export class UserService implements UserServiceExtensions<number> {
 
   async readOneByID(id: number): Promise<User> {
     return this.repository.findOne({ id, status: true }, { roles: true, permissions: true });
+  }
+
+  async readOneByDNI(dni: string): Promise<User> {
+    return this.repository.findOne({ dni, status: true }, { roles: true, permissions: true });
   }
 
   async update(id: number, user: UpdateUserRequestDTO): Promise<User> {

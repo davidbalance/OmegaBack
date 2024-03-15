@@ -8,7 +8,11 @@ import { UserModule } from 'src/user/user.module';
 import { UserCredentialModule } from 'src/authentication/user-credential/user-credential.module';
 
 @Module({
-  imports: [SqlDatabaseModule.forFeature([Doctor]), UserModule, UserCredentialModule],
+  imports: [
+    SqlDatabaseModule.forFeature([Doctor]),
+    UserModule,
+    UserCredentialModule
+  ],
   controllers: [DoctorController],
   providers: [DoctorService, DoctorRepository]
 })
