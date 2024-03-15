@@ -11,3 +11,18 @@ export class CreateUserRequestDTO {
     @Max(64)
     public readonly lastname: string;
 }
+
+export class UpdateUserDNIRequestDTO {
+    @IsString()
+    @Length(10, 10)
+    public readonly dni: string;
+}
+
+export class UpdateUserRequestDTO {
+    @IsString()
+    @Max(64)
+    public readonly name: string;
+    @IsString()
+    @Max(64)
+    public readonly lastname: string;
+}
