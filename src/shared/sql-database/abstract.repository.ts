@@ -36,10 +36,11 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
     }
 
     /**
-     * Find the first element that math the filter provided
+     * Find the first element that math the filter provided if there is not matches throws exception
      * @param filterOptions 
      * @param relationOptions 
-     * @returns 
+     * @throws NotFoundException
+     * @returns
      */
     async findOne(filterOptions: FindOptionsWhere<TEntity>, relationOptions?: FindOptionsRelations<TEntity>): Promise<TEntity> {
         const entity = await this.model.findOne({ where: filterOptions, relations: relationOptions });
@@ -54,6 +55,7 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
      * Find one item and updates it using hte provided values
      * @param filterOptions 
      * @param updateOptions 
+     * @throws NotFoundException
      * @returns 
      */
     async findOneAndUpdate(filterOptions: FindOptionsWhere<TEntity>, updateOptions: Partial<TEntity>): Promise<TEntity> {
