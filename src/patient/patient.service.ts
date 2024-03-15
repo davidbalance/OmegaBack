@@ -3,7 +3,7 @@ import { PatientRepository } from './patient.repository';
 import { Patient } from './entities/patient.entity';
 import { UserCredentialService } from 'src/authentication/user-credential/user-credential.service';
 import { UserService } from 'src/user/user.service';
-import { CreatePatientRequestDTO, UpdatePatientRequestDTO } from 'src/shared';
+import { CreatePatientAndAssignUserRequestDTO, CreatePatientRequestDTO, UpdatePatientRequestDTO } from 'src/shared';
 import { User } from 'src/user/entities/user.entity';
 
 interface PatientServiceExtensions {
@@ -17,7 +17,7 @@ interface PatientServiceExtensions {
    * @param patient 
    * @param user 
    */
-  create(patient: CreatePatientRequestDTO, user: number): Promise<Patient>;
+  create(patient: CreatePatientAndAssignUserRequestDTO, user: number): Promise<Patient>;
   /**
    * Find all the patients that have an active user
    */
@@ -45,14 +45,14 @@ export class PatientService implements PatientServiceExtensions {
   ) { }
 
   create(patient: CreatePatientRequestDTO): Promise<Patient>;
-  create(patient: CreatePatientRequestDTO, user: number): Promise<Patient>;
-  async create(patient: CreatePatientRequestDTO, userOrUndefined?: number): Promise<Patient> {
+  create(patient: CreatePatientAndAssignUserRequestDTO, user: number): Promise<Patient>;
+  async create(patient: CreatePatientRequestDTO | CreatePatientAndAssignUserRequestDTO, userOrUndefined?: number): Promise<Patient> {
     let user: User = null;
     if (userOrUndefined) {
       user = await this.userService.readOneByID(userOrUndefined);
     } else {
-      user = await this.userService.create(patient);
-      await this.credentialService.create(patient, user.id);
+      user = await this.userService.create(patient as CreatePatientRequestDTO);
+      await this.credentialService.create(patient as CreatePatientRequestDTO, user.id);
     }
     return await this.repository.create({ ...patient, user: user });
   }

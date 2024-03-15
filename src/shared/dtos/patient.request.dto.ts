@@ -23,6 +23,17 @@ export class CreatePatientRequestDTO {
     public age: number;
 }
 
+export class CreatePatientAndAssignUserRequestDTO {
+    @IsNumber()
+    public readonly user: number;
+    @IsEnum(PatientGenderEnum)
+    public gender: PatientGenderEnum;
+    @IsDate()
+    public birthday: Date;
+    @IsNumber()
+    public age: number;
+}
+
 export class UpdatePatientRequestDTO {
     @IsEmail()
     @IsOptional()

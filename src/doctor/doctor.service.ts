@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DoctorRepository } from './doctor.repository';
 import { Doctor } from './entities/doctor.entity';
-import { CreateDoctorRequestDTO, UpdateDoctorRequestDTO } from 'src/shared';
+import { CreateDoctorAndAssignUserRequestDTO, CreateDoctorRequestDTO, UpdateDoctorRequestDTO } from 'src/shared';
 import { User } from 'src/user/entities/user.entity';
 import { UserCredentialService } from 'src/authentication/user-credential/user-credential.service';
 import { UserService } from 'src/user/user.service';
@@ -18,7 +18,7 @@ interface DoctorServiceExtensions {
    * @param doctor 
    * @param user 
    */
-  create(doctor: CreateDoctorRequestDTO, user: number): Promise<Doctor>;
+  create(doctor: CreateDoctorAndAssignUserRequestDTO, user: number): Promise<Doctor>;
   /**
    * Find all the doctors that have an active user
    */
@@ -53,14 +53,14 @@ export class DoctorService implements DoctorServiceExtensions {
   ) { }
 
   create(doctor: CreateDoctorRequestDTO): Promise<Doctor>;
-  create(doctor: CreateDoctorRequestDTO, user: number): Promise<Doctor>;
-  async create(doctor: CreateDoctorRequestDTO, userOrUndefined?: number): Promise<Doctor> {
+  create(doctor: CreateDoctorAndAssignUserRequestDTO, user: number): Promise<Doctor>;
+  async create(doctor: CreateDoctorRequestDTO | CreateDoctorAndAssignUserRequestDTO, userOrUndefined?: number): Promise<Doctor> {
     let user: User = null;
     if (userOrUndefined) {
       user = await this.userService.readOneByID(userOrUndefined);
     } else {
-      user = await this.userService.create(doctor);
-      await this.credentialService.create(doctor, user.id);
+      user = await this.userService.create(doctor as CreateDoctorRequestDTO);
+      await this.credentialService.create(doctor as CreateDoctorRequestDTO, user.id);
     }
     return await this.repository.create({ ...doctor, user: user });
   }

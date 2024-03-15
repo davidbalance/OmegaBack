@@ -16,6 +16,11 @@ export class CreateDoctorRequestDTO {
     public readonly lastname: string;
 }
 
+export class CreateDoctorAndAssignUserRequestDTO {
+    @IsNumber()
+    public readonly user: number;
+}
+
 export class UpdateDoctorRequestDTO {
     @IsEmail()
     @IsOptional()

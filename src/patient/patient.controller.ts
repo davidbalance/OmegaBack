@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { Patient } from './entities/patient.entity';
-import { CreatePatientRequestDTO, UpdatePatientRequestDTO } from 'src/shared';
+import { CreatePatientAndAssignUserRequestDTO, CreatePatientRequestDTO, UpdatePatientRequestDTO } from 'src/shared';
 
 @Controller('patients')
 export class PatientController {
@@ -12,6 +12,13 @@ export class PatientController {
     @Body() body: CreatePatientRequestDTO
   ): Promise<void> {
     await this.patientService.create(body);
+  }
+
+  @Post('assign')
+  async assignUser(
+    @Body() body: CreatePatientAndAssignUserRequestDTO
+  ): Promise<void> {
+    await this.patientService.create(body, body.user);
   }
 
   @Get()
