@@ -13,6 +13,8 @@ export class UpdateUserCredentialEmailRequestDTO {
 }
 
 export class UpdateUserCredentialPasswordRequestDTO {
+    @IsEmail()
+    public readonly email: string;
     @IsStrongPassword({ minLength: 8 })
     public readonly password: string;
 }
