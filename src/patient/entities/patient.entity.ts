@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { PatientGenderEnum } from "../common/enums";
+import { PatientGenderEnum } from "../../shared/enums";
 import { AbstractEntity } from "src/shared";
 import { Order } from "src/medical-order/order/entities/order.entity";
 import { User } from "src/user/entities/user.entity";

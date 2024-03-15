@@ -4,6 +4,7 @@ import { UserController } from './user.controller';
 import { UserRepository } from './user.repository';
 import { SqlDatabaseModule } from 'src/shared';
 import { User } from './entities/user.entity';
+import { UserCredentialModule } from 'src/authentication/user-credential/user-credential.module';
 
 @Module({
   imports: [SqlDatabaseModule.forFeature([User])],

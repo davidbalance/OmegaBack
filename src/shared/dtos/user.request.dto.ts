@@ -1,4 +1,4 @@
-import { IsString, Length, Max } from "class-validator";
+import { IsEmail, IsOptional, IsString, Length, Max } from "class-validator";
 
 export class CreateUserRequestDTO {
     @IsString()
@@ -19,6 +19,9 @@ export class UpdateUserDNIRequestDTO {
 }
 
 export class UpdateUserRequestDTO {
+    @IsEmail()
+    @IsOptional()
+    public readonly email?: string;
     @IsString()
     @Max(64)
     public readonly name: string;
