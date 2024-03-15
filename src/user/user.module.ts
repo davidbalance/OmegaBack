@@ -8,6 +8,7 @@ import { User } from './entities/user.entity';
 @Module({
   imports: [SqlDatabaseModule.forFeature([User])],
   controllers: [UserController],
-  providers: [UserService, UserRepository]
+  providers: [UserService, UserRepository],
+  exports: [UserService]
 })
 export class UserModule { }
