@@ -14,9 +14,6 @@ export class CreateDoctorRequestDTO {
     @IsString()
     @Max(64)
     public readonly lastname: string;
-    @IsString()
-    @IsNotEmpty()
-    public signature: string;
 }
 
 export class UpdateDoctorRequestDTO {
@@ -29,7 +26,4 @@ export class UpdateDoctorRequestDTO {
     @IsString()
     @Max(64)
     public readonly lastname: string;
-    @IsString()
-    @IsNotEmpty()
-    public signature: string;
 }

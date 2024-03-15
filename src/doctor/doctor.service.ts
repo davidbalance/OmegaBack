@@ -5,19 +5,20 @@ import { CreateDoctorRequestDTO, UpdateDoctorRequestDTO } from 'src/shared';
 import { User } from 'src/user/entities/user.entity';
 import { UserCredentialService } from 'src/authentication/user-credential/user-credential.service';
 import { UserService } from 'src/user/user.service';
+import { StorageSaver } from 'src/shared/storage-saver';
 
 interface DoctorServiceExtensions {
   /**
    * Creates a doctor using the given values
    * @param doctor 
    */
-  create(doctor: CreateDoctorRequestDTO, signature: Express.Multer.File): Promise<Doctor>;
+  create(doctor: CreateDoctorRequestDTO): Promise<Doctor>;
   /**
    * Creates a doctor using the given values
    * @param doctor 
    * @param user 
    */
-  create(doctor: CreateDoctorRequestDTO, signature: Express.Multer.File, user: number): Promise<Doctor>;
+  create(doctor: CreateDoctorRequestDTO, user: number): Promise<Doctor>;
   /**
    * Find all the doctors that have an active user
    */
@@ -32,7 +33,13 @@ interface DoctorServiceExtensions {
    * @param id 
    * @param doctor 
    */
-  update(id: number, signature: Express.Multer.File, doctor: UpdateDoctorRequestDTO): Promise<Doctor>;
+  update(id: number, doctor: UpdateDoctorRequestDTO): Promise<Doctor>;
+  /**
+   * 
+   * @param id Uploads a doctor signature and stores it in an specific folder
+   * @param signature 
+   */
+  uploadSignature(id: number, signature: Express.Multer.File): Promise<void>;
 }
 
 @Injectable()
@@ -41,12 +48,13 @@ export class DoctorService implements DoctorServiceExtensions {
   constructor(
     @Inject(DoctorRepository) private readonly repository: DoctorRepository,
     @Inject(UserCredentialService) private readonly credentialService: UserCredentialService,
-    @Inject(UserService) private readonly userService: UserService
+    @Inject(UserService) private readonly userService: UserService,
+    @Inject(StorageSaver) private readonly storage: StorageSaver
   ) { }
 
-  create(doctor: CreateDoctorRequestDTO, signature: Express.Multer.File): Promise<Doctor>;
-  create(doctor: CreateDoctorRequestDTO, signature: Express.Multer.File, user: number): Promise<Doctor>;
-  async create(doctor: CreateDoctorRequestDTO, signature: Express.Multer.File, userOrUndefined?: number): Promise<Doctor> {
+  create(doctor: CreateDoctorRequestDTO): Promise<Doctor>;
+  create(doctor: CreateDoctorRequestDTO, user: number): Promise<Doctor>;
+  async create(doctor: CreateDoctorRequestDTO, userOrUndefined?: number): Promise<Doctor> {
     let user: User = null;
     if (userOrUndefined) {
       user = await this.userService.readOneByID(userOrUndefined);
@@ -65,15 +73,24 @@ export class DoctorService implements DoctorServiceExtensions {
     return await this.repository.findOne({ id, user: { status: true } }, { user: true })
   }
 
-  async update(id: number, signature: Express.Multer.File, doctor: UpdateDoctorRequestDTO): Promise<Doctor> {
+  async update(id: number, doctor: UpdateDoctorRequestDTO): Promise<Doctor> {
     const currentDoctor = await this.repository.findOne({ id }, { user: true });
-    await this.userService.update(currentDoctor.user.id, doctor);
+    const user = await this.userService.update(currentDoctor.user.id, { ...doctor });
     if (doctor.email) {
       const credential = await this.credentialService.readByUser(currentDoctor.user.id);
       if (credential.email !== doctor.email) {
         await this.credentialService.updateUsername(credential.id, doctor.email);
       }
     }
-    return await this.repository.findOneAndUpdate({ id }, doctor);
+    currentDoctor.user = user;
+    return currentDoctor;
+    // return await this.repository.findOneAndUpdate({ id }, { signature: currentDoctor.signature });
+  }
+
+  async uploadSignature(id: number, signature: Express.Multer.File): Promise<void> {
+    const doctor = await this.repository.findOne({ id }, { user: true });
+    const directory = doctor.user.dni;
+    const uploaded = await this.storage.saveFile(signature, directory);
+    await this.repository.findOneAndUpdate({ id }, { signature: `${directory}/${uploaded}` });
   }
 }
