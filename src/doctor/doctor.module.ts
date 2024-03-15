@@ -4,9 +4,11 @@ import { DoctorController } from './doctor.controller';
 import { SqlDatabaseModule } from 'src/shared';
 import { Doctor } from './entities/doctor.entity';
 import { DoctorRepository } from './doctor.repository';
+import { UserModule } from 'src/user/user.module';
+import { UserCredentialModule } from 'src/authentication/user-credential/user-credential.module';
 
 @Module({
-  imports: [SqlDatabaseModule.forFeature([Doctor])],
+  imports: [SqlDatabaseModule.forFeature([Doctor]), UserModule, UserCredentialModule],
   controllers: [DoctorController],
   providers: [DoctorService, DoctorRepository]
 })
