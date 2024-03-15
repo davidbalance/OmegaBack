@@ -1,6 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreatePatientDto } from './dto/create-patient.dto';
-import { UpdatePatientDto } from './dto/update-patient.dto';
 import { PatientRepository } from './patient.repository';
 import { Patient } from './entities/patient.entity';
 import { UserCredentialService } from 'src/authentication/user-credential/user-credential.service';
