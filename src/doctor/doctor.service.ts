@@ -6,6 +6,7 @@ import { User } from 'src/user/entities/user.entity';
 import { UserCredentialService } from 'src/authentication/user-credential/user-credential.service';
 import { UserService } from 'src/user/user.service';
 import { StorageSaver } from 'src/shared/storage-saver';
+import path from 'path';
 
 interface DoctorServiceExtensions {
   /**
@@ -90,7 +91,7 @@ export class DoctorService implements DoctorServiceExtensions {
   async uploadSignature(id: number, signature: Express.Multer.File): Promise<void> {
     const doctor = await this.repository.findOne({ id }, { user: true });
     const directory = doctor.user.dni;
-    const uploaded = await this.storage.saveFile(signature, directory);
+    const uploaded = await this.storage.saveFile(signature, path.resolve(`signatures/${directory}`));
     await this.repository.findOneAndUpdate({ id }, { signature: `${directory}/${uploaded}` });
   }
 }

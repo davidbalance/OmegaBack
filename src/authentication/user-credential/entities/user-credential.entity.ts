@@ -8,7 +8,7 @@ export class UserCredential extends AbstractEntity<number> {
     public id: number;
     @Column({ name: 'USER_CREDENTIAL_EMAIL', type: 'varchar', length: 128, unique: true, nullable: false })
     public email: string;
-    @Column({ name: 'USER_CREDENTIAL_PASSWORD', type: 'varchar', length: 32, nullable: false })
+    @Column({ name: 'USER_CREDENTIAL_PASSWORD', type: 'varchar', length: 256, nullable: false })
     public password: string;
 
     @OneToOne(() => User, { eager: false })

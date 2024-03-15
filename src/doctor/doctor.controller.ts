@@ -8,7 +8,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class DoctorController {
   constructor(private readonly doctorService: DoctorService) { }
 
-  @Post('doctor')
+  @Post()
   async create(
     @Body() body: CreateDoctorRequestDTO
   ): Promise<void> {
@@ -42,7 +42,7 @@ export class DoctorController {
     await this.doctorService.update(id, body);
   }
 
-  @Post('doctor/:id')
+  @Post('signature/:id')
   @UseInterceptors(FileInterceptor('signature'))
   async uploadSignature(
     @Param('id') id: number,

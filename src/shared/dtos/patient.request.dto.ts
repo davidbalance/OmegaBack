@@ -1,5 +1,6 @@
-import { IsDate, IsEmail, IsEnum, IsNumber, IsOptional, IsString, IsStrongPassword, Length, Max } from "class-validator";
+import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsStrongPassword, Length, Max } from "class-validator";
 import { PatientGenderEnum } from "../enums";
+import { Type } from "class-transformer";
 
 export class CreatePatientRequestDTO {
     @IsEmail()
@@ -10,14 +11,15 @@ export class CreatePatientRequestDTO {
     @Length(10, 10)
     public readonly dni: string;
     @IsString()
-    @Max(64)
+    @IsNotEmpty()
     public readonly name: string;
     @IsString()
-    @Max(64)
+    @IsNotEmpty()
     public readonly lastname: string;
     @IsEnum(PatientGenderEnum)
     public gender: PatientGenderEnum;
     @IsDate()
+    @Type(() => Date)
     public birthday: Date;
     @IsNumber()
     public age: number;
@@ -29,6 +31,7 @@ export class CreatePatientAndAssignUserRequestDTO {
     @IsEnum(PatientGenderEnum)
     public gender: PatientGenderEnum;
     @IsDate()
+    @Type(() => Date)
     public birthday: Date;
     @IsNumber()
     public age: number;
@@ -47,6 +50,7 @@ export class UpdatePatientRequestDTO {
     @IsEnum(PatientGenderEnum)
     public gender: PatientGenderEnum;
     @IsDate()
+    @Type(() => Date)
     public birthday: Date;
     @IsNumber()
     public age: number;

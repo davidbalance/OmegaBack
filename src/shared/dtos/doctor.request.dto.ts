@@ -9,10 +9,10 @@ export class CreateDoctorRequestDTO {
     @Length(10, 10)
     public readonly dni: string;
     @IsString()
-    @Max(64)
+    @IsNotEmpty()
     public readonly name: string;
     @IsString()
-    @Max(64)
+    @IsNotEmpty()
     public readonly lastname: string;
 }
 
@@ -26,9 +26,9 @@ export class UpdateDoctorRequestDTO {
     @IsOptional()
     public readonly email?: string;
     @IsString()
-    @Max(64)
+    @IsNotEmpty()
     public readonly name: string;
     @IsString()
-    @Max(64)
+    @IsNotEmpty()
     public readonly lastname: string;
 }
