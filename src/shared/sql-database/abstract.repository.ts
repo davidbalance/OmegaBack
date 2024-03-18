@@ -45,7 +45,7 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
     async findOne(filterOptions: FindOptionsWhere<TEntity>, relationOptions?: FindOptionsRelations<TEntity>): Promise<TEntity> {
         const entity = await this.model.findOne({ where: filterOptions, relations: relationOptions });
         if (!entity) {
-            this.logger.warn("Entity not found with the given filterOptions", filterOptions);
+            this.logger.warn("Entity not found with the given filterOptions", JSON.stringify(filterOptions));
             throw new NotFoundException(["Entity not found with the given filterOptions"]);
         }
         return entity;
@@ -61,7 +61,7 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
     async findOneAndUpdate(filterOptions: FindOptionsWhere<TEntity>, updateOptions: Partial<TEntity>): Promise<TEntity> {
         const entity = await this.model.findOneBy(filterOptions);
         if (!entity) {
-            this.logger.warn("Entity not found with the given filterOptions", filterOptions);
+            this.logger.warn("Entity not found with the given filterOptions", JSON.stringify(filterOptions));
             throw new NotFoundException(["Entity not found with the given filterOptions"]);
         }
         const updateEntity = { ...entity, ...updateOptions };
@@ -76,7 +76,7 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
     async findOneAndDelete(filterOptions: FindOptionsWhere<TEntity>): Promise<void> {
         const entity = await this.model.findOneBy(filterOptions);
         if (!entity) {
-            this.logger.warn("Entity not found with the given filterOptions", filterOptions);
+            this.logger.warn("Entity not found with the given filterOptions", JSON.stringify(filterOptions));
             throw new NotFoundException(["Entity not found with the given filterOptions"]);
         }
         await this.model.delete(filterOptions);

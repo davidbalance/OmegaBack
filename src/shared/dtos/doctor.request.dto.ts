@@ -1,9 +1,6 @@
 import { IsDate, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsStrongPassword, Length, Max } from "class-validator";
 import { CreateUserRequestDTO } from "./user.request.dto";
 
-
-
-
 export class FindOrCreateDoctorRequestDTO extends CreateUserRequestDTO { }
 
 export class CreateDoctorRequestDTO extends FindOrCreateDoctorRequestDTO {
