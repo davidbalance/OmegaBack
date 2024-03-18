@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateStateDto } from './dto/create-state.dto';
-import { UpdateStateDto } from './dto/update-state.dto';
 import { StateRepository } from './state.repository';
 import { State } from './entities/state.entity';
+import { CreateStateRequestDTO, UpdateStateRequestDTO } from './dto';
 
 @Injectable()
 export class StateService {
@@ -11,7 +10,7 @@ export class StateService {
     @Inject(StateRepository) private readonly repository: StateRepository
   ) { }
 
-  async create(createStateDto: CreateStateDto): Promise<State> {
+  async create(createStateDto: CreateStateRequestDTO): Promise<State> {
     return await this.repository.create(createStateDto);
   }
 
@@ -23,7 +22,7 @@ export class StateService {
     return await this.repository.findOne({ id });
   }
 
-  async update(id: number, updateStateDto: UpdateStateDto): Promise<State> {
+  async update(id: number, updateStateDto: UpdateStateRequestDTO): Promise<State> {
     return await this.repository.findOneAndUpdate({ id }, updateStateDto);
   }
 }

@@ -1,14 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { CorporativeGroupService } from './corporative-group.service';
-import { CreateCorporativeGroupDto } from './dto/create-corporative-group.dto';
-import { UpdateCorporativeGroupDto } from './dto/update-corporative-group.dto';
+import { CreateCorporativeGroupRequestDTO, UpdateCorporativeGroupRequestDTO } from './dto';
 
 @Controller('corporative-group')
 export class CorporativeGroupController {
   constructor(private readonly corporativeGroupService: CorporativeGroupService) { }
 
   @Post()
-  create(@Body() createCorporativeGroupDto: CreateCorporativeGroupDto) {
+  create(@Body() createCorporativeGroupDto: CreateCorporativeGroupRequestDTO) {
     return this.corporativeGroupService.create(createCorporativeGroupDto);
   }
 
@@ -23,7 +22,7 @@ export class CorporativeGroupController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCorporativeGroupDto: UpdateCorporativeGroupDto) {
+  update(@Param('id') id: string, @Body() updateCorporativeGroupDto: UpdateCorporativeGroupRequestDTO) {
     return this.corporativeGroupService.update(+id, updateCorporativeGroupDto);
   }
 

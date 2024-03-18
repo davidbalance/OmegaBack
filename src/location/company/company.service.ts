@@ -1,18 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateCompanyDto } from './dto/create-company.dto';
-import { UpdateCompanyDto } from './dto/update-company.dto';
 import { CompanyRepository } from './company.repository';
 import { Company } from './entities/company.entity';
+import { CreateCompanyRequestDTO, UpdateCompanyCorporativeGroupRequestDTO, UpdateCompanyRUCRequestDTO, UpdateCompanyRequestDTO } from './dto';
+import { CorporativeGroupService } from '../corporative-group/corporative-group.service';
 
 @Injectable()
 export class CompanyService {
 
   constructor(
-    @Inject(CompanyRepository) private readonly repository: CompanyRepository
+    @Inject(CompanyRepository) private readonly repository: CompanyRepository,
+    @Inject(CorporativeGroupService) private readonly corporativeGroupService: CorporativeGroupService
   ) { }
 
-  async create(createCompanyDto: CreateCompanyDto): Promise<Company> {
-    return await this.repository.create(createCompanyDto);
+  async create(createCompanyDto: CreateCompanyRequestDTO): Promise<Company> {
+    const corporativeGroup = await this.corporativeGroupService.readOneByID(createCompanyDto.corporativeGroup);
+    return await this.repository.create({ ...createCompanyDto, corporativeGroup: corporativeGroup });
   }
 
   async readAll(): Promise<Company[]> {
@@ -20,11 +22,20 @@ export class CompanyService {
   }
 
   async readOneByID(id: number): Promise<Company> {
-    return await this.repository.findOne({ status: false });
+    return await this.repository.findOne({ id: id, status: false });
   }
 
-  async update(id: number, updateCompanyDto: UpdateCompanyDto): Promise<Company> {
+  async update(id: number, updateCompanyDto: UpdateCompanyRequestDTO): Promise<Company> {
     return await this.repository.findOneAndUpdate({ id }, updateCompanyDto);
+  }
+
+  async updateRUC(id: number, updateRucDto: UpdateCompanyRUCRequestDTO): Promise<Company> {
+    return await this.repository.findOneAndUpdate({ id }, { ruc: updateRucDto.ruc });
+  }
+
+  async updateCorporativeGroup(id: number, updateCorporativeGroupDto: UpdateCompanyCorporativeGroupRequestDTO): Promise<Company> {
+    const corporativeGroup = await this.corporativeGroupService.readOneByID(updateCorporativeGroupDto.corporativeGroup);
+    return await this.repository.findOneAndUpdate({ id }, { corporativeGroup: corporativeGroup });
   }
 
   async inactive(id: number): Promise<Company> {
