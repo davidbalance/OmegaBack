@@ -1,6 +1,8 @@
 import { IsEmail, IsOptional, IsString, Length, Max } from "class-validator";
 
 export class CreateUserRequestDTO {
+    @IsEmail()
+    public readonly email: string;
     @IsString()
     @Length(10, 10)
     public readonly dni: string;

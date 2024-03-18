@@ -1,28 +1,21 @@
-import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsStrongPassword, Length, Max } from "class-validator";
+import { IsDate, IsEmail, IsEnum, IsNumber, IsOptional, IsString, IsStrongPassword, Max } from "class-validator";
 import { PatientGenderEnum } from "../enums";
 import { Type } from "class-transformer";
+import { CreateUserRequestDTO } from "./user.request.dto";
 
-export class CreatePatientRequestDTO {
-    @IsEmail()
-    public readonly email: string;
-    @IsStrongPassword({ minLength: 8 })
-    public readonly password: string;
-    @IsString()
-    @Length(10, 10)
-    public readonly dni: string;
-    @IsString()
-    @IsNotEmpty()
-    public readonly name: string;
-    @IsString()
-    @IsNotEmpty()
-    public readonly lastname: string;
+export class FindOrCreatePatientRequestDTO extends CreateUserRequestDTO {
     @IsEnum(PatientGenderEnum)
-    public gender: PatientGenderEnum;
+    public readonly gender: PatientGenderEnum;
     @IsDate()
     @Type(() => Date)
-    public birthday: Date;
+    public readonly birthday: Date;
     @IsNumber()
-    public age: number;
+    public readonly age: number;
+}
+
+export class CreatePatientRequestDTO extends FindOrCreatePatientRequestDTO {
+    @IsStrongPassword({ minLength: 8 })
+    public readonly password: string;
 }
 
 export class CreatePatientAndAssignUserRequestDTO {

@@ -1,4 +1,4 @@
-import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { UserCredentialRepository } from './user-credential.repository';
 import { UserCredential } from './entities/user-credential.entity';
 import { CreateUserCredentialRequestDTO, CreateUserRequestDTO } from 'src/shared/dtos';
@@ -64,7 +64,8 @@ export class UserCredentialService implements UserCredentialServiceExtension {
     }
     try {
       await this.repository.findOne({ email: credentials.email });
-      throw new ConflictException(["Email already in use", `${credentials.email}`])
+      Logger.error(`Email already in use: ${credentials.email}`);
+      throw new ConflictException("Email already in use")
     } catch (error) {
       const hashedPassword = this.hashPassword(credentials.password);
       const credential: UserCredential = await this.repository.create({

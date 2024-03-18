@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { PatientRepository } from './patient.repository';
 import { Patient } from './entities/patient.entity';
 import { UserCredentialService } from 'src/authentication/user-credential/user-credential.service';
 import { UserService } from 'src/user/user.service';
-import { CreatePatientAndAssignUserRequestDTO, CreatePatientRequestDTO, UpdatePatientRequestDTO } from 'src/shared';
+import { CreatePatientAndAssignUserRequestDTO, CreatePatientRequestDTO, FindOrCreatePatientRequestDTO, UpdatePatientRequestDTO } from 'src/shared';
 import { User } from 'src/user/entities/user.entity';
 
 interface PatientServiceExtensions {
@@ -33,6 +33,11 @@ interface PatientServiceExtensions {
    * @param patient 
    */
   update(id: number, patient: UpdatePatientRequestDTO): Promise<Patient>;
+  /**
+   * Finds a patient if not exists create it without credentials
+   * @param patient 
+   */
+  findOrCreatePatient(patient: FindOrCreatePatientRequestDTO): Promise<Patient>;
 }
 
 @Injectable()
@@ -43,6 +48,21 @@ export class PatientService implements PatientServiceExtensions {
     @Inject(UserCredentialService) private readonly credentialService: UserCredentialService,
     @Inject(UserService) private readonly userService: UserService
   ) { }
+
+  async findOrCreatePatient(patient: FindOrCreatePatientRequestDTO): Promise<Patient> {
+    try {
+      let retrivedPatient = await this.repository.findOne({ user: { dni: patient.dni } });
+      return retrivedPatient;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        const user = await this.userService.create(patient);
+        return await this.repository.create({ ...patient, user: user });
+      } else {
+        Logger.error(error);
+        throw new InternalServerErrorException(error);
+      }
+    }
+  }
 
   create(patient: CreatePatientRequestDTO): Promise<Patient>;
   create(patient: CreatePatientAndAssignUserRequestDTO, user: number): Promise<Patient>;

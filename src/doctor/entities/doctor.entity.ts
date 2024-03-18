@@ -7,6 +7,7 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn
 export class Doctor extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'DOCTOR_ID' })
     public id: number;
+
     @Column({ name: 'DOCTOR_SIGNATURE', type: 'varchar', length: 256, nullable: true })
     public signature: string;
 

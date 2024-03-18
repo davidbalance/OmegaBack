@@ -1,7 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { DoctorRepository } from './doctor.repository';
 import { Doctor } from './entities/doctor.entity';
-import { CreateDoctorAndAssignUserRequestDTO, CreateDoctorRequestDTO, UpdateDoctorRequestDTO } from 'src/shared';
+import { CreateDoctorAndAssignUserRequestDTO, CreateDoctorRequestDTO, FindOrCreateDoctorRequestDTO, UpdateDoctorRequestDTO } from 'src/shared';
 import { User } from 'src/user/entities/user.entity';
 import { UserCredentialService } from 'src/authentication/user-credential/user-credential.service';
 import { UserService } from 'src/user/user.service';
@@ -41,6 +41,11 @@ interface DoctorServiceExtensions {
    * @param signature 
    */
   uploadSignature(id: number, signature: Express.Multer.File): Promise<void>;
+  /**
+   * Finds a doctor if not exists create it without credentials
+   * @param doctor 
+   */
+  findOrCreateDoctor(doctor: FindOrCreateDoctorRequestDTO): Promise<Doctor>;
 }
 
 @Injectable()
@@ -52,6 +57,21 @@ export class DoctorService implements DoctorServiceExtensions {
     @Inject(UserService) private readonly userService: UserService,
     @Inject(StorageSaver) private readonly storage: StorageSaver
   ) { }
+
+  async findOrCreateDoctor(doctor: FindOrCreateDoctorRequestDTO): Promise<Doctor> {
+    try {
+      let retrivedDoctor = await this.repository.findOne({ user: { dni: doctor.dni } });
+      return retrivedDoctor;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        const user = await this.userService.create(doctor);
+        return await this.repository.create({ ...doctor, user: user });
+      } else {
+        Logger.error(error);
+        throw new InternalServerErrorException(error);
+      }
+    }
+  }
 
   create(doctor: CreateDoctorRequestDTO): Promise<Doctor>;
   create(doctor: CreateDoctorAndAssignUserRequestDTO, user: number): Promise<Doctor>;

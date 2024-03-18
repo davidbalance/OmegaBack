@@ -1,19 +1,14 @@
 import { IsDate, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsStrongPassword, Length, Max } from "class-validator";
+import { CreateUserRequestDTO } from "./user.request.dto";
 
-export class CreateDoctorRequestDTO {
-    @IsEmail()
-    public readonly email: string;
+
+
+
+export class FindOrCreateDoctorRequestDTO extends CreateUserRequestDTO { }
+
+export class CreateDoctorRequestDTO extends FindOrCreateDoctorRequestDTO {
     @IsStrongPassword({ minLength: 8 })
     public readonly password: string;
-    @IsString()
-    @Length(10, 10)
-    public readonly dni: string;
-    @IsString()
-    @IsNotEmpty()
-    public readonly name: string;
-    @IsString()
-    @IsNotEmpty()
-    public readonly lastname: string;
 }
 
 export class CreateDoctorAndAssignUserRequestDTO {

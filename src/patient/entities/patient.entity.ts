@@ -8,10 +8,13 @@ import { User } from "src/user/entities/user.entity";
 export class Patient extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'PATIENT_ID' })
     public id: number;
+
     @Column({ name: 'PATIENT_NAME', type: 'enum', enum: PatientGenderEnum, nullable: false })
     public gender: PatientGenderEnum;
+
     @Column({ name: 'PATIENT_BIRTHDAY', type: 'date', nullable: false })
     public birthday: Date;
+
     @Column({ name: 'PATIENT_AGE', type: 'int', nullable: false })
     public age: number;
 
