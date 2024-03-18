@@ -26,8 +26,4 @@ export class StateService {
   async update(id: number, updateStateDto: UpdateStateDto): Promise<State> {
     return await this.repository.findOneAndUpdate({ id }, updateStateDto);
   }
-
-  async remove(id: number): Promise<void> {
-    await this.repository.findOneAndDelete({ id });
-  }
 }

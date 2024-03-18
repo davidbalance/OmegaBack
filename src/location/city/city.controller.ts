@@ -26,9 +26,4 @@ export class CityController {
   update(@Param('id') id: string, @Body() updateCityDto: UpdateCityDto) {
     return this.cityService.update(+id, updateCityDto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cityService.remove(+id);
-  }
 }

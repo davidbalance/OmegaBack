@@ -27,7 +27,7 @@ export class CorporativeGroupService {
     return await this.repository.findOneAndUpdate({ id }, updateCorporativeGroupDto);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.repository.findOneAndDelete({ id });
+  async inactive(id: number): Promise<CorporativeGroup> {
+    return await this.repository.findOneAndUpdateStatus(id, false);
   }
 }

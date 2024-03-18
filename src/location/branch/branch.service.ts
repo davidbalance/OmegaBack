@@ -27,7 +27,7 @@ export class BranchService {
     return await this.repository.findOneAndUpdate({ id }, updateBranchDto);
   }
 
-  async remove(id: number): Promise<void> {
+  async inactive(id: number): Promise<void> {
     await this.repository.findOneAndDelete({ id });
   }
 }

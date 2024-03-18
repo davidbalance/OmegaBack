@@ -27,7 +27,7 @@ export class CompanyService {
     return await this.repository.findOneAndUpdate({ id }, updateCompanyDto);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.repository.findOneAndDelete({ id });
+  async inactive(id: number): Promise<Company> {
+    return await this.repository.findOneAndUpdateStatus(id, false);
   }
 }

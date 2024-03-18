@@ -26,8 +26,4 @@ export class CityService {
   async update(id: number, updateCityDto: UpdateCityDto): Promise<City> {
     return await this.repository.findOneAndUpdate({ id }, updateCityDto);
   }
-
-  async remove(id: number): Promise<void> {
-    await this.repository.findOneAndDelete({ id });
-  }
 }

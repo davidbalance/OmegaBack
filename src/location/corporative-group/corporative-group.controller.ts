@@ -29,6 +29,6 @@ export class CorporativeGroupController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.corporativeGroupService.remove(+id);
+    return this.corporativeGroupService.inactive(+id);
   }
 }

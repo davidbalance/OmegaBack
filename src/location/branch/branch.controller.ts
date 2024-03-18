@@ -29,6 +29,6 @@ export class BranchController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.branchService.remove(+id);
+    return this.branchService.inactive(+id);
   }
 }
