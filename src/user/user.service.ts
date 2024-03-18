@@ -1,8 +1,7 @@
-import { ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { User } from './entities/user.entity';
 import { CreateUserRequestDTO, UpdateUserDNIRequestDTO, UpdateUserRequestDTO } from 'src/shared/dtos';
-import { Like } from 'typeorm';
 
 interface UserServiceExtensions<K> {
   /**
@@ -52,10 +51,14 @@ export class UserService implements UserServiceExtensions<number> {
 
   async create(user: CreateUserRequestDTO): Promise<User> {
     try {
-      await this.repository.findOne({ dni: user.dni });
-      throw new ConflictException(["DNI already in use"]);
+      await this.repository.findOne([{ dni: user.dni }, { email: user.email }]);
+      Logger.warn('DNI or Email already un use', JSON.stringify({ email: user.email, dni: user.dni }));
+      throw new ConflictException('DNI or Email already un use', JSON.stringify({ email: user.email, dni: user.dni }));
     } catch (error) {
-      return this.repository.create(user);
+      if (error instanceof NotFoundException) {
+        return this.repository.create(user);
+      }
+      throw error;
     }
   }
 

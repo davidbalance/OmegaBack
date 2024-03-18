@@ -21,11 +21,14 @@ export class CreatePatientRequestDTO extends FindOrCreatePatientRequestDTO {
 export class CreatePatientAndAssignUserRequestDTO {
     @IsNumber()
     public readonly user: number;
+
     @IsEnum(PatientGenderEnum)
     public gender: PatientGenderEnum;
+
     @IsDate()
     @Type(() => Date)
     public birthday: Date;
+    
     @IsNumber()
     public age: number;
 }

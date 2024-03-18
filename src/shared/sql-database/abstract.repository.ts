@@ -42,7 +42,7 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
      * @throws NotFoundException
      * @returns
      */
-    async findOne(filterOptions: FindOptionsWhere<TEntity>, relationOptions?: FindOptionsRelations<TEntity>): Promise<TEntity> {
+    async findOne(filterOptions: FindOptionsWhere<TEntity> | FindOptionsWhere<TEntity>[], relationOptions?: FindOptionsRelations<TEntity>): Promise<TEntity> {
         const entity = await this.model.findOne({ where: filterOptions, relations: relationOptions });
         if (!entity) {
             this.logger.warn("Entity not found with the given filterOptions", JSON.stringify(filterOptions));
