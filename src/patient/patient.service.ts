@@ -28,6 +28,11 @@ interface PatientServiceExtensions {
    */
   readOneByID(id: number): Promise<Patient>;
   /**
+   * Find one active patient
+   * @param dni 
+   */
+  readOneByDNI(dni: string): Promise<Patient>;
+  /**
    * Finds and updates a patient with the given values
    * @param id 
    * @param patient 
@@ -85,15 +90,20 @@ export class PatientService implements PatientServiceExtensions {
     return await this.repository.findOne({ id, user: { status: true } }, { user: true })
   }
 
+  async readOneByDNI(dni: string): Promise<Patient> {
+    return await this.repository.findOne({ user: { dni: dni, status: true } }, { user: true });
+  }
+
   async update(id: number, patient: UpdatePatientRequestDTO): Promise<Patient> {
     const currentPatient = await this.repository.findOne({ id }, { user: true });
-    await this.userService.update(currentPatient.user.id, patient);
+    const user = await this.userService.update(currentPatient.user.id, patient);
     if (patient.email) {
       const credential = await this.credentialService.readByUser(currentPatient.user.id);
       if (credential.email !== patient.email) {
         await this.credentialService.updateUsername(credential.id, patient.email);
       }
     }
+    currentPatient.user = user;
     return await this.repository.findOneAndUpdate({ id }, patient);
   }
 }

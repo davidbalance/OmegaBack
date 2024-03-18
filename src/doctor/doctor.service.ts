@@ -30,6 +30,11 @@ interface DoctorServiceExtensions {
    */
   readOneByID(id: number): Promise<Doctor>;
   /**
+   * Find one active patient
+   * @param dni 
+   */
+  readOneByDNI(dni: string): Promise<Doctor>;
+  /**
    * Finds and updates a doctor with the given values
    * @param id 
    * @param doctor 
@@ -92,6 +97,10 @@ export class DoctorService implements DoctorServiceExtensions {
 
   async readOneByID(id: number): Promise<Doctor> {
     return await this.repository.findOne({ id, user: { status: true } }, { user: true })
+  }
+
+  async readOneByDNI(dni: string): Promise<Doctor> {
+    return await this.repository.findOne({ user: { dni: dni, status: true } }, { user: true });
   }
 
   async update(id: number, doctor: UpdateDoctorRequestDTO): Promise<Doctor> {
