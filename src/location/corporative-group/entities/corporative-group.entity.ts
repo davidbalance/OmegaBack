@@ -6,8 +6,13 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 export class CorporativeGroup extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'CORPORATIVE_GROUP_ID' })
     public id: number;
+
     @Column({ name: 'CORPORATIVE_GROUP_NAME', type: 'varchar', length: 64, nullable: false, unique: true })
     public name: string;
+
+    @Column({ name: 'CORPORATIVE_GROUP_LABINT', type: 'int', nullable: false, unique: true })
+    public labint: number;
+
     @Column({ name: 'CORPORATIVE_GROUP_STATUS', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 

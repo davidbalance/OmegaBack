@@ -2,13 +2,20 @@ import { ConflictException, Inject, Injectable, Logger, NotFoundException } from
 import { UserRepository } from './user.repository';
 import { User } from './entities/user.entity';
 import { CreateUserRequestDTO, UpdateUserDNIRequestDTO, UpdateUserRequestDTO } from 'src/shared/dtos';
+import { IServiceCheckAvailability } from '@/shared';
 
 @Injectable()
-export class UserService {
+export class UserService
+  implements IServiceCheckAvailability<string> {
 
   constructor(
     @Inject(UserRepository) private readonly repository: UserRepository
   ) { }
+
+  async checkAvailability(key: string): Promise<boolean> {
+    const user = await this.repository.findOne({ dni: key });
+    return user.status;
+  }
 
   async create(user: CreateUserRequestDTO): Promise<User> {
     try {
@@ -33,19 +40,6 @@ export class UserService {
 
   async findOneByDNI(dni: string): Promise<User> {
     return this.repository.findOne({ dni, status: true });
-  }
-
-  isUserActive(id: number): Promise<boolean>;
-  isUserActive(dni: string): Promise<boolean>;
-  async isUserActive(idOrDni: number | string): Promise<boolean> {
-    let user: User;
-    if (typeof idOrDni === 'string') {
-      user = await this.repository.findOne({ dni: idOrDni });
-    } else if (typeof idOrDni === 'number') {
-      user = await this.repository.findOne({ id: idOrDni });
-    }
-    const flag = !user ? false : user.status;
-    return flag;
   }
 
   async update(id: number, user: UpdateUserRequestDTO): Promise<User> {

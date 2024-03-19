@@ -1,65 +1,37 @@
-import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { OrderRepository } from './order.repository';
 import { Order } from './entities/order.entity';
 import { Result } from '../result/entities/result.entity';
-import { CreateOrderRequestDTO, FindOrCreateOrderRequestDTO, FindOrCreatePatientRequestDTO } from 'src/shared';
-import { BranchService } from 'src/location/branch/branch.service';
-import { PatientService } from '@/user/patient/patient.service';
+import { CreateOrderRequestDTO } from 'src/shared';
+
+interface FindOrderParams {
+  patient?: string;
+  corporativeGroup?: number;
+  company?: string;
+  branch?: number;
+  labint?: number;
+}
 
 @Injectable()
 export class OrderService {
 
   constructor(
     @Inject(OrderRepository) private readonly repository: OrderRepository,
-    @Inject(PatientService) private readonly patientService: PatientService,
-    @Inject(BranchService) private readonly branchService: BranchService
   ) { }
 
-  async findOrCreateOrder(
-    order: FindOrCreateOrderRequestDTO,
-    findOrCreatePatient: FindOrCreatePatientRequestDTO,
-  ): Promise<Order> {
-    const patient = await this.patientService.findOrCreatePatient(findOrCreatePatient);
-    try {
-      let retrivedOrder = null;
-      return retrivedOrder;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        return await this.repository.create({ ...order, patient: patient.user.dni });
-      } else {
-        Logger.error(error);
-        throw new InternalServerErrorException(error);
-      }
-    }
-  }
-
   async create(order: CreateOrderRequestDTO): Promise<Order> {
-    // const patient = await this.patientService.readOneByID(order.patient);
-    // const branch = await this.branchService.readOneByID(order.branch);
-    return await this.repository.create({ branch: order.branch, patient: order.patient });
+    return await this.repository.create({ ...order, labint: order.key });
   }
 
-  async findOneByID(id: number): Promise<Order> {
-    return await this.repository.findOne({ id });
+  async find(params?: FindOrderParams): Promise<Order[]> {
+    return this.repository.find(params, { results: true });
   }
 
-  async readOrdersByDNI(dni: string): Promise<Order[]> {
-    return await this.repository.find({ patient: dni });
+  async findOne(params?: FindOrderParams & { id: number }): Promise<Order> {
+    return this.repository.findOne(params, { results: true });
   }
 
-  async appendResult(id: number, results: Result[]): Promise<Order> {
+  async updateResults(id: number, results: Result[]): Promise<Order> {
     return this.repository.findOneAndAppendResult({ id }, results);
-  }
-
-  async removeResult(id: number, results: number[]): Promise<Order> {
-    return this.repository.findOneAndRemoveResult({ id }, results);
-  }
-
-  async send(id: number, sends: any[]): Promise<Order> {
-    // const order = await this.repository.findOne({ id }, { sends: true });
-    // const filterSends = order.sends.filter(e => !sends.includes(e));
-    // Here goes send logic for each send item
-    // return this.repository.findOneAndSend({ id }, filterSends);
-    return null;
   }
 }

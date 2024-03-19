@@ -1,16 +1,22 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BranchRepository } from './branch.repository';
 import { Branch } from './entities/branch.entity';
-import { CreateBranchRequestDTO, UpdateBranchCompanyRequestDTO, UpdateBranchRequestDTO } from './dto';
 import { CompanyService } from '../company/company.service';
+import { CreateBranchRequestDTO, IServiceCheckAvailability, UpdateBranchCompanyRequestDTO, UpdateBranchRequestDTO } from '@/shared';
 
 @Injectable()
-export class BranchService {
+export class BranchService
+  implements IServiceCheckAvailability<number> {
 
   constructor(
     @Inject(BranchRepository) private readonly repository: BranchRepository,
     @Inject(CompanyService) private readonly companyService: CompanyService
   ) { }
+
+  async checkAvailability(key: number): Promise<boolean> {
+    const entity = await this.repository.findOne({ id: key });
+    return entity.status;
+  }
 
   async create(createBranchDto: CreateBranchRequestDTO): Promise<Branch> {
     const company = await this.companyService.findOneByID(createBranchDto.company);

@@ -1,9 +1,9 @@
-import { CreateOrderRequestDTO } from "./order.request.dto";
-import { CreateUserRequestDTO } from "./user.request.dto";
-
 export class CreateResultRequestDTO {
-    public readonly user: CreateUserRequestDTO;
-    public readonly order: CreateOrderRequestDTO;
+    public readonly order: number;
+    public readonly exam: number;
+    public readonly morbidity: number;
+    public readonly doctor: number;
+    public readonly labint: number;
 }
 
 export class UpdateResultRequestDTO { }

@@ -16,16 +16,15 @@ export class MedicalReportService {
     @Inject(DoctorService) private readonly doctorService: DoctorService
   ) { }
 
-  async create(createMedicalReportDto: CreateReportRequestDTO): Promise<MedicalReport> {
-    const doctor = await this.doctorService.findOneByID(createMedicalReportDto.doctor);
-    const result = await this.resultService.findOneByID(createMedicalReportDto.result);
-    const values = await Promise.all(createMedicalReportDto.values.map(async (value) => await this.valueService.create(value)));
-    return await this.repository.create({
+  async create(medicalReport: CreateReportRequestDTO): Promise<MedicalReport> {
+    const doctor = await this.doctorService.findOneByID(medicalReport.doctor);
+    const report = await this.repository.create({
+      result: medicalReport.result,
       doctorDNI: doctor.user.dni,
       doctorFullname: `${doctor.user.name} ${doctor.user.lastname}`,
       doctorSignature: doctor.signature,
-      result: result.id,
-      values: values
     });
+    Promise.all(medicalReport.values.map(async (value) => await this.valueService.create(value, report)));
+    return report;
   }
 }

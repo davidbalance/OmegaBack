@@ -2,15 +2,21 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CompanyRepository } from './company.repository';
 import { Company } from './entities/company.entity';
 import { CorporativeGroupService } from '../corporative-group/corporative-group.service';
-import { CreateCompanyRequestDTO, UpdateCompanyRequestDTO, UpdateCompanyRUCRequestDTO, UpdateCompanyCorporativeGroupRequestDTO } from '@/shared';
+import { CreateCompanyRequestDTO, UpdateCompanyRequestDTO, UpdateCompanyRUCRequestDTO, UpdateCompanyCorporativeGroupRequestDTO, IServiceCheckAvailability } from '@/shared';
 
 @Injectable()
-export class CompanyService {
+export class CompanyService
+  implements IServiceCheckAvailability<string> {
 
   constructor(
     @Inject(CompanyRepository) private readonly repository: CompanyRepository,
     @Inject(CorporativeGroupService) private readonly corporativeGroupService: CorporativeGroupService
   ) { }
+
+  async checkAvailability(key: string): Promise<boolean> {
+    const entity = await this.repository.findOne({ ruc: key });
+    return entity.status;
+  }
 
   async create(createCompanyDto: CreateCompanyRequestDTO): Promise<Company> {
     const corporativeGroup = await this.corporativeGroupService.readOneByID(createCompanyDto.corporativeGroup);

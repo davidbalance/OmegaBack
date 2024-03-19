@@ -16,19 +16,13 @@ export class Order extends AbstractEntity<number> {
     public corporativeGroup: number;
 
     @Index('order-company-idx')
-    @Column({ name: 'COMPANY_ID', type: 'varchar', length: 13, nullable: false })
+    @Column({ name: 'COMPANY_RUC', type: 'varchar', length: 13, nullable: false })
     public company: string;
 
     @Index('order-branch-idx')
     @Column({ name: 'BRANCH_ID', type: 'int', nullable: false })
     public branch: number;
-
-    @Column({ name: 'ORDER_FILENAME', type: 'varchar', length: 256 })
-    public filename: string;
-
-    @Column({ name: 'ORDER_PATH', type: 'varchar', length: 256 })
-    public path: string;
-
+    
     @Index('order-labint-idx')
     @Column({ name: 'ORDER_LABINT', type: 'int', unique: true, nullable: true })
     public labint: number;

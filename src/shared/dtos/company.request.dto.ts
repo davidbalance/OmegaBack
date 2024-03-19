@@ -20,6 +20,10 @@ export class CreateCompanyRequestDTO {
     public readonly phone: string;
 }
 
+export class FindOneOrCreateCompanyRequestDTO extends CreateCompanyRequestDTO {
+    public readonly lookup: number;
+}
+
 export class UpdateCompanyRequestDTO {
     @IsString()
     @IsNotEmpty()

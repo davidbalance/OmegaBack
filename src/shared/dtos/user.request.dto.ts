@@ -17,6 +17,10 @@ export class CreateUserRequestDTO {
     public readonly lastname: string;
 }
 
+export class FindOneOrCreateUserRequestDTO extends CreateUserRequestDTO {
+    public lookup: number;
+}
+
 export class UpdateUserDNIRequestDTO {
     @IsString()
     @Length(10, 10)

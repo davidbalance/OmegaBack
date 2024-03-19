@@ -26,3 +26,5 @@ export * from './corporative-group.request.dto';
 export * from './corporative-group.response.dto';
 export * from './sender-status.request.dto';
 export * from './sender-status.response.dto';
+export * from './branch.request.dto';
+export * from './branch.response.dto';

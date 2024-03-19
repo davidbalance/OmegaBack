@@ -3,6 +3,10 @@ export class CreateBranchRequestDTO {
     public readonly name: string;
 }
 
+export class FindOneOrCreateBranchRequestDTO extends CreateBranchRequestDTO {
+    public readonly lookup: number;
+}
+
 export class UpdateBranchRequestDTO {
     public readonly name: string;
 }
