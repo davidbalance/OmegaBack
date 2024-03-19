@@ -25,20 +25,4 @@ export class User extends AbstractEntity<number> {
 
     @Column({ name: 'USER_STATUS', type: 'boolean', default: true, nullable: false })
     public status: boolean;
-
-    @ManyToMany(() => Permission)
-    @JoinTable({
-        name: 'USERS_PERMISSIONS',
-        joinColumn: { name: 'USER_ID', referencedColumnName: 'id' },
-        inverseJoinColumn: { name: 'PERMISSION_ID', referencedColumnName: 'id' }
-    })
-    public permissions: Permission[];
-
-    @ManyToMany(() => Role)
-    @JoinTable({
-        name: 'USERS_ROLE',
-        joinColumn: { name: 'USER_ID', referencedColumnName: 'id' },
-        inverseJoinColumn: { name: 'ROLE_ID', referencedColumnName: 'id' }
-    })
-    public roles: Role[];
 }
