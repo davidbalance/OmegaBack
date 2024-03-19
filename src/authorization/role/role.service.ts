@@ -1,32 +1,35 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
 import { RoleRepository } from './role.repository';
 import { Role } from './entities/role.entity';
+import { PermissionService } from '../permission/permission.service';
+import { CreateRoleRequestDTO, UpdateRolePermissionsRequestDTO, UpdateRoleRequestDTO } from './dto';
 
 @Injectable()
 export class RoleService {
   constructor(
-    @Inject(RoleRepository) private readonly repository: RoleRepository
+    @Inject(RoleRepository) private readonly repository: RoleRepository,
+    @Inject(PermissionService) private readonly permissionService: PermissionService
   ) { }
 
-  async create(createRoleDto: CreateRoleDto): Promise<Role> {
-    return await this.repository.create(createRoleDto);
+  async create(createRoleDto: CreateRoleRequestDTO): Promise<Role> {
+    const permissions = await this.permissionService.find(createRoleDto.permissions);
+    return await this.repository.create({ ...createRoleDto, permissions: permissions });
   }
 
   async readAll(): Promise<Role[]> {
-    return await this.repository.find({});
+    return await this.repository.find({}, { permissions: true });
   }
 
-  async readOneByID(id: number): Promise<Role> {
-    return await this.repository.findOne({ id });
-  }
-
-  async update(id: number, updateRoleDto: UpdateRoleDto): Promise<Role> {
+  async update(id: number, updateRoleDto: UpdateRoleRequestDTO): Promise<Role> {
     return await this.repository.findOneAndUpdate({ id }, updateRoleDto);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.repository.findOneAndDelete({ id });
+  async updateRolePermissions(id: number, updateRoleDto: UpdateRolePermissionsRequestDTO): Promise<Role> {
+    const permissions = await this.permissionService.find(updateRoleDto.permissions);
+    return await this.repository.findOneAndUpdate({ id }, { permissions: permissions });
+  }
+
+  async inactive(id: number): Promise<void> {
+    await this.repository.findOneAndUpdateStatus(id, false);
   }
 }
