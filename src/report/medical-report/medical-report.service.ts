@@ -17,7 +17,7 @@ export class MedicalReportService {
   ) { }
 
   async create(createMedicalReportDto: CreateReportRequestDTO): Promise<MedicalReport> {
-    const doctor = await this.doctorService.readOneByID(createMedicalReportDto.doctor);
+    const doctor = await this.doctorService.findOneByID(createMedicalReportDto.doctor);
     const result = await this.resultService.findOneByID(createMedicalReportDto.result);
     const values = await Promise.all(createMedicalReportDto.values.map(async (value) => await this.valueService.create(value)));
     return await this.repository.create({

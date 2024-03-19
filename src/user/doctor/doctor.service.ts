@@ -23,17 +23,17 @@ interface DoctorServiceExtensions {
   /**
    * Find all the doctors that have an active user
    */
-  readAll(): Promise<Doctor[]>;
+  findAll(): Promise<Doctor[]>;
   /**
    * Find one active doctor
    * @param id 
    */
-  readOneByID(id: number): Promise<Doctor>;
+  findOneByID(id: number): Promise<Doctor>;
   /**
    * Find one active patient
    * @param dni 
    */
-  readOneByDNI(dni: string): Promise<Doctor>;
+  findOneByDNI(dni: string): Promise<Doctor>;
   /**
    * Finds and updates a doctor with the given values
    * @param id 
@@ -91,15 +91,15 @@ export class DoctorService implements DoctorServiceExtensions {
     return await this.repository.create({ ...doctor, user: user });
   }
 
-  async readAll(): Promise<Doctor[]> {
+  async findAll(): Promise<Doctor[]> {
     return await this.repository.find({ user: { status: true } }, { user: true });
   }
 
-  async readOneByID(id: number): Promise<Doctor> {
+  async findOneByID(id: number): Promise<Doctor> {
     return await this.repository.findOne({ id, user: { status: true } }, { user: true })
   }
 
-  async readOneByDNI(dni: string): Promise<Doctor> {
+  async findOneByDNI(dni: string): Promise<Doctor> {
     return await this.repository.findOne({ user: { dni: dni, status: true } }, { user: true });
   }
 
@@ -107,7 +107,7 @@ export class DoctorService implements DoctorServiceExtensions {
     const currentDoctor = await this.repository.findOne({ id }, { user: true });
     const user = await this.userService.update(currentDoctor.user.id, { ...doctor });
     if (doctor.email) {
-      const credential = await this.credentialService.readByUser(currentDoctor.user.id);
+      const credential = await this.credentialService.findByUser(currentDoctor.user.id);
       if (credential.email !== doctor.email) {
         await this.credentialService.updateUsername(credential.id, doctor.email);
       }

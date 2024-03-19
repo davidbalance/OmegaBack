@@ -6,38 +6,4 @@ import { UpdateUserRequestDTO } from 'src/shared';
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) { }
-
-  @Get()
-  async readAll(): Promise<User[]> {
-    return await this.userService.findAll();
-  }
-
-  @Get('user/:id')
-  async readOneByID(
-    @Param() id: number
-  ): Promise<User> {
-    return await this.userService.findOneByID(id);
-  }
-
-  @Get('dni/:dni')
-  async readOneByDNI(
-    @Param() dni: string
-  ): Promise<User> {
-    return await this.userService.findOneByDNI(dni);
-  }
-
-  @Patch('user/:id')
-  async updateOne(
-    @Param('id') id: number,
-    @Body() body: UpdateUserRequestDTO
-  ): Promise<void> {
-    await this.userService.update(id, body);
-  }
-
-  @Delete('user/:id')
-  async inactiveOne(
-    @Param('id') id: number
-  ): Promise<void> {
-    await this.userService.inactive(id);
-  }
 }

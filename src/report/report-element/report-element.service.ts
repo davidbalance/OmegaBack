@@ -14,11 +14,11 @@ export class ReportElementService {
     return await this.repository.create(createReportElementDto);
   }
 
-  async readAll(): Promise<ReportElement[]> {
+  async findAll(): Promise<ReportElement[]> {
     return await this.repository.find({ status: false });
   }
 
-  async readOneByID(id: number): Promise<ReportElement> {
+  async findOneByID(id: number): Promise<ReportElement> {
     return await this.repository.findOne({ id });
   }
 

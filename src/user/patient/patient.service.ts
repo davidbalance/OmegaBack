@@ -6,47 +6,8 @@ import { UserService } from 'src/user/user/user.service';
 import { CreatePatientAndAssignUserRequestDTO, CreatePatientRequestDTO, FindOrCreatePatientRequestDTO, UpdatePatientRequestDTO } from 'src/shared';
 import { User } from 'src/user/user/entities/user.entity';
 
-interface PatientServiceExtensions {
-  /**
-   * Creates a patient using the given values
-   * @param patient 
-   */
-  create(patient: CreatePatientRequestDTO): Promise<Patient>;
-  /**
-   * Creates a patient using the given values
-   * @param patient 
-   * @param user 
-   */
-  create(patient: CreatePatientAndAssignUserRequestDTO, user: number): Promise<Patient>;
-  /**
-   * Find all the patients that have an active user
-   */
-  readAll(): Promise<Patient[]>;
-  /**
-   * Find one active patient
-   * @param id 
-   */
-  readOneByID(id: number): Promise<Patient>;
-  /**
-   * Find one active patient
-   * @param dni 
-   */
-  readOneByDNI(dni: string): Promise<Patient>;
-  /**
-   * Finds and updates a patient with the given values
-   * @param id 
-   * @param patient 
-   */
-  update(id: number, patient: UpdatePatientRequestDTO): Promise<Patient>;
-  /**
-   * Finds a patient if not exists create it without credentials
-   * @param patient 
-   */
-  findOrCreatePatient(patient: FindOrCreatePatientRequestDTO): Promise<Patient>;
-}
-
 @Injectable()
-export class PatientService implements PatientServiceExtensions {
+export class PatientService {
 
   constructor(
     @Inject(PatientRepository) private readonly repository: PatientRepository,
@@ -82,15 +43,15 @@ export class PatientService implements PatientServiceExtensions {
     return await this.repository.create({ ...patient, user: user });
   }
 
-  async readAll(): Promise<Patient[]> {
+  async findAll(): Promise<Patient[]> {
     return await this.repository.find({ user: { status: true } }, { user: true })
   }
 
-  async readOneByID(id: number): Promise<Patient> {
+  async findOneByID(id: number): Promise<Patient> {
     return await this.repository.findOne({ id, user: { status: true } }, { user: true })
   }
 
-  async readOneByDNI(dni: string): Promise<Patient> {
+  async findOneByDNI(dni: string): Promise<Patient> {
     return await this.repository.findOne({ user: { dni: dni, status: true } }, { user: true });
   }
 
@@ -98,7 +59,7 @@ export class PatientService implements PatientServiceExtensions {
     const currentPatient = await this.repository.findOne({ id }, { user: true });
     const user = await this.userService.update(currentPatient.user.id, patient);
     if (patient.email) {
-      const credential = await this.credentialService.readByUser(currentPatient.user.id);
+      const credential = await this.credentialService.findByUser(currentPatient.user.id);
       if (credential.email !== patient.email) {
         await this.credentialService.updateUsername(credential.id, patient.email);
       }

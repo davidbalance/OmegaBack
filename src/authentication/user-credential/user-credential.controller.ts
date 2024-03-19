@@ -11,7 +11,7 @@ export class UserCredentialController {
   async readOne(
     @Param('id') id: number
   ): Promise<UserCredential> {
-    return await this.userCredentialService.readByUser(id);
+    return await this.userCredentialService.findByUser(id);
   }
 
   @Patch()

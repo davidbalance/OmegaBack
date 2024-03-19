@@ -24,7 +24,7 @@ interface UserCredentialServiceExtension {
    * Finds a credential that matches with the given key
    * @param user Foreign key
    */
-  readByUser(user: number): Promise<UserCredential>;
+  findByUser(user: number): Promise<UserCredential>;
   /**
    * Updates the user by the given id
    * @param id 
@@ -77,7 +77,7 @@ export class UserCredentialService implements UserCredentialServiceExtension {
     }
   }
 
-  async readByUser(user: number): Promise<UserCredential> {
+  async findByUser(user: number): Promise<UserCredential> {
     const credentials = await this.repository.findOne({ user: { id: user } });
     return credentials;
   }
