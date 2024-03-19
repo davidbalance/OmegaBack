@@ -29,6 +29,10 @@ export class Order extends AbstractEntity<number> {
     @Column({ name: 'ORDER_PATH', type: 'varchar', length: 256 })
     public path: string;
 
+    @Index('order-labint-idx')
+    @Column({ name: 'ORDER_LABINT', type: 'int', unique: true, nullable: true })
+    public labint: number;
+
     @OneToMany(() => Result, result => result.order, { eager: false })
     public results: Result[];
 }

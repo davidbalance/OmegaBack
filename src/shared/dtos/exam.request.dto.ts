@@ -4,7 +4,7 @@ export class CreateExamRequestDTO {
 
 export class FindOrCreateExamRequestDTO {
     public readonly name: string;
-    public readonly key: string;
+    public readonly key: number;
 }
 
 export class UpdateExamRequestDTO {

@@ -26,6 +26,10 @@ export class Result extends AbstractEntity<number> {
     @Column({ name: 'RESULT_PATH', type: 'varchar', length: 256, nullable: false })
     public path: string;
 
+    @Index('result-labint-idx')
+    @Column({ name: 'RESULT_LABINT', type: 'int', unique: true, nullable: false })
+    public labint: number;
+
     @ManyToOne(() => Order, order => order.results, { eager: false })
     @JoinColumn([
         { name: 'USER_DNI', referencedColumnName: 'patient' },

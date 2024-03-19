@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateMorbidityDto } from './dto/create-morbidity.dto';
-import { UpdateMorbidityDto } from './dto/update-morbidity.dto';
 import { MorbidityRepository } from './morbidity.repository';
 import { Morbidity } from './entities/morbidity.entity';
 import { find } from 'rxjs';
+import { CreateMorbidityRequestDTO, UpdateMorbidityRequestDTO } from '@/shared/dtos/morbidity.request.dto';
 
 @Injectable()
 export class MorbidityService {
@@ -12,19 +11,19 @@ export class MorbidityService {
     @Inject(MorbidityRepository) private readonly repository: MorbidityRepository
   ) { }
 
-  async create(createMorbidityDto: CreateMorbidityDto): Promise<Morbidity> {
+  async create(createMorbidityDto: CreateMorbidityRequestDTO): Promise<Morbidity> {
     return await this.repository.create(createMorbidityDto);
   }
 
-  async readAll(): Promise<Morbidity[]> {
+  async findAll(): Promise<Morbidity[]> {
     return await this.repository.find({ status: true });
   }
 
-  async readOneByID(id: number): Promise<Morbidity> {
+  async findOneByID(id: number): Promise<Morbidity> {
     return await this.repository.findOne({ id });
   }
 
-  async update(id: number, updateMorbidityDto: UpdateMorbidityDto): Promise<Morbidity> {
+  async update(id: number, updateMorbidityDto: UpdateMorbidityRequestDTO): Promise<Morbidity> {
     return await this.repository.findOneAndUpdate({ id }, updateMorbidityDto);
   }
 

@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateMorbidityGroupDto } from './dto/create-morbidity-group.dto';
-import { UpdateMorbidityGroupDto } from './dto/update-morbidity-group.dto';
 import { MorbidityGroupRepository } from './morbidity-group.repository';
 import { MorbidityGroup } from './entities/morbidity-group.entity';
+import { CreateMorbidityGroupRequestDTO, UpdateMorbidityGroupRequestDTO } from '@/shared/dtos/morbidity-group.request.dto';
 
 @Injectable()
 export class MorbidityGroupService {
@@ -11,7 +10,7 @@ export class MorbidityGroupService {
     @Inject(MorbidityGroupRepository) private readonly repository: MorbidityGroupRepository
   ) { }
 
-  async create(createMorbidityGroupDto: CreateMorbidityGroupDto): Promise<MorbidityGroup> {
+  async create(createMorbidityGroupDto: CreateMorbidityGroupRequestDTO): Promise<MorbidityGroup> {
     return await this.repository.create(createMorbidityGroupDto);
   }
 
@@ -23,7 +22,7 @@ export class MorbidityGroupService {
     return await this.repository.findOne({ id });
   }
 
-  async update(id: number, updateMorbidityGroupDto: UpdateMorbidityGroupDto): Promise<MorbidityGroup> {
+  async update(id: number, updateMorbidityGroupDto: UpdateMorbidityGroupRequestDTO): Promise<MorbidityGroup> {
     return await this.repository.findOneAndUpdate({ id }, updateMorbidityGroupDto);
   }
 

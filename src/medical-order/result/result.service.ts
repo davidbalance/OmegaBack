@@ -47,7 +47,7 @@ export class ResultService {
   }
 
   async updateMorbidity(id: number, morbidity: number): Promise<Result> {
-    const retrivedMorbidity = await this.morbidityService.readOneByID(morbidity);
+    const retrivedMorbidity = await this.morbidityService.findOneByID(morbidity);
     return await this.repository.findOneAndUpdate({ id }, { morbidity: retrivedMorbidity.id });
   }
 
