@@ -8,6 +8,7 @@ import { ReportValueRepository } from './report-value.repository';
 @Module({
   imports: [SqlDatabaseModule.forFeature([ReportValue])],
   controllers: [ReportValueController],
-  providers: [ReportValueService, ReportValueRepository]
+  providers: [ReportValueService, ReportValueRepository],
+  exports: [ReportValueService]
 })
 export class ReportValueModule { }

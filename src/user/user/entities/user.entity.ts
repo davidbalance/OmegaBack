@@ -9,11 +9,11 @@ export class User extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'USER_ID' })
     public id: number;
 
-    @Index()
+    // @Index()
     @Column({ name: 'USER_DNI', type: 'varchar', length: 10, nullable: false, unique: true })
     public dni: string;
 
-    @Index()
+    // @Index()
     @Column({ name: 'USER_EMAIL', type: 'varchar', length: 64, nullable: false, unique: true })
     public email: string;
 
@@ -23,7 +23,7 @@ export class User extends AbstractEntity<number> {
     @Column({ name: 'USER_LAST_NAME', type: 'varchar', length: 64, nullable: false })
     public lastname: string;
 
-    @Column({ name: 'USER_LAST_STATUS', type: 'boolean', default: true, nullable: false })
+    @Column({ name: 'USER_STATUS', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
     @ManyToMany(() => Permission)
@@ -34,7 +34,7 @@ export class User extends AbstractEntity<number> {
     })
     public permissions: Permission[];
 
-    @ManyToMany(() => Permission)
+    @ManyToMany(() => Role)
     @JoinTable({
         name: 'USERS_ROLE',
         joinColumn: { name: 'USER_ID', referencedColumnName: 'id' },

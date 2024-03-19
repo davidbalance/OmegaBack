@@ -1,6 +1,6 @@
+import { AuthorizationType } from "@/authorization/common";
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { AuthorizationType } from "../enums";
 
 @Entity({ name: 'PERMISSIONS' })
 export class Permission extends AbstractEntity<number> {

@@ -8,6 +8,7 @@ import { ExamRepository } from './exam.repository';
 @Module({
   imports: [SqlDatabaseModule.forFeature([Exam])],
   controllers: [ExamController],
-  providers: [ExamService, ExamRepository]
+  providers: [ExamService, ExamRepository],
+  exports: [ExamService]
 })
 export class ExamModule { }

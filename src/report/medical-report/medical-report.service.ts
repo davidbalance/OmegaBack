@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { MedicalReportRepository } from './medical-report.repository';
 import { MedicalReport } from './entities/medical-report.entity';
 import { ResultService } from 'src/medical-order/result/result.service';
-import { DoctorService } from 'src/doctor/doctor.service';
 import { CreateReportRequestDTO } from 'src/shared/dtos/report.request.dto';
 import { ReportValueService } from '../report-value/report-value.service';
+import { DoctorService } from '@/user/doctor/doctor.service';
 
 @Injectable()
 export class MedicalReportService {

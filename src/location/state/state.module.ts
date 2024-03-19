@@ -8,6 +8,7 @@ import { StateRepository } from './state.repository';
 @Module({
   imports: [SqlDatabaseModule.forFeature([State])],
   controllers: [StateController],
-  providers: [StateService, StateRepository]
+  providers: [StateService, StateRepository],
+  exports: [StateService]
 })
 export class StateModule { }

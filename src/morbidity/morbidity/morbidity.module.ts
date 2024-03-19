@@ -8,6 +8,7 @@ import { MorbidityRepository } from './morbidity.repository';
 @Module({
   imports: [SqlDatabaseModule.forFeature([Morbidity])],
   controllers: [MorbidityController],
-  providers: [MorbidityService, MorbidityRepository]
+  providers: [MorbidityService, MorbidityRepository],
+  exports: [MorbidityService]
 })
 export class MorbidityModule { }

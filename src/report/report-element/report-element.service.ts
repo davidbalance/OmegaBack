@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ReportElementRepository } from './report-element.repository';
 import { ReportElement } from './entities/report-element.entity';
-import { CreateReportValueRequestDTO, CreateRequestElementRequestDTO, UpdateReportValueRequestDTO } from 'src/shared';
-import { DoctorService } from 'src/doctor/doctor.service';
+import { CreateRequestElementRequestDTO, UpdateReportValueRequestDTO } from 'src/shared';
 
 @Injectable()
 export class ReportElementService {

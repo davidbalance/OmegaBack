@@ -8,6 +8,7 @@ import { Permission } from './entities/permission.entity';
 @Module({
   imports: [SqlDatabaseModule.forFeature([Permission])],
   controllers: [PermissionController],
-  providers: [PermissionService, PermissionRepository]
+  providers: [PermissionService, PermissionRepository],
+  exports: [PermissionService]
 })
 export class PermissionModule { }

@@ -10,7 +10,7 @@ export class Exam extends AbstractEntity<number> {
     @Column({ name: 'EXAM_NAME', type: 'varchar', length: 256, unique: true })
     public name: string;
 
-    @Index()
+    // @Index()
     @Column({ name: 'EXAM_LABINT', type: 'varchar', length: 256, unique: true, nullable: true })
     public labint: string;
 

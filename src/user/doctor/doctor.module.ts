@@ -4,9 +4,9 @@ import { DoctorController } from './doctor.controller';
 import { SqlDatabaseModule } from 'src/shared';
 import { Doctor } from './entities/doctor.entity';
 import { DoctorRepository } from './doctor.repository';
-import { UserModule } from 'src/user/user/user.module';
 import { UserCredentialModule } from 'src/authentication/user-credential/user-credential.module';
 import { LocalStorageSaverModule } from 'src/shared/storage-saver';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -16,6 +16,7 @@ import { LocalStorageSaverModule } from 'src/shared/storage-saver';
     LocalStorageSaverModule
   ],
   controllers: [DoctorController],
-  providers: [DoctorService, DoctorRepository]
+  providers: [DoctorService, DoctorRepository],
+  exports: [DoctorService]
 })
 export class DoctorModule { }
