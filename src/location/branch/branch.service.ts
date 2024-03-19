@@ -17,16 +17,8 @@ export class BranchService {
     return await this.repository.create({ ...createBranchDto, company: company });
   }
 
-  async readAll(): Promise<Branch[]> {
+  async findAll(): Promise<Branch[]> {
     return await this.repository.find({ status: true });
-  }
-
-  async readOneByID(id: number): Promise<Branch> {
-    return await this.repository.findOne({ id });
-  }
-
-  async readOneByRUC(ruc: string): Promise<Branch> {
-    return await this.repository.findOne({ company: { ruc: ruc } });
   }
 
   async update(id: number, updateBranchDto: UpdateBranchRequestDTO): Promise<Branch> {
