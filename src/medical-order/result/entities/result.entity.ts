@@ -1,4 +1,4 @@
-import { Doctor } from "src/doctor/entities/doctor.entity";
+import { Doctor } from "@/user/doctor/entities/doctor.entity";
 import { Exam } from "src/exam/entities/exam.entity";
 import { Order } from "src/medical-order/order/entities/order.entity";
 import { Send } from "src/medical-order/send/entities/send.entity";

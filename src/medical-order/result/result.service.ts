@@ -5,9 +5,9 @@ import { Send } from '../send/entities/send.entity';
 import { FindOrCreateDoctorRequestDTO, FindOrCreateExamRequestDTO, FindOrCreateOrderRequestDTO, FindOrCreatePatientRequestDTO } from 'src/shared';
 import { StorageSaver } from 'src/shared/storage-saver';
 import { OrderService } from '../order/order.service';
-import { DoctorService } from 'src/doctor/doctor.service';
 import { MorbidityService } from 'src/morbidity/morbidity/morbidity.service';
 import { ExamService } from 'src/exam/exam.service';
+import { DoctorService } from '@/user/doctor/doctor.service';
 
 @Injectable()
 export class ResultService {

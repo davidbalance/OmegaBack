@@ -1,7 +1,7 @@
+import { Patient } from "@/user/patient/entities/patient.entity";
 import { Branch } from "src/location/branch/entities/branch.entity";
 import { Result } from "src/medical-order/result/entities/result.entity";
 import { Send } from "src/medical-order/send/entities/send.entity";
-import { Patient } from "src/patient/entities/patient.entity";
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -26,7 +26,7 @@ export class Order extends AbstractEntity<number> {
     @ManyToOne(() => Patient, patient => patient.orders, { eager: false })
     @JoinColumn({ name: 'PATIENT_ID', referencedColumnName: 'id' })
     public patient: Patient;
-    
+
 
     @ManyToMany(() => Send, { eager: false })
     @JoinTable({

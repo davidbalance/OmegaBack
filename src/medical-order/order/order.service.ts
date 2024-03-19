@@ -4,8 +4,8 @@ import { Order } from './entities/order.entity';
 import { Result } from '../result/entities/result.entity';
 import { Send } from '../send/entities/send.entity';
 import { CreateOrderRequestDTO, FindOrCreateOrderRequestDTO, FindOrCreatePatientRequestDTO } from 'src/shared';
-import { PatientService } from 'src/patient/patient.service';
 import { BranchService } from 'src/location/branch/branch.service';
+import { PatientService } from '@/user/patient/patient.service';
 
 @Injectable()
 export class OrderService {
