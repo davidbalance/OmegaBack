@@ -13,7 +13,7 @@ export class BranchService {
   ) { }
 
   async create(createBranchDto: CreateBranchRequestDTO): Promise<Branch> {
-    const company = await this.companyService.readOneByID(createBranchDto.company);
+    const company = await this.companyService.findOneByID(createBranchDto.company);
     return await this.repository.create({ ...createBranchDto, company: company });
   }
 
@@ -26,7 +26,7 @@ export class BranchService {
   }
 
   async updateCompany(id: number, updateCompanyDto: UpdateBranchCompanyRequestDTO): Promise<Branch> {
-    const company = await this.companyService.readOneByID(updateCompanyDto.company);
+    const company = await this.companyService.findOneByID(updateCompanyDto.company);
     return await this.repository.findOneAndUpdate({ id }, { company: company });
   }
 

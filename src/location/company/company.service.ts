@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CompanyRepository } from './company.repository';
 import { Company } from './entities/company.entity';
-import { CreateCompanyRequestDTO, UpdateCompanyCorporativeGroupRequestDTO, UpdateCompanyRUCRequestDTO, UpdateCompanyRequestDTO } from './dto';
 import { CorporativeGroupService } from '../corporative-group/corporative-group.service';
+import { CreateCompanyRequestDTO, UpdateCompanyRequestDTO, UpdateCompanyRUCRequestDTO, UpdateCompanyCorporativeGroupRequestDTO } from '@/shared';
 
 @Injectable()
 export class CompanyService {
@@ -17,11 +17,11 @@ export class CompanyService {
     return await this.repository.create({ ...createCompanyDto, corporativeGroup: corporativeGroup });
   }
 
-  async readAll(): Promise<Company[]> {
+  async findAll(): Promise<Company[]> {
     return await this.repository.find({ status: true });
   }
 
-  async readOneByID(id: number): Promise<Company> {
+  async findOneByID(id: number): Promise<Company> {
     return await this.repository.findOne({ id: id, status: false });
   }
 
