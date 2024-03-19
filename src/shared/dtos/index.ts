@@ -22,3 +22,5 @@ export * from './city.request.dto';
 export * from './city.response.dto';
 export * from './company.request.dto';
 export * from './company.response.dto';
+export * from './corporative-group.request.dto';
+export * from './corporative-group.response.dto';

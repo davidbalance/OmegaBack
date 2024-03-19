@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CorporativeGroupRepository } from './corporative-group.repository';
 import { CorporativeGroup } from './entities/corporative-group.entity';
-import { CreateCorporativeGroupRequestDTO, UpdateCorporativeGroupRequestDTO } from './dto';
+import { CreateCorporativeGroupRequestDTO, UpdateCorporativeGroupRequestDTO } from '@/shared';
 
 @Injectable()
 export class CorporativeGroupService {
