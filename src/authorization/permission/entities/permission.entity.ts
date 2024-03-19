@@ -15,7 +15,4 @@ export class Permission extends AbstractEntity<number> {
 
     @Column({ name: 'PERMISSION_TYPE', type: 'enum', enum: AuthorizationType, nullable: false })
     public type: AuthorizationType
-
-    @Column({ name: 'PERMISSION_APP', type: 'varchar', length: 64, nullable: true })
-    public app?: string;
 }
