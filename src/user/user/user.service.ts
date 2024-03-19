@@ -67,11 +67,11 @@ export class UserService implements UserServiceExtensions<number> {
   }
 
   async readOneByID(id: number): Promise<User> {
-    return this.repository.findOne({ id, status: true }, { roles: true, permissions: true });
+    return this.repository.findOne({ id, status: true });
   }
 
   async readOneByDNI(dni: string): Promise<User> {
-    return this.repository.findOne({ dni, status: true }, { roles: true, permissions: true });
+    return this.repository.findOne({ dni, status: true });
   }
 
   async update(id: number, user: UpdateUserRequestDTO): Promise<User> {

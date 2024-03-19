@@ -1,4 +1,4 @@
-import { AuthorizationType } from "../enums";
+import { AuthorizationType } from "@/authorization/common";
 
 export class CreatePermissionRequestDTO {
     public readonly name: string;

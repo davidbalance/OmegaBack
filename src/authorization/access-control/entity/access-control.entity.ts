@@ -8,14 +8,14 @@ export class AccessControl extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'ACCESS_CONTROL_ID' })
     public id: number;
 
-    @Index()
+    @Index("access-control-idx")
     @Column({ name: 'USER_ID', type: 'varchar', length: 10, unique: true, nullable: false })
     public user: string;
 
     @ManyToMany(() => Permission)
     @JoinTable({
         name: 'ACCESS_CONTROL_PERMISSION',
-        joinColumn: { name: 'USER_ID', referencedColumnName: 'dni' },
+        joinColumn: { name: 'USER_ID', referencedColumnName: 'user' },
         inverseJoinColumn: { name: 'PERMISSIONS_ID', referencedColumnName: 'id' }
     })
     public permissions: Permission[];
@@ -23,7 +23,7 @@ export class AccessControl extends AbstractEntity<number> {
     @ManyToMany(() => Role)
     @JoinTable({
         name: 'ACCESS_CONTROL_ROLE',
-        joinColumn: { name: 'USER_ID', referencedColumnName: 'dni' },
+        joinColumn: { name: 'USER_ID', referencedColumnName: 'user' },
         inverseJoinColumn: { name: 'ROLES_ID', referencedColumnName: 'id' }
     })
     public roles: Role[];
