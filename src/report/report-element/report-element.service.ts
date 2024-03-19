@@ -1,17 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateReportElementDto } from './dto/create-report-element.dto';
-import { UpdateReportElementDto } from './dto/update-report-element.dto';
 import { ReportElementRepository } from './report-element.repository';
 import { ReportElement } from './entities/report-element.entity';
+import { CreateReportValueRequestDTO, CreateRequestElementRequestDTO, UpdateReportValueRequestDTO } from 'src/shared';
+import { DoctorService } from 'src/doctor/doctor.service';
 
 @Injectable()
 export class ReportElementService {
 
   constructor(
-    @Inject(ReportElementRepository) private readonly repository: ReportElementRepository
+    @Inject(ReportElementRepository) private readonly repository: ReportElementRepository,
   ) { }
 
-  async create(createReportElementDto: CreateReportElementDto): Promise<ReportElement> {
+  async create(createReportElementDto: CreateRequestElementRequestDTO): Promise<ReportElement> {
     return await this.repository.create(createReportElementDto);
   }
 
@@ -23,7 +23,7 @@ export class ReportElementService {
     return await this.repository.findOne({ id });
   }
 
-  async update(id: number, updateReportElementDto: UpdateReportElementDto): Promise<ReportElement> {
+  async update(id: number, updateReportElementDto: UpdateReportValueRequestDTO): Promise<ReportElement> {
     return await this.repository.findOneAndUpdate({ id }, updateReportElementDto);
   }
 

@@ -1,6 +1,6 @@
 import { Result } from "src/medical-order/result/entities/result.entity";
 import { AbstractEntity } from "src/shared";
-import { User } from "src/user/entities/user.entity";
+import { User } from "src/user/user/entities/user.entity";
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'DOCTORS' })

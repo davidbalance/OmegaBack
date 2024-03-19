@@ -9,8 +9,10 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany
 export class Order extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'ORDER_ID' })
     public id: number;
+
     @Column({ name: 'ORDER_FILENAME' })
     public filename: string;
+
     @Column({ name: 'ORDER_PATH' })
     public path: string;
 
@@ -24,6 +26,7 @@ export class Order extends AbstractEntity<number> {
     @ManyToOne(() => Patient, patient => patient.orders, { eager: false })
     @JoinColumn({ name: 'PATIENT_ID', referencedColumnName: 'id' })
     public patient: Patient;
+    
 
     @ManyToMany(() => Send, { eager: false })
     @JoinTable({

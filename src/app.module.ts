@@ -6,12 +6,10 @@ import { MedicalOrderModule } from './medical-order/medical-order.module';
 import { MorbidityModule } from './morbidity/morbidity.module';
 import { ExamModule } from './exam/exam.module';
 import { ReportModule } from './report/report.module';
-import { PatientModule } from './patient/patient.module';
-import { DoctorModule } from './doctor/doctor.module';
 import { LocationModule } from './location/location.module';
-import { UserModule } from './user/user.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthorizationModule } from './authorization/authorization.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -20,8 +18,6 @@ import { AuthorizationModule } from './authorization/authorization.module';
     MorbidityModule,
     ExamModule,
     ReportModule,
-    PatientModule,
-    DoctorModule,
     LocationModule,
     UserModule,
     AuthenticationModule,

@@ -7,10 +7,13 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "t
 export class ReportValue extends AbstractEntity<number>{
     @PrimaryGeneratedColumn('increment', { name: 'REPORT_VALUE_ID' })
     public id: number;
+
     @Column({ name: 'REPORT_VALUE_NAME', type: 'varchar', length: 256, nullable: false })
     public name: string;
+    
     @Column({ name: 'REPORT_VALUE_TYPE', type: 'enum', enum: ReportElementType, nullable: false })
     public type: ReportElementType;
+    
     @Column({ name: 'REPORT_VALUE_CONTENT', type: 'varchar', length: 256, nullable: false })
     public value: string;
 

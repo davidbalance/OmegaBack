@@ -1,5 +1,5 @@
 import { AbstractEntity } from "src/shared";
-import { User } from "src/user/entities/user.entity";
+import { User } from "src/user/user/entities/user.entity";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('USER_CREDENTIALS')

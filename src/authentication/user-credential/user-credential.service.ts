@@ -2,7 +2,7 @@ import { ConflictException, Inject, Injectable, Logger, UnauthorizedException } 
 import { UserCredentialRepository } from './user-credential.repository';
 import { UserCredential } from './entities/user-credential.entity';
 import { CreateUserCredentialRequestDTO, CreateUserRequestDTO } from 'src/shared/dtos';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/user/user/user.service';
 import * as bcrypt from 'bcrypt';
 
 interface UserCredentialServiceExtension {

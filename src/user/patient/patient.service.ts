@@ -2,9 +2,9 @@ import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundExcep
 import { PatientRepository } from './patient.repository';
 import { Patient } from './entities/patient.entity';
 import { UserCredentialService } from 'src/authentication/user-credential/user-credential.service';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/user/user/user.service';
 import { CreatePatientAndAssignUserRequestDTO, CreatePatientRequestDTO, FindOrCreatePatientRequestDTO, UpdatePatientRequestDTO } from 'src/shared';
-import { User } from 'src/user/entities/user.entity';
+import { User } from 'src/user/user/entities/user.entity';
 
 interface PatientServiceExtensions {
   /**

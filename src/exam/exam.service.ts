@@ -1,8 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateExamDto } from './dto/create-exam.dto';
-import { UpdateExamDto } from './dto/update-exam.dto';
+import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { ExamRepository } from './exam.repository';
 import { Exam } from './entities/exam.entity';
+import { CreateExamRequestDTO, FindOrCreateExamRequestDTO } from 'src/shared';
 
 @Injectable()
 export class ExamService {
@@ -11,23 +10,27 @@ export class ExamService {
     @Inject(ExamRepository) private readonly repository: ExamRepository
   ) { }
 
-  async create(createExamDto: CreateExamDto): Promise<Exam> {
+  async findOrCreateExam(exam: FindOrCreateExamRequestDTO): Promise<Exam> {
+    try {
+      return await this.repository.findOne({ labint: exam.key });
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return await this.repository.create({
+          name: exam.name,
+          labint: exam.key
+        });
+      } else {
+        Logger.error(error);
+        throw new InternalServerErrorException(error);
+      }
+    }
+  }
+
+  async create(createExamDto: CreateExamRequestDTO): Promise<Exam> {
     return await this.repository.create(createExamDto);
   }
 
-  async readAll(): Promise<Exam[]> {
+  async findAll(): Promise<Exam[]> {
     return await this.repository.find({});
-  }
-
-  async readOneByID(id: number): Promise<Exam> {
-    return await this.repository.findOne({ id });
-  }
-
-  async update(id: number, updateExamDto: UpdateExamDto): Promise<Exam> {
-    return await this.repository.findOneAndUpdate({ id }, updateExamDto);
-  }
-
-  async remove(id: number): Promise<void> {
-    await this.repository.findOneAndDelete({ id });
   }
 }

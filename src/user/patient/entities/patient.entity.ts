@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn
 import { PatientGenderEnum } from "../../shared/enums";
 import { AbstractEntity } from "src/shared";
 import { Order } from "src/medical-order/order/entities/order.entity";
-import { User } from "src/user/entities/user.entity";
+import { User } from "src/user/user/entities/user.entity";
 
 @Entity({ name: "PATIENTS" })
 export class Patient extends AbstractEntity<number> {

@@ -1,28 +1,51 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { OrderRepository } from './order.repository';
 import { Order } from './entities/order.entity';
 import { Result } from '../result/entities/result.entity';
 import { Send } from '../send/entities/send.entity';
+import { CreateOrderRequestDTO, FindOrCreateOrderRequestDTO, FindOrCreatePatientRequestDTO } from 'src/shared';
+import { PatientService } from 'src/patient/patient.service';
+import { BranchService } from 'src/location/branch/branch.service';
 
 @Injectable()
 export class OrderService {
 
   constructor(
-    @Inject(OrderRepository) private readonly repository: OrderRepository
+    @Inject(OrderRepository) private readonly repository: OrderRepository,
+    @Inject(PatientService) private readonly patientService: PatientService,
+    @Inject(BranchService) private readonly branchService: BranchService
   ) { }
 
-  async create(createOrderDto: CreateOrderDto): Promise<Order> {
-    return await this.repository.create(createOrderDto);
+  async findOrCreateOrder(
+    order: FindOrCreateOrderRequestDTO,
+    findOrCreatePatient: FindOrCreatePatientRequestDTO,
+  ): Promise<Order> {
+    const patient = await this.patientService.findOrCreatePatient(findOrCreatePatient);
+    try {
+      let retrivedOrder = null;
+      return retrivedOrder;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return await this.repository.create({ ...order, patient: patient });
+      } else {
+        Logger.error(error);
+        throw new InternalServerErrorException(error);
+      }
+    }
   }
 
-  async readOneByID(id: number): Promise<Order> {
-    return await this.repository.findOne({ id: id });
+  async create(order: CreateOrderRequestDTO): Promise<Order> {
+    const patient = await this.patientService.readOneByID(order.patient);
+    const branch = await this.branchService.readOneByID(order.branch);
+    return await this.repository.create({ branch, patient });
   }
 
-  async readAll(): Promise<Order[]> {
-    return await this.repository.find({});
+  async findOneByID(id: number): Promise<Order> {
+    return await this.repository.findOne({ id });
+  }
+
+  async readOrdersByDNI(dni: string): Promise<Order[]> {
+    return await this.repository.find({ patient: { user: { dni } } });
   }
 
   async appendResult(id: number, results: Result[]): Promise<Order> {
@@ -38,13 +61,5 @@ export class OrderService {
     const filterSends = order.sends.filter(e => !sends.includes(e));
     // Here goes send logic for each send item
     return this.repository.findOneAndSend({ id }, filterSends);
-  }
-
-  async update(id: number, updateOrderDto: UpdateOrderDto): Promise<Order> {
-    return await this.repository.findOneAndUpdate({ id }, updateOrderDto);
-  }
-
-  async remove(id: number): Promise<void> {
-    await this.repository.findOneAndDelete({ id });
   }
 }

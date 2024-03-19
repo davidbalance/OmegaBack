@@ -2,9 +2,9 @@ import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundExcep
 import { DoctorRepository } from './doctor.repository';
 import { Doctor } from './entities/doctor.entity';
 import { CreateDoctorAndAssignUserRequestDTO, CreateDoctorRequestDTO, FindOrCreateDoctorRequestDTO, UpdateDoctorRequestDTO } from 'src/shared';
-import { User } from 'src/user/entities/user.entity';
+import { User } from 'src/user/user/entities/user.entity';
 import { UserCredentialService } from 'src/authentication/user-credential/user-credential.service';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/user/user/user.service';
 import { StorageSaver } from 'src/shared/storage-saver';
 import path from 'path';
 
