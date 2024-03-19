@@ -3,47 +3,8 @@ import { UserRepository } from './user.repository';
 import { User } from './entities/user.entity';
 import { CreateUserRequestDTO, UpdateUserDNIRequestDTO, UpdateUserRequestDTO } from 'src/shared/dtos';
 
-interface UserServiceExtensions<K> {
-  /**
-   * Creates a user by its given values
-   * @param user 
-   */
-  create(user: CreateUserRequestDTO): Promise<User>;
-  /**
-   * Retrives all the active users
-   */
-  readAll(): Promise<User[]>;
-  /**
-   * Retrive one active user by its given id
-   * @param id 
-   */
-  readOneByID(id: K): Promise<User>;
-  /**
-   * Retrive one active user by its given DNI
-   * @param dni 
-   */
-  readOneByDNI(dni: string): Promise<User>;
-  /**
-   * Updates user by its given values
-   * @param id 
-   * @param user 
-   */
-  update(id: K, user: UpdateUserRequestDTO): Promise<User>;
-  /**
-   * Updates ony the DNI
-   * @param id 
-   * @param user 
-   */
-  updateDNI(id: K, user: UpdateUserDNIRequestDTO): Promise<User>;
-  /**
-   * Inactive user by its give id
-   * @param id 
-   */
-  inactive(id: K): Promise<User>;
-}
-
 @Injectable()
-export class UserService implements UserServiceExtensions<number> {
+export class UserService {
 
   constructor(
     @Inject(UserRepository) private readonly repository: UserRepository
@@ -62,16 +23,29 @@ export class UserService implements UserServiceExtensions<number> {
     }
   }
 
-  async readAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     return this.repository.find({ status: true });
   }
 
-  async readOneByID(id: number): Promise<User> {
+  async findOneByID(id: number): Promise<User> {
     return this.repository.findOne({ id, status: true });
   }
 
-  async readOneByDNI(dni: string): Promise<User> {
+  async findOneByDNI(dni: string): Promise<User> {
     return this.repository.findOne({ dni, status: true });
+  }
+
+  isUserActive(id: number): Promise<boolean>;
+  isUserActive(dni: string): Promise<boolean>;
+  async isUserActive(idOrDni: number | string): Promise<boolean> {
+    let user: User;
+    if (typeof idOrDni === 'string') {
+      user = await this.repository.findOne({ dni: idOrDni });
+    } else if (typeof idOrDni === 'number') {
+      user = await this.repository.findOne({ id: idOrDni });
+    }
+    const flag = !user ? false : user.status;
+    return flag;
   }
 
   async update(id: number, user: UpdateUserRequestDTO): Promise<User> {
