@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CityRepository } from './city.repository';
 import { City } from './entities/city.entity';
-import { CreateCityRequestDTO, UpdateCityRequestDTO } from './dto';
+import { CreateCityRequestDTO, UpdateCityRequestDTO } from '@/shared';
 
 @Injectable()
 export class CityService {
@@ -14,11 +14,11 @@ export class CityService {
     return await this.repository.create({ ...createCityDto });
   }
 
-  async readAll(): Promise<City[]> {
+  async findAll(): Promise<City[]> {
     return await this.repository.find({});
   }
 
-  async readOneByID(id: number): Promise<City> {
+  async findOneByID(id: number): Promise<City> {
     return await this.repository.findOne({ id });
   }
 

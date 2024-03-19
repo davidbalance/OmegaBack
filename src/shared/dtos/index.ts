@@ -18,3 +18,5 @@ export * from './report-element.request.dto';
 export * from './report-element.response.dto';
 export * from './report.request.dto';
 export * from './report.response.dto';
+export * from './city.request.dto';
+export * from './city.response.dto';
