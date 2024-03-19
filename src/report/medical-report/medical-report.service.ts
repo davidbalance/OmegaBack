@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { MedicalReportRepository } from './medical-report.repository';
 import { MedicalReport } from './entities/medical-report.entity';
-import { ResultService } from 'src/medical-order/result/result.service';
 import { CreateReportRequestDTO } from 'src/shared/dtos/report.request.dto';
 import { ReportValueService } from '../report-value/report-value.service';
 import { DoctorService } from '@/user/doctor/doctor.service';
@@ -11,7 +10,6 @@ export class MedicalReportService {
 
   constructor(
     @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository,
-    @Inject(ResultService) private readonly resultService: ResultService,
     @Inject(ReportValueService) private readonly valueService: ReportValueService,
     @Inject(DoctorService) private readonly doctorService: DoctorService
   ) { }
