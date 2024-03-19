@@ -2,7 +2,6 @@ import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundExcep
 import { OrderRepository } from './order.repository';
 import { Order } from './entities/order.entity';
 import { Result } from '../result/entities/result.entity';
-import { Send } from '../send/entities/send.entity';
 import { CreateOrderRequestDTO, FindOrCreateOrderRequestDTO, FindOrCreatePatientRequestDTO } from 'src/shared';
 import { BranchService } from 'src/location/branch/branch.service';
 import { PatientService } from '@/user/patient/patient.service';
@@ -26,7 +25,7 @@ export class OrderService {
       return retrivedOrder;
     } catch (error) {
       if (error instanceof NotFoundException) {
-        return await this.repository.create({ ...order, patient: patient });
+        return await this.repository.create({ ...order, patient: patient.user.dni });
       } else {
         Logger.error(error);
         throw new InternalServerErrorException(error);
@@ -35,9 +34,9 @@ export class OrderService {
   }
 
   async create(order: CreateOrderRequestDTO): Promise<Order> {
-    const patient = await this.patientService.readOneByID(order.patient);
-    const branch = await this.branchService.readOneByID(order.branch);
-    return await this.repository.create({ branch, patient });
+    // const patient = await this.patientService.readOneByID(order.patient);
+    // const branch = await this.branchService.readOneByID(order.branch);
+    return await this.repository.create({ branch: order.branch, patient: order.patient });
   }
 
   async findOneByID(id: number): Promise<Order> {
@@ -45,7 +44,7 @@ export class OrderService {
   }
 
   async readOrdersByDNI(dni: string): Promise<Order[]> {
-    return await this.repository.find({ patient: { user: { dni } } });
+    return await this.repository.find({ patient: dni });
   }
 
   async appendResult(id: number, results: Result[]): Promise<Order> {
@@ -56,10 +55,11 @@ export class OrderService {
     return this.repository.findOneAndRemoveResult({ id }, results);
   }
 
-  async send(id: number, sends: Send[]): Promise<Order> {
-    const order = await this.repository.findOne({ id }, { sends: true });
-    const filterSends = order.sends.filter(e => !sends.includes(e));
+  async send(id: number, sends: any[]): Promise<Order> {
+    // const order = await this.repository.findOne({ id }, { sends: true });
+    // const filterSends = order.sends.filter(e => !sends.includes(e));
     // Here goes send logic for each send item
-    return this.repository.findOneAndSend({ id }, filterSends);
+    // return this.repository.findOneAndSend({ id }, filterSends);
+    return null;
   }
 }

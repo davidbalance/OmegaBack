@@ -9,21 +9,21 @@ export class UserController {
 
   @Get()
   async readAll(): Promise<User[]> {
-    return await this.userService.readAll();
+    return await this.userService.findAll();
   }
 
   @Get('user/:id')
   async readOneByID(
     @Param() id: number
   ): Promise<User> {
-    return await this.userService.readOneByID(id);
+    return await this.userService.findOneByID(id);
   }
 
   @Get('dni/:dni')
   async readOneByDNI(
     @Param() dni: string
   ): Promise<User> {
-    return await this.userService.readOneByDNI(dni);
+    return await this.userService.findOneByDNI(dni);
   }
 
   @Patch('user/:id')

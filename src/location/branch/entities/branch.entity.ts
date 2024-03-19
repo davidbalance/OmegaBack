@@ -1,7 +1,7 @@
+import { City } from "@/location/city/entities/city.entity";
 import { Company } from "src/location/company/entities/company.entity";
-import { Order } from "src/medical-order/order/entities/order.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'BRANCHES' })
 export class Branch extends AbstractEntity<number>{
@@ -18,6 +18,7 @@ export class Branch extends AbstractEntity<number>{
     @JoinColumn({ referencedColumnName: 'id', name: 'COMPANY_ID' })
     public company: Company;
 
-    @OneToMany(() => Order, order => order.branch, {eager: false})
-    public orders: Order;
+    @ManyToOne(() => City, city => city.branches, { eager: false })
+    @JoinColumn({ name: 'CITY_ID', referencedColumnName: 'id' })
+    public city: City;
 }

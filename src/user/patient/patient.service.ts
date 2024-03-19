@@ -74,7 +74,7 @@ export class PatientService implements PatientServiceExtensions {
   async create(patient: CreatePatientRequestDTO | CreatePatientAndAssignUserRequestDTO, userOrUndefined?: number): Promise<Patient> {
     let user: User = null;
     if (userOrUndefined) {
-      user = await this.userService.readOneByID(userOrUndefined);
+      user = await this.userService.findOneByID(userOrUndefined);
     } else {
       user = await this.userService.create(patient as CreatePatientRequestDTO);
       await this.credentialService.create(patient as CreatePatientRequestDTO, user.id);

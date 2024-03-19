@@ -24,7 +24,7 @@ export class MedicalReportService {
       doctorDNI: doctor.user.dni,
       doctorFullname: `${doctor.user.name} ${doctor.user.lastname}`,
       doctorSignature: doctor.signature,
-      result: result,
+      result: result.id,
       values: values
     });
   }

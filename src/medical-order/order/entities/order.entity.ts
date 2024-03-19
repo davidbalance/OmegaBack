@@ -1,38 +1,34 @@
-import { Patient } from "@/user/patient/entities/patient.entity";
-import { Branch } from "src/location/branch/entities/branch.entity";
 import { Result } from "src/medical-order/result/entities/result.entity";
-import { Send } from "src/medical-order/send/entities/send.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'ORDERS' })
 export class Order extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'ORDER_ID' })
     public id: number;
 
-    @Column({ name: 'ORDER_FILENAME' })
+    @Index('order-user-idx')
+    @Column({ name: 'USER_DNI', type: 'varchar', length: 10, nullable: false })
+    public patient: string;
+
+    @Index('order-corporative-group-idx')
+    @Column({ name: 'CORPORATIVE_GROUP_ID', type: 'int', nullable: false })
+    public corporativeGroup: number;
+
+    @Index('order-company-idx')
+    @Column({ name: 'COMPANY_ID', type: 'varchar', length: 13, nullable: false })
+    public company: string;
+
+    @Index('order-branch-idx')
+    @Column({ name: 'BRANCH_ID', type: 'int', nullable: false })
+    public branch: number;
+
+    @Column({ name: 'ORDER_FILENAME', type: 'varchar', length: 256 })
     public filename: string;
 
-    @Column({ name: 'ORDER_PATH' })
+    @Column({ name: 'ORDER_PATH', type: 'varchar', length: 256 })
     public path: string;
 
     @OneToMany(() => Result, result => result.order, { eager: false })
     public results: Result[];
-
-    @ManyToOne(() => Branch, branch => branch.orders, { eager: false })
-    @JoinColumn({ name: 'BRANCH_ID', referencedColumnName: 'id' })
-    public branch: Branch;
-
-    @ManyToOne(() => Patient, patient => patient.orders, { eager: false })
-    @JoinColumn({ name: 'PATIENT_ID', referencedColumnName: 'id' })
-    public patient: Patient;
-
-
-    @ManyToMany(() => Send, { eager: false })
-    @JoinTable({
-        name: 'ORDERS_SENDS',
-        joinColumn: { referencedColumnName: 'id', name: 'ORDER_ID' },
-        inverseJoinColumn: { referencedColumnName: 'id', name: 'SEND_ID' },
-    })
-    public sends: Send[];
 }

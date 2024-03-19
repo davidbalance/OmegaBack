@@ -18,9 +18,6 @@ export class Patient extends AbstractEntity<number> {
     @Column({ name: 'PATIENT_AGE', type: 'int', nullable: false })
     public age: number;
 
-    @OneToMany(() => Order, order => order.patient, { eager: false })
-    public orders: Order[];
-
     @OneToOne(() => User, { eager: false })
     @JoinColumn({ referencedColumnName: 'id', name: 'USER_ID' })
     public user: User;

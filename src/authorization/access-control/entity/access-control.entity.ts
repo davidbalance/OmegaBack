@@ -12,7 +12,7 @@ export class AccessControl extends AbstractEntity<number> {
     @Column({ name: 'USER_ID', type: 'varchar', length: 10, unique: true, nullable: false })
     public user: string;
 
-    @ManyToMany(() => Permission)
+    @ManyToMany(() => Permission, { eager: false })
     @JoinTable({
         name: 'ACCESS_CONTROL_PERMISSION',
         joinColumn: { name: 'USER_ID', referencedColumnName: 'user' },
@@ -20,7 +20,7 @@ export class AccessControl extends AbstractEntity<number> {
     })
     public permissions: Permission[];
 
-    @ManyToMany(() => Role)
+    @ManyToMany(() => Role, { eager: false })
     @JoinTable({
         name: 'ACCESS_CONTROL_ROLE',
         joinColumn: { name: 'USER_ID', referencedColumnName: 'user' },

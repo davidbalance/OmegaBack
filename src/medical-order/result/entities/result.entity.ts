@@ -1,41 +1,38 @@
-import { Doctor } from "@/user/doctor/entities/doctor.entity";
-import { Exam } from "src/exam/entities/exam.entity";
 import { Order } from "src/medical-order/order/entities/order.entity";
-import { Send } from "src/medical-order/send/entities/send.entity";
-import { Morbidity } from "src/morbidity/morbidity/entities/morbidity.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { ResultSendStatus } from "./result-send-status.entity";
 
 @Entity({ name: "RESULTS" })
 export class Result extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: "RESULT_ID" })
     public id: number;
+
+    @Index('result-exam-idx')
+    @Column({ name: 'EXAM_ID', type: 'int', nullable: false })
+    public exam: number;
+
+    @Index('result-morbidity-idx')
+    @Column({ name: 'MORBIDITY_ID', type: 'int' })
+    public morbidity: number;
+
+    @Index('result-doctor-idx')
+    @Column({ name: 'DOCTOR_ID', type: 'int', nullable: false })
+    public doctor: number;
+
     @Column({ name: 'RESULT_FILENAME', type: 'varchar', length: 256, nullable: false })
     public filename: string;
+
     @Column({ name: 'RESULT_PATH', type: 'varchar', length: 256, nullable: false })
     public path: string;
 
-    @ManyToOne(() => Doctor, doctor => doctor.results, { eager: false })
-    @JoinColumn({ name: 'DOCTOR_ID', referencedColumnName: 'id' })
-    public doctor: Doctor;
-
-    @ManyToOne(() => Morbidity, morbidity => morbidity.results, { eager: false })
-    @JoinColumn({ name: 'MORBIDITY_ID', referencedColumnName: 'id' })
-    public morbidity: Morbidity
-
-    @ManyToOne(() => Exam, exam => exam.results, { eager: false })
-    @JoinColumn({ name: 'EXAM_ID', referencedColumnName: 'id' })
-    public exam: Exam
-
     @ManyToOne(() => Order, order => order.results, { eager: false })
-    @JoinColumn({ name: 'ORDER_ID', referencedColumnName: 'id' })
+    @JoinColumn([
+        { name: 'USER_DNI', referencedColumnName: 'patient' },
+        { name: 'ORDER_ID', referencedColumnName: 'id' },
+    ])
     public order: Order;
 
-    @ManyToMany(() => Send, { eager: false })
-    @JoinTable({
-        name: 'RESULTS_SENDS',
-        joinColumn: { referencedColumnName: 'id', name: 'RESULT_ID' },
-        inverseJoinColumn: { referencedColumnName: 'id', name: 'SEND_ID' },
-    })
-    public sends: Send[];
+    @OneToMany(() => ResultSendStatus, sender => sender.result, { eager: false })
+    public sendsStatus: ResultSendStatus[];
 }
