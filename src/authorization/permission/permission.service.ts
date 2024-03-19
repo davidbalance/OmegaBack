@@ -1,34 +1,31 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreatePermissionDto } from './dto/create-permission.dto';
-import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { PermissionRepository } from './permission.repository';
-import { privateDecrypt } from 'crypto';
 import { Permission } from './entities/permission.entity';
+import { CreatePermissionRequestDTO } from './dto';
+
+interface PermissionServiceFindExtensions {
+  find(): Promise<Permission[]>;
+  find(app: string): Promise<Permission[]>;
+}
 
 @Injectable()
-export class PermissionService {
+export class PermissionService implements PermissionServiceFindExtensions {
 
   constructor(
     @Inject(PermissionRepository) private readonly repository: PermissionRepository
   ) { }
 
-  async create(createPermissionDto: CreatePermissionDto): Promise<Permission> {
+  find(): Promise<Permission[]>;
+  find(app: string): Promise<Permission[]>;
+  async find(app?: string): Promise<Permission[]> {
+    if (app) {
+      return await this.repository.find({ app });
+    } else {
+      return await this.repository.find({});
+    }
+  }
+
+  async create(createPermissionDto: CreatePermissionRequestDTO): Promise<Permission> {
     return await this.repository.create(createPermissionDto);
-  }
-
-  async readAll(): Promise<Permission[]> {
-    return await this.repository.find({});
-  }
-
-  async readOneByID(id: number): Promise<Permission> {
-    return await this.repository.findOne({ id });
-  }
-
-  async update(id: number, updatePermissionDto: UpdatePermissionDto): Promise<Permission> {
-    return await this.repository.findOneAndUpdate({ id }, updatePermissionDto);
-  }
-
-  async remove(id: number): Promise<void> {
-    await this.repository.findOneAndDelete({ id });
   }
 }
