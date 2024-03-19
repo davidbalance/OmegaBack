@@ -10,6 +10,7 @@ import { LocationModule } from './location/location.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { UserModule } from './user/user.module';
+import { SenderStatusModule } from './sender-status/sender-status.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { UserModule } from './user/user.module';
     LocationModule,
     UserModule,
     AuthenticationModule,
-    AuthorizationModule
+    AuthorizationModule,
+    SenderStatusModule
   ],
   controllers: [AppController],
   providers: [AppService],
