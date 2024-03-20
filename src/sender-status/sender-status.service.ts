@@ -1,6 +1,7 @@
 import { CreateSenderStatusRequestDTO, UpdateSenderStatusRequestDTO } from '@/shared';
 import { Inject, Injectable } from '@nestjs/common';
 import { SenderStatusRepository } from './sender-status.repository';
+import { SenderStatus } from './entities/sender-status.entity';
 
 @Injectable()
 export class SenderStatusService {
@@ -9,23 +10,19 @@ export class SenderStatusService {
     @Inject(SenderStatusRepository) private readonly repository: SenderStatusRepository
   ) { }
 
-  create(createSenderStatusDto: CreateSenderStatusRequestDTO) {
-    return 'This action adds a new senderStatus';
+  async create(createSender: CreateSenderStatusRequestDTO): Promise<SenderStatus> {
+    return await this.repository.create(createSender);
   }
 
-  findAll() {
-    return `This action returns all senderStatus`;
+  async find(): Promise<SenderStatus[]> {
+    return await this.repository.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} senderStatus`;
+  async update(id: number, updateSender: UpdateSenderStatusRequestDTO): Promise<SenderStatus> {
+    return await this.repository.findOneAndUpdate({ id: id }, updateSender);
   }
 
-  update(id: number, updateSenderStatusDto: UpdateSenderStatusRequestDTO) {
-    return `This action updates a #${id} senderStatus`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} senderStatus`;
+  async inactive(id: number): Promise<SenderStatus> {
+    return await this.repository.findOneAndUpdate({ id: id }, { status: false });
   }
 }

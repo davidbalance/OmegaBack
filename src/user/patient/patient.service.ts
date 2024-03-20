@@ -3,12 +3,13 @@ import { PatientRepository } from './patient.repository';
 import { Patient } from './entities/patient.entity';
 import { UserCredentialService } from 'src/authentication/user-credential/user-credential.service';
 import { UserService } from 'src/user/user/user.service';
-import { CreatePatientRequestDTO, UpdatePatientRequestDTO } from 'src/shared';
+import { CreatePatientRequestDTO, FindOneOrCreateService, UpdatePatientRequestDTO } from 'src/shared';
 
 type FindPatientParams = Omit<Patient, 'id' | 'status' | 'createAt' | 'updateAt' | 'user'> & { dni: string }
 
 @Injectable()
-export class PatientService {
+export class PatientService
+  implements FindOneOrCreateService<Patient> {
 
   constructor(
     @Inject(PatientRepository) private readonly repository: PatientRepository,
@@ -16,7 +17,18 @@ export class PatientService {
     @Inject(UserService) private readonly userService: UserService
   ) { }
 
-  create(createPatient: CreatePatientRequestDTO): Promise<Patient>;
+  async findOneOrCreate(filterOption: any, createOption: any): Promise<Patient> {
+    const patientOptions = createOption as CreatePatientRequestDTO;
+    const filter = filterOption as Partial<FindPatientParams & { id: number }>
+    try {
+      return await this.findOne(filter);
+    } catch (error) {
+      const user = await this.userService.create(patientOptions);
+      const patient = await this.repository.create({ ...patientOptions, user: user });
+      return patient;
+    }
+  }
+
   async create(createPatient: CreatePatientRequestDTO): Promise<Patient> {
     const user = await this.userService.create(createPatient);
     await this.credentialService.create(createPatient, user.id);

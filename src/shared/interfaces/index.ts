@@ -15,7 +15,8 @@ export interface FindOneOrCreateService<E> {
     /**
      * Returns an existing value, if not creates one and return it
      * @param filterOption 
-     * @template T filterOptionType
+     * @template F filterOption type
+     * @template C createOption type
      */
-    findOneOrCreate<T>(filterOption: T): Promise<E>;
+    findOneOrCreate<F, C>(filterOption: F, createOption: C): Promise<E>;
 }

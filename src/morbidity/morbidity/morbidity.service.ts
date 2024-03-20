@@ -19,12 +19,12 @@ export class MorbidityService {
     return await this.repository.create({ ...createMorbidity, group: group });
   }
 
-  async find(): Promise<Morbidity[]> {
-    return await this.repository.find({ status: true });
+  async find(params?: Partial<FindGroupParams>): Promise<Morbidity[]> {
+    return await this.repository.find({ ...params, status: true });
   }
 
-  async findOneByID(id: number): Promise<Morbidity> {
-    return await this.repository.findOne({ id });
+  async findOne(params?: Partial<FindGroupParams & { id: number }>): Promise<Morbidity> {
+    return await this.repository.findOne(params);
   }
 
   async update(id: number, updateMorbidityDto: UpdateMorbidityRequestDTO): Promise<Morbidity> {
