@@ -8,16 +8,14 @@ export interface RepositoryUpdateStatusExtension<K, M> {
 }
 
 /**
- * Signature to check the availability of a entity
- * @template K Primary key type
+ * Interface for data creation
+ * @template E Entity that must be returned
  */
-export interface IServiceCheckAvailability<K> {
-    checkAvailability(key: K): Promise<boolean>
-}
-
-/**
- * Find one create base
- */
-export interface FindOneOrCreate<K> {
-    lookup: K
+export interface FindOneOrCreateService<E> {
+    /**
+     * Returns an existing value, if not creates one and return it
+     * @param filterOption 
+     * @template T filterOptionType
+     */
+    findOneOrCreate<T>(filterOption: T): Promise<E>;
 }

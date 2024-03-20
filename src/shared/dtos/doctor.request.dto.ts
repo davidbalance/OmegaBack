@@ -1,9 +1,7 @@
-import { IsDate, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsStrongPassword, Length, Max } from "class-validator";
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsStrongPassword } from "class-validator";
 import { CreateUserRequestDTO } from "./user.request.dto";
 
-export class FindOrCreateDoctorRequestDTO extends CreateUserRequestDTO { }
-
-export class CreateDoctorRequestDTO extends FindOrCreateDoctorRequestDTO {
+export class CreateDoctorRequestDTO extends CreateUserRequestDTO {
     @IsStrongPassword({ minLength: 8 })
     public readonly password: string;
 }

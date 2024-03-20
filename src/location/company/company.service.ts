@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CompanyRepository } from './company.repository';
 import { Company } from './entities/company.entity';
 import { CorporativeGroupService } from '../corporative-group/corporative-group.service';
-import { CreateCompanyRequestDTO, UpdateCompanyRequestDTO, UpdateCompanyRUCRequestDTO, UpdateCompanyCorporativeGroupRequestDTO, IServiceCheckAvailability } from '@/shared';
+import { CreateCompanyRequestDTO, UpdateCompanyRequestDTO, UpdateCompanyRUCRequestDTO, UpdateCompanyCorporativeGroupRequestDTO } from '@/shared';
 
 type FindCompanyParams = Omit<Company, 'id' | 'status' | 'corporativeGroup' | 'branches'>;
 

@@ -1,4 +1,3 @@
-import { FindOneOrCreate } from "../interfaces";
 import { FindOneOrCreateBranchRequestDTO } from "./branch.request.dto";
 import { FindOneOrCreateCompanyRequestDTO } from "./company.request.dto";
 import { FindOneOrCreateCorporativeGroupRequestDTO } from "./corporative-group.request.dto";

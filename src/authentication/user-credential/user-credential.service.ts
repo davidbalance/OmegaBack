@@ -5,63 +5,16 @@ import { CreateUserCredentialRequestDTO, CreateUserRequestDTO } from 'src/shared
 import { UserService } from 'src/user/user/user.service';
 import * as bcrypt from 'bcrypt';
 
-interface UserCredentialServiceExtension {
-  /**
-   * Creates credentials by given values
-   * @param credentials 
-   * @param user Users primary key that must be related with this credentials
-   * @throws ConflictException
-   */
-  create(credentials: CreateUserCredentialRequestDTO, user: number): Promise<UserCredential>;
-  /**
-   * Creates credentials by given values
-   * @param credentials 
-   * @param user Users information to create
-   * @throws ConflictException
-   */
-  create(credentials: CreateUserCredentialRequestDTO, user: CreateUserRequestDTO): Promise<UserCredential>;
-  /**
-   * Finds a credential that matches with the given key
-   * @param user Foreign key
-   */
-  findByUser(user: number): Promise<UserCredential>;
-  /**
-   * Updates the user by the given id
-   * @param id 
-   * @param username 
-   */
-  updateUsername(id: number, username: string): Promise<UserCredential>;
-  /**
-   * Find one user by its username and updates its password
-   * @param username 
-   * @param password 
-   */
-  updatePassword(username: string, password: string): Promise<UserCredential>;
-  /**
-   * Check if the given username and password matches on in the database
-   * @param username 
-   * @param password 
-   */
-  validateCredentials(username: string, password: string): Promise<number>;
-}
-
 @Injectable()
-export class UserCredentialService implements UserCredentialServiceExtension {
+export class UserCredentialService {
 
   constructor(
     @Inject(UserCredentialRepository) private readonly repository: UserCredentialRepository,
     @Inject(UserService) private readonly userService: UserService
   ) { }
 
-  create(credentials: CreateUserCredentialRequestDTO, user: number): Promise<UserCredential>;
-  create(credentials: CreateUserCredentialRequestDTO, user: CreateUserRequestDTO): Promise<UserCredential>;
-  async create(credentials: CreateUserCredentialRequestDTO, numberOrUser: number | CreateUserRequestDTO): Promise<UserCredential> {
-    let user: CreateUserRequestDTO;
-    if (typeof numberOrUser === 'number') {
-      user = await this.userService.findOne({ id: numberOrUser });
-    } else {
-      user = await this.userService.create(numberOrUser);
-    }
+  async create(credentials: CreateUserCredentialRequestDTO, user: number): Promise<UserCredential> {
+    const retriveUser = await this.userService.findOne({ id: user });
     try {
       await this.repository.findOne({ email: credentials.email });
       Logger.error(`Email already in use: ${credentials.email}`);
@@ -71,7 +24,7 @@ export class UserCredentialService implements UserCredentialServiceExtension {
       const credential: UserCredential = await this.repository.create({
         ...credentials,
         password: hashedPassword,
-        user: user
+        user: retriveUser
       });
       return credential;
     }

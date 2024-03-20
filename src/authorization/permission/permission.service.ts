@@ -4,19 +4,9 @@ import { Permission } from './entities/permission.entity';
 import { CreatePermissionRequestDTO } from './dto';
 import { In } from 'typeorm';
 
-interface PermissionServiceFindExtensions {
-  /**
-   * Finds all the permissions in the DB
-   */
-  find(): Promise<Permission[]>;
-  /**
-   * Finds all the permissions from the given arrays of ids
-   */
-  find(ids: number[]): Promise<Permission[]>;
-}
 
 @Injectable()
-export class PermissionService implements PermissionServiceFindExtensions {
+export class PermissionService {
 
   constructor(
     @Inject(PermissionRepository) private readonly repository: PermissionRepository

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CorporativeGroupRepository } from './corporative-group.repository';
 import { CorporativeGroup } from './entities/corporative-group.entity';
-import { CreateCorporativeGroupRequestDTO, IServiceCheckAvailability, UpdateCorporativeGroupRequestDTO } from '@/shared';
+import { CreateCorporativeGroupRequestDTO, UpdateCorporativeGroupRequestDTO } from '@/shared';
 
 type FindCorporativeGroupParams = Omit<CorporativeGroup, 'id' | 'status' | 'companies'>;
 
