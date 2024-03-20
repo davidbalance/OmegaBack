@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SenderStatusService } from './sender-status.service';
+import { SenderStatusService } from '../sender-status.service';
 
 describe('SenderStatusService', () => {
   let service: SenderStatusService;

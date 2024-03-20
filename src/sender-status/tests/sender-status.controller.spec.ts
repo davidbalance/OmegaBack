@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SenderStatusController } from './sender-status.controller';
-import { SenderStatusService } from './sender-status.service';
+import { SenderStatusController } from '../sender-status.controller';
+import { SenderStatusService } from '../sender-status.service';
 
 describe('SenderStatusController', () => {
   let controller: SenderStatusController;
