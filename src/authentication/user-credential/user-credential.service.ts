@@ -58,7 +58,7 @@ export class UserCredentialService implements UserCredentialServiceExtension {
   async create(credentials: CreateUserCredentialRequestDTO, numberOrUser: number | CreateUserRequestDTO): Promise<UserCredential> {
     let user: CreateUserRequestDTO;
     if (typeof numberOrUser === 'number') {
-      user = await this.userService.findOneByID(numberOrUser);
+      user = await this.userService.findOne({ id: numberOrUser });
     } else {
       user = await this.userService.create(numberOrUser);
     }

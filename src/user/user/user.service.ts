@@ -1,21 +1,16 @@
 import { ConflictException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { User } from './entities/user.entity';
-import { CreateUserRequestDTO, UpdateUserDNIRequestDTO, UpdateUserRequestDTO } from 'src/shared/dtos';
-import { IServiceCheckAvailability } from '@/shared';
+import { CreateUserRequestDTO, UpdateUserRequestDTO } from 'src/shared/dtos';
+
+type FindUserParams = Omit<User, 'id' | 'status' | 'createAt' | 'updateAt'>;
 
 @Injectable()
-export class UserService
-  implements IServiceCheckAvailability<string> {
+export class UserService {
 
   constructor(
     @Inject(UserRepository) private readonly repository: UserRepository
   ) { }
-
-  async checkAvailability(key: string): Promise<boolean> {
-    const user = await this.repository.findOne({ dni: key });
-    return user.status;
-  }
 
   async create(user: CreateUserRequestDTO): Promise<User> {
     try {
@@ -30,32 +25,23 @@ export class UserService
     }
   }
 
-  async findAll(): Promise<User[]> {
-    return this.repository.find({ status: true });
+  async find(params?: Partial<FindUserParams>): Promise<User[]> {
+    return this.repository.find({ ...params, status: true });
   }
 
-  async findOneByID(id: number): Promise<User> {
-    return this.repository.findOne({ id, status: true });
-  }
-
-  async findOneByDNI(dni: string): Promise<User> {
-    return this.repository.findOne({ dni, status: true });
+  async findOne(params?: Partial<FindUserParams & { id?: number }>): Promise<User> {
+    return this.repository.findOne({ ...params, status: true });
   }
 
   async update(id: number, user: UpdateUserRequestDTO): Promise<User> {
     return this.repository.findOneAndUpdate({ id }, user);
   }
 
-  async updateDNI(id: number, user: UpdateUserDNIRequestDTO): Promise<User> {
-    try {
-      await this.repository.findOne({ dni: user.dni });
-      throw new ConflictException(["DNI already in use"]);
-    } catch (error) {
-      return this.repository.findOneAndUpdate({ id, status: true }, user);
-    }
-  }
-
   async inactive(id: number): Promise<User> {
     return await this.repository.findOneAndUpdateStatus(id, false);
+  }
+
+  async checkExistence(params: FindUserParams): Promise<boolean> {
+    return !!(await this.repository.findOne(params));
   }
 }

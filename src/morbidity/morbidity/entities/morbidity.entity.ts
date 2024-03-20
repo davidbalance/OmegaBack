@@ -7,8 +7,10 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 export class Morbidity extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'MORBIDITY_ID' })
     public id: number;
+    
     @Column({ name: 'MORBIDITY_NAME', type: 'varchar', length: 128, nullable: false })
     public name: string;
+
     @Column({ name: 'MORBIDITY_STATUS', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 

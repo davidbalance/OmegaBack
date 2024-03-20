@@ -6,8 +6,10 @@ import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "t
 export class MorbidityGroup extends AbstractEntity<number>{
     @PrimaryGeneratedColumn({ name: 'MORBIDITY_GROUP_ID' })
     public id: number;
+
     @Column({ name: 'MORBIDITY_GROUP_NAME', type: 'varchar', length: 64, nullable: false })
     public name: string;
+    
     @Column({ name: 'MORBIDITY_GROUP_STATUS', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 

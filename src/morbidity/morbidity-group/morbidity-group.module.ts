@@ -6,8 +6,11 @@ import { SqlDatabaseModule } from 'src/shared';
 import { MorbidityGroupRepository } from './morbidity-group.repository';
 
 @Module({
-  imports: [SqlDatabaseModule.forFeature([MorbidityGroup])],
+  imports: [
+    SqlDatabaseModule.forFeature([MorbidityGroup]),
+  ],
   controllers: [MorbidityGroupController],
-  providers: [MorbidityGroupService, MorbidityGroupRepository]
+  providers: [MorbidityGroupService, MorbidityGroupRepository],
+  exports: [MorbidityGroupService]
 })
 export class MorbidityGroupModule { }

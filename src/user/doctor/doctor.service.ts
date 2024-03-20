@@ -83,7 +83,7 @@ export class DoctorService implements DoctorServiceExtensions {
   async create(doctor: CreateDoctorRequestDTO | CreateDoctorAndAssignUserRequestDTO, userOrUndefined?: number): Promise<Doctor> {
     let user: User = null;
     if (userOrUndefined) {
-      user = await this.userService.findOneByID(userOrUndefined);
+      user = await this.userService.findOne({ id: userOrUndefined });
     } else {
       user = await this.userService.create(doctor as CreateDoctorRequestDTO);
       await this.credentialService.create(doctor as CreateDoctorRequestDTO, user.id);

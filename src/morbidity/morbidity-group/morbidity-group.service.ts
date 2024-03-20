@@ -3,6 +3,8 @@ import { MorbidityGroupRepository } from './morbidity-group.repository';
 import { MorbidityGroup } from './entities/morbidity-group.entity';
 import { CreateMorbidityGroupRequestDTO, UpdateMorbidityGroupRequestDTO } from '@/shared/dtos/morbidity-group.request.dto';
 
+type FindMorbidityParams = Omit<MorbidityGroup, 'id' | 'status' | 'group' | 'results'>
+
 @Injectable()
 export class MorbidityGroupService {
 
@@ -14,19 +16,19 @@ export class MorbidityGroupService {
     return await this.repository.create(createMorbidityGroupDto);
   }
 
-  async readAll(): Promise<MorbidityGroup[]> {
-    return await this.repository.find({ status: true });
+  async find(params?: Partial<FindMorbidityParams>): Promise<MorbidityGroup[]> {
+    return await this.repository.find({ ...params, status: true });
   }
 
-  async readOneByID(id: number): Promise<MorbidityGroup> {
-    return await this.repository.findOne({ id });
+  async findOne(params?: Partial<FindMorbidityParams & { id: number }>): Promise<MorbidityGroup> {
+    return await this.repository.findOne(params);
   }
 
   async update(id: number, updateMorbidityGroupDto: UpdateMorbidityGroupRequestDTO): Promise<MorbidityGroup> {
     return await this.repository.findOneAndUpdate({ id }, updateMorbidityGroupDto);
   }
 
-  async remove(id: number): Promise<void> {
+  async inactive(id: number): Promise<void> {
     await this.repository.findOneAndUpdate({ id }, { status: false });
   }
 }

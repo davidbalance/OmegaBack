@@ -11,13 +11,13 @@ interface MorbidityGroupRepositoryExtension {
      * @param findOptions 
      * @param morbidities 
      */
-    findOneAndAppendMorbidities(findOptions: FindOptionsWhere<Morbidity>, morbidities: Morbidity[]): Promise<MorbidityGroup>;
+    findOneAndAppendMorbidities(findOptions: FindOptionsWhere<MorbidityGroup>, morbidities: Morbidity[]): Promise<MorbidityGroup>;
     /**
      * Find a morbidity group and remove morbidities
      * @param findOptions 
      * @param morbidities 
      */
-    findOneAndRemoveMorbidities(findOptions: FindOptionsWhere<Morbidity>, morbidities: Morbidity[]): Promise<MorbidityGroup>;
+    findOneAndRemoveMorbidities(findOptions: FindOptionsWhere<MorbidityGroup>, morbidities: Morbidity[]): Promise<MorbidityGroup>;
 }
 
 @Injectable()
@@ -30,7 +30,7 @@ export class MorbidityGroupRepository extends AbstractRepository<number, Morbidi
         super(groupModel);
     }
 
-    async findOneAndAppendMorbidities(findOptions: FindOptionsWhere<Morbidity>, morbidities: Morbidity[]): Promise<MorbidityGroup> {
+    async findOneAndAppendMorbidities(findOptions: FindOptionsWhere<MorbidityGroup>, morbidities: Morbidity[]): Promise<MorbidityGroup> {
         const entity = await this.findOne(findOptions, { morbidities: true });
         const filterMorbidities = entity.morbidities.filter(e => !morbidities.includes(e));
         entity.morbidities.concat(filterMorbidities);
@@ -38,7 +38,7 @@ export class MorbidityGroupRepository extends AbstractRepository<number, Morbidi
         return entity;
     }
 
-    async findOneAndRemoveMorbidities(findOptions: FindOptionsWhere<Morbidity>, morbidities: Morbidity[]): Promise<MorbidityGroup> {
+    async findOneAndRemoveMorbidities(findOptions: FindOptionsWhere<MorbidityGroup>, morbidities: Morbidity[]): Promise<MorbidityGroup> {
         const entity = await this.findOne(findOptions, { morbidities: true });
         const filterMorbidities = entity.morbidities.filter(e => morbidities.includes(e));
         entity.morbidities = filterMorbidities;

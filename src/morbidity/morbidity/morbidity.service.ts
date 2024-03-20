@@ -1,21 +1,25 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { MorbidityRepository } from './morbidity.repository';
 import { Morbidity } from './entities/morbidity.entity';
-import { find } from 'rxjs';
 import { CreateMorbidityRequestDTO, UpdateMorbidityRequestDTO } from '@/shared/dtos/morbidity.request.dto';
+import { MorbidityGroupService } from '../morbidity-group/morbidity-group.service';
+
+type FindGroupParams = Omit<Morbidity, 'id' | 'status' | 'morbidities'>
 
 @Injectable()
 export class MorbidityService {
 
   constructor(
-    @Inject(MorbidityRepository) private readonly repository: MorbidityRepository
+    @Inject(MorbidityRepository) private readonly repository: MorbidityRepository,
+    @Inject(MorbidityGroupService) private readonly groupService: MorbidityGroupService
   ) { }
 
-  async create(createMorbidityDto: CreateMorbidityRequestDTO): Promise<Morbidity> {
-    return await this.repository.create(createMorbidityDto);
+  async create(createMorbidity: CreateMorbidityRequestDTO): Promise<Morbidity> {
+    const group = await this.groupService.findOne({ id: createMorbidity.group });
+    return await this.repository.create({ ...createMorbidity, group: group });
   }
 
-  async findAll(): Promise<Morbidity[]> {
+  async find(): Promise<Morbidity[]> {
     return await this.repository.find({ status: true });
   }
 
