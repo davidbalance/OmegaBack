@@ -5,11 +5,13 @@ import { Branch } from './entities/branch.entity';
 import { SqlDatabaseModule } from 'src/shared';
 import { BranchRepository } from './branch.repository';
 import { CompanyModule } from '../company/company.module';
+import { CityModule } from '../city/city.module';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Branch]),
-    CompanyModule
+    CompanyModule,
+    CityModule
   ],
   controllers: [BranchController],
   providers: [BranchService, BranchRepository],

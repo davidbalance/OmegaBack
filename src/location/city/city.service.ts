@@ -3,6 +3,8 @@ import { CityRepository } from './city.repository';
 import { City } from './entities/city.entity';
 import { CreateCityRequestDTO, UpdateCityRequestDTO } from '@/shared';
 
+type FindCityParams = Omit<City, 'id' | 'branches'>;
+
 @Injectable()
 export class CityService {
 
@@ -10,16 +12,16 @@ export class CityService {
     @Inject(CityRepository) private readonly repository: CityRepository,
   ) { }
 
-  async create(createCityDto: CreateCityRequestDTO): Promise<City> {
-    return await this.repository.create({ ...createCityDto });
+  async create(createCity: CreateCityRequestDTO): Promise<City> {
+    return await this.repository.create({ ...createCity });
   }
 
-  async findAll(): Promise<City[]> {
+  async find(params?: Partial<FindCityParams>): Promise<City[]> {
     return await this.repository.find({});
   }
 
-  async findOneByID(id: number): Promise<City> {
-    return await this.repository.findOne({ id });
+  async findOne(params?: Partial<FindCityParams & { id: number }>): Promise<City> {
+    return await this.repository.findOne({ ...params });
   }
 
   async update(id: number, updateCityDto: UpdateCityRequestDTO): Promise<City> {
