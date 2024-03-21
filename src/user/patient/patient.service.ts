@@ -3,31 +3,18 @@ import { PatientRepository } from './patient.repository';
 import { Patient } from './entities/patient.entity';
 import { UserCredentialService } from 'src/authentication/user-credential/user-credential.service';
 import { UserService } from 'src/user/user/user.service';
-import { CreatePatientRequestDTO, FindOneOrCreateService, UpdatePatientRequestDTO } from 'src/shared';
+import { CreatePatientRequestDTO, UpdatePatientRequestDTO } from 'src/shared';
 
 type FindPatientParams = Omit<Patient, 'id' | 'status' | 'createAt' | 'updateAt' | 'user'> & { dni: string }
 
 @Injectable()
-export class PatientService
-  implements FindOneOrCreateService<Patient> {
+export class PatientService {
 
   constructor(
     @Inject(PatientRepository) private readonly repository: PatientRepository,
     @Inject(UserCredentialService) private readonly credentialService: UserCredentialService,
     @Inject(UserService) private readonly userService: UserService
   ) { }
-
-  async findOneOrCreate(filterOption: any, createOption: any): Promise<Patient> {
-    const patientOptions = createOption as CreatePatientRequestDTO;
-    const filter = filterOption as Partial<FindPatientParams & { id: number }>
-    try {
-      return await this.findOne(filter);
-    } catch (error) {
-      const user = await this.userService.create(patientOptions);
-      const patient = await this.repository.create({ ...patientOptions, user: user });
-      return patient;
-    }
-  }
 
   async create(createPatient: CreatePatientRequestDTO): Promise<Patient> {
     const user = await this.userService.create(createPatient);
@@ -44,7 +31,7 @@ export class PatientService
     return await this.repository.findOne({ ...params, user: { dni: params.dni } }, { user: true })
   }
 
-  async update(id: number, patient: UpdatePatientRequestDTO): Promise<Patient> {
+  async findOneAndUpdate(id: number, patient: UpdatePatientRequestDTO): Promise<Patient> {
     const currentPatient = await this.repository.findOne({ id }, { user: true });
     const user = await this.userService.update(currentPatient.user.id, patient);
     if (patient.email) {

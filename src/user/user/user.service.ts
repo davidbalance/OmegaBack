@@ -33,7 +33,7 @@ export class UserService {
     return this.repository.findOne({ ...params, status: true });
   }
 
-  async update(id: number, user: UpdateUserRequestDTO): Promise<User> {
+  async update(id: number, user: Partial<UpdateUserRequestDTO>): Promise<User> {
     return this.repository.findOneAndUpdate({ id }, user);
   }
 

@@ -13,19 +13,19 @@ export class AuthenticationController {
     ) { }
 
     @UseGuards(LocalAuthGuard)
-    @Post()
+    @Post('login')
     async login(@User() user: number): Promise<any> {
         return await this.tokenService.initToken(user);
     }
 
     @UseGuards(JwtRefreshGuard)
-    @Post()
+    @Post('refresh')
     async refresh(@User() token: RefreshToken): Promise<any> {
         return await this.tokenService.refreshToken(token);
     }
 
     @UseGuards(JwtAuthGuard)
-    @Post()
+    @Post('logout')
     async logout(@User() user: number) {
         await this.tokenService.removeToken(user);
     }
