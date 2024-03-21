@@ -30,7 +30,7 @@ export class ResultService {
 
   async create(file: Express.Multer.File, createResult: CreateResultRequestDTO): Promise<Result> {
     const order = await this.orderService.findOneOrCreate({ labint: createResult.order }, createResult.createOrder);
-    const doctor = await this.doctorService.findOneOrCreate({ labint: createResult.doctor }, createResult.createDoctor);
+    // const doctor = await this.doctorService.findOneOrCreate({ labint: createResult.doctor }, createResult.createDoctor);
     const exam = await this.examService.findOneOrCreate({ labint: createResult.exam }, createResult.createExam);
     const directory: string = `medical-order/${order.patient}/${order.id}`;
     const filename: string = await this.storage.saveFile(file, directory);
@@ -39,7 +39,7 @@ export class ResultService {
       path: directory,
       filename: filename,
       order: order,
-      doctor: doctor.id,
+      doctor: createResult.doctor,
       exam: exam.id,
       examName: exam.name
     });
