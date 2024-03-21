@@ -29,14 +29,19 @@ export class ResultService {
   ) { }
 
   async create(file: Express.Multer.File, createResult: CreateResultRequestDTO): Promise<Result> {
-    const order = await this.orderService.findOne({ id: createResult.order });
+    const order = await this.orderService.findOneOrCreate({ labint: createResult.order }, createResult.createOrder);
+    const doctor = await this.doctorService.findOneOrCreate({ labint: createResult.doctor }, createResult.createDoctor);
+    const exam = await this.examService.findOneOrCreate({ labint: createResult.exam }, createResult.createExam);
     const directory: string = `medical-order/${order.patient}/${order.id}`;
     const filename: string = await this.storage.saveFile(file, directory);
     const result = await this.repository.create({
       ...createResult,
       path: directory,
       filename: filename,
-      order: order
+      order: order,
+      doctor: doctor.id,
+      exam: exam.id,
+      examName: exam.name
     });
     return result;
   }
@@ -50,10 +55,11 @@ export class ResultService {
   }
 
   async updateMorbidity(id: number, morbidity: number): Promise<Result> {
-    return await this.repository.findOneAndUpdate({ id }, { morbidity: morbidity });
+    const retriveMorbidity = await this.morbidityService.findOne({ id: morbidity });
+    return await this.repository.findOneAndUpdate({ id }, { morbidity: retriveMorbidity.id });
   }
 
-  async send(id: number, sender: string): Promise<Result> {
+  async registerSender(id: number, sender: string): Promise<Result> {
     let result = await this.repository.findOne({ id: id, sendsStatus: { name: sender } });
     if (result) throw new ConflictException([`The item already been send to ${sender}`]);
     result = await this.repository.findOne({ id });

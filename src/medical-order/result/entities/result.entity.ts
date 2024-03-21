@@ -1,7 +1,8 @@
 import { Order } from "src/medical-order/order/entities/order.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ResultSendStatus } from "./result-send-status.entity";
+import { MedicalReport } from "@/report/medical-report/entities/medical-report.entity";
 
 @Entity({ name: "RESULTS" })
 export class Result extends AbstractEntity<number> {
@@ -11,6 +12,9 @@ export class Result extends AbstractEntity<number> {
     @Index('result-exam-idx')
     @Column({ name: 'EXAM_ID', type: 'int', nullable: false })
     public exam: number;
+
+    @Column({ name: 'EXAM_NAME', type: 'varchar', length: 128, nullable: false })
+    public examName: string;
 
     @Index('result-morbidity-idx')
     @Column({ name: 'MORBIDITY_ID', type: 'int' })

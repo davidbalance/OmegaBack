@@ -31,7 +31,7 @@ export class MorbidityService {
     return await this.repository.findOneAndUpdate({ id }, updateMorbidityDto);
   }
 
-  async remove(id: number): Promise<void> {
+  async inactive(id: number): Promise<void> {
     await this.repository.findOneAndUpdate({ id }, { status: false });
   }
 }

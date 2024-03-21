@@ -11,6 +11,13 @@ export class MedicalReport extends AbstractEntity<number>{
     @Index('report-result-idx')
     @Column({ name: 'RESULT_ID', type: 'int', nullable: false })
     public result: number;
+    
+    @Column({ name: 'RESULT_NAME', type: 'varchar', length: 128, nullable: false })
+    public resultName: number;
+    
+    @Index('report-order-idx')
+    @Column({ name: 'ORDER_ID', type: 'int', nullable: false })
+    public order: number;
 
     @Column({ name: 'REPORT_FILENAME', type: 'varchar', length: 256 })
     public filename: string;
