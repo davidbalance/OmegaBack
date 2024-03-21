@@ -29,7 +29,7 @@ export class PatientController {
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
-    @Body() body: Omit<UpdatePatientRequestDTO, 'password'>
+    @Body() body: UpdatePatientRequestDTO
   ): Promise<UpdatePatientResponseDTO> {
     await this.patientService.findOneAndUpdate(id, body);
     return;

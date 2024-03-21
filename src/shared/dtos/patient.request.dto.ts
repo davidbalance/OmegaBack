@@ -2,7 +2,7 @@ import { IsDate, IsEnum, IsNumber, IsStrongPassword } from "class-validator";
 import { PatientGenderEnum } from "../enums";
 import { Type } from "class-transformer";
 import { CreateUserRequestDTO } from "./user.request.dto";
-import { PartialType } from "@nestjs/mapped-types";
+import { OmitType, PartialType } from "@nestjs/mapped-types";
 
 export class CreatePatientRequestDTO extends CreateUserRequestDTO {
     @IsStrongPassword({ minLength: 8 })
@@ -19,20 +19,7 @@ export class CreatePatientRequestDTO extends CreateUserRequestDTO {
     public readonly age: number;
 }
 
-export class CreatePatientAndAssignUserRequestDTO {
-    @IsNumber()
-    public readonly user: number;
 
-    @IsEnum(PatientGenderEnum)
-    public gender: PatientGenderEnum;
-
-    @IsDate()
-    @Type(() => Date)
-    public birthday: Date;
-
-    @IsNumber()
-    public age: number;
-}
-
-
-export class UpdatePatientRequestDTO extends PartialType(CreatePatientRequestDTO) { }
+export class UpdatePatientRequestDTO extends PartialType(
+    OmitType(CreatePatientRequestDTO, ['dni', 'password'])
+) { }

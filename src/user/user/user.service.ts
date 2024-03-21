@@ -33,15 +33,11 @@ export class UserService {
     return this.repository.findOne({ ...params, status: true });
   }
 
-  async update(id: number, user: Partial<UpdateUserRequestDTO>): Promise<User> {
+  async findOneAndUpdate(id: number, user: UpdateUserRequestDTO): Promise<User> {
     return this.repository.findOneAndUpdate({ id }, user);
   }
 
-  async inactive(id: number): Promise<User> {
+  async findOneAndInactive(id: number): Promise<User> {
     return await this.repository.findOneAndUpdateStatus(id, false);
-  }
-
-  async checkExistence(params: FindUserParams): Promise<boolean> {
-    return !!(await this.repository.findOne(params));
   }
 }

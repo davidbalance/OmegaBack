@@ -32,7 +32,7 @@ export class DoctorController {
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
-    @Body() body: Omit<UpdateDoctorRequestDTO, 'password'>
+    @Body() body: UpdateDoctorRequestDTO
   ): Promise<UpdateDoctorResponseDTO> {
     await this.doctorService.findOneAndUpdate(id, body);
     return;

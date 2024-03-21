@@ -1,5 +1,5 @@
 import { IsStrongPassword } from "class-validator";
-import { CreateUserRequestDTO } from "./user.request.dto";
+import { CreateUserRequestDTO, UpdateUserRequestDTO } from "./user.request.dto";
 import { PartialType } from "@nestjs/mapped-types";
 
 export class CreateDoctorRequestDTO extends CreateUserRequestDTO {
@@ -7,4 +7,4 @@ export class CreateDoctorRequestDTO extends CreateUserRequestDTO {
     public readonly password: string;
 }
 
-export class UpdateDoctorRequestDTO extends PartialType(CreateDoctorRequestDTO) { }
+export class UpdateDoctorRequestDTO extends UpdateUserRequestDTO { }

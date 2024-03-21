@@ -35,7 +35,7 @@ export class DoctorService {
 
   async findOneAndUpdate(id: number, doctor: UpdateDoctorRequestDTO): Promise<Doctor> {
     const currentDoctor = await this.repository.findOne({ id }, { user: true });
-    const user = await this.userService.update(currentDoctor.user.id, { ...doctor });
+    const user = await this.userService.findOneAndUpdate(currentDoctor.user.id, { ...doctor });
     if (doctor.email) {
       const credential = await this.credentialService.findByUser(currentDoctor.user.id);
       if (credential.email !== doctor.email) {
