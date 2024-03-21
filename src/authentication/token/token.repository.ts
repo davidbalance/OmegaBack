@@ -2,7 +2,7 @@ import { AbstractRepository } from "src/shared";
 import { Token } from "./entities/token.entity";
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 
 @Injectable()
 export class TokenRepository extends AbstractRepository<number, Token> {
@@ -12,5 +12,9 @@ export class TokenRepository extends AbstractRepository<number, Token> {
         @InjectRepository(Token) private readonly tokenModel: Repository<Token>
     ) {
         super(tokenModel);
+    }
+
+    async findAndDelete(filterOptions: FindOptionsWhere<Token>): Promise<void> {
+        await this.tokenModel.delete(filterOptions);
     }
 }

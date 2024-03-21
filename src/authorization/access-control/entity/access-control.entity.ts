@@ -9,8 +9,8 @@ export class AccessControl extends AbstractEntity<number> {
     public id: number;
 
     @Index("access-control-idx")
-    @Column({ name: 'USER_ID', type: 'varchar', length: 10, unique: true, nullable: false })
-    public user: string;
+    @Column({ name: 'USER_ID', type: 'int', unique: true, nullable: false })
+    public user: number;
 
     @ManyToMany(() => Permission, { eager: false })
     @JoinTable({

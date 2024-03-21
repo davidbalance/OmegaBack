@@ -8,7 +8,7 @@ export class UserCredentialController {
   constructor(private readonly userCredentialService: UserCredentialService) { }
 
   @Get(':id')
-  async readOne(
+  async findUser(
     @Param('id') id: number
   ): Promise<UserCredential> {
     return await this.userCredentialService.findByUser(id);

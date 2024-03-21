@@ -9,4 +9,6 @@ export class Token extends AbstractEntity<number>{
     public key: number;
     @Column({ name: 'TOKEN_IN_USE', type: 'varchar', length: 256, nullable: false, unique: true })
     public token: string;
+    @Column({ name: 'TOKEN_EXPIRES_AT', type: 'datetime', nullable: false})
+    public expiresAt: Date;
 }

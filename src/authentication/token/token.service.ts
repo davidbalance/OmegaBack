@@ -1,33 +1,87 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateTokenDto } from './dto/create-token.dto';
-import { UpdateTokenDto } from './dto/update-token.dto';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { TokenRepository } from './token.repository';
-import { Token } from './entities/token.entity';
+import { AccessToken, RefreshToken } from '@/shared';
+import { JwtService } from '@nestjs/jwt';
+import dayjs from 'dayjs';
+import { Between } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
+
+type Tokens = {
+  access: string;
+  refresh: string;
+}
 
 @Injectable()
 export class TokenService {
 
   constructor(
-    @Inject(TokenRepository) private readonly repository: TokenRepository
+    @Inject(TokenRepository) private readonly repository: TokenRepository,
+    @Inject(JwtService) private readonly jwt: JwtService,
+    @Inject(ConfigService) private readonly config: ConfigService
   ) { }
 
-  async create(createTokenDto: CreateTokenDto): Promise<Token> {
-    return await this.repository.create(createTokenDto);
+  async initToken(sub: number): Promise<Tokens> {
+    const tokens = await this.generateToken(sub);
+    await this.storeToken(sub, tokens.access);
+    return tokens;
   }
 
-  async findAll(): Promise<Token[]> {
-    return await this.repository.find({});
+  async refreshToken(payload: RefreshToken): Promise<Tokens> {
+    const flag = await this.canRefresh(payload);
+    if (!flag) throw new ForbiddenException(["Forbidden token"]);
+    const tokens = await this.generateToken(payload.sub);
+    await this.storeToken(payload.sub, tokens.access);
+    return tokens;
   }
 
-  async findOne(id: number): Promise<Token> {
-    return await this.repository.findOne({ id })
+  async generateToken(sub: number): Promise<Tokens> {
+    const accessPayload: AccessToken = { sub: sub };
+    const access = this.jwt.sign(accessPayload);
+
+    const secret: string = this.config.get<string>('jwt.refresh.secret');
+    const expiresIn: number = this.config.get<number>('jwt.refresh.expiresIn');
+    const refreshPayload: RefreshToken = { sub: sub, token: access };
+    const refresh = this.jwt.sign(refreshPayload, { secret: secret, expiresIn: `${expiresIn}s` });
+    return { access, refresh };
   }
 
-  async update(id: number, updateTokenDto: UpdateTokenDto): Promise<Token> {
-    return await this.repository.findOneAndUpdate({ id }, updateTokenDto);
+  async storeToken(key: number, token: string): Promise<void> {
+    const expiresIn: number = this.config.get<number>('jwt.refresh.expiresIn');
+    const expiresAt = dayjs().add(expiresIn, 'seconds').toDate();
+    try {
+      await this.repository.findOneAndUpdate({ key: key }, { token: token, expiresAt: expiresAt });
+    } catch (error) {
+      await this.repository.create({ key: key, token: token, expiresAt: expiresAt });
+    }
   }
 
-  async remove(id: number): Promise<void> {
-    await this.repository.findOneAndDelete({ id });
+  validateToken(token: string): AccessToken {
+    return this.jwt.decode<AccessToken>(token);
+  }
+
+  async removeToken(sub: number): Promise<void> {
+    this.repository.findOneAndDelete({ key: sub });
+  }
+
+  async removeExpireToken(): Promise<void> {
+    const to = dayjs().toDate();
+    const from = dayjs().subtract(1, "day").toDate();
+    await this.repository.findAndDelete({ expiresAt: Between(from, to) });
+  }
+
+  private async canRefresh(token: RefreshToken): Promise<boolean> {
+    try {
+      const storedToken = await this.repository.findOne({ key: token.sub });
+      const match = storedToken.token === token.token;
+      const issuedAt = dayjs.unix(token.iat);
+      const diff = dayjs().diff(issuedAt, 'seconds');
+      if (!match || diff > 60) {
+        await this.repository.findAndDelete({ key: token.sub });
+        return false;
+      }
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }

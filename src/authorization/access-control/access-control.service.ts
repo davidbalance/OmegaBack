@@ -11,22 +11,19 @@ export class AccessControlService {
         @Inject(AccessControlRepository) private readonly repository: AccessControlRepository
     ) { }
 
-    async createAccessInstance(user: string): Promise<AccessControl> {
+    async createAccessInstance(user: number): Promise<AccessControl> {
         return await this.repository.create({ user: user });
     }
 
-    async updateAccessRoles(user: string, roles: Role[]): Promise<AccessControl> {
+    async findOne(user: number): Promise<AccessControl> {
+        return await this.repository.findOne({ user: user }, { permissions: true, roles: { permissions: true } });
+    }
+
+    async updateAccessRoles(user: number, roles: Role[]): Promise<AccessControl> {
         return await this.repository.findOneAndUpdate({ user: user }, { roles: roles });
     }
 
-    async updateAccessPermission(user: string, permissions: Permission[]): Promise<AccessControl> {
+    async updateAccessPermission(user: number, permissions: Permission[]): Promise<AccessControl> {
         return await this.repository.findOneAndUpdate({ user: user }, { permissions: permissions });
-    }
-
-    async canAccess(user: string, route: string, type: AuthorizationType): Promise<boolean> {
-        const accessControl = await this.repository.findOne({ user: user }, { permissions: true, roles: { permissions: true } });
-        const permissions: Permission[] = accessControl.roles.reduce((prev: Permission[], curr) => [...prev, ...curr.permissions], []);
-        permissions.concat(accessControl.permissions);
-        return permissions.some(e => e.route === route && e.type === type);
     }
 }
