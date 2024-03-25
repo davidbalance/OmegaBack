@@ -3,13 +3,13 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-local";
 import { UserCredentialService } from "../user-credential/user-credential.service";
 
-export class LocalAuthStrategy extends PassportStrategy(Strategy, 'local') {
+export class LocalAuthStrategy extends PassportStrategy(Strategy, 'local-auth') {
     constructor(
         @Inject(UserCredentialService) private readonly authentication: UserCredentialService
     ) {
         super({
             usernameField: 'username',
-            passwordField: 'password'
+            passwordField: 'password',
         });
     }
 

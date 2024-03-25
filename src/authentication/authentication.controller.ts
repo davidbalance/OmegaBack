@@ -1,9 +1,10 @@
-import { Controller, Inject, Post, UseGuards } from '@nestjs/common';
+import { Controller, Inject, Post, Res, UseGuards } from '@nestjs/common';
 import { UserCredentialService } from './user-credential/user-credential.service';
 import { TokenService } from './token/token.service';
 import { JwtAuthGuard, JwtRefreshGuard, LocalAuthGuard } from './guards';
 import { User } from '@/shared/decorator';
 import { RefreshToken } from '@/shared';
+import { Response } from 'express';
 
 @Controller('auth')
 export class AuthenticationController {
@@ -14,7 +15,8 @@ export class AuthenticationController {
 
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    async login(@User() user: number): Promise<any> {
+    async login(
+        @User() user: number): Promise<any> {
         return await this.tokenService.initToken(user);
     }
 
@@ -28,5 +30,6 @@ export class AuthenticationController {
     @Post('logout')
     async logout(@User() user: number) {
         await this.tokenService.removeToken(user);
+        return { msg: "Successfully logged out" };
     }
 }

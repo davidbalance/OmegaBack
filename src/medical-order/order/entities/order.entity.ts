@@ -1,6 +1,7 @@
+import { Process } from "@/medical-order/process/entities/process.entity";
 import { Result } from "src/medical-order/result/entities/result.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'ORDERS' })
 export class Order extends AbstractEntity<number> {
@@ -22,11 +23,15 @@ export class Order extends AbstractEntity<number> {
     @Index('order-branch-idx')
     @Column({ name: 'BRANCH_ID', type: 'int', nullable: false })
     public branch: number;
-    
+
     @Index('order-labint-idx')
     @Column({ name: 'ORDER_LABINT', type: 'int', unique: true, nullable: true })
     public labint: number;
 
     @OneToMany(() => Result, result => result.order, { eager: false })
     public results: Result[];
+
+    @ManyToOne(() => Process, process => process.orders, { eager: true })
+    @JoinColumn({ referencedColumnName: 'id', name: 'PROCESS_ID' })
+    public process: Process;
 }

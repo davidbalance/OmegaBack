@@ -9,10 +9,10 @@ export class AuthorizationService {
         @Inject(AccessControlService) private readonly accessControl: AccessControlService
     ) { }
 
-    async canAccess(user: number, type: AuthorizationType, route: string[]): Promise<boolean> {
+    async canAccess(user: number, type: AuthorizationType, resources: string[]): Promise<boolean> {
         const accessControl = await this.accessControl.findOne(user);
         const permissions: Permission[] = accessControl.roles.reduce((prev: Permission[], curr) => [...prev, ...curr.permissions], []);
         permissions.concat(accessControl.permissions);
-        return permissions.some(e => route.includes(e.route) && e.type === type);
+        return permissions.some(e => resources.includes(e.resource) && e.type === type);
     }
 }

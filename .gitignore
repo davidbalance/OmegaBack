@@ -4,6 +4,8 @@
 
 **/signatures/*
 
+**/*.values.sql
+
 # Logs
 logs
 *.log

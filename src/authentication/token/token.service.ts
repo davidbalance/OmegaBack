@@ -11,6 +11,8 @@ type Tokens = {
   refresh: string;
 }
 
+type Token = { token: string, expiresAt: Date }
+
 @Injectable()
 export class TokenService {
 
@@ -20,18 +22,44 @@ export class TokenService {
     @Inject(ConfigService) private readonly config: ConfigService
   ) { }
 
-  async initToken(sub: number): Promise<Tokens> {
-    const tokens = await this.generateToken(sub);
-    await this.storeToken(sub, tokens.access);
-    return tokens;
+  async initToken(sub: number): Promise<{ access: Token, refresh: Token }> {
+    const { access, refresh } = await this.generateToken(sub);
+    const { expiresAccess, expiresRefresh } = this.getExpiresTime();
+    await this.storeToken(sub, access);
+    return {
+      access: {
+        token: access,
+        expiresAt: expiresAccess
+      },
+      refresh: {
+        token: refresh,
+        expiresAt: expiresRefresh
+      }
+    };
   }
 
-  async refreshToken(payload: RefreshToken): Promise<Tokens> {
+  async refreshToken(payload: RefreshToken): Promise<{ access: Token, refresh: Token }> {
     const flag = await this.canRefresh(payload);
     if (!flag) throw new ForbiddenException(["Forbidden token"]);
-    const tokens = await this.generateToken(payload.sub);
-    await this.storeToken(payload.sub, tokens.access);
-    return tokens;
+    const { access, refresh } = await this.generateToken(payload.sub);
+    const { expiresAccess, expiresRefresh } = this.getExpiresTime();
+    await this.storeToken(payload.sub, access);
+    return {
+      access: {
+        token: access,
+        expiresAt: expiresAccess
+      },
+      refresh: {
+        token: refresh,
+        expiresAt: expiresRefresh
+      }
+    };
+  }
+
+  private getExpiresTime = (): { expiresAccess: Date, expiresRefresh: Date } => {
+    const expiresAccess = dayjs().add(this.config.get<number>("jwt.default.expiresIn"), 'seconds').toDate();
+    const expiresRefresh = dayjs().add(this.config.get<number>("jwt.refresh.expiresIn"), 'seconds').toDate();
+    return { expiresAccess, expiresRefresh }
   }
 
   async generateToken(sub: number): Promise<Tokens> {

@@ -3,7 +3,7 @@ import { UserCredentialService } from './user-credential.service';
 import { UserCredential } from './entities/user-credential.entity';
 import { UpdateUserCredentialPasswordRequestDTO } from 'src/shared';
 
-@Controller('user-credential')
+@Controller('credential')
 export class UserCredentialController {
   constructor(private readonly userCredentialService: UserCredentialService) { }
 

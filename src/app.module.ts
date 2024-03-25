@@ -11,6 +11,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { UserModule } from './user/user.module';
 import { SenderStatusModule } from './sender-status/sender-status.module';
+import { OmegaWebModule } from './omega-web/omega-web.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { SenderStatusModule } from './sender-status/sender-status.module';
     UserModule,
     AuthenticationModule,
     AuthorizationModule,
-    SenderStatusModule
+    SenderStatusModule,
+    OmegaWebModule
   ],
   controllers: [AppController],
   providers: [AppService],
