@@ -5,6 +5,7 @@ import { SqlDatabaseModule } from '@/shared';
 import { WebClient } from './entities/web-client.entity';
 import { WebClientRepository } from './web-clinet.repository';
 import { WebRoutesModule } from '../web-routes/web-routes.module';
+import { JwtAuthStrategy } from '@/authentication/strategies';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { WebRoutesModule } from '../web-routes/web-routes.module';
     WebRoutesModule
   ],
   controllers: [WebClientController],
-  providers: [WebClientService, WebClientRepository],
+  providers: [WebClientService, WebClientRepository, JwtAuthStrategy],
   exports: [WebClientService]
 })
 export class WebClientModule { }

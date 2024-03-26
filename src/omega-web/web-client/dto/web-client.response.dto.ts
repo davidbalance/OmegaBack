@@ -9,5 +9,5 @@ export class UpdateWebClientRoutesResponseDTO {
 }
 
 export class FindWebClientConfiguration {
-    public readonly client: WebClient;
+    public readonly client: Omit<WebClient, 'createAt' | 'updateAt' | 'user' | 'id'>;
 }

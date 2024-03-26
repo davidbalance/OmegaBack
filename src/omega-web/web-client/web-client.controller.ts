@@ -2,12 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { WebClientService } from './web-client.service';
 import { FindWebClientConfiguration } from './dto';
 import { User } from '@/shared/decorator';
+import { JwtAuthGuard } from '@/authentication/guards';
 
-@Controller('web-client')
+@Controller('clients')
 export class WebClientController {
   constructor(private readonly webClientService: WebClientService) { }
 
-  @UseGuards()
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findOneWebClientConfiguration(
     @User() user: number

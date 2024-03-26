@@ -1,4 +1,4 @@
-import { DeepPartial, FindOptionsRelations, FindOptionsWhere, Repository } from "typeorm";
+import { DeepPartial, FindOptionsRelations, FindOptionsSelect, FindOptionsWhere, Repository } from "typeorm";
 import { AbstractEntity } from "./abstract.entity";
 import { Logger, NotFoundException } from "@nestjs/common";
 

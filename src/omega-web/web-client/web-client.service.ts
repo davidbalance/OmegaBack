@@ -18,7 +18,12 @@ export class WebClientService {
   }
 
   async findOneWebClientConfiguration(user: number): Promise<WebClient> {
-    return await this.repository.findOne({ user: user });
+    const config = await this.repository.findOne({ user: user }, { routes: true });
+    delete config.createAt;
+    delete config.id;
+    delete config.updateAt;
+    delete config.user;
+    return config;
   }
 
   async findOneUserAndUpdateRoutes(user: number, updateWebClientRoutes: UpdateWebClientRoutesRequestDTO): Promise<WebClient> {
