@@ -1,11 +1,19 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UserCredentialService } from './user-credential.service';
 import { UserCredential } from './entities/user-credential.entity';
-import { UpdateUserCredentialPasswordRequestDTO } from 'src/shared';
+import { CreateUserCredentialRequestDTO, CreateUserResponseDTO, UpdateUserCredentialPasswordRequestDTO } from 'src/shared';
 
 @Controller('credential')
 export class UserCredentialController {
   constructor(private readonly userCredentialService: UserCredentialService) { }
+
+  @Post()
+  async create(
+    @Body() body: CreateUserCredentialRequestDTO
+  ): Promise<CreateUserResponseDTO> {
+    const user = await this.userCredentialService.create(body);
+    return { user: user.id };
+  }
 
   @Get(':id')
   async findUser(

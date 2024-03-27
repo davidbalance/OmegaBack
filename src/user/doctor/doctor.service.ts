@@ -20,8 +20,7 @@ export class DoctorService {
   ) { }
 
   async create(createDoctor: CreateDoctorRequestDTO): Promise<Doctor> {
-    const user = await this.userService.create(createDoctor);
-    await this.credentialService.create(createDoctor, user.id);
+    const { user } = await this.credentialService.create(createDoctor);
     return await this.repository.create({ ...createDoctor, user: user });
   }
 

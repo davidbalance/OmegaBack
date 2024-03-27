@@ -9,3 +9,7 @@ export class FindMorbidityResponseDTO {
 export class FindOneMorbidityResponseDTO {
     public readonly morbidity: Morbidity;
 }
+
+export class UpdateMobidityResponseDTO { }
+
+export class FindOneAndInactiveResponseDTO { }

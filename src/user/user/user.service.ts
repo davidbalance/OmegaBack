@@ -30,7 +30,7 @@ export class UserService {
   }
 
   async find(params?: Partial<FindUserParams>): Promise<User[]> {
-    return this.repository.find({ ...params, status: true });
+    return this.repository.find({ ...params, status: true }, null, { dni: true, email: true, name: true, lastname: true,  id: true });
   }
 
   async findOne(params?: Partial<FindUserParams & { id?: number }>): Promise<User> {

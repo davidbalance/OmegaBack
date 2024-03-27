@@ -13,18 +13,18 @@ export class UserCredentialService {
     @Inject(UserService) private readonly userService: UserService
   ) { }
 
-  async create(credentials: CreateUserCredentialRequestDTO, user: number): Promise<UserCredential> {
-    const retriveUser = await this.userService.findOne({ id: user });
+  async create(credentials: CreateUserCredentialRequestDTO): Promise<UserCredential> {
     try {
       await this.repository.findOne({ email: credentials.email });
       Logger.error(`Email already in use: ${credentials.email}`);
       throw new ConflictException("Email already in use")
     } catch (error) {
+      const user = await this.userService.create(credentials);
       const hashedPassword = this.hashPassword(credentials.password);
       const credential: UserCredential = await this.repository.create({
         ...credentials,
         password: hashedPassword,
-        user: retriveUser
+        user: user
       });
       return credential;
     }

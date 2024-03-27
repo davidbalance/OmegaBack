@@ -3,10 +3,9 @@ import { PatientGenderEnum } from "../enums";
 import { Type } from "class-transformer";
 import { CreateUserRequestDTO } from "./user.request.dto";
 import { OmitType, PartialType } from "@nestjs/mapped-types";
+import { CreateUserCredentialRequestDTO } from "./user-credential.request.dto";
 
-export class CreatePatientRequestDTO extends CreateUserRequestDTO {
-    @IsStrongPassword({ minLength: 8 })
-    public readonly password: string;
+export class CreatePatientRequestDTO extends CreateUserCredentialRequestDTO {
 
     @IsEnum(PatientGenderEnum)
     public readonly gender: PatientGenderEnum;

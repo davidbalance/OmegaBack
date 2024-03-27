@@ -28,7 +28,12 @@ export class MorbidityService {
   }
 
   async update(id: number, updateMorbidityDto: UpdateMorbidityRequestDTO): Promise<Morbidity> {
-    return await this.repository.findOneAndUpdate({ id }, updateMorbidityDto);
+    const morbidity = await this.repository.findOne({ id: id }, { group: true });
+    if (morbidity.group.id !== updateMorbidityDto.group) {
+      const group = await this.groupService.findOne({ id: updateMorbidityDto.group });
+      return await this.repository.findOneAndUpdate({ id }, { ...updateMorbidityDto, group: group });
+    }
+    return await this.repository.findOneAndUpdate({ id }, { name: updateMorbidityDto.name });
   }
 
   async inactive(id: number): Promise<void> {

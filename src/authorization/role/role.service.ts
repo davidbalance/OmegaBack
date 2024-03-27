@@ -16,20 +16,20 @@ export class RoleService {
     return await this.repository.create({ ...createRoleDto, permissions: permissions });
   }
 
-  async readAll(): Promise<Role[]> {
-    return await this.repository.find({}, { permissions: true });
+  async find(): Promise<Role[]> {
+    return await this.repository.find({ status: true }, { permissions: true }, { id: true, name: true, permissions: { id: true, resource: true, type: true } });
   }
 
-  async update(id: number, updateRoleDto: UpdateRoleRequestDTO): Promise<Role> {
+  async findOneAndUpdate(id: number, updateRoleDto: UpdateRoleRequestDTO): Promise<Role> {
     return await this.repository.findOneAndUpdate({ id }, updateRoleDto);
   }
 
-  async updateRolePermissions(id: number, updateRoleDto: UpdateRolePermissionsRequestDTO): Promise<Role> {
+  async findOneAndUpdatePermissions(id: number, updateRoleDto: UpdateRolePermissionsRequestDTO): Promise<Role> {
     const permissions = await this.permissionService.find(updateRoleDto.permissions);
     return await this.repository.findOneAndUpdate({ id }, { permissions: permissions });
   }
 
-  async inactive(id: number): Promise<void> {
+  async findOneAndInactive(id: number): Promise<void> {
     await this.repository.findOneAndUpdateStatus(id, false);
   }
 }

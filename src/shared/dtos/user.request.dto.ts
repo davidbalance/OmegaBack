@@ -1,3 +1,4 @@
+import { User } from "@/user/user/entities/user.entity";
 import { OmitType, PartialType } from "@nestjs/mapped-types";
 import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 

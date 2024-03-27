@@ -14,19 +14,19 @@ export class ReportElementService {
     return await this.repository.create(createReportElementDto);
   }
 
-  async findAll(): Promise<ReportElement[]> {
+  async find(): Promise<ReportElement[]> {
     return await this.repository.find({ status: false });
   }
 
-  async findOneByID(id: number): Promise<ReportElement> {
+  async findOne(id: number): Promise<ReportElement> {
     return await this.repository.findOne({ id });
   }
 
-  async update(id: number, updateReportElementDto: UpdateReportValueRequestDTO): Promise<ReportElement> {
+  async findOneAndUpdate(id: number, updateReportElementDto: UpdateReportValueRequestDTO): Promise<ReportElement> {
     return await this.repository.findOneAndUpdate({ id }, updateReportElementDto);
   }
 
-  async remove(id: number): Promise<void> {
+  async findOneAndInactivate(id: number): Promise<void> {
     await this.repository.findOneAndUpdate({ id }, { status: false });
   }
 }

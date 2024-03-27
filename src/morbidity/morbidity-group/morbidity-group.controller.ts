@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { MorbidityGroupService } from './morbidity-group.service';
-import { FindMorbidityGroupsResponseDTO } from '@/shared/dtos/morbidity-group.response.dto';
+import { CreateMorbidityGroupResponseDTO, FindMorbidityGroupsResponseDTO, InactiveMorbiditGroupResponseDTO, UpdateMorbidityGroupResponseDTO } from '@/shared/dtos/morbidity-group.response.dto';
 import { CreateMorbidityGroupRequestDTO, UpdateMorbidityGroupRequestDTO } from '@/shared/dtos/morbidity-group.request.dto';
 
 @Controller('morbidity-groups')
@@ -10,8 +10,9 @@ export class MorbidityGroupController {
   @Post()
   async create(
     @Body() body: CreateMorbidityGroupRequestDTO
-  ): Promise<void> {
+  ): Promise<CreateMorbidityGroupResponseDTO> {
     await this.morbidityGroupService.create(body);
+    return;
   }
 
   @Get()
@@ -24,14 +25,16 @@ export class MorbidityGroupController {
   async findOneAndUpdate(
     @Param('id') id: number,
     @Body() body: UpdateMorbidityGroupRequestDTO
-  ): Promise<void> {
+  ): Promise<UpdateMorbidityGroupResponseDTO> {
     await this.morbidityGroupService.update(id, body);
+    return;
   }
 
   @Delete(':id')
   async findOneAndInactive(
     @Param("id") id: number
-  ): Promise<void> {
+  ): Promise<InactiveMorbiditGroupResponseDTO> {
     await this.morbidityGroupService.inactive(id);
+    return;
   }
 }

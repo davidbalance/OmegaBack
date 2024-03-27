@@ -8,6 +8,6 @@ export class FindMorbidityGroupsResponseDTO {
     public readonly groups: MorbidityGroup[];
 }
 
-export class UpdateMorbidityGroupResponseDTO {
-    public readonly group: MorbidityGroup;
-}
+export class UpdateMorbidityGroupResponseDTO { }
+
+export class InactiveMorbiditGroupResponseDTO { }

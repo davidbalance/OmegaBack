@@ -1,8 +1,7 @@
-import { IsEmail, IsStrongPassword } from "class-validator";
+import { IsEmail, IsNumber, IsStrongPassword } from "class-validator";
+import { CreateUserRequestDTO } from "./user.request.dto";
 
-export class CreateUserCredentialRequestDTO {
-    @IsEmail()
-    public readonly email: string;
+export class CreateUserCredentialRequestDTO extends CreateUserRequestDTO {
     @IsStrongPassword({ minLength: 8 })
     public readonly password: string;
 }

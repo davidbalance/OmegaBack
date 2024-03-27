@@ -1,8 +1,7 @@
 import { Order } from "src/medical-order/order/entities/order.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ResultSendStatus } from "./result-send-status.entity";
-import { MedicalReport } from "@/report/medical-report/entities/medical-report.entity";
 
 @Entity({ name: "RESULTS" })
 export class Result extends AbstractEntity<number> {

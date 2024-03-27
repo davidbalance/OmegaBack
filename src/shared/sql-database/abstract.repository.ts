@@ -31,8 +31,8 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
      * @param relationOptions 
      * @returns 
      */
-    async find(filterOptions: FindOptionsWhere<TEntity>, relationOptions?: FindOptionsRelations<TEntity>): Promise<TEntity[]> {
-        return await this.model.find({ where: filterOptions, relations: relationOptions });
+    async find(filterOptions: FindOptionsWhere<TEntity>, relationOptions?: FindOptionsRelations<TEntity>, selectOptions?: FindOptionsSelect<TEntity>): Promise<TEntity[]> {
+        return await this.model.find({ where: filterOptions, relations: relationOptions, select: selectOptions });
     }
 
     /**

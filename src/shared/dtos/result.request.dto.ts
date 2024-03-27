@@ -1,8 +1,8 @@
 import { IsDefined, IsNotEmptyObject, IsNumber, ValidateNested } from "class-validator";
 import { CreateDoctorRequestDTO } from "./doctor.request.dto";
-import { CreateExamResponseDTO } from "./exam.response.dto";
 import { Type } from "class-transformer";
 import { CreateOrderRequestDTO } from "./order.request.dto";
+import { CreateExamRequestDTO } from "./exam.request.dto";
 
 export class CreateResultRequestDTO {
     @IsNumber()
@@ -17,8 +17,8 @@ export class CreateResultRequestDTO {
     @IsDefined()
     @IsNotEmptyObject()
     @ValidateNested()
-    @Type(() => CreateExamResponseDTO)
-    public readonly createExam: CreateExamResponseDTO;
+    @Type(() => CreateExamRequestDTO)
+    public readonly createExam: CreateExamRequestDTO;
 
     @IsNumber()
     public readonly doctor: number;
@@ -34,5 +34,9 @@ export class CreateResultRequestDTO {
 }
 
 export class UpdateResultRequestDTO { }
+
+export class FindOneResultAndInsertMorbidityRequestDTO {
+    public readonly morbidity: number;
+}
 
 export class FindOneOrInsertResultRequestDTO { }
