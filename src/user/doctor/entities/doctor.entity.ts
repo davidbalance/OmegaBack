@@ -5,16 +5,13 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn
 
 @Entity({ name: 'DOCTORS' })
 export class Doctor extends AbstractEntity<number> {
-    @PrimaryGeneratedColumn('increment', { name: 'DOCTOR_ID' })
+    @PrimaryGeneratedColumn('increment', { name: 'doctorID' })
     public id: number;
 
-    @Column({ name: 'DOCTOR_SIGNATURE', type: 'varchar', length: 256, nullable: true })
+    @Column({ name: 'doctorSignature', type: 'varchar', length: 256, nullable: true })
     public signature: string;
 
-    @OneToMany(() => Result, result => result.doctor, { eager: false })
-    public results: Result[];
-
-    @OneToOne(() => User, { eager: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'USER_ID' })
+    @OneToOne(() => User, { eager: true })
+    @JoinColumn({ referencedColumnName: 'id', name: 'userId' })
     public user: User;
 }

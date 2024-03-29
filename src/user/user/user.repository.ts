@@ -1,22 +1,22 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { AbstractRepository, RepositoryUpdateStatusExtension } from "src/shared";
+import { AbstractRepository } from "src/shared";
 import { User } from "./entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 
 @Injectable()
 export class UserRepository
-    extends AbstractRepository<number, User>
-    implements RepositoryUpdateStatusExtension<number, User>{
+    extends AbstractRepository<number, User>{
+
     protected logger: Logger = new Logger();
 
     constructor(
-        @InjectRepository(User) private readonly userModel: Repository<User>
+        @InjectRepository(User) private readonly _: Repository<User>
     ) {
-        super(userModel);
+        super(_);
     }
 
-    async findOneAndUpdateStatus(id: number, status: boolean): Promise<User> {
-        return await this.findOneAndUpdate({ id }, { status });
+    async findOneAndDelete(filterOptions: FindOptionsWhere<User>): Promise<void> {
+        await this.findOneAndUpdate(filterOptions, { status: false });
     }
 }

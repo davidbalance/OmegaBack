@@ -1,7 +1,5 @@
-import { Permission } from "src/authorization/permission/entities/permission.entity";
-import { Role } from "src/authorization/role/entities/role.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, Index, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'USERS' })
 @Index(['dni', 'email'], { unique: true })

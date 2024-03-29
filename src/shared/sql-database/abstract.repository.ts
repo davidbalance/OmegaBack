@@ -1,4 +1,4 @@
-import { DeepPartial, FindOptionsOrder, FindOptionsRelations, FindOptionsSelect, FindOptionsWhere, Repository } from "typeorm";
+import { DeepPartial, FindManyOptions, FindOneOptions, FindOptionsOrder, FindOptionsRelations, FindOptionsSelect, FindOptionsWhere, Repository } from "typeorm";
 import { AbstractEntity } from "./abstract.entity";
 import { Logger, NotFoundException } from "@nestjs/common";
 
@@ -27,12 +27,11 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
 
     /**
      * Find all the items that mathes the filter provided
-     * @param filterOptions 
-     * @param relationOptions 
+     * @param options 
      * @returns 
      */
-    async find(filterOptions: FindOptionsWhere<TEntity>, relationOptions?: FindOptionsRelations<TEntity>, selectOptions?: FindOptionsSelect<TEntity>, orderOptions?: FindOptionsOrder<TEntity>): Promise<TEntity[]> {
-        return await this.model.find({ where: filterOptions, relations: relationOptions, select: selectOptions, order: orderOptions });
+    async find(options?: FindManyOptions<TEntity>): Promise<TEntity[]> {
+        return await this.model.find(options);
     }
 
     /**
@@ -42,10 +41,10 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
      * @throws NotFoundException
      * @returns
      */
-    async findOne(filterOptions: FindOptionsWhere<TEntity> | FindOptionsWhere<TEntity>[], relationOptions?: FindOptionsRelations<TEntity>): Promise<TEntity> {
-        const entity = await this.model.findOne({ where: filterOptions, relations: relationOptions });
+    async findOne(options: FindOneOptions<TEntity>): Promise<TEntity> {
+        const entity = await this.model.findOne(options);
         if (!entity) {
-            this.logger.warn("Entity not found with the given filterOptions", JSON.stringify(filterOptions));
+            this.logger.warn("Entity not found with the given filterOptions", JSON.stringify(options));
             throw new NotFoundException(["Entity not found with the given filterOptions"]);
         }
         return entity;
@@ -59,7 +58,7 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
      * @returns 
      */
     async findOneAndUpdate(filterOptions: FindOptionsWhere<TEntity>, updateOptions: Partial<TEntity>): Promise<TEntity> {
-        const entity = await this.model.findOneBy(filterOptions);
+        const entity = await this.findOne({ where: filterOptions });
         if (!entity) {
             this.logger.warn("Entity not found with the given filterOptions", JSON.stringify(filterOptions));
             throw new NotFoundException(["Entity not found with the given filterOptions"]);
@@ -73,12 +72,5 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
      * 
      * @param filterOptions Find one item and remove it from the database
      */
-    async findOneAndDelete(filterOptions: FindOptionsWhere<TEntity>): Promise<void> {
-        const entity = await this.model.findOneBy(filterOptions);
-        if (!entity) {
-            this.logger.warn("Entity not found with the given filterOptions", JSON.stringify(filterOptions));
-            throw new NotFoundException(["Entity not found with the given filterOptions"]);
-        }
-        await this.model.delete(filterOptions);
-    }
+    abstract findOneAndDelete(filterOptions: FindOptionsWhere<TEntity>): void | Promise<void>;
 }

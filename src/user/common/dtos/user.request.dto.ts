@@ -1,12 +1,9 @@
-import { User } from "@/user/user/entities/user.entity";
 import { OmitType, PartialType } from "@nestjs/mapped-types";
 import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 
 export class CreateUserRequestDTO {
-    @IsEmail()
-    public readonly email: string;
-
     @IsString()
+    @IsNotEmpty()
     @Length(10, 10)
     public readonly dni: string;
 
@@ -17,10 +14,10 @@ export class CreateUserRequestDTO {
     @IsString()
     @IsNotEmpty()
     public readonly lastname: string;
+
+    @IsEmail()
+    public readonly email: string;
 }
 
-export class UpdateUserRequestDTO extends PartialType(
-    OmitType(CreateUserRequestDTO, ['dni'])
-) { }
-
-export class UpdateUserDNIRequestDTO extends OmitType(CreateUserRequestDTO, ['email', 'name', 'lastname']) { }
+class CreateUserRequestDTOOmittedType extends OmitType(CreateUserRequestDTO, ['dni']) { }
+export class FindOneUserAndUpdateRequestDTO extends PartialType(CreateUserRequestDTOOmittedType) { }

@@ -1,4 +1,4 @@
-export abstract class StorageSaver {
+export abstract class StorageManager {
     /**
      * Save file in a tmp directory in the localmachine
      * @param file 
@@ -10,4 +10,8 @@ export abstract class StorageSaver {
      * @param dir 
      */
     abstract saveFile(file: Express.Multer.File, dir: string): string | Promise<string>
+
+    abstract replaceFile(): Promise<boolean>;
+    abstract moveFile(): Promise<boolean>;
+    abstract deleteFile(): Promise<boolean>;
 }

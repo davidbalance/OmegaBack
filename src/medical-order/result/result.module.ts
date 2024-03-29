@@ -4,7 +4,7 @@ import { ResultController } from './result.controller';
 import { SqlDatabaseModule } from 'src/shared';
 import { Result } from './entities/result.entity';
 import { ResultRepository } from './repositories/result.repository';
-import { LocalStorageSaverModule } from '@/shared/storage-saver';
+import { LocalStorageSaverModule } from '@/shared/storage-manager';
 import { DoctorModule } from '@/user/doctor/doctor.module';
 import { OrderModule } from '../order/order.module';
 import { ExamModule } from '@/exam/exam.module';

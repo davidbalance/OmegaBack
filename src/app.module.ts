@@ -12,9 +12,20 @@ import { AuthorizationModule } from './authorization/authorization.module';
 import { UserModule } from './user/user.module';
 import { SenderStatusModule } from './sender-status/sender-status.module';
 import { OmegaWebModule } from './omega-web/omega-web.module';
+import { EventEmitter } from 'stream';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot({
+      wildcard: false,
+      delimiter: '.',
+      newListener: false,
+      removeListener: false,
+      maxListeners: 10,
+      verboseMemoryLeak: false,
+      ignoreErrors: false,
+    }),
     SqlDatabaseModule,
     MedicalOrderModule,
     MorbidityModule,

@@ -1,11 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { StorageSaver } from '../storage-saver.service';
-import { createReadStream, createWriteStream, existsSync, mkdirSync } from 'fs';
+import { createWriteStream, existsSync, mkdirSync } from 'fs';
 import path, { extname } from 'path';
 import { v4 } from 'uuid';
+import { StorageManager } from '../storage-manager.service';
 
 @Injectable()
-export class LocalStorageSaverService implements StorageSaver {
+export class LocalStorageService implements StorageManager {
+    replaceFile(): Promise<boolean> {
+        throw new Error('Method not implemented.');
+    }
+    moveFile(): Promise<boolean> {
+        throw new Error('Method not implemented.');
+    }
+    deleteFile(): Promise<boolean> {
+        throw new Error('Method not implemented.');
+    }
     saveFile(file: Express.Multer.File): string | Promise<string>;
     saveFile(file: Express.Multer.File, dir: string): string | Promise<string>;
     saveFile(file: Express.Multer.File, dir: string = path.resolve(`tmp`)): string | Promise<string> {

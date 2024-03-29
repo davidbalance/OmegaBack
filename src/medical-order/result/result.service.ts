@@ -2,7 +2,7 @@ import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { ResultRepository } from './repositories/result.repository';
 import { Result } from './entities/result.entity';
 import { CreateResultRequestDTO } from 'src/shared';
-import { StorageSaver } from 'src/shared/storage-saver';
+import { StorageSaver } from '@/shared/storage-manager';
 import { OrderService } from '../order/order.service';
 import { MorbidityService } from 'src/morbidity/morbidity/morbidity.service';
 import { ExamService } from 'src/exam/exam.service';

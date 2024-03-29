@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateDoctorRequestDTO, CreateDoctorResponseDTO, FindDoctorResponseDTO, FindOneDoctorResponseDTO, UpdateDoctorRequestDTO, UpdateDoctorResponseDTO } from '@/shared';
+import { CreateDoctorRequestDTO, CreateDoctorResponseDTO, FindDoctorsResponseDTO, FindOneDoctorAndUpdateRequestDTO, FindOneDoctorAndUpdateResponseDTO } from '../common';
 
 @Controller('doctors')
 export class DoctorController {
@@ -16,24 +16,16 @@ export class DoctorController {
   }
 
   @Get()
-  async find(): Promise<FindDoctorResponseDTO> {
+  async find(): Promise<FindDoctorsResponseDTO> {
     const doctors = await this.doctorService.find();
     return { doctors };
-  }
-
-  @Get(':id')
-  async findOne(
-    @Param('id') id: number
-  ): Promise<FindOneDoctorResponseDTO> {
-    const doctor = await this.doctorService.findOne({ id });
-    return { doctor };
   }
 
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
-    @Body() body: UpdateDoctorRequestDTO
-  ): Promise<UpdateDoctorResponseDTO> {
+    @Body() body: FindOneDoctorAndUpdateRequestDTO
+  ): Promise<FindOneDoctorAndUpdateResponseDTO> {
     await this.doctorService.findOneAndUpdate(id, body);
     return;
   }
@@ -43,8 +35,9 @@ export class DoctorController {
   async uploadSignature(
     @Param('id') id: number,
     @UploadedFile() file: Express.Multer.File
-  ): Promise<void> {
+  ): Promise<FindOneDoctorAndUpdateResponseDTO> {
     await this.doctorService.uploadSignature(id, file);
+    return;
   }
 
 }

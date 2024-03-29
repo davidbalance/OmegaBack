@@ -1,24 +1,23 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AbstractEntity } from "src/shared";
-import { Order } from "src/medical-order/order/entities/order.entity";
 import { User } from "src/user/user/entities/user.entity";
-import { PatientGenderEnum } from "@/shared/enums";
+import { PatientGenderEnum } from "@/user/common";
 
 @Entity({ name: "PATIENTS" })
 export class Patient extends AbstractEntity<number> {
-    @PrimaryGeneratedColumn('increment', { name: 'PATIENT_ID' })
+    @PrimaryGeneratedColumn('increment', { name: 'patientId' })
     public id: number;
 
-    @Column({ name: 'PATIENT_GENDER', type: 'enum', enum: PatientGenderEnum, nullable: false })
+    @Column({ name: 'patientGender', type: 'enum', enum: PatientGenderEnum, nullable: false })
     public gender: PatientGenderEnum;
 
-    @Column({ name: 'PATIENT_BIRTHDAY', type: 'date', nullable: false })
+    @Column({ name: 'patientBirthday', type: 'date', nullable: false })
     public birthday: Date;
 
-    @Column({ name: 'PATIENT_AGE', type: 'int', nullable: false })
+    @Column({ name: 'patientAge', type: 'int', nullable: false })
     public age: number;
 
-    @OneToOne(() => User, { eager: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'USER_ID' })
+    @OneToOne(() => User, { eager: true })
+    @JoinColumn({ referencedColumnName: 'id', name: 'userId' })
     public user: User;
 }

@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
-import { FindOneAndInactiveUserResponseDTO, FindUserResponseDTO, UpdateUserRequestDTO, UpdateUserResponseDTO } from '@/shared';
+import { FindOneUserAndDeleteResponseDTO, FindOneUserAndUpdateRequestDTO, FindOneUserAndUpdateResponseDTO, FindUsersResponseDTO } from '../common';
 
 @Controller('users')
 export class UserController {
@@ -9,17 +9,16 @@ export class UserController {
   ) { }
 
   @Get()
-  async find(): Promise<FindUserResponseDTO> {
+  async find(): Promise<FindUsersResponseDTO> {
     const users = await this.userService.find();
-    const amount = users.length;
-    return { amount, users };
+    return { users };
   }
 
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
-    @Body() body: UpdateUserRequestDTO
-  ): Promise<UpdateUserResponseDTO> {
+    @Body() body: FindOneUserAndUpdateRequestDTO
+  ): Promise<FindOneUserAndUpdateResponseDTO> {
     await this.userService.findOneAndUpdate(id, body)
     return;
   }
@@ -27,8 +26,8 @@ export class UserController {
   @Delete(':id')
   async findOneAndInactive(
     @Param('id') id: number
-  ): Promise<FindOneAndInactiveUserResponseDTO> {
-    await this.userService.findOneAndInactive(id);
+  ): Promise<FindOneUserAndDeleteResponseDTO> {
+    await this.userService.findOneAndDelete(id);
     return;
   }
 }

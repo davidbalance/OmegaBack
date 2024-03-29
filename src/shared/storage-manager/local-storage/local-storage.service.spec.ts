@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { LocalStorageSaverService } from './local-storage-saver.service';
+import { LocalStorageSaverService } from './local-storage.service';
 
 describe('LocalStorageSaverService', () => {
   let service: LocalStorageSaverService;

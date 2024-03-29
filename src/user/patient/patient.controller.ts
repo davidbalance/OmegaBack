@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { PatientService } from './patient.service';
-import { CreatePatientRequestDTO, CreatePatientResponseDTO, FindOnePatientResponseDTO, FindPatientsResponseDTO, UpdatePatientRequestDTO, UpdatePatientResponseDTO } from '@/shared';
+import { CreatePatientRequestDTO, CreatePatientResponseDTO, FindPatientsResponseDTO, FindOnePatientResponseDTO, FindOnePatientAndUpdateRequestDTO, FindOnePatientAndUpdateResponseDTO } from '../common';
 
 @Controller('patients')
 export class PatientController {
@@ -20,17 +20,11 @@ export class PatientController {
     return { patients };
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: number): Promise<FindOnePatientResponseDTO> {
-    const patient = await this.patientService.findOne({ id });
-    return { patient };
-  }
-
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
-    @Body() body: UpdatePatientRequestDTO
-  ): Promise<UpdatePatientResponseDTO> {
+    @Body() body: FindOnePatientAndUpdateRequestDTO
+  ): Promise<FindOnePatientAndUpdateResponseDTO> {
     await this.patientService.findOneAndUpdate(id, body);
     return;
   }

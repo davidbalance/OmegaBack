@@ -1,45 +1,53 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PatientRepository } from './patient.repository';
 import { Patient } from './entities/patient.entity';
-import { UserCredentialService } from 'src/authentication/user-credential/user-credential.service';
 import { UserService } from 'src/user/user/user.service';
-import { CreatePatientRequestDTO, UpdatePatientRequestDTO } from 'src/shared';
-
-type FindPatientParams = Omit<Patient, 'id' | 'status' | 'createAt' | 'updateAt' | 'user'> & { dni: string }
+import { CreatePatientRequestDTO, FindOnePatientAndUpdateRequestDTO, FindPatient } from '../common';
 
 @Injectable()
 export class PatientService {
 
   constructor(
     @Inject(PatientRepository) private readonly repository: PatientRepository,
-    @Inject(UserCredentialService) private readonly credentialService: UserCredentialService,
     @Inject(UserService) private readonly userService: UserService
   ) { }
 
-  async create(createPatient: CreatePatientRequestDTO): Promise<Patient> {
-    const { user } = await this.credentialService.create(createPatient);
-    const patient = await this.repository.create({ ...createPatient, user: user });
+  async create({ age, birthday, gender, ...data }: CreatePatientRequestDTO): Promise<Patient> {
+    const user = await this.userService.create(data);
+    const patient = await this.repository.create({ age, birthday, gender, user });
     return patient;
   }
 
-  async find(params?: Partial<FindPatientParams>): Promise<Patient[]> {
-    return await this.repository.find({ ...params, user: { status: true } }, { user: true }, { age: true, id: true, birthday: true, gender: true, user: { dni: true, email: true, lastname: true, name: true } })
-  }
-
-  async findOne(params?: Partial<FindPatientParams & { id: number }>): Promise<Patient> {
-    return await this.repository.findOne({ ...params, user: { dni: params.dni } }, { user: true })
-  }
-
-  async findOneAndUpdate(id: number, patient: UpdatePatientRequestDTO): Promise<Patient> {
-    const currentPatient = await this.repository.findOne({ id }, { user: true });
-    const user = await this.userService.findOneAndUpdate(currentPatient.user.id, patient);
-    if (patient.email) {
-      const credential = await this.credentialService.findByUser(currentPatient.user.id);
-      if (credential.email !== patient.email) {
-        await this.credentialService.updateUsername(credential.id, patient.email);
+  async find(): Promise<FindPatient[]> {
+    const patients = await this.repository.find({
+      where: {
+        user: {
+          status: true
+        }
+      },
+      select: {
+        age: true,
+        id: true,
+        birthday: true,
+        gender: true,
+        user: {
+          dni: true,
+          email: true,
+          lastname: true,
+          name: true
+        }
       }
-    }
-    currentPatient.user = user;
-    return await this.repository.findOneAndUpdate({ id }, patient);
+    });
+
+    const foundPatients: FindPatient[] = patients.map((e) => ({ ...e.user, ...e }));
+    return foundPatients;
+  }
+
+  async findOneAndUpdate(id: number, { age, birthday, gender, ...data }: FindOnePatientAndUpdateRequestDTO): Promise<FindPatient> {
+    const patient = await this.repository.findOne({ where: { id }, select: { user: { id: true } } });
+    const user = await this.userService.findOneAndUpdate(patient.user.id, data);
+    const updatedPatient = await this.repository.findOneAndUpdate({ id }, patient);
+    const findPatient = { ...user, ...updatedPatient }
+    return findPatient;
   }
 }
