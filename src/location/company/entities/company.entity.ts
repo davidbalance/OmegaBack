@@ -5,26 +5,26 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 
 @Entity({ name: 'COMPANIES' })
 export class Company extends AbstractEntity<number> {
-    @PrimaryGeneratedColumn('increment', { name: 'COMPANY_ID' })
+    @PrimaryGeneratedColumn('increment', { name: 'companyId' })
     public id: number;
 
-    @Column({ name: 'COMPANY_RUC', type: 'varchar', length: 13, nullable: false, unique: true })
+    @Column({ name: 'companyRuc', type: 'varchar', length: 13, nullable: false, unique: true })
     public ruc: string;
 
-    @Column({ name: 'COMPANY_NAME', type: 'varchar', length: 64, nullable: false, unique: true })
+    @Column({ name: 'companyName', type: 'varchar', length: 64, nullable: false, unique: true })
     public name: string;
 
-    @Column({ name: 'COMPANY_ADDRESS', type: 'varchar', length: 128, nullable: false })
+    @Column({ name: 'companyAddress', type: 'varchar', length: 128, nullable: false })
     public address: string;
 
-    @Column({ name: 'COMPANY_PHONE', type: 'varchar', length: 16, nullable: false })
+    @Column({ name: 'companyPhone', type: 'varchar', length: 16, nullable: false })
     public phone: string;
 
-    @Column({ name: 'COMPANY_STATUS', type: 'boolean', default: true, nullable: false })
+    @Column({ name: 'companyStatus', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
     @ManyToOne(() => CorporativeGroup, group => group.companies, { eager: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'CORPORATIVE_GROUP_ID' })
+    @JoinColumn({ referencedColumnName: 'id', name: 'corporativeGroupId' })
     public corporativeGroup: CorporativeGroup;
 
     @OneToMany(() => Branch, branch => branch.company, { eager: false })

@@ -9,12 +9,13 @@ import { CityModule } from '../city/city.module';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([Branch]),
-    CompanyModule,
-    CityModule
+    SqlDatabaseModule.forFeature([Branch])
   ],
   controllers: [BranchController],
-  providers: [BranchService, BranchRepository],
+  providers: [
+    BranchService,
+    BranchRepository
+  ],
   exports: [BranchService]
 })
 export class BranchModule { }

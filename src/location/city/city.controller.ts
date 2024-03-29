@@ -1,7 +1,15 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { CityService } from './city.service';
+import { FindCitySelectorOptions } from './dto';
 
-@Controller('city')
+@Controller('cities')
 export class CityController {
   constructor(private readonly cityService: CityService) { }
+
+  @Get('selector')
+  async findSelectorOptions(): Promise<FindCitySelectorOptions> {
+    const options = await this.cityService.findSelectorOptions();
+    return { options };
+  }
+
 }

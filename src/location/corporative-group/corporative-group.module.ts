@@ -8,7 +8,10 @@ import { CorporativeGroupRepository } from './corporative-group.repository';
 @Module({
   imports: [SqlDatabaseModule.forFeature([CorporativeGroup])],
   controllers: [CorporativeGroupController],
-  providers: [CorporativeGroupService, CorporativeGroupRepository],
+  providers: [
+    CorporativeGroupService,
+    CorporativeGroupRepository
+  ],
   exports: [CorporativeGroupService]
 })
 export class CorporativeGroupModule { }

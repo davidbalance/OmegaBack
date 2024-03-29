@@ -8,11 +8,13 @@ import { CorporativeGroupModule } from '../corporative-group/corporative-group.m
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([Company]),
-    CorporativeGroupModule
+    SqlDatabaseModule.forFeature([Company])
   ],
   controllers: [CompanyController],
-  providers: [CompanyService, CompanyRepository],
+  providers: [
+    CompanyService,
+    CompanyRepository
+  ],
   exports: [CompanyService]
 })
 export class CompanyModule { }

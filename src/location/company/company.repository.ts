@@ -1,13 +1,14 @@
-import { AbstractRepository, RepositoryUpdateStatusExtension } from "src/shared";
+
+import { AbstractRepository } from "@/shared";
 import { Company } from "./entities/company.entity";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 
 @Injectable()
 export class CompanyRepository
-    extends AbstractRepository<number, Company>
-    implements RepositoryUpdateStatusExtension<number, Company> {
+    extends AbstractRepository<number, Company> {
+
     protected logger: Logger = new Logger();
 
     constructor(
@@ -16,7 +17,7 @@ export class CompanyRepository
         super(companyModel);
     }
 
-    async findOneAndUpdateStatus(id: number, status: boolean): Promise<Company> {
-        return await this.findOneAndUpdate({ id }, { status });
+    async findOneAndDelete(filterOptions: FindOptionsWhere<Company>): Promise<void> {
+        await this.findOneAndUpdate(filterOptions, { status: false });
     }
 }

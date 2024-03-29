@@ -10,7 +10,10 @@ import { CityRepository } from './city.repository';
     SqlDatabaseModule.forFeature([City]),
   ],
   controllers: [CityController],
-  providers: [CityService, CityRepository],
+  providers: [
+    CityService,
+    CityRepository
+  ],
   exports: [CityService]
 })
 export class CityModule { }

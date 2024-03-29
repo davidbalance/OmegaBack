@@ -2,56 +2,23 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CompanyRepository } from './company.repository';
 import { Company } from './entities/company.entity';
 import { CorporativeGroupService } from '../corporative-group/corporative-group.service';
-import { CreateCompanyRequestDTO, UpdateCompanyRequestDTO, UpdateCompanyRUCRequestDTO, UpdateCompanyCorporativeGroupRequestDTO, FindOneOrCreateService } from '@/shared';
+import { SelectorOption } from '@/shared';
 
 type FindCompanyParams = Omit<Company, 'id' | 'status' | 'corporativeGroup' | 'branches'>;
 
 @Injectable()
-export class CompanyService
-  implements FindOneOrCreateService<Company>{
+export class CompanyService {
 
   constructor(
-    @Inject(CompanyRepository) private readonly repository: CompanyRepository,
-    @Inject(CorporativeGroupService) private readonly corporativeGroupService: CorporativeGroupService
+    @Inject(CompanyRepository) private readonly repository: CompanyRepository
   ) { }
 
-  async findOneOrCreate(filterOption: any, createOption: any): Promise<Company> {
-    const filter = filterOption as Partial<FindCompanyParams & { id: number }>;
-    const companyOption = createOption as CreateCompanyRequestDTO;
-    try {
-      return await this.findOne(filter);
-    } catch (error) {
-      return await this.create(companyOption);
-    }
-  }
-
-  async create(createCompany: CreateCompanyRequestDTO): Promise<Company> {
-    const corporativeGroup = await this.corporativeGroupService.findOne({ id: createCompany.corporativeGroup });
-    return await this.repository.create({ ...createCompany, corporativeGroup: corporativeGroup });
-  }
-
-  async find(params?: Partial<FindCompanyParams>): Promise<Company[]> {
-    return await this.repository.find({ ...params, status: true });
-  }
-
-  async findOne(params?: Partial<FindCompanyParams & { id: number }>): Promise<Company> {
-    return await this.repository.findOne({ ...params, status: false });
-  }
-
-  async update(id: number, updateCompanyDto: UpdateCompanyRequestDTO): Promise<Company> {
-    return await this.repository.findOneAndUpdate({ id }, updateCompanyDto);
-  }
-
-  async updateRUC(id: number, updateRucDto: UpdateCompanyRUCRequestDTO): Promise<Company> {
-    return await this.repository.findOneAndUpdate({ id }, { ruc: updateRucDto.ruc });
-  }
-
-  async updateCorporativeGroup(id: number, updateCorporativeGroup: UpdateCompanyCorporativeGroupRequestDTO): Promise<Company> {
-    const corporativeGroup = await this.corporativeGroupService.findOne({ id: updateCorporativeGroup.corporativeGroup });
-    return await this.repository.findOneAndUpdate({ id }, { corporativeGroup: corporativeGroup });
-  }
-
-  async inactive(id: number): Promise<Company> {
-    return await this.repository.findOneAndUpdateStatus(id, false);
+  async findSelectorOptions(): Promise<SelectorOption<number>[]> {
+    const companies = await this.repository.find({ select: { id: true, name: true } });
+    const options = companies.map((e) => ({
+      key: e.id,
+      label: e.name
+    } as SelectorOption<number>));
+    return options;
   }
 }

@@ -1,9 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CityRepository } from './city.repository';
-import { City } from './entities/city.entity';
-import { CreateCityRequestDTO, UpdateCityRequestDTO } from '@/shared';
-
-type FindCityParams = Omit<City, 'id' | 'branches'>;
+import { SelectorOption } from '@/shared';
 
 @Injectable()
 export class CityService {
@@ -12,19 +9,13 @@ export class CityService {
     @Inject(CityRepository) private readonly repository: CityRepository,
   ) { }
 
-  async create(createCity: CreateCityRequestDTO): Promise<City> {
-    return await this.repository.create({ ...createCity });
+  async findSelectorOptions(): Promise<SelectorOption<number>[]> {
+    const cities = await this.repository.find({ select: { id: true, name: true } });
+    const options = cities.map((e) => ({
+      key: e.id,
+      label: e.name
+    } as SelectorOption<number>));
+    return options;
   }
 
-  async find(params?: Partial<FindCityParams>): Promise<City[]> {
-    return await this.repository.find({});
-  }
-
-  async findOne(params?: Partial<FindCityParams & { id: number }>): Promise<City> {
-    return await this.repository.findOne({ ...params });
-  }
-
-  async update(id: number, updateCityDto: UpdateCityRequestDTO): Promise<City> {
-    return await this.repository.findOneAndUpdate({ id }, updateCityDto);
-  }
 }
