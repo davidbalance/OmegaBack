@@ -5,23 +5,10 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { Morbidity } from "../morbidity/entities/morbidity.entity";
 
-interface MorbidityGroupRepositoryExtension {
-    /**
-     * Find a morbidity group and appends new morbidities
-     * @param findOptions 
-     * @param morbidities 
-     */
-    findOneAndAppendMorbidities(findOptions: FindOptionsWhere<MorbidityGroup>, morbidities: Morbidity[]): Promise<MorbidityGroup>;
-    /**
-     * Find a morbidity group and remove morbidities
-     * @param findOptions 
-     * @param morbidities 
-     */
-    findOneAndRemoveMorbidities(findOptions: FindOptionsWhere<MorbidityGroup>, morbidities: Morbidity[]): Promise<MorbidityGroup>;
-}
-
 @Injectable()
-export class MorbidityGroupRepository extends AbstractRepository<number, MorbidityGroup> implements MorbidityGroupRepositoryExtension {
+export class MorbidityGroupRepository
+    extends AbstractRepository<number, MorbidityGroup> {
+
     protected logger: Logger = new Logger();
 
     constructor(
@@ -30,19 +17,7 @@ export class MorbidityGroupRepository extends AbstractRepository<number, Morbidi
         super(groupModel);
     }
 
-    async findOneAndAppendMorbidities(findOptions: FindOptionsWhere<MorbidityGroup>, morbidities: Morbidity[]): Promise<MorbidityGroup> {
-        const entity = await this.findOne(findOptions, { morbidities: true });
-        const filterMorbidities = entity.morbidities.filter(e => !morbidities.includes(e));
-        entity.morbidities.concat(filterMorbidities);
-        await this.groupModel.save(entity);
-        return entity;
-    }
-
-    async findOneAndRemoveMorbidities(findOptions: FindOptionsWhere<MorbidityGroup>, morbidities: Morbidity[]): Promise<MorbidityGroup> {
-        const entity = await this.findOne(findOptions, { morbidities: true });
-        const filterMorbidities = entity.morbidities.filter(e => morbidities.includes(e));
-        entity.morbidities = filterMorbidities;
-        await this.groupModel.save(entity);
-        return entity;
+    async findOneAndDelete(filterOptions: FindOptionsWhere<MorbidityGroup>): Promise<void> {
+        await this.findOneAndUpdate(filterOptions, { status: false });
     }
 }

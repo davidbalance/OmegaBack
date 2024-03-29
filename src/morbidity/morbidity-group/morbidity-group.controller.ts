@@ -1,7 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { MorbidityGroupService } from './morbidity-group.service';
-import { CreateMorbidityGroupResponseDTO, FindMorbidityGroupsResponseDTO, InactiveMorbiditGroupResponseDTO, UpdateMorbidityGroupResponseDTO } from '@/shared/dtos/morbidity-group.response.dto';
-import { CreateMorbidityGroupRequestDTO, UpdateMorbidityGroupRequestDTO } from '@/shared/dtos/morbidity-group.request.dto';
+import { CreateMorbidityGroupRequestDTO, CreateMorbidityGroupResponseDTO, FindMorbidityGroupSelectorOptionsResponseDTO, FindMorbidityGroupsResponseDTO, FindOneMorbidityGroupAndUpdateRequestDTO, FindOneMorbidityGroupAndUpdateResponseDTO } from './dtos';
 
 @Controller('morbidity-groups')
 export class MorbidityGroupController {
@@ -18,23 +17,21 @@ export class MorbidityGroupController {
   @Get()
   async find(): Promise<FindMorbidityGroupsResponseDTO> {
     const groups = await this.morbidityGroupService.find();
-    return { groups };
+    return { morbidityGroups: groups };
+  }
+
+  @Get('selector')
+  async findSelectorOptions(): Promise<FindMorbidityGroupSelectorOptionsResponseDTO> {
+    const options = await this.morbidityGroupService.findSelectorOptions();
+    return { options };
   }
 
   @Patch(":id")
   async findOneAndUpdate(
     @Param('id') id: number,
-    @Body() body: UpdateMorbidityGroupRequestDTO
-  ): Promise<UpdateMorbidityGroupResponseDTO> {
-    await this.morbidityGroupService.update(id, body);
-    return;
-  }
-
-  @Delete(':id')
-  async findOneAndInactive(
-    @Param("id") id: number
-  ): Promise<InactiveMorbiditGroupResponseDTO> {
-    await this.morbidityGroupService.inactive(id);
+    @Body() body: FindOneMorbidityGroupAndUpdateRequestDTO
+  ): Promise<FindOneMorbidityGroupAndUpdateResponseDTO> {
+    await this.morbidityGroupService.findOneAndUpdate(id, body);
     return;
   }
 }

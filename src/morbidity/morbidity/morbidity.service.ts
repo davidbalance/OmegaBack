@@ -1,10 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { MorbidityRepository } from './morbidity.repository';
 import { Morbidity } from './entities/morbidity.entity';
-import { CreateMorbidityRequestDTO, UpdateMorbidityRequestDTO } from '@/shared/dtos/morbidity.request.dto';
 import { MorbidityGroupService } from '../morbidity-group/morbidity-group.service';
-
-type FindGroupParams = Omit<Morbidity, 'id' | 'status' | 'morbidities'>
+import { CreateMorbidityRequestDTO, FindMorbidity, FindOneMorbidityAndUpdateRequestDTO } from './dtos';
+import { SelectorOption } from '@/shared';
 
 @Injectable()
 export class MorbidityService {
@@ -14,29 +13,43 @@ export class MorbidityService {
     @Inject(MorbidityGroupService) private readonly groupService: MorbidityGroupService
   ) { }
 
-  async create(createMorbidity: CreateMorbidityRequestDTO): Promise<Morbidity> {
-    const group = await this.groupService.findOne({ id: createMorbidity.group });
-    return await this.repository.create({ ...createMorbidity, group: group });
+  async create({ group, ...data }: CreateMorbidityRequestDTO): Promise<Morbidity> {
+    const morbidityGroup = await this.groupService.findOneById(group);
+    return await this.repository.create({ ...data, group: morbidityGroup });
   }
 
-  async find(params?: Partial<FindGroupParams>): Promise<Morbidity[]> {
-    return await this.repository.find({ ...params, status: true });
+  async find(): Promise<FindMorbidity[]> {
+    const morbidities = await this.repository.find({
+      where: { status: true },
+      select: {
+        id: true,
+        name: true
+      }
+    });
+    return morbidities;
   }
 
-  async findOne(params?: Partial<FindGroupParams & { id: number }>): Promise<Morbidity> {
-    return await this.repository.findOne(params);
+  async findSelectorOptions(): Promise<SelectorOption<number>[]> {
+    const morbidities = await this.repository.find({
+      where: { status: true },
+      select: {
+        id: true,
+        name: true
+      }
+    });
+    const options = await morbidities.map((e) => ({
+      key: e.id,
+      label: e.name
+    } as SelectorOption<number>));
+    return options;
   }
 
-  async update(id: number, updateMorbidityDto: UpdateMorbidityRequestDTO): Promise<Morbidity> {
-    const morbidity = await this.repository.findOne({ id: id }, { group: true });
-    if (morbidity.group.id !== updateMorbidityDto.group) {
-      const group = await this.groupService.findOne({ id: updateMorbidityDto.group });
-      return await this.repository.findOneAndUpdate({ id }, { ...updateMorbidityDto, group: group });
+  async findOneAndUpdate(id: number, { group, ...data }: FindOneMorbidityAndUpdateRequestDTO): Promise<Morbidity> {
+    if (group) {
+      const morbidityGroup = await this.groupService.findOneById(group);
+      return await this.repository.findOneAndUpdate({ id }, { ...data, group: morbidityGroup });
+    } else {
+      return await this.repository.findOneAndUpdate({ id }, { ...data });
     }
-    return await this.repository.findOneAndUpdate({ id }, { name: updateMorbidityDto.name });
-  }
-
-  async inactive(id: number): Promise<void> {
-    await this.repository.findOneAndUpdate({ id }, { status: false });
   }
 }

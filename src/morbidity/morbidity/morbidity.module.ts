@@ -12,7 +12,10 @@ import { MorbidityGroupModule } from '../morbidity-group/morbidity-group.module'
     MorbidityGroupModule
   ],
   controllers: [MorbidityController],
-  providers: [MorbidityService, MorbidityRepository],
+  providers: [
+    MorbidityService,
+    MorbidityRepository
+  ],
   exports: [MorbidityService]
 })
 export class MorbidityModule { }

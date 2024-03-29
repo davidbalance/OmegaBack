@@ -10,7 +10,10 @@ import { MorbidityGroupRepository } from './morbidity-group.repository';
     SqlDatabaseModule.forFeature([MorbidityGroup]),
   ],
   controllers: [MorbidityGroupController],
-  providers: [MorbidityGroupService, MorbidityGroupRepository],
+  providers: [
+    MorbidityGroupService,
+    MorbidityGroupRepository
+  ],
   exports: [MorbidityGroupService]
 })
 export class MorbidityGroupModule { }
