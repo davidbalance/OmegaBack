@@ -3,16 +3,16 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'TOKENS' })
 export class Token extends AbstractEntity<number>{
-    @PrimaryGeneratedColumn('increment', { name: 'TOKEN_ID' })
+    @PrimaryGeneratedColumn('increment', { name: 'tokenId' })
     public id: number;
 
     @Index('token-user-idx')
-    @Column({ name: 'TOKEN_KEY', type: 'int', nullable: false, unique: true })
+    @Column({ name: 'tokenKey', type: 'int', nullable: false, unique: true })
     public key: number;
 
-    @Column({ name: 'TOKEN_IN_USE', type: 'varchar', length: 256, nullable: false, unique: true })
+    @Column({ name: 'tokenUsed', type: 'varchar', length: 256, nullable: false, unique: true })
     public token: string;
 
-    @Column({ name: 'TOKEN_EXPIRES_AT', type: 'datetime', nullable: false })
+    @Column({ name: 'tokenExpiresAt', type: 'datetime', nullable: false })
     public expiresAt: Date;
 }
