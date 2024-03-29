@@ -3,7 +3,7 @@ import { UserRepository } from './user.repository';
 import { User } from './entities/user.entity';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { CreateUserRequestDTO, FindOneUserAndUpdateRequestDTO } from '../common';
-import { CredentialEvent, UserCreateEvent, UserEvent, UserRemoveEvent, UserUpdateEvent } from '@/shared';
+import { CredentialCreateEvent, CredentialEvent, CredentialRemoveEvent, UserCreateEvent, UserEvent, UserRemoveEvent, UserUpdateEvent } from '@/shared';
 
 @Injectable()
 export class UserService {
@@ -46,12 +46,14 @@ export class UserService {
   }
 
   @OnEvent(CredentialEvent.CREATE)
-  async assignCredential(id: number): Promise<void> {
+  async assignCredential({ createEvent }: CredentialCreateEvent): Promise<void> {
+    const { id } = createEvent;
     this.repository.findOneAndUpdate({ id }, { hasCredential: true });
   }
 
   @OnEvent(CredentialEvent.REMOVE)
-  async removeCredential(id: number): Promise<void> {
+  async removeCredential({ removeEvent }: CredentialRemoveEvent): Promise<void> {
+    const { id } = removeEvent;
     this.repository.findOneAndUpdate({ id }, { hasCredential: false });
   }
 

@@ -1,17 +1,21 @@
 import { AbstractEntity } from "src/shared";
-import { User } from "src/user/user/entities/user.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('USER_CREDENTIALS')
+@Index(['email', 'user'], { unique: true })
 export class UserCredential extends AbstractEntity<number> {
-    @PrimaryGeneratedColumn('increment', { name: 'USER_CREDENTIAL_ID' })
+    @PrimaryGeneratedColumn('increment', { name: 'userCredentialId' })
     public id: number;
-    @Column({ name: 'USER_CREDENTIAL_EMAIL', type: 'varchar', length: 128, unique: true, nullable: false })
+
+    @Column({ name: 'userCredentialEmail', type: 'varchar', length: 128, unique: true, nullable: false })
     public email: string;
-    @Column({ name: 'USER_CREDENTIAL_PASSWORD', type: 'varchar', length: 256, nullable: false })
+
+    @Column({ name: 'userCredentialPassword', type: 'varchar', length: 256, nullable: false })
     public password: string;
 
-    @OneToOne(() => User, { eager: false })
-    @JoinColumn({ name: 'USER_ID', referencedColumnName: 'id' })
-    public user: User;
+    @Column({ name: 'userCredentialUser', type: 'int', nullable: false, unique: true })
+    public user: number;
+
+    @Column({ name: 'userCredentialStatus', type: 'boolean', default: true, nullable: false })
+    public status: boolean;
 }
