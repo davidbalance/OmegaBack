@@ -6,6 +6,7 @@ import { WebClient } from './entities/web-client.entity';
 import { WebClientRepository } from './web-client.repository';
 import { JwtAuthStrategy } from '@/authentication/strategies';
 import { UserListener } from './listeners';
+import { AccessControlListener } from './listeners/access-control.listener';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UserListener } from './listeners';
     WebClientService,
     WebClientRepository,
     UserListener,
+    AccessControlListener,
     JwtAuthStrategy
   ],
   exports: [WebClientService]

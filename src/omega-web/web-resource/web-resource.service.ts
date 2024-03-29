@@ -1,26 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateWebResourceDto } from './dto/create-web-resource.dto';
 import { UpdateWebResourceDto } from './dto/update-web-resource.dto';
+import { WebResourceRespository } from './web-resource.repository';
+import { WebResource } from './entities/web-resource.entity';
+import { In } from 'typeorm';
 
 @Injectable()
 export class WebResourceService {
-  create(createWebResourceDto: CreateWebResourceDto) {
-    return 'This action adds a new webResource';
-  }
+  constructor(
+    @Inject(WebResourceRespository) private readonly repository: WebResourceRespository
+  ) { }
 
-  findAll() {
-    return `This action returns all webResource`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} webResource`;
-  }
-
-  update(id: number, updateWebResourceDto: UpdateWebResourceDto) {
-    return `This action updates a #${id} webResource`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} webResource`;
+  async findInNames(names: string[]): Promise<WebResource[]> {
+    const resources = await this.repository.find({ where: { name: In(names) } });
+    return resources;
   }
 }
