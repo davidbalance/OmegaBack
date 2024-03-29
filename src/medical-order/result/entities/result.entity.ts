@@ -30,7 +30,7 @@ export class Result extends AbstractEntity<number> {
     public path: string;
 
     @Index('result-labint-idx')
-    @Column({ name: 'RESULT_LABINT', type: 'int', unique: true, nullable: false })
+    @Column({ name: 'RESULT_LABINT', type: 'int', unique: true, nullable: true })
     public labint: number;
 
     @ManyToOne(() => Order, order => order.results, { eager: false })

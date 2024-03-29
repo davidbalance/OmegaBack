@@ -34,6 +34,22 @@ export class OrderService
     return await this.repository.create({ ...order, labint: order.key });
   }
 
+  async findOrdersByDNI(dni: string): Promise<any[]> {
+    const orders = await this.repository.find(
+      { patient: dni },
+      { process: true, results: true },
+      {
+        id: true,
+        process: { name: true },
+        createAt: true,
+        results: {
+          examName: true
+        }
+      }, { createAt: 1 }
+    );
+    return orders.map((e) => ({ ...e, process: e.process.name }));
+  }
+
   async find(params?: Partial<FindOrderParams>): Promise<Order[]> {
     return this.repository.find(params, { results: true });
   }

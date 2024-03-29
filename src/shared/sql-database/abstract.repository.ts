@@ -1,4 +1,4 @@
-import { DeepPartial, FindOptionsRelations, FindOptionsSelect, FindOptionsWhere, Repository } from "typeorm";
+import { DeepPartial, FindOptionsOrder, FindOptionsRelations, FindOptionsSelect, FindOptionsWhere, Repository } from "typeorm";
 import { AbstractEntity } from "./abstract.entity";
 import { Logger, NotFoundException } from "@nestjs/common";
 
@@ -31,8 +31,8 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
      * @param relationOptions 
      * @returns 
      */
-    async find(filterOptions: FindOptionsWhere<TEntity>, relationOptions?: FindOptionsRelations<TEntity>, selectOptions?: FindOptionsSelect<TEntity>): Promise<TEntity[]> {
-        return await this.model.find({ where: filterOptions, relations: relationOptions, select: selectOptions });
+    async find(filterOptions: FindOptionsWhere<TEntity>, relationOptions?: FindOptionsRelations<TEntity>, selectOptions?: FindOptionsSelect<TEntity>, orderOptions?: FindOptionsOrder<TEntity>): Promise<TEntity[]> {
+        return await this.model.find({ where: filterOptions, relations: relationOptions, select: selectOptions, order: orderOptions });
     }
 
     /**

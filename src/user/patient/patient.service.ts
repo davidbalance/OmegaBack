@@ -23,7 +23,7 @@ export class PatientService {
   }
 
   async find(params?: Partial<FindPatientParams>): Promise<Patient[]> {
-    return await this.repository.find({ ...params, user: { dni: params.dni, status: true } }, { user: true })
+    return await this.repository.find({ ...params, user: { status: true } }, { user: true }, { age: true, id: true, birthday: true, gender: true, user: { dni: true, email: true, lastname: true, name: true } })
   }
 
   async findOne(params?: Partial<FindPatientParams & { id: number }>): Promise<Patient> {

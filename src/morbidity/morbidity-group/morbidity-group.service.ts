@@ -17,7 +17,7 @@ export class MorbidityGroupService {
   }
 
   async find(params?: Partial<FindMorbidityParams>): Promise<MorbidityGroup[]> {
-    return await this.repository.find({ ...params, status: true });
+    return await this.repository.find({ ...params, status: true }, null, { id: true, name: true });
   }
 
   async findOne(params?: Partial<FindMorbidityParams & { id: number }>): Promise<MorbidityGroup> {

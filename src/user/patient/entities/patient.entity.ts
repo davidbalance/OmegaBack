@@ -9,7 +9,7 @@ export class Patient extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'PATIENT_ID' })
     public id: number;
 
-    @Column({ name: 'PATIENT_NAME', type: 'enum', enum: PatientGenderEnum, nullable: false })
+    @Column({ name: 'PATIENT_GENDER', type: 'enum', enum: PatientGenderEnum, nullable: false })
     public gender: PatientGenderEnum;
 
     @Column({ name: 'PATIENT_BIRTHDAY', type: 'date', nullable: false })

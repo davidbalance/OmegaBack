@@ -4,27 +4,24 @@ import { AbstractEntity } from "src/shared";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'ORDERS' })
+@Index(['patient', 'corporativeGroup', 'company', 'branch', 'labint'])
 export class Order extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'ORDER_ID' })
     public id: number;
 
-    @Index('order-user-idx')
+    @Index({ unique: false })
     @Column({ name: 'USER_DNI', type: 'varchar', length: 10, nullable: false })
     public patient: string;
 
-    @Index('order-corporative-group-idx')
     @Column({ name: 'CORPORATIVE_GROUP_ID', type: 'int', nullable: false })
     public corporativeGroup: number;
 
-    @Index('order-company-idx')
     @Column({ name: 'COMPANY_RUC', type: 'varchar', length: 13, nullable: false })
     public company: string;
 
-    @Index('order-branch-idx')
     @Column({ name: 'BRANCH_ID', type: 'int', nullable: false })
     public branch: number;
 
-    @Index('order-labint-idx')
     @Column({ name: 'ORDER_LABINT', type: 'int', unique: true, nullable: true })
     public labint: number;
 

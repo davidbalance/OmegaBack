@@ -13,7 +13,7 @@ export class WebClient extends AbstractEntity<number> {
 
     @ManyToMany(() => WebRoute, { eager: true })
     @JoinTable({
-        name: 'CLIENT_ROUTE',
+        name: 'OMEGA_CLIENT_ROUTE',
         joinColumn: { name: 'CLIENT_ID', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'ROUTE_ID', referencedColumnName: 'id' },
     })

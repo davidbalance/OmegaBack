@@ -25,11 +25,13 @@ export class DoctorService {
   }
 
   async find(params?: Partial<FindDoctorParams>): Promise<Doctor[]> {
-    return await this.repository.find({ ...params, user: { dni: params.dni, status: true } }, { user: true });
+    return await this.repository.find({ ...params, user: { status: true } },
+      { user: true },
+      { id: true, signature: true, user: { dni: true, email: true, name: true, lastname: true } });
   }
 
   async findOne(params?: Partial<FindDoctorParams & { id: number }>): Promise<Doctor> {
-    return await this.repository.findOne({ ...params, user: { dni: params.dni, status: true } }, { user: true })
+    return await this.repository.findOne({ ...params, user: { status: true } }, { user: true })
   }
 
   async findOneAndUpdate(id: number, doctor: UpdateDoctorRequestDTO): Promise<Doctor> {

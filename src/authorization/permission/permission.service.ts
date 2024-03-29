@@ -14,12 +14,22 @@ export class PermissionService {
 
   find(): Promise<Permission[]>;
   find(ids: number[]): Promise<Permission[]>;
-  async find(undefinedOrValue?: number[]): Promise<Permission[]> {
+  async find(undefinedOrValue?: number[]): Promise<any> {
+    let permissions: Permission[];
     if (undefinedOrValue) {
-      return await this.repository.find({ id: In(undefinedOrValue) });
+      permissions = await this.repository.find({ id: In(undefinedOrValue) }, null, { id: null, resource: true, type: true }, { type: 1, order: 1 });
     } else {
-      return await this.repository.find({});
+      permissions = await this.repository.find({}, null, { id: null, resource: true, type: true }, { type: 1, order: 1 });
     }
+    const newPermission: any = {};
+    permissions.forEach((e) => {
+      if (!newPermission[e.resource]) {
+        newPermission[e.resource] = [];
+      }
+      newPermission[e.resource] = [...newPermission[e.resource], e.type];
+    })
+
+    return newPermission;
   }
 
   async create(createPermissionDto: CreatePermissionRequestDTO): Promise<Permission> {
