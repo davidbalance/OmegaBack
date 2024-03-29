@@ -1,9 +1,9 @@
 import { ConflictException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { User } from './entities/user.entity';
-import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CreateUserRequestDTO, FindOneUserAndUpdateRequestDTO } from '../common';
-import { CredentialCreateEvent, CredentialEvent, CredentialRemoveEvent, UserCreateEvent, UserEvent, UserRemoveEvent, UserUpdateEvent } from '@/shared';
+import { UserCreateEvent, UserEvent, UserRemoveEvent, UserUpdateEvent } from '@/shared';
 
 @Injectable()
 export class UserService {
@@ -43,18 +43,6 @@ export class UserService {
         lastname: true
       }
     });
-  }
-
-  @OnEvent(CredentialEvent.CREATE)
-  async assignCredential({ createEvent }: CredentialCreateEvent): Promise<void> {
-    const { id } = createEvent;
-    this.repository.findOneAndUpdate({ id }, { hasCredential: true });
-  }
-
-  @OnEvent(CredentialEvent.REMOVE)
-  async removeCredential({ removeEvent }: CredentialRemoveEvent): Promise<void> {
-    const { id } = removeEvent;
-    this.repository.findOneAndUpdate({ id }, { hasCredential: false });
   }
 
   async findOneAndUpdate(id: number, user: FindOneUserAndUpdateRequestDTO): Promise<User> {
