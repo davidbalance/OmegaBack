@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TokenService } from './token.service';
-import { TokenController } from './token.controller';
 import { SqlDatabaseModule } from 'src/shared';
 import { Token } from './entities/token.entity';
 import { TokenRepository } from './token.repository';
@@ -20,8 +19,10 @@ import { ConfigService } from '@nestjs/config';
       })
     })
   ],
-  controllers: [TokenController],
-  providers: [TokenService, TokenRepository],
+  providers: [
+    TokenService,
+    TokenRepository
+  ],
   exports: [TokenService]
 })
 export class TokenModule { }

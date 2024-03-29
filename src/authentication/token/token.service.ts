@@ -1,17 +1,17 @@
 import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { TokenRepository } from './token.repository';
-import { AccessToken, RefreshToken } from '@/shared';
 import { JwtService } from '@nestjs/jwt';
 import dayjs from 'dayjs';
 import { Between } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
+import { RefreshToken, AccessToken } from './types';
 
 type Tokens = {
   access: string;
   refresh: string;
 }
 
-type Token = { token: string, expiresAt: Date }
+type TokenPayload = { token: string, expiresAt: Date }
 
 @Injectable()
 export class TokenService {
@@ -22,7 +22,7 @@ export class TokenService {
     @Inject(ConfigService) private readonly config: ConfigService
   ) { }
 
-  async initToken(sub: number): Promise<{ access: Token, refresh: Token }> {
+  async initToken(sub: number): Promise<{ access: TokenPayload, refresh: TokenPayload }> {
     const { access, refresh } = await this.generateToken(sub);
     const { expiresAccess, expiresRefresh } = this.getExpiresTime();
     await this.storeToken(sub, access);
@@ -38,7 +38,7 @@ export class TokenService {
     };
   }
 
-  async refreshToken(payload: RefreshToken): Promise<{ access: Token, refresh: Token }> {
+  async refreshToken(payload: RefreshToken): Promise<{ access: TokenPayload, refresh: TokenPayload }> {
     const flag = await this.canRefresh(payload);
     if (!flag) throw new ForbiddenException(["Forbidden token"]);
     const { access, refresh } = await this.generateToken(payload.sub);
@@ -94,17 +94,17 @@ export class TokenService {
   async removeExpireToken(): Promise<void> {
     const to = dayjs().toDate();
     const from = dayjs().subtract(1, "day").toDate();
-    await this.repository.findAndDelete({ expiresAt: Between(from, to) });
+    await this.repository.findOneAndDelete({ expiresAt: Between(from, to) });
   }
 
   private async canRefresh(token: RefreshToken): Promise<boolean> {
     try {
-      const storedToken = await this.repository.findOne({ key: token.sub });
+      const storedToken = await this.repository.findOne({ where: { key: token.sub } });
       const match = storedToken.token === token.token;
       const issuedAt = dayjs.unix(token.iat);
       const diff = dayjs().diff(issuedAt, 'seconds');
       if (!match || diff > 60) {
-        await this.repository.findAndDelete({ key: token.sub });
+        await this.repository.findOneAndDelete({ key: token.sub });
         return false;
       }
       return true;

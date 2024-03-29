@@ -14,7 +14,8 @@ export class TokenRepository extends AbstractRepository<number, Token> {
         super(tokenModel);
     }
 
-    async findAndDelete(filterOptions: FindOptionsWhere<Token>): Promise<void> {
+    async findOneAndDelete(filterOptions: FindOptionsWhere<Token>): Promise<void> {
         await this.tokenModel.delete(filterOptions);
     }
+
 }
