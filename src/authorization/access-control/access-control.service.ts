@@ -14,6 +14,10 @@ export class AccessControlService {
         @Inject(ResourceService) private readonly resourceService: ResourceService
     ) { }
 
+    async findOne(user: number): Promise<AccessControl> {
+        return await this.repository.findOne({ where: { user: user } });
+    }
+
     async updateAccessRoles(user: number, { roles }: FindOneACClientAndUpdateRolesRequestDTO): Promise<AccessControl> {
         const foundRoles = await this.roleService.findIn(roles);
         return await this.repository.findOneAndUpdate({ user: user }, { roles: foundRoles });

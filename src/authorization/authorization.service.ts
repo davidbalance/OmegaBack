@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AccessControlService } from './access-control/access-control.service';
-import { AuthorizationType } from './common';
-import { Permission } from './permission/entities/permission.entity';
+import { Resource } from './resource/entities/resource.entity';
+import { ClaimEnum } from '@/shared';
 
 @Injectable()
 export class AuthorizationService {
@@ -9,10 +9,10 @@ export class AuthorizationService {
         @Inject(AccessControlService) private readonly accessControl: AccessControlService
     ) { }
 
-    async canAccess(user: number, type: AuthorizationType, resources: string[]): Promise<boolean> {
+    async canAccess(user: number, claim: ClaimEnum, resources: string[]): Promise<boolean> {
         const accessControl = await this.accessControl.findOne(user);
-        const permissions: Permission[] = accessControl.roles.reduce((prev: Permission[], curr) => [...prev, ...curr.permissions], []);
-        permissions.concat(accessControl.permissions);
-        return permissions.some(e => resources.includes(e.resource) && e.type === type);
+        const currentResources: Resource[] = accessControl.roles.reduce((prev: Resource[], curr) => [...prev, ...curr.resources], []);
+        currentResources.concat(accessControl.resources);
+        return currentResources.some(e => resources.includes(e.name) && e.claim === claim);
     }
 }
