@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SenderStatusService } from '../sender-status.service';
+import { WebResourceService } from './web-resource.service';
 
-describe('SenderStatusService', () => {
-  let service: SenderStatusService;
+describe('WebResourceService', () => {
+  let service: WebResourceService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [SenderStatusService],
+      providers: [WebResourceService],
     }).compile();
 
-    service = module.get<SenderStatusService>(SenderStatusService);
+    service = module.get<WebResourceService>(WebResourceService);
   });
 
   it('should be defined', () => {
