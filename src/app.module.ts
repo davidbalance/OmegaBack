@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { SqlDatabaseModule } from './shared';
 import { MedicalOrderModule } from './medical-order/medical-order.module';
 import { MorbidityModule } from './morbidity/morbidity.module';
-import { ExamModule } from './exam/exam.module';
 import { ReportModule } from './report/report.module';
 import { LocationModule } from './location/location.module';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -14,6 +13,7 @@ import { SenderStatusModule } from './sender-status/sender-status.module';
 import { OmegaWebModule } from './omega-web/omega-web.module';
 import { EventEmitter } from 'stream';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { LaboratoryModule } from './laboratory/laboratory.module';
 
 @Module({
   imports: [
@@ -29,14 +29,14 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     SqlDatabaseModule,
     MedicalOrderModule,
     MorbidityModule,
-    ExamModule,
     ReportModule,
     LocationModule,
     UserModule,
     AuthenticationModule,
     AuthorizationModule,
     SenderStatusModule,
-    OmegaWebModule
+    OmegaWebModule,
+    LaboratoryModule
   ],
   controllers: [AppController],
   providers: [AppService],
