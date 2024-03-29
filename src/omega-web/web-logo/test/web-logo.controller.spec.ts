@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WebLogoController } from './web-logo.controller';
-import { WebLogoService } from './web-logo.service';
+import { WebLogoController } from '../web-logo.controller';
+import { WebLogoService } from '../web-logo.service';
 
 describe('WebLogoController', () => {
   let controller: WebLogoController;

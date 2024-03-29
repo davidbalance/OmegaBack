@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WebResourceController } from './web-resource.controller';
-import { WebResourceService } from './web-resource.service';
+import { WebResourceController } from '../web-resource.controller';
+import { WebResourceService } from '../web-resource.service';
 
 describe('WebResourceController', () => {
   let controller: WebResourceController;

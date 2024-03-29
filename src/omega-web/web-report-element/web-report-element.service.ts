@@ -1,26 +1,35 @@
-import { Injectable } from '@nestjs/common';
-import { CreateWebReportElementDto } from './dto/create-web-report-element.dto';
-import { UpdateWebReportElementDto } from './dto/update-web-report-element.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { WebReportElementRepository } from './web-report-element.repository.dto';
+import { SelectorOption } from '@/shared';
 
 @Injectable()
 export class WebReportElementService {
-  create(createWebReportElementDto: CreateWebReportElementDto) {
-    return 'This action adds a new webReportElement';
+
+  constructor(
+    @Inject(WebReportElementRepository) private readonly repository: WebReportElementRepository
+  ) { }
+
+  async findSelectorOptions(): Promise<SelectorOption<string>[]> {
+    const elements = await this.repository.find({
+      where: { status: true, mandatory: false },
+      select: {
+        name: true
+      }
+    });
+    const options = elements.map((e) => ({
+      key: e.name,
+      label: e.name
+    } as SelectorOption<string>));
+    return options;
   }
 
-  findAll() {
-    return `This action returns all webReportElement`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} webReportElement`;
-  }
-
-  update(id: number, updateWebReportElementDto: UpdateWebReportElementDto) {
-    return `This action updates a #${id} webReportElement`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} webReportElement`;
+  async findManadatoryFields(): Promise<string[]> {
+    const elements = await this.repository.find({
+      where: { status: true, mandatory: true },
+      select: {
+        name: true
+      }
+    });
+    return elements.map((e) => e.name);
   }
 }

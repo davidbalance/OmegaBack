@@ -8,6 +8,11 @@ export class UpdateWebClientRoutesResponseDTO {
     public readonly routes: number[];
 }
 
-export class FindWebClientConfiguration {
-    public readonly client: Omit<WebClient, 'createAt' | 'updateAt' | 'user' | 'id'>;
+export class FindWebClient {
+    public readonly logo: { address: string };
+    public readonly resources: { icon?: string; label: string; address: string; }[];
+}
+
+export class FindOneWebClientResponseDTO {
+    public readonly client: FindWebClient;
 }

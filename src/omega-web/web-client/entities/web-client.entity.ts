@@ -1,21 +1,26 @@
-import { WebRoute } from "@/omega-web/web-routes/entities/web-route.entity";
-import { AbstractEntity } from "@/shared";
-import { Column, Entity, Index, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'OMEGA_WEB_CLIENT' })
+import { WebLogo } from "@/omega-web/web-logo/entities/web-logo.entity";
+import { WebResource } from "@/omega-web/web-resource/entities/web-resource.entity";
+import { AbstractEntity } from "@/shared";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+
+@Entity({ name: 'WEB_CLIENT' })
 export class WebClient extends AbstractEntity<number> {
-    @PrimaryGeneratedColumn('increment', { name: 'CLIENT_ID' })
+    @PrimaryGeneratedColumn('increment', { name: 'clientId' })
     public id: number;
 
-    @Index('web-client-user-idx')
-    @Column({ name: 'CLIENT_USER', type: 'int' })
+    @Column({ name: 'userId', type: 'int' })
     public user: number;
 
-    @ManyToMany(() => WebRoute, { eager: true })
+    @ManyToMany(() => WebResource, { eager: true })
     @JoinTable({
-        name: 'OMEGA_CLIENT_ROUTE',
-        joinColumn: { name: 'CLIENT_ID', referencedColumnName: 'id' },
-        inverseJoinColumn: { name: 'ROUTE_ID', referencedColumnName: 'id' },
+        name: 'WEB_CLIENT_RESOURCE',
+        joinColumn: { name: 'clientId', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'resourceId', referencedColumnName: 'id' },
     })
-    public routes: WebRoute[];
+    public resources: WebResource[];
+
+    @ManyToOne(() => WebLogo, logo => logo.clients, { eager: true })
+    @JoinColumn({ referencedColumnName: 'id', name: 'logoId' })
+    public logo: WebLogo;
 }

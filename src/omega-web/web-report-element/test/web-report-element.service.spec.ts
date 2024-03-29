@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WebReportElementService } from './web-report-element.service';
+import { WebReportElementService } from '../web-report-element.service';
 
 describe('WebReportElementService', () => {
   let service: WebReportElementService;

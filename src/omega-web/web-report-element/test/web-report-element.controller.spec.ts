@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WebReportElementController } from './web-report-element.controller';
-import { WebReportElementService } from './web-report-element.service';
+import { WebReportElementController } from '../web-report-element.controller';
+import { WebReportElementService } from '../web-report-element.service';
 
 describe('WebReportElementController', () => {
   let controller: WebReportElementController;
