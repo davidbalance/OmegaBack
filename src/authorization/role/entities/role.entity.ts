@@ -1,24 +1,24 @@
-import { Permission } from "src/authorization/permission/entities/permission.entity";
+import { Resource } from "@/authorization/resource/entities/resource.entity";
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'ROLES' })
 export class Role extends AbstractEntity<number> {
 
-    @PrimaryGeneratedColumn('increment', { name: 'ROLE_ID' })
+    @PrimaryGeneratedColumn('increment', { name: 'roleId' })
     public id: number;
 
-    @Column({ name: 'ROLE_NAME', type: 'varchar', length: 64, unique: true, nullable: false })
+    @Column({ name: 'roleName', type: 'varchar', length: 64, unique: true, nullable: false })
     public name: string;
 
-    @Column({ name: 'ROLE_STATUS', type: 'boolean', default: true, nullable: false })
+    @Column({ name: 'roleStatus', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
-    @ManyToMany(() => Permission)
+    @ManyToMany(() => Resource, { eager: true })
     @JoinTable({
-        name: 'ROLES_PERMISSIONS',
-        joinColumn: { name: 'ROLE_ID', referencedColumnName: 'id' },
-        inverseJoinColumn: { name: 'PERMISSION_ID', referencedColumnName: 'id' }
+        name: 'ROLES_RESOURCE',
+        joinColumn: { referencedColumnName: 'id', name: 'roleId' },
+        inverseJoinColumn: { referencedColumnName: 'id', name: 'resourceId' }
     })
-    public permissions: Permission[];
+    public resources: Resource[];
 }

@@ -3,10 +3,14 @@ import { AccessControlService } from './access-control.service';
 import { SqlDatabaseModule } from '@/shared';
 import { AccessControl } from './entity/access-control.entity';
 import { AccessControlRepository } from './access-control.repository';
+import { UserListener } from './listeners';
 
 @Module({
   imports: [SqlDatabaseModule.forFeature([AccessControl])],
-  providers: [AccessControlService, AccessControlRepository],
+  providers: [
+    AccessControlService,
+    UserListener,
+    AccessControlRepository],
   exports: [AccessControlService]
 })
 export class AccessControlModule { }

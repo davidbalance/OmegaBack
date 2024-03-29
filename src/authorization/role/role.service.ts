@@ -1,35 +1,47 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RoleRepository } from './role.repository';
 import { Role } from './entities/role.entity';
-import { PermissionService } from '../permission/permission.service';
-import { CreateRoleRequestDTO, UpdateRolePermissionsRequestDTO, UpdateRoleRequestDTO } from './dto';
+import { CreateRoleRequestDTO, FindOneRoleAndUpdateRequestDTO, FindRole } from './dto';
+import { ResourceService } from '../resource/resource.service';
+import { In } from 'typeorm';
 
 @Injectable()
 export class RoleService {
   constructor(
     @Inject(RoleRepository) private readonly repository: RoleRepository,
-    @Inject(PermissionService) private readonly permissionService: PermissionService
+    @Inject(ResourceService) private readonly resourceService: ResourceService
   ) { }
 
-  async create(createRoleDto: CreateRoleRequestDTO): Promise<Role> {
-    const permissions = await this.permissionService.find(createRoleDto.permissions);
-    return await this.repository.create({ ...createRoleDto, permissions: permissions });
+  async create({ resources, ...data }: CreateRoleRequestDTO): Promise<Role> {
+    const foundResources = await this.resourceService.findIn(resources);
+    return await this.repository.create({ ...data, resources: foundResources });
   }
 
-  async find(): Promise<Role[]> {
-    return await this.repository.find({ status: true }, { permissions: true }, { id: true, name: true, permissions: { id: true, resource: true, type: true } });
+  async find(): Promise<FindRole[]> {
+    return await this.repository.find({
+      where: { status: true },
+      select: {
+        id: true,
+        name: true,
+        resources: {
+          id: true,
+          name: true,
+          claim: true
+        }
+      }
+    });
   }
 
-  async findOneAndUpdate(id: number, updateRoleDto: UpdateRoleRequestDTO): Promise<Role> {
-    return await this.repository.findOneAndUpdate({ id }, updateRoleDto);
+  async findIn(ids: number[]): Promise<Role[]> {
+    return await this.repository.find({ where: { id: In(ids) } });
   }
 
-  async findOneAndUpdatePermissions(id: number, updateRoleDto: UpdateRolePermissionsRequestDTO): Promise<Role> {
-    const permissions = await this.permissionService.find(updateRoleDto.permissions);
-    return await this.repository.findOneAndUpdate({ id }, { permissions: permissions });
+  async findOneAndUpdate(id: number, { resources, ...data }: FindOneRoleAndUpdateRequestDTO): Promise<Role> {
+    const foundResources = await this.resourceService.findIn(resources);
+    return await this.repository.findOneAndUpdate({ id }, { ...data, resources: foundResources });
   }
 
-  async findOneAndInactive(id: number): Promise<void> {
-    await this.repository.findOneAndUpdateStatus(id, false);
+  async findOneAndDelete(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id });
   }
 }

@@ -1,13 +1,13 @@
-import { AbstractRepository, RepositoryUpdateStatusExtension } from "src/shared";
+import { AbstractRepository } from "src/shared";
 import { Role } from "./entities/role.entity";
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 
 @Injectable()
 export class RoleRepository
-    extends AbstractRepository<number, Role>
-    implements RepositoryUpdateStatusExtension<number, Role> {
+    extends AbstractRepository<number, Role> {
+
     protected logger: Logger = new Logger();
 
     constructor(
@@ -16,7 +16,7 @@ export class RoleRepository
         super(roleModel);
     }
 
-    async findOneAndUpdateStatus(id: number, status: boolean): Promise<Role> {
-        return await this.findOneAndUpdate({ id }, { status: status });
+    async findOneAndDelete(filterOptions: FindOptionsWhere<Role>): Promise<void> {
+        await this.findOneAndUpdate(filterOptions, { status: false });
     }
 }

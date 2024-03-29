@@ -2,28 +2,25 @@ import { Inject, Injectable } from '@nestjs/common';
 import { AccessControlRepository } from './access-control.repository';
 import { AccessControl } from './entity/access-control.entity';
 import { Role } from '../role/entities/role.entity';
-import { Permission } from '../permission/entities/permission.entity';
-import { AuthorizationType } from '../common';
+import { FindOneACClientAndUpdateResourcesRequestDTO, FindOneACClientAndUpdateRolesRequestDTO } from './dtos';
+import { ResourceService } from '../resource/resource.service';
+import { RoleService } from '../role/role.service';
 
 @Injectable()
 export class AccessControlService {
     constructor(
-        @Inject(AccessControlRepository) private readonly repository: AccessControlRepository
+        @Inject(AccessControlRepository) private readonly repository: AccessControlRepository,
+        @Inject(RoleService) private readonly roleService: RoleService,
+        @Inject(ResourceService) private readonly resourceService: ResourceService
     ) { }
 
-    async createAccessInstance(user: number): Promise<AccessControl> {
-        return await this.repository.create({ user: user });
+    async updateAccessRoles(user: number, { roles }: FindOneACClientAndUpdateRolesRequestDTO): Promise<AccessControl> {
+        const foundRoles = await this.roleService.findIn(roles);
+        return await this.repository.findOneAndUpdate({ user: user }, { roles: foundRoles });
     }
 
-    async findOne(user: number): Promise<AccessControl> {
-        return await this.repository.findOne({ user: user }, { permissions: true, roles: { permissions: true } });
-    }
-
-    async updateAccessRoles(user: number, roles: Role[]): Promise<AccessControl> {
-        return await this.repository.findOneAndUpdate({ user: user }, { roles: roles });
-    }
-
-    async updateAccessPermission(user: number, permissions: Permission[]): Promise<AccessControl> {
-        return await this.repository.findOneAndUpdate({ user: user }, { permissions: permissions });
+    async updateAccessPermission(user: number, { resources }: FindOneACClientAndUpdateResourcesRequestDTO): Promise<AccessControl> {
+        const foundResources = await this.resourceService.findIn(resources);
+        return await this.repository.findOneAndUpdate({ user: user }, { resources: foundResources });
     }
 }

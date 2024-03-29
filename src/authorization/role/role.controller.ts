@@ -1,6 +1,21 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post
+} from '@nestjs/common';
 import { RoleService } from './role.service';
-import { CreateRoleRequestDTO, CreateRoleResponseDTO, FindOneAndInactiveRoleResponseDTO, FindOneAndUpdateRoleResponseDTO, FindRolesResponseDTO, UpdateRoleRequestDTO } from './dto';
+import {
+  CreateRoleRequestDTO,
+  CreateRoleResponseDTO,
+  FindOneRoleAndDeleteResponseDTO,
+  FindOneRoleAndUpdateRequestDTO,
+  FindOneRoleAndUpdateResponseDTO,
+  FindRolesResponseDTO
+} from './dto';
 
 @Controller('roles')
 export class RoleController {
@@ -23,8 +38,8 @@ export class RoleController {
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
-    @Body() body: UpdateRoleRequestDTO
-  ): Promise<FindOneAndUpdateRoleResponseDTO> {
+    @Body() body: FindOneRoleAndUpdateRequestDTO
+  ): Promise<FindOneRoleAndUpdateResponseDTO> {
     await this.roleService.findOneAndUpdate(id, body);
     return;
   }
@@ -32,8 +47,8 @@ export class RoleController {
   @Delete(':id')
   async findOneAndDelete(
     @Param('id') id: number
-  ): Promise<FindOneAndInactiveRoleResponseDTO> {
-    await this.roleService.findOneAndInactive(id);
+  ): Promise<FindOneRoleAndDeleteResponseDTO> {
+    await this.roleService.findOneAndDelete(id);
     return;
   }
 }
