@@ -1,10 +1,8 @@
-import { Controller, Inject, Post, Res, UseGuards } from '@nestjs/common';
-import { UserCredentialService } from './user-credential/user-credential.service';
+import { Controller, Inject, Post, UseGuards } from '@nestjs/common';
 import { TokenService } from './token/token.service';
 import { JwtAuthGuard, JwtRefreshGuard, LocalAuthGuard } from './guards';
 import { User } from '@/shared/decorator';
-import { RefreshToken } from '@/shared';
-import { Response } from 'express';
+import { RefreshToken } from './token/types';
 
 @Controller('auth')
 export class AuthenticationController {
