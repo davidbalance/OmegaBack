@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ExamService } from './exam.service';
-import { FindExamSelectorOptions } from './dtos/exam.response.dto';
+import { FindExamSelectorOptions } from './dtos';
 
 @Controller('exams')
 export class ExamController {
