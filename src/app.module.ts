@@ -14,6 +14,7 @@ import { OmegaWebModule } from './omega-web/omega-web.module';
 import { EventEmitter } from 'stream';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { LaboratoryModule } from './laboratory/laboratory.module';
+import { MedicalResultModule } from './medical-result/medical-result.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { LaboratoryModule } from './laboratory/laboratory.module';
     AuthorizationModule,
     SenderStatusModule,
     OmegaWebModule,
-    LaboratoryModule
+    LaboratoryModule,
+    MedicalResultModule
   ],
   controllers: [AppController],
   providers: [AppService],
