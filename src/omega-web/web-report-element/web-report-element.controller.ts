@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { WebReportElementService } from './web-report-element.service';
 import { FindWebReportElementFieldsResponseDTO } from './dto';
 
-@Controller('report-elements')
+@Controller('omega-web/report-elements')
 export class WebReportElementController {
   constructor(private readonly webReportElementService: WebReportElementService) { }
 

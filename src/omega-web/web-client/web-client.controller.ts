@@ -4,7 +4,7 @@ import { User } from '@/shared/decorator';
 import { JwtAuthGuard } from '@/authentication/guards';
 import { FindOneWebClientResponseDTO } from './dto';
 
-@Controller('clients')
+@Controller('omega-web/clients')
 export class WebClientController {
   constructor(private readonly webClientService: WebClientService) { }
 

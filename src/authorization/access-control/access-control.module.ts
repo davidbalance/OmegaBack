@@ -3,7 +3,7 @@ import { AccessControlService } from './access-control.service';
 import { SqlDatabaseModule } from '@/shared';
 import { AccessControl } from './entity/access-control.entity';
 import { AccessControlRepository } from './access-control.repository';
-import { UserListener } from './listeners';
+import { CredentialListener } from './listeners';
 import { ResourceModule } from '../resource/resource.module';
 import { RoleModule } from '../role/role.module';
 import { AccessControlController } from './access-control.controller';
@@ -16,8 +16,9 @@ import { AccessControlController } from './access-control.controller';
   ],
   providers: [
     AccessControlService,
-    UserListener,
-    AccessControlRepository],
+    CredentialListener,
+    AccessControlRepository
+  ],
   exports: [AccessControlService],
   controllers: [AccessControlController]
 })

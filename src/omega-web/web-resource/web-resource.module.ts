@@ -11,6 +11,7 @@ import { WebResourceRespository } from './web-resource.repository';
   providers: [
     WebResourceService,
     WebResourceRespository
-  ]
+  ],
+  exports: [WebResourceService]
 })
 export class WebResourceModule { }

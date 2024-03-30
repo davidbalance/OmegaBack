@@ -5,20 +5,22 @@ import { SqlDatabaseModule } from '@/shared';
 import { WebClient } from './entities/web-client.entity';
 import { WebClientRepository } from './web-client.repository';
 import { JwtAuthStrategy } from '@/authentication/strategies';
-import { UserListener } from './listeners';
+import { CredentialListener } from './listeners';
 import { AccessControlListener } from './listeners/access-control.listener';
+import { WebResourceModule } from '../web-resource/web-resource.module';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([WebClient])
+    SqlDatabaseModule.forFeature([WebClient]),
+    WebResourceModule
   ],
   controllers: [WebClientController],
   providers: [
     WebClientService,
-    WebClientRepository,
-    UserListener,
+    CredentialListener,
     AccessControlListener,
-    JwtAuthStrategy
+    JwtAuthStrategy,
+    WebClientRepository,
   ],
   exports: [WebClientService]
 })

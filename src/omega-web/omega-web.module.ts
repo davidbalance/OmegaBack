@@ -9,25 +9,10 @@ const root = "omega-web"
 
 @Module({
   imports: [
-    RouterModule.register([
-      {
-        path: root,
-        module: WebResourceModule,
-      },
-      {
-        path: root,
-        module: WebReportElementModule,
-      },
-      {
-        path: root,
-        module: WebLogoModule,
-      },
-      {
-        path: root,
-        module: WebClientModule,
-      }
-    ])
-
+    WebResourceModule,
+    WebReportElementModule,
+    WebLogoModule,
+    WebClientModule
   ]
 })
 export class OmegaWebModule { }
