@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ReportValueService } from '../report-value.service';
+import { PdfManagerService } from '../pdf-manager.service';
 
-describe('ReportValueService', () => {
-  let service: ReportValueService;
+describe('PdfManagerService', () => {
+  let service: PdfManagerService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ReportValueService],
+      providers: [PdfManagerService],
     }).compile();
 
-    service = module.get<ReportValueService>(ReportValueService);
+    service = module.get<PdfManagerService>(PdfManagerService);
   });
 
   it('should be defined', () => {

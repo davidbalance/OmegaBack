@@ -21,7 +21,7 @@ export class Result extends AbstractEntity<number> {
     @Column({ name: 'doctorId', type: 'int', nullable: false })
     public doctor: number;
 
-    @Column({ name: 'resultAddress', type: 'varchar', length: 256, nullable: false })
+    @Column({ name: 'resultAddress', type: 'varchar', length: 256, nullable: true })
     public address: string;
 
     @ManyToOne(() => Order, order => order.results, { eager: false })

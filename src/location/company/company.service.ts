@@ -21,4 +21,14 @@ export class CompanyService {
     } as SelectorOption<number>));
     return options;
   }
+
+  async findOne(id: number): Promise<Company> {
+    const company = await this.repository.findOne({ where: { id } });
+    return company;
+  }
+  
+  async findOneByRuc(ruc: string): Promise<Company> {
+    const company = await this.repository.findOne({ where: { ruc } });
+    return company;
+  }
 }

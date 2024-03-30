@@ -7,11 +7,17 @@ import { OrderModule } from '../order/order.module';
 import { DiseaseModule } from '@/disease/disease/disease.module';
 import { Result } from './entities/result.entity';
 import { ResultRepository } from './result.repository';
+import { PatientModule } from '@/user/patient/patient.module';
+import { MedicalReportModule } from '../medical-report/medical-report.module';
+import { CompanyModule } from '@/location/company/company.module';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Result]),
     DoctorModule,
+    PatientModule,
+    CompanyModule,
+    MedicalReportModule,
     OrderModule,
     DiseaseModule
   ],

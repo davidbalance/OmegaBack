@@ -1,11 +1,34 @@
-import { Injectable } from '@nestjs/common';
-import { createWriteStream, existsSync, mkdirSync } from 'fs';
+import { Injectable, StreamableFile } from '@nestjs/common';
+import { createReadStream, createWriteStream, existsSync, mkdirSync } from 'fs';
 import path, { extname } from 'path';
 import { v4 } from 'uuid';
 import { StorageManager } from '../storage-manager.service';
 
 @Injectable()
 export class LocalStorageService implements StorageManager {
+
+    saveFile(buffer: Buffer, extension: string, destinationPath: string = path.resolve(`tmp`)): string | Promise<string> {
+        const filename = v4();
+        const outputDir = path.resolve(destinationPath);
+        const output = `${outputDir}/${filename}${extension}`;
+
+        if (!existsSync(destinationPath)) {
+            mkdirSync(destinationPath, { recursive: true });
+        }
+
+        const writeStream = createWriteStream(output);
+        writeStream.write(buffer);
+        writeStream.end();
+        return `${output}`;
+    }
+
+    readFile(dir: string): StreamableFile | Promise<StreamableFile> {
+        const filepath = path.resolve(dir);
+        const file = createReadStream(filepath);
+        return new StreamableFile(file);
+    }
+
+
     replaceFile(): Promise<boolean> {
         throw new Error('Method not implemented.');
     }
@@ -14,20 +37,5 @@ export class LocalStorageService implements StorageManager {
     }
     deleteFile(): Promise<boolean> {
         throw new Error('Method not implemented.');
-    }
-    saveFile(file: Express.Multer.File): string | Promise<string>;
-    saveFile(file: Express.Multer.File, dir: string): string | Promise<string>;
-    saveFile(file: Express.Multer.File, dir: string = path.resolve(`tmp`)): string | Promise<string> {
-        const extension = extname(file.originalname);
-        const filename = v4();
-        const destination = `${dir}/${filename}${extension}`;
-
-        if (!existsSync(dir)) {
-            mkdirSync(dir, { recursive: true });
-        }
-
-        const writeStream = createWriteStream(destination);
-        writeStream.write(file.buffer);
-        return `${filename}${extension}`;
     }
 }

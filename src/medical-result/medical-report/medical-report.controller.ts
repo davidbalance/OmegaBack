@@ -1,18 +1,22 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Controller, Get, Header, Inject, Param, StreamableFile } from '@nestjs/common';
 import { MedicalReportService } from './medical-report.service';
-import { CreateMedicalReportRequestDTO } from '../common/dtos';
-import { CreateMedicalReportResponseDTO } from '../common/dtos/medical-report.response.dto';
+import { PdfManagerService } from '@/shared';
 
 @Controller('medical-report')
 export class MedicalReportController {
-  
-  constructor(private readonly medicalReportService: MedicalReportService) { }
 
-  @Post()
-  async create(
-    @Body() body: CreateMedicalReportRequestDTO
-  ): Promise<CreateMedicalReportResponseDTO> {
-    await this.medicalReportService.create(body);
-    return;
+  constructor(
+    private readonly medicalReportService: MedicalReportService,
+    @Inject(PdfManagerService) private readonly pdfService: PdfManagerService
+  ) { }
+
+  @Get('pdf/:id')
+  @Header('Content-Type', 'application/pdf')
+  @Header('Content-Disposition', 'attachment; filename="reporte-medico.pdf"')
+  async getPdf(
+    @Param('id') id: number
+  ): Promise<StreamableFile> {
+    return await this.medicalReportService.getPdf(id);
   }
+
 }

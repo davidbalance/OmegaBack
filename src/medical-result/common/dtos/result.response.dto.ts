@@ -4,11 +4,17 @@ export class FindResult {
     public readonly address: string;
     public readonly disease?: number;
     public readonly report?: {
-        address?: string
+        id: number,
+        content: string;
     }
 }
 
-export class FindResultsByDoctor {
+export class FindResultsByDoctorResponseDTO {
     public readonly results: FindResult[];
 }
 
+export class InsertMedicalReportResponseDTO {
+    public readonly result: FindResult;
+}
+
+export class FindOneResultAndUpdateDiseaseResponseDTO {}

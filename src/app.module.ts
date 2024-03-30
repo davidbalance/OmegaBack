@@ -11,6 +11,7 @@ import { OmegaWebModule } from './omega-web/omega-web.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { LaboratoryModule } from './laboratory/laboratory.module';
 import { MedicalResultModule } from './medical-result/medical-result.module';
+import { PdfManagerModule } from './shared/pdf-manager/pdf-manager.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { MedicalResultModule } from './medical-result/medical-result.module';
     AuthorizationModule,
     OmegaWebModule,
     LaboratoryModule,
-    MedicalResultModule
+    MedicalResultModule,
+    PdfManagerModule
   ],
   controllers: [AppController],
   providers: [AppService],

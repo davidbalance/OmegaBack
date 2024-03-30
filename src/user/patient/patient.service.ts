@@ -42,6 +42,7 @@ export class PatientService {
     const foundPatients: FindPatient[] = patients.map((e) => {
       const user = e.user;
       delete e.user;
+      delete user.id;
       delete user.createAt;
       delete user.hasCredential;
       delete user.status;
@@ -49,6 +50,38 @@ export class PatientService {
       return { ...user, ...e };
     });
     return foundPatients;
+  }
+
+
+  async findOneByDni(dni: string): Promise<FindPatient> {
+    const patient = await this.repository.findOne({
+      where: {
+        user: {
+          dni: dni
+        }
+      },
+      select: {
+        age: true,
+        id: true,
+        birthday: true,
+        gender: true,
+        user: {
+          dni: true,
+          email: true,
+          lastname: true,
+          name: true
+        }
+      }
+    });
+
+    const user = patient.user;
+    delete patient.user;
+    delete user.id;
+    delete user.createAt;
+    delete user.hasCredential;
+    delete user.status;
+    delete user.updateAt;
+    return { ...user, ...patient };
   }
 
   async findOneAndUpdate(id: number, { age, birthday, gender, ...data }: FindOnePatientAndUpdateRequestDTO): Promise<FindPatient> {

@@ -39,5 +39,4 @@ export class DoctorController {
     await this.doctorService.uploadSignature(id, file);
     return;
   }
-
 }

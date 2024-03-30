@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DoctorRepository } from './doctor.repository';
 import { Doctor } from './entities/doctor.entity';
 import { UserService } from 'src/user/user/user.service';
-import path from 'path';
+import path, { extname } from 'path';
 import { CreateDoctorRequestDTO, FindDoctor, FindOneDoctorAndUpdateRequestDTO } from '../common';
 import { StorageManager } from '@/shared/storage-manager';
 
@@ -52,6 +52,32 @@ export class DoctorService {
     return foundDoctors;
   }
 
+  async findOne(id: number): Promise<FindDoctor> {
+    const doctor = await this.repository.findOne({
+      where: {
+        id: id
+      },
+      select: {
+        id: true,
+        signature: true,
+        user: {
+          dni: true,
+          email: true,
+          name: true,
+          lastname: true
+        }
+      }
+    });
+    const user = doctor.user;
+    delete user.createAt;
+    delete user.updateAt;
+    delete user.id;
+    delete user.hasCredential;
+    delete user.status;
+    delete doctor.user;
+    return { ...doctor, ...user };
+  }
+
   async findOneAndUpdate(id: number, { ...data }: FindOneDoctorAndUpdateRequestDTO): Promise<FindDoctor> {
     const doctor = await this.repository.findOne({
       where: { id },
@@ -81,7 +107,8 @@ export class DoctorService {
   async uploadSignature(id: number, signature: Express.Multer.File): Promise<void> {
     const doctor = await this.repository.findOne({ where: { id }, select: { user: { dni: true } } });
     const directory = doctor.user.dni;
-    const uploaded = await this.storage.saveFile(signature, path.resolve(`signatures/${directory}`));
+    const extension = extname(signature.filename);
+    const uploaded = await this.storage.saveFile(signature.buffer, extension, path.resolve(`signatures/${directory}`));
     await this.repository.findOneAndUpdate({ id }, { signature: `${directory}/${uploaded}` });
   }
 }

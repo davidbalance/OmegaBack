@@ -3,3 +3,4 @@ export * from './logger';
 export * from './types'
 export * from './events'
 export * from './enums'
+export * from './pdf-manager'
