@@ -15,7 +15,7 @@ export class Result extends AbstractEntity<number> {
     @Column({ name: 'examName', type: 'varchar', length: 128, nullable: false })
     public examName: string;
 
-    @Column({ name: 'disease', type: 'int', nullable: true })
+    @Column({ name: 'diseaseId', type: 'int', nullable: true })
     public disease?: number;
 
     @Column({ name: 'doctorId', type: 'int', nullable: false })

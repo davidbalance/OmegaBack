@@ -5,7 +5,7 @@ import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeor
 @Entity({ name: 'MR_ORDERS' })
 @Index(['patient', 'corporativeGroup', 'company', 'branch'])
 export class Order extends AbstractEntity<number> {
-    @PrimaryGeneratedColumn('increment', { name: 'ORDER_ID' })
+    @PrimaryGeneratedColumn('increment', { name: 'orderId' })
     public id: number;
 
     @Index()

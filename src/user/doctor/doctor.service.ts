@@ -39,7 +39,16 @@ export class DoctorService {
         }
       }
     });
-    const foundDoctors = doctors.map((e) => ({ ...e, ...e.user }));
+    const foundDoctors = doctors.map((e) => {
+      const user = e.user;
+      delete user.createAt;
+      delete user.updateAt;
+      delete user.id;
+      delete user.hasCredential;
+      delete user.status;
+      delete e.user;
+      return { ...e, ...user };
+    });
     return foundDoctors;
   }
 

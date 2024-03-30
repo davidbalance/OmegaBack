@@ -1,10 +1,30 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post
+} from '@nestjs/common';
 import { DiseaseGroupService } from './disease-group.service';
-import { CreateDiseaseGroupRequestDTO, CreateDiseaseGroupResponseDTO, FindDiseaseGroupSelectorOptionsResponseDTO, FindDiseaseGroupsResponseDTO, FindOneDiseaseGroupAndUpdateRequestDTO, FindOneDiseaseGroupAndUpdateResponseDTO } from './dtos';
+import {
+  CreateDiseaseGroupRequestDTO,
+  CreateDiseaseGroupResponseDTO,
+  FindDiseaseGroupSelectorOptionsResponseDTO,
+  FindDiseaseGroupsResponseDTO,
+  FindOneDiseaseGroupAndUpdateRequestDTO,
+  FindOneDiseaseGroupAndUpdateResponseDTO
+} from './dtos';
 
 @Controller('disease-groups')
 export class DiseaseGroupController {
   constructor(private readonly diseaseGroupService: DiseaseGroupService) { }
+
+  @Get()
+  async find(): Promise<FindDiseaseGroupsResponseDTO> {
+    const groups = await this.diseaseGroupService.find();
+    return { diseaseGroups: groups };
+  }
 
   @Post()
   async create(
@@ -12,12 +32,6 @@ export class DiseaseGroupController {
   ): Promise<CreateDiseaseGroupResponseDTO> {
     await this.diseaseGroupService.create(body);
     return;
-  }
-
-  @Get()
-  async find(): Promise<FindDiseaseGroupsResponseDTO> {
-    const groups = await this.diseaseGroupService.find();
-    return { diseaseGroups: groups };
   }
 
   @Get('selector')

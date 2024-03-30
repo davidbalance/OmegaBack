@@ -14,7 +14,7 @@ export class AccessControl extends AbstractEntity<number> {
 
     @ManyToMany(() => Resource, { eager: false })
     @JoinTable({
-        name: 'AC_RESOURCE',
+        name: 'AC_CLIENTS_RESOURCES',
         joinColumn: { referencedColumnName: 'user', name: 'userId' },
         inverseJoinColumn: { referencedColumnName: 'id', name: 'resourceId' }
     })

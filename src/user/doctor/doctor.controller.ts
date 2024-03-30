@@ -7,18 +7,18 @@ import { CreateDoctorRequestDTO, CreateDoctorResponseDTO, FindDoctorsResponseDTO
 export class DoctorController {
   constructor(private readonly doctorService: DoctorService) { }
 
+  @Get()
+  async find(): Promise<FindDoctorsResponseDTO> {
+    const doctors = await this.doctorService.find();
+    return { doctors };
+  }
+
   @Post()
   async create(
     @Body() body: CreateDoctorRequestDTO
   ): Promise<CreateDoctorResponseDTO> {
     await this.doctorService.create(body);
     return;
-  }
-
-  @Get()
-  async find(): Promise<FindDoctorsResponseDTO> {
-    const doctors = await this.doctorService.find();
-    return { doctors };
   }
 
   @Patch(':id')

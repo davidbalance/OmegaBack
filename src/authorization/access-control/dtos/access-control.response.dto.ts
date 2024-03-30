@@ -1,3 +1,2 @@
-export class FindOneACClientAndUpdateRolesResponseDTO {
-
-}
+export class FindOneACClientAndUpdateRolesResponseDTO {}
+export class FindOneACClientAndUpdateResourcesResponseDTO {}

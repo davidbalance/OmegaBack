@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { CorporativeGroupService } from './corporative-group.service';
 import { FindCorporativeGroupSelectorOptions } from './dtos';
 
-@Controller('corporative-group')
+@Controller('corporative-groups')
 export class CorporativeGroupController {
   constructor(private readonly corporativeGroupService: CorporativeGroupService) { }
 

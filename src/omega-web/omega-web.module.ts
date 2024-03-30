@@ -12,12 +12,21 @@ const root = "omega-web"
     RouterModule.register([
       {
         path: root,
+        module: WebResourceModule,
+      },
+      {
+        path: root,
+        module: WebReportElementModule,
+      },
+      {
+        path: root,
+        module: WebLogoModule,
+      },
+      {
+        path: root,
         module: WebClientModule,
       }
-    ]),
-    WebResourceModule,
-    WebLogoModule,
-    WebReportElementModule,
+    ])
 
   ]
 })

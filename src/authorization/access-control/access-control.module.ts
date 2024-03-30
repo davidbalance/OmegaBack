@@ -6,6 +6,7 @@ import { AccessControlRepository } from './access-control.repository';
 import { UserListener } from './listeners';
 import { ResourceModule } from '../resource/resource.module';
 import { RoleModule } from '../role/role.module';
+import { AccessControlController } from './access-control.controller';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { RoleModule } from '../role/role.module';
     AccessControlService,
     UserListener,
     AccessControlRepository],
-  exports: [AccessControlService]
+  exports: [AccessControlService],
+  controllers: [AccessControlController]
 })
 export class AccessControlModule { }

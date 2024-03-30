@@ -39,7 +39,15 @@ export class PatientService {
       }
     });
 
-    const foundPatients: FindPatient[] = patients.map((e) => ({ ...e.user, ...e }));
+    const foundPatients: FindPatient[] = patients.map((e) => {
+      const user = e.user;
+      delete e.user;
+      delete user.createAt;
+      delete user.hasCredential;
+      delete user.status;
+      delete user.updateAt;
+      return { ...user, ...e };
+    });
     return foundPatients;
   }
 

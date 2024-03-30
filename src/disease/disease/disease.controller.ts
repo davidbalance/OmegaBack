@@ -20,26 +20,18 @@ import {
 export class DiseaseController {
   constructor(private readonly diseaseService: DiseaseService) { }
 
-  @Post()
-  async create(
-    @Body() body: CreateDiseaseRequestDTO
-  ): Promise<CreateDiseaseResponseDTO> {
-    await this.diseaseService.create(body);
-    return;
-  }
-
   @Get()
   async find(): Promise<FindMorbiditiesResponseDTO> {
     const diseases = await this.diseaseService.find();
     return { diseases };
   }
 
-  @Get('selector')
-  async findSelectorOptions(
-    @Param('id') id: number
-  ): Promise<FindDiseaseSelectorOptionsResponseDTO> {
-    const options = await this.diseaseService.findSelectorOptions();
-    return { options };
+  @Post()
+  async create(
+    @Body() body: CreateDiseaseRequestDTO
+  ): Promise<CreateDiseaseResponseDTO> {
+    await this.diseaseService.create(body);
+    return;
   }
 
   @Patch(":id")
@@ -49,5 +41,13 @@ export class DiseaseController {
   ): Promise<FindOneDiseaseAndUpdateResponseDTO> {
     await this.diseaseService.findOneAndUpdate(id, body);
     return;
+  }
+
+  @Get('selector')
+  async findSelectorOptions(
+    @Param('id') id: number
+  ): Promise<FindDiseaseSelectorOptionsResponseDTO> {
+    const options = await this.diseaseService.findSelectorOptions();
+    return { options };
   }
 }

@@ -32,7 +32,7 @@ export class AccessControlService {
         return client
     }
 
-    async updateAccessPermission(user: number, { resources }: FindOneACClientAndUpdateResourcesRequestDTO): Promise<AccessControl> {
+    async updateAccessResources(user: number, { resources }: FindOneACClientAndUpdateResourcesRequestDTO): Promise<AccessControl> {
         const foundResources = await this.resourceService.findIn(resources);
         return await this.repository.findOneAndUpdate({ user: user }, { resources: foundResources });
     }
