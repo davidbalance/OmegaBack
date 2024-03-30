@@ -1,8 +1,8 @@
-import { Result } from "src/medical-order/result/entities/result.entity";
+import { Result } from "@/medical-result/result/entities/result.entity";
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'ORDERS' })
+@Entity({ name: 'MR_ORDERS' })
 @Index(['patient', 'corporativeGroup', 'company', 'branch'])
 export class Order extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'ORDER_ID' })

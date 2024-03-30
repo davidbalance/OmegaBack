@@ -2,7 +2,7 @@ import { AbstractEntity } from "src/shared";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { MedicalReportValue } from "../medical-value/entities/medical-report-value.entity";
 
-@Entity({ name: 'REPORTS' })
+@Entity({ name: 'MR_REPORTS' })
 export class MedicalReport extends AbstractEntity<number>{
     @PrimaryGeneratedColumn('increment', { name: 'reportId' })
     public id: number;

@@ -2,7 +2,7 @@ import { Resource } from "@/authorization/resource/entities/resource.entity";
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'ROLES' })
+@Entity({ name: 'AC_ROLES' })
 export class Role extends AbstractEntity<number> {
 
     @PrimaryGeneratedColumn('increment', { name: 'roleId' })
@@ -16,7 +16,7 @@ export class Role extends AbstractEntity<number> {
 
     @ManyToMany(() => Resource, { eager: true })
     @JoinTable({
-        name: 'ROLES_RESOURCE',
+        name: 'AC_ROLES_RESOURCE',
         joinColumn: { referencedColumnName: 'id', name: 'roleId' },
         inverseJoinColumn: { referencedColumnName: 'id', name: 'resourceId' }
     })

@@ -3,8 +3,8 @@ import { Order } from "@/medical-result/order/entities/order.entity";
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: "RESULTS" })
-@Index(['doctor', 'morbidity'])
+@Entity({ name: "MR_RESULTS" })
+@Index(['doctor', 'disease'])
 export class Result extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: "resultId" })
     public id: number;
@@ -15,8 +15,8 @@ export class Result extends AbstractEntity<number> {
     @Column({ name: 'examName', type: 'varchar', length: 128, nullable: false })
     public examName: string;
 
-    @Column({ name: 'morbidity', type: 'int', nullable: true })
-    public morbidity?: number;
+    @Column({ name: 'disease', type: 'int', nullable: true })
+    public disease?: number;
 
     @Column({ name: 'doctorId', type: 'int', nullable: false })
     public doctor: number;

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SqlDatabaseModule } from './shared';
-import { MorbidityModule } from './morbidity/morbidity.module';
+import { DiseaseModule } from './disease/disease.module';
 import { LocationModule } from './location/location.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthorizationModule } from './authorization/authorization.module';
@@ -24,7 +24,7 @@ import { MedicalResultModule } from './medical-result/medical-result.module';
       ignoreErrors: false,
     }),
     SqlDatabaseModule,
-    MorbidityModule,
+    DiseaseModule,
     LocationModule,
     UserModule,
     AuthenticationModule,

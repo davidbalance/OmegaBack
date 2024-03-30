@@ -3,7 +3,7 @@ import { Company } from "src/location/company/entities/company.entity";
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'BRANCHES' })
+@Entity({ name: 'LO_BRANCHES' })
 export class Branch extends AbstractEntity<number>{
     @PrimaryGeneratedColumn('increment', { name: 'branchId' })
     public id: number;

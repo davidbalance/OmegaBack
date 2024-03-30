@@ -4,7 +4,7 @@ import { FindResult } from '../common/dtos';
 
 interface FindResultParams {
   exam?: number;
-  morbidity?: number;
+  disease?: number;
   doctor?: number;
 }
 
@@ -21,7 +21,7 @@ export class ResultService {
       select: {
         id: true,
         examName: true,
-        morbidity: true,
+        disease: true,
         address: true,
         report: {
           address: true

@@ -3,7 +3,7 @@ import { AbstractEntity } from "src/shared";
 import { User } from "src/user/user/entities/user.entity";
 import { PatientGenderEnum } from "@/user/common";
 
-@Entity({ name: "PATIENTS" })
+@Entity({ name: "U_PATIENTS" })
 export class Patient extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'patientId' })
     public id: number;

@@ -4,7 +4,7 @@ import { ResultController } from './result.controller';
 import { SqlDatabaseModule } from 'src/shared';
 import { DoctorModule } from '@/user/doctor/doctor.module';
 import { OrderModule } from '../order/order.module';
-import { MorbidityModule } from '@/morbidity/morbidity/morbidity.module';
+import { DiseaseModule } from '@/disease/disease/disease.module';
 import { Result } from './entities/result.entity';
 import { ResultRepository } from './result.repository';
 
@@ -13,7 +13,7 @@ import { ResultRepository } from './result.repository';
     SqlDatabaseModule.forFeature([Result]),
     DoctorModule,
     OrderModule,
-    MorbidityModule
+    DiseaseModule
   ],
   controllers: [ResultController],
   providers: [

@@ -2,7 +2,7 @@ import { Company } from "src/location/company/entities/company.entity";
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'CORPORATIVE_GROUPS' })
+@Entity({ name: 'LO_CORPORATIVE_GROUPS' })
 export class CorporativeGroup extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'corporativeGroupId' })
     public id: number;

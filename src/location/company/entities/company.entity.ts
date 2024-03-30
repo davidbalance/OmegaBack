@@ -3,7 +3,7 @@ import { CorporativeGroup } from "src/location/corporative-group/entities/corpor
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'COMPANIES' })
+@Entity({ name: 'LO_COMPANIES' })
 export class Company extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'companyId' })
     public id: number;

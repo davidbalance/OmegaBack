@@ -1,7 +1,7 @@
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'EXAMS' })
+@Entity({ name: 'LAB_EXAMS' })
 export class Exam extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: "examId" })
     public id: number;

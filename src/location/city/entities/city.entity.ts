@@ -2,7 +2,7 @@ import { Branch } from "@/location/branch/entities/branch.entity";
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'CITIES' })
+@Entity({ name: 'LO_CITIES' })
 export class City extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'cityId' })
     public id: number;

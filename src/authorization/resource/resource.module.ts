@@ -11,6 +11,7 @@ import { ResourceRepository } from './resource.repository.dto';
   providers: [
     ResourceService,
     ResourceRepository
-  ]
+  ],
+  exports: [ResourceService]
 })
 export class ResourceModule { }

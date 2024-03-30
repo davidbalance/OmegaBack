@@ -1,7 +1,7 @@
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity('USER_CREDENTIALS')
+@Entity({ name: 'AUTH_USER_CREDENTIALS' })
 @Index(['email', 'user'], { unique: true })
 export class UserCredential extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'userCredentialId' })

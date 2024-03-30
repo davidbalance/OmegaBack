@@ -1,9 +1,8 @@
-import { Result } from "src/medical-order/result/entities/result.entity";
 import { AbstractEntity } from "src/shared";
 import { User } from "src/user/user/entities/user.entity";
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'DOCTORS' })
+@Entity({ name: 'U_DOCTORS' })
 export class Doctor extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'doctorID' })
     public id: number;
