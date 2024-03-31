@@ -10,6 +10,8 @@ import { ResultRepository } from './result.repository';
 import { PatientModule } from '@/user/patient/patient.module';
 import { MedicalReportModule } from '../medical-report/medical-report.module';
 import { CompanyModule } from '@/location/company/company.module';
+import { ExternalKeyModule } from './external-key/external-key.module';
+import { SendValueModule } from './send-value/send-value.module';
 
 @Module({
   imports: [
@@ -19,7 +21,9 @@ import { CompanyModule } from '@/location/company/company.module';
     CompanyModule,
     MedicalReportModule,
     OrderModule,
-    DiseaseModule
+    DiseaseModule,
+    ExternalKeyModule,
+    SendValueModule
   ],
   controllers: [ResultController],
   providers: [

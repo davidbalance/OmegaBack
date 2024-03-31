@@ -38,7 +38,7 @@ export class MedicalReportService {
 
     const content = this.getContent(reportData, base64);
 
-    const templateDirectory = path.resolve('templates');
+    const templateDirectory = path.resolve('templates/medical-result/medical-report');
     const templateFile = path.join(templateDirectory, 'template.hbs');
 
     const buffer = await this.pdfService.craft(templateFile, content);
