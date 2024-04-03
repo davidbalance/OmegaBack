@@ -1,7 +1,6 @@
 import { ConflictException, Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { UserCredentialRepository } from './user-credential.repository';
 import { UserCredential } from './entities/user-credential.entity';
-import { UserService } from 'src/user/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { CreateCredentialRequestDTO } from './dtos';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
@@ -36,7 +35,7 @@ export class UserCredentialService {
   }
 
   async validateCredentials(username: string, password: string): Promise<number> {
-    const credentials = await this.repository.findOne({ where: { email: username, status: true }, select: { password: true } });
+    const credentials = await this.repository.findOne({ where: { email: username, status: true }, select: { user: true, password: true } });
     const passwordIsValid = this.validatePassword(password, credentials.password);
     if (!passwordIsValid) throw new UnauthorizedException(["Wrong credentials"]);
     return credentials.user;
@@ -54,7 +53,7 @@ export class UserCredentialService {
   @OnEvent(UserEvent.REMOVE)
   async findOneCredentialAndDelete({ removeEvent }: UserRemoveEvent): Promise<void> {
     const { id } = removeEvent;
-    await this.repository.findOneAndDelete({ id });
+    await this.repository.findOneAndDelete({ user: id });
   }
 
   private validatePassword(password: string, hash: string): boolean {

@@ -55,4 +55,8 @@ export class DiseaseGroupService {
   async findOneAndUpdate(id: number, update: FindOneDiseaseGroupAndUpdateRequestDTO): Promise<DiseaseGroup> {
     return await this.repository.findOneAndUpdate({ id }, update);
   }
+
+  async findOneAndDelete(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id });
+  }
 }

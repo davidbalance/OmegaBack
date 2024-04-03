@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -9,13 +10,17 @@ import {
 import { DiseaseGroupService } from './disease-group.service';
 import {
   CreateDiseaseGroupRequestDTO,
-  CreateDiseaseGroupResponseDTO,
-  FindDiseaseGroupSelectorOptionsResponseDTO,
+  FindDiseaseGroupResponseDTO,
   FindDiseaseGroupsResponseDTO,
+  FindOneDiseaseGroupAndDeleteResponseDTO,
   FindOneDiseaseGroupAndUpdateRequestDTO,
-  FindOneDiseaseGroupAndUpdateResponseDTO
+  FindOneDiseaseGroupAndUpdateResponseDTO,
+  FindSelectorOptionsDiseaseGroupDTO,
 } from './dtos';
+import { plainToInstance } from 'class-transformer';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Disease')
 @Controller('disease-groups')
 export class DiseaseGroupController {
   constructor(private readonly diseaseGroupService: DiseaseGroupService) { }
@@ -23,21 +28,21 @@ export class DiseaseGroupController {
   @Get()
   async find(): Promise<FindDiseaseGroupsResponseDTO> {
     const groups = await this.diseaseGroupService.find();
-    return { diseaseGroups: groups };
+    return plainToInstance(FindDiseaseGroupsResponseDTO, { groups: groups });
   }
 
   @Post()
   async create(
     @Body() body: CreateDiseaseGroupRequestDTO
-  ): Promise<CreateDiseaseGroupResponseDTO> {
-    await this.diseaseGroupService.create(body);
-    return;
+  ): Promise<FindDiseaseGroupResponseDTO> {
+    const disease = await this.diseaseGroupService.create(body);
+    return plainToInstance(FindDiseaseGroupResponseDTO, disease);
   }
 
   @Get('selector')
-  async findSelectorOptions(): Promise<FindDiseaseGroupSelectorOptionsResponseDTO> {
+  async findSelectorOptions(): Promise<FindSelectorOptionsDiseaseGroupDTO> {
     const options = await this.diseaseGroupService.findSelectorOptions();
-    return { options };
+    return plainToInstance(FindSelectorOptionsDiseaseGroupDTO, { options });
   }
 
   @Patch(":id")
@@ -46,6 +51,14 @@ export class DiseaseGroupController {
     @Body() body: FindOneDiseaseGroupAndUpdateRequestDTO
   ): Promise<FindOneDiseaseGroupAndUpdateResponseDTO> {
     await this.diseaseGroupService.findOneAndUpdate(id, body);
-    return;
+    return {};
+  }
+
+  @Delete(':id')
+  async findOneAndDelete(
+    @Param('id') id: number
+  ): Promise<FindOneDiseaseGroupAndDeleteResponseDTO> {
+    await this.diseaseGroupService.findOneAndDelete(id);
+    return {};
   }
 }

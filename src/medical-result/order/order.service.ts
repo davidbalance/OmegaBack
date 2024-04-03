@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { OrderRepository } from './order.repository';
-import { FindOrder } from '../common/dtos/order.response.dto';
+import { Order } from './entities/order.entity';
 
 @Injectable()
 export class OrderService {
@@ -9,19 +9,25 @@ export class OrderService {
     @Inject(OrderRepository) private readonly repository: OrderRepository,
   ) { }
 
-  async findByPatient(patient: string): Promise<FindOrder[]> {
+  async findByPatient(dni: string): Promise<Order[]> {
     const orders = await this.repository.find({
-      where: { patient: patient },
+      where: {
+        patientDni: dni
+      },
       select: {
         id: true,
-        patient: true,
+        patientDni: true,
+        patientFullname: true,
         process: true,
         createAt: true,
         results: {
           id: true,
           examName: true,
-          address: true
+          disease: true,
         }
+      },
+      relations: {
+        results: true
       }
     });
     return orders;

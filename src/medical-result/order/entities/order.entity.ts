@@ -3,14 +3,20 @@ import { AbstractEntity } from "src/shared";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'MR_ORDERS' })
-@Index(['patient', 'corporativeGroup', 'company', 'branch'])
+@Index(['patientDni', 'corporativeGroup', 'company', 'branch'])
 export class Order extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'orderId' })
     public id: number;
 
     @Index()
-    @Column({ name: 'userDni', type: 'varchar', length: 10, nullable: false })
-    public patient: string;
+    @Column({ name: 'patientDni', type: 'varchar', length: 10, nullable: false })
+    public patientDni: string;
+    
+    @Column({ name: 'patientFullname', type: 'varchar', length: 128, nullable: false })
+    public patientFullname: string;
+
+    @Column({ name: 'patientBirthday', type: 'date', nullable: false })
+    public patientBirthday: Date;
 
     @Column({ name: 'corporativeGroupId', type: 'int', nullable: false })
     public corporativeGroup: number;

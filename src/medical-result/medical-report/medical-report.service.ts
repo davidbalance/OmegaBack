@@ -20,13 +20,13 @@ export class MedicalReportService {
   async create({ ...data }: CreateMedicalReportRequestDTO): Promise<MedicalReport> {
     const report = await this.repository.create({ ...data });
     const filename = await this.createPdf(report.id);
-    const newReport = await this.repository.findOneAndUpdate({ id: report.id }, { address: filename });
+    const newReport = await this.repository.findOneAndUpdate({ id: report.id }, { fileAddress: filename, hasFile: true });
     return newReport;
   }
 
   async getPdf(id: number): Promise<StreamableFile> {
-    const report = await this.repository.findOne({ where: { id }, select: { address: true } });
-    return this.storageManager.readFile(report.address);
+    const report = await this.repository.findOne({ where: { id }, select: { fileAddress: true } });
+    return this.storageManager.readFile(report.fileAddress);
   }
 
   async createPdf(id: number): Promise<string> {

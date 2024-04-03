@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { WebClientRepository } from './web-client.repository';
-import { FindWebClient } from './dto';
+import { WebClient } from './entities/web-client.entity';
 
 @Injectable()
 export class WebClientService {
@@ -9,12 +9,12 @@ export class WebClientService {
     @Inject(WebClientRepository) private readonly repository: WebClientRepository
   ) { }
 
-  async findWebClient(user: number): Promise<FindWebClient> {
+  async findWebClient(user: number): Promise<WebClient> {
     const client = await this.repository.findOne({
       where: { user: user },
       select: {
         logo: {
-          address: true
+          name: true
         },
         resources: {
           icon: true,

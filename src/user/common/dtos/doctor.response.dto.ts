@@ -1,22 +1,23 @@
 import { Doctor } from "@/user/doctor/entities/doctor.entity";
-import { FindUserBase } from ".";
+import { FindUserResponseDTO } from "./user.response.dto";
+import { Expose, Type } from "class-transformer";
 
-export class FindDoctor
-    extends FindUserBase
-    implements Omit<Doctor, 'id' | 'user' | 'createAt' | 'updateAt'> {
+export class FindDoctorResponseDTO {
+    @Expose()
+    public readonly id: number
+
+    @Expose()
     public readonly signature: string;
-}
 
-export class CreateDoctorResponseDTO {
-    public readonly doctor: number;
+    @Type(() => FindUserResponseDTO)
+    @Expose()
+    public readonly user: FindUserResponseDTO;
 }
 
 export class FindDoctorsResponseDTO {
-    public readonly doctors: FindDoctor[];
-}
-
-export class FindOneDoctorResponseDTO {
-    public readonly doctor: FindDoctor;
+    @Type(() => FindDoctorResponseDTO)
+    @Expose()
+    public readonly doctors: FindDoctorResponseDTO[];
 }
 
 export class FindOneDoctorAndUpdateResponseDTO { }

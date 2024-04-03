@@ -11,7 +11,9 @@ import {
   FindOneCredentialAndUpdatePasswordRequestDTO,
   FindOneCredentialAndUpdatePasswordResponseDTO
 } from './dtos';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Authentication')
 @Controller('credentials')
 export class UserCredentialController {
   constructor(private readonly userCredentialService: UserCredentialService) { }
@@ -21,7 +23,7 @@ export class UserCredentialController {
     @Body() body: CreateCredentialRequestDTO
   ): Promise<CreateCredentialResponseDTO> {
     await this.userCredentialService.create(body);
-    return;
+    return {};
   }
 
   @Patch()
@@ -29,6 +31,6 @@ export class UserCredentialController {
     @Body() { email, password }: FindOneCredentialAndUpdatePasswordRequestDTO
   ): Promise<FindOneCredentialAndUpdatePasswordResponseDTO> {
     await this.userCredentialService.findOneCredentialAndUpdatePassword(email, password);
-    return;
+    return {};
   }
 }

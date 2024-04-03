@@ -1,18 +1,33 @@
 import { ClaimEnum } from "@/shared";
-import { Role } from "../entities/role.entity";
+import { Expose, Type } from "class-transformer";
 
-export class FindRole {
+class RoleResourceDTO {
+    @Expose()
     public readonly id: number;
+
+    @Expose()
     public readonly name: string;
-    public readonly resources: {
-        id: number;
-        name: string;
-        claim: ClaimEnum
-    }[];
+
+    @Expose()
+    public readonly claim: string;
+}
+
+export class FindRoleResponseDTO {
+    @Expose()
+    public readonly id: number;
+
+    @Expose()
+    public readonly name: string;
+
+    @Type(() => RoleResourceDTO)
+    @Expose()
+    public readonly resources: RoleResourceDTO[];
 }
 
 export class FindRolesResponseDTO {
-    public readonly roles: FindRole[];
+    @Type(() => FindRoleResponseDTO)
+    @Expose()
+    public readonly roles: FindRoleResponseDTO[];
 }
 
 export class CreateRoleResponseDTO { }

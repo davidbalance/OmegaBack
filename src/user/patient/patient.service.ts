@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PatientRepository } from './patient.repository';
 import { Patient } from './entities/patient.entity';
 import { UserService } from 'src/user/user/user.service';
-import { CreatePatientRequestDTO, FindOnePatientAndUpdateRequestDTO, FindPatient } from '../common';
+import { CreatePatientRequestDTO, FindOnePatientAndUpdateRequestDTO } from '../common';
 
 @Injectable()
 export class PatientService {
@@ -18,7 +18,7 @@ export class PatientService {
     return patient;
   }
 
-  async find(): Promise<FindPatient[]> {
+  async find(): Promise<Patient[]> {
     const patients = await this.repository.find({
       where: {
         user: {
@@ -31,6 +31,7 @@ export class PatientService {
         birthday: true,
         gender: true,
         user: {
+          id: true,
           dni: true,
           email: true,
           lastname: true,
@@ -38,22 +39,11 @@ export class PatientService {
         }
       }
     });
-
-    const foundPatients: FindPatient[] = patients.map((e) => {
-      const user = e.user;
-      delete e.user;
-      delete user.id;
-      delete user.createAt;
-      delete user.hasCredential;
-      delete user.status;
-      delete user.updateAt;
-      return { ...user, ...e };
-    });
-    return foundPatients;
+    return patients;
   }
 
 
-  async findOneByDni(dni: string): Promise<FindPatient> {
+  async findOneByDni(dni: string): Promise<Patient> {
     const patient = await this.repository.findOne({
       where: {
         user: {
@@ -66,6 +56,7 @@ export class PatientService {
         birthday: true,
         gender: true,
         user: {
+          id: true,
           dni: true,
           email: true,
           lastname: true,
@@ -73,22 +64,13 @@ export class PatientService {
         }
       }
     });
-
-    const user = patient.user;
-    delete patient.user;
-    delete user.id;
-    delete user.createAt;
-    delete user.hasCredential;
-    delete user.status;
-    delete user.updateAt;
-    return { ...user, ...patient };
+    return patient;
   }
 
-  async findOneAndUpdate(id: number, { age, birthday, gender, ...data }: FindOnePatientAndUpdateRequestDTO): Promise<FindPatient> {
+  async findOneAndUpdate(id: number, { age, birthday, gender, ...data }: FindOnePatientAndUpdateRequestDTO): Promise<Patient> {
     const patient = await this.repository.findOne({ where: { id }, select: { user: { id: true } } });
-    const user = await this.userService.findOneAndUpdate(patient.user.id, data);
+    await this.userService.findOneAndUpdate(patient.user.id, {...data});
     const updatedPatient = await this.repository.findOneAndUpdate({ id }, patient);
-    const findPatient = { ...user, ...updatedPatient }
-    return findPatient;
+    return updatedPatient;
   }
 }

@@ -1,24 +1,31 @@
-import { SelectorOption } from "@/shared";
-import { User } from "@/user/user/entities/user.entity";
+import { Expose, Type } from "class-transformer";
 
-export class FindUserBase implements Omit<User, 'createAt' | 'updateAt' | 'status' | 'hasCredential'>{
+export class FindUserResponseDTO {
+    @Expose()
     public readonly id: number;
+
+    @Expose()
     public readonly dni: string;
+
+    @Expose()
     public readonly email: string;
+
+    @Expose()
     public readonly name: string;
+
+    @Expose()
     public readonly lastname: string;
 }
 
 export class CreateUserResponseDTO {
+    @Expose()
     public readonly user: number;
 }
 
 export class FindUsersResponseDTO {
-    public readonly users: FindUserBase[];
-}
-
-export class FindUserResponseDTO {
-    public readonly user: FindUserBase;
+    @Type(() => FindUserResponseDTO)
+    @Expose()
+    public readonly users: FindUserResponseDTO[];
 }
 
 export class FindOneUserAndUpdateResponseDTO { }

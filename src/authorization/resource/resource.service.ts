@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ResourceRepository } from './resource.repository.dto';
-import { FindResource } from './dto';
 import { Resource } from './entities/resource.entity';
 import { In } from 'typeorm';
 
@@ -10,7 +9,7 @@ export class ResourceService {
     @Inject(ResourceRepository) private readonly repository: ResourceRepository
   ) { }
 
-  async find(): Promise<FindResource[]> {
+  async find(): Promise<Resource[]> {
     const resources = await this.repository.find({
       where: { status: true },
       select: {

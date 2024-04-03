@@ -11,7 +11,7 @@ type Tokens = {
   refresh: string;
 }
 
-type TokenPayload = { token: string, expiresAt: Date }
+export type TokenPayload = { token: string, expiresAt: Date }
 
 @Injectable()
 export class TokenService {

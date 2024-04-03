@@ -2,8 +2,11 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { WebClientService } from './web-client.service';
 import { User } from '@/shared/decorator';
 import { JwtAuthGuard } from '@/authentication/guards';
-import { FindOneWebClientResponseDTO } from './dto';
+import { FindWebClientResponseDTO } from './dto';
+import { plainToInstance } from 'class-transformer';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Omega Web')
 @Controller('omega-web/clients')
 export class WebClientController {
   constructor(private readonly webClientService: WebClientService) { }
@@ -12,8 +15,8 @@ export class WebClientController {
   @Get()
   async findOneWebClientConfiguration(
     @User() user: number
-  ): Promise<FindOneWebClientResponseDTO> {
+  ): Promise<FindWebClientResponseDTO> {
     const webClient = await this.webClientService.findWebClient(user);
-    return { client: webClient };
+    return plainToInstance(FindWebClientResponseDTO, webClient);
   }
 }

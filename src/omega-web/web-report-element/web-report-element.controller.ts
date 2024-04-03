@@ -1,7 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 import { WebReportElementService } from './web-report-element.service';
 import { FindWebReportElementFieldsResponseDTO } from './dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Omega Web')
 @Controller('omega-web/report-elements')
 export class WebReportElementController {
   constructor(private readonly webReportElementService: WebReportElementService) { }

@@ -1,25 +1,30 @@
-import { Patient } from "@/user/patient/entities/patient.entity";
-import { FindUserBase } from "./user.response.dto";
-import { PatientGenderEnum } from "../enums";
+import { FindUserResponseDTO } from "./user.response.dto";
+import { Expose, Type } from "class-transformer";
 
-export class FindPatient
-    extends FindUserBase
-    implements Omit<Patient, 'id' | 'user' | 'createAt' | 'updateAt'> {
-    public readonly gender: PatientGenderEnum;
+export class FindPatientResponseDTO {
+    @Expose()
+    public readonly id: number
+
+    @Expose()
     public readonly birthday: Date;
-    public readonly age: number;
+
+    @Expose()
+    public readonly gender: string;
+
+    @Type(() => FindUserResponseDTO)
+    @Expose()
+    public readonly user: FindUserResponseDTO;
 }
 
 export class CreatePatientResponseDTO {
+    @Expose()
     public readonly patient: number;
 }
 
 export class FindPatientsResponseDTO {
-    public readonly patients: FindPatient[];
-}
-
-export class FindOnePatientResponseDTO {
-    public readonly patient: FindPatient;
+    @Type(() => FindPatientResponseDTO)
+    @Expose()
+    public readonly patients: FindPatientResponseDTO[];
 }
 
 export class FindOnePatientAndUpdateResponseDTO { }

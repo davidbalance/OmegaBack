@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RoleRepository } from './role.repository';
 import { Role } from './entities/role.entity';
-import { CreateRoleRequestDTO, FindOneRoleAndUpdateRequestDTO, FindRole } from './dto';
 import { ResourceService } from '../resource/resource.service';
 import { In } from 'typeorm';
+import { CreateRoleRequestDTO, FindOneRoleAndUpdateRequestDTO } from './dto';
 
 @Injectable()
 export class RoleService {
@@ -17,7 +17,7 @@ export class RoleService {
     return await this.repository.create({ ...data, resources: foundResources });
   }
 
-  async find(): Promise<FindRole[]> {
+  async find(): Promise<Role[]> {
     return await this.repository.find({
       where: { status: true },
       select: {

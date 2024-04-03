@@ -3,7 +3,11 @@ import { TokenService } from './token/token.service';
 import { JwtAuthGuard, JwtRefreshGuard, LocalAuthGuard } from './guards';
 import { User } from '@/shared/decorator';
 import { RefreshToken } from './token/types';
+import { AuthenticationResponseDTO } from './dtos';
+import { plainToInstance } from 'class-transformer';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthenticationController {
 
@@ -13,21 +17,22 @@ export class AuthenticationController {
 
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    async login(
-        @User() user: number): Promise<any> {
-        return await this.tokenService.initToken(user);
+    async login(@User() user: number): Promise<AuthenticationResponseDTO> {
+        const tokens = await this.tokenService.initToken(user);
+        return plainToInstance(AuthenticationResponseDTO, tokens);
     }
 
     @UseGuards(JwtRefreshGuard)
     @Post('refresh')
-    async refresh(@User() token: RefreshToken): Promise<any> {
-        return await this.tokenService.refreshToken(token);
+    async refresh(@User() token: RefreshToken): Promise<AuthenticationResponseDTO> {
+        const tokens = await this.tokenService.refreshToken(token);
+        return plainToInstance(AuthenticationResponseDTO, tokens);
     }
 
     @UseGuards(JwtAuthGuard)
     @Post('logout')
-    async logout(@User() user: number) {
+    async logout(@User() user: number): Promise<any> {
         await this.tokenService.removeToken(user);
-        return { msg: "Successfully logged out" };
+        return {};
     }
 }

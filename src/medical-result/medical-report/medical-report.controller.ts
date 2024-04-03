@@ -1,13 +1,13 @@
-import { Controller, Get, Header, Inject, Param, StreamableFile } from '@nestjs/common';
+import { Controller, Get, Header, Param, StreamableFile } from '@nestjs/common';
 import { MedicalReportService } from './medical-report.service';
-import { PdfManagerService } from '@/shared';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Medical Result')
 @Controller('medical-report')
 export class MedicalReportController {
 
   constructor(
     private readonly medicalReportService: MedicalReportService,
-    @Inject(PdfManagerService) private readonly pdfService: PdfManagerService
   ) { }
 
   @Get('pdf/:id')

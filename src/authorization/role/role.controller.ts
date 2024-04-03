@@ -14,9 +14,13 @@ import {
   FindOneRoleAndDeleteResponseDTO,
   FindOneRoleAndUpdateRequestDTO,
   FindOneRoleAndUpdateResponseDTO,
+  FindRoleResponseDTO,
   FindRolesResponseDTO
 } from './dto';
+import { plainToInstance } from 'class-transformer';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Authorization')
 @Controller('roles')
 export class RoleController {
   constructor(private readonly roleService: RoleService) { }
@@ -24,15 +28,15 @@ export class RoleController {
   @Get()
   async find(): Promise<FindRolesResponseDTO> {
     const roles = await this.roleService.find();
-    return { roles };
+    return plainToInstance(FindRolesResponseDTO, { roles });
   }
 
   @Post()
   async create(
     @Body() body: CreateRoleRequestDTO
-  ): Promise<CreateRoleResponseDTO> {
-    await this.roleService.create(body);
-    return;
+  ): Promise<FindRoleResponseDTO> {
+    const role = await this.roleService.create(body);
+    return plainToInstance(FindRoleResponseDTO, role);
   }
 
   @Patch(':id')
@@ -41,7 +45,7 @@ export class RoleController {
     @Body() body: FindOneRoleAndUpdateRequestDTO
   ): Promise<FindOneRoleAndUpdateResponseDTO> {
     await this.roleService.findOneAndUpdate(id, body);
-    return;
+    return {};
   }
 
   @Delete(':id')
@@ -49,6 +53,6 @@ export class RoleController {
     @Param('id') id: number
   ): Promise<FindOneRoleAndDeleteResponseDTO> {
     await this.roleService.findOneAndDelete(id);
-    return;
+    return {};
   }
 }

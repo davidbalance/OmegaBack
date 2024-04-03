@@ -1,15 +1,18 @@
 import { Controller, Get } from '@nestjs/common';
 import { CityService } from './city.service';
-import { FindCitySelectorOptions } from './dto';
+import { FindSelectorOptionsCityDTO } from './dto';
+import { plainToInstance } from 'class-transformer';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Location')
 @Controller('cities')
 export class CityController {
   constructor(private readonly cityService: CityService) { }
 
   @Get('selector')
-  async findSelectorOptions(): Promise<FindCitySelectorOptions> {
+  async findSelectorOptions(): Promise<FindSelectorOptionsCityDTO> {
     const options = await this.cityService.findSelectorOptions();
-    return { options };
+    return plainToInstance(FindSelectorOptionsCityDTO, { options });
   }
 
 }

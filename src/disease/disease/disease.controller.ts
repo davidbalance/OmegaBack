@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -9,45 +10,54 @@ import {
 import { DiseaseService } from './disease.service';
 import {
   CreateDiseaseRequestDTO,
-  CreateDiseaseResponseDTO,
-  FindMorbiditiesResponseDTO,
-  FindDiseaseSelectorOptionsResponseDTO,
   FindOneDiseaseAndUpdateRequestDTO,
-  FindOneDiseaseAndUpdateResponseDTO
+  FindOneDiseaseAndDeleteResponseDTO,
+  FindDiseasesResponseDTO,
+  FindDiseaseResponseDTO,
+  FindSelectorOptionsDiseaseDTO,
 } from './dtos';
+import { plainToInstance } from 'class-transformer';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Disease')
 @Controller('diseases')
 export class DiseaseController {
   constructor(private readonly diseaseService: DiseaseService) { }
 
   @Get()
-  async find(): Promise<FindMorbiditiesResponseDTO> {
+  async find(): Promise<FindDiseasesResponseDTO> {
     const diseases = await this.diseaseService.find();
-    return { diseases };
+    return plainToInstance(FindDiseasesResponseDTO, { diseases: diseases });
   }
 
   @Post()
   async create(
     @Body() body: CreateDiseaseRequestDTO
-  ): Promise<CreateDiseaseResponseDTO> {
-    await this.diseaseService.create(body);
-    return;
+  ): Promise<FindDiseaseResponseDTO> {
+    const disease = await this.diseaseService.create(body);
+    return plainToInstance(FindDiseaseResponseDTO, disease);
   }
 
   @Patch(":id")
   async findOneAndUpdate(
     @Param('id') id: number,
     @Body() body: FindOneDiseaseAndUpdateRequestDTO
-  ): Promise<FindOneDiseaseAndUpdateResponseDTO> {
-    await this.diseaseService.findOneAndUpdate(id, body);
-    return;
+  ): Promise<FindDiseaseResponseDTO> {
+    const disease = await this.diseaseService.findOneAndUpdate(id, body);
+    return plainToInstance(FindDiseaseResponseDTO, disease);
+  }
+
+  @Delete(":id")
+  async findOneAndDelete(
+    @Param('id') id: number
+  ): Promise<FindOneDiseaseAndDeleteResponseDTO> {
+    await this.diseaseService.findOneAndDelete(id);
+    return {};
   }
 
   @Get('selector')
-  async findSelectorOptions(
-    @Param('id') id: number
-  ): Promise<FindDiseaseSelectorOptionsResponseDTO> {
+  async findSelectorOptions(): Promise<FindSelectorOptionsDiseaseDTO> {
     const options = await this.diseaseService.findSelectorOptions();
-    return { options };
+    return plainToInstance(FindSelectorOptionsDiseaseDTO, { options: options });
   }
 }

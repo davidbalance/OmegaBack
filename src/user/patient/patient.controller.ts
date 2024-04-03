@@ -1,20 +1,15 @@
 import {
-  Body,
   Controller,
-  Get,
-  Param,
-  Patch,
-  Post
+  Get
 } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import {
-  CreatePatientRequestDTO,
-  CreatePatientResponseDTO,
-  FindPatientsResponseDTO,
-  FindOnePatientAndUpdateRequestDTO,
-  FindOnePatientAndUpdateResponseDTO
+  FindPatientsResponseDTO
 } from '../common';
+import { ApiTags } from '@nestjs/swagger';
+import { plainToInstance } from 'class-transformer';
 
+@ApiTags('User')  
 @Controller('patients')
 export class PatientController {
   constructor(private readonly patientService: PatientService) { }
@@ -22,23 +17,6 @@ export class PatientController {
   @Get()
   async find(): Promise<FindPatientsResponseDTO> {
     const patients = await this.patientService.find();
-    return { patients };
-  }
-
-  @Post()
-  async create(
-    @Body() body: CreatePatientRequestDTO
-  ): Promise<CreatePatientResponseDTO> {
-    await this.patientService.create(body);
-    return;
-  }
-
-  @Patch(':id')
-  async findOneAndUpdate(
-    @Param('id') id: number,
-    @Body() body: FindOnePatientAndUpdateRequestDTO
-  ): Promise<FindOnePatientAndUpdateResponseDTO> {
-    await this.patientService.findOneAndUpdate(id, body);
-    return;
+    return plainToInstance(FindPatientsResponseDTO, { patients });
   }
 }

@@ -1,5 +1,5 @@
 import { PartialType } from "@nestjs/mapped-types";
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateDiseaseRequestDTO {
     @IsString()
@@ -9,4 +9,12 @@ export class CreateDiseaseRequestDTO {
     public readonly group: number;
 }
 
-export class FindOneDiseaseAndUpdateRequestDTO extends PartialType(CreateDiseaseRequestDTO) { }
+export class FindOneDiseaseAndUpdateRequestDTO {
+    @IsString()
+    @IsOptional()
+    public readonly name?: string;
+
+    @IsNumber()
+    @IsOptional()
+    public readonly group?: number;
+}

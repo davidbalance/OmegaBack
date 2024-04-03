@@ -1,8 +1,11 @@
-import { Body, Controller, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateDoctorRequestDTO, CreateDoctorResponseDTO, FindDoctorsResponseDTO, FindOneDoctorAndUpdateRequestDTO, FindOneDoctorAndUpdateResponseDTO } from '../common';
+import { FindDoctorsResponseDTO, FindOneDoctorAndUpdateResponseDTO } from '../common';
+import { plainToInstance } from 'class-transformer';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User')
 @Controller('doctors')
 export class DoctorController {
   constructor(private readonly doctorService: DoctorService) { }
@@ -10,24 +13,7 @@ export class DoctorController {
   @Get()
   async find(): Promise<FindDoctorsResponseDTO> {
     const doctors = await this.doctorService.find();
-    return { doctors };
-  }
-
-  @Post()
-  async create(
-    @Body() body: CreateDoctorRequestDTO
-  ): Promise<CreateDoctorResponseDTO> {
-    await this.doctorService.create(body);
-    return;
-  }
-
-  @Patch(':id')
-  async findOneAndUpdate(
-    @Param('id') id: number,
-    @Body() body: FindOneDoctorAndUpdateRequestDTO
-  ): Promise<FindOneDoctorAndUpdateResponseDTO> {
-    await this.doctorService.findOneAndUpdate(id, body);
-    return;
+    return plainToInstance(FindDoctorsResponseDTO, { doctors });
   }
 
   @Post('signature/:id')
@@ -37,6 +23,6 @@ export class DoctorController {
     @UploadedFile() file: Express.Multer.File
   ): Promise<FindOneDoctorAndUpdateResponseDTO> {
     await this.doctorService.uploadSignature(id, file);
-    return;
+    return {};
   }
 }

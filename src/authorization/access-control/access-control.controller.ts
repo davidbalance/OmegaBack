@@ -1,7 +1,9 @@
 import { Body, Controller, Inject, Param, Patch } from '@nestjs/common';
 import { AccessControlService } from './access-control.service';
 import { FindOneACClientAndUpdateResourcesRequestDTO, FindOneACClientAndUpdateResourcesResponseDTO, FindOneACClientAndUpdateRolesRequestDTO, FindOneACClientAndUpdateRolesResponseDTO } from './dtos';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Authorization')
 @Controller('access-control')
 export class AccessControlController {
     constructor(
@@ -14,7 +16,7 @@ export class AccessControlController {
         @Body() body: FindOneACClientAndUpdateRolesRequestDTO
     ): Promise<FindOneACClientAndUpdateRolesResponseDTO> {
         await this.controlService.updateAccessRoles(user, body);
-        return;
+        return {};
     }
 
     @Patch('resource/:user')
@@ -23,6 +25,6 @@ export class AccessControlController {
         @Body() body: FindOneACClientAndUpdateResourcesRequestDTO
     ): Promise<FindOneACClientAndUpdateResourcesResponseDTO> {
         await this.controlService.updateAccessResources(user, body);
-        return;
+        return {};
     }
 }

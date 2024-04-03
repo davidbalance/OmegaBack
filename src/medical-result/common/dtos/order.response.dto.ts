@@ -1,17 +1,39 @@
-class FindOrderResult {
+import { Expose, Type } from "class-transformer";
+
+class OrderResultDTO {
+    @Expose()
     public readonly id: number;
+
+    @Expose()
     public readonly examName: string;
-    public readonly address: string;
+
+    @Expose()
+    public readonly disease?: number;
 }
 
-export class FindOrder {
+export class FindOrderResponseDTO {
+    @Expose()
     public readonly id: number;
-    public readonly createAt: Date;
-    public readonly patient: string;
+
+    @Expose()
+    public readonly patientDni: string;
+
+    @Expose()
+    public readonly patientFullname: string;
+
+    @Expose()
     public readonly process: string;
-    public readonly results: FindOrderResult[]
+
+    @Expose()
+    public readonly createAt: Date;
+
+    @Type(() => OrderResultDTO)
+    @Expose()
+    public readonly results: OrderResultDTO[]
 }
 
 export class FindOrdersResponseDTO {
-    public readonly orders: FindOrder[];
+    @Type(() => FindOrderResponseDTO)
+    @Expose()
+    public readonly orders: FindOrderResponseDTO[]
 }

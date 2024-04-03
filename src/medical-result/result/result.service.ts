@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ResultRepository } from './result.repository';
-import { FindResult } from '../common/dtos';
 import { FindOneResultAndUpdateDiseaseRequestDTO, InsertMedicalReportRequestDTO } from '../common/dtos/result.request.dto';
-import { PatientService } from '@/user/patient/patient.service';
 import { DoctorService } from '@/user/doctor/doctor.service';
 import { MedicalReportService } from '../medical-report/medical-report.service';
 import { CompanyService } from '@/location/company/company.service';
+import dayjs from 'dayjs';
+import { Result } from './entities/result.entity';
 
 interface FindResultParams {
   exam?: number;
@@ -18,69 +18,97 @@ export class ResultService {
 
   constructor(
     @Inject(ResultRepository) private readonly repository: ResultRepository,
-    @Inject(PatientService) private readonly patientService: PatientService,
     @Inject(DoctorService) private readonly doctorService: DoctorService,
     @Inject(MedicalReportService) private readonly reportService: MedicalReportService,
     @Inject(CompanyService) private readonly companyService: CompanyService
   ) { }
 
-  async findResultsByDoctor(doctor: number): Promise<FindResult[]> {
+  async find(): Promise<Result[]> {
     const results = await this.repository.find({
-      where: { doctor: doctor },
       select: {
         id: true,
         examName: true,
         disease: true,
-        address: true,
         report: {
           id: true,
           content: true
-        }
-      }
-    });
-
-    return results;
-  }
-
-  async findOneResultAndUpdateDisease(id: number, { ...data }: FindOneResultAndUpdateDiseaseRequestDTO): Promise<FindResult> {
-    const result = await this.repository.findOneAndUpdate({ id }, { disease: data.disease });
-    return result;
-  }
-
-  async insertMedicalReport(id: number, { ...data }: InsertMedicalReportRequestDTO): Promise<FindResult> {
-    const medicalResult = await this.repository.findOne({
-      where: { id },
-      select: {
-        id: true,
-        examName: true,
-        doctor: true,
+        },
         order: {
-          id: true,
-          company: true,
-          patient: true
+          patientFullname: true
         }
       },
       relations: {
         order: true
       }
     });
-    const doctor = await this.doctorService.findOne(medicalResult.doctor);
-    const patient = await this.patientService.findOneByDni(medicalResult.order.patient);
+    return results;
+  }
+
+  async findResultsByDoctor(doctor: number): Promise<Result[]> {
+    const currentDoctor = await this.doctorService.findOne(doctor);
+    const results = await this.repository.find({
+      where: { doctorDni: currentDoctor.user.dni },
+      select: {
+        id: true,
+        examName: true,
+        disease: true,
+        report: {
+          id: true,
+          content: true
+        },
+        order: {
+          patientFullname: true
+        }
+      },
+      relations: {
+        order: true
+      }
+    });
+
+    return results;
+  }
+
+  async findOneResultAndUpdateDisease(id: number, { ...data }: FindOneResultAndUpdateDiseaseRequestDTO): Promise<Result> {
+    const result = await this.repository.findOneAndUpdate({ id }, { disease: data.disease });
+    return result;
+  }
+
+  async insertMedicalReport(id: number, { ...data }: InsertMedicalReportRequestDTO): Promise<Result> {
+    const medicalResult = await this.repository.findOne({
+      where: { id },
+      select: {
+        id: true,
+        examName: true,
+        doctorDni: true,
+        doctorFullname: true,
+        doctorSignature: true,
+        order: {
+          id: true,
+          company: true,
+          patientDni: true,
+          patientFullname: true,
+          patientBirthday: true
+        }
+      },
+      relations: {
+        order: true
+      }
+    });
     const company = await this.companyService.findOneByRuc(medicalResult.order.company);
     const medicalReport = await this.reportService.create({
       content: data.content,
       order: medicalResult.order.id,
       companyName: company.name,
-      doctorDni: doctor.dni,
-      doctorFullname: `${doctor.name} ${doctor.lastname}`,
-      doctorSignature: doctor.signature,
-      patientAge: patient.age,
-      patientDni: patient.dni,
-      patientFullname: `${patient.lastname} ${patient.name}`,
+      doctorDni: medicalResult.doctorDni,
+      doctorFullname: medicalResult.doctorFullname,
+      doctorSignature: medicalResult.doctorSignature,
+      patientAge: dayjs().diff(medicalResult.order.patientBirthday, 'year'),
+      patientDni: medicalResult.order.patientDni,
+      patientFullname: medicalResult.order.patientFullname,
       examName: medicalResult.examName,
     });
-    const newMedicalResult = this.repository.findOneAndUpdate({ id }, { report: medicalReport });
-    return newMedicalResult;
+    await this.repository.findOneAndUpdate({ id }, { report: medicalReport });
+    medicalResult.report = medicalReport;
+    return medicalResult;
   }
-
 }

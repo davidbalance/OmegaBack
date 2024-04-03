@@ -7,11 +7,8 @@ export class WebLogo extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'logoId' })
     public id: number;
 
-    @Column({ name: 'logoResource', type: 'varchar', length: 256, nullable: false, unique: true })
-    public resource: string;
-
-    @Column({ name: 'logoAddress', type: 'varchar', length: 256, nullable: false, unique: true })
-    public address: string;
+    @Column({ name: 'logoName', type: 'varchar', length: 256, nullable: false, unique: true })
+    public name: string;
 
     @OneToMany(() => WebClient, client => client.logo, { eager: false })
     public clients: WebClient[]

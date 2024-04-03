@@ -6,10 +6,14 @@ import { ExternalKey } from "../external-key/entities/external-key.entity";
 import { SendValue } from "../send-value/entities/send-value.entity";
 
 @Entity({ name: "MR_RESULTS" })
-@Index(['doctor', 'disease'])
+@Index(['doctorDni'], { unique: false })
+@Index(['disease'], { unique: false })
 export class Result extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: "resultId" })
     public id: number;
+
+    @Column({ name: 'resultFileAddress', type: 'varchar', length: 256, unique: true })
+    public fileAdress: string;
 
     @Column({ name: 'examId', type: 'int', nullable: false })
     public exam: number;
@@ -20,26 +24,29 @@ export class Result extends AbstractEntity<number> {
     @Column({ name: 'diseaseId', type: 'int', nullable: true })
     public disease?: number;
 
-    @Column({ name: 'doctorId', type: 'int', nullable: false })
-    public doctor: number;
+    @Column({ name: 'doctorDni', type: 'varchar', length: 10, nullable: false })
+    public doctorDni: string;
 
-    @Column({ name: 'resultAddress', type: 'varchar', length: 256, nullable: true })
-    public address: string;
+    @Column({ name: 'doctorFullName', type: 'varchar', length: 128, nullable: false })
+    public doctorFullname: string;
+
+    @Column({ name: 'doctorSignature', type: 'varchar', length: 256, nullable: false })
+    public doctorSignature: string;
 
     @ManyToOne(() => Order, order => order.results, { eager: false })
     @JoinColumn([
-        { referencedColumnName: 'patient', name: 'userDni' },
+        { referencedColumnName: 'patientDni', name: 'patientDni' },
         { referencedColumnName: 'id', name: 'orderId' },
     ])
     public order: Order;
 
-    @OneToOne(() => MedicalReport, { nullable: true, eager: false })
+    @OneToOne(() => MedicalReport, { nullable: true, eager: true })
     @JoinColumn({ referencedColumnName: 'id', name: 'reportId' })
     public report: MedicalReport;
 
     @OneToMany(() => ExternalKey, key => key.result, { eager: false })
     public externalKeys: ExternalKey[];
-    
+
     @OneToMany(() => SendValue, value => value.result, { eager: false })
     public sendValues: SendValue[];
 }

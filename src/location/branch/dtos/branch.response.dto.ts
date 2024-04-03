@@ -1,5 +1,16 @@
 import { SelectorOption } from "@/shared";
+import { Expose, Type } from "class-transformer";
 
-export class FindBranchSelectorOptionsResponseDTO {
-    public readonly options: SelectorOption<number>[];
+class SelectorOptionBranchDTO implements SelectorOption<number> {
+    @Expose()
+    public readonly key: number;
+
+    @Expose()
+    public readonly label: string;
+}
+
+export class FindSelectorOptionsBranchDTO {
+    @Type(() => SelectorOptionBranchDTO)
+    @Expose()
+    public readonly options: SelectorOptionBranchDTO[];
 }

@@ -1,14 +1,17 @@
 import { Controller, Get } from '@nestjs/common';
 import { BranchService } from './branch.service';
-import { FindBranchSelectorOptionsResponseDTO } from './dtos';
+import { FindSelectorOptionsBranchDTO } from './dtos';
+import { plainToInstance } from 'class-transformer';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Location')
 @Controller('branches')
 export class BranchController {
   constructor(private readonly branchService: BranchService) { }
 
   @Get('selector')
-  async findSelectorOptions(): Promise<FindBranchSelectorOptionsResponseDTO> {
+  async findSelectorOptions(): Promise<FindSelectorOptionsBranchDTO> {
     const options = await this.branchService.findSelectorOptions();
-    return { options };
+    return plainToInstance(FindSelectorOptionsBranchDTO, { options });
   }
 }

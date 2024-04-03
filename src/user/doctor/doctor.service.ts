@@ -3,7 +3,7 @@ import { DoctorRepository } from './doctor.repository';
 import { Doctor } from './entities/doctor.entity';
 import { UserService } from 'src/user/user/user.service';
 import path, { extname } from 'path';
-import { CreateDoctorRequestDTO, FindDoctor, FindOneDoctorAndUpdateRequestDTO } from '../common';
+import { CreateDoctorRequestDTO, FindOneDoctorAndUpdateRequestDTO } from '../common';
 import { StorageManager } from '@/shared/storage-manager';
 
 @Injectable()
@@ -21,17 +21,13 @@ export class DoctorService {
     return doctor;
   }
 
-  async find(): Promise<FindDoctor[]> {
+  async find(): Promise<Doctor[]> {
     const doctors = await this.repository.find({
-      where: {
-        user: {
-          status: true
-        }
-      },
       select: {
         id: true,
         signature: true,
         user: {
+          id: true,
           dni: true,
           email: true,
           name: true,
@@ -39,20 +35,10 @@ export class DoctorService {
         }
       }
     });
-    const foundDoctors = doctors.map((e) => {
-      const user = e.user;
-      delete user.createAt;
-      delete user.updateAt;
-      delete user.id;
-      delete user.hasCredential;
-      delete user.status;
-      delete e.user;
-      return { ...e, ...user };
-    });
-    return foundDoctors;
+    return doctors;
   }
 
-  async findOne(id: number): Promise<FindDoctor> {
+  async findOne(id: number): Promise<Doctor> {
     const doctor = await this.repository.findOne({
       where: {
         id: id
@@ -61,6 +47,7 @@ export class DoctorService {
         id: true,
         signature: true,
         user: {
+          id: true,
           dni: true,
           email: true,
           name: true,
@@ -68,17 +55,10 @@ export class DoctorService {
         }
       }
     });
-    const user = doctor.user;
-    delete user.createAt;
-    delete user.updateAt;
-    delete user.id;
-    delete user.hasCredential;
-    delete user.status;
-    delete doctor.user;
-    return { ...doctor, ...user };
+    return doctor;
   }
 
-  async findOneAndUpdate(id: number, { ...data }: FindOneDoctorAndUpdateRequestDTO): Promise<FindDoctor> {
+  async findOneAndUpdate(id: number, { ...data }: FindOneDoctorAndUpdateRequestDTO): Promise<Doctor> {
     const doctor = await this.repository.findOne({
       where: { id },
       select: {
@@ -88,24 +68,19 @@ export class DoctorService {
       }
     });
     const user = await this.userService.findOneAndUpdate(doctor.user.id, data);
-    const foundDoctor = await this.repository.findOne({
-      where: { id },
-      select: {
-        id: true,
-        signature: true,
-        user: {
-          dni: true,
-          email: true,
-          name: true,
-          lastname: true,
-        }
-      }
-    })
-    return { ...foundDoctor, ...foundDoctor.user };
+    doctor.user = user;
+    return doctor;
   }
 
   async uploadSignature(id: number, signature: Express.Multer.File): Promise<void> {
-    const doctor = await this.repository.findOne({ where: { id }, select: { user: { dni: true } } });
+    const doctor = await this.repository.findOne({
+      where: { id },
+      select: {
+        user: {
+          dni: true
+        }
+      }
+    });
     const directory = doctor.user.dni;
     const extension = extname(signature.filename);
     const uploaded = await this.storage.saveFile(signature.buffer, extension, path.resolve(`signatures/${directory}`));

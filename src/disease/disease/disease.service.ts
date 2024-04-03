@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DiseaseRepository } from './disease.repository';
 import { Disease } from './entities/disease.entity';
-import { CreateDiseaseRequestDTO, FindDisease, FindOneDiseaseAndUpdateRequestDTO } from './dtos';
 import { SelectorOption } from '@/shared';
 import { DiseaseGroupService } from '../disease-group/disease-group.service';
+import { CreateDiseaseRequestDTO, FindOneDiseaseAndUpdateRequestDTO } from './dtos';
 
 @Injectable()
 export class DiseaseService {
@@ -18,12 +18,19 @@ export class DiseaseService {
     return await this.repository.create({ ...data, group: diseaseGroup });
   }
 
-  async find(): Promise<FindDisease[]> {
+  async find(): Promise<Disease[]> {
     const diseases = await this.repository.find({
       where: { status: true },
       select: {
         id: true,
-        name: true
+        name: true,
+        group: {
+          id: true,
+          name: true
+        }
+      },
+      relations: {
+        group: true
       }
     });
     return diseases;
@@ -51,5 +58,9 @@ export class DiseaseService {
     } else {
       return await this.repository.findOneAndUpdate({ id }, { ...data });
     }
+  }
+
+  async findOneAndDelete(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id });
   }
 }

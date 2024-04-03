@@ -14,9 +14,13 @@ import {
   FindOneUserAndDeleteResponseDTO,
   FindOneUserAndUpdateRequestDTO,
   FindOneUserAndUpdateResponseDTO,
+  FindUserResponseDTO,
   FindUsersResponseDTO
 } from '../common';
+import { ApiTags } from '@nestjs/swagger';
+import { plainToInstance } from 'class-transformer';
 
+@ApiTags('User')
 @Controller('users')
 export class UserController {
   constructor(
@@ -26,24 +30,24 @@ export class UserController {
   @Get()
   async find(): Promise<FindUsersResponseDTO> {
     const users = await this.userService.find();
-    return { users };
+    return plainToInstance(FindUsersResponseDTO, { users });
   }
 
   @Post()
   async create(
     @Body() body: CreateUserRequestDTO
-  ): Promise<CreateUserResponseDTO> {
+  ): Promise<FindUserResponseDTO> {
     const user = await this.userService.create(body);
-    return { user: user.id };
+    return plainToInstance(FindUserResponseDTO, user);
   }
 
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
     @Body() body: FindOneUserAndUpdateRequestDTO
-  ): Promise<FindOneUserAndUpdateResponseDTO> {
-    await this.userService.findOneAndUpdate(id, body)
-    return;
+  ): Promise<FindUserResponseDTO> {
+    const user = await this.userService.findOneAndUpdate(id, body)
+    return plainToInstance(FindUserResponseDTO, user);
   }
 
   @Delete(':id')
@@ -51,6 +55,6 @@ export class UserController {
     @Param('id') id: number
   ): Promise<FindOneUserAndDeleteResponseDTO> {
     await this.userService.findOneAndDelete(id);
-    return;
+    return {};
   }
 }

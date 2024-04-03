@@ -1,16 +1,22 @@
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'MR_REPORTS' })
+@Index(['patientDni'], { unique: false })
+@Index(['doctorDni'], { unique: false })
+@Index(['doctorDni', 'patientDni'], { unique: false })
 export class MedicalReport extends AbstractEntity<number>{
     @PrimaryGeneratedColumn('increment', { name: 'reportId' })
     public id: number;
 
-    @Column({ name: 'reportAddress', type: 'varchar', length: 256, nullable: true })
-    public address: string;
+    @Column({ name: 'reportFileAddress', type: 'varchar', length: 256, nullable: true })
+    public fileAddress: string;
 
     @Column({ name: 'reportContent', type: 'varchar', length: 8192, nullable: false })
     public content: string;
+
+    @Column({ name: 'reportHasFile', type: 'boolean', default: false, nullable: false })
+    public hasFile: boolean;
 
     @Column({ name: 'orderId', type: 'int', nullable: false })
     public order: number;
