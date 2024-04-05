@@ -4,14 +4,27 @@ import { CorporativeGroupController } from './corporative-group.controller';
 import { CorporativeGroup } from './entities/corporative-group.entity';
 import { SqlDatabaseModule } from 'src/shared';
 import { CorporativeGroupRepository } from './corporative-group.repository';
+import { CGExternalConnectionController } from './external-connection/c-g-external-connection.controller';
+import { CGExternalConnectionService } from './external-connection/c-g-external-connection.service';
+import { CorporativeGroupExternalKeyModule } from './corporative-group-external-key/corporative-group-external-key.module';
 
 @Module({
-  imports: [SqlDatabaseModule.forFeature([CorporativeGroup])],
-  controllers: [CorporativeGroupController],
+  imports: [
+    SqlDatabaseModule.forFeature([CorporativeGroup]),
+    CorporativeGroupExternalKeyModule
+  ],
+  controllers: [
+    CorporativeGroupController,
+    CGExternalConnectionController
+  ],
   providers: [
     CorporativeGroupService,
-    CorporativeGroupRepository
+    CorporativeGroupRepository,
+    CGExternalConnectionService
   ],
-  exports: [CorporativeGroupService]
+  exports: [
+    CorporativeGroupService,
+    CGExternalConnectionService
+  ]
 })
 export class CorporativeGroupModule { }

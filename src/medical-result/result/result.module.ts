@@ -10,8 +10,11 @@ import { ResultRepository } from './result.repository';
 import { PatientModule } from '@/user/patient/patient.module';
 import { MedicalReportModule } from '../medical-report/medical-report.module';
 import { CompanyModule } from '@/location/company/company.module';
-import { ExternalKeyModule } from './external-key/external-key.module';
 import { SendValueModule } from './send-value/send-value.module';
+import { ResultExternalKeyModule } from './result-external-key/result-external-key.module';
+import { ResultExternalConnectionService } from './external-connections/result-external-connection.service';
+import { ResultExternalConnectionController } from './external-connections/result-external-connection.controller';
+import { LocalStorageModule } from '@/shared/storage-manager';
 
 @Module({
   imports: [
@@ -22,13 +25,19 @@ import { SendValueModule } from './send-value/send-value.module';
     MedicalReportModule,
     OrderModule,
     DiseaseModule,
-    ExternalKeyModule,
-    SendValueModule
+    SendValueModule,
+    ResultExternalKeyModule,
+    OrderModule,
+    LocalStorageModule
   ],
-  controllers: [ResultController],
+  controllers: [
+    ResultController,
+    ResultExternalConnectionController
+  ],
   providers: [
     ResultService,
-    ResultRepository
+    ResultRepository,
+    ResultExternalConnectionService
   ],
   exports: [ResultService]
 })

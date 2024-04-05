@@ -4,18 +4,26 @@ import { BranchController } from './branch.controller';
 import { Branch } from './entities/branch.entity';
 import { SqlDatabaseModule } from 'src/shared';
 import { BranchRepository } from './branch.repository';
+import { BranchExternalKeyModule } from './branch-external-key/branch-external-key.module';
+import { BranchExternalConnectionController } from './external-connection/branch-external-connection.controller';
+import { BranchExternalConnectionService } from './external-connection/branch-external-connection.service';
 import { CompanyModule } from '../company/company.module';
-import { CityModule } from '../city/city.module';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([Branch])
+    SqlDatabaseModule.forFeature([Branch]),
+    BranchExternalKeyModule,
+    CompanyModule
   ],
-  controllers: [BranchController],
+  controllers: [
+    BranchController,
+    BranchExternalConnectionController
+  ],
   providers: [
     BranchService,
-    BranchRepository
+    BranchRepository,
+    BranchExternalConnectionService
   ],
-  exports: [BranchService]
+  exports: [BranchService, BranchExternalConnectionService]
 })
 export class BranchModule { }

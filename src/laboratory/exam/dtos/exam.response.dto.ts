@@ -1,7 +1,15 @@
 import { SelectorOption } from "@/shared";
 import { Expose, Type } from "class-transformer";
 
-class SelectorOptionExam implements SelectorOption<number>{
+export class FindExamResponseDTO {
+    @Expose()
+    public id: number;
+
+    @Expose()
+    public name: string;
+}
+
+class SelectorOptionExam implements SelectorOption<number> {
     @Expose()
     public readonly key: number;
 

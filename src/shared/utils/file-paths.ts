@@ -1,0 +1,2 @@
+export const fileResultPath = ({ dni, order }: { dni: string, order: number }) => `medical-result/${dni}/${order}/result`
+export const fileReportPath = ({ dni, order }: { dni: string, order: number }) => `medical-result/${dni}/${order}/result`

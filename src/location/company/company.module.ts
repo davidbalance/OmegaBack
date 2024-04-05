@@ -4,17 +4,29 @@ import { CompanyController } from './company.controller';
 import { Company } from './entities/company.entity';
 import { SqlDatabaseModule } from 'src/shared';
 import { CompanyRepository } from './company.repository';
+import { CompanyExternalConnectionService } from './external-connection/company-external-connection.service';
+import { CompanyExternalConnectionController } from './external-connection/company-external-connection.controller';
+import { CompanyExternalKeyModule } from './company-external-key/company-external-key.module';
 import { CorporativeGroupModule } from '../corporative-group/corporative-group.module';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([Company])
+    SqlDatabaseModule.forFeature([Company]),
+    CompanyExternalKeyModule,
+    CorporativeGroupModule
   ],
-  controllers: [CompanyController],
+  controllers: [
+    CompanyController,
+    CompanyExternalConnectionController
+  ],
   providers: [
     CompanyService,
-    CompanyRepository
+    CompanyRepository,
+    CompanyExternalConnectionService
   ],
-  exports: [CompanyService]
+  exports: [
+    CompanyService,
+    CompanyExternalConnectionService
+  ]
 })
 export class CompanyModule { }

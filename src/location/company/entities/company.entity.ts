@@ -1,7 +1,8 @@
 import { Branch } from "src/location/branch/entities/branch.entity";
 import { CorporativeGroup } from "src/location/corporative-group/entities/corporative-group.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { CompanyExternalKey } from "../company-external-key/entities/company-external-key.entity";
 
 @Entity({ name: 'LO_COMPANIES' })
 export class Company extends AbstractEntity<number> {
@@ -29,4 +30,8 @@ export class Company extends AbstractEntity<number> {
 
     @OneToMany(() => Branch, branch => branch.company, { eager: false })
     public branches: Branch[];
+
+    @OneToOne(() => CompanyExternalKey, { eager: false, nullable: true })
+    @JoinColumn({ referencedColumnName: 'id', name: 'externalKey' })
+    public externalKey: CompanyExternalKey;
 }

@@ -8,6 +8,9 @@ import { BranchModule } from '@/location/branch/branch.module';
 import { CompanyModule } from '@/location/company/company.module';
 import { CorporativeGroupModule } from '@/location/corporative-group/corporative-group.module';
 import { UserModule } from '@/user/user/user.module';
+import { OrderExternalKeyModule } from './order-external-key/order-external-key.module';
+import { OrderExternalConnectionService } from './external-connections/order-external-connection.service';
+import { OrderExternalConnectionController } from './external-connections/order-external-connection.controller';
 
 @Module({
   imports: [
@@ -15,10 +18,21 @@ import { UserModule } from '@/user/user/user.module';
     CompanyModule,
     CorporativeGroupModule,
     UserModule,
-    BranchModule
+    BranchModule,
+    OrderExternalKeyModule
   ],
-  controllers: [OrderController],
-  providers: [OrderService, OrderRepository],
-  exports: [OrderService]
+  controllers: [
+    OrderController,
+    OrderExternalConnectionController
+  ],
+  providers: [
+    OrderService,
+    OrderRepository,
+    OrderExternalConnectionService
+  ],
+  exports: [
+    OrderService,
+    OrderExternalConnectionService
+  ]
 })
 export class OrderModule { }

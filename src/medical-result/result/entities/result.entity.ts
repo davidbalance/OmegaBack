@@ -2,8 +2,8 @@ import { MedicalReport } from "@/medical-result/medical-report/entities/medical-
 import { Order } from "@/medical-result/order/entities/order.entity";
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { ExternalKey } from "../external-key/entities/external-key.entity";
 import { SendValue } from "../send-value/entities/send-value.entity";
+import { ResultExternalKey } from "../result-external-key/entities/result-external-key.entity";
 
 @Entity({ name: "MR_RESULTS" })
 @Index(['doctorDni'], { unique: false })
@@ -12,11 +12,8 @@ export class Result extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: "resultId" })
     public id: number;
 
-    @Column({ name: 'resultFileAddress', type: 'varchar', length: 256, unique: true })
-    public fileAdress: string;
-
-    @Column({ name: 'examId', type: 'int', nullable: false })
-    public exam: number;
+    @Column({ name: 'resultFileName', type: 'varchar', length: 256, unique: true })
+    public fileName: string;
 
     @Column({ name: 'examName', type: 'varchar', length: 128, nullable: false })
     public examName: string;
@@ -44,9 +41,10 @@ export class Result extends AbstractEntity<number> {
     @JoinColumn({ referencedColumnName: 'id', name: 'reportId' })
     public report: MedicalReport;
 
-    @OneToMany(() => ExternalKey, key => key.result, { eager: false })
-    public externalKeys: ExternalKey[];
-
     @OneToMany(() => SendValue, value => value.result, { eager: false })
     public sendValues: SendValue[];
+
+    @OneToOne(() => ResultExternalKey, { eager: false })
+    @JoinColumn({ referencedColumnName: 'id', name: 'externalKey' })
+    public externalKey: ResultExternalKey;
 }

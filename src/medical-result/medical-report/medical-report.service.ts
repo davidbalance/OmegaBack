@@ -2,7 +2,7 @@ import { Inject, Injectable, StreamableFile } from '@nestjs/common';
 import { MedicalReportRepository } from './medical-report.repository';
 import { CreateMedicalReportRequestDTO } from '../common/dtos';
 import { MedicalReport } from './entities/medical-report.entity';
-import { PdfManagerService } from '@/shared';
+import { PdfManagerService, fileReportPath } from '@/shared';
 import { readFileSync } from 'fs';
 import dayjs from 'dayjs';
 import path from 'path';
@@ -43,7 +43,9 @@ export class MedicalReportService {
 
     const buffer = await this.pdfService.craft(templateFile, content);
 
-    const output = this.storageManager.saveFile(buffer, '.pdf', `medical-report/${reportData.patientDni}/${reportData.order}`);
+    const filePath = fileReportPath({ dni: reportData.patientDni, order: reportData.order });
+
+    const output = this.storageManager.saveFile(buffer, '.pdf', filePath);
 
     return output;
   }

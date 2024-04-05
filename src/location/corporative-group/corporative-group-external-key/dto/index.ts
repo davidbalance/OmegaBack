@@ -1,0 +1,1 @@
+export * from './corporative-group-external-key.request.dto'

@@ -5,6 +5,11 @@ import { CorporativeGroupModule } from './corporative-group/corporative-group.mo
 import { BranchModule } from './branch/branch.module';
 
 @Module({
-  imports: [CityModule, CompanyModule, CorporativeGroupModule, BranchModule]
+  imports: [
+    CityModule,
+    CompanyModule,
+    CorporativeGroupModule,
+    BranchModule
+  ]
 })
 export class LocationModule { }

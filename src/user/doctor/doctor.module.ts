@@ -6,6 +6,9 @@ import { Doctor } from './entities/doctor.entity';
 import { DoctorRepository } from './doctor.repository';
 import { UserModule } from '../user/user.module';
 import { LocalStorageModule } from '@/shared/storage-manager';
+import { DoctorExternalConnectionService } from './external-connection/doctor-external-connection.service';
+import { DoctorExternalConnectionController } from './external-connection/doctor-external-connection.controller';
+import { ResultListener } from './listener';
 
 @Module({
   imports: [
@@ -13,8 +16,16 @@ import { LocalStorageModule } from '@/shared/storage-manager';
     UserModule,
     LocalStorageModule
   ],
-  controllers: [DoctorController],
-  providers: [DoctorService, DoctorRepository],
+  controllers: [
+    DoctorController,
+    DoctorExternalConnectionController
+  ],
+  providers: [
+    DoctorService,
+    DoctorRepository,
+    DoctorExternalConnectionService,
+    ResultListener
+  ],
   exports: [DoctorService]
 })
 export class DoctorModule { }

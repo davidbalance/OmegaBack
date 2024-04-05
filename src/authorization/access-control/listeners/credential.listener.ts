@@ -10,7 +10,7 @@ export class CredentialListener {
     ) { }
 
     @OnEvent(CredentialEvent.CREATE)
-    async createAccessControlClient({ createEvent }: CredentialCreateEvent) {
+    async createAccessControlClient({ createEvent }: CredentialCreateEvent): Promise<void> {
         const { id } = createEvent;
         await this.repository.create({ user: id });
     }

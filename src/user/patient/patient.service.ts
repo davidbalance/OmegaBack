@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PatientRepository } from './patient.repository';
 import { Patient } from './entities/patient.entity';
 import { UserService } from 'src/user/user/user.service';
-import { CreatePatientRequestDTO, FindOnePatientAndUpdateRequestDTO } from '../common';
+import { FindOnePatientAndUpdateRequestDTO } from '../common';
 
 @Injectable()
 export class PatientService {
@@ -12,12 +12,6 @@ export class PatientService {
     @Inject(UserService) private readonly userService: UserService
   ) { }
 
-  async create({ age, birthday, gender, ...data }: CreatePatientRequestDTO): Promise<Patient> {
-    const user = await this.userService.create(data);
-    const patient = await this.repository.create({ age, birthday, gender, user });
-    return patient;
-  }
-
   async find(): Promise<Patient[]> {
     const patients = await this.repository.find({
       where: {
@@ -26,7 +20,6 @@ export class PatientService {
         }
       },
       select: {
-        age: true,
         id: true,
         birthday: true,
         gender: true,
@@ -51,7 +44,6 @@ export class PatientService {
         }
       },
       select: {
-        age: true,
         id: true,
         birthday: true,
         gender: true,
@@ -65,12 +57,5 @@ export class PatientService {
       }
     });
     return patient;
-  }
-
-  async findOneAndUpdate(id: number, { age, birthday, gender, ...data }: FindOnePatientAndUpdateRequestDTO): Promise<Patient> {
-    const patient = await this.repository.findOne({ where: { id }, select: { user: { id: true } } });
-    await this.userService.findOneAndUpdate(patient.user.id, {...data});
-    const updatedPatient = await this.repository.findOneAndUpdate({ id }, patient);
-    return updatedPatient;
   }
 }
