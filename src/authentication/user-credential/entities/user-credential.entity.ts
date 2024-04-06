@@ -1,5 +1,6 @@
+import { ApiKey } from "@/authentication/api-key/entities/api-key.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'AUTH_USER_CREDENTIALS' })
 @Index(['email', 'user'], { unique: true })
@@ -18,4 +19,7 @@ export class UserCredential extends AbstractEntity<number> {
 
     @Column({ name: 'userCredentialStatus', type: 'boolean', default: true, nullable: false })
     public status: boolean;
+
+    @OneToMany(() => ApiKey, key => key.user, { eager: false })
+    public apiKeys: ApiKey[];
 }

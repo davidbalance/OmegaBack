@@ -45,6 +45,10 @@ export class UserService {
     });
   }
 
+  async findOne(id: number): Promise<User> {
+    return this.repository.findOne({ where: { id: id } });
+  }
+
   async findOneAndUpdate(id: number, user: FindOneUserAndUpdateRequestDTO): Promise<User> {
     const updateUser = await this.repository.findOneAndUpdate({ id }, user);
     this.eventEmitter.emit(UserEvent.UPDATE, new UserUpdateEvent({ id, email: user.email }));
