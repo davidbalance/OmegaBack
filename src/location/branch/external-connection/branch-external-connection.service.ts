@@ -4,23 +4,27 @@ import { BranchRepository } from "../branch.repository";
 import { Branch } from "../entities/branch.entity";
 import { CompanyExternalConnectionService } from "@/location/company/external-connection/company-external-connection.service";
 import { CreateBranchExternalRequestDTO, FindOneBranchExternalAndUpdateRequestDTO } from "../dtos";
+import { CityService } from "@/location/city/city.service";
 
 @Injectable()
 export class BranchExternalConnectionService {
     constructor(
         @Inject(CompanyExternalConnectionService) private readonly externalService: CompanyExternalConnectionService,
         @Inject(BranchRepository) private readonly repository: BranchRepository,
-        @Inject(BranchExternalKeyService) private readonly keyService: BranchExternalKeyService
+        @Inject(BranchExternalKeyService) private readonly keyService: BranchExternalKeyService,
+        @Inject(CityService) private readonly cityService: CityService
     ) { }
 
-    async create({ source, key, company, ...branch }: CreateBranchExternalRequestDTO & { source: string }): Promise<Branch> {
+    async create({ source, key, company, city, ...branch }: CreateBranchExternalRequestDTO & { source: string }): Promise<Branch> {
         const foundCompany = await this.externalService.findOneOrCreate({
             source: source,
             ...company
         });
+        const foundCity = await this.cityService.findOne(city);
         const newKey = await this.keyService.create({ source: source, key: key });
         const newBranch = await this.repository.create({
             ...branch,
+            city: foundCity,
             company: foundCompany,
             externalKey: newKey
         });

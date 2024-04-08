@@ -1,6 +1,6 @@
 import { CreateCompanyExternalRequestDTO } from "@/location/company/dtos/company-external-key.request.dto";
 import { Type } from "class-transformer";
-import { IsDefined, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, ValidateNested } from "class-validator";
+import { IsDefined, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, Length, ValidateNested } from "class-validator";
 
 export class CreateBranchExternalRequestDTO {
     @IsString()
@@ -10,6 +10,11 @@ export class CreateBranchExternalRequestDTO {
     @IsString()
     @IsNotEmpty()
     public readonly name: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @Length(3, 3)
+    public readonly city: string;
 
     @IsDefined()
     @IsObject()

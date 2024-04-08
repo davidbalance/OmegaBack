@@ -8,16 +8,18 @@ import { BranchExternalKeyModule } from './branch-external-key/branch-external-k
 import { BranchExternalConnectionController } from './external-connection/branch-external-connection.controller';
 import { BranchExternalConnectionService } from './external-connection/branch-external-connection.service';
 import { CompanyModule } from '../company/company.module';
+import { CityModule } from '../city/city.module';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Branch]),
     BranchExternalKeyModule,
-    CompanyModule
+    CompanyModule,
+    CityModule,
   ],
   controllers: [
     BranchController,
-    BranchExternalConnectionController
+    BranchExternalConnectionController,
   ],
   providers: [
     BranchService,

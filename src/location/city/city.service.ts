@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CityRepository } from './city.repository';
 import { SelectorOption } from '@/shared';
+import { City } from './entities/city.entity';
 
 @Injectable()
 export class CityService {
@@ -8,6 +9,11 @@ export class CityService {
   constructor(
     @Inject(CityRepository) private readonly repository: CityRepository,
   ) { }
+
+  async findOne(id: string): Promise<City> {
+    const city = await this.repository.findOne({ where: { id: id } });
+    return city;
+  }
 
   async findSelectorOptions(): Promise<SelectorOption<string>[]> {
     const cities = await this.repository.find({ select: { id: true, name: true } });
