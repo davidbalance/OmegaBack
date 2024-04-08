@@ -16,12 +16,13 @@ export class ApiKeyService {
     @Inject(ConfigService) private readonly configService: ConfigService
   ) { }
 
-  async create({ user }: CreateApiKeyRequestDTO): Promise<string> {
+  async create({ user, ...valueKey }: CreateApiKeyRequestDTO): Promise<string> {
     const foundUser = await this.userService.findOne(user);
     const apiKey: string = v4();
     const expiresIn: number = this.configService.get<number>('apikey.expiresIn');
     const expiresAt = dayjs().add(expiresIn, 's').toDate();
     const newApiKey = await this.repository.create({
+      ...valueKey,
       value: apiKey,
       user: foundUser,
       expiresAt: expiresAt

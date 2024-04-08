@@ -4,12 +4,12 @@ import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne, PrimaryGenerate
 import { OrderExternalKey } from "../order-external-key/entities/order-external-key.entity";
 
 @Entity({ name: 'MR_ORDERS' })
-@Index(['patientDni', 'corporativeGroup', 'company', 'branch'])
+@Index('order-dni-group-company-branch-idx', ['patientDni', 'corporativeGroup', 'company', 'branch'])
 export class Order extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'orderId' })
     public id: number;
 
-    @Index()
+    @Index('order-dni-idx')
     @Column({ name: 'patientDni', type: 'varchar', length: 10, nullable: false })
     public patientDni: string;
 

@@ -1,8 +1,8 @@
 import { Column, Index } from "typeorm";
 import { AbstractEntity } from "../sql-database";
 
-@Index(['source', 'key'], { unique: true })
-export abstract class ExternalKeyEntity extends AbstractEntity<number>{
+@Index('external-key-source-key-idx', ['source', 'key'], { unique: true })
+export abstract class ExternalKeyEntity extends AbstractEntity<number> {
     @Column({ name: 'externalSource', type: 'varchar', length: 128, nullable: false })
     public source: string;
 

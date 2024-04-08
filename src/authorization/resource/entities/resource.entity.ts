@@ -3,7 +3,7 @@ import { AbstractEntity, ClaimEnum } from "@/shared";
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'AC_RESOURCES' })
-@Index(['name', 'claim'], { unique: true })
+@Index('resource-name-claim-idx', ['name', 'claim'], { unique: true })
 export class Resource extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'resourceId' })
     public id: number;

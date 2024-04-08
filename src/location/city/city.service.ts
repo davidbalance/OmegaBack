@@ -9,12 +9,12 @@ export class CityService {
     @Inject(CityRepository) private readonly repository: CityRepository,
   ) { }
 
-  async findSelectorOptions(): Promise<SelectorOption<number>[]> {
+  async findSelectorOptions(): Promise<SelectorOption<string>[]> {
     const cities = await this.repository.find({ select: { id: true, name: true } });
     const options = cities.map((e) => ({
       key: e.id,
       label: e.name
-    } as SelectorOption<number>));
+    } as SelectorOption<string>));
     return options;
   }
 

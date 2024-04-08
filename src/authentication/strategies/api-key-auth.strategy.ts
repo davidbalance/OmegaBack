@@ -5,7 +5,7 @@ import { ApiKeyService } from "../api-key/api-key.service";
 
 export class ApiKeyAuthStrategy extends PassportStrategy(Strategy, 'api-key-auth') {
     constructor(@Inject(ApiKeyService) private readonly service: ApiKeyService) {
-        super({ header: 'x- api - key', prefix: '' }, true);
+        super({ header: 'x-api-key', prefix: '' }, true);
     }
 
     async validate(apiKey: string) {

@@ -10,7 +10,6 @@ import { ResultRepository } from './result.repository';
 import { PatientModule } from '@/user/patient/patient.module';
 import { MedicalReportModule } from '../medical-report/medical-report.module';
 import { CompanyModule } from '@/location/company/company.module';
-import { SendValueModule } from './send-value/send-value.module';
 import { ResultExternalKeyModule } from './result-external-key/result-external-key.module';
 import { ResultExternalConnectionService } from './external-connections/result-external-connection.service';
 import { ResultExternalConnectionController } from './external-connections/result-external-connection.controller';
@@ -25,7 +24,6 @@ import { LocalStorageModule } from '@/shared/storage-manager';
     MedicalReportModule,
     OrderModule,
     DiseaseModule,
-    SendValueModule,
     ResultExternalKeyModule,
     OrderModule,
     LocalStorageModule
