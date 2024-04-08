@@ -5,7 +5,8 @@ import {
   Get,
   Param,
   Patch,
-  Post
+  Post,
+  UseGuards
 } from '@nestjs/common';
 import { RoleService } from './role.service';
 import {
@@ -19,18 +20,21 @@ import {
 } from './dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 
 @ApiTags('Authorization')
 @Controller('roles')
 export class RoleController {
   constructor(private readonly roleService: RoleService) { }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<FindRolesResponseDTO> {
     const roles = await this.roleService.find();
     return plainToInstance(FindRolesResponseDTO, { roles });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() body: CreateRoleRequestDTO
@@ -39,6 +43,7 @@ export class RoleController {
     return plainToInstance(FindRoleResponseDTO, role);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
@@ -48,6 +53,7 @@ export class RoleController {
     return {};
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async findOneAndDelete(
     @Param('id') id: number

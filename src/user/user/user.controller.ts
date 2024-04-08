@@ -5,7 +5,8 @@ import {
   Get,
   Param,
   Patch,
-  Post
+  Post,
+  UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
@@ -19,6 +20,7 @@ import {
 } from '../common';
 import { ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 
 @ApiTags('User')
 @Controller('users')
@@ -27,12 +29,14 @@ export class UserController {
     private readonly userService: UserService
   ) { }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<FindUsersResponseDTO> {
     const users = await this.userService.find();
     return plainToInstance(FindUsersResponseDTO, { users });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() body: CreateUserRequestDTO
@@ -41,6 +45,7 @@ export class UserController {
     return plainToInstance(FindUserResponseDTO, user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
@@ -50,6 +55,7 @@ export class UserController {
     return plainToInstance(FindUserResponseDTO, user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async findOneAndInactive(
     @Param('id') id: number

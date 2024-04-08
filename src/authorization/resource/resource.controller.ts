@@ -1,8 +1,9 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
 import { ResourceService } from './resource.service';
 import { FindResourcesResponseDTO } from './dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 
 @ApiTags('Authorization')
 @Controller('resources')
@@ -11,6 +12,7 @@ export class ResourceController {
     @Inject(ResourceService) private readonly resourceService: ResourceService
   ) { }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<FindResourcesResponseDTO> {
     const resources = await this.resourceService.find();

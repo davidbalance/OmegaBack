@@ -4,9 +4,13 @@ import { ResourceController } from './resource.controller';
 import { SqlDatabaseModule } from '@/shared';
 import { Resource } from './entities/resource.entity';
 import { ResourceRepository } from './resource.repository.dto';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
-  imports: [SqlDatabaseModule.forFeature([Resource])],
+  imports: [
+    SqlDatabaseModule.forFeature([Resource]),
+    AuthenticationGuardModule
+  ],
   controllers: [ResourceController],
   providers: [
     ResourceService,

@@ -5,12 +5,14 @@ import { PdfManagerModule, SqlDatabaseModule } from 'src/shared';
 import { MedicalReport } from './entities/medical-report.entity';
 import { MedicalReportRepository } from './medical-report.repository';
 import { LocalStorageModule } from '@/shared/storage-manager';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([MedicalReport]),
     LocalStorageModule,
-    PdfManagerModule
+    PdfManagerModule,
+    AuthenticationGuardModule
   ],
   controllers: [MedicalReportController],
   providers: [

@@ -5,11 +5,13 @@ import { RoleRepository } from './role.repository';
 import { SqlDatabaseModule } from 'src/shared';
 import { Role } from './entities/role.entity';
 import { ResourceModule } from '../resource/resource.module';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Role]),
-    ResourceModule
+    ResourceModule,
+    AuthenticationGuardModule
   ],
   controllers: [RoleController],
   providers: [

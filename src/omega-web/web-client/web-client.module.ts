@@ -8,11 +8,13 @@ import { JwtAuthStrategy } from '@/shared/guards/authentication-guard/strategies
 import { CredentialListener } from './listeners';
 import { AccessControlListener } from './listeners/access-control.listener';
 import { WebResourceModule } from '../web-resource/web-resource.module';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([WebClient]),
-    WebResourceModule
+    WebResourceModule,
+    AuthenticationGuardModule
   ],
   controllers: [WebClientController],
   providers: [

@@ -5,7 +5,8 @@ import {
   Get,
   Param,
   Patch,
-  Post
+  Post,
+  UseGuards
 } from '@nestjs/common';
 import { DiseaseService } from './disease.service';
 import {
@@ -18,18 +19,21 @@ import {
 } from './dtos';
 import { plainToInstance } from 'class-transformer';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 
 @ApiTags('Disease')
 @Controller('diseases')
 export class DiseaseController {
   constructor(private readonly diseaseService: DiseaseService) { }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<FindDiseasesResponseDTO> {
     const diseases = await this.diseaseService.find();
     return plainToInstance(FindDiseasesResponseDTO, { diseases: diseases });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() body: CreateDiseaseRequestDTO
@@ -38,6 +42,7 @@ export class DiseaseController {
     return plainToInstance(FindDiseaseResponseDTO, disease);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(":id")
   async findOneAndUpdate(
     @Param('id') id: number,
@@ -47,6 +52,7 @@ export class DiseaseController {
     return plainToInstance(FindDiseaseResponseDTO, disease);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async findOneAndDelete(
     @Param('id') id: number
@@ -55,6 +61,7 @@ export class DiseaseController {
     return {};
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('selector')
   async findSelectorOptions(): Promise<FindSelectorOptionsDiseaseDTO> {
     const options = await this.diseaseService.findSelectorOptions();

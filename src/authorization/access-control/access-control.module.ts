@@ -7,12 +7,14 @@ import { CredentialListener } from './listeners';
 import { ResourceModule } from '../resource/resource.module';
 import { RoleModule } from '../role/role.module';
 import { AccessControlController } from './access-control.controller';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([AccessControl]),
     RoleModule,
-    ResourceModule
+    ResourceModule,
+    AuthenticationGuardModule
   ],
   providers: [
     AccessControlService,
