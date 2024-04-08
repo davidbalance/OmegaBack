@@ -101,13 +101,16 @@ export class TokenService {
     try {
       const storedToken = await this.repository.findOne({ where: { key: token.sub } });
       const match = storedToken.token === token.token;
+
+      if (match) return true;
+
       const issuedAt = dayjs.unix(token.iat);
       const diff = dayjs().diff(issuedAt, 'seconds');
-      if (!match || diff > 60) {
-        await this.repository.findOneAndDelete({ key: token.sub });
-        return false;
-      }
-      return true;
+
+      if (diff < 60) return true;
+
+      await this.repository.findOneAndDelete({ key: token.sub });
+      return false;
     } catch (error) {
       return false;
     }
