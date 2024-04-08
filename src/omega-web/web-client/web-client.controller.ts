@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { WebClientService } from './web-client.service';
 import { User } from '@/shared/decorator';
-import { JwtAuthGuard } from '@/authentication/guards';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards';
 import { FindWebClientResponseDTO } from './dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiTags } from '@nestjs/swagger';

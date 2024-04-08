@@ -4,7 +4,7 @@ import { WebClientController } from './web-client.controller';
 import { SqlDatabaseModule } from '@/shared';
 import { WebClient } from './entities/web-client.entity';
 import { WebClientRepository } from './web-client.repository';
-import { JwtAuthStrategy } from '@/authentication/strategies';
+import { JwtAuthStrategy } from '@/shared/guards/authentication-guard/strategies';
 import { CredentialListener } from './listeners';
 import { AccessControlListener } from './listeners/access-control.listener';
 import { WebResourceModule } from '../web-resource/web-resource.module';

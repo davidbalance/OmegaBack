@@ -9,12 +9,14 @@ import { LocalStorageModule } from '@/shared/storage-manager';
 import { DoctorExternalConnectionService } from './external-connection/doctor-external-connection.service';
 import { DoctorExternalConnectionController } from './external-connection/doctor-external-connection.controller';
 import { ResultListener } from './listener';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Doctor]),
     UserModule,
-    LocalStorageModule
+    LocalStorageModule,
+    AuthenticationGuardModule
   ],
   controllers: [
     DoctorController,

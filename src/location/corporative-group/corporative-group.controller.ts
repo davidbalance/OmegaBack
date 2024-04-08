@@ -8,7 +8,7 @@ import { ApiTags } from '@nestjs/swagger';
 @Controller('corporative-groups')
 export class CorporativeGroupController {
   constructor(private readonly corporativeGroupService: CorporativeGroupService) { }
-
+  
   @Get('selector')
   async findSelectorOptions(): Promise<FindSelectorOptionsCorporativeGroupDTO> {
     const options = await this.corporativeGroupService.findSelectorOptions();

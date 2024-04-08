@@ -1,8 +1,9 @@
-import { Body, Controller, Inject, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { BranchExternalConnectionService } from "./branch-external-connection.service";
 import { ApiTags } from "@nestjs/swagger";
 import { CreateBranchExternalRequestDTO, FindBranchResponseDTO, FindOneBranchExternalAndUpdateRequestDTO } from "../dtos";
 import { plainToInstance } from "class-transformer";
+import { ApiKeyAuthGuard } from "@/shared/guards/authentication-guard";
 
 @ApiTags('External Connections')
 @Controller('branch-external-connection')
@@ -11,6 +12,7 @@ export class BranchExternalConnectionController {
         @Inject(BranchExternalConnectionService) private readonly service: BranchExternalConnectionService
     ) { }
 
+    @UseGuards(ApiKeyAuthGuard)
     @Post(':source')
     async create(
         @Param('source') source: string,
@@ -20,6 +22,7 @@ export class BranchExternalConnectionController {
         return plainToInstance(FindBranchResponseDTO, branch);
     }
 
+    @UseGuards(ApiKeyAuthGuard)
     @Patch(':source/:id')
     async findOneAndUpdate(
         @Param('source') source: string,

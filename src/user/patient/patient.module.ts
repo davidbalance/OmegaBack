@@ -8,11 +8,13 @@ import { UserModule } from '../user/user.module';
 import { PatientExternalConnectionService } from './external-connection/patient-external-connection.service';
 import { PatientExternalConnectionController } from './external-connection/patient-external-connection.controller';
 import { OrderListener } from './listeners';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Patient]),
-    UserModule
+    UserModule,
+    AuthenticationGuardModule
   ],
   controllers: [
     PatientController,

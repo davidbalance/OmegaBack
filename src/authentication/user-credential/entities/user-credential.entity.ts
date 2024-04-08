@@ -20,6 +20,6 @@ export class UserCredential extends AbstractEntity<number> {
     @Column({ name: 'userCredentialStatus', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
-    @OneToMany(() => ApiKey, key => key.user, { eager: false })
+    @OneToMany(() => ApiKey, key => key.credential, { eager: false })
     public apiKeys: ApiKey[];
 }

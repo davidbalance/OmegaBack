@@ -1,9 +1,21 @@
-import { Body, Controller, Inject, Param, Patch, Post } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Inject,
+    Param,
+    Patch,
+    Post,
+    UseGuards
+} from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { CompanyExternalConnectionService } from "./company-external-connection.service";
-import { CreateCompanyExternalRequestDTO, FindCompanyExternalAndUpdateRequestDTO } from "../dtos/company-external-key.request.dto";
+import {
+    CreateCompanyExternalRequestDTO,
+    FindCompanyExternalAndUpdateRequestDTO
+} from "../dtos/company-external-key.request.dto";
 import { FindCompanyResponseDTO } from "../dtos/company.response.dto";
 import { plainToInstance } from "class-transformer";
+import { ApiKeyAuthGuard } from "@/shared/guards/authentication-guard/guards";
 
 @ApiTags('External Connections')
 @Controller('company-external-connection')
@@ -12,6 +24,7 @@ export class CompanyExternalConnectionController {
         @Inject(CompanyExternalConnectionService) private readonly service: CompanyExternalConnectionService
     ) { }
 
+    @UseGuards(ApiKeyAuthGuard)
     @Post(':source')
     async create(
         @Param('source') source: string,
@@ -21,6 +34,7 @@ export class CompanyExternalConnectionController {
         return plainToInstance(FindCompanyResponseDTO, company);
     }
 
+    @UseGuards(ApiKeyAuthGuard)
     @Patch(':source/:id')
     async findOneAndUpdate(
         @Param('source') source: string,

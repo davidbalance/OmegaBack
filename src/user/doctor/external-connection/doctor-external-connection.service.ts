@@ -41,9 +41,13 @@ export class DoctorExternalConnectionService {
         }
     }
 
-    async findOneAndUpdate(id: number, { ...user }: FindOneDoctorAndUpdateRequestDTO): Promise<Doctor> {
+    async findOneAndUpdate(id: string, { ...user }: FindOneDoctorAndUpdateRequestDTO): Promise<Doctor> {
         const doctor = await this.repository.findOne({
-            where: { id },
+            where: {
+                user: {
+                    dni: id
+                }
+            },
             select: {
                 user: {
                     id: true

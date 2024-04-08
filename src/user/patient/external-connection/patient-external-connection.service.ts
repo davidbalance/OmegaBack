@@ -35,10 +35,10 @@ export class PatientExternalConnectionService {
         }
     }
 
-    async findOneAndUpdate(id: number, { birthday, gender, ...user }: FindOnePatientAndUpdateRequestDTO): Promise<Patient> {
-        const patient = await this.repository.findOne({ where: { id }, select: { user: { id: true } } });
+    async findOneAndUpdate(id: string, { birthday, gender, ...user }: FindOnePatientAndUpdateRequestDTO): Promise<Patient> {
+        const patient = await this.repository.findOne({ where: { user: { dni: id } }, select: { user: { id: true } } });
         await this.userService.findOneAndUpdate(patient.user.id, { ...user });
-        const updatedPatient = await this.repository.findOneAndUpdate({ id }, patient);
+        const updatedPatient = await this.repository.findOneAndUpdate({ user: { dni: id } }, patient);
         return updatedPatient;
     }
 }

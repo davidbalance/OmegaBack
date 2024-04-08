@@ -4,7 +4,8 @@ import {
     Inject,
     Param,
     Patch,
-    Post
+    Post,
+    UseGuards
 } from "@nestjs/common";
 import { DoctorExternalConnectionService } from "./doctor-external-connection.service";
 import { ApiTags } from "@nestjs/swagger";
@@ -14,6 +15,7 @@ import {
     FindOneDoctorAndUpdateRequestDTO
 } from "@/user/common";
 import { plainToInstance } from "class-transformer";
+import { ApiKeyAuthGuard } from "@/shared/guards/authentication-guard";
 
 @ApiTags('External Connections')
 @Controller('doctor-external-connection')
@@ -22,6 +24,7 @@ export class DoctorExternalConnectionController {
         @Inject(DoctorExternalConnectionService) private readonly service: DoctorExternalConnectionService
     ) { }
 
+    @UseGuards(ApiKeyAuthGuard)
     @Post()
     async create(
         @Body() body: CreateDoctorExternalRequestDTO
@@ -30,12 +33,13 @@ export class DoctorExternalConnectionController {
         return plainToInstance(FindDoctorResponseDTO, doctor);
     }
 
-    @Patch(':id')
+    @UseGuards(ApiKeyAuthGuard)
+    @Patch(':dni')
     async findOneAndUpddate(
-        @Param('id') id: number,
+        @Param('dni') dni: string,
         @Body() body: FindOneDoctorAndUpdateRequestDTO
     ): Promise<FindDoctorResponseDTO> {
-        const doctor = await this.service.findOneAndUpdate(id, body);
+        const doctor = await this.service.findOneAndUpdate(dni, body);
         return plainToInstance(FindDoctorResponseDTO, doctor);
     }
 }

@@ -8,11 +8,13 @@ import { ExamExternalKeyModule } from './exam-external-key/exam-external-key.mod
 import { ExamExternalConnectionController } from './external-connections/exam-external-connection.controller';
 import { ExamExternalConnectionService } from './external-connections/exam-external-connection.service';
 import { ResultListener } from './listeners';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Exam]),
-    ExamExternalKeyModule
+    ExamExternalKeyModule,
+    AuthenticationGuardModule
   ],
   controllers: [
     ExamController,

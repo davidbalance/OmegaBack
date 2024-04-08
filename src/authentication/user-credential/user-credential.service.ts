@@ -41,19 +41,8 @@ export class UserCredentialService {
     return credentials.user;
   }
 
-  @OnEvent(UserEvent.UPDATE)
-  async findOneCredentialAndUpdateUsername({ updateEvent }: UserUpdateEvent): Promise<void> {
-    const { id, email } = updateEvent;
-    const credential = await this.repository.findOne({ where: { user: id }, select: { email: true } });
-    if (credential.email !== email) {
-      await this.repository.findOneAndUpdate({ id }, { email: email });
-    }
-  }
-
-  @OnEvent(UserEvent.REMOVE)
-  async findOneCredentialAndDelete({ removeEvent }: UserRemoveEvent): Promise<void> {
-    const { id } = removeEvent;
-    await this.repository.findOneAndDelete({ user: id });
+  async findOneByUser(user: number): Promise<UserCredential> {
+    return this.repository.findOne({ where: { user: user } });
   }
 
   private validatePassword(password: string, hash: string): boolean {

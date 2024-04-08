@@ -12,6 +12,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { LaboratoryModule } from './laboratory/laboratory.module';
 import { MedicalResultModule } from './medical-result/medical-result.module';
 import { PdfManagerModule } from './shared/pdf-manager/pdf-manager.module';
+import { AuthenticationGuardModule } from './shared/guards/authentication-guard/authentication-guard.module';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { PdfManagerModule } from './shared/pdf-manager/pdf-manager.module';
     OmegaWebModule,
     LaboratoryModule,
     MedicalResultModule,
-    PdfManagerModule
+    PdfManagerModule,
+    AuthenticationGuardModule
   ],
   controllers: [AppController],
   providers: [AppService],

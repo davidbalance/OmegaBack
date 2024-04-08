@@ -14,6 +14,7 @@ import { ResultExternalKeyModule } from './result-external-key/result-external-k
 import { ResultExternalConnectionService } from './external-connections/result-external-connection.service';
 import { ResultExternalConnectionController } from './external-connections/result-external-connection.controller';
 import { LocalStorageModule } from '@/shared/storage-manager';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { LocalStorageModule } from '@/shared/storage-manager';
     DiseaseModule,
     ResultExternalKeyModule,
     OrderModule,
-    LocalStorageModule
+    LocalStorageModule,
+    AuthenticationGuardModule
   ],
   controllers: [
     ResultController,

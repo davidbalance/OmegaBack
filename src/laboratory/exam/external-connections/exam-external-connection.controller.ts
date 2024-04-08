@@ -1,9 +1,10 @@
-import { Body, Controller, Inject, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ExamExternalConnectionService } from "./exam-external-connection.service";
 import { CreateExamExternalRequestDTO, FindOneExamExternalAndUpdateRequestDTO } from "../dtos/exam-external-connection.request.dto";
 import { FindExamResponseDTO } from "../dtos";
 import { plainToInstance } from "class-transformer";
 import { ApiTags } from "@nestjs/swagger";
+import { ApiKeyAuthGuard } from "@/shared/guards/authentication-guard";
 
 @ApiTags('External Connections')
 @Controller('exam-external-connection')
@@ -12,6 +13,7 @@ export class ExamExternalConnectionController {
         @Inject(ExamExternalConnectionService) private readonly service: ExamExternalConnectionService
     ) { }
 
+    @UseGuards(ApiKeyAuthGuard)
     @Post(':source')
     async create(
         @Param('source') source: string,
@@ -21,6 +23,7 @@ export class ExamExternalConnectionController {
         return plainToInstance(FindExamResponseDTO, exam);
     }
 
+    @UseGuards(ApiKeyAuthGuard)
     @Patch(':source/:id')
     async findOneAndUpdate(
         @Param('source') source: string,

@@ -7,11 +7,13 @@ import { CorporativeGroupRepository } from './corporative-group.repository';
 import { CGExternalConnectionController } from './external-connection/c-g-external-connection.controller';
 import { CGExternalConnectionService } from './external-connection/c-g-external-connection.service';
 import { CorporativeGroupExternalKeyModule } from './corporative-group-external-key/corporative-group-external-key.module';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([CorporativeGroup]),
-    CorporativeGroupExternalKeyModule
+    CorporativeGroupExternalKeyModule,
+    AuthenticationGuardModule
   ],
   controllers: [
     CorporativeGroupController,

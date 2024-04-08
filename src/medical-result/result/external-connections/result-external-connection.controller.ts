@@ -1,10 +1,11 @@
-import { Body, Controller, Inject, Param, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Inject, Param, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { ResultExternalConnectionService } from "./result-external-connection.service";
 import { FindResultResponseDTO } from "@/medical-result/common/dtos";
 import { CreateResultExternalRequestExtendedDTO } from "@/medical-result/common/dtos/result-external-connection.request.dto";
 import { plainToInstance } from "class-transformer";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiConsumes, ApiTags } from "@nestjs/swagger";
+import { ApiKeyAuthGuard } from "@/shared/guards/authentication-guard";
 
 @ApiTags('External Connections')
 @Controller('result-external-connection')
@@ -14,6 +15,7 @@ export class ResultExternalConnectionController {
     ) { }
 
     @ApiConsumes('multipart/form-data')
+    @UseGuards(ApiKeyAuthGuard)
     @Post(':source')
     @UseInterceptors(FileInterceptor('file'))
     async create(

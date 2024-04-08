@@ -22,5 +22,5 @@ export class ApiKey extends AbstractEntity<number> {
 
     @ManyToOne(() => UserCredential, user => user.apiKeys, { eager: false })
     @JoinColumn({ referencedColumnName: 'id', name: 'userId' })
-    public user: UserCredential;
+    public credential: UserCredential;
 }

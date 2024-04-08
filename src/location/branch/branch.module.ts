@@ -9,6 +9,7 @@ import { BranchExternalConnectionController } from './external-connection/branch
 import { BranchExternalConnectionService } from './external-connection/branch-external-connection.service';
 import { CompanyModule } from '../company/company.module';
 import { CityModule } from '../city/city.module';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { CityModule } from '../city/city.module';
     BranchExternalKeyModule,
     CompanyModule,
     CityModule,
+    AuthenticationGuardModule
   ],
   controllers: [
     BranchController,

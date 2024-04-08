@@ -11,6 +11,7 @@ import { UserModule } from '@/user/user/user.module';
 import { OrderExternalKeyModule } from './order-external-key/order-external-key.module';
 import { OrderExternalConnectionService } from './external-connections/order-external-connection.service';
 import { OrderExternalConnectionController } from './external-connections/order-external-connection.controller';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { OrderExternalConnectionController } from './external-connections/order-
     CorporativeGroupModule,
     UserModule,
     BranchModule,
-    OrderExternalKeyModule
+    OrderExternalKeyModule,
+    AuthenticationGuardModule
   ],
   controllers: [
     OrderController,
