@@ -1,4 +1,4 @@
-import { ConflictException, Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { UserCredentialRepository } from './user-credential.repository';
 import { UserCredential } from './entities/user-credential.entity';
 import * as bcrypt from 'bcrypt';
@@ -37,7 +37,7 @@ export class UserCredentialService {
   async validateCredentials(username: string, password: string): Promise<number> {
     const credentials = await this.repository.findOne({ where: { email: username, status: true }, select: { user: true, password: true } });
     const passwordIsValid = this.validatePassword(password, credentials.password);
-    if (!passwordIsValid) throw new UnauthorizedException(["Wrong credentials"]);
+    if (!passwordIsValid) throw new ForbiddenException(["Wrong credentials"]);
     return credentials.user;
   }
 
