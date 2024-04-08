@@ -1,8 +1,9 @@
 import { MedicalReport } from "@/medical-result/medical-report/entities/medical-report.entity";
 import { Order } from "@/medical-result/order/entities/order.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ResultExternalKey } from "../result-external-key/entities/result-external-key.entity";
+import { ResultSendAttribute } from "../result-send-attribute/entities/result-send-attribute.entity";
 
 @Entity({ name: "MR_RESULTS" })
 @Index('result-dni-idx', ['doctorDni'], { unique: false })
@@ -43,4 +44,7 @@ export class Result extends AbstractEntity<number> {
     @OneToOne(() => ResultExternalKey, { eager: false })
     @JoinColumn({ referencedColumnName: 'id', name: 'externalKey' })
     public externalKey: ResultExternalKey;
+
+    @OneToMany(() => ResultSendAttribute, value => value.result, { eager: false })
+    public sendAttributes: ResultSendAttribute[];
 }

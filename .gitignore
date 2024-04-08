@@ -4,7 +4,7 @@
 
 **/signatures/*
 **/reports/*
-**/medical-report/*
+**/medical-report-pdf/*
 
 **/*.values.sql
 

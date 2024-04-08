@@ -7,6 +7,8 @@ import { readFileSync } from 'fs';
 import dayjs from 'dayjs';
 import path from 'path';
 import { StorageManager } from '@/shared/storage-manager';
+import { MedicalReportSendAttributeService } from './medical-report-send-attribute/medical-report-send-attribute.service';
+import { Not } from 'typeorm';
 
 @Injectable()
 export class MedicalReportService {
@@ -14,7 +16,8 @@ export class MedicalReportService {
   constructor(
     @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository,
     @Inject(PdfManagerService) private readonly pdfService: PdfManagerService,
-    @Inject(StorageManager) private readonly storageManager: StorageManager
+    @Inject(StorageManager) private readonly storageManager: StorageManager,
+    @Inject(MedicalReportSendAttributeService) private readonly attributeService: MedicalReportSendAttributeService
   ) { }
 
   async create({ ...data }: CreateMedicalReportRequestDTO): Promise<MedicalReport> {
@@ -63,4 +66,17 @@ export class MedicalReportService {
     doctorDni: report.doctorDni,
     doctorSignature: `data:image/png;base64,${base64}`
   });
+
+  async findResultsWithoutValue(value: string): Promise<MedicalReport[]> {
+    const results = await this.repository.find({ where: { sendAttributes: { value: Not(value) } } });
+    return results;
+  }
+
+  async assignSendAttribute(id: number, value: string): Promise<MedicalReport> {
+    const attribute = await this.attributeService.create({ value: value });
+    const { sendAttributes } = await this.repository.findOne({ where: { id: id }, relations: { sendAttributes: true } });
+    sendAttributes.concat(attribute);
+    const report = await this.repository.findOneAndUpdate({ id: id }, { sendAttributes: sendAttributes });
+    return report;
+  }
 }

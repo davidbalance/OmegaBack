@@ -36,5 +36,5 @@ export class Order extends AbstractEntity<number> {
 
     @OneToOne(() => OrderExternalKey, { eager: false })
     @JoinColumn({ referencedColumnName: 'id', name: 'externalKey' })
-    public externalKey: OrderExternalKey
+    public externalKey: OrderExternalKey;
 }

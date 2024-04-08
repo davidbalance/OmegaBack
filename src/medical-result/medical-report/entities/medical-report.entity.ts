@@ -1,11 +1,12 @@
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { MedicalReportSendAttribute } from "../medical-report-send-attribute/entities/medical-report-send-attribute.entity";
 
 @Entity({ name: 'MR_REPORTS' })
 @Index(['patientDni'], { unique: false })
 @Index(['doctorDni'], { unique: false })
 @Index(['doctorDni', 'patientDni'], { unique: false })
-export class MedicalReport extends AbstractEntity<number>{
+export class MedicalReport extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'reportId' })
     public id: number;
 
@@ -44,4 +45,7 @@ export class MedicalReport extends AbstractEntity<number>{
 
     @Column({ name: 'doctorSignature', type: 'varchar', length: 256, nullable: false })
     public doctorSignature: string;
+
+    @OneToMany(() => MedicalReportSendAttribute, value => value.report, { eager: false })
+    public sendAttributes: MedicalReportSendAttribute[]
 }

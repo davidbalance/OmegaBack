@@ -6,6 +6,8 @@ import { MedicalReportService } from '../medical-report/medical-report.service';
 import { CompanyService } from '@/location/company/company.service';
 import dayjs from 'dayjs';
 import { Result } from './entities/result.entity';
+import { ResultSendAttributeService } from './result-send-attribute/result-send-attribute.service';
+import { Not } from 'typeorm';
 
 interface FindResultParams {
   exam?: number;
@@ -20,7 +22,8 @@ export class ResultService {
     @Inject(ResultRepository) private readonly repository: ResultRepository,
     @Inject(DoctorService) private readonly doctorService: DoctorService,
     @Inject(MedicalReportService) private readonly reportService: MedicalReportService,
-    @Inject(CompanyService) private readonly companyService: CompanyService
+    @Inject(CompanyService) private readonly companyService: CompanyService,
+    @Inject(ResultSendAttributeService) private readonly attributeService: ResultSendAttributeService
   ) { }
 
   async find(): Promise<Result[]> {
@@ -110,5 +113,18 @@ export class ResultService {
     await this.repository.findOneAndUpdate({ id }, { report: medicalReport });
     medicalResult.report = medicalReport;
     return medicalResult;
+  }
+
+  async findResultsWithoutValue(value: string): Promise<Result[]> {
+    const results = await this.repository.find({ where: { sendAttributes: { value: Not(value) } } });
+    return results;
+  }
+
+  async assignSendAttribute(id: number, value: string): Promise<Result> {
+    const attribute = await this.attributeService.create({ value: value });
+    const { sendAttributes } = await this.repository.findOne({ where: { id: id }, relations: { sendAttributes: true } });
+    sendAttributes.concat(attribute);
+    const report = await this.repository.findOneAndUpdate({ id: id }, { sendAttributes: sendAttributes });
+    return report;
   }
 }
