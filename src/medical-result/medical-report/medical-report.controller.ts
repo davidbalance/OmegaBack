@@ -2,6 +2,9 @@ import { Controller, Get, Header, Param, StreamableFile, UseGuards } from '@nest
 import { MedicalReportService } from './medical-report.service';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { Authorize } from '@/shared/decorator';
+import { ClaimEnum } from '@/shared';
 
 @ApiTags('Medical Result')
 @Controller('medical-report')
@@ -11,7 +14,8 @@ export class MedicalReportController {
     private readonly medicalReportService: MedicalReportService,
   ) { }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.READ, 'medical-report')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Get('pdf/:id')
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'attachment; filename="reporte-medico.pdf"')

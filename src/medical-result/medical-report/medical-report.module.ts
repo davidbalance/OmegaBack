@@ -7,6 +7,8 @@ import { MedicalReportRepository } from './medical-report.repository';
 import { LocalStorageModule } from '@/shared/storage-manager';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { MedicalReportSendAttributeModule } from './medical-report-send-attribute/medical-report-send-attribute.module';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
 
 @Module({
   imports: [
@@ -14,12 +16,14 @@ import { MedicalReportSendAttributeModule } from './medical-report-send-attribut
     LocalStorageModule,
     PdfManagerModule,
     AuthenticationGuardModule,
-    MedicalReportSendAttributeModule
+    MedicalReportSendAttributeModule,
+    LocalAuthorizationModule
   ],
   controllers: [MedicalReportController],
   providers: [
     MedicalReportService,
-    MedicalReportRepository
+    MedicalReportRepository,
+    AuthorizationGuard
   ],
   exports: [MedicalReportService]
 })

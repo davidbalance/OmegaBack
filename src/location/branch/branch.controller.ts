@@ -4,13 +4,17 @@ import { FindBranchesResponseDTO, FindSelectorOptionsBranchDTO } from './dtos';
 import { plainToInstance } from 'class-transformer';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
+import { Authorize } from '@/shared/decorator';
+import { ClaimEnum } from '@/shared';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
 
 @ApiTags('Location')
 @Controller('branches')
 export class BranchController {
   constructor(private readonly branchService: BranchService) { }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.READ, 'branch')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Get(':company')
   async find(
     @Param('company') company: string

@@ -1,13 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AccessControlRepository } from './access-control.repository';
 import { AccessControl } from './entity/access-control.entity';
-import { Role } from '../role/entities/role.entity';
 import { FindOneACClientAndUpdateResourcesRequestDTO, FindOneACClientAndUpdateRolesRequestDTO } from './dtos';
 import { ResourceService } from '../resource/resource.service';
 import { RoleService } from '../role/role.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AccessControlEvent, AccessControlUpdateEvent } from '@/shared';
-import e from 'express';
 import { Resource } from '../resource/entities/resource.entity';
 
 @Injectable()
@@ -20,7 +18,7 @@ export class AccessControlService {
     ) { }
 
     async findOne(user: number): Promise<AccessControl> {
-        return await this.repository.findOne({ where: { user: user } });
+        return await this.repository.findOne({ where: { user: user }, relations: { resources: true, roles: true } });
     }
 
     async updateAccessRoles(user: number, { roles }: FindOneACClientAndUpdateRolesRequestDTO): Promise<AccessControl> {

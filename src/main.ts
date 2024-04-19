@@ -14,6 +14,7 @@ async function bootstrap() {
   );
 
   const swaggerConfig = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Omega API')
     .setDescription('')
     .setVersion('1.0')

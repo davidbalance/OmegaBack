@@ -12,6 +12,8 @@ import { OrderExternalKeyModule } from './order-external-key/order-external-key.
 import { OrderExternalConnectionService } from './external-connections/order-external-connection.service';
 import { OrderExternalConnectionController } from './external-connections/order-external-connection.controller';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
 
 @Module({
   imports: [
@@ -21,7 +23,8 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
     UserModule,
     BranchModule,
     OrderExternalKeyModule,
-    AuthenticationGuardModule
+    AuthenticationGuardModule,
+    LocalAuthorizationModule
   ],
   controllers: [
     OrderController,
@@ -30,7 +33,8 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
   providers: [
     OrderService,
     OrderRepository,
-    OrderExternalConnectionService
+    OrderExternalConnectionService,
+    AuthorizationGuard
   ],
   exports: [
     OrderService,
