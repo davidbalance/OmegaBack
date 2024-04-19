@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { SqlDatabaseModule } from './shared';
 import { DiseaseModule } from './disease/disease.module';
 import { LocationModule } from './location/location.module';
@@ -35,9 +33,7 @@ import { AuthenticationGuardModule } from './shared/guards/authentication-guard/
     LaboratoryModule,
     MedicalResultModule,
     PdfManagerModule,
-    AuthenticationGuardModule
+    AuthenticationGuardModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { CityService } from './city.service';
-import { FindSelectorOptionsCityDTO } from './dto';
+import { FindCitiesResponseDTO, FindSelectorOptionsCityDTO } from './dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
@@ -9,6 +9,14 @@ import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 @Controller('cities')
 export class CityController {
   constructor(private readonly cityService: CityService) { }
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async find(): Promise<FindCitiesResponseDTO> {
+    const cities = await this.cityService.find();
+    return plainToInstance(FindCitiesResponseDTO, { cities: cities });
+  }
+
 
   @UseGuards(JwtAuthGuard)
   @Get('selector')

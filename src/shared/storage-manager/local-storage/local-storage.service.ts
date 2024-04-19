@@ -1,16 +1,16 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
 import { createReadStream, createWriteStream, existsSync, mkdirSync } from 'fs';
-import path, { extname } from 'path';
+import path from 'path';
 import { v4 } from 'uuid';
 import { StorageManager } from '../storage-manager.service';
 
 @Injectable()
 export class LocalStorageService implements StorageManager {
 
-    saveFile(buffer: Buffer, extension: string, destinationPath: string = path.resolve(`tmp`)): string | Promise<string> {
-        const filename = v4();
+    saveFile(buffer: Buffer, extension: string, destinationPath: string = path.resolve(`tmp`), filename?: string): string | Promise<string> {
+        const newFilename = filename ?? v4();
         const outputDir = path.resolve(destinationPath);
-        const output = `${outputDir}/${filename}${extension}`;
+        const output = `${outputDir}/${newFilename}${extension}`;
 
         if (!existsSync(destinationPath)) {
             mkdirSync(destinationPath, { recursive: true });

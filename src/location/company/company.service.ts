@@ -1,10 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CompanyRepository } from './company.repository';
 import { Company } from './entities/company.entity';
-import { CorporativeGroupService } from '../corporative-group/corporative-group.service';
 import { SelectorOption } from '@/shared';
-
-type FindCompanyParams = Omit<Company, 'id' | 'status' | 'corporativeGroup' | 'branches'>;
 
 @Injectable()
 export class CompanyService {
@@ -12,6 +9,28 @@ export class CompanyService {
   constructor(
     @Inject(CompanyRepository) private readonly repository: CompanyRepository
   ) { }
+
+  async find(group: number): Promise<Company[]> {
+    const companies = await this.repository.find({
+      select: {
+        id: true,
+        name: true, 
+        phone: true,
+        ruc: true,
+        address: true,
+        corporativeGroup: {
+          name: true
+        }
+      },
+      where: {
+        corporativeGroup: {
+          id: group
+        },
+        status: true
+      }
+    });
+    return companies;
+  }
 
   async findSelectorOptions(): Promise<SelectorOption<number>[]> {
     const companies = await this.repository.find({ select: { id: true, name: true } });

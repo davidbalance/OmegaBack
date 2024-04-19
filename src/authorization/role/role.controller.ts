@@ -11,7 +11,6 @@ import {
 import { RoleService } from './role.service';
 import {
   CreateRoleRequestDTO,
-  CreateRoleResponseDTO,
   FindOneRoleAndDeleteResponseDTO,
   FindOneRoleAndUpdateRequestDTO,
   FindOneRoleAndUpdateResponseDTO,

@@ -1,6 +1,6 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { BranchService } from './branch.service';
-import { FindSelectorOptionsBranchDTO } from './dtos';
+import { FindBranchesResponseDTO, FindSelectorOptionsBranchDTO } from './dtos';
 import { plainToInstance } from 'class-transformer';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
@@ -9,6 +9,15 @@ import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 @Controller('branches')
 export class BranchController {
   constructor(private readonly branchService: BranchService) { }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':company')
+  async find(
+    @Param('company') company: string
+  ): Promise<FindBranchesResponseDTO> {
+    const branches = await this.branchService.find(company);
+    return plainToInstance(FindBranchesResponseDTO, { branches: branches });
+  }
 
   @UseGuards(JwtAuthGuard)
   @Get('selector')
