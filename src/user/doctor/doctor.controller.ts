@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, NotAcceptableException, Param, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FindDoctorsResponseDTO, FindOneDoctorAndUpdateResponseDTO } from '../common';
@@ -20,7 +20,15 @@ export class DoctorController {
 
   @UseGuards(JwtAuthGuard)
   @Post('signature/:id')
-  @UseInterceptors(FileInterceptor('signature'))
+  @UseInterceptors(FileInterceptor('signature', {
+    fileFilter: (_, file, cb) => {
+      if (file.mimetype === 'image/png') {
+        cb(null, true);
+        return;
+      }
+      cb(new NotAcceptableException(["Only png files"]), false);
+    }
+  })) // Upload it, only let png files
   async uploadSignature(
     @Param('id') id: number,
     @UploadedFile() file: Express.Multer.File

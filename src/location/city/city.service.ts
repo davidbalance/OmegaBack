@@ -15,6 +15,11 @@ export class CityService {
     return city;
   }
 
+  async find(): Promise<City[]> {
+    const cities = await this.repository.find({ select: { id: true, name: true } });
+    return cities;
+  }
+
   async findSelectorOptions(): Promise<SelectorOption<string>[]> {
     const cities = await this.repository.find({ select: { id: true, name: true } });
     const options = cities.map((e) => ({

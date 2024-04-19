@@ -18,6 +18,12 @@ export class FindCompanyResponseDTO {
     public readonly phone: string;
 }
 
+export class FindCompaniesResponseDTO {
+    @Type(() => FindCompanyResponseDTO)
+    @Expose()
+    public readonly companies: FindCompanyResponseDTO[];
+}
+
 class SelectorOptionCompanyDTO implements SelectorOption<number> {
     @Expose()
     public readonly key: number;

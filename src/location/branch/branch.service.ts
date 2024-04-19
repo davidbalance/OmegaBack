@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BranchRepository } from './branch.repository';
 import { SelectorOption } from '@/shared';
+import { Branch } from './entities/branch.entity';
 
 @Injectable()
 export class BranchService {
@@ -8,6 +9,30 @@ export class BranchService {
   constructor(
     @Inject(BranchRepository) private readonly repository: BranchRepository
   ) { }
+
+  async find(company: string): Promise<Branch[]> {
+    const branches = await this.repository.find({
+      where: {
+        company: { ruc: company },
+        status: true,
+      },
+      select: {
+        id: true,
+        name: true,
+        city: { name: true },
+        company: {
+          corporativeGroup: {
+            name: true
+          },
+          address: true,
+          name: true,
+          ruc: true,
+          phone: true
+        },
+      }
+    });
+    return branches;
+  }
 
   async findSelectorOptions(): Promise<SelectorOption<number>[]> {
     const branches = await this.repository.find({ select: { name: true, id: true } });

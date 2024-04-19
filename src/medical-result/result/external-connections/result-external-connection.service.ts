@@ -5,8 +5,8 @@ import { Result } from "../entities/result.entity";
 import { OrderExternalConnectionService } from "@/medical-result/order/external-connections/order-external-connection.service";
 import { CreateResultExternalRequestDTO } from "@/medical-result/common/dtos/result-external-connection.request.dto";
 import { StorageManager } from "@/shared/storage-manager";
-import { extname } from "path";
-import { ResultEvent, ResultFindOrCreateDoctorEvent, ResultFindOrCreateExamEvent, fileResultPath } from "@/shared";
+import path, { extname } from "path";
+import { ResultEvent, ResultFindOrCreateDoctorEvent, ResultFindOrCreateExamEvent, fileResultPath, signaturePath } from "@/shared";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { DoctorService } from "@/user/doctor/doctor.service";
 
@@ -29,13 +29,8 @@ export class ResultExternalConnectionService {
         const extension = extname(file.originalname);
         const fileName = await this.storageManager.saveFile(file.buffer, extension, medicalResultPath);
 
-        let signature = '';
-        try {
-            const doctorSignature = await this.doctorService.findOneByDni(doctor.dni);
-            signature = doctorSignature.signature;
-        } catch (error) {
-
-        }
+        const directory = signaturePath({ dni: doctor.dni });
+        const signature = `${directory}/${doctor.dni}.png`;
 
         const newKey = await this.externalKeyService.create({ key, source });
         const newResult = await this.repository.create({

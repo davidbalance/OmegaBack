@@ -3,6 +3,7 @@ import { DoctorRepository } from './doctor.repository';
 import { Doctor } from './entities/doctor.entity';
 import path, { extname } from 'path';
 import { StorageManager } from '@/shared/storage-manager';
+import { signaturePath } from '@/shared';
 
 @Injectable()
 export class DoctorService {
@@ -84,7 +85,7 @@ export class DoctorService {
     });
     const directory = doctor.user.dni;
     const extension = extname(signature.originalname);
-    const uploaded = await this.storage.saveFile(signature.buffer, extension, path.resolve(`signatures/${directory}`));
+    const uploaded = await this.storage.saveFile(signature.buffer, extension, path.resolve(signaturePath({ dni: directory })), doctor.user.dni);
     await this.repository.findOneAndUpdate({ id }, { signature: `${directory}/${uploaded}` });
   }
 }

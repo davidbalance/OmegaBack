@@ -9,6 +9,12 @@ export class FindBranchResponseDTO {
     public readonly name: string;
 }
 
+export class FindBranchesResponseDTO {
+    @Type(() => FindBranchResponseDTO)
+    @Expose()
+    public readonly branches: FindBranchResponseDTO[];
+}
+
 class SelectorOptionBranchDTO implements SelectorOption<number> {
     @Expose()
     public readonly key: number;

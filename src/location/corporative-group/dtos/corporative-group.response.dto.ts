@@ -9,6 +9,12 @@ export class FindCorporativeGroupResponseDTO {
     public readonly name: string;
 }
 
+export class FindCorporativeGroupsResponseDTO {
+    @Type(() => FindCorporativeGroupResponseDTO)
+    @Expose()
+    public readonly groups: FindCorporativeGroupResponseDTO[];
+}
+
 class SelectorOptionCorporativeGroupDTO implements SelectorOption<number> {
     @Expose()
     public readonly key: number;
