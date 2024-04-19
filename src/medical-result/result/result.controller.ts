@@ -4,12 +4,13 @@ import { FindOneResultAndUpdateDiseaseRequestDTO, InsertMedicalReportRequestDTO 
 import { Authorize, User } from '@/shared/decorator';
 import { plainToInstance } from 'class-transformer';
 import { FindOneResultAndUpdateDiseaseResponseDTO, FindResultResponseDTO, FindResultsResponseDTO } from '../common/dtos';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
 import { ClaimEnum } from '@/shared';
 
 @ApiTags('Medical Result')
+@ApiBearerAuth()
 @Controller('results')
 export class ResultController {
   constructor(private readonly resultService: ResultService) { }

@@ -2,13 +2,14 @@ import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { BranchService } from './branch.service';
 import { FindBranchesResponseDTO, FindSelectorOptionsBranchDTO } from './dtos';
 import { plainToInstance } from 'class-transformer';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { Authorize } from '@/shared/decorator';
 import { ClaimEnum } from '@/shared';
 import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
 
 @ApiTags('Location')
+@ApiBearerAuth()
 @Controller('branches')
 export class BranchController {
   constructor(private readonly branchService: BranchService) { }

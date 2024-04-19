@@ -1,11 +1,4 @@
-import {
-    Body,
-    Controller,
-    Inject,
-    Param,
-    Patch,
-    UseGuards
-} from '@nestjs/common';
+import { Body, Controller, Inject, Param, Patch, UseGuards } from '@nestjs/common';
 import { AccessControlService } from './access-control.service';
 import {
     FindOneACClientAndUpdateResourcesRequestDTO,
@@ -13,17 +6,22 @@ import {
     FindOneACClientAndUpdateRolesRequestDTO,
     FindOneACClientAndUpdateRolesResponseDTO
 } from './dtos';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { Authorize } from '@/shared/decorator';
+import { ClaimEnum } from '@/shared';
 
 @ApiTags('Authorization')
+@ApiBearerAuth()
 @Controller('access-control')
 export class AccessControlController {
     constructor(
         @Inject(AccessControlService) private readonly controlService: AccessControlService
     ) { }
 
-    @UseGuards(JwtAuthGuard)
+    @Authorize(ClaimEnum.UPDATE, 'access-control')
+    @UseGuards(JwtAuthGuard, AuthorizationGuard)
     @Patch('role/:user')
     async findOneClientAndUpdateRoles(
         @Param('user') user: number,
@@ -33,7 +31,8 @@ export class AccessControlController {
         return {};
     }
 
-    @UseGuards(JwtAuthGuard)
+    @Authorize(ClaimEnum.UPDATE, 'access-control')
+    @UseGuards(JwtAuthGuard, AuthorizationGuard)
     @Patch('resource/:user')
     async findOneClientAndUpdateResources(
         @Param('user') user: number,

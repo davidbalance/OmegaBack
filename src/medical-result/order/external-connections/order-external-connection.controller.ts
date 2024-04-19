@@ -3,10 +3,11 @@ import { OrderExternalConnectionService } from "./order-external-connection.serv
 import { FindOrderResponseDTO } from "@/medical-result/common/dtos/order.response.dto";
 import { plainToInstance } from "class-transformer";
 import { CreateOrderExternalRequestDTO, FindOneOrderExternalAndUpdateRequestDTO } from "@/medical-result/common/dtos/order-external-connection.request.dto";
-import { ApiTags } from "@nestjs/swagger";
-import { ApiKeyAuthGuard } from "@/shared/guards/authentication-guard";
+import { ApiHeader, ApiTags } from "@nestjs/swagger";
+import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 
 @ApiTags('External Connections')
+@ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @Controller('order-external-connection')
 export class OrderExternalConnectionController {
     constructor(

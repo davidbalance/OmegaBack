@@ -4,10 +4,11 @@ import { FindResultResponseDTO } from "@/medical-result/common/dtos";
 import { CreateResultExternalRequestExtendedDTO } from "@/medical-result/common/dtos/result-external-connection.request.dto";
 import { plainToInstance } from "class-transformer";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { ApiConsumes, ApiTags } from "@nestjs/swagger";
-import { ApiKeyAuthGuard } from "@/shared/guards/authentication-guard";
+import { ApiConsumes, ApiHeader, ApiTags } from "@nestjs/swagger";
+import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 
 @ApiTags('External Connections')
+@ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @Controller('result-external-connection')
 export class ResultExternalConnectionController {
     constructor(

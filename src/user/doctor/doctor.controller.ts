@@ -3,7 +3,7 @@ import { DoctorService } from './doctor.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FindDoctorsResponseDTO, FindOneDoctorAndUpdateResponseDTO } from '../common';
 import { plainToInstance } from 'class-transformer';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
 import { Authorize } from '@/shared/decorator';
@@ -12,6 +12,7 @@ import { FileTypePipe } from '@/shared/pipes/file-type/file-type.pipe';
 import { MIME_TYPES } from '@/shared/pipes/file-type/constants';
 
 @ApiTags('User')
+@ApiBearerAuth()
 @Controller('doctors')
 export class DoctorController {
   constructor(private readonly doctorService: DoctorService) { }
