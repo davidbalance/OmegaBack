@@ -16,6 +16,8 @@ import { ResultExternalConnectionController } from './external-connections/resul
 import { LocalStorageModule } from '@/shared/storage-manager';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { ResultSendAttributeModule } from './result-send-attribute/result-send-attribute.module';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
 
 @Module({
   imports: [
@@ -30,7 +32,8 @@ import { ResultSendAttributeModule } from './result-send-attribute/result-send-a
     OrderModule,
     LocalStorageModule,
     AuthenticationGuardModule,
-    ResultSendAttributeModule
+    ResultSendAttributeModule,
+    LocalAuthorizationModule
   ],
   controllers: [
     ResultController,
@@ -39,7 +42,8 @@ import { ResultSendAttributeModule } from './result-send-attribute/result-send-a
   providers: [
     ResultService,
     ResultRepository,
-    ResultExternalConnectionService
+    ResultExternalConnectionService,
+    AuthorizationGuard
   ],
   exports: [ResultService]
 })

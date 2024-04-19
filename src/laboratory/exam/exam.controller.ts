@@ -2,10 +2,11 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ExamService } from './exam.service';
 import { FindSelectorOptionsExam } from './dtos';
 import { plainToInstance } from 'class-transformer';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 
 @ApiTags('Exam')
+@ApiBearerAuth()
 @Controller('exams')
 export class ExamController {
   constructor(private readonly examService: ExamService) { }

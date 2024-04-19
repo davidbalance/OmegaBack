@@ -1,8 +1,8 @@
 import { CanActivate, ExecutionContext, Inject, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { AuthorizationService } from '../authorization.service';
 import { AuthorizeDecoratorKey, AuthorizeDecoratorParam } from '@/shared/decorator';
 import { Request } from 'express';
+import { AuthorizationService } from '@/shared/shared-authorization/authorization.service';
 
 @Injectable()
 export class AuthorizationGuard implements CanActivate {

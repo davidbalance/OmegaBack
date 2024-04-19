@@ -10,13 +10,16 @@ import { DoctorExternalConnectionService } from './external-connection/doctor-ex
 import { DoctorExternalConnectionController } from './external-connection/doctor-external-connection.controller';
 import { ResultListener } from './listener';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Doctor]),
     UserModule,
     LocalStorageModule,
-    AuthenticationGuardModule
+    AuthenticationGuardModule,
+    LocalAuthorizationModule
   ],
   controllers: [
     DoctorController,
@@ -26,7 +29,8 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
     DoctorService,
     DoctorRepository,
     DoctorExternalConnectionService,
-    ResultListener
+    ResultListener,
+    AuthorizationGuard
   ],
   exports: [DoctorService]
 })

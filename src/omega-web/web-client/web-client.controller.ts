@@ -4,9 +4,10 @@ import { User } from '@/shared/decorator';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards';
 import { FindWebClientResponseDTO } from './dto';
 import { plainToInstance } from 'class-transformer';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Omega Web')
+@ApiBearerAuth()
 @Controller('omega-web/clients')
 export class WebClientController {
   constructor(private readonly webClientService: WebClientService) { }

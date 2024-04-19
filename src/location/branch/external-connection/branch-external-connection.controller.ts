@@ -1,11 +1,12 @@
 import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { BranchExternalConnectionService } from "./branch-external-connection.service";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { CreateBranchExternalRequestDTO, FindBranchResponseDTO, FindOneBranchExternalAndUpdateRequestDTO } from "../dtos";
 import { plainToInstance } from "class-transformer";
-import { ApiKeyAuthGuard } from "@/shared/guards/authentication-guard";
+import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 
 @ApiTags('External Connections')
+@ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @Controller('branch-external-connection')
 export class BranchExternalConnectionController {
     constructor(

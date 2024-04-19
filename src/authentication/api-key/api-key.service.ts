@@ -1,8 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ApiKeyRepository } from './api-key.repository';
-import { ApiKey } from './entities/api-key.entity';
 import { CreateApiKeyRequestDTO } from './dto';
-import { UserService } from '@/user/user/user.service';
 import { v4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
 import dayjs from 'dayjs';
@@ -17,7 +15,7 @@ export class ApiKeyService {
     @Inject(ConfigService) private readonly configService: ConfigService
   ) { }
 
-  async create({ user, ...valueKey }: CreateApiKeyRequestDTO): Promise<string> {
+  async create({ user, ...valueKey }: CreateApiKeyRequestDTO & { user: number }): Promise<string> {
     const foundUser = await this.userService.findOneByUser(user);
     const apiKey: string = v4();
     const expiresIn: number = this.configService.get<number>('apikey.expiresIn');
