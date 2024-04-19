@@ -8,6 +8,8 @@
 
 **/*.values.sql
 
+**/.env
+
 # Logs
 logs
 *.log
