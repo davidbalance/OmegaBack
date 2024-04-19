@@ -1,4 +1,4 @@
-import { Controller, Get, NotAcceptableException, Param, ParseFilePipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, ParseFilePipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FindDoctorsResponseDTO, FindOneDoctorAndUpdateResponseDTO } from '../common';
