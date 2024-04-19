@@ -3,10 +3,11 @@ import { ExamExternalConnectionService } from "./exam-external-connection.servic
 import { CreateExamExternalRequestDTO, FindOneExamExternalAndUpdateRequestDTO } from "../dtos/exam-external-connection.request.dto";
 import { FindExamResponseDTO } from "../dtos";
 import { plainToInstance } from "class-transformer";
-import { ApiTags } from "@nestjs/swagger";
-import { ApiKeyAuthGuard } from "@/shared/guards/authentication-guard";
+import { ApiHeader, ApiTags } from "@nestjs/swagger";
+import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 
 @ApiTags('External Connections')
+@ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @Controller('exam-external-connection')
 export class ExamExternalConnectionController {
     constructor(

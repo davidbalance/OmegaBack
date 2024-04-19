@@ -1,7 +1,7 @@
+import { ApiKeyService } from "@/authentication/api-key/api-key.service";
 import { Inject, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import Strategy from "passport-headerapikey";
-import { ApiKeyService } from "../../../../authentication/api-key/api-key.service";
 
 export class ApiKeyAuthStrategy extends PassportStrategy(Strategy, 'api-key-auth') {
     constructor(@Inject(ApiKeyService) private readonly service: ApiKeyService) {
@@ -13,7 +13,7 @@ export class ApiKeyAuthStrategy extends PassportStrategy(Strategy, 'api-key-auth
             });
     }
 
-    async validate(apiKey: string, done: (error: Error, data) => {}) {
+    async validate(apiKey: string, done: (error: Error, data) => void) {
         try {
             const user = await this.service.validate(apiKey);
             done(null, user);

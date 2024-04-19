@@ -18,22 +18,28 @@ import {
   FindRolesResponseDTO
 } from './dto';
 import { plainToInstance } from 'class-transformer';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { Authorize } from '@/shared/decorator';
+import { ClaimEnum } from '@/shared';
 
 @ApiTags('Authorization')
+@ApiBearerAuth()
 @Controller('roles')
 export class RoleController {
   constructor(private readonly roleService: RoleService) { }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.READ, 'role')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Get()
   async find(): Promise<FindRolesResponseDTO> {
     const roles = await this.roleService.find();
     return plainToInstance(FindRolesResponseDTO, { roles });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.CREATE, 'role')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Post()
   async create(
     @Body() body: CreateRoleRequestDTO
@@ -42,7 +48,8 @@ export class RoleController {
     return plainToInstance(FindRoleResponseDTO, role);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.UPDATE, 'role')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
@@ -52,7 +59,8 @@ export class RoleController {
     return {};
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.DELETE, 'role')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Delete(':id')
   async findOneAndDelete(
     @Param('id') id: number

@@ -1,25 +1,30 @@
 import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { ResultService } from './result.service';
 import { FindOneResultAndUpdateDiseaseRequestDTO, InsertMedicalReportRequestDTO } from '../common/dtos/result.request.dto';
-import { User } from '@/shared/decorator';
+import { Authorize, User } from '@/shared/decorator';
 import { plainToInstance } from 'class-transformer';
 import { FindOneResultAndUpdateDiseaseResponseDTO, FindResultResponseDTO, FindResultsResponseDTO } from '../common/dtos';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { ClaimEnum } from '@/shared';
 
 @ApiTags('Medical Result')
+@ApiBearerAuth()
 @Controller('results')
 export class ResultController {
   constructor(private readonly resultService: ResultService) { }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.READ, 'medical-result')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Get()
   async find(): Promise<FindResultsResponseDTO> {
     const results = await this.resultService.find();
     return plainToInstance(FindResultsResponseDTO, { results: results });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.READ, 'medical-result')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Get('doctor')
   async findByDoctor(
     @User() user: number
@@ -28,7 +33,8 @@ export class ResultController {
     return plainToInstance(FindResultsResponseDTO, { results: results });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.UPDATE, 'medical-result')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Patch(':id')
   async findOneResultAndUpdateDisease(
     @Param('id') id: number,
@@ -38,7 +44,8 @@ export class ResultController {
     return {};
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.CREATE, 'medical-report')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Patch('report/:id')
   async insertMedicalReport(
     @Param('id') id: number,

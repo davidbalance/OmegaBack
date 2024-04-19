@@ -7,7 +7,7 @@ import {
     Post,
     UseGuards
 } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { CompanyExternalConnectionService } from "./company-external-connection.service";
 import {
     CreateCompanyExternalRequestDTO,
@@ -15,9 +15,10 @@ import {
 } from "../dtos/company-external-key.request.dto";
 import { FindCompanyResponseDTO } from "../dtos/company.response.dto";
 import { plainToInstance } from "class-transformer";
-import { ApiKeyAuthGuard } from "@/shared/guards/authentication-guard/guards";
+import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 
 @ApiTags('External Connections')
+@ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @Controller('company-external-connection')
 export class CompanyExternalConnectionController {
     constructor(

@@ -8,16 +8,17 @@ import {
     UseGuards
 } from "@nestjs/common";
 import { DoctorExternalConnectionService } from "./doctor-external-connection.service";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import {
     CreateDoctorExternalRequestDTO,
     FindDoctorResponseDTO,
     FindOneDoctorAndUpdateRequestDTO
 } from "@/user/common";
 import { plainToInstance } from "class-transformer";
-import { ApiKeyAuthGuard } from "@/shared/guards/authentication-guard";
+import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 
 @ApiTags('External Connections')
+@ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @Controller('doctor-external-connection')
 export class DoctorExternalConnectionController {
     constructor(

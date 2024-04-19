@@ -8,12 +8,15 @@ import { CGExternalConnectionController } from './external-connection/c-g-extern
 import { CGExternalConnectionService } from './external-connection/c-g-external-connection.service';
 import { CorporativeGroupExternalKeyModule } from './corporative-group-external-key/corporative-group-external-key.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([CorporativeGroup]),
     CorporativeGroupExternalKeyModule,
-    AuthenticationGuardModule
+    AuthenticationGuardModule,
+    LocalAuthorizationModule
   ],
   controllers: [
     CorporativeGroupController,
@@ -22,7 +25,8 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
   providers: [
     CorporativeGroupService,
     CorporativeGroupRepository,
-    CGExternalConnectionService
+    CGExternalConnectionService,
+    AuthorizationGuard
   ],
   exports: [
     CorporativeGroupService,

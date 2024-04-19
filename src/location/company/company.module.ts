@@ -9,13 +9,16 @@ import { CompanyExternalConnectionController } from './external-connection/compa
 import { CompanyExternalKeyModule } from './company-external-key/company-external-key.module';
 import { CorporativeGroupModule } from '../corporative-group/corporative-group.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Company]),
     CompanyExternalKeyModule,
     CorporativeGroupModule,
-    AuthenticationGuardModule
+    AuthenticationGuardModule,
+    LocalAuthorizationModule
   ],
   controllers: [
     CompanyController,
@@ -24,7 +27,8 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
   providers: [
     CompanyService,
     CompanyRepository,
-    CompanyExternalConnectionService
+    CompanyExternalConnectionService,
+    AuthorizationGuard
   ],
   exports: [
     CompanyService,

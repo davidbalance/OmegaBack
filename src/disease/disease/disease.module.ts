@@ -6,17 +6,21 @@ import { Disease } from './entities/disease.entity';
 import { DiseaseRepository } from './disease.repository';
 import { DiseaseGroupModule } from '../disease-group/disease-group.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Disease]),
     DiseaseGroupModule,
-    AuthenticationGuardModule
+    AuthenticationGuardModule,
+    LocalAuthorizationModule
   ],
   controllers: [DiseaseController],
   providers: [
     DiseaseService,
-    DiseaseRepository
+    DiseaseRepository,
+    AuthorizationGuard
   ],
   exports: [DiseaseService]
 })

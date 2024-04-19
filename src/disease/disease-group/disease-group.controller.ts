@@ -19,22 +19,28 @@ import {
   FindSelectorOptionsDiseaseGroupDTO,
 } from './dtos';
 import { plainToInstance } from 'class-transformer';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
+import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { Authorize } from '@/shared/decorator';
+import { ClaimEnum } from '@/shared';
 
 @ApiTags('Disease')
+@ApiBearerAuth()
 @Controller('disease-groups')
 export class DiseaseGroupController {
   constructor(private readonly diseaseGroupService: DiseaseGroupService) { }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.READ, 'disease-group')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Get()
   async find(): Promise<FindDiseaseGroupsResponseDTO> {
     const groups = await this.diseaseGroupService.find();
     return plainToInstance(FindDiseaseGroupsResponseDTO, { groups: groups });
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.CREATE, 'disease-group')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Post()
   async create(
     @Body() body: CreateDiseaseGroupRequestDTO
@@ -43,14 +49,8 @@ export class DiseaseGroupController {
     return plainToInstance(FindDiseaseGroupResponseDTO, disease);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('selector')
-  async findSelectorOptions(): Promise<FindSelectorOptionsDiseaseGroupDTO> {
-    const options = await this.diseaseGroupService.findSelectorOptions();
-    return plainToInstance(FindSelectorOptionsDiseaseGroupDTO, { options });
-  }
-
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.UPDATE, 'disease-group')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Patch(":id")
   async findOneAndUpdate(
     @Param('id') id: number,
@@ -60,12 +60,20 @@ export class DiseaseGroupController {
     return {};
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Authorize(ClaimEnum.DELETE, 'disease-group')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Delete(':id')
   async findOneAndDelete(
     @Param('id') id: number
   ): Promise<FindOneDiseaseGroupAndDeleteResponseDTO> {
     await this.diseaseGroupService.findOneAndDelete(id);
     return {};
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('selector')
+  async findSelectorOptions(): Promise<FindSelectorOptionsDiseaseGroupDTO> {
+    const options = await this.diseaseGroupService.findSelectorOptions();
+    return plainToInstance(FindSelectorOptionsDiseaseGroupDTO, { options });
   }
 }
