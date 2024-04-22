@@ -4,27 +4,27 @@ import { AbstractEntity } from "src/shared";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BranchExternalKey } from "../branch-external-key/entities/branch-external-key.entity";
 
-@Entity({ name: 'LO_BRANCHES' })
+@Entity({ name: 'tbl_lo_branches' })
 export class Branch extends AbstractEntity<number>{
-    @PrimaryGeneratedColumn('increment', { name: 'branchId' })
+    @PrimaryGeneratedColumn('increment', { name: 'branch_id' })
     public id: number;
 
-    @Column({ name: 'branchName', type: 'varchar', length: 64, nullable: false })
+    @Column({ name: 'branch_name', type: 'varchar', length: 128, nullable: false })
     public name: string;
 
-    @Column({ name: 'branchStatus', type: 'boolean', default: true, nullable: false })
+    @Column({ name: 'branch_status', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
     @ManyToOne(() => Company, company => company.branches, { eager: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'companyId' })
+    @JoinColumn({ referencedColumnName: 'id', name: 'company_id' })
     public company: Company;
 
     @ManyToOne(() => City, city => city.branches, { eager: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'cityId' })
+    @JoinColumn({ referencedColumnName: 'id', name: 'city_id' })
     public city: City;
 
     @OneToOne(() => BranchExternalKey, { eager: false, nullable: true })
-    @JoinColumn({ referencedColumnName: 'id', name: 'externalKey' })
+    @JoinColumn({ referencedColumnName: 'id', name: 'external_key' })
     public externalKey: BranchExternalKey;
 
 }

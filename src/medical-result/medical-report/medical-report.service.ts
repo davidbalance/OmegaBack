@@ -56,7 +56,7 @@ export class MedicalReportService {
   private getContent = (report: MedicalReport, base64: string) => ({
     title: 'Omega report',
     patientFullname: report.patientFullname,
-    patientAge: report.patientAge,
+    patientAge: dayjs().diff(report.patientBirthday, 'years'),
     patientDni: report.patientDni,
     date: dayjs(report.createAt).format('dddd, MMMM D, YYYY'),
     company: report.companyName,

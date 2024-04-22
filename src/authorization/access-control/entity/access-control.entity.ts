@@ -3,28 +3,28 @@ import { Role } from "@/authorization/role/entities/role.entity";
 import { AbstractEntity } from "@/shared";
 import { Column, Entity, Index, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'AC_CLIENT' })
+@Entity({ name: 'tbl_ac_clients' })
 export class AccessControl extends AbstractEntity<number> {
-    @PrimaryGeneratedColumn('increment', { name: 'acClientId' })
+    @PrimaryGeneratedColumn('increment', { name: 'client_id' })
     public id: number;
 
-    @Index('user-idx')
-    @Column({ name: 'userId', type: 'int', unique: true, nullable: false })
+    @Index('user_idx')
+    @Column({ name: 'user_id', type: 'int', unique: true, nullable: false })
     public user: number;
 
     @ManyToMany(() => Resource, { eager: false })
     @JoinTable({
-        name: 'AC_CLIENTS_RESOURCES',
-        joinColumn: { referencedColumnName: 'user', name: 'userId' },
-        inverseJoinColumn: { referencedColumnName: 'id', name: 'resourceId' }
+        name: 'tbl_ac_clients_resources',
+        joinColumn: { referencedColumnName: 'id', name: 'client_id' },
+        inverseJoinColumn: { referencedColumnName: 'id', name: 'resource_id' }
     })
     public resources: Resource[];
 
     @ManyToMany(() => Role, { eager: false })
     @JoinTable({
-        name: 'AC_ROLES_USERS',
-        joinColumn: { referencedColumnName: 'user', name: 'userId' },
-        inverseJoinColumn: { referencedColumnName: 'id', name: 'roleId' }
+        name: 'tbl_ac_clients_roles',
+        joinColumn: { referencedColumnName: 'id', name: 'client_id' },
+        inverseJoinColumn: { referencedColumnName: 'id', name: 'role_id' }
     })
     public roles: Role[];
 }

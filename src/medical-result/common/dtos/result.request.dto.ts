@@ -8,5 +8,9 @@ export class InsertMedicalReportRequestDTO {
 
 export class FindOneResultAndUpdateDiseaseRequestDTO {
     @IsNumber()
-    public readonly disease: number;
+    public readonly diseaseId: number;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly diseaseName: string;
 }

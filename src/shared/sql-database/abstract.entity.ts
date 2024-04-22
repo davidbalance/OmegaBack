@@ -1,4 +1,4 @@
-import { BeforeUpdate, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 /**
  * Base class for entities
@@ -10,8 +10,8 @@ export abstract class AbstractEntity<K> {
      */
     public abstract id: K;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ name: 'create_at' })
     public createAt: Date;
-    @UpdateDateColumn()
+    @UpdateDateColumn({ name: 'update_at' })
     public updateAt: Date;
 }

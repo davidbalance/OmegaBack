@@ -1,8 +1,8 @@
 import { ExternalKeyEntity } from "@/shared";
 import { Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'MR_ORDER_EXTERNAL_KEY' })
+@Entity({ name: 'tbl_mr_order_external_key' })
 export class OrderExternalKey extends ExternalKeyEntity {
-    @PrimaryGeneratedColumn('increment', { name: 'orderExternalKey' })
+    @PrimaryGeneratedColumn('increment', { name: 'order_external_key_id' })
     public id: number;
 }

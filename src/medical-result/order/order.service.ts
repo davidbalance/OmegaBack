@@ -23,7 +23,8 @@ export class OrderService {
         results: {
           id: true,
           examName: true,
-          disease: true,
+          diseaseId: true,
+          diseaseName: true
         }
       },
       relations: {

@@ -24,7 +24,10 @@ export class FindResultResponseDTO {
     public readonly examName: string;
 
     @Expose()
-    public readonly disease?: number;
+    public readonly diseaseId: number;
+    
+    @Expose()
+    public readonly diseaseName: string;
 
     @Type(() => ResultOrderDTO)
     @Expose()

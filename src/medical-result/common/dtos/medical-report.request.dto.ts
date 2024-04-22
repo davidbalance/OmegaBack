@@ -14,7 +14,7 @@ export class CreateMedicalReportRequestDTO {
     public readonly patientFullname: string;
 
     @IsNumber()
-    public readonly patientAge: number;
+    public readonly patientBirthday: Date;
     
     @IsString()
     @IsNotEmpty()
