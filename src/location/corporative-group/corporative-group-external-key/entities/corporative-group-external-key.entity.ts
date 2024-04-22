@@ -1,8 +1,8 @@
 import { ExternalKeyEntity } from "@/shared";
 import { Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'LO_CORPORATIVE_GROUP_EXTERNAL_KEY' })
+@Entity({ name: 'tbl_lo_corporative_external_key' })
 export class CorporativeGroupExternalKey extends ExternalKeyEntity {
-    @PrimaryGeneratedColumn('increment', { name: 'corporativeGroupExternalKeyId' })
+    @PrimaryGeneratedColumn('increment', { name: 'corporative_external_key_id' })
     public id: number;
 }

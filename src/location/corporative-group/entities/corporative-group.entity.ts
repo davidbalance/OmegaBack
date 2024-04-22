@@ -3,22 +3,22 @@ import { AbstractEntity } from "src/shared";
 import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CorporativeGroupExternalKey } from "../corporative-group-external-key/entities/corporative-group-external-key.entity";
 
-@Entity({ name: 'LO_CORPORATIVE_GROUPS' })
+@Entity({ name: 'tbl_lo_corporative_groups' })
 export class CorporativeGroup extends AbstractEntity<number> {
-    @PrimaryGeneratedColumn('increment', { name: 'corporativeGroupId' })
+    @PrimaryGeneratedColumn('increment', { name: 'corporative_id' })
     public id: number;
 
-    @Index('cg-name-idx', { unique: true })
-    @Column({ name: 'corporativeGroupName', type: 'varchar', length: 64, nullable: false, unique: true })
+    @Index('corporative_name_idx', { unique: true })
+    @Column({ name: 'corporative_name', type: 'varchar', length: 64, nullable: false, unique: true })
     public name: string;
 
-    @Column({ name: 'corporativeGroupStatus', type: 'boolean', default: true, nullable: false })
+    @Column({ name: 'corporative_status', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
     @OneToMany(() => Company, company => company.corporativeGroup, { eager: false })
     public companies: Company[]
 
     @OneToOne(() => CorporativeGroupExternalKey, { eager: false, nullable: true })
-    @JoinColumn({ referencedColumnName: 'id', name: 'externalKey' })
+    @JoinColumn({ referencedColumnName: 'id', name: 'external_key' })
     public externalKey: CorporativeGroupExternalKey;
 }

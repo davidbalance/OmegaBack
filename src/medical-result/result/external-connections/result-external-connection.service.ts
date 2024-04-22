@@ -5,7 +5,7 @@ import { Result } from "../entities/result.entity";
 import { OrderExternalConnectionService } from "@/medical-result/order/external-connections/order-external-connection.service";
 import { CreateResultExternalRequestDTO } from "@/medical-result/common/dtos/result-external-connection.request.dto";
 import { StorageManager } from "@/shared/storage-manager";
-import path, { extname } from "path";
+import { extname } from "path";
 import { ResultEvent, ResultFindOrCreateDoctorEvent, ResultFindOrCreateExamEvent, fileResultPath, signaturePath } from "@/shared";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { DoctorService } from "@/user/doctor/doctor.service";

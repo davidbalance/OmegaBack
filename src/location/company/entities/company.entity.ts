@@ -1,37 +1,38 @@
 import { Branch } from "src/location/branch/entities/branch.entity";
 import { CorporativeGroup } from "src/location/corporative-group/entities/corporative-group.entity";
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CompanyExternalKey } from "../company-external-key/entities/company-external-key.entity";
 
-@Entity({ name: 'LO_COMPANIES' })
+@Entity({ name: 'tbl_lo_companies' })
 export class Company extends AbstractEntity<number> {
-    @PrimaryGeneratedColumn('increment', { name: 'companyId' })
+    @PrimaryGeneratedColumn('increment', { name: 'company_id' })
     public id: number;
 
-    @Column({ name: 'companyRuc', type: 'varchar', length: 13, nullable: false, unique: true })
+    @Index('company_ruc_idx', { unique: true })
+    @Column({ name: 'company_ruc', type: 'varchar', length: 13, nullable: false, unique: true })
     public ruc: string;
 
-    @Column({ name: 'companyName', type: 'varchar', length: 64, nullable: false, unique: true })
+    @Column({ name: 'company_name', type: 'varchar', length: 64, nullable: false, unique: true })
     public name: string;
 
-    @Column({ name: 'companyAddress', type: 'varchar', length: 128, nullable: false })
+    @Column({ name: 'company_address', type: 'varchar', length: 128, nullable: false })
     public address: string;
 
-    @Column({ name: 'companyPhone', type: 'varchar', length: 16, nullable: false })
+    @Column({ name: 'company_phone', type: 'varchar', length: 16, nullable: false })
     public phone: string;
 
-    @Column({ name: 'companyStatus', type: 'boolean', default: true, nullable: false })
+    @Column({ name: 'company_status', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
     @ManyToOne(() => CorporativeGroup, group => group.companies, { eager: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'corporativeGroupId' })
+    @JoinColumn({ referencedColumnName: 'id', name: 'corporative_id' })
     public corporativeGroup: CorporativeGroup;
 
     @OneToMany(() => Branch, branch => branch.company, { eager: false })
     public branches: Branch[];
 
     @OneToOne(() => CompanyExternalKey, { eager: false, nullable: true })
-    @JoinColumn({ referencedColumnName: 'id', name: 'externalKey' })
+    @JoinColumn({ referencedColumnName: 'id', name: 'external_key' })
     public externalKey: CompanyExternalKey;
 }

@@ -4,16 +4,9 @@ import { FindOneResultAndUpdateDiseaseRequestDTO, InsertMedicalReportRequestDTO 
 import { DoctorService } from '@/user/doctor/doctor.service';
 import { MedicalReportService } from '../medical-report/medical-report.service';
 import { CompanyService } from '@/location/company/company.service';
-import dayjs from 'dayjs';
 import { Result } from './entities/result.entity';
 import { ResultSendAttributeService } from './result-send-attribute/result-send-attribute.service';
 import { Not } from 'typeorm';
-
-interface FindResultParams {
-  exam?: number;
-  disease?: number;
-  doctor?: number;
-}
 
 @Injectable()
 export class ResultService {
@@ -31,7 +24,8 @@ export class ResultService {
       select: {
         id: true,
         examName: true,
-        disease: true,
+        diseaseId: true,
+        diseaseName: true,
         report: {
           id: true,
           content: true
@@ -54,7 +48,8 @@ export class ResultService {
       select: {
         id: true,
         examName: true,
-        disease: true,
+        diseaseId: true,
+        diseaseName: true,
         report: {
           id: true,
           content: true
@@ -72,7 +67,10 @@ export class ResultService {
   }
 
   async findOneResultAndUpdateDisease(id: number, { ...data }: FindOneResultAndUpdateDiseaseRequestDTO): Promise<Result> {
-    const result = await this.repository.findOneAndUpdate({ id }, { disease: data.disease });
+    const result = await this.repository.findOneAndUpdate({ id }, {
+      diseaseId: data.diseaseId,
+      diseaseName: data.diseaseName
+    });
     return result;
   }
 
@@ -87,7 +85,7 @@ export class ResultService {
         doctorSignature: true,
         order: {
           id: true,
-          company: true,
+          companyName: true,
           patientDni: true,
           patientFullname: true,
           patientBirthday: true
@@ -97,7 +95,7 @@ export class ResultService {
         order: true
       }
     });
-    const company = await this.companyService.findOneByRuc(medicalResult.order.company);
+    const company = await this.companyService.findOneByRuc(medicalResult.order.companyName);
     const medicalReport = await this.reportService.create({
       content: data.content,
       order: medicalResult.order.id,
@@ -105,7 +103,7 @@ export class ResultService {
       doctorDni: medicalResult.doctorDni,
       doctorFullname: medicalResult.doctorFullname,
       doctorSignature: medicalResult.doctorSignature,
-      patientAge: dayjs().diff(medicalResult.order.patientBirthday, 'year'),
+      patientBirthday: medicalResult.order.patientBirthday,
       patientDni: medicalResult.order.patientDni,
       patientFullname: medicalResult.order.patientFullname,
       examName: medicalResult.examName,
