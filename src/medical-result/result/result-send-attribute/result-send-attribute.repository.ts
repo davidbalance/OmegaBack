@@ -1,5 +1,5 @@
 import { AbstractRepository } from "@/shared";
-import { Inject, Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ResultSendAttribute } from "./entities/result-send-attribute.entity";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -14,7 +14,8 @@ export class ResultSendAttributeRepository extends AbstractRepository<number, Re
         super(attributeModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<ResultSendAttribute>): void | Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    findOneAndDelete(_filterOptions: FindOptionsWhere<ResultSendAttribute>): void | Promise<void> {
         throw new Error("Method not implemented.");
     }
 }

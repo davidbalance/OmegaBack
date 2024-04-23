@@ -1,10 +1,10 @@
-import { ConflictException, ForbiddenException, Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Inject, Injectable, Logger } from '@nestjs/common';
 import { UserCredentialRepository } from './user-credential.repository';
 import { UserCredential } from './entities/user-credential.entity';
 import * as bcrypt from 'bcrypt';
 import { CreateCredentialRequestDTO } from './dtos';
-import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
-import { CredentialCreateEvent, CredentialEvent, UserEvent, UserRemoveEvent, UserUpdateEvent } from '@/shared';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CredentialCreateEvent, CredentialEvent } from '@/shared';
 
 @Injectable()
 export class UserCredentialService {
@@ -14,6 +14,11 @@ export class UserCredentialService {
     @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
   ) { }
 
+  /**
+   * Creates a new credential with the given options
+   * @param param0 
+   * @returns A new user credential
+   */
   async create({ email, ...data }: CreateCredentialRequestDTO): Promise<UserCredential> {
     try {
       await this.repository.findOne({ where: { email } });
@@ -28,12 +33,24 @@ export class UserCredentialService {
     }
   }
 
+  /**
+   * Find one credetials by its username name, then updates the password
+   * @param username 
+   * @param password 
+   * @returns The updated credential
+   */
   async findOneCredentialAndUpdatePassword(username: string, password: string): Promise<UserCredential> {
     const hashedPassword = this.hashPassword(password);
     const credentials = await this.repository.findOneAndUpdate({ email: username }, { password: hashedPassword });
     return credentials;
   }
 
+  /**
+   * Checks if there is a credential that matches its username or password
+   * @param username 
+   * @param password 
+   * @returns The credential owner key
+   */
   async validateCredentials(username: string, password: string): Promise<number> {
     const credentials = await this.repository.findOne({ where: { email: username, status: true }, select: { user: true, password: true } });
     const passwordIsValid = this.validatePassword(password, credentials.password);
@@ -41,6 +58,11 @@ export class UserCredentialService {
     return credentials.user;
   }
 
+  /**
+   * Finds one credential by its owner key
+   * @param user 
+   * @returns Credentials
+   */
   async findOneByUser(user: number): Promise<UserCredential> {
     return this.repository.findOne({ where: { user: user } });
   }

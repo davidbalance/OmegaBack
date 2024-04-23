@@ -15,6 +15,11 @@ export class CompanyExternalConnectionService {
         @Inject(CompanyExternalKeyService) private readonly keyService: CompanyExternalKeyService
     ) { }
 
+    /**
+     * Creates a company by the given options
+     * @param param0 
+     * @returns Company
+     */
     async create({ source, key, corporativeGroup, ...company }: CreateCompanyType): Promise<Company> {
         const group = await this.externalService.findOneOrCreate({
             source: source,
@@ -29,6 +34,11 @@ export class CompanyExternalConnectionService {
         return newCompany;
     }
 
+    /**
+     * Finds one company if not exists creates one by the given options
+     * @param param0 
+     * @returns Company
+     */
     async findOneOrCreate({ source, key, ...company }: CreateCompanyType): Promise<Company> {
         try {
             const foundCompany = await this.repository.findOne({
@@ -45,6 +55,12 @@ export class CompanyExternalConnectionService {
         }
     }
 
+    /**
+     * Finds one company and updates by the given options
+     * @param param0 
+     * @param param1 
+     * @returns Company
+     */
     async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: FindCompanyExternalAndUpdateRequestDTO): Promise<Company> {
         const company = await this.repository.findOneAndUpdate({
             externalKey: {

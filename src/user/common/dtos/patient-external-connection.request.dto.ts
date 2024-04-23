@@ -1,6 +1,6 @@
 import { OmitType, PartialType } from "@nestjs/mapped-types";
 import { Type } from "class-transformer";
-import { IsEnum, IsDate, IsNumber } from "class-validator";
+import { IsEnum, IsDate } from "class-validator";
 import { PatientGenderEnum } from "../enums";
 import { CreateUserRequestDTO } from "./user.request.dto";
 

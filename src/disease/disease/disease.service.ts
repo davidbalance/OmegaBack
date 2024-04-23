@@ -13,11 +13,20 @@ export class DiseaseService {
     @Inject(DiseaseGroupService) private readonly groupService: DiseaseGroupService
   ) { }
 
+  /**
+   * Creates a new disease with the given options
+   * @param param0 
+   * @returns Disease
+   */
   async create({ group, ...data }: CreateDiseaseRequestDTO): Promise<Disease> {
     const diseaseGroup = await this.groupService.findOneById(group);
     return await this.repository.create({ ...data, group: diseaseGroup });
   }
 
+  /**
+   * Finds all the active diseases
+   * @returns Array of Disease
+   */
   async find(): Promise<Disease[]> {
     const diseases = await this.repository.find({
       where: { status: true },
@@ -36,6 +45,10 @@ export class DiseaseService {
     return diseases;
   }
 
+  /**
+   * Find all the active diseases and get only values for label and key
+   * @returns Array of SelectorOption
+   */
   async findSelectorOptions(): Promise<SelectorOption<number>[]> {
     const diseases = await this.repository.find({
       where: { status: true },
@@ -51,6 +64,12 @@ export class DiseaseService {
     return options;
   }
 
+  /**
+   * Finds one disease and update its data with the given value
+   * @param id 
+   * @param param1 
+   * @returns Disease
+   */
   async findOneAndUpdate(id: number, { group, ...data }: FindOneDiseaseAndUpdateRequestDTO): Promise<Disease> {
     if (group) {
       const diseaseGroup = await this.groupService.findOneById(group);
@@ -60,6 +79,10 @@ export class DiseaseService {
     }
   }
 
+  /**
+   * Finds one disease and change its state to inactive
+   * @param id 
+   */
   async findOneAndDelete(id: number): Promise<void> {
     await this.repository.findOneAndDelete({ id });
   }

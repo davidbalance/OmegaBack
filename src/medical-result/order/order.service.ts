@@ -9,6 +9,11 @@ export class OrderService {
     @Inject(OrderRepository) private readonly repository: OrderRepository
   ) { }
 
+  /**
+   * Finds all orders owned by a patient
+   * @param dni 
+   * @returns Array of Order
+   */
   async findByPatient(dni: string): Promise<Order[]> {
     const orders = await this.repository.find({
       where: {

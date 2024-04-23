@@ -1,5 +1,5 @@
 import { AbstractRepository } from "@/shared";
-import { Inject, Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ApiKey } from "./entities/api-key.entity";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -18,6 +18,10 @@ export class ApiKeyRepository extends AbstractRepository<number, ApiKey> {
         this.findOneAndUpdate(filterOptions, { status: false });
     }
 
+    /**
+     * Delete all the items that matches the given options
+     * @param filterOptions 
+     */
     findAndDelete(filterOptions: FindOptionsWhere<ApiKey>): void | Promise<void> {
         this.apikeyModel.update(filterOptions, { status: false });
     }

@@ -8,19 +8,23 @@ import { StorageManager } from "@/shared/storage-manager";
 import { extname } from "path";
 import { ResultEvent, ResultFindOrCreateDoctorEvent, ResultFindOrCreateExamEvent, fileResultPath, signaturePath } from "@/shared";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { DoctorService } from "@/user/doctor/doctor.service";
 
 @Injectable()
 export class ResultExternalConnectionService {
     constructor(
         @Inject(ResultExternalKeyService) private readonly externalKeyService: ResultExternalKeyService,
         @Inject(OrderExternalConnectionService) private readonly orderService: OrderExternalConnectionService,
-        @Inject(DoctorService) private readonly doctorService: DoctorService,
         @Inject(ResultRepository) private readonly repository: ResultRepository,
         @Inject(StorageManager) private readonly storageManager: StorageManager,
         @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
     ) { }
 
+    /**
+     * Creates a new result with the given options
+     * @param param0 
+     * @param file 
+     * @returns Result
+     */
     async create({ source, key, order, doctor, exam }: CreateResultExternalRequestDTO & { source: string }, file: Express.Multer.File): Promise<Result> {
 
         const foundOrder = await this.orderService.findOneOrCreate({ source, ...order });
@@ -48,8 +52,4 @@ export class ResultExternalConnectionService {
 
         return newResult;
     }
-
-    async findOneOrCreate(): Promise<Result> { return; }
-
-    async findOneAndUpdate(): Promise<Result> { return; }
 }

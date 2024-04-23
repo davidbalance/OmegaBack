@@ -10,6 +10,11 @@ export class BranchService {
     @Inject(BranchRepository) private readonly repository: BranchRepository
   ) { }
 
+  /**
+   * Find all the active branches associated to a company
+   * @param company 
+   * @returns Array of Branch
+   */
   async find(company: string): Promise<Branch[]> {
     const branches = await this.repository.find({
       where: {
@@ -34,6 +39,10 @@ export class BranchService {
     return branches;
   }
 
+  /**
+   * Find all the branches and get only values for label and key
+   * @returns Array of SelectorOption
+   */
   async findSelectorOptions(): Promise<SelectorOption<number>[]> {
     const branches = await this.repository.find({ select: { name: true, id: true } });
     const options = branches.map((e) => ({

@@ -15,7 +15,8 @@ export class CorporativeGroupExternalKeyRepository
         super(keyModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<CorporativeGroupExternalKey>): void | Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    findOneAndDelete(_filterOptions: FindOptionsWhere<CorporativeGroupExternalKey>): void | Promise<void> {
         throw new Error("Method not implemented.");
     }
 

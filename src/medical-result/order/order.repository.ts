@@ -16,7 +16,8 @@ export class OrderRepository
         super(orderModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<Order>): void | Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    findOneAndDelete(_filterOptions: FindOptionsWhere<Order>): void | Promise<void> {
         throw new Error("Method not implemented.");
     }
 }

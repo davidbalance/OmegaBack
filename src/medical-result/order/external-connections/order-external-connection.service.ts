@@ -14,6 +14,11 @@ export class OrderExternalConnectionService {
         @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
     ) { }
 
+    /**
+     * Creates a new order with the given values
+     * @param param0 
+     * @returns Order
+     */
     async create({ key, source, branch, patient, ...order }: CreateOrderExternalRequestDTO & { source: string }): Promise<Order> {
         const { company } = branch;
         const { corporativeGroup } = company;
@@ -35,6 +40,11 @@ export class OrderExternalConnectionService {
         return newOrder;
     }
 
+    /**
+     * Find one order if not exists creates one with the given values
+     * @param param0 
+     * @returns Order
+     */
     async findOneOrCreate({ key, source, branch, patient, ...order }: CreateOrderExternalRequestDTO & { source: string }): Promise<Order> {
         try {
             const foundOrder = await this.repository.findOne({
@@ -51,6 +61,12 @@ export class OrderExternalConnectionService {
         }
     }
 
+    /**
+     * Find one order and updates it with the given options
+     * @param param0 
+     * @param param1 
+     * @returns Order
+     */
     async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: FindOneOrderExternalAndUpdateRequestDTO): Promise<Order> {
         const order = await this.repository.findOneAndUpdate({
             externalKey: {

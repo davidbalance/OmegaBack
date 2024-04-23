@@ -35,10 +35,6 @@ export class FindCompanyExternalAndUpdateRequestDTO {
 
     @IsString()
     @IsNotEmpty()
-    public readonly ruc: string;
-
-    @IsString()
-    @IsNotEmpty()
     public readonly name: string;
 
     @IsString()
