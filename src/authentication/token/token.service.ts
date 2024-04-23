@@ -22,6 +22,11 @@ export class TokenService {
     @Inject(ConfigService) private readonly config: ConfigService
   ) { }
 
+  /**
+   * Instantiate a new access and refresh tokens
+   * @param sub 
+   * @returns Access and refresh tokens
+   */
   async initToken(sub: number): Promise<{ access: TokenPayload, refresh: TokenPayload }> {
     const { access, refresh } = await this.generateToken(sub);
     const { expiresAccess, expiresRefresh } = this.getExpiresTime();
@@ -38,6 +43,11 @@ export class TokenService {
     };
   }
 
+  /**
+   * Check if the refresh token given is valid, so it can creates a new access and refresh tokens
+   * @param payload 
+   * @returns Access and refresh tokens
+   */
   async refreshToken(payload: RefreshToken): Promise<{ access: TokenPayload, refresh: TokenPayload }> {
     const flag = await this.canRefresh(payload);
     if (!flag) throw new ForbiddenException(["Forbidden token"]);
@@ -62,7 +72,8 @@ export class TokenService {
     return { expiresAccess, expiresRefresh }
   }
 
-  async generateToken(sub: number): Promise<Tokens> {
+
+  private async generateToken(sub: number): Promise<Tokens> {
     const accessPayload: AccessToken = { sub: sub };
     const access = this.jwt.sign(accessPayload);
 
@@ -73,7 +84,7 @@ export class TokenService {
     return { access, refresh };
   }
 
-  async storeToken(key: number, token: string): Promise<void> {
+  private async storeToken(key: number, token: string): Promise<void> {
     const expiresIn: number = this.config.get<number>('jwt.refresh.expiresIn');
     const expiresAt = dayjs().add(expiresIn, 'seconds').toDate();
     try {
@@ -83,14 +94,17 @@ export class TokenService {
     }
   }
 
-  validateToken(token: string): AccessToken {
-    return this.jwt.decode<AccessToken>(token);
-  }
-
+  /**
+   * Remove a token with a given sub key
+   * @param sub 
+   */
   async removeToken(sub: number): Promise<void> {
     this.repository.findOneAndDelete({ key: sub });
   }
 
+  /**
+   * Removes all tokens that have expired
+   */
   async removeExpireToken(): Promise<void> {
     const to = dayjs().toDate();
     const from = dayjs().subtract(1, "day").toDate();

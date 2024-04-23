@@ -14,7 +14,8 @@ export class ExamExternalKeyRepository extends AbstractRepository<number, ExamEx
         super(keyModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<ExamExternalKey>): void | Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    findOneAndDelete(_filterOptions: FindOptionsWhere<ExamExternalKey>): void | Promise<void> {
         throw new Error("Method not implemented.");
     }
 }

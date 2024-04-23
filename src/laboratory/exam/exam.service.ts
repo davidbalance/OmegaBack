@@ -9,6 +9,10 @@ export class ExamService {
     @Inject(ExamRepository) private readonly repository: ExamRepository
   ) { }
 
+  /**
+   * Find all the exams and get only values for label and key
+   * @returns Array of SelectorOption
+   */
   async findSelectorOptions(): Promise<SelectorOption<number>[]> {
     const exams = await this.repository.find({ select: { name: true, id: true } });
     const options: SelectorOption<number>[] = exams

@@ -5,6 +5,14 @@ import handlebars from 'handlebars';
 
 @Injectable()
 export class PdfManagerService {
+
+    /**
+     * Creates a pdf using a handlebars template
+     * @param templatePath 
+     * @param data 
+     * @param options 
+     * @returns Buffer
+     */
     async craft(templatePath: string, data: any, options?: PDFOptions): Promise<Buffer> {
         try {
             const browser = await puppeteer.launch();

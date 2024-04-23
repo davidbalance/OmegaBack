@@ -14,7 +14,8 @@ export class CompanyExternalKeyRepository extends AbstractRepository<number, Com
         super(companyModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<CompanyExternalKey>): void | Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    findOneAndDelete(_filterOptions: FindOptionsWhere<CompanyExternalKey>): void | Promise<void> {
         throw new Error("Method not implemented.");
     }
 }

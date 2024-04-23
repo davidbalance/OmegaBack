@@ -8,7 +8,6 @@ import dayjs from 'dayjs';
 import path from 'path';
 import { StorageManager } from '@/shared/storage-manager';
 import { MedicalReportSendAttributeService } from './medical-report-send-attribute/medical-report-send-attribute.service';
-import { Not } from 'typeorm';
 
 @Injectable()
 export class MedicalReportService {
@@ -20,6 +19,11 @@ export class MedicalReportService {
     @Inject(MedicalReportSendAttributeService) private readonly attributeService: MedicalReportSendAttributeService
   ) { }
 
+  /**
+   * Creates a new report with the given options
+   * @param param0 
+   * @returns MedicalReport
+   */
   async create({ ...data }: CreateMedicalReportRequestDTO): Promise<MedicalReport> {
     const report = await this.repository.create({ ...data });
     const filename = await this.createPdf(report.id);
@@ -27,12 +31,17 @@ export class MedicalReportService {
     return newReport;
   }
 
+  /**
+   * Returns the pdf associated to the report
+   * @param id 
+   * @returns StreamableFile
+   */
   async getPdf(id: number): Promise<StreamableFile> {
     const report = await this.repository.findOne({ where: { id }, select: { fileAddress: true } });
     return this.storageManager.readFile(report.fileAddress);
   }
 
-  async createPdf(id: number): Promise<string> {
+  private async createPdf(id: number): Promise<string> {
     const reportData = await this.repository.findOne({ where: { id } });
 
     const directory = path.resolve(reportData.doctorSignature);
@@ -67,11 +76,12 @@ export class MedicalReportService {
     doctorSignature: `data:image/png;base64,${base64}`
   });
 
-  async findResultsWithoutValue(value: string): Promise<MedicalReport[]> {
-    const results = await this.repository.find({ where: { sendAttributes: { value: Not(value) } } });
-    return results;
-  }
-
+  /**
+   * Creates a send attribute for the given report
+   * @param id 
+   * @param value 
+   * @returns MedicalReport
+   */
   async assignSendAttribute(id: number, value: string): Promise<MedicalReport> {
     const attribute = await this.attributeService.create({ value: value });
     const { sendAttributes } = await this.repository.findOne({ where: { id: id }, relations: { sendAttributes: true } });

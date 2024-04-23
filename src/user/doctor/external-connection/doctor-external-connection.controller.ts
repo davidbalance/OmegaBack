@@ -1,12 +1,4 @@
-import {
-    Body,
-    Controller,
-    Inject,
-    Param,
-    Patch,
-    Post,
-    UseGuards
-} from "@nestjs/common";
+import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { DoctorExternalConnectionService } from "./doctor-external-connection.service";
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import {

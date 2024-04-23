@@ -14,7 +14,8 @@ export class MedicalReportSendAttributeRepository extends AbstractRepository<num
         super(attributeModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<MedicalReportSendAttribute>): void | Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    findOneAndDelete(_filterOptions: FindOptionsWhere<MedicalReportSendAttribute>): void | Promise<void> {
         throw new Error("Method not implemented.");
     }
 }

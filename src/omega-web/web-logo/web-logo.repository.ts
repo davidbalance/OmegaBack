@@ -16,7 +16,8 @@ export class WebLogoRepository
         super(logoModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<WebLogo>): void | Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    findOneAndDelete(_filterOptions: FindOptionsWhere<WebLogo>): void | Promise<void> {
         throw new Error("Method not implemented.");
     }
 

@@ -10,6 +10,11 @@ export abstract class AbstractExternalKeyService<
         private readonly _prRepository: R
     ) { }
 
+    /**
+     * Creates a new external key
+     * @param key 
+     * @returns External Key
+     */
     async create(key: { source: string, key: string }): Promise<E> {
         try {
             await this._prRepository.findOne({

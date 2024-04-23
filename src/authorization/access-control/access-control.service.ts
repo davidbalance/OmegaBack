@@ -17,10 +17,21 @@ export class AccessControlService {
         @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
     ) { }
 
+    /**
+     * Finds one client by the user keys
+     * @param user 
+     * @returns Access Control Client
+     */
     async findOne(user: number): Promise<AccessControl> {
         return await this.repository.findOne({ where: { user: user }, relations: { resources: true, roles: true } });
     }
 
+    /**
+     * Finds one client by its owner key and updates the roles
+     * @param user 
+     * @param param1 
+     * @returns Access Control Client
+     */
     async updateAccessRoles(user: number, { roles }: FindOneACClientAndUpdateRolesRequestDTO): Promise<AccessControl> {
         const foundRoles = await this.roleService.findIn(roles);
         const client = await this.repository.findOneAndUpdate({ user: user }, { roles: foundRoles });
@@ -30,6 +41,12 @@ export class AccessControlService {
         return client
     }
 
+    /**
+     * Finds one client by its owner key and updates the resources
+     * @param user 
+     * @param param1 
+     * @returns Access Control Client
+     */
     async updateAccessResources(user: number, { resources }: FindOneACClientAndUpdateResourcesRequestDTO): Promise<AccessControl> {
         const foundResources = await this.resourceService.findIn(resources);
         return await this.repository.findOneAndUpdate({ user: user }, { resources: foundResources });

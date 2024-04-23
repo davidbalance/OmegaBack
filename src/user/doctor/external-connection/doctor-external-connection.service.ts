@@ -1,7 +1,4 @@
-import {
-    Inject,
-    Injectable
-} from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { DoctorRepository } from "../doctor.repository";
 import { Doctor } from "../entities/doctor.entity";
 import {
@@ -17,12 +14,22 @@ export class DoctorExternalConnectionService {
         @Inject(UserService) private readonly userService: UserService
     ) { }
 
+    /**
+     * Creates a doctor with the given options
+     * @param param0 
+     * @returns Doctor
+     */
     async create({ ...user }: CreateDoctorExternalRequestDTO): Promise<Doctor> {
         const newUser = await this.userService.create(user);
         const doctor = await this.repository.create({ user: newUser });
         return doctor;
     }
 
+    /**
+     * Find one doctor if not exists creates one with the given options
+     * @param param0 
+     * @returns Doctor
+     */
     async findOneOrCreate({ ...user }: CreateDoctorExternalRequestDTO): Promise<Doctor> {
         try {
             const foundUser = await this.repository.findOne({
@@ -41,6 +48,12 @@ export class DoctorExternalConnectionService {
         }
     }
 
+    /**
+     * Find one doctor and updates it with the given value
+     * @param id 
+     * @param param1 
+     * @returns Doctor
+     */
     async findOneAndUpdate(id: string, { ...user }: FindOneDoctorAndUpdateRequestDTO): Promise<Doctor> {
         const doctor = await this.repository.findOne({
             where: {

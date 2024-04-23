@@ -16,7 +16,8 @@ export class MedicalReportRepository
         super(reportModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<MedicalReport>): void | Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    findOneAndDelete(_filterOptions: FindOptionsWhere<MedicalReport>): void | Promise<void> {
         throw new Error("Method not implemented.");
     }
 }

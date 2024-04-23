@@ -15,6 +15,11 @@ export class ApiKeyService {
     @Inject(ConfigService) private readonly configService: ConfigService
   ) { }
 
+  /**
+   * Creates a new API key with the given options
+   * @param param0 
+   * @returns The resulting API-KEY
+   */
   async create({ user, ...valueKey }: CreateApiKeyRequestDTO & { user: number }): Promise<string> {
     const foundUser = await this.userService.findOneByUser(user);
     const apiKey: string = v4();
@@ -29,11 +34,19 @@ export class ApiKeyService {
     return newApiKey.value;
   }
 
+  /**
+   * Check if the given key is valid
+   * @param key 
+   * @returns API-KEY owner
+   */
   async validate(key: string): Promise<number> {
     const apikey = await this.repository.findOne({ where: { value: key, status: true }, relations: { credential: true } })
     return apikey.credential.user;
   }
 
+  /**
+   * Removes all the API-KEYS that have been expired
+   */
   async removeExpireKeys(): Promise<void> {
     await this.repository.findAndDelete({ expiresAt: LessThan(dayjs().toDate()) })
   }

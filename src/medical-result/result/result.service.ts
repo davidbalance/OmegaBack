@@ -6,7 +6,6 @@ import { MedicalReportService } from '../medical-report/medical-report.service';
 import { CompanyService } from '@/location/company/company.service';
 import { Result } from './entities/result.entity';
 import { ResultSendAttributeService } from './result-send-attribute/result-send-attribute.service';
-import { Not } from 'typeorm';
 
 @Injectable()
 export class ResultService {
@@ -19,6 +18,10 @@ export class ResultService {
     @Inject(ResultSendAttributeService) private readonly attributeService: ResultSendAttributeService
   ) { }
 
+  /**
+   * Finds all the results
+   * @returns Array of Result
+   */
   async find(): Promise<Result[]> {
     const results = await this.repository.find({
       select: {
@@ -41,6 +44,11 @@ export class ResultService {
     return results;
   }
 
+  /**
+   * Finds all the results associated to a doctor
+   * @param doctor 
+   * @returns Result
+   */
   async findResultsByDoctor(doctor: number): Promise<Result[]> {
     const currentDoctor = await this.doctorService.findOne(doctor);
     const results = await this.repository.find({
@@ -66,6 +74,12 @@ export class ResultService {
     return results;
   }
 
+  /**
+   * Find one result and assing a disease
+   * @param id 
+   * @param param1 
+   * @returns Result
+   */
   async findOneResultAndUpdateDisease(id: number, { ...data }: FindOneResultAndUpdateDiseaseRequestDTO): Promise<Result> {
     const result = await this.repository.findOneAndUpdate({ id }, {
       diseaseId: data.diseaseId,
@@ -74,6 +88,12 @@ export class ResultService {
     return result;
   }
 
+  /**
+   * Creates a new report and associate it to the given result
+   * @param id 
+   * @param param1 
+   * @returns Result
+   */
   async insertMedicalReport(id: number, { ...data }: InsertMedicalReportRequestDTO): Promise<Result> {
     const medicalResult = await this.repository.findOne({
       where: { id },
@@ -113,11 +133,12 @@ export class ResultService {
     return medicalResult;
   }
 
-  async findResultsWithoutValue(value: string): Promise<Result[]> {
-    const results = await this.repository.find({ where: { sendAttributes: { value: Not(value) } } });
-    return results;
-  }
-
+  /**
+   * Assign a send attribute to the result
+   * @param id 
+   * @param value 
+   * @returns Result
+   */
   async assignSendAttribute(id: number, value: string): Promise<Result> {
     const attribute = await this.attributeService.create({ value: value });
     const { sendAttributes } = await this.repository.findOne({ where: { id: id }, relations: { sendAttributes: true } });
