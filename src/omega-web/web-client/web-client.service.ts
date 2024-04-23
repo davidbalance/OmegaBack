@@ -9,6 +9,11 @@ export class WebClientService {
     @Inject(WebClientRepository) private readonly repository: WebClientRepository
   ) { }
 
+  /**
+   * Finds a web client by its user key
+   * @param user 
+   * @returns WebClient
+   */
   async findWebClient(user: number): Promise<WebClient> {
     const client = await this.repository.findOne({
       where: { user: user },

@@ -15,7 +15,8 @@ export class ResourceRepository
         super(resourceModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<Resource>): void | Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    findOneAndDelete(_filterOptions: FindOptionsWhere<Resource>): void | Promise<void> {
         throw new Error("Method not implemented.");
     }
 }

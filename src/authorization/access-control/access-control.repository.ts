@@ -16,7 +16,8 @@ export class AccessControlRepository
         super(accessModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<AccessControl>): void | Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    findOneAndDelete(_filterOptions: FindOptionsWhere<AccessControl>): void | Promise<void> {
         throw new Error("Method not implemented.");
     }
 }

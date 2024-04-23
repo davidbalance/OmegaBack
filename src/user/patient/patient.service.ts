@@ -1,17 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PatientRepository } from './patient.repository';
 import { Patient } from './entities/patient.entity';
-import { UserService } from 'src/user/user/user.service';
-import { FindOnePatientAndUpdateRequestDTO } from '../common';
 
 @Injectable()
 export class PatientService {
 
   constructor(
-    @Inject(PatientRepository) private readonly repository: PatientRepository,
-    @Inject(UserService) private readonly userService: UserService
-  ) { }
+    @Inject(PatientRepository) private readonly repository: PatientRepository) { }
 
+  /**
+   * Find all the active patients
+   * @returns Array of patient
+   */
   async find(): Promise<Patient[]> {
     const patients = await this.repository.find({
       where: {
@@ -35,7 +35,11 @@ export class PatientService {
     return patients;
   }
 
-
+  /**
+   * Find one patient by its dni
+   * @param dni 
+   * @returns Patient
+   */
   async findOneByDni(dni: string): Promise<Patient> {
     const patient = await this.repository.findOne({
       where: {

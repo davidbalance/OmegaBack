@@ -12,6 +12,11 @@ export class RoleService {
     @Inject(ResourceService) private readonly resourceService: ResourceService
   ) { }
 
+  /**
+   * Creates a new role with the given options
+   * @param param0 
+   * @returns Role
+   */
   async create({ resources, ...data }: CreateRoleRequestDTO): Promise<Role> {
     const foundResources = await this.resourceService.findIn(resources);
     return await this.repository.create({ ...data, resources: foundResources });
@@ -32,15 +37,30 @@ export class RoleService {
     });
   }
 
+  /**
+   * Find all roles that matches the given array of numbers
+   * @param ids 
+   * @returns Array of Role
+   */
   async findIn(ids: number[]): Promise<Role[]> {
     return await this.repository.find({ where: { id: In(ids) } });
   }
 
+  /**
+   * Find one role and updates it with the given values
+   * @param id 
+   * @param param1 
+   * @returns Role
+   */
   async findOneAndUpdate(id: number, { resources, ...data }: FindOneRoleAndUpdateRequestDTO): Promise<Role> {
     const foundResources = await this.resourceService.findIn(resources);
     return await this.repository.findOneAndUpdate({ id }, { ...data, resources: foundResources });
   }
 
+  /**
+   * Find one role and change its state to inactive
+   * @param id 
+   */
   async findOneAndDelete(id: number): Promise<void> {
     await this.repository.findOneAndDelete({ id });
   }

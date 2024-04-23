@@ -14,7 +14,8 @@ export class BranchExternalKeyRepository extends AbstractRepository<number, Bran
         super(keyModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<BranchExternalKey>): void | Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    findOneAndDelete(_filterOptions: FindOptionsWhere<BranchExternalKey>): void | Promise<void> {
         throw new Error('Method not implemented.');
     }
 

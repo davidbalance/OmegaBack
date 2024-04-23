@@ -1,6 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateWebResourceDto } from './dto/create-web-resource.dto';
-import { UpdateWebResourceDto } from './dto/update-web-resource.dto';
 import { WebResourceRespository } from './web-resource.repository';
 import { WebResource } from './entities/web-resource.entity';
 import { In } from 'typeorm';
@@ -11,6 +9,11 @@ export class WebResourceService {
     @Inject(WebResourceRespository) private readonly repository: WebResourceRespository
   ) { }
 
+  /**
+   * Finds all the web resources that matches to an array of strings
+   * @param names 
+   * @returns Array of WebResource
+   */
   async findInNames(names: string[]): Promise<WebResource[]> {
     const resources = await this.repository.find({ where: { name: In(names) } });
     return resources;
