@@ -6,6 +6,10 @@ import { MedicalReportService } from '../medical-report/medical-report.service';
 import { CompanyService } from '@/location/company/company.service';
 import { Result } from './entities/result.entity';
 import { ResultSendAttributeService } from './result-send-attribute/result-send-attribute.service';
+<<<<<<< HEAD
+import { Not } from 'typeorm';
+=======
+>>>>>>> 9ce70a3617a365872924c33ca479398803eee97b
 
 @Injectable()
 export class ResultService {
