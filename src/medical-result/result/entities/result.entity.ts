@@ -10,8 +10,8 @@ export class Result extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: "result_id" })
     public id: number;
 
-    @Column({ name: 'result_file_name', type: 'varchar', length: 256, unique: true })
-    public fileName: string;
+    @Column({ name: 'result_file_path', type: 'varchar', length: 256, unique: true })
+    public filePath: string;
 
     @Column({ name: 'exam_name', type: 'varchar', length: 128, nullable: false })
     public examName: string;

@@ -6,10 +6,6 @@ import { MedicalReportService } from '../medical-report/medical-report.service';
 import { CompanyService } from '@/location/company/company.service';
 import { Result } from './entities/result.entity';
 import { ResultSendAttributeService } from './result-send-attribute/result-send-attribute.service';
-<<<<<<< HEAD
-import { Not } from 'typeorm';
-=======
->>>>>>> 9ce70a3617a365872924c33ca479398803eee97b
 
 @Injectable()
 export class ResultService {
@@ -53,10 +49,9 @@ export class ResultService {
    * @param doctor 
    * @returns Result
    */
-  async findResultsByDoctor(doctor: number): Promise<Result[]> {
-    const currentDoctor = await this.doctorService.findOne(doctor);
+  async findResultsByDoctor(doctor: string): Promise<Result[]> {
     const results = await this.repository.find({
-      where: { doctorDni: currentDoctor.user.dni },
+      where: { doctorDni: doctor },
       select: {
         id: true,
         examName: true,
