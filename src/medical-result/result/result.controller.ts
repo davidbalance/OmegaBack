@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ResultService } from './result.service';
 import { FindOneResultAndUpdateDiseaseRequestDTO, InsertMedicalReportRequestDTO } from '../common/dtos/result.request.dto';
 import { Authorize, User } from '@/shared/decorator';
@@ -8,6 +8,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
 import { ClaimEnum } from '@/shared';
+import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
 
 @ApiTags('Medical Result')
 @ApiBearerAuth()
@@ -25,9 +26,10 @@ export class ResultController {
 
   @Authorize(ClaimEnum.READ, 'medical-result')
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseInterceptors(DniInterceptor)
   @Get('doctor')
   async findByDoctor(
-    @User() user: number
+    @User() user: string
   ): Promise<FindResultsResponseDTO> {
     const results = await this.resultService.findResultsByDoctor(user);
     return plainToInstance(FindResultsResponseDTO, { results: results });

@@ -31,14 +31,14 @@ export class ResultExternalConnectionService {
 
         const medicalResultPath = fileResultPath({ dni: order.patient.dni, order: foundOrder.id })
         const extension = extname(file.originalname);
-        const fileName = await this.storageManager.saveFile(file.buffer, extension, medicalResultPath);
+        const filePath = await this.storageManager.saveFile(file.buffer, extension, medicalResultPath);
 
         const directory = signaturePath({ dni: doctor.dni });
         const signature = `${directory}/${doctor.dni}.png`;
 
         const newKey = await this.externalKeyService.create({ key, source });
         const newResult = await this.repository.create({
-            fileName: fileName,
+            filePath: filePath,
             order: foundOrder,
             externalKey: newKey,
             doctorDni: doctor.dni,

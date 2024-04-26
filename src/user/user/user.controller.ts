@@ -11,7 +11,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { Authorize } from '@/shared/decorator';
+import { Authorize, User } from '@/shared/decorator';
 import { ClaimEnum } from '@/shared';
 
 @ApiTags('User')
@@ -28,6 +28,16 @@ export class UserController {
   async find(): Promise<FindUsersResponseDTO> {
     const users = await this.userService.find();
     return plainToInstance(FindUsersResponseDTO, { users });
+  }
+
+  @Authorize(ClaimEnum.READ, 'users')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Get('user')
+  async findOne(
+    @User() user: number
+  ): Promise<FindUserResponseDTO> {
+    const foundUser = await this.userService.findOne(user);
+    return plainToInstance(FindUserResponseDTO, foundUser);
   }
 
   @Authorize(ClaimEnum.CREATE, 'users')

@@ -15,8 +15,18 @@ export class CityService {
    * @param id 
    * @returns 
    */
-  async findOne(id: string): Promise<City> {
+  async findOne(id: number): Promise<City> {
     const city = await this.repository.findOne({ where: { id: id } });
+    return city;
+  }
+  
+  /**
+   * Finds one city by its city code
+   * @param id 
+   * @returns 
+   */
+  async findOneByName(name: string): Promise<City> {
+    const city = await this.repository.findOne({ where: { name: name } });
     return city;
   }
 
@@ -33,12 +43,12 @@ export class CityService {
    * Find all the cities and get only values for label and key
    * @returns Array of SelectorOption
    */
-  async findSelectorOptions(): Promise<SelectorOption<string>[]> {
+  async findSelectorOptions(): Promise<SelectorOption<number>[]> {
     const cities = await this.repository.find({ select: { id: true, name: true } });
     const options = cities.map((e) => ({
       key: e.id,
       label: e.name
-    } as SelectorOption<string>));
+    } as SelectorOption<number>));
     return options;
   }
 
