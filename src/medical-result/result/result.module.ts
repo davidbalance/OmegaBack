@@ -18,6 +18,7 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
 import { ResultSendAttributeModule } from './result-send-attribute/result-send-attribute.module';
 import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
 import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
+import { DniInterceptorModule } from '@/shared/interceptors/dni/dni-interceptor.module';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-au
     LocalStorageModule,
     AuthenticationGuardModule,
     ResultSendAttributeModule,
-    LocalAuthorizationModule
+    LocalAuthorizationModule,
+    DniInterceptorModule
   ],
   controllers: [
     ResultController,

@@ -11,10 +11,14 @@ export class LocalAuthorizationService implements AuthorizationService {
     ) { }
 
     async canAccess(user: number, claim: ClaimEnum, resources: string[]): Promise<boolean> {
-        const accessControl = await this.accessControl.findOne(user);
-        if (!accessControl.roles) return false;
-        const currentResources: Resource[] = accessControl.roles.reduce((prev: Resource[], curr) => [...prev, ...curr.resources], []);
-        currentResources.concat(accessControl.resources);
-        return currentResources.some(e => resources.includes(e.name) && e.claim === claim);
+        try {
+            const accessControl = await this.accessControl.findOne(user);
+            if (!accessControl.roles) return false;
+            const currentResources: Resource[] = accessControl.roles.reduce((prev: Resource[], curr) => [...prev, ...curr.resources], []);
+            currentResources.concat(accessControl.resources);
+            return currentResources.some(e => resources.includes(e.name) && e.claim === claim);
+        } catch (error) {
+            return false;
+        }
     }
 }

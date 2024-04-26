@@ -5,7 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
 
 @Injectable()
-export class CityRepository extends AbstractRepository<string, City> {
+export class CityRepository extends AbstractRepository<number, City> {
     protected logger: Logger = new Logger();
 
     constructor(

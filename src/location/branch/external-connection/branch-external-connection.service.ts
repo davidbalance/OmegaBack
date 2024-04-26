@@ -25,7 +25,7 @@ export class BranchExternalConnectionService {
             source: source,
             ...company
         });
-        const foundCity = await this.cityService.findOne(city);
+        const foundCity = await this.cityService.findOneByName(city);
         const newKey = await this.keyService.create({ source: source, key: key });
         const newBranch = await this.repository.create({
             ...branch,

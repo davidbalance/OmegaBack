@@ -13,7 +13,6 @@ export class CreateBranchExternalRequestDTO {
 
     @IsString()
     @IsNotEmpty()
-    @Length(3, 3)
     public readonly city: string;
 
     @IsDefined()
