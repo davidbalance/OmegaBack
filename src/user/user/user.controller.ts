@@ -25,8 +25,10 @@ export class UserController {
   @Authorize(ClaimEnum.READ, 'users')
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Get()
-  async find(): Promise<FindUsersResponseDTO> {
-    const users = await this.userService.find();
+  async find(
+    @User() user: number
+  ): Promise<FindUsersResponseDTO> {
+    const users = await this.userService.find(user);
     return plainToInstance(FindUsersResponseDTO, { users });
   }
 
