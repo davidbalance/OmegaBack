@@ -4,6 +4,7 @@ import { User } from './entities/user.entity';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CreateUserRequestDTO, FindOneUserAndUpdateRequestDTO } from '../common';
 import { UserEvent, UserRemoveEvent, UserUpdateEvent } from '@/shared';
+import { Not } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -37,11 +38,12 @@ export class UserService {
    * Find all users that have credentials and are active
    * @returns Array of User
    */
-  async find(): Promise<User[]> {
+  async find(not: number = -1): Promise<User[]> {
     return this.repository.find({
       where: {
         status: true,
-        hasCredential: true
+        hasCredential: true,
+        id: Not(not)
       },
       select: {
         id: true,

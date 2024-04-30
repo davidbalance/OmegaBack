@@ -114,11 +114,10 @@ export class ResultService {
         order: true
       }
     });
-    const company = await this.companyService.findOneByRuc(medicalResult.order.companyName);
     const medicalReport = await this.reportService.create({
       content: data.content,
       order: medicalResult.order.id,
-      companyName: company.name,
+      companyName: medicalResult.order.companyName,
       doctorDni: medicalResult.doctorDni,
       doctorFullname: medicalResult.doctorFullname,
       doctorSignature: medicalResult.doctorSignature,
