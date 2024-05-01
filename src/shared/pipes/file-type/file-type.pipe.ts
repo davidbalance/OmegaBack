@@ -11,7 +11,6 @@ export class FileTypePipe extends FileValidator<IFileTypeOptions> {
 
     constructor(options: IFileTypeOptions) {
         super(options);
-
         if (!options ||
             (!Array.isArray(options.acceptableTypes) &&
                 typeof options.acceptableTypes != 'string')) {

@@ -1,9 +1,9 @@
-import { Controller, Get, Param, ParseFilePipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseFilePipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FindDoctorsResponseDTO, FindOneDoctorAndUpdateResponseDTO } from '../common';
+import { FindDoctorsResponseDTO, FindOneDoctorAndUpdateResponseDTO, UploadSignatureRequestDTO } from '../common';
 import { plainToInstance } from 'class-transformer';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
 import { Authorize } from '@/shared/decorator';
@@ -25,12 +25,14 @@ export class DoctorController {
     return plainToInstance(FindDoctorsResponseDTO, { doctors });
   }
 
+  @ApiConsumes('multipart/form-data')
   @Authorize(ClaimEnum.UPDATE, 'doctors')
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Post('signature/:id')
-  @UseInterceptors(FileInterceptor('signature')) // Upload it, only let png files
+  @UseInterceptors(FileInterceptor('signature'))
   async uploadSignature(
     @Param('id') id: number,
+    @Body() body: UploadSignatureRequestDTO,
     @UploadedFile(new ParseFilePipe({
       validators: [
         new FileTypePipe({ acceptableTypes: MIME_TYPES.PNG })

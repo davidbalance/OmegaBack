@@ -27,7 +27,8 @@ export class DoctorService {
           dni: true,
           email: true,
           name: true,
-          lastname: true
+          lastname: true,
+          hasCredential: true
         }
       }
     });
@@ -103,6 +104,7 @@ export class DoctorService {
     const directory = doctor.user.dni;
     const extension = extname(signature.originalname);
     const uploaded = await this.storage.saveFile(signature.buffer, extension, path.resolve(signaturePath({ dni: directory })), doctor.user.dni);
+    console.log(`${directory}/${uploaded}`);
     await this.repository.findOneAndUpdate({ id }, { signature: `${directory}/${uploaded}` });
   }
 }

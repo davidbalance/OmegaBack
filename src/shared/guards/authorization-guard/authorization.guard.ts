@@ -24,6 +24,7 @@ export class AuthorizationGuard implements CanActivate {
     const { user }: any = request;
     if (!user) return false;
 
-    return await this.authorization.canAccess(user, params.type, params.resources);
+    const canPass = await this.authorization.canAccess(user, params.type, params.resources);
+    return canPass;
   }
 }
