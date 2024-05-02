@@ -12,6 +12,12 @@ class OrderResultDTO {
     
     @Expose()
     public readonly diseaseName?: string;
+    
+    @Expose()
+    public readonly diseaseGroupId?: number;
+    
+    @Expose()
+    public readonly diseaseGroupName?: string;
 }
 
 export class FindOrderResponseDTO {

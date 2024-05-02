@@ -18,7 +18,7 @@ export class OrderController {
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Get('patient/:dni')
   async findByPatient(
-    @Param('patient') patient: string
+    @Param('dni') patient: string
   ): Promise<FindOrdersResponseDTO> {
     const orders = await this.orderService.findByPatient(patient);
     return plainToInstance(FindOrdersResponseDTO, { orders });

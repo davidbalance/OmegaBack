@@ -29,7 +29,9 @@ export class OrderService {
           id: true,
           examName: true,
           diseaseId: true,
-          diseaseName: true
+          diseaseName: true,
+          diseaseGroupId: true,
+          diseaseGroupName: true
         }
       },
       relations: {

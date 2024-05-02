@@ -80,10 +80,7 @@ export class ResultService {
    * @returns Result
    */
   async findOneResultAndUpdateDisease(id: number, { ...data }: FindOneResultAndUpdateDiseaseRequestDTO): Promise<Result> {
-    const result = await this.repository.findOneAndUpdate({ id }, {
-      diseaseId: data.diseaseId,
-      diseaseName: data.diseaseName
-    });
+    const result = await this.repository.findOneAndUpdate({ id }, { ...data });
     return result;
   }
 

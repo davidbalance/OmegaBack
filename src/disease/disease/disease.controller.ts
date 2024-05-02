@@ -1,22 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  UseGuards
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { DiseaseService } from './disease.service';
-import {
-  CreateDiseaseRequestDTO,
-  FindOneDiseaseAndUpdateRequestDTO,
-  FindOneDiseaseAndDeleteResponseDTO,
-  FindDiseasesResponseDTO,
-  FindDiseaseResponseDTO,
-  FindSelectorOptionsDiseaseDTO,
-} from './dtos';
+import { CreateDiseaseRequestDTO, FindOneDiseaseAndUpdateRequestDTO, FindOneDiseaseAndDeleteResponseDTO, FindDiseasesResponseDTO, FindDiseaseResponseDTO, FindSelectorOptionsDiseaseDTO } from './dtos';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
@@ -70,9 +54,11 @@ export class DiseaseController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('selector')
-  async findSelectorOptions(): Promise<FindSelectorOptionsDiseaseDTO> {
-    const options = await this.diseaseService.findSelectorOptions();
+  @Get('selector/:group')
+  async findSelectorOptions(
+    @Param("group") group: number
+  ): Promise<FindSelectorOptionsDiseaseDTO> {
+    const options = await this.diseaseService.findSelectorOptions(group);
     return plainToInstance(FindSelectorOptionsDiseaseDTO, { options: options });
   }
 }

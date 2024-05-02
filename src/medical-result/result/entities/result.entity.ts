@@ -22,6 +22,13 @@ export class Result extends AbstractEntity<number> {
 
     @Column({ name: 'disease_name', type: 'varchar', length: 128, nullable: true })
     public diseaseName?: string;
+    
+    @Index('result_disease_group_idx')
+    @Column({ name: 'disease_group_id', type: 'int', nullable: true })
+    public diseaseGroupId?: number;
+
+    @Column({ name: 'disease_group_name', type: 'varchar', length: 128, nullable: true })
+    public diseaseGroupName?: string;
 
     @Index('result_doctor_dni_idx')
     @Column({ name: 'doctor_dni', type: 'varchar', length: 10, nullable: false })

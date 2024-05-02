@@ -49,9 +49,14 @@ export class DiseaseService {
    * Find all the active diseases and get only values for label and key
    * @returns Array of SelectorOption
    */
-  async findSelectorOptions(): Promise<SelectorOption<number>[]> {
+  async findSelectorOptions(group: number): Promise<SelectorOption<number>[]> {
     const diseases = await this.repository.find({
-      where: { status: true },
+      where: {
+        status: true,
+        group: {
+          id: group
+        }
+      },
       select: {
         id: true,
         name: true
