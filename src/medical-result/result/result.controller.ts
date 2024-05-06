@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Header, Param, Patch, StreamableFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ResultService } from './result.service';
 import { FindOneResultAndUpdateDiseaseRequestDTO, InsertMedicalReportRequestDTO } from '../common/dtos/result.request.dto';
 import { Authorize, User } from '@/shared/decorator';
@@ -22,6 +22,17 @@ export class ResultController {
   async find(): Promise<FindResultsResponseDTO> {
     const results = await this.resultService.find();
     return plainToInstance(FindResultsResponseDTO, { results: results });
+  }
+
+  @Authorize(ClaimEnum.READ, 'medical-result')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Get('file/:result')
+  @Header('Content-Type', 'application/pdf')
+  @Header('Content-Disposition', 'attachment; filename="resultado-medico.pdf"')
+  async getFile(
+    @Param("result") id: number
+  ): Promise<StreamableFile> {
+    return await this.resultService.getFile(id);
   }
 
   @Authorize(ClaimEnum.READ, 'medical-result')
