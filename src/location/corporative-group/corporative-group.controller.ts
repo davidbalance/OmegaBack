@@ -18,7 +18,7 @@ export class CorporativeGroupController {
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Get()
   async find(): Promise<FindCorporativeGroupsResponseDTO> {
-    const groups = await this.corporativeGroupService.findSelectorOptions();
+    const groups = await this.corporativeGroupService.find();
     return plainToInstance(FindCorporativeGroupsResponseDTO, { groups });
   }
 
