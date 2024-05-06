@@ -1,21 +1,19 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, StreamableFile } from '@nestjs/common';
 import { ResultRepository } from './result.repository';
 import { FindOneResultAndUpdateDiseaseRequestDTO, InsertMedicalReportRequestDTO } from '../common/dtos/result.request.dto';
-import { DoctorService } from '@/user/doctor/doctor.service';
 import { MedicalReportService } from '../medical-report/medical-report.service';
-import { CompanyService } from '@/location/company/company.service';
 import { Result } from './entities/result.entity';
 import { ResultSendAttributeService } from './result-send-attribute/result-send-attribute.service';
+import { StorageManager } from '@/shared/storage-manager';
 
 @Injectable()
 export class ResultService {
 
   constructor(
     @Inject(ResultRepository) private readonly repository: ResultRepository,
-    @Inject(DoctorService) private readonly doctorService: DoctorService,
     @Inject(MedicalReportService) private readonly reportService: MedicalReportService,
-    @Inject(CompanyService) private readonly companyService: CompanyService,
-    @Inject(ResultSendAttributeService) private readonly attributeService: ResultSendAttributeService
+    @Inject(ResultSendAttributeService) private readonly attributeService: ResultSendAttributeService,
+    @Inject(StorageManager) private readonly storageManager: StorageManager,
   ) { }
 
   /**
@@ -42,6 +40,17 @@ export class ResultService {
       }
     });
     return results;
+  }
+
+  /**
+   * Returns a file associated to the report
+   * @param id 
+   * @returns 
+   */
+  async getFile(id: number): Promise<StreamableFile> {
+    console.log(id);
+    const foundMedicalResult = await this.repository.findOne({ where: { id: id }, select: { id: true, filePath: true } });
+    return this.storageManager.readFile(foundMedicalResult.filePath);
   }
 
   /**
