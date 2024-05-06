@@ -49,7 +49,6 @@ export class ResultService {
    */
   async getFile(id: number): Promise<StreamableFile> {
     const foundMedicalResult = await this.repository.findOne({ where: { id: id }, select: { id: true, filePath: true } });
-    console.log(foundMedicalResult.filePath);
     return this.storageManager.readFile(foundMedicalResult.filePath);
   }
 
