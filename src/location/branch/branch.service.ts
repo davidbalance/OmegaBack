@@ -15,7 +15,36 @@ export class BranchService {
    * @param company 
    * @returns Array of Branch
    */
-  async find(company: string): Promise<Branch[]> {
+  async find(company: number): Promise<Branch[]> {
+    const branches = await this.repository.find({
+      where: {
+        company: { id: company },
+        status: true,
+      },
+      select: {
+        id: true,
+        name: true,
+        city: { name: true },
+        company: {
+          corporativeGroup: {
+            name: true
+          },
+          address: true,
+          name: true,
+          ruc: true,
+          phone: true
+        },
+      }
+    });
+    return branches;
+  }
+
+  /**
+   * Find all the active branches associated to a company
+   * @param company 
+   * @returns Array of Branch
+   */
+  async findByCompanyRuc(company: string): Promise<Branch[]> {
     const branches = await this.repository.find({
       where: {
         company: { ruc: company },

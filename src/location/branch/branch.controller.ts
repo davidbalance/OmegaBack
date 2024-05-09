@@ -18,9 +18,19 @@ export class BranchController {
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Get(':company')
   async find(
-    @Param('company') company: string
+    @Param('company') company: number
   ): Promise<FindBranchesResponseDTO> {
     const branches = await this.branchService.find(company);
+    return plainToInstance(FindBranchesResponseDTO, { branches: branches });
+  }
+  
+  @Authorize(ClaimEnum.READ, 'branch')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Get('ruc/:company')
+  async findByCompanyRuc(
+    @Param('company') company: string
+  ): Promise<FindBranchesResponseDTO> {
+    const branches = await this.branchService.findByCompanyRuc(company);
     return plainToInstance(FindBranchesResponseDTO, { branches: branches });
   }
 
