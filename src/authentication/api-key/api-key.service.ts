@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ApiKeyRepository } from './api-key.repository';
-import { CreateApiKeyRequestDTO } from './dto';
+import { CreateApiKeyRequestDTO, FindOneAndUpdateApiKeyRequestDTO } from './dto';
 import { v4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
 import dayjs from 'dayjs';
@@ -14,6 +14,46 @@ export class ApiKeyService {
     @Inject(UserCredentialService) private readonly userService: UserCredentialService,
     @Inject(ConfigService) private readonly configService: ConfigService
   ) { }
+
+  /**
+   * Finds a all the API KEYS assigned to a user
+   * @param user 
+   * @returns 
+   */
+  async find(user: number): Promise<{ name: string }[]> {
+    const keys = await this.repository.find({
+      where: {
+        status: true,
+        credential: {
+          user: user
+        }
+      },
+      select: {
+        name: true
+      }
+    });
+
+    return keys;
+  }
+
+  /**
+   * Find one and update an API KEY
+   * @param param0 
+   * @returns 
+   */
+  async findOneAndUpdate({ id, ...props }: FindOneAndUpdateApiKeyRequestDTO & { id: number }): Promise<{ name: string }> {
+    const keys = await this.repository.findOneAndUpdate({ id: id }, { ...props });
+    return keys;
+  }
+
+  /**
+   * Find one and delete an API KEY
+   * @param param0 
+   * @returns 
+   */
+  async findOneAndDelete(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id: id });
+  }
 
   /**
    * Creates a new API key with the given options

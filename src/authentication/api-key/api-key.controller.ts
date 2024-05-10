@@ -1,6 +1,6 @@
-import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiKeyService } from './api-key.service';
-import { CreateApiKeyRequestDTO, CreateApiKeyResponseDTO } from './dto';
+import { CreateApiKeyRequestDTO, CreateApiKeyResponseDTO, FindApiKeyResponseDTO, FindApiKeysResponseDTO, FindOneAndDeleteApiKeyResponseDTO, FindOneAndUpdateApiKeyRequestDTO } from './dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Authorize, User } from '@/shared/decorator';
@@ -16,6 +16,16 @@ export class ApiKeyController {
     @Inject(ApiKeyService) private readonly apiKeyService: ApiKeyService
   ) { }
 
+  @Authorize(ClaimEnum.READ, 'api-key')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Get()
+  async find(
+    @User() user: number
+  ): Promise<FindApiKeysResponseDTO> {
+    const apikeys = await this.apiKeyService.find(user);
+    return plainToInstance(FindApiKeysResponseDTO, { apikeys });
+  }
+
   @Authorize(ClaimEnum.CREATE, 'api-key')
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Post()
@@ -25,5 +35,26 @@ export class ApiKeyController {
   ): Promise<CreateApiKeyResponseDTO> {
     const apikey = await this.apiKeyService.create({ ...body, user });
     return plainToInstance(CreateApiKeyResponseDTO, { apikey: apikey });
+  }
+
+  @Authorize(ClaimEnum.UPDATE, 'api-key')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Patch(':id')
+  async findOneAndUpdate(
+    @Param('id') id: number,
+    @User() body: FindOneAndUpdateApiKeyRequestDTO
+  ): Promise<FindApiKeyResponseDTO> {
+    const apikey = await this.apiKeyService.findOneAndUpdate({ id, ...body });
+    return plainToInstance(FindApiKeyResponseDTO, apikey);
+  }
+
+  @Authorize(ClaimEnum.DELETE, 'api-key')
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @Patch(':id')
+  async findOneAndDelete(
+    @Param('id') id: number
+  ): Promise<FindOneAndDeleteApiKeyResponseDTO> {
+    await this.apiKeyService.findOneAndDelete(id);
+    return plainToInstance(FindOneAndDeleteApiKeyResponseDTO, {});
   }
 }

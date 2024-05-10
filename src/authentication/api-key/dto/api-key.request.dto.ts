@@ -6,3 +6,10 @@ export class CreateApiKeyRequestDTO {
     @IsNotEmpty()
     public readonly name: string;
 }
+
+export class FindOneAndUpdateApiKeyRequestDTO {
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly name: string;
+}
