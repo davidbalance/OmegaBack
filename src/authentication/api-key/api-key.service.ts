@@ -28,7 +28,11 @@ export class ApiKeyService {
           user: user
         }
       },
+      relations: {
+        credential: true
+      },
       select: {
+        id: true,
         name: true
       }
     });
