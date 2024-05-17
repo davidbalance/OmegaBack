@@ -3,7 +3,10 @@
 name: Node.js CI
 on:
   pull_request: 
-    branches: [ test ]
+    branches:
+      - test
+    types:
+      - closed
 jobs:
   build:
     runs-on: ubuntu-latest
