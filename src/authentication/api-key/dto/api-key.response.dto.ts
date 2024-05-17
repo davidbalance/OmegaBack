@@ -7,6 +7,8 @@ export class CreateApiKeyResponseDTO {
 
 export class FindApiKeyResponseDTO {
     @Expose()
+    public readonly id: number;
+    @Expose()
     public readonly name: string;
 }
 

@@ -50,7 +50,7 @@ export class ApiKeyController {
 
   @Authorize(ClaimEnum.DELETE, 'api-key')
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
-  @Patch(':id')
+  @Delete(':id')
   async findOneAndDelete(
     @Param('id') id: number
   ): Promise<FindOneAndDeleteApiKeyResponseDTO> {
