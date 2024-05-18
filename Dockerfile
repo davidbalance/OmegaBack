@@ -55,4 +55,5 @@ COPY --chown=node:node --from=build /usr/src/app/templates templates
 
 USER node
 
+EXPOSE 3001
 CMD ["node", "dist/main.js"]
