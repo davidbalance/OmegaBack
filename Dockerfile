@@ -44,8 +44,14 @@ ENV app.enviroment production
 # RUN addgroup --system --gid 1001 node
 # RUN adduser --system --uid 1001 node
 
+RUN mkdir medical-report-pdf
+RUN mkdir signatures
+RUN mkdir old-eeq
+RUN mkdir old-ipeges
+
 COPY --chown=node:node --from=build /usr/src/app/dist dist
 COPY --chown=node:node --from=build /usr/src/app/node_modules node_modules
+COPY --chown=node:node --from=build /usr/src/app/templates templates
 
 USER node
 
