@@ -76,4 +76,4 @@ jobs:
               -e jwt.default.expiresIn = $JWT_DEFAULT_EXPIRES_IN \
               -e jwt.refresh.secret = $JWT_REFRESH_SECRET \
               -e jwt.refresh.expiresIn = $JWT_REFRESH_EXPIRES_IN \
-              -e apikey.expiresIn = $API_KEY_EXPIRES_IN \
+              -e apikey.expiresIn = $API_KEY_EXPIRES_IN
