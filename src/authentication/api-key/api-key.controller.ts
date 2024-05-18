@@ -48,7 +48,7 @@ export class ApiKeyController {
     return plainToInstance(FindApiKeyResponseDTO, apikey);
   }
 
-  @Authorize(ClaimEnum.DELETE, 'api-key')
+  /* @Authorize(ClaimEnum.DELETE, 'api-key')
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Delete(':id')
   async findOneAndDelete(
@@ -56,5 +56,5 @@ export class ApiKeyController {
   ): Promise<FindOneAndDeleteApiKeyResponseDTO> {
     await this.apiKeyService.findOneAndDelete(id);
     return plainToInstance(FindOneAndDeleteApiKeyResponseDTO, {});
-  }
+  } */
 }
