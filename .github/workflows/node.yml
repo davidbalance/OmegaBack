@@ -57,25 +57,25 @@ jobs:
             docker rm ${{ secrets.CONTAINER_NAME }} || true
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest
             docker run -d \ 
-              --name"${{ secrets.CONTAINER_NAME }}" \ 
+              --name "${{ secrets.CONTAINER_NAME }}" \ 
               -p 3001:3001 \ 
               --network="${{ secrets.CONTAINER_NETWORK }}" \
-              -v "${{ secrets.LOCAL_FOLDER_MEDICAL_REPORT }}":"${{ secrets.CONTAINER_FOLDER_MEDICAL_REPORT }}" \ 
-              -v "${{ secrets.LOCAL_FOLDER_SIGNATURES }}":"${{ secrets.CONTAINER_FOLDER_SIGNATURES }}" \ 
-              -v "${{ secrets.LOCAL_FOLDER_EEQ }}":"${{ secrets.CONTAINER_FOLDER_EEQ }}" \ 
-              -v "${{ secrets.LOCAL_FOLDER_IPEGES }}":"${{ secrets.CONTAINER_FOLDER_IPEGES }}" \ 
-              - e app.enviroment="${{ secrets.ENVIRONMENT }}" \ 
-              - e database.sql.type="${{ secrets.DATABASE_TYPE }}" \ 
-              - e database.sql.host="${{ secrets.DATABASE_HOST }}" \ 
-              - e database.sql.port="${{ secrets.DATABASE_PORT }}" \ 
-              - e database.sql.username="${{ secrets.DATABASE_USERNAME }}" \ 
-              - e database.sql.password="${{ secrets.DATABASE_PASSWORD }}" \ 
-              - e database.sql.database="${{ secrets.DATABASE_DATABASE }}" \ 
-              - e jwt.default.secret="${{ secrets.JWT_DEFAULT_SECRET }}" \
-              - e jwt.default.expiresIn="${{ secrets.JWT_DEFAULT_EXPIRES_IN }}" \ 
-              - e jwt.refresh.secret="${{ secrets.JWT_REFRESH_SECRET }}" \
-              - e jwt.refresh.expiresIn="${{ secrets.JWT_REFRESH_EXPIRES_IN }}" \ 
-              - e apikey.expiresIn="${{ secrets.API_KEY_EXPIRES_IN }}" \ 
+              -v"${{ secrets.LOCAL_FOLDER_MEDICAL_REPORT }}":"${{ secrets.CONTAINER_FOLDER_MEDICAL_REPORT }}" \ 
+              -v"${{ secrets.LOCAL_FOLDER_SIGNATURES }}":"${{ secrets.CONTAINER_FOLDER_SIGNATURES }}" \ 
+              -v"${{ secrets.LOCAL_FOLDER_EEQ }}":"${{ secrets.CONTAINER_FOLDER_EEQ }}" \ 
+              -v"${{ secrets.LOCAL_FOLDER_IPEGES }}":"${{ secrets.CONTAINER_FOLDER_IPEGES }}" \ 
+              -e app.enviroment="${{ secrets.ENVIRONMENT }}" \ 
+              -e database.sql.type="${{ secrets.DATABASE_TYPE }}" \ 
+              -e database.sql.host="${{ secrets.DATABASE_HOST }}" \ 
+              -e database.sql.port="${{ secrets.DATABASE_PORT }}" \ 
+              -e database.sql.username="${{ secrets.DATABASE_USERNAME }}" \ 
+              -e database.sql.password="${{ secrets.DATABASE_PASSWORD }}" \ 
+              -e database.sql.database="${{ secrets.DATABASE_DATABASE }}" \ 
+              -e jwt.default.secret="${{ secrets.JWT_DEFAULT_SECRET }}" \
+              -e jwt.default.expiresIn="${{ secrets.JWT_DEFAULT_EXPIRES_IN }}" \ 
+              -e jwt.refresh.secret="${{ secrets.JWT_REFRESH_SECRET }}" \
+              -e jwt.refresh.expiresIn="${{ secrets.JWT_REFRESH_EXPIRES_IN }}" \ 
+              -e apikey.expiresIn="${{ secrets.API_KEY_EXPIRES_IN }}" \ 
               ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest
 
 
