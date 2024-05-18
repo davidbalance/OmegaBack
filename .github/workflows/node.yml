@@ -46,30 +46,6 @@ jobs:
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Debug - Print Variable Values
-        run: |
-          echo"SERVER_HOST: ${{ secrets.SERVER_HOST }}"
-          echo"SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}"
-          echo"SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}"
-          echo"CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}"
-          echo"CONTAINER_NETWORK: ${{ secrets.CONTAINER_NETWORK }}"
-          echo"DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}"
-          echo"DOCKERHUB_REPOSITORY: ${{ secrets.DOCKERHUB_REPOSITORY }}"
-          echo"ENVIRONMENT: ${{ secrets.ENVIRONMENT }}"
-          echo"DATABASE_TYPE: ${{ secrets.DATABASE_TYPE }}"
-          echo"DATABASE_HOST: ${{ secrets.DATABASE_HOST }}"
-          echo"DATABASE_PORT: ${{ secrets.DATABASE_PORT }}"
-          echo"DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}"
-          echo"DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}"
-          echo"DATABASE_DATABASE: ${{ secrets.DATABASE_DATABASE }}"
-          echo"JWT_DEFAULT_SECRET: ${{ secrets.JWT_DEFAULT_SECRET }}"
-          echo"JWT_DEFAULT_EXPIRES_IN: ${{ secrets.JWT_DEFAULT_EXPIRES_IN }}"
-          echo"JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}"
-          echo"JWT_REFRESH_EXPIRES_IN: ${{ secrets.JWT_REFRESH_EXPIRES_IN }}"
-          echo"API_KEY_EXPIRES_IN: ${{ secrets.API_KEY_EXPIRES_IN }}"
-    
-
       - name: SSH Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -84,10 +60,10 @@ jobs:
               --name"${{ secrets.CONTAINER_NAME }}" \ 
               -p 3001:3001 \ 
               --network="${{ secrets.CONTAINER_NETWORK }}" \
-              -v" ${{ secrets.LOCAL_FOLDER_MEDICAL_REPORT }}":"${{ secrets.CONTAINER_FOLDER_MEDICAL_REPORT }}" \ 
-              -v"${{ secrets.LOCAL_FOLDER_SIGNATURES }}":"${{ secrets.CONTAINER_FOLDER_SIGNATURES }}" \ 
-              -v"${{ secrets.LOCAL_FOLDER_EEQ }}":"${{ secrets.CONTAINER_FOLDER_EEQ }}" \ 
-              -v"${{ secrets.LOCAL_FOLDER_IPEGES }}":"${{ secrets.CONTAINER_FOLDER_IPEGES }}" \ 
+              -v "${{ secrets.LOCAL_FOLDER_MEDICAL_REPORT }}":"${{ secrets.CONTAINER_FOLDER_MEDICAL_REPORT }}" \ 
+              -v "${{ secrets.LOCAL_FOLDER_SIGNATURES }}":"${{ secrets.CONTAINER_FOLDER_SIGNATURES }}" \ 
+              -v "${{ secrets.LOCAL_FOLDER_EEQ }}":"${{ secrets.CONTAINER_FOLDER_EEQ }}" \ 
+              -v "${{ secrets.LOCAL_FOLDER_IPEGES }}":"${{ secrets.CONTAINER_FOLDER_IPEGES }}" \ 
               - e app.enviroment="${{ secrets.ENVIRONMENT }}" \ 
               - e database.sql.type="${{ secrets.DATABASE_TYPE }}" \ 
               - e database.sql.host="${{ secrets.DATABASE_HOST }}" \ 
