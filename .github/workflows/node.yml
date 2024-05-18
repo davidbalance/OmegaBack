@@ -86,7 +86,7 @@ jobs:
               --network=$CONTAINER_NETWORK \
               --name $CONTAINER_NAME \
               $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY:latest \
-              -p 3001:3001 \
+              -p 80:3001 \
               -v $LOCAL_FOLDER_MEDICAL_REPORT:$CONTAINER_FOLDER_MEDICAL_REPORT \
               -v $LOCAL_FOLDER_SIGNATURES:$CONTAINER_FOLDER_SIGNATURES \
               -v $LOCAL_FOLDER_EEQ:$CONTAINER_FOLDER_EEQ \
