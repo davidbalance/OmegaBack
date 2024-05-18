@@ -58,6 +58,7 @@ jobs:
             docker pull $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY:latest
             docker run -d \
               --name $CONTAINER_NAME \
+              $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY:latest \
               -p 3001:3001 \
               --network="$CONTAINER_NETWORK" \
               -v $LOCAL_FOLDER_MEDICAL_REPORT:$CONTAINER_FOLDER_MEDICAL_REPORT \
@@ -76,4 +77,3 @@ jobs:
               -e jwt.refresh.secret = $JWT_REFRESH_SECRET \
               -e jwt.refresh.expiresIn = $JWT_REFRESH_EXPIRES_IN \
               -e apikey.expiresIn = $API_KEY_EXPIRES_IN \
-              $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY:latest
