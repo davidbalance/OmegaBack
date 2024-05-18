@@ -81,6 +81,7 @@ jobs:
           script: |
             docker stop $CONTAINER_NAME || true
             docker rm $CONTAINER_NAME || true
+            docker rmi $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY:latest || true
             docker pull $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY:latest
             docker run -d \
               --network=$CONTAINER_NETWORK \
