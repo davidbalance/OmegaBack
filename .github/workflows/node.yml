@@ -64,7 +64,7 @@ jobs:
               -v ${{ secrets.LOCAL_FOLDER_SIGNATURES }}:${{ secrets.CONTAINER_FOLDER_SIGNATURES }} \
               -v ${{ secrets.LOCAL_FOLDER_EEQ }}:${{ secrets.CONTAINER_FOLDER_EEQ }} \
               -v ${{ secrets.LOCAL_FOLDER_IPEGES }}:${{ secrets.CONTAINER_FOLDER_IPEGES }} \
-              -e app.enviroment= ${{ secrets.ENVIRONMENT }}" \
+              -e app.enviroment= ${{ secrets.ENVIRONMENT }} \
               -e database.sql.type = ${{ secrets.DATABASE_TYPE }} \
               -e database.sql.host = ${{ secrets.DATABASE_HOST }} \
               -e database.sql.port = ${{ secrets.DATABASE_PORT }} \
