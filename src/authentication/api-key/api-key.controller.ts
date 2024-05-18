@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiKeyService } from './api-key.service';
 import { CreateApiKeyRequestDTO, CreateApiKeyResponseDTO, FindApiKeyResponseDTO, FindApiKeysResponseDTO, FindOneAndDeleteApiKeyResponseDTO, FindOneAndUpdateApiKeyRequestDTO } from './dto';
 import { plainToInstance } from 'class-transformer';
@@ -48,7 +48,7 @@ export class ApiKeyController {
     return plainToInstance(FindApiKeyResponseDTO, apikey);
   }
 
-  @Authorize(ClaimEnum.DELETE, 'api-key')
+  /* @Authorize(ClaimEnum.DELETE, 'api-key')
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @Delete(':id')
   async findOneAndDelete(
@@ -56,5 +56,5 @@ export class ApiKeyController {
   ): Promise<FindOneAndDeleteApiKeyResponseDTO> {
     await this.apiKeyService.findOneAndDelete(id);
     return plainToInstance(FindOneAndDeleteApiKeyResponseDTO, {});
-  }
+  } */
 }
