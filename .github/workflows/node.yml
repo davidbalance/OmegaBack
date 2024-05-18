@@ -57,10 +57,10 @@ jobs:
             docker rm $CONTAINER_NAME || true
             docker pull $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY:latest
             docker run -d \
+              --network=$CONTAINER_NETWORK \
               --name $CONTAINER_NAME \
               $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY:latest \
               -p 3001:3001 \
-              --network="$CONTAINER_NETWORK" \
               -v $LOCAL_FOLDER_MEDICAL_REPORT:$CONTAINER_FOLDER_MEDICAL_REPORT \
               -v $LOCAL_FOLDER_SIGNATURES:$CONTAINER_FOLDER_SIGNATURES \
               -v $LOCAL_FOLDER_EEQ:$CONTAINER_FOLDER_EEQ \
