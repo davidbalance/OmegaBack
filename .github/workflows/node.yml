@@ -35,6 +35,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build_and_push_docker_image
+    continue-on-error: false
     env:
       SERVER_HOST: ${{ secrets.SERVER_HOST }}
       SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
@@ -51,6 +52,7 @@ jobs:
 
       - name: Connect to server
         run: bash .github/scripts/connect-to-server.sh
+        fail-fast: true
 
       - name: Stop Docker Container
         run: docker stop ${{ secrets.CONTAINER_NAME }} || true
