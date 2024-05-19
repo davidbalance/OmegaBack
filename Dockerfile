@@ -3,7 +3,7 @@ FROM node:22-alpine AS development
 RUN apk add --no-cache libc6-compat
 WORKDIR /usr/src/app
 
-ENV app.enviroment development
+ENV APP_ENVIRONMENT development
 
 # RUN addgroup --system --gid 1001 node
 # RUN adduser --system --uid 1001 node
@@ -19,7 +19,7 @@ FROM node:22-alpine AS build
 RUN apk add --no-cache libc6-compat
 WORKDIR /usr/src/app
 
-ENV app.enviroment production
+ENV APP_ENVIRONMENT production
 
 # RUN addgroup --system --gid 1001 node
 # RUN adduser --system --uid 1001 node
@@ -39,7 +39,7 @@ FROM node:22-alpine AS production
 RUN apk add --no-cache libc6-compat
 WORKDIR /usr/src/app
 
-ENV app.enviroment production
+ENV APP_ENVIRONMENT production
 
 # RUN addgroup --system --gid 1001 node
 # RUN adduser --system --uid 1001 node

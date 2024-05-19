@@ -92,15 +92,15 @@ jobs:
               -v $LOCAL_FOLDER_SIGNATURES:$CONTAINER_FOLDER_SIGNATURES \
               -v $LOCAL_FOLDER_EEQ:$CONTAINER_FOLDER_EEQ \
               -v $LOCAL_FOLDER_IPEGES:$CONTAINER_FOLDER_IPEGES \
-              -e app.enviroment= $ENVIRONMENT \
-              -e database.sql.type = $DATABASE_TYPE \
-              -e database.sql.host = $DATABASE_HOST \
-              -e database.sql.port = $DATABASE_PORT \
-              -e database.sql.username = $DATABASE_USERNAME \
-              -e database.sql.password = $DATABASE_PASSWORD \
-              -e database.sql.database = $DATABASE_DATABASE \
-              -e jwt.default.secret = $JWT_DEFAULT_SECRET \
-              -e jwt.default.expiresIn = $JWT_DEFAULT_EXPIRES_IN \
-              -e jwt.refresh.secret = $JWT_REFRESH_SECRET \
-              -e jwt.refresh.expiresIn = $JWT_REFRESH_EXPIRES_IN \
-              -e apikey.expiresIn = $API_KEY_EXPIRES_IN
+              -e APP_ENVIRONMENT= $ENVIRONMENT \
+              -e DATABASE_SQL_TYPE = $DATABASE_TYPE \
+              -e DATABASE_SQL_HOST = $DATABASE_HOST \
+              -e DATABASE_SQL_PORT = $DATABASE_PORT \
+              -e DATABASE_SQL_USERNAME = $DATABASE_USERNAME \
+              -e DATABASE_SQL_PASSWORD = $DATABASE_PASSWORD \
+              -e DATABASE_SQL_DATABASE = $DATABASE_DATABASE \
+              -e JWT_DEFAULT_SECRET = $JWT_DEFAULT_SECRET \
+              -e JWT_DEFAULT_EXPIRES_IN = $JWT_DEFAULT_EXPIRES_IN \
+              -e JWT_REFRESH_SECRET = $JWT_REFRESH_SECRET \
+              -e JWT_REFRESH_EXPIRES_IN = $JWT_REFRESH_EXPIRES_IN \
+              -e APIKEY_EXPIRES_IN = $API_KEY_EXPIRES_IN

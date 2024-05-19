@@ -67,7 +67,7 @@ export class ApiKeyService {
   async create({ user, ...valueKey }: CreateApiKeyRequestDTO & { user: number }): Promise<string> {
     const foundUser = await this.userService.findOneByUser(user);
     const apiKey: string = v4();
-    const expiresIn: number = this.configService.get<number>('apikey.expiresIn');
+    const expiresIn: number = this.configService.get<number>('APIKEY_EXPIRES_IN');
     const expiresAt = dayjs().add(expiresIn, 's').toDate();
     const newApiKey = await this.repository.create({
       ...valueKey,

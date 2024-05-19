@@ -8,26 +8,26 @@ import Joi from 'joi';
     imports: [
         ConfigModule.forRoot({
             validationSchema: Joi.object({
-                "database.sql.type": Joi.string().required(),
-                "database.sql.host": Joi.string().required(),
-                "database.sql.port": Joi.number().required(),
-                "database.sql.username": Joi.string().required(),
-                "database.sql.password": Joi.string().required(),
-                "database.sql.database": Joi.string().required(),
-                "app.enviroment": Joi.string().required(),
+                "DATABASE_SQL_TYPE": Joi.string().required(),
+                "DATABASE_SQL_HOST": Joi.string().required(),
+                "DATABASE_SQL_PORT": Joi.number().required(),
+                "DATABASE_SQL_USERNAME": Joi.string().required(),
+                "DATABASE_SQL_PASSWORD": Joi.string().required(),
+                "DATABASE_SQL_DATABASE": Joi.string().required(),
+                "APP_ENVIRONMENT": Joi.string().required(),
             }),
             cache: true,
             isGlobal: true
         }),
         TypeOrmModule.forRootAsync({
             useFactory: async (config: ConfigService) => ({
-                type: config.get<any>("database.sql.type"),
-                host: config.get<string>("database.sql.host"),
-                port: config.get<number>("database.sql.port"),
-                username: config.get<string>("database.sql.username"),
-                password: config.get<string>("database.sql.password"),
-                database: config.get<string>("database.sql.database"),
-                synchronize: config.get<"production" | "development">("app.enviroment") !== 'production',
+                type: config.get<any>("DATABASE_SQL_TYPE"),
+                host: config.get<string>("DATABASE_SQL_HOST"),
+                port: config.get<number>("DATABASE_SQL_PORT"),
+                username: config.get<string>("DATABASE_SQL_USERNAME"),
+                password: config.get<string>("DATABASE_SQL_PASSWORD"),
+                database: config.get<string>("DATABASE_SQL_DATABASE"),
+                synchronize: config.get<"production" | "development">("APP_ENVIRONMENT") !== 'production',
                 autoLoadEntities: true
             }),
             inject: [ConfigService],
