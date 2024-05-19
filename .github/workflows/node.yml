@@ -86,7 +86,6 @@ jobs:
             docker run -d \
               --network=$CONTAINER_NETWORK \
               --name $CONTAINER_NAME \
-              $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY:latest \
               -p 80:3001 \
               -v $LOCAL_FOLDER_MEDICAL_REPORT:$CONTAINER_FOLDER_MEDICAL_REPORT \
               -v $LOCAL_FOLDER_SIGNATURES:$CONTAINER_FOLDER_SIGNATURES \
@@ -103,4 +102,5 @@ jobs:
               -e JWT_DEFAULT_EXPIRES_IN = $JWT_DEFAULT_EXPIRES_IN \
               -e JWT_REFRESH_SECRET = $JWT_REFRESH_SECRET \
               -e JWT_REFRESH_EXPIRES_IN = $JWT_REFRESH_EXPIRES_IN \
-              -e APIKEY_EXPIRES_IN = $API_KEY_EXPIRES_IN
+              -e APIKEY_EXPIRES_IN = $API_KEY_EXPIRES_IN \
+              $DOCKERHUB_USERNAME/$DOCKERHUB_REPOSITORY:latest
