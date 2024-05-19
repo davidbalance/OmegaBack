@@ -35,6 +35,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build_and_push_docker_image
+    env: 
+      SERVER_HOST: ${{ secrets.SERVER_HOST }}
+      SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
 
     steps:
       - name: Check Repository
@@ -44,6 +47,9 @@ jobs:
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Connect to server
+        run: bash .github/scripts/connect-to-server.sh
 
       - name: Stop Docker Container
         run: docker stop ${{ secrets.CONTAINER_NAME }}
