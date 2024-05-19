@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SERVER_HOST=${SERVER_USERNAME}
+SERVER_HOST=${SERVER_PASSWORD}
+
 # Load the private key from the environment variable
 SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
 
@@ -14,7 +17,9 @@ echo "$SSH_PRIVATE_KEY" > "$TMP_KEY_FILE"
 chmod 600 "$TMP_KEY_FILE"
 
 # Connect to the server using SSH with the agent (no key management needed)
-ssh -o StrictHostKeyChecking=no  -i "$TMP_KEY_FILE" $SERVER_HOST
+# ssh -o StrictHostKeyChecking=no  -i "$TMP_KEY_FILE" $SERVER_HOST
+ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_HOST
+$SERVER_PASSWORD
 
 # Remove the temporary key file after use (optional but recommended)
 rm "$TMP_KEY_FILE"
