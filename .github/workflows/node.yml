@@ -47,6 +47,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: SSH Deploy
+        uses: appleboy/ssh-action@master
         env:
           CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
           DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }}
@@ -71,7 +72,6 @@ jobs:
           JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
           JWT_REFRESH_EXPIRES_IN: ${{ secrets.JWT_REFRESH_EXPIRES_IN }}
           API_KEY_EXPIRES_IN: ${{ secrets.API_KEY_EXPIRES_IN }}
-        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
