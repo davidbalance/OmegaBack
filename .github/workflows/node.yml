@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - develop
-  pull_request: 
+  pull_request:
     branches:
       - develop
     types:
@@ -14,15 +14,15 @@ jobs:
     strategy:
       matrix:
         node-version: ['22.x']
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        
+
       - name: Build docker image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest .
         working-directory: .
-      
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -44,62 +44,93 @@ jobs:
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: SSH Deploy
-        env:
-          CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
-          DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }}
-          CONTAINER_NETWORK: ${{ secrets.CONTAINER_NETWORK }}
-          LOCAL_FOLDER_MEDICAL_REPORT: ${{ secrets.LOCAL_FOLDER_MEDICAL_REPORT }}
-          LOCAL_FOLDER_SIGNATURES: ${{ secrets.LOCAL_FOLDER_SIGNATURES }}
-          LOCAL_FOLDER_EEQ: ${{ secrets.LOCAL_FOLDER_EEQ }}
-          LOCAL_FOLDER_IPEGES: ${{ secrets.LOCAL_FOLDER_IPEGES }}
-          CONTAINER_FOLDER_MEDICAL_REPORT: ${{ secrets.CONTAINER_FOLDER_MEDICAL_REPORT }}
-          CONTAINER_FOLDER_SIGNATURES: ${{ secrets.CONTAINER_FOLDER_SIGNATURES }}
-          CONTAINER_FOLDER_EEQ: ${{ secrets.CONTAINER_FOLDER_EEQ }}
-          CONTAINER_FOLDER_IPEGES: ${{ secrets.CONTAINER_FOLDER_IPEGES }}
-          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
-          DATABASE_TYPE: ${{ secrets.DATABASE_TYPE }}
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-          DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
-          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          DATABASE_DATABASE: ${{ secrets.DATABASE_DATABASE }}
-          JWT_DEFAULT_SECRET: ${{ secrets.JWT_DEFAULT_SECRET }}
-          JWT_DEFAULT_EXPIRES_IN: ${{ secrets.JWT_DEFAULT_EXPIRES_IN }}
-          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
-          JWT_REFRESH_EXPIRES_IN: ${{ secrets.JWT_REFRESH_EXPIRES_IN }}
-          API_KEY_EXPIRES_IN: ${{ secrets.API_KEY_EXPIRES_IN }}
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          envs: CONTAINER_NAME,DOCKER_IMAGE,CONTAINER_NETWORK,LOCAL_FOLDER_MEDICAL_REPORT,LOCAL_FOLDER_SIGNATURES,LOCAL_FOLDER_EEQ,LOCAL_FOLDER_IPEGES,CONTAINER_FOLDER_MEDICAL_REPORT,CONTAINER_FOLDER_SIGNATURES,CONTAINER_FOLDER_EEQ,CONTAINER_FOLDER_IPEGES,ENVIRONMENT,DATABASE_TYPE,DATABASE_HOST,DATABASE_PORT,DATABASE_USERNAME,DATABASE_PASSWORD,DATABASE_DATABASE,JWT_DEFAULT_SECRET,JWT_DEFAULT_EXPIRES_IN,JWT_REFRESH_SECRET,JWT_REFRESH_EXPIRES_IN,API_KEY_EXPIRES_IN
-          allenvs: false
-          script: |
-            printenv
-            docker stop $CONTAINER_NAME || true
-            docker rm $CONTAINER_NAME || true
-            docker rmi $DOCKER_IMAGE || true
-            docker pull $DOCKER_IMAGE
-            docker run -d \
-              --network=$CONTAINER_NETWORK \
-              --name $CONTAINER_NAME \
-              -p 80:3001 \
-              -v $LOCAL_FOLDER_MEDICAL_REPORT:$CONTAINER_FOLDER_MEDICAL_REPORT \
-              -v $LOCAL_FOLDER_SIGNATURES:$CONTAINER_FOLDER_SIGNATURES \
-              -v $LOCAL_FOLDER_EEQ:$CONTAINER_FOLDER_EEQ \
-              -v $LOCAL_FOLDER_IPEGES:$CONTAINER_FOLDER_IPEGES \
-              -e APP_ENVIRONMENT=$ENVIRONMENT \
-              -e DATABASE_SQL_TYPE=$DATABASE_TYPE \
-              -e DATABASE_SQL_HOST=$DATABASE_HOST \
-              -e DATABASE_SQL_PORT=$DATABASE_PORT \
-              -e DATABASE_SQL_USERNAME=$DATABASE_USERNAME \
-              -e DATABASE_SQL_PASSWORD=$DATABASE_PASSWORD \
-              -e DATABASE_SQL_DATABASE=$DATABASE_DATABASE \
-              -e JWT_DEFAULT_SECRET=$JWT_DEFAULT_SECRET \
-              -e JWT_DEFAULT_EXPIRES_IN=$JWT_DEFAULT_EXPIRES_IN \
-              -e JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET \
-              -e JWT_REFRESH_EXPIRES_IN=$JWT_REFRESH_EXPIRES_IN \
-              -e APIKEY_EXPIRES_IN=$API_KEY_EXPIRES_IN  \
-              $DOCKER_IMAGE
+
+      - name: Stop Docker Container
+        run: docker stop ${{ secrets.CONTAINER_NAME }}
+
+      - name: Remove Docker Container
+        run: docker rm ${{ secrets.CONTAINER_NAME }}
+
+      - name: Remove Docker Image
+        run: docker rm ${{ secrets.CONTAINER_NAME }}
+
+      - name: Pull Docker Image
+        run: docker pull ${{ secrets.DOCKER_IMAGE }}
+
+      - name: Create Container
+        run: docker run -d \
+          --network=${{ secrets.CONTAINER_NETWORK}} \
+          --name ${{ secrets.CONTAINER_NAME}} \
+          -p 3001:3001 \
+          -v ${{ secrets.LOCAL_FOLDER_MEDICAL_REPORT }}:${{ secrets.CONTAINER_FOLDER_MEDICAL_REPORT }} \
+          -v ${{ secrets.LOCAL_FOLDER_SIGNATURES }}:${{ secrets.CONTAINER_FOLDER_SIGNATURES }} \
+          -v ${{ secrets.LOCAL_FOLDER_EEQ }}:${{ secrets.CONTAINER_FOLDER_EEQ }} \
+          -v ${{ secrets.LOCAL_FOLDER_IPEGES }}:${{ secrets.CONTAINER_FOLDER_IPEGES }} \
+          -e APP_ENVIRONMENT=${{ secrets.ENVIRONMENT}} \
+          -e DATABASE_SQL_TYPE=${{ secrets.DATABASE_TYPE}} \
+          -e DATABASE_SQL_HOST=${{ secrets.DATABASE_HOST}} \
+          -e DATABASE_SQL_PORT=${{ secrets.DATABASE_PORT}} \
+          -e DATABASE_SQL_USERNAME=${{ secrets.DATABASE_USERNAME}} \
+          -e DATABASE_SQL_PASSWORD=${{ secrets.DATABASE_PASSWORD}} \
+          -e DATABASE_SQL_DATABASE=${{ secrets.DATABASE_DATABASE}} \
+          -e JWT_DEFAULT_SECRET=${{ secrets.JWT_DEFAULT_SECRET}} \
+          -e JWT_DEFAULT_EXPIRES_IN=${{ secrets.JWT_DEFAULT_EXPIRES_IN}} \
+          -e JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET}} \
+          -e JWT_REFRESH_EXPIRES_IN=${{ secrets.JWT_REFRESH_EXPIRES_IN}} \
+          -e APIKEY_EXPIRES_IN=${{ secrets.API_KEY_EXPIRES_IN }} \
+          $DOCKER_IMAGE
+
+      # - name: SSH Deploy
+      #   env:
+      #     CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+      #     DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }}
+      #     CONTAINER_NETWORK: ${{ secrets.CONTAINER_NETWORK }}
+      #     LOCAL_FOLDER_MEDICAL_REPORT: ${{ secrets.LOCAL_FOLDER_MEDICAL_REPORT }}
+      #     LOCAL_FOLDER_SIGNATURES: ${{ secrets.LOCAL_FOLDER_SIGNATURES }}
+      #     LOCAL_FOLDER_EEQ: ${{ secrets.LOCAL_FOLDER_EEQ }}
+      #     LOCAL_FOLDER_IPEGES: ${{ secrets.LOCAL_FOLDER_IPEGES }}
+      #     CONTAINER_FOLDER_MEDICAL_REPORT: ${{ secrets.CONTAINER_FOLDER_MEDICAL_REPORT }}
+      #     CONTAINER_FOLDER_SIGNATURES: ${{ secrets.CONTAINER_FOLDER_SIGNATURES }}
+      #     CONTAINER_FOLDER_EEQ: ${{ secrets.CONTAINER_FOLDER_EEQ }}
+      #     CONTAINER_FOLDER_IPEGES: ${{ secrets.CONTAINER_FOLDER_IPEGES }}
+      #     ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+      #     DATABASE_TYPE: ${{ secrets.DATABASE_TYPE }}
+      #     DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+      #     DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+      #     DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      #     DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      #     DATABASE_DATABASE: ${{ secrets.DATABASE_DATABASE }}
+      #     JWT_DEFAULT_SECRET: ${{ secrets.JWT_DEFAULT_SECRET }}
+      #     JWT_DEFAULT_EXPIRES_IN: ${{ secrets.JWT_DEFAULT_EXPIRES_IN }}
+      #     JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+      #     JWT_REFRESH_EXPIRES_IN: ${{ secrets.JWT_REFRESH_EXPIRES_IN }}
+      #     API_KEY_EXPIRES_IN: ${{ secrets.API_KEY_EXPIRES_IN }}
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with:
+      #     host: ${{ secrets.SERVER_HOST }}
+      #     username: ${{ secrets.SERVER_USERNAME }}
+      #     password: ${{ secrets.SERVER_PASSWORD }}
+      #     envs: CONTAINER_NAME,DOCKER_IMAGE,CONTAINER_NETWORK,LOCAL_FOLDER_MEDICAL_REPORT,LOCAL_FOLDER_SIGNATURES,LOCAL_FOLDER_EEQ,LOCAL_FOLDER_IPEGES,CONTAINER_FOLDER_MEDICAL_REPORT,CONTAINER_FOLDER_SIGNATURES,CONTAINER_FOLDER_EEQ,CONTAINER_FOLDER_IPEGES,ENVIRONMENT,DATABASE_TYPE,DATABASE_HOST,DATABASE_PORT,DATABASE_USERNAME,DATABASE_PASSWORD,DATABASE_DATABASE,JWT_DEFAULT_SECRET,JWT_DEFAULT_EXPIRES_IN,JWT_REFRESH_SECRET,JWT_REFRESH_EXPIRES_IN,API_KEY_EXPIRES_IN
+      #     allenvs: false
+      #     script: |
+      #       docker run -d \
+      #         --network=$CONTAINER_NETWORK \
+      #         --name $CONTAINER_NAME \
+      #         -p 80:3001 \
+      #         -v $LOCAL_FOLDER_MEDICAL_REPORT:$CONTAINER_FOLDER_MEDICAL_REPORT \
+      #         -v $LOCAL_FOLDER_SIGNATURES:$CONTAINER_FOLDER_SIGNATURES \
+      #         -v $LOCAL_FOLDER_EEQ:$CONTAINER_FOLDER_EEQ \
+      #         -v $LOCAL_FOLDER_IPEGES:$CONTAINER_FOLDER_IPEGES \
+      #         -e APP_ENVIRONMENT=$ENVIRONMENT \
+      #         -e DATABASE_SQL_TYPE=$DATABASE_TYPE \
+      #         -e DATABASE_SQL_HOST=$DATABASE_HOST \
+      #         -e DATABASE_SQL_PORT=$DATABASE_PORT \
+      #         -e DATABASE_SQL_USERNAME=$DATABASE_USERNAME \
+      #         -e DATABASE_SQL_PASSWORD=$DATABASE_PASSWORD \
+      #         -e DATABASE_SQL_DATABASE=$DATABASE_DATABASE \
+      #         -e JWT_DEFAULT_SECRET=$JWT_DEFAULT_SECRET \
+      #         -e JWT_DEFAULT_EXPIRES_IN=$JWT_DEFAULT_EXPIRES_IN \
+      #         -e JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET \
+      #         -e JWT_REFRESH_EXPIRES_IN=$JWT_REFRESH_EXPIRES_IN \
+      #         -e APIKEY_EXPIRES_IN=$API_KEY_EXPIRES_IN \
+      #         $DOCKER_IMAGE
