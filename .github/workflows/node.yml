@@ -50,30 +50,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            # Stop and remove any existing container with the specified name
-            docker stop ${{ secrets.CONTAINER_NAME }} || true
-            docker rm ${{ secrets.CONTAINER_NAME }} || true
-
-            # Pull the latest Docker image from the provided source
-            docker pull ${{ secrets.DOCKER_IMAGE }}
-
-            # Example: Create a container with environment variables and volume mounts
-            docker run -d --network="${{ secrets.CONTAINER_NETWORK}}" --name ${{ secrets.CONTAINER_NAME}} \
-              -p 3001:3001 \
-              -v ${{ secrets.LOCAL_FOLDER_MEDICAL_REPORT }}:${{ secrets.CONTAINER_FOLDER_MEDICAL_REPORT }} \
-              -v ${{ secrets.LOCAL_FOLDER_SIGNATURES }}:${{ secrets.CONTAINER_FOLDER_SIGNATURES }} \
-              -v ${{ secrets.LOCAL_FOLDER_EEQ }}:${{ secrets.CONTAINER_FOLDER_EEQ }} \
-              -v ${{ secrets.LOCAL_FOLDER_IPEGES }}:${{ secrets.CONTAINER_FOLDER_IPEGES }} \
-              -e APP_ENVIRONMENT=${{ secrets.ENVIRONMENT}} \
-              -e DATABASE_SQL_TYPE=${{ secrets.DATABASE_TYPE}} \
-              -e DATABASE_SQL_HOST=${{ secrets.DATABASE_HOST}} \
-              -e DATABASE_SQL_PORT=${{ secrets.DATABASE_PORT}} \
-              -e DATABASE_SQL_USERNAME=${{ secrets.DATABASE_USERNAME}} \
-              -e DATABASE_SQL_PASSWORD=${{ secrets.DATABASE_PASSWORD}} \
-              -e DATABASE_SQL_DATABASE=${{ secrets.DATABASE_DATABASE}} \
-              -e JWT_DEFAULT_SECRET=${{ secrets.JWT_DEFAULT_SECRET}} \
-              -e JWT_DEFAULT_EXPIRES_IN=${{ secrets.JWT_DEFAULT_EXPIRES_IN}} \
-              -e JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET}} \
-              -e JWT_REFRESH_EXPIRES_IN=${{ secrets.JWT_REFRESH_EXPIRES_IN}} \
-              -e APIKEY_EXPIRES_IN=${{ secrets.API_KEY_EXPIRES_IN }} \
-              ${{ secrets.DOCKER_IMAGE }}
+            cd ${{ secrets.DOCKER_COMPOSE_DIRECTORY }}
+            docker-compose down || true
+            docker-compose pull
+            docker-compose up -d
