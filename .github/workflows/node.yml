@@ -52,7 +52,6 @@ jobs:
 
       - name: Connect to server
         run: bash .github/scripts/connect-to-server.sh
-        fail-fast: true
 
       - name: Stop Docker Container
         run: docker stop ${{ secrets.CONTAINER_NAME }} || true
