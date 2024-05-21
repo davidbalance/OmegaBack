@@ -2,13 +2,13 @@ import { AbstractEntity } from "src/shared";
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_u_users' })
-@Index('user_dni_email_idx', ['dni', 'email'], { unique: true })
+@Index('user_dni_idx', ['dni'], { unique: true })
+@Index('user_dni_email_idx', ['dni', 'email'])
 export class User extends AbstractEntity<number> {
 
     @PrimaryGeneratedColumn('increment', { name: 'user_id' })
     public id: number;
 
-    @Index('user_dni_idx', { unique: true })
     @Column({ name: 'user_dni', type: 'varchar', length: 10, nullable: false, unique: true })
     public dni: string;
 

@@ -6,31 +6,31 @@ import { ResultExternalKey } from "../result-external-key/entities/result-extern
 import { ResultSendAttribute } from "../result-send-attribute/entities/result-send-attribute.entity";
 
 @Entity({ name: "tbl_mr_results" })
+@Index('result_disease_idx', ['diseaseId'])
+@Index('result_disease_group_idx', ['diseaseGroupId'])
+@Index('result_doctor_dni_idx', ['doctorDni'])
 export class Result extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: "result_id" })
     public id: number;
 
-    @Column({ name: 'result_file_path', type: 'varchar', length: 256, unique: true })
+    @Column({ name: 'result_file_path', type: 'varchar', length: 512, unique: true })
     public filePath: string;
 
     @Column({ name: 'exam_name', type: 'varchar', length: 128, nullable: false })
     public examName: string;
 
-    @Index('result_disease_idx')
     @Column({ name: 'disease_id', type: 'int', nullable: true })
     public diseaseId?: number;
 
     @Column({ name: 'disease_name', type: 'varchar', length: 128, nullable: true })
     public diseaseName?: string;
-    
-    @Index('result_disease_group_idx')
+
     @Column({ name: 'disease_group_id', type: 'int', nullable: true })
     public diseaseGroupId?: number;
 
     @Column({ name: 'disease_group_name', type: 'varchar', length: 128, nullable: true })
     public diseaseGroupName?: string;
 
-    @Index('result_doctor_dni_idx')
     @Column({ name: 'doctor_dni', type: 'varchar', length: 10, nullable: false })
     public doctorDni: string;
 
@@ -42,8 +42,8 @@ export class Result extends AbstractEntity<number> {
 
     @ManyToOne(() => Order, order => order.results, { eager: false, nullable: false })
     @JoinColumn([
-        { referencedColumnName: 'patientDni', name: 'patient_dni' },
         { referencedColumnName: 'id', name: 'order_id' },
+        { referencedColumnName: 'patientDni', name: 'patient_dni' },
     ])
     public order: Order;
 

@@ -4,11 +4,11 @@ import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne, PrimaryGenerate
 import { CorporativeGroupExternalKey } from "../corporative-group-external-key/entities/corporative-group-external-key.entity";
 
 @Entity({ name: 'tbl_lo_corporative_groups' })
+@Index('corporative_name_idx', ['name'], { unique: true })
 export class CorporativeGroup extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'corporative_id' })
     public id: number;
 
-    @Index('corporative_name_idx', { unique: true })
     @Column({ name: 'corporative_name', type: 'varchar', length: 64, nullable: false, unique: true })
     public name: string;
 

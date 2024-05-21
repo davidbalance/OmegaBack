@@ -5,11 +5,11 @@ import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, Prim
 import { CompanyExternalKey } from "../company-external-key/entities/company-external-key.entity";
 
 @Entity({ name: 'tbl_lo_companies' })
+@Index('company_ruc_idx', ['ruc'], { unique: true })
 export class Company extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'company_id' })
     public id: number;
 
-    @Index('company_ruc_idx', { unique: true })
     @Column({ name: 'company_ruc', type: 'varchar', length: 13, nullable: false, unique: true })
     public ruc: string;
 
