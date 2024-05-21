@@ -3,11 +3,6 @@ on:
   push:
     branches:
       - develop
-  pull_request:
-    branches:
-      - develop
-    types:
-      - closed
 
 jobs:
   build_and_push_docker_image:
