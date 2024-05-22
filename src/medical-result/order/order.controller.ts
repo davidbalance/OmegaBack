@@ -19,7 +19,7 @@ export class OrderController {
   @Get('patient/:dni')
   async findByPatient(
     @Param('dni') patient: string
-  ): Promise<FindOrdersResponseDTO> {
+  ): Promise<FindOrdersResponseDTO> {    
     const orders = await this.orderService.findByPatient(patient);
     return plainToInstance(FindOrdersResponseDTO, { orders });
   }

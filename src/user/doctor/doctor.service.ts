@@ -30,7 +30,8 @@ export class DoctorService {
           lastname: true,
           hasCredential: true
         }
-      }
+      },
+      cache: 1000 * 900
     });
     return doctors;
   }

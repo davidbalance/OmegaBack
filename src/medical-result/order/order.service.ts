@@ -36,7 +36,8 @@ export class OrderService {
       },
       relations: {
         results: true
-      }
+      },
+      cache: 1000 * 900
     });
     return orders;
   }
