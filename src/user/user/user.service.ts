@@ -51,7 +51,8 @@ export class UserService {
         email: true,
         name: true,
         lastname: true
-      }
+      },
+      cache: 1000 * 900
     });
   }
 

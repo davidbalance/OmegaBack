@@ -30,7 +30,8 @@ export class PatientService {
           lastname: true,
           name: true
         }
-      }
+      },
+      cache: 1000 * 900
     });
     return patients;
   }
@@ -58,7 +59,8 @@ export class PatientService {
           lastname: true,
           name: true
         }
-      }
+      },
+      cache: 1000 * 900
     });
     return patient;
   }
