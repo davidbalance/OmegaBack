@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiKeyService } from './api-key.service';
 import { CreateApiKeyRequestDTO, CreateApiKeyResponseDTO, FindApiKeyResponseDTO, FindApiKeysResponseDTO, FindOneAndDeleteApiKeyResponseDTO, FindOneAndUpdateApiKeyRequestDTO } from './dto';
 import { plainToInstance } from 'class-transformer';
@@ -22,8 +22,8 @@ export class ApiKeyController {
   async find(
     @User() user: number
   ): Promise<FindApiKeysResponseDTO> {
-    const apiKeys = await this.apiKeyService.find(user);
-    return plainToInstance(FindApiKeysResponseDTO, { apiKeys });
+    const apikeys = await this.apiKeyService.find(user);
+    return plainToInstance(FindApiKeysResponseDTO, { apikeys });
   }
 
   @Authorize(ClaimEnum.CREATE, 'api-key')
@@ -42,7 +42,7 @@ export class ApiKeyController {
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
-    @Body() body: FindOneAndUpdateApiKeyRequestDTO
+    @User() body: FindOneAndUpdateApiKeyRequestDTO
   ): Promise<FindApiKeyResponseDTO> {
     const apikey = await this.apiKeyService.findOneAndUpdate({ id, ...body });
     return plainToInstance(FindApiKeyResponseDTO, apikey);
