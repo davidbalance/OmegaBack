@@ -22,8 +22,8 @@ export class ApiKeyController {
   async find(
     @User() user: number
   ): Promise<FindApiKeysResponseDTO> {
-    const apikeys = await this.apiKeyService.find(user);
-    return plainToInstance(FindApiKeysResponseDTO, { apikeys });
+    const apiKeys = await this.apiKeyService.find(user);
+    return plainToInstance(FindApiKeysResponseDTO, { apiKeys });
   }
 
   @Authorize(ClaimEnum.CREATE, 'api-key')
