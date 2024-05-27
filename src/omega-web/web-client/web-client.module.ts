@@ -9,12 +9,14 @@ import { CredentialListener } from './listeners';
 import { AccessControlListener } from './listeners/access-control.listener';
 import { WebResourceModule } from '../web-resource/web-resource.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { WebLogoModule } from '../web-logo/web-logo.module';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([WebClient]),
     WebResourceModule,
-    AuthenticationGuardModule
+    AuthenticationGuardModule,
+    WebLogoModule
   ],
   controllers: [WebClientController],
   providers: [

@@ -1,4 +1,4 @@
-import { IsArray, IsEmpty, IsNumber } from "class-validator";
+import { IsArray, IsEmpty, IsNotEmpty, IsNumber } from "class-validator";
 
 export class CreateWebClientRequestDTO {
     @IsNumber()
@@ -9,4 +9,10 @@ export class UpdateWebClientRoutesRequestDTO {
     @IsArray()
     @IsEmpty()
     public readonly routes: number[];
+}
+
+export class UpdateWebClientWebLogoRequestDTO {
+    @IsNumber()
+    @IsNotEmpty()
+    public readonly logo: number;
 }

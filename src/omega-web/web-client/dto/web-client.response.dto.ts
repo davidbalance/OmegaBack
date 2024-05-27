@@ -35,3 +35,7 @@ export class FindWebClientResponseDTO {
     @Expose()
     public readonly resources: WebClientResource[];
 }
+
+export class UpdateWebClientWebLogoResponseDTO {
+
+}

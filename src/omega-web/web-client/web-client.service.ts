@@ -1,12 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { WebClientRepository } from './web-client.repository';
 import { WebClient } from './entities/web-client.entity';
+import { WebLogoService } from '../web-logo/web-logo.service';
+import { UpdateWebClientWebLogoRequestDTO } from './dto';
 
 @Injectable()
 export class WebClientService {
 
   constructor(
-    @Inject(WebClientRepository) private readonly repository: WebClientRepository
+    @Inject(WebClientRepository) private readonly repository: WebClientRepository,
+    @Inject(WebLogoService) private readonly logoService: WebLogoService
   ) { }
 
   /**
@@ -29,5 +32,14 @@ export class WebClientService {
       }
     });
     return client;
+  }
+
+  async updateWebLogoFromClient(user: number, { logo }: UpdateWebClientWebLogoRequestDTO): Promise<void> {
+    const foundLogo = await this.logoService.findOne(logo);
+    await this.repository.findOneAndUpdate({
+      user: user
+    }, {
+      logo: foundLogo
+    });
   }
 }
