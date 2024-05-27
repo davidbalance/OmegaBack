@@ -1,8 +1,8 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { WebClientService } from './web-client.service';
 import { User } from '@/shared/decorator';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards';
-import { FindWebClientResponseDTO } from './dto';
+import { FindWebClientResponseDTO, UpdateWebClientWebLogoRequestDTO, UpdateWebClientWebLogoResponseDTO } from './dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
@@ -19,5 +19,15 @@ export class WebClientController {
   ): Promise<FindWebClientResponseDTO> {
     const webClient = await this.webClientService.findWebClient(user);
     return plainToInstance(FindWebClientResponseDTO, webClient);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('logo/:user')
+  async assignWebLogoToWebClient(
+    @Param('user') user: number,
+    @Body() body: UpdateWebClientWebLogoRequestDTO
+  ): Promise<UpdateWebClientWebLogoResponseDTO> {
+    await this.webClientService.updateWebLogoFromClient(user, body);
+    return plainToInstance(UpdateWebClientWebLogoResponseDTO, {});
   }
 }
