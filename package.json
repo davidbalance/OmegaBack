@@ -37,6 +37,7 @@
     "hbs": "^4.2.0",
     "joi": "^17.12.2",
     "mysql2": "^3.9.2",
+    "nest-winston": "^1.10.0",
     "nestjs-pino": "^4.0.0",
     "passport": "^0.7.0",
     "passport-headerapikey": "^1.2.2",
@@ -48,7 +49,9 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "typeorm": "^0.3.20",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "winston": "^3.13.0",
+    "winston-transport": "^4.7.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
