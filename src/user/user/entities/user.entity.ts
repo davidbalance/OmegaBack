@@ -1,5 +1,6 @@
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { UserExtraAttribute } from "./user-extra-attribute";
 
 @Entity({ name: 'tbl_u_users' })
 @Index('user_dni_idx', ['dni'], { unique: true })
@@ -26,4 +27,7 @@ export class User extends AbstractEntity<number> {
 
     @Column({ name: 'user_status', type: 'boolean', default: true, nullable: false })
     public status: boolean;
+
+    @OneToMany(() => UserExtraAttribute, attribute => attribute.user, { eager: false })
+    public extraAttributes: UserExtraAttribute[];
 }

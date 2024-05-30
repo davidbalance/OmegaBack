@@ -1,5 +1,5 @@
-import { Module } from '@nestjs/common';
-import { SqlDatabaseModule } from './shared';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { LoggerModule, SqlDatabaseModule } from './shared';
 import { DiseaseModule } from './disease/disease.module';
 import { LocationModule } from './location/location.module';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -11,6 +11,8 @@ import { LaboratoryModule } from './laboratory/laboratory.module';
 import { MedicalResultModule } from './medical-result/medical-result.module';
 import { PdfManagerModule } from './shared/pdf-manager/pdf-manager.module';
 import { ApiKeyGuardModule } from './shared/guards/api-key-guard/api-key-guard.module';
+import { LoggerMiddleware } from './shared/middleware';
+import { HealthStatusModule } from './shared/health-status/health-status.module';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import { ApiKeyGuardModule } from './shared/guards/api-key-guard/api-key-guard.m
       verboseMemoryLeak: false,
       ignoreErrors: false,
     }),
+    LoggerModule,
     SqlDatabaseModule,
     DiseaseModule,
     LocationModule,
@@ -33,7 +36,12 @@ import { ApiKeyGuardModule } from './shared/guards/api-key-guard/api-key-guard.m
     LaboratoryModule,
     MedicalResultModule,
     PdfManagerModule,
-    ApiKeyGuardModule
+    ApiKeyGuardModule,
+    HealthStatusModule
   ]
 })
-export class AppModule { }
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes("*");
+  }
+}
