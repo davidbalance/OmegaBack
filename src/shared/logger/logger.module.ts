@@ -1,19 +1,14 @@
 import { Module } from '@nestjs/common';
-import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
+import { WinstonModule } from 'nest-winston';
+import { WinstonLoggerConfig } from './config/winston-logger.config';
+import { LogModule } from './log/log.module';
 
 @Module({
     imports: [
-        PinoLoggerModule.forRoot({
-            pinoHttp: {
-                transport: {
-                    target: 'pino-pretty',
-                    options: {
-                        singleLine: true
-                    }
-                }
-
-            }
+        WinstonModule.forRootAsync({
+            imports: [LogModule],
+            useClass: WinstonLoggerConfig
         })
-    ]
+    ],
 })
 export class LoggerModule { }
