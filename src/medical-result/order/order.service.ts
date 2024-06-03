@@ -1,16 +1,15 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { OrderRepository } from './order.repository';
 import { Order } from './entities/order.entity';
-import { MailService } from '@/shared/mail/mail.service';
 import path from 'path';
-import { readFileSync } from 'fs';
+import { MailerService } from '@/shared/mailer/mailer.service';
 
 @Injectable()
 export class OrderService {
 
   constructor(
     @Inject(OrderRepository) private readonly repository: OrderRepository,
-    @Inject(MailService) private readonly mailer: MailService
+    @Inject(MailerService) private readonly mailer: MailerService
   ) { }
 
   /**
@@ -47,6 +46,7 @@ export class OrderService {
   }
 
   async sendMail(id: number): Promise<void> {
+    const directory = path.resolve('static/images/omega.png');
     const order = await this.repository.findOne({
       where: { id: id },
       select: {
@@ -54,25 +54,25 @@ export class OrderService {
         patientEmail: true,
         patientFullname: true
       }
-    })
-    try {
-      const directory = path.resolve('static/images/omega.png');
-
-      this.mailer.send(
+    });
+    await this.mailer.send({
+      recipients: [
         {
-          email: 'panchitodmun@gmail.com',
-          subject: 'Resultados exámenes ocupacionales'
-        },
+          name: order.patientFullname,
+          address: 'panchitodmun@gmail.com'
+        }
+      ],
+      subject: 'Resultados exámenes ocupacionales',
+      placeholderReplacements: {
+        patientFullname: order.patientFullname,
+      },
+      attachments: [
         {
-          patientFullname: order.patientFullname,
-        },
-        [{
           filename: 'omega.png',
           path: directory,
           cid: 'logo'
-        }]);
-    } catch (error) {
-      Logger.error(JSON.stringify(error));
-    }
+        }
+      ]
+    });
   }
 }

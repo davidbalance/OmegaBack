@@ -11,7 +11,8 @@ import { OrderExternalConnectionController } from './external-connections/order-
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
 import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { MailModule } from '@/shared/mail/mail.module';
+import { MailerModule } from '@/shared/mailer/mailer.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -20,7 +21,29 @@ import { MailModule } from '@/shared/mail/mail.module';
     OrderExternalKeyModule,
     AuthenticationGuardModule,
     LocalAuthorizationModule,
-    MailModule
+    MailerModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => ({
+        auth: {
+          user: config.get<string>('SMTP_MAIL_AUTH_USER'),
+          password: config.get<string>('SMTP_MAIL_AUTH_PASSWORD'),
+        },
+        default: {
+          name: config.get<string>('SMTP_DEFAULT_APP_NAME'),
+          address: config.get<string>('SMTP_DEFAULT_MAIL_FROM'),
+        },
+        server: {
+          host: config.get<string>('SMTP_MAIL_HOST'),
+          port: config.get<number>('SMTP_MAIL_PORT'),
+          secure: config.get<boolean>('SMTP_MAIL_SECURE'),
+        },
+        template: {
+          name: 'mail.hbs',
+          path: 'templates/mail'
+        }
+      })
+    })
   ],
   controllers: [
     OrderController,
