@@ -12,7 +12,7 @@ import { MedicalResultModule } from './medical-result/medical-result.module';
 import { PdfManagerModule } from './shared/pdf-manager/pdf-manager.module';
 import { ApiKeyGuardModule } from './shared/guards/api-key-guard/api-key-guard.module';
 import { LoggerMiddleware } from './shared/middleware';
-import { HealthStatusModule } from './shared/health-status/health-status.module';
+import { HealthCheckModule } from './shared/health-status/health-check.module';
 
 @Module({
   imports: [
@@ -37,7 +37,7 @@ import { HealthStatusModule } from './shared/health-status/health-status.module'
     MedicalResultModule,
     PdfManagerModule,
     ApiKeyGuardModule,
-    HealthStatusModule
+    HealthCheckModule
   ]
 })
 export class AppModule implements NestModule {
