@@ -11,6 +11,7 @@ import { OrderExternalConnectionController } from './external-connections/order-
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
 import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { MailModule } from '@/shared/mail/mail.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authoriz
     UserModule,
     OrderExternalKeyModule,
     AuthenticationGuardModule,
-    LocalAuthorizationModule
+    LocalAuthorizationModule,
+    MailModule
   ],
   controllers: [
     OrderController,

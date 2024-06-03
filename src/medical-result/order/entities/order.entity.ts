@@ -19,6 +19,9 @@ export class Order extends AbstractEntity<number> {
     @Column({ name: 'patient_birthday', type: 'date', nullable: false })
     public patientBirthday: Date;
 
+    @Column({ name: 'patient_email', type: 'varchar', length: 128, nullable: false })
+    public patientEmail: string;
+
     @Column({ name: 'corporative_name', type: 'varchar', length: 64, nullable: false })
     public corporativeName: string;
 
