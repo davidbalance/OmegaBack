@@ -28,6 +28,7 @@ export class OrderService {
         patientFullname: true,
         process: true,
         createAt: true,
+        mailStatus: true,
         results: {
           id: true,
           examName: true,
@@ -43,6 +44,7 @@ export class OrderService {
       cache: 1000 * 900
     });
     return orders;
+
   }
 
   async sendMail(id: number): Promise<void> {
@@ -55,24 +57,32 @@ export class OrderService {
         patientFullname: true
       }
     });
-    await this.mailer.send({
-      recipients: [
-        {
-          name: order.patientFullname,
-          address: 'panchitodmun@gmail.com'
-        }
-      ],
-      subject: 'Resultados exámenes ocupacionales',
-      placeholderReplacements: {
-        patientFullname: order.patientFullname,
-      },
-      attachments: [
-        {
-          filename: 'omega.png',
-          path: directory,
-          cid: 'logo'
-        }
-      ]
-    });
+
+    try {
+      await this.mailer.send({
+        recipients: [
+          {
+            name: order.patientFullname,
+            address: 'panchitodmun@gmail.com'
+          }
+        ],
+        subject: 'Resultados exámenes ocupacionales',
+        placeholderReplacements: {
+          patientFullname: order.patientFullname,
+        },
+        attachments: [
+          {
+            filename: 'omega.png',
+            path: directory,
+            cid: 'logo'
+          }
+        ]
+      });
+    } catch (error) {
+      this.repository.findOneAndUpdate({ id: id }, { mailStatus: false });
+      Logger.error(error);
+      throw error;
+    }
+    this.repository.findOneAndUpdate({ id: id }, { mailStatus: true });
   }
 }

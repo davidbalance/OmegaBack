@@ -27,6 +27,7 @@ export class OrderExternalConnectionService {
             ...order,
             patientBirthday: patient.birthday,
             patientDni: patient.dni,
+            patientEmail: patient.email,
             patientFullname: `${patient.lastname} ${patient.name}`,
             companyRuc: company.ruc,
             companyName: company.name,
