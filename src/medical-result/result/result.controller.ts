@@ -23,18 +23,7 @@ export class ResultController {
     const results = await this.resultService.find();
     return plainToInstance(FindResultsResponseDTO, { results: results });
   }
-
-  @Authorize(ClaimEnum.READ, 'medical-result')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
-  @Get('file/:result')
-  @Header('Content-Type', 'application/pdf')
-  @Header('Content-Disposition', 'attachment; filename="resultado-medico.pdf"')
-  async getFile(
-    @Param("result") id: number
-  ): Promise<StreamableFile> {
-    return await this.resultService.getFile(id);
-  }
-
+  
   @Authorize(ClaimEnum.READ, 'medical-result')
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
   @UseInterceptors(DniInterceptor)

@@ -5,16 +5,28 @@ import { MedicalReportService } from '../medical-report/medical-report.service';
 import { Result } from './entities/result.entity';
 import { ResultSendAttributeService } from './result-send-attribute/result-send-attribute.service';
 import { StorageManager } from '@/shared/storage-manager';
+import { FindFilePathService } from '@/shared';
 
 @Injectable()
-export class ResultService {
+export class ResultService implements FindFilePathService<number> {
 
   constructor(
     @Inject(ResultRepository) private readonly repository: ResultRepository,
     @Inject(MedicalReportService) private readonly reportService: MedicalReportService,
-    @Inject(ResultSendAttributeService) private readonly attributeService: ResultSendAttributeService,
-    @Inject(StorageManager) private readonly storageManager: StorageManager,
+    @Inject(ResultSendAttributeService) private readonly attributeService: ResultSendAttributeService
   ) { }
+
+
+  async getpath(key: number): Promise<string> {
+    const file = await this.repository.findOne({
+      where: { id: key },
+      select: {
+        id: true,
+        filePath: true
+      }
+    });
+    return file.filePath;
+  }
 
   /**
    * Finds all the results
@@ -40,16 +52,6 @@ export class ResultService {
       }
     });
     return results;
-  }
-
-  /**
-   * Returns a file associated to the report
-   * @param id 
-   * @returns 
-   */
-  async getFile(id: number): Promise<StreamableFile> {
-    const foundMedicalResult = await this.repository.findOne({ where: { id: id }, select: { id: true, filePath: true } });
-    return this.storageManager.readFile(foundMedicalResult.filePath);
   }
 
   /**

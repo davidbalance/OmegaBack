@@ -2,7 +2,7 @@ import { Inject, Injectable, StreamableFile } from '@nestjs/common';
 import { MedicalReportRepository } from './medical-report.repository';
 import { CreateMedicalReportRequestDTO } from '../common/dtos';
 import { MedicalReport } from './entities/medical-report.entity';
-import { PdfManagerService, fileReportPath } from '@/shared';
+import { FindFilePathService, PdfManagerService, fileReportPath } from '@/shared';
 import { readFileSync } from 'fs';
 import dayjs from 'dayjs';
 import path from 'path';
@@ -10,7 +10,7 @@ import { StorageManager } from '@/shared/storage-manager';
 import { MedicalReportSendAttributeService } from './medical-report-send-attribute/medical-report-send-attribute.service';
 
 @Injectable()
-export class MedicalReportService {
+export class MedicalReportService implements FindFilePathService<number> {
 
   constructor(
     @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository,
@@ -18,6 +18,18 @@ export class MedicalReportService {
     @Inject(StorageManager) private readonly storageManager: StorageManager,
     @Inject(MedicalReportSendAttributeService) private readonly attributeService: MedicalReportSendAttributeService
   ) { }
+
+
+  async getpath(key: number): Promise<string> {
+    const file = await this.repository.findOne({
+      where: { id: key },
+      select: {
+        id: true,
+        fileAddress: true
+      }
+    });
+    return file.fileAddress;
+  }
 
   /**
    * Creates a new report with the given options
@@ -29,16 +41,6 @@ export class MedicalReportService {
     const filename = await this.createPdf(report.id);
     const newReport = await this.repository.findOneAndUpdate({ id: report.id }, { fileAddress: filename, hasFile: true });
     return newReport;
-  }
-
-  /**
-   * Returns the pdf associated to the report
-   * @param id 
-   * @returns StreamableFile
-   */
-  async getPdf(id: number): Promise<StreamableFile> {
-    const report = await this.repository.findOne({ where: { id }, select: { fileAddress: true } });
-    return this.storageManager.readFile(report.fileAddress);
   }
 
   private async createPdf(id: number): Promise<string> {

@@ -1,6 +1,6 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { FindOrdersResponseDTO } from '../common/dtos';
+import { FindOrdersResponseDTO, SendMailRequestDto } from '../common/dtos';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
@@ -24,11 +24,11 @@ export class OrderController {
     return plainToInstance(FindOrdersResponseDTO, { orders });
   }
 
-  @Get('/mail/:id')
+  @Post('/mail')
   sendEmail(
-    @Param('id') id: number
+    @Body() body: SendMailRequestDto
   ): string {
-    this.orderService.sendMail(id);
+    this.orderService.sendMail(body.id);
     return "ok";
   }
 }

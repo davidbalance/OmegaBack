@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class InsertMedicalReportRequestDTO {
     @IsString()
@@ -13,7 +14,7 @@ export class FindOneResultAndUpdateDiseaseRequestDTO {
     @IsString()
     @IsNotEmpty()
     public readonly diseaseName: string;
-    
+
     @IsNumber()
     public readonly diseaseGroupId: number;
 
