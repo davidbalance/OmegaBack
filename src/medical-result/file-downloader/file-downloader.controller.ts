@@ -12,26 +12,28 @@ export class FileDownloaderController {
     ) { }
 
     @Post()
-    getFile(
+    async getFile(
         @Body() body: FileSourceRequestDTO,
         @Res() response: Response
-    ): Promise<StreamableFile> {
+    ) {
+        const file = await this.service.downloadFile(body);
         response.set({
             'Content-Type': 'application/pdf',
             'Content-Disposition': 'attachment; filename="archivo-medico.pdf"',
-        })
-        return this.service.downloadFile(body);
+        });
+        file.getStream().pipe(response);
     }
 
     @Post('multiple')
-    getZip(
+    async getZip(
         @Body() body: DownloadAndZipContentRequestDTO,
         @Res() response: Response
-    ): Promise<StreamableFile> {
+    ) {
+        const zip = await this.service.downloadMultipleFiles(body);
         response.set({
             'Content-Type': 'application/zip',
             'Content-Disposition': 'attachment; filename="archivo-medico.zip"',
         })
-        return this.service.downloadMultipleFiles(body);
+        zip.getStream().pipe(response);
     }
 }

@@ -1,4 +1,4 @@
-import { Inject, Injectable, StreamableFile } from '@nestjs/common';
+import { Inject, Injectable, Logger, StreamableFile } from '@nestjs/common';
 import { FindFilePathService } from '@/shared';
 import { MedicalReportService } from '@/medical-result/medical-report/medical-report.service';
 import { ResultService } from '../result/result.service';
@@ -36,7 +36,7 @@ export class FileDownloaderService {
             sources.push(source);
         }
 
-        const zip = this.zipper.zip(sources);
+        const zip = await this.zipper.zip(sources);
         return zip;
     }
 }

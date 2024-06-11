@@ -1,48 +1,39 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
-import { ZipOptions } from './zipper.interface';
-import dayjs from 'dayjs';
-import { createReadStream, createWriteStream } from 'fs';
+import { createReadStream } from 'fs';
 import archiver from 'archiver';
 import path from 'path';
+import { PassThrough } from 'stream';
 
 @Injectable()
 export class ZipperService {
-    public zip(sources: string[], options?: ZipOptions): StreamableFile {
-        const outputPath: string = this.getZipname(options.name);
+    public async zip(sources: string[]): Promise<StreamableFile> {
 
         const inputSources = sources.map((source: string) => ({
             stream: createReadStream(source),
-            name: source.split('/').pop()
+            name: path.basename(source)
         }));
 
-        const outputStream = createWriteStream(outputPath);
+        const outputStream = new PassThrough();
         const archive = archiver('zip', {
-            zlib: {
-                level: 9
+            zlib: { level: 9 }
+        });
+
+        archive.on('warning', (err) => {
+            if (err.code !== 'ENOENT') {
+                throw err;
             }
+        });
+
+        archive.on('error', (err) => {
+            throw err;
         });
 
         archive.pipe(outputStream);
         for (const source of inputSources) {
             archive.append(source.stream, { name: source.name });
         }
+
         archive.finalize();
-
-        const streamableFile = this.getStreamableFile(outputPath);
-        return streamableFile;
+        return new StreamableFile(outputStream);
     }
-
-    private getZipname(name?: string): string {
-        const output: string = name ?? dayjs().toISOString();
-        const outputFolder: string = path.resolve('static/zip');
-        const outputPath: string = path.join(outputFolder, output);
-        return outputPath;
-    }
-
-    private getStreamableFile(path: string): StreamableFile {
-        const readStream = createReadStream(path);
-        return new StreamableFile(readStream);
-    }
-
-
 }
