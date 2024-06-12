@@ -27,8 +27,8 @@ export class OrderController {
   @Post('/mail')
   sendEmail(
     @Body() body: SendMailRequestDto
-  ): string {
+  ): { message: string } {
     this.orderService.sendMail(body.id);
-    return "ok";
+    return { message: "ok" };
   }
 }

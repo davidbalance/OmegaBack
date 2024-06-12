@@ -1,13 +1,12 @@
-import { Body, Controller, Get, Header, Param, Patch, StreamableFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ResultService } from './result.service';
 import { FindOneResultAndUpdateDiseaseRequestDTO, InsertMedicalReportRequestDTO } from '../common/dtos/result.request.dto';
-import { Authorize, User } from '@/shared/decorator';
+import { User } from '@/shared/decorator';
 import { plainToInstance } from 'class-transformer';
 import { FindOneResultAndUpdateDiseaseResponseDTO, FindResultResponseDTO, FindResultsResponseDTO } from '../common/dtos';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { ClaimEnum } from '@/shared';
+import { } from '@/shared/guards/authorization-guard/authorization.guard';
 import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
 
 @ApiTags('Medical Result')
@@ -16,16 +15,14 @@ import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
 export class ResultController {
   constructor(private readonly resultService: ResultService) { }
 
-  @Authorize(ClaimEnum.READ, 'medical-result')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<FindResultsResponseDTO> {
     const results = await this.resultService.find();
     return plainToInstance(FindResultsResponseDTO, { results: results });
   }
-  
-  @Authorize(ClaimEnum.READ, 'medical-result')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(DniInterceptor)
   @Get('doctor')
   async findByDoctor(
@@ -35,8 +32,7 @@ export class ResultController {
     return plainToInstance(FindResultsResponseDTO, { results: results });
   }
 
-  @Authorize(ClaimEnum.UPDATE, 'medical-result')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async findOneResultAndUpdateDisease(
     @Param('id') id: number,
@@ -46,8 +42,7 @@ export class ResultController {
     return {};
   }
 
-  @Authorize(ClaimEnum.CREATE, 'medical-report')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch('report/:id')
   async insertMedicalReport(
     @Param('id') id: number,

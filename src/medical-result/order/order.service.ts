@@ -66,7 +66,7 @@ export class OrderService {
         recipients: [
           {
             name: order.patientFullname,
-            address: 'panchitodmun@gmail.com'
+            address: order.patientEmail
           }
         ],
         subject: 'Resultados exámenes ocupacionales',

@@ -9,13 +9,13 @@ class OrderResultDTO {
 
     @Expose()
     public readonly diseaseId?: number;
-    
+
     @Expose()
     public readonly diseaseName?: string;
-    
+
     @Expose()
     public readonly diseaseGroupId?: number;
-    
+
     @Expose()
     public readonly diseaseGroupName?: string;
 }
@@ -35,6 +35,9 @@ export class FindOrderResponseDTO {
 
     @Expose()
     public readonly createAt: Date;
+
+    @Expose()
+    public readonly mailStatus?: boolean;
 
     @Type(() => OrderResultDTO)
     @Expose()
