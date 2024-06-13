@@ -3,7 +3,6 @@ import { LoggerModule, SqlDatabaseModule } from './shared';
 import { DiseaseModule } from './disease/disease.module';
 import { LocationModule } from './location/location.module';
 import { AuthenticationModule } from './authentication/authentication.module';
-import { AuthorizationModule } from './authorization/authorization.module';
 import { UserModule } from './user/user.module';
 import { OmegaWebModule } from './omega-web/omega-web.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
@@ -31,7 +30,6 @@ import { HealthCheckModule } from './shared/health-status/health-check.module';
     LocationModule,
     UserModule,
     AuthenticationModule,
-    AuthorizationModule,
     OmegaWebModule,
     LaboratoryModule,
     MedicalResultModule,

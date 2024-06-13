@@ -9,8 +9,6 @@ import { OrderExternalKeyModule } from './order-external-key/order-external-key.
 import { OrderExternalConnectionService } from './external-connections/order-external-connection.service';
 import { OrderExternalConnectionController } from './external-connections/order-external-connection.controller';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
 import { MailerModule } from '@/shared/mailer/mailer.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
@@ -20,7 +18,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UserModule,
     OrderExternalKeyModule,
     AuthenticationGuardModule,
-    LocalAuthorizationModule,
     MailerModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -53,7 +50,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     OrderService,
     OrderRepository,
     OrderExternalConnectionService,
-    AuthorizationGuard
   ],
   exports: [
     OrderService,

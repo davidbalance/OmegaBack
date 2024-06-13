@@ -9,8 +9,6 @@ import { CompanyExternalConnectionController } from './external-connection/compa
 import { CompanyExternalKeyModule } from './company-external-key/company-external-key.module';
 import { CorporativeGroupModule } from '../corporative-group/corporative-group.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
 
 @Module({
   imports: [
@@ -18,7 +16,6 @@ import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-au
     CompanyExternalKeyModule,
     CorporativeGroupModule,
     AuthenticationGuardModule,
-    LocalAuthorizationModule
   ],
   controllers: [
     CompanyController,
@@ -28,7 +25,6 @@ import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-au
     CompanyService,
     CompanyRepository,
     CompanyExternalConnectionService,
-    AuthorizationGuard
   ],
   exports: [
     CompanyService,

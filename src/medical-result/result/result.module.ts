@@ -16,8 +16,6 @@ import { ResultExternalConnectionController } from './external-connections/resul
 import { LocalStorageModule } from '@/shared/storage-manager';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { ResultSendAttributeModule } from './result-send-attribute/result-send-attribute.module';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
 import { DniInterceptorModule } from '@/shared/interceptors/dni/dni-interceptor.module';
 
 @Module({
@@ -34,7 +32,6 @@ import { DniInterceptorModule } from '@/shared/interceptors/dni/dni-interceptor.
     LocalStorageModule,
     AuthenticationGuardModule,
     ResultSendAttributeModule,
-    LocalAuthorizationModule,
     DniInterceptorModule
   ],
   controllers: [
@@ -45,7 +42,6 @@ import { DniInterceptorModule } from '@/shared/interceptors/dni/dni-interceptor.
     ResultService,
     ResultRepository,
     ResultExternalConnectionService,
-    AuthorizationGuard
   ],
   exports: [ResultService]
 })

@@ -10,8 +10,6 @@ import { DoctorExternalConnectionService } from './external-connection/doctor-ex
 import { DoctorExternalConnectionController } from './external-connection/doctor-external-connection.controller';
 import { ResultListener } from './listener';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
 
 @Module({
   imports: [
@@ -19,7 +17,6 @@ import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-au
     UserModule,
     LocalStorageModule,
     AuthenticationGuardModule,
-    LocalAuthorizationModule
   ],
   controllers: [
     DoctorController,
@@ -30,7 +27,6 @@ import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-au
     DoctorRepository,
     DoctorExternalConnectionService,
     ResultListener,
-    AuthorizationGuard
   ],
   exports: [DoctorService]
 })

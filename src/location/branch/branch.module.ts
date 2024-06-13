@@ -10,8 +10,6 @@ import { BranchExternalConnectionService } from './external-connection/branch-ex
 import { CompanyModule } from '../company/company.module';
 import { CityModule } from '../city/city.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
 
 @Module({
   imports: [
@@ -20,7 +18,6 @@ import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-au
     CompanyModule,
     CityModule,
     AuthenticationGuardModule,
-    LocalAuthorizationModule
   ],
   controllers: [
     BranchController,
@@ -30,7 +27,6 @@ import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-au
     BranchService,
     BranchRepository,
     BranchExternalConnectionService,
-    AuthorizationGuard
   ],
   exports: [BranchService, BranchExternalConnectionService]
 })
