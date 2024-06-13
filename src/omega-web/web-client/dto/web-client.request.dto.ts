@@ -16,3 +16,9 @@ export class UpdateWebClientWebLogoRequestDTO {
     @IsNotEmpty()
     public readonly logo: number;
 }
+
+export class UpdateWebClientWebResourcesRequestDTO {
+    @IsArray()
+    @IsNotEmpty()
+    public readonly resources: number[];
+}

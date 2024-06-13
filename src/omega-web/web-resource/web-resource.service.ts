@@ -18,4 +18,14 @@ export class WebResourceService {
     const resources = await this.repository.find({ where: { name: In(names) } });
     return resources;
   }
+
+  async findInIds(ids: number[]): Promise<WebResource[]> {
+    const resources = await this.repository.find({ where: { id: In(ids) } });
+    return resources;
+  }
+
+  async findAll(): Promise<WebResource[]> {
+    const resources = await this.repository.find();
+    return resources;
+  }
 }

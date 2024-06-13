@@ -36,6 +36,5 @@ export class FindWebClientResponseDTO {
     public readonly resources: WebClientResource[];
 }
 
-export class UpdateWebClientWebLogoResponseDTO {
-
-}
+export class UpdateWebClientWebLogoResponseDTO {}
+export class UpdateWebClientWebResourceResponseDTO {}

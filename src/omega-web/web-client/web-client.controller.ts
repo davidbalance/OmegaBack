@@ -2,9 +2,10 @@ import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { WebClientService } from './web-client.service';
 import { User } from '@/shared/decorator';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards';
-import { FindWebClientResponseDTO, UpdateWebClientWebLogoRequestDTO, UpdateWebClientWebLogoResponseDTO } from './dto';
+import { FindWebClientResponseDTO, UpdateWebClientWebLogoRequestDTO, UpdateWebClientWebLogoResponseDTO, UpdateWebClientWebResourceResponseDTO, UpdateWebClientWebResourcesRequestDTO } from './dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FindAllWebResourceResponseDto } from '../web-resource/dto/web-resource.response.dto';
 
 @ApiTags('Omega Web')
 @ApiBearerAuth()
@@ -29,5 +30,24 @@ export class WebClientController {
   ): Promise<UpdateWebClientWebLogoResponseDTO> {
     await this.webClientService.updateWebLogoFromClient(user, body);
     return plainToInstance(UpdateWebClientWebLogoResponseDTO, {});
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('resource/:user')
+  async findOneWebResources(
+    @Param('user') user: number,
+  ): Promise<FindAllWebResourceResponseDto> {
+    const resources = await this.webClientService.findWebResources(user);
+    return plainToInstance(FindAllWebResourceResponseDto, { resources });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('resource/:user')
+  async assignWebResourceToWebClient(
+    @Param('user') user: number,
+    @Body() body: UpdateWebClientWebResourcesRequestDTO
+  ): Promise<UpdateWebClientWebResourceResponseDTO> {
+    await this.webClientService.updateWebResourcesFromClient(user, body);
+    return plainToInstance(UpdateWebClientWebResourceResponseDTO, {});
   }
 }
