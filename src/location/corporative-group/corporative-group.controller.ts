@@ -4,9 +4,6 @@ import { FindCorporativeGroupsResponseDTO, FindSelectorOptionsCorporativeGroupDT
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { Authorize } from '@/shared/decorator';
-import { ClaimEnum } from '@/shared';
 
 @ApiTags('Location')
 @ApiBearerAuth()
@@ -14,8 +11,7 @@ import { ClaimEnum } from '@/shared';
 export class CorporativeGroupController {
   constructor(private readonly corporativeGroupService: CorporativeGroupService) { }
 
-  @Authorize(ClaimEnum.READ, 'corporative-group')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<FindCorporativeGroupsResponseDTO> {
     const groups = await this.corporativeGroupService.find();

@@ -9,9 +9,6 @@ import {
 } from './dtos';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { Authorize, User } from '@/shared/decorator';
-import { ClaimEnum } from '@/shared';
 import { plainToInstance } from 'class-transformer';
 
 @ApiTags('Authorization')
@@ -22,7 +19,6 @@ export class AccessControlController {
         @Inject(AccessControlService) private readonly controlService: AccessControlService
     ) { }
 
-    @Authorize(ClaimEnum.READ, 'access-control')
     @UseGuards(JwtAuthGuard)
     @Get('client/:client')
     async findOne(
@@ -32,8 +28,7 @@ export class AccessControlController {
         return plainToInstance(FindOneACClient, client)
     }
 
-    @Authorize(ClaimEnum.UPDATE, 'access-control')
-    @UseGuards(JwtAuthGuard, AuthorizationGuard)
+    @UseGuards(JwtAuthGuard)
     @Patch('role/:user')
     async findOneClientAndUpdateRoles(
         @Param('user') user: number,
@@ -43,8 +38,7 @@ export class AccessControlController {
         return {};
     }
 
-    @Authorize(ClaimEnum.UPDATE, 'access-control')
-    @UseGuards(JwtAuthGuard, AuthorizationGuard)
+    @UseGuards(JwtAuthGuard)
     @Patch('resource/:user')
     async findOneClientAndUpdateResources(
         @Param('user') user: number,

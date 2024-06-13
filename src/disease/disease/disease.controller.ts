@@ -4,9 +4,6 @@ import { CreateDiseaseRequestDTO, FindOneDiseaseAndUpdateRequestDTO, FindOneDise
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { Authorize } from '@/shared/decorator';
-import { ClaimEnum } from '@/shared';
 
 @ApiTags('Disease')
 @ApiBearerAuth()
@@ -14,16 +11,14 @@ import { ClaimEnum } from '@/shared';
 export class DiseaseController {
   constructor(private readonly diseaseService: DiseaseService) { }
 
-  @Authorize(ClaimEnum.READ, 'disease')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<FindDiseasesResponseDTO> {
     const diseases = await this.diseaseService.find();
     return plainToInstance(FindDiseasesResponseDTO, { diseases: diseases });
   }
 
-  @Authorize(ClaimEnum.CREATE, 'disease')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() body: CreateDiseaseRequestDTO
@@ -32,8 +27,7 @@ export class DiseaseController {
     return plainToInstance(FindDiseaseResponseDTO, disease);
   }
 
-  @Authorize(ClaimEnum.UPDATE, 'disease')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(":id")
   async findOneAndUpdate(
     @Param('id') id: number,
@@ -43,8 +37,7 @@ export class DiseaseController {
     return plainToInstance(FindDiseaseResponseDTO, disease);
   }
 
-  @Authorize(ClaimEnum.DELETE, 'disease')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async findOneAndDelete(
     @Param('id') id: number

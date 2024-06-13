@@ -22,16 +22,14 @@ import { ClaimEnum } from '@/shared';
 export class DiseaseGroupController {
   constructor(private readonly diseaseGroupService: DiseaseGroupService) { }
 
-  @Authorize(ClaimEnum.READ, 'disease-group')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<FindDiseaseGroupsResponseDTO> {
     const groups = await this.diseaseGroupService.find();
     return plainToInstance(FindDiseaseGroupsResponseDTO, { groups: groups });
   }
 
-  @Authorize(ClaimEnum.CREATE, 'disease-group')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() body: CreateDiseaseGroupRequestDTO
@@ -40,8 +38,7 @@ export class DiseaseGroupController {
     return plainToInstance(FindDiseaseGroupResponseDTO, disease);
   }
 
-  @Authorize(ClaimEnum.UPDATE, 'disease-group')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(":id")
   async findOneAndUpdate(
     @Param('id') id: number,
@@ -51,8 +48,7 @@ export class DiseaseGroupController {
     return {};
   }
 
-  @Authorize(ClaimEnum.DELETE, 'disease-group')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async findOneAndDelete(
     @Param('id') id: number

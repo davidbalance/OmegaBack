@@ -4,9 +4,6 @@ import { FindCitiesResponseDTO, FindSelectorOptionsCityDTO } from './dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { Authorize } from '@/shared/decorator';
-import { ClaimEnum } from '@/shared';
 
 @ApiTags('Location')
 @ApiBearerAuth()
@@ -14,8 +11,7 @@ import { ClaimEnum } from '@/shared';
 export class CityController {
   constructor(private readonly cityService: CityService) { }
 
-  @Authorize(ClaimEnum.READ, 'city')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<FindCitiesResponseDTO> {
     const cities = await this.cityService.find();

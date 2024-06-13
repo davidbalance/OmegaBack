@@ -4,9 +4,6 @@ import { FindOrderFilesResponseDTO, FindOrdersResponseDTO, SendMailRequestDto } 
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { Authorize } from '@/shared/decorator';
-import { ClaimEnum } from '@/shared';
 
 @ApiTags('Medical Result')
 @ApiBearerAuth()
@@ -23,8 +20,7 @@ export class OrderController {
   }
 
 
-  @Authorize(ClaimEnum.READ, 'medical-order')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('patient/:dni')
   async findByPatient(
     @Param('dni') patient: string

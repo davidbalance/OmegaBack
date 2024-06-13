@@ -16,8 +16,7 @@ export class ApiKeyController {
     @Inject(ApiKeyService) private readonly apiKeyService: ApiKeyService
   ) { }
 
-  @Authorize(ClaimEnum.READ, 'api-key')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(
     @User() user: number
@@ -26,8 +25,7 @@ export class ApiKeyController {
     return plainToInstance(FindApiKeysResponseDTO, { apiKeys });
   }
 
-  @Authorize(ClaimEnum.CREATE, 'api-key')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() body: CreateApiKeyRequestDTO,
@@ -37,8 +35,7 @@ export class ApiKeyController {
     return plainToInstance(CreateApiKeyResponseDTO, { apikey: apikey });
   }
 
-  @Authorize(ClaimEnum.UPDATE, 'api-key')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
@@ -47,14 +44,4 @@ export class ApiKeyController {
     const apikey = await this.apiKeyService.findOneAndUpdate({ id, ...body });
     return plainToInstance(FindApiKeyResponseDTO, apikey);
   }
-
-  /* @Authorize(ClaimEnum.DELETE, 'api-key')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
-  @Delete(':id')
-  async findOneAndDelete(
-    @Param('id') id: number
-  ): Promise<FindOneAndDeleteApiKeyResponseDTO> {
-    await this.apiKeyService.findOneAndDelete(id);
-    return plainToInstance(FindOneAndDeleteApiKeyResponseDTO, {});
-  } */
 }

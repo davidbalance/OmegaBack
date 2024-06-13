@@ -5,9 +5,6 @@ import { FindDoctorsResponseDTO, FindOneDoctorAndUpdateResponseDTO, UploadSignat
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { Authorize } from '@/shared/decorator';
-import { ClaimEnum } from '@/shared';
 import { FileTypePipe } from '@/shared/pipes/file-type/file-type.pipe';
 import { MIME_TYPES } from '@/shared/pipes/file-type/constants';
 
@@ -17,8 +14,7 @@ import { MIME_TYPES } from '@/shared/pipes/file-type/constants';
 export class DoctorController {
   constructor(private readonly doctorService: DoctorService) { }
 
-  @Authorize(ClaimEnum.READ, 'doctors')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<FindDoctorsResponseDTO> {
     const doctors = await this.doctorService.find();
@@ -26,8 +22,7 @@ export class DoctorController {
   }
 
   @ApiConsumes('multipart/form-data')
-  @Authorize(ClaimEnum.UPDATE, 'doctors')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('signature/:id')
   @UseInterceptors(FileInterceptor('signature'))
   async uploadSignature(

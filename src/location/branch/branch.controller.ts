@@ -4,9 +4,6 @@ import { FindBranchesResponseDTO, FindSelectorOptionsBranchDTO } from './dtos';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { Authorize } from '@/shared/decorator';
-import { ClaimEnum } from '@/shared';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
 
 @ApiTags('Location')
 @ApiBearerAuth()
@@ -14,8 +11,7 @@ import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authoriz
 export class BranchController {
   constructor(private readonly branchService: BranchService) { }
 
-  @Authorize(ClaimEnum.READ, 'branch')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(':company')
   async find(
     @Param('company') company: number
@@ -23,9 +19,8 @@ export class BranchController {
     const branches = await this.branchService.find(company);
     return plainToInstance(FindBranchesResponseDTO, { branches: branches });
   }
-  
-  @Authorize(ClaimEnum.READ, 'branch')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+
+  @UseGuards(JwtAuthGuard)
   @Get('ruc/:company')
   async findByCompanyRuc(
     @Param('company') company: string

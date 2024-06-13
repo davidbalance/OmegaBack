@@ -4,8 +4,6 @@ import { FindResourcesResponseDTO } from './dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { Authorize } from '@/shared/decorator';
-import { ClaimEnum } from '@/shared';
 
 @ApiTags('Authorization')
 @ApiBearerAuth()
@@ -15,7 +13,6 @@ export class ResourceController {
     @Inject(ResourceService) private readonly resourceService: ResourceService
   ) { }
 
-  @Authorize(ClaimEnum.READ, 'resource')
   @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<FindResourcesResponseDTO> {

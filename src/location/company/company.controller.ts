@@ -4,9 +4,6 @@ import { FindCompaniesResponseDTO, FindSelectorOptionsCompanyDTO } from './dtos/
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { Authorize } from '@/shared/decorator';
-import { ClaimEnum } from '@/shared';
 
 @ApiTags('Location')
 @ApiBearerAuth()
@@ -14,8 +11,7 @@ import { ClaimEnum } from '@/shared';
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) { }
 
-  @Authorize(ClaimEnum.READ, 'company')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(':group')
   async find(
     @Param('group') group: number

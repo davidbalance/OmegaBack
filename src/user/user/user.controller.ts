@@ -1,18 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import {
-  CreateUserRequestDTO,
-  FindOneUserAndDeleteResponseDTO,
-  FindOneUserAndUpdateRequestDTO,
-  FindUserResponseDTO,
-  FindUsersResponseDTO
-} from '../common';
+import { CreateUserRequestDTO, FindOneUserAndDeleteResponseDTO, FindOneUserAndUpdateRequestDTO, FindUserResponseDTO, FindUsersResponseDTO } from '../common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { Authorize, User } from '@/shared/decorator';
-import { ClaimEnum } from '@/shared';
+import { User } from '@/shared/decorator';
 
 @ApiTags('User')
 @ApiBearerAuth()
@@ -22,8 +14,7 @@ export class UserController {
     private readonly userService: UserService
   ) { }
 
-  @Authorize(ClaimEnum.READ, 'users')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(
     @User() user: number
@@ -32,8 +23,7 @@ export class UserController {
     return plainToInstance(FindUsersResponseDTO, { users });
   }
 
-  @Authorize(ClaimEnum.READ, 'users')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('user')
   async findOne(
     @User() user: number
@@ -42,8 +32,7 @@ export class UserController {
     return plainToInstance(FindUserResponseDTO, foundUser);
   }
 
-  @Authorize(ClaimEnum.CREATE, 'users')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() body: CreateUserRequestDTO
@@ -52,8 +41,7 @@ export class UserController {
     return plainToInstance(FindUserResponseDTO, user);
   }
 
-  @Authorize(ClaimEnum.UPDATE, 'users')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
@@ -63,8 +51,7 @@ export class UserController {
     return plainToInstance(FindUserResponseDTO, user);
   }
 
-  @Authorize(ClaimEnum.DELETE, 'users')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async findOneAndInactive(
     @Param('id') id: number

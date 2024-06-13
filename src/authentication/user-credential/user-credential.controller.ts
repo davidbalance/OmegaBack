@@ -14,9 +14,6 @@ import {
 } from './dtos';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { Authorize } from '@/shared/decorator';
-import { ClaimEnum } from '@/shared';
 
 @ApiTags('Authentication')
 @ApiBearerAuth()
@@ -24,8 +21,7 @@ import { ClaimEnum } from '@/shared';
 export class UserCredentialController {
   constructor(private readonly userCredentialService: UserCredentialService) { }
 
-  @Authorize(ClaimEnum.CREATE, 'user-credential')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() body: CreateCredentialRequestDTO
@@ -34,8 +30,7 @@ export class UserCredentialController {
     return {};
   }
 
-  @Authorize(ClaimEnum.UPDATE, 'user-credential')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch()
   async findOneCredentialAndUpdatePassword(
     @Body() { email, password }: FindOneCredentialAndUpdatePasswordRequestDTO

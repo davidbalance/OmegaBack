@@ -21,16 +21,14 @@ import { ClaimEnum } from '@/shared';
 export class RoleController {
   constructor(private readonly roleService: RoleService) { }
 
-  @Authorize(ClaimEnum.READ, 'role')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<FindRolesResponseDTO> {
     const roles = await this.roleService.find();
     return plainToInstance(FindRolesResponseDTO, { roles });
   }
 
-  @Authorize(ClaimEnum.CREATE, 'role')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() body: CreateRoleRequestDTO
@@ -39,8 +37,7 @@ export class RoleController {
     return plainToInstance(FindRoleResponseDTO, role);
   }
 
-  @Authorize(ClaimEnum.UPDATE, 'role')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
@@ -50,8 +47,7 @@ export class RoleController {
     return {};
   }
 
-  @Authorize(ClaimEnum.DELETE, 'role')
-  @UseGuards(JwtAuthGuard, AuthorizationGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async findOneAndDelete(
     @Param('id') id: number
