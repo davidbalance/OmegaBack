@@ -25,17 +25,12 @@ export class DiseaseGroupService {
    * @returns Array of DiseaseGroup
    */
   async find(): Promise<DiseaseGroup[]> {
-    return await this.repository.find({
-      where: { status: true },
-      select: {
-        id: true,
-        name: true
-      },
-      cache: {
-        id: "disease-group-find-all-cache",
-        milliseconds: 1000 * 60 * 15
-      }
-    });
+    return this.repository.createQuery('group')
+      .leftJoinAndSelect('group.diseases', 'disease', 'disease.status = :diseaseStatus', { diseaseStatus: true })
+      .select(['group.id', 'group.name', 'disease.id', 'disease.name'])
+      .cache('disease-group-find-all-cache', 1000 * 60 * 15)
+      .where('group.status = :status', { status: true })
+      .getMany();
   }
 
   /**
