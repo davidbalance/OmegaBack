@@ -4,6 +4,7 @@ import { Order } from './entities/order.entity';
 import path from 'path';
 import { MailerService } from '@/shared/mailer/mailer.service';
 import { ConfigService } from '@nestjs/config';
+import { FindOrderFilesResponseDTO } from '../common/dtos';
 
 @Injectable()
 export class OrderService {
@@ -13,6 +14,29 @@ export class OrderService {
     @Inject(MailerService) private readonly mailer: MailerService,
     @Inject(ConfigService) private readonly config: ConfigService
   ) { }
+
+  /**
+   * Finds an order by its id
+   * @param dni 
+   * @returns FindOrderFilesResponseDTO
+   */
+  async findOrderFilesById(id: number): Promise<FindOrderFilesResponseDTO> {
+    const order = await this.repository.findOne({
+      where: {
+        id: id
+      },
+      relations: ['results'],
+      cache: 1000 * 900
+    });
+
+    return {
+      dni: order.patientDni,
+      email: order.patientEmail,
+      fullname: order.patientFullname,
+      fileReports: order.results.filter(e => !!e.report).map((e) => ({ ...e.report, type: 'report' })),
+      fileResults: order.results.map(e => ({ ...e, type: 'result' }))
+    };
+  }
 
   /**
    * Finds all orders owned by a patient
@@ -46,7 +70,6 @@ export class OrderService {
       cache: 1000 * 900
     });
     return orders;
-
   }
 
   async sendMail(id: number): Promise<void> {

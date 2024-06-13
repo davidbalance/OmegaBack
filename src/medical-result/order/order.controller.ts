@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { FindOrdersResponseDTO, SendMailRequestDto } from '../common/dtos';
+import { FindOrderFilesResponseDTO, FindOrdersResponseDTO, SendMailRequestDto } from '../common/dtos';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
@@ -13,6 +13,15 @@ import { ClaimEnum } from '@/shared';
 @Controller('orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) { }
+
+  @Get('files/:id')
+  async findFilesById(
+    @Param('id') id: number
+  ): Promise<FindOrderFilesResponseDTO> {
+    const order = await this.orderService.findOrderFilesById(id);
+    return plainToInstance(FindOrderFilesResponseDTO, order);
+  }
+
 
   @Authorize(ClaimEnum.READ, 'medical-order')
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
