@@ -82,7 +82,7 @@ export class OrderService {
         patientFullname: true
       }
     });
-    const url: string = `${this.config.get<string>('APP_TARGET_HOST')}/patient/order/${order.id}`
+    const url: string = `${this.config.get<string>('APP_TARGET_HOST')}/order/${order.id}`
 
     try {
       await this.mailer.send({
