@@ -5,8 +5,8 @@ import { FindAllWebResourceResponseDto } from './dto/web-resource.response.dto';
 import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 
-@ApiTags('Omega Web')
-@Controller('omega-web/resources')
+@ApiTags('Omega/Web/Resource')
+@Controller('omega/web/resources')
 export class WebResourceController {
   constructor(
     @Inject(WebResourceService) private readonly webResourceService: WebResourceService

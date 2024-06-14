@@ -7,9 +7,9 @@ import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FindAllWebResourceResponseDto } from '../web-resource/dto/web-resource.response.dto';
 
-@ApiTags('Omega Web')
+@ApiTags('Omega/Web/Client')
 @ApiBearerAuth()
-@Controller('omega-web/clients')
+@Controller('omega/web/clients')
 export class WebClientController {
   constructor(private readonly webClientService: WebClientService) { }
 
