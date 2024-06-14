@@ -1,34 +1,36 @@
 import { Module } from '@nestjs/common';
-import { CompanyService } from './company.service';
-import { CompanyController } from './company.controller';
 import { Company } from './entities/company.entity';
 import { SqlDatabaseModule } from 'src/shared';
 import { CompanyRepository } from './company.repository';
-import { CompanyExternalConnectionService } from './external-connection/company-external-connection.service';
-import { CompanyExternalConnectionController } from './external-connection/company-external-connection.controller';
-import { CompanyExternalKeyModule } from './company-external-key/company-external-key.module';
 import { CorporativeGroupModule } from '../corporative-group/corporative-group.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { ExternalKeyModule } from './external-key/external-key.module';
+import { CompanyService } from './services/company.service';
+import { ExternalConnectionService } from './services/external-connection.service';
+import { ExternalConnectionController } from './controllers/external-connection.controller';
+import { SelectorController } from './controllers/selector.controller';
+import { SelectorService } from './services/selector.service';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Company]),
-    CompanyExternalKeyModule,
+    ExternalKeyModule,
     CorporativeGroupModule,
     AuthenticationGuardModule,
   ],
   controllers: [
-    CompanyController,
-    CompanyExternalConnectionController
+    SelectorController,
+    ExternalConnectionController
   ],
   providers: [
     CompanyService,
+    SelectorService,
     CompanyRepository,
-    CompanyExternalConnectionService,
+    ExternalConnectionService,
   ],
   exports: [
     CompanyService,
-    CompanyExternalConnectionService
+    ExternalConnectionService
   ]
 })
 export class CompanyModule { }

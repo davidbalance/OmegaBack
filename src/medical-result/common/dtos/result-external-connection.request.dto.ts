@@ -1,11 +1,11 @@
-import { CreateExamExternalRequestDTO } from "@/laboratory/exam/dtos/exam-external-connection.request.dto";
 import { CreateDoctorExternalRequestDTO } from "@/user/common";
 import { Transform, Type } from "class-transformer";
 import { IsString, IsNotEmpty, IsDefined, IsObject, IsNotEmptyObject, ValidateNested } from "class-validator";
-import { CreateOrderExternalRequestDTO } from "./order-external-connection.request.dto";
 import { ApiProperty } from "@nestjs/swagger";
+import { POSTExamRequestDTO } from "@/laboratory/exam/dtos/external-connection.request.dto";
+import { POSTMedicalOrderRequestDTO } from "./order-external-connection.request.dto";
 
-export class CreateResultExternalRequestDTO {
+export class POSTMedicalResultRequestDTO {
     @IsString()
     @IsNotEmpty()
     public readonly key: string;
@@ -15,8 +15,8 @@ export class CreateResultExternalRequestDTO {
     @IsNotEmptyObject()
     @ValidateNested()
     @Transform(({ value }) => value)
-    @Type(() => CreateExamExternalRequestDTO)
-    public readonly exam: CreateExamExternalRequestDTO;
+    @Type(() => POSTExamRequestDTO)
+    public readonly exam: POSTExamRequestDTO;
 
     @IsDefined()
     @IsObject()
@@ -31,11 +31,11 @@ export class CreateResultExternalRequestDTO {
     @IsNotEmptyObject()
     @ValidateNested()
     @Transform(({ value }) => value)
-    @Type(() => CreateOrderExternalRequestDTO)
-    public readonly order: CreateOrderExternalRequestDTO;
+    @Type(() => POSTMedicalOrderRequestDTO)
+    public readonly order: POSTMedicalOrderRequestDTO;
 }
 
-export class CreateResultExternalRequestExtendedDTO extends CreateResultExternalRequestDTO {
+export class POSTMedicalResultFileRequestDTO extends POSTMedicalResultRequestDTO {
     @ApiProperty({ type: 'string', format: 'binary' })
     file: Express.Multer.File;
 }

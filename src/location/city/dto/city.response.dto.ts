@@ -1,29 +1,14 @@
-import { SelectorOption } from "@/shared";
 import { Expose, Type } from "class-transformer";
 
-export class FindCityResponseDTO {
+export class GETCityResponseDTO {
     @Expose()
     public readonly id: number;
     @Expose()
     public readonly name: string;
 }
 
-export class FindCitiesResponseDTO {
-    @Type(() => FindCityResponseDTO)
+export class GETCityArrayResponseDTO {
+    @Type(() => GETCityResponseDTO)
     @Expose()
-    public readonly cities: FindCityResponseDTO[];
-}
-
-class SelectorOptionCityDTO implements SelectorOption<number> {
-    @Expose()
-    public readonly key: number;
-
-    @Expose()
-    public readonly label: string;
-}
-
-export class FindSelectorOptionsCityDTO {
-    @Type(() => SelectorOptionCityDTO)
-    @Expose()
-    public readonly options: SelectorOptionCityDTO[];
+    public readonly cities: GETCityResponseDTO[];
 }

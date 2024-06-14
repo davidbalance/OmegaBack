@@ -2,9 +2,9 @@ import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs
 import { OrderExternalConnectionService } from "./order-external-connection.service";
 import { FindOrderResponseDTO } from "@/medical-result/common/dtos/order.response.dto";
 import { plainToInstance } from "class-transformer";
-import { CreateOrderExternalRequestDTO, FindOneOrderExternalAndUpdateRequestDTO } from "@/medical-result/common/dtos/order-external-connection.request.dto";
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
+import { PATCHMedicalOrderRequestDTO, POSTMedicalOrderRequestDTO } from "@/medical-result/common/dtos/order-external-connection.request.dto";
 
 @ApiTags('External Connections')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -18,7 +18,7 @@ export class OrderExternalConnectionController {
     @Post(':source')
     async create(
         @Param('source') source: string,
-        @Body() body: CreateOrderExternalRequestDTO
+        @Body() body: POSTMedicalOrderRequestDTO
     ): Promise<FindOrderResponseDTO> {
         const order = await this.service.create({ source, ...body });
         return plainToInstance(FindOrderResponseDTO, order);
@@ -29,7 +29,7 @@ export class OrderExternalConnectionController {
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('id') id: string,
-        @Body() body: FindOneOrderExternalAndUpdateRequestDTO
+        @Body() body: PATCHMedicalOrderRequestDTO
     ): Promise<FindOrderResponseDTO> {
         const order = await this.service.findOneAndUpdate({ key: id, source: source }, body);
         return plainToInstance(FindOrderResponseDTO, order);

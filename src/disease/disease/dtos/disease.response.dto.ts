@@ -1,7 +1,6 @@
-import { SelectorOption } from "@/shared";
 import { Expose, Type } from "class-transformer";
 
-class DiseaseGroupDTO {
+export class GETDiseaseResponseDTO {
     @Expose()
     public readonly id: number;
 
@@ -9,36 +8,14 @@ class DiseaseGroupDTO {
     public readonly name: string;
 }
 
-export class FindDiseaseResponseDTO {
-    @Expose()
-    public readonly id: number;
+export class POSTDiseaseResponseDTO extends GETDiseaseResponseDTO { }
 
-    @Expose()
-    public readonly name: string;
+export class PATCHDiseaseResponseDTO extends GETDiseaseResponseDTO { }
 
-    @Type(() => DiseaseGroupDTO)
+export class GETDiseaseArrayResponseDTO {
+    @Type(() => GETDiseaseResponseDTO)
     @Expose()
-    public readonly group: DiseaseGroupDTO;
+    public readonly diseases: GETDiseaseResponseDTO[]
 }
 
-export class FindDiseasesResponseDTO {
-    @Type(() => FindDiseaseResponseDTO)
-    @Expose()
-    public readonly diseases: FindDiseaseResponseDTO[]
-}
-
-class SelectorOptionDiseaseDTO implements SelectorOption<number>{
-    @Expose()
-    public readonly key: number;
-
-    @Expose()
-    public readonly label: string;
-}
-
-export class FindSelectorOptionsDiseaseDTO {
-    @Type(() => SelectorOptionDiseaseDTO)
-    @Expose()
-    public readonly options: SelectorOptionDiseaseDTO[]
-}
-
-export class FindOneDiseaseAndDeleteResponseDTO { }
+export class DELETEDiseaseResponseDTO { }

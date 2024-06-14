@@ -2,9 +2,9 @@ import { ConflictException, ForbiddenException, Inject, Injectable, Logger } fro
 import { UserCredentialRepository } from './user-credential.repository';
 import { UserCredential } from './entities/user-credential.entity';
 import * as bcrypt from 'bcrypt';
-import { CreateCredentialRequestDTO } from './dtos';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CredentialCreateEvent, CredentialEvent } from '@/shared';
+import { POSTCredentialRequestDTO } from './dtos/user-credential.request.dto';
 
 @Injectable()
 export class UserCredentialService {
@@ -19,7 +19,7 @@ export class UserCredentialService {
    * @param param0 
    * @returns A new user credential
    */
-  async create({ email, ...data }: CreateCredentialRequestDTO): Promise<UserCredential> {
+  async create({ email, ...data }: POSTCredentialRequestDTO): Promise<UserCredential> {
     try {
       await this.repository.findOne({ where: { email } });
       const conflictMessage = ['Email already', JSON.stringify({ email })];

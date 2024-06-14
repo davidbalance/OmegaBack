@@ -1,3 +1,3 @@
-export class CreateCredentialResponseDTO { }
+export class POSTCredentialResponseDTO { }
 
-export class FindOneCredentialAndUpdatePasswordResponseDTO { }
+export class PATCHCredentialPasswordChangeResponseDTO { }

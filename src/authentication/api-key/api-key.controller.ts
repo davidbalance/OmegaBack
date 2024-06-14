@@ -1,16 +1,15 @@
 import { Body, Controller, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiKeyService } from './api-key.service';
-import { CreateApiKeyRequestDTO, CreateApiKeyResponseDTO, FindApiKeyResponseDTO, FindApiKeysResponseDTO, FindOneAndDeleteApiKeyResponseDTO, FindOneAndUpdateApiKeyRequestDTO } from './dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Authorize, User } from '@/shared/decorator';
+import { User } from '@/shared/decorator';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { ClaimEnum } from '@/shared';
+import { GETApiKeyArrayResponseDTO, PATCHApiKeyResponseDTO, POSTApiKeyResponseDTO } from './dto/api-key.response.dto';
+import { PATCHApiKeyRequestDTO, POSTApiKeyRequestDTO } from './dto/api-key.request.dto';
 
-@ApiTags('Api Key')
+@ApiTags('Authentication/Api Key')
 @ApiBearerAuth()
-@Controller('api-key')
+@Controller('api/key')
 export class ApiKeyController {
   constructor(
     @Inject(ApiKeyService) private readonly apiKeyService: ApiKeyService
@@ -20,28 +19,28 @@ export class ApiKeyController {
   @Get()
   async find(
     @User() user: number
-  ): Promise<FindApiKeysResponseDTO> {
+  ): Promise<GETApiKeyArrayResponseDTO> {
     const apiKeys = await this.apiKeyService.find(user);
-    return plainToInstance(FindApiKeysResponseDTO, { apiKeys });
+    return plainToInstance(GETApiKeyArrayResponseDTO, { apiKeys });
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(
-    @Body() body: CreateApiKeyRequestDTO,
+    @Body() body: POSTApiKeyRequestDTO,
     @User() user: number
-  ): Promise<CreateApiKeyResponseDTO> {
+  ): Promise<POSTApiKeyResponseDTO> {
     const apikey = await this.apiKeyService.create({ ...body, user });
-    return plainToInstance(CreateApiKeyResponseDTO, { apikey: apikey });
+    return plainToInstance(POSTApiKeyResponseDTO, { apikey: apikey });
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
-    @User() body: FindOneAndUpdateApiKeyRequestDTO
-  ): Promise<FindApiKeyResponseDTO> {
+    @User() body: PATCHApiKeyRequestDTO
+  ): Promise<PATCHApiKeyResponseDTO> {
     const apikey = await this.apiKeyService.findOneAndUpdate({ id, ...body });
-    return plainToInstance(FindApiKeyResponseDTO, apikey);
+    return plainToInstance(PATCHApiKeyResponseDTO, apikey);
   }
 }

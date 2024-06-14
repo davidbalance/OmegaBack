@@ -1,9 +1,9 @@
-import { CreateBranchExternalRequestDTO } from "@/location/branch/dtos";
+import { POSTBranchRequestDTO } from "@/location/branch/dtos/external-connection.request.dto";
 import { CreatePatientExternalRequestDTO } from "@/user/common";
 import { Type } from "class-transformer";
 import { IsDefined, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, ValidateNested } from "class-validator";
 
-export class CreateOrderExternalRequestDTO {
+export class POSTMedicalOrderRequestDTO {
     @IsString()
     @IsNotEmpty()
     public readonly key: string;
@@ -16,8 +16,8 @@ export class CreateOrderExternalRequestDTO {
     @IsObject()
     @IsNotEmptyObject()
     @ValidateNested()
-    @Type(() => CreateBranchExternalRequestDTO)
-    public readonly branch: CreateBranchExternalRequestDTO;
+    @Type(() => POSTBranchRequestDTO)
+    public readonly branch: POSTBranchRequestDTO;
 
     @IsDefined()
     @IsObject()
@@ -27,7 +27,7 @@ export class CreateOrderExternalRequestDTO {
     public readonly patient: CreatePatientExternalRequestDTO;
 }
 
-export class FindOneOrderExternalAndUpdateRequestDTO {
+export class PATCHMedicalOrderRequestDTO {
     @IsString()
     @IsNotEmpty()
     public readonly process: string;

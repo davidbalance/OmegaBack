@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ApiKeyRepository } from './api-key.repository';
-import { CreateApiKeyRequestDTO, FindOneAndUpdateApiKeyRequestDTO } from './dto';
 import { v4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
 import dayjs from 'dayjs';
 import { LessThan } from 'typeorm';
 import { UserCredentialService } from '../user-credential/user-credential.service';
+import { PATCHApiKeyRequestDTO, POSTApiKeyRequestDTO } from './dto/api-key.request.dto';
 
 @Injectable()
 export class ApiKeyService {
@@ -41,30 +41,11 @@ export class ApiKeyService {
   }
 
   /**
-   * Find one and update an API KEY
-   * @param param0 
-   * @returns 
-   */
-  async findOneAndUpdate({ id, ...props }: FindOneAndUpdateApiKeyRequestDTO & { id: number }): Promise<{ name: string }> {
-    const keys = await this.repository.findOneAndUpdate({ id: id }, { ...props });
-    return keys;
-  }
-
-  /**
-   * Find one and delete an API KEY
-   * @param param0 
-   * @returns 
-   */
-  async findOneAndDelete(id: number): Promise<void> {
-    await this.repository.findOneAndDelete({ id: id });
-  }
-
-  /**
    * Creates a new API key with the given options
    * @param param0 
    * @returns The resulting API-KEY
    */
-  async create({ user, ...valueKey }: CreateApiKeyRequestDTO & { user: number }): Promise<string> {
+  async create({ user, ...valueKey }: POSTApiKeyRequestDTO & { user: number }): Promise<string> {
     const foundUser = await this.userService.findOneByUser(user);
     const apiKey: string = v4();
     const expiresIn: number = this.configService.get<number>('APIKEY_EXPIRES_IN');
@@ -76,6 +57,25 @@ export class ApiKeyService {
       expiresAt: expiresAt
     });
     return newApiKey.value;
+  }
+
+  /**
+   * Find one and update an API KEY
+   * @param param0 
+   * @returns 
+   */
+  async findOneAndUpdate({ id, ...props }: PATCHApiKeyRequestDTO & { id: number }): Promise<{ name: string }> {
+    const keys = await this.repository.findOneAndUpdate({ id: id }, { ...props });
+    return keys;
+  }
+
+  /**
+   * Find one and delete an API KEY
+   * @param param0 
+   * @returns 
+   */
+  async findOneAndDelete(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id: id });
   }
 
   /**

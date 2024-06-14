@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Order } from "../entities/order.entity";
-import { CreateOrderExternalRequestDTO, FindOneOrderExternalAndUpdateRequestDTO } from "@/medical-result/common/dtos/order-external-connection.request.dto";
 import { OrderExternalKeyService } from "../order-external-key/order-external-key.service";
 import { OrderRepository } from "../order.repository";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { OrderEvent, OrderFindOrCreateBranchEvent, OrderFindOrCreatePatientEvent } from "@/shared";
+import { PATCHMedicalOrderRequestDTO, POSTMedicalOrderRequestDTO } from "@/medical-result/common/dtos/order-external-connection.request.dto";
 
 @Injectable()
 export class OrderExternalConnectionService {
@@ -19,7 +19,7 @@ export class OrderExternalConnectionService {
      * @param param0 
      * @returns Order
      */
-    async create({ key, source, branch, patient, ...order }: CreateOrderExternalRequestDTO & { source: string }): Promise<Order> {
+    async create({ key, source, branch, patient, ...order }: POSTMedicalOrderRequestDTO & { source: string }): Promise<Order> {
         const { company } = branch;
         const { corporativeGroup } = company;
         const newKey = await this.externalKeyService.create({ key, source });
@@ -46,7 +46,7 @@ export class OrderExternalConnectionService {
      * @param param0 
      * @returns Order
      */
-    async findOneOrCreate({ key, source, branch, patient, ...order }: CreateOrderExternalRequestDTO & { source: string }): Promise<Order> {
+    async findOneOrCreate({ key, source, branch, patient, ...order }: POSTMedicalOrderRequestDTO & { source: string }): Promise<Order> {
         try {
             const foundOrder = await this.repository.findOne({
                 where: {
@@ -68,7 +68,7 @@ export class OrderExternalConnectionService {
      * @param param1 
      * @returns Order
      */
-    async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: FindOneOrderExternalAndUpdateRequestDTO): Promise<Order> {
+    async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHMedicalOrderRequestDTO): Promise<Order> {
         const order = await this.repository.findOneAndUpdate({
             externalKey: {
                 source: source,

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BranchController } from '../branch.controller';
+import { BranchController } from '../controllers/branch.controller';
 import { BranchService } from '../branch.service';
 
 describe('BranchController', () => {

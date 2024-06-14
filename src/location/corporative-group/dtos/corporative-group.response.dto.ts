@@ -1,35 +1,24 @@
-import { FindCompanyResponseDTO } from "@/location/company/dtos/company.response.dto";
-import { SelectorOption } from "@/shared";
+import { GETCompanyResponseDTO } from "@/location/company/dtos/company.response.dto";
 import { Expose, Type } from "class-transformer";
 
-export class FindCorporativeGroupResponseDTO {
+export class GETCorporativeGroupResponseDTO {
     @Expose()
     public readonly id: number;
 
     @Expose()
     public readonly name: string;
 
-    @Type(() => FindCompanyResponseDTO)
+    @Type(() => GETCompanyResponseDTO)
     @Expose()
-    public readonly companies: FindCompanyResponseDTO[]
+    public readonly companies: GETCompanyResponseDTO[]
 }
 
-export class FindCorporativeGroupsResponseDTO {
-    @Type(() => FindCorporativeGroupResponseDTO)
+export class GETCorporativeGroupArrayResponseDTO {
+    @Type(() => GETCorporativeGroupResponseDTO)
     @Expose()
-    public readonly groups: FindCorporativeGroupResponseDTO[];
+    public readonly groups: GETCorporativeGroupResponseDTO[];
 }
 
-class SelectorOptionCorporativeGroupDTO implements SelectorOption<number> {
-    @Expose()
-    public readonly key: number;
+export class POSTCorporativeGroupResponseDTO extends GETCorporativeGroupResponseDTO { }
 
-    @Expose()
-    public readonly label: string;
-}
-
-export class FindSelectorOptionsCorporativeGroupDTO {
-    @Type(() => SelectorOptionCorporativeGroupDTO)
-    @Expose()
-    public readonly options: SelectorOptionCorporativeGroupDTO[];
-}
+export class PATCHCorporativeGroupResponseDTO extends GETCorporativeGroupResponseDTO { }

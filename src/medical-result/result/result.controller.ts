@@ -6,7 +6,6 @@ import { plainToInstance } from 'class-transformer';
 import { FindOneResultAndUpdateDiseaseResponseDTO, FindResultResponseDTO, FindResultsResponseDTO } from '../common/dtos';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { } from '@/shared/guards/authorization-guard/authorization.guard';
 import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
 
 @ApiTags('Medical Result')

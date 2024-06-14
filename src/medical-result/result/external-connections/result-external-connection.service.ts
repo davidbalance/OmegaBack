@@ -3,11 +3,11 @@ import { ResultExternalKeyService } from "../result-external-key/result-external
 import { ResultRepository } from "../result.repository";
 import { Result } from "../entities/result.entity";
 import { OrderExternalConnectionService } from "@/medical-result/order/external-connections/order-external-connection.service";
-import { CreateResultExternalRequestDTO } from "@/medical-result/common/dtos/result-external-connection.request.dto";
 import { StorageManager } from "@/shared/storage-manager";
 import { extname } from "path";
 import { ResultEvent, ResultFindOrCreateDoctorEvent, ResultFindOrCreateExamEvent, fileResultPath, signaturePath } from "@/shared";
 import { EventEmitter2 } from "@nestjs/event-emitter";
+import { POSTMedicalResultRequestDTO } from "@/medical-result/common/dtos/result-external-connection.request.dto";
 
 @Injectable()
 export class ResultExternalConnectionService {
@@ -25,7 +25,7 @@ export class ResultExternalConnectionService {
      * @param file 
      * @returns Result
      */
-    async create({ source, key, order, doctor, exam }: CreateResultExternalRequestDTO & { source: string }, file: Express.Multer.File): Promise<Result> {
+    async create({ source, key, order, doctor, exam }: POSTMedicalResultRequestDTO & { source: string }, file: Express.Multer.File): Promise<Result> {
 
         const foundOrder = await this.orderService.findOneOrCreate({ source, ...order });
 

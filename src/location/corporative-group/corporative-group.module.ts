@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
-import { CorporativeGroupService } from './corporative-group.service';
-import { CorporativeGroupController } from './corporative-group.controller';
+import { CorporativeGroupService } from './services/corporative-group.service';
 import { CorporativeGroup } from './entities/corporative-group.entity';
 import { SqlDatabaseModule } from 'src/shared';
 import { CorporativeGroupRepository } from './corporative-group.repository';
-import { CGExternalConnectionController } from './external-connection/c-g-external-connection.controller';
-import { CGExternalConnectionService } from './external-connection/c-g-external-connection.service';
 import { CorporativeGroupExternalKeyModule } from './corporative-group-external-key/corporative-group-external-key.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { CorporativeGroupController } from './controllers/corporative-group.controller';
+import { ExternalConnectionController } from './controllers/external-connection.controller';
+import { SelectorController } from './controllers/selector.controller';
+import { ExternalConnectionService } from './services/external-connection.service';
+import { SelectorService } from './services/selector.service';
 
 @Module({
   imports: [
@@ -17,16 +19,18 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
   ],
   controllers: [
     CorporativeGroupController,
-    CGExternalConnectionController
+    ExternalConnectionController,
+    SelectorController
   ],
   providers: [
+    SelectorService,
     CorporativeGroupService,
     CorporativeGroupRepository,
-    CGExternalConnectionService,
+    ExternalConnectionService,
   ],
   exports: [
     CorporativeGroupService,
-    CGExternalConnectionService
+    ExternalConnectionService
   ]
 })
 export class CorporativeGroupModule { }

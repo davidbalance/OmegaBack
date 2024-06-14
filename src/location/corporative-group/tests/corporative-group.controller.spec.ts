@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CorporativeGroupController } from '../corporative-group.controller';
-import { CorporativeGroupService } from '../corporative-group.service';
+import { CorporativeGroupService } from '../services/corporative-group.service';
 
 describe('CorporativeGroupController', () => {
   let controller: CorporativeGroupController;

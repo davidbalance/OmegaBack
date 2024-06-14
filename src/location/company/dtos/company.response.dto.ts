@@ -1,8 +1,7 @@
-import { FindBranchResponseDTO } from "@/location/branch/dtos";
-import { SelectorOption } from "@/shared";
+import { GETBranchResponseDTO } from "@/location/branch/dtos/branch.response.dto";
 import { Expose, Type } from "class-transformer";
 
-export class FindCompanyResponseDTO {
+export class GETCompanyResponseDTO {
     @Expose()
     public readonly id: number;
 
@@ -18,27 +17,17 @@ export class FindCompanyResponseDTO {
     @Expose()
     public readonly phone: string;
 
-    @Type(() => FindBranchResponseDTO)
+    @Type(() => GETBranchResponseDTO)
     @Expose()
-    public readonly branches: FindBranchResponseDTO[];
+    public readonly branches: GETBranchResponseDTO[];
 }
 
-export class FindCompaniesResponseDTO {
-    @Type(() => FindCompanyResponseDTO)
+export class GETCompanyArrayResponseDTO {
+    @Type(() => GETCompanyResponseDTO)
     @Expose()
-    public readonly companies: FindCompanyResponseDTO[];
+    public readonly companies: GETCompanyResponseDTO[];
 }
 
-class SelectorOptionCompanyDTO implements SelectorOption<number> {
-    @Expose()
-    public readonly key: number;
+export class POSTCompanyResponseDTO extends GETCompanyResponseDTO { }
 
-    @Expose()
-    public readonly label: string;
-}
-
-export class FindSelectorOptionsCompanyDTO {
-    @Type(() => SelectorOptionCompanyDTO)
-    @Expose()
-    public readonly options: SelectorOptionCompanyDTO[];
-}
+export class PATCHCompanyResponseDTO extends GETCompanyResponseDTO { }
