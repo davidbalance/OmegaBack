@@ -25,7 +25,7 @@ import { SelectorService } from './services/selector.service';
   providers: [
     SelectorService,
     CorporativeGroupService,
-    CorporativeGroupRepository,
+    CorporativeGroupRepository, 
     ExternalConnectionService,
   ],
   exports: [
