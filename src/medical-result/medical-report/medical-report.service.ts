@@ -1,4 +1,4 @@
-import { Inject, Injectable, StreamableFile } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { MedicalReportRepository } from './medical-report.repository';
 import { CreateMedicalReportRequestDTO } from '../common/dtos';
 import { MedicalReport } from './entities/medical-report.entity';
@@ -7,7 +7,7 @@ import { readFileSync } from 'fs';
 import dayjs from 'dayjs';
 import path from 'path';
 import { StorageManager } from '@/shared/storage-manager';
-import { MedicalReportSendAttributeService } from './medical-report-send-attribute/medical-report-send-attribute.service';
+import { SendAttributeService } from './send-attribute/send-attribute.service';
 
 @Injectable()
 export class MedicalReportService implements FindFilePathService<number> {
@@ -16,7 +16,7 @@ export class MedicalReportService implements FindFilePathService<number> {
     @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository,
     @Inject(PdfManagerService) private readonly pdfService: PdfManagerService,
     @Inject(StorageManager) private readonly storageManager: StorageManager,
-    @Inject(MedicalReportSendAttributeService) private readonly attributeService: MedicalReportSendAttributeService
+    @Inject(SendAttributeService) private readonly attributeService: SendAttributeService
   ) { }
 
 
@@ -31,11 +31,7 @@ export class MedicalReportService implements FindFilePathService<number> {
     return file.fileAddress;
   }
 
-  /**
-   * Creates a new report with the given options
-   * @param param0 
-   * @returns MedicalReport
-   */
+
   async create({ ...data }: CreateMedicalReportRequestDTO): Promise<MedicalReport> {
     const report = await this.repository.create({ ...data });
     const filename = await this.createPdf(report.id);
@@ -78,12 +74,6 @@ export class MedicalReportService implements FindFilePathService<number> {
     doctorSignature: `data:image/png;base64,${base64}`
   });
 
-  /**
-   * Creates a send attribute for the given report
-   * @param id 
-   * @param value 
-   * @returns MedicalReport
-   */
   async assignSendAttribute(id: number, value: string): Promise<MedicalReport> {
     const attribute = await this.attributeService.create({ value: value });
     const { sendAttributes } = await this.repository.findOne({ where: { id: id }, relations: { sendAttributes: true } });

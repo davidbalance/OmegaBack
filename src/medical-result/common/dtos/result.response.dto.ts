@@ -16,7 +16,7 @@ class ResultOrderDTO {
     public readonly patientFullname: string;
 }
 
-export class FindResultResponseDTO {
+export class GETMedicalResultResponseDTO {
     @Expose()
     public readonly id: number;
 
@@ -25,7 +25,7 @@ export class FindResultResponseDTO {
 
     @Expose()
     public readonly diseaseId: number;
-    
+
     @Expose()
     public readonly diseaseName: string;
 
@@ -38,10 +38,10 @@ export class FindResultResponseDTO {
     public readonly report?: ResultReportDTO;
 }
 
-export class FindResultsResponseDTO {
-    @Type(() => FindResultResponseDTO)
+export class GETMedicalResultArrayResponseDTO {
+    @Type(() => GETMedicalResultResponseDTO)
     @Expose()
-    public readonly results: FindResultResponseDTO[]
+    public readonly results: GETMedicalResultResponseDTO[]
 }
 
-export class FindOneResultAndUpdateDiseaseResponseDTO { }
+export class PATCHMedicalResultResponseDTO { }

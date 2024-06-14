@@ -1,11 +1,11 @@
-import { Body, Controller, Header, Inject, Post, Res, StreamableFile } from '@nestjs/common';
+import { Body, Controller, Inject, Post, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FileDownloaderService } from './file-downloader.service';
 import { DownloadAndZipContentRequestDTO, FileSourceRequestDTO } from './dto/file-downloader.request.dto';
 import { Response } from 'express';
 
-@ApiTags('Medical Result')
-@Controller('medical-result/file-downloader')
+@ApiTags('Medical/File')
+@Controller('medical/file')
 export class FileDownloaderController {
     constructor(
         @Inject(FileDownloaderService) private readonly service: FileDownloaderService

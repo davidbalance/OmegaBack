@@ -1,13 +1,12 @@
-import { Type } from "class-transformer";
-import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class InsertMedicalReportRequestDTO {
+export class POSTMedicalReportRequestDTO {
     @IsString()
     @IsNotEmpty()
     public readonly content: string;
 }
 
-export class FindOneResultAndUpdateDiseaseRequestDTO {
+export class PATCHMedicalResultWithDiseaseRequestDTO {
     @IsNumber()
     public readonly diseaseId: number;
 
