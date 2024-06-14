@@ -1,3 +1,4 @@
+import { FindCompanyResponseDTO } from "@/location/company/dtos/company.response.dto";
 import { SelectorOption } from "@/shared";
 import { Expose, Type } from "class-transformer";
 
@@ -7,6 +8,10 @@ export class FindCorporativeGroupResponseDTO {
 
     @Expose()
     public readonly name: string;
+
+    @Type(() => FindCompanyResponseDTO)
+    @Expose()
+    public readonly companies: FindCompanyResponseDTO[]
 }
 
 export class FindCorporativeGroupsResponseDTO {

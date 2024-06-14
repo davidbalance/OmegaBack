@@ -18,6 +18,13 @@ export class CorporativeGroupService {
     const groups = await this.repository.find({
       where: {
         status: true
+      },
+      relations: {
+        companies: {
+          branches: {
+            city: true
+          }
+        }
       }
     });
 

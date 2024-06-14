@@ -8,7 +8,6 @@ export class CreateApiKeyRequestDTO {
 }
 
 export class FindOneAndUpdateApiKeyRequestDTO {
-
     @IsString()
     @IsNotEmpty()
     public readonly name: string;

@@ -1,3 +1,4 @@
+import { FindCityResponseDTO } from "@/location/city/dto";
 import { SelectorOption } from "@/shared";
 import { Expose, Type } from "class-transformer";
 
@@ -7,6 +8,10 @@ export class FindBranchResponseDTO {
 
     @Expose()
     public readonly name: string;
+
+    @Type(() => FindCityResponseDTO)
+    @Expose()
+    public readonly city: FindCityResponseDTO;
 }
 
 export class FindBranchesResponseDTO {
