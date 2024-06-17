@@ -31,3 +31,14 @@ export class FindUsersResponseDTO {
 export class FindOneUserAndUpdateResponseDTO { }
 
 export class FindOneUserAndDeleteResponseDTO { }
+
+export class GETAttributeResponseDTO {
+    @Expose()
+    public readonly id: number;
+    @Expose()
+    public readonly name: string;
+    @Expose()
+    public readonly value: string;
+}
+
+export class PATCHUserExtraAttributeResponseDTO { }

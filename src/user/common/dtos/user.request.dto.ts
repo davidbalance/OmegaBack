@@ -1,5 +1,5 @@
 import { OmitType, PartialType } from "@nestjs/mapped-types";
-import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
+import { IsEmail, IsNotEmpty, IsObject, IsString, Length } from "class-validator";
 
 export class CreateUserRequestDTO {
     @IsString()
@@ -21,3 +21,8 @@ export class CreateUserRequestDTO {
 
 class CreateUserRequestDTOOmittedType extends OmitType(CreateUserRequestDTO, ['dni']) { }
 export class FindOneUserAndUpdateRequestDTO extends PartialType(CreateUserRequestDTOOmittedType) { }
+
+export class PATCHUserExtraAttributeRequestDTO {
+    @IsObject()
+    public readonly value: any;
+}

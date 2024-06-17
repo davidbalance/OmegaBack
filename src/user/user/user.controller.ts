@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserRequestDTO, FindOneUserAndDeleteResponseDTO, FindOneUserAndUpdateRequestDTO, FindUserResponseDTO, FindUsersResponseDTO } from '../common';
+import { CreateUserRequestDTO, FindOneUserAndDeleteResponseDTO, FindOneUserAndUpdateRequestDTO, FindUserResponseDTO, FindUsersResponseDTO, GETAttributeResponseDTO, PATCHUserExtraAttributeRequestDTO, PATCHUserExtraAttributeResponseDTO } from '../common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
@@ -57,6 +57,44 @@ export class UserController {
     @Param('id') id: number
   ): Promise<FindOneUserAndDeleteResponseDTO> {
     await this.userService.findOneAndDelete(id);
+    return {};
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('look/for/company/:id')
+  async findLookForCompanyAttribute(
+    @Param('id') id: number,
+  ): Promise<GETAttributeResponseDTO> {
+    const attribute = await this.userService.findExtraAttribute(id, 'look_for_company');
+    return plainToInstance(GETAttributeResponseDTO, attribute);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('look/for/company/:id')
+  async findOneAndUpdateLookForCompanyAttribute(
+    @Param('id') id: number,
+    @Body() body: PATCHUserExtraAttributeRequestDTO
+  ): Promise<PATCHUserExtraAttributeResponseDTO> {
+    await this.userService.assignExtraAttribute(id, { name: 'look_for_company', value: body.value });
+    return {};
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('employee/:id')
+  async findEmployeeOfAttribute(
+    @Param('id') id: number,
+  ): Promise<GETAttributeResponseDTO> {
+    const attribute = await this.userService.findExtraAttribute(id, 'employee_of');
+    return plainToInstance(GETAttributeResponseDTO, attribute);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('employee/:id')
+  async findOneAndUpdateEmployeeOfAttribute(
+    @Param('id') id: number,
+    @Body() body: PATCHUserExtraAttributeRequestDTO
+  ): Promise<PATCHUserExtraAttributeResponseDTO> {
+    await this.userService.assignExtraAttribute(id, { name: 'employee_of', value: body.value });
     return {};
   }
 }
