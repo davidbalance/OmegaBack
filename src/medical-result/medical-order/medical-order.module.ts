@@ -11,6 +11,9 @@ import { ExternalConnectionController } from './controllers/external-connection.
 import { MedicalOrderService } from './services/medical-order.service';
 import { MedicalOrderRepository } from './medical-order.repository';
 import { ExternalConnectionService } from './services/external-connection.service';
+import { MailAddressModule } from './mail-address/mail-address.module';
+import { DniInterceptorModule } from '@/shared/interceptors/dni/dni-interceptor.module';
+import { ExtraAttributeInterceptorModule } from '@/shared/interceptors/extra-attribute/extra-attribute-interceptor.module';
 
 @Module({
   imports: [
@@ -18,6 +21,7 @@ import { ExternalConnectionService } from './services/external-connection.servic
     UserModule,
     ExternalKeyModule,
     AuthenticationGuardModule,
+    DniInterceptorModule,
     MailerModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -40,7 +44,8 @@ import { ExternalConnectionService } from './services/external-connection.servic
           path: 'templates/mail'
         }
       })
-    })
+    }),
+    MailAddressModule
   ],
   controllers: [
     MedicalOrderController,

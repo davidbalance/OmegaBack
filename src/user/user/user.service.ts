@@ -62,7 +62,7 @@ export class UserService {
    * @returns User
    */
   async findOne(id: number): Promise<User> {
-    return this.repository.findOne({ where: { id: id } });
+    return this.repository.findOne({ where: { id: id }, relations: { extraAttributes: true } });
   }
 
   /**

@@ -19,7 +19,6 @@ export class MedicalOrderController {
     return plainToInstance(FindOrderFilesResponseDTO, order);
   }
 
-
   @UseGuards(JwtAuthGuard)
   @Get('patient/:dni')
   async findByPatient(

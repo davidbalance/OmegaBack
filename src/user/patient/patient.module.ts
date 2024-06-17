@@ -9,12 +9,14 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
 import { PatientController } from './controller/patient.controller';
 import { PatientService } from './service/patient.service';
 import { ExternalConnectionService } from './service/external-connection.service';
+import { ExtraAttributeInterceptorModule } from '@/shared/interceptors/extra-attribute/extra-attribute-interceptor.module';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Patient]),
     UserModule,
     AuthenticationGuardModule,
+    ExtraAttributeInterceptorModule
   ],
   controllers: [
     PatientController,

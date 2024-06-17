@@ -36,6 +36,34 @@ export class PatientService {
     return patients;
   }
 
+  async findByExtraAttribute(name: string, value: string): Promise<Patient[]> {
+    const patients = await this.repository.find({
+      where: {
+        user: {
+          extraAttributes: {
+            name: name,
+            value: value
+          },
+          status: true,
+        }
+      },
+      select: {
+        id: true,
+        birthday: true,
+        gender: true,
+        user: {
+          id: true,
+          dni: true,
+          email: true,
+          lastname: true,
+          name: true
+        }
+      },
+      cache: 1000 * 900
+    });
+    return patients;
+  }
+
   /**
    * Find one patient by its dni
    * @param dni 

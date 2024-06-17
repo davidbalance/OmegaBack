@@ -1,7 +1,8 @@
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { MedicalResult } from "@/medical-result/medical-result/entities/result.entity";
 import { ExternalKey } from "../external-key/entities/external-key.entity";
+import { MailAddress } from "../mail-address/entity/mail-address.entity";
 
 @Entity({ name: 'tbl_mr_orders' })
 @Index('order_dni_idx', ['patientDni'])
@@ -46,4 +47,12 @@ export class MedicalOrder extends AbstractEntity<number> {
     @OneToOne(() => ExternalKey, { eager: false })
     @JoinColumn({ referencedColumnName: 'id', name: 'external_key' })
     public externalKey: ExternalKey;
+
+    @ManyToMany(() => MailAddress, { eager: true })
+    @JoinTable({
+        name: 'tbl_mr_orders_email',
+        joinColumn: { referencedColumnName: 'id', name: 'order_id' },
+        inverseJoinColumn: { referencedColumnName: 'id', name: 'mail_address_id' }
+    })
+    public mailAddress: MailAddress[];
 }
