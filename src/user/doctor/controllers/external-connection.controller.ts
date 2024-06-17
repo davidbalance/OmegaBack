@@ -1,20 +1,16 @@
 import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import { DoctorExternalConnectionService } from "./doctor-external-connection.service";
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
-import {
-    CreateDoctorExternalRequestDTO,
-    FindDoctorResponseDTO,
-    FindOneDoctorAndUpdateRequestDTO
-} from "@/user/common";
+import { CreateDoctorExternalRequestDTO, FindDoctorResponseDTO, FindOneDoctorAndUpdateRequestDTO } from "@/user/common";
 import { plainToInstance } from "class-transformer";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
+import { ExternalConnectionService } from "../services/external-connection.service";
 
-@ApiTags('External Connections')
+@ApiTags('External/Connection', 'User/Doctor')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
-@Controller('doctor-external-connection')
-export class DoctorExternalConnectionController {
+@Controller('external/connection/doctor')
+export class ExternalConnectionController {
     constructor(
-        @Inject(DoctorExternalConnectionService) private readonly service: DoctorExternalConnectionService
+        @Inject(ExternalConnectionService) private readonly service: ExternalConnectionService
     ) { }
 
     @UseGuards(ApiKeyAuthGuard)

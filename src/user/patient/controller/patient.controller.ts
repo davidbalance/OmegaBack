@@ -1,11 +1,11 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { PatientService } from './patient.service';
-import { FindPatientsResponseDTO } from '../common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
+import { FindPatientsResponseDTO } from '@/user/common';
+import { PatientService } from '../service/patient.service';
 
-@ApiTags('User')
+@ApiTags('User/Patient')
 @ApiBearerAuth()
 @Controller('patients')
 export class PatientController {

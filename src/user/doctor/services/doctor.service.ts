@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { DoctorRepository } from './doctor.repository';
-import { Doctor } from './entities/doctor.entity';
 import path, { extname } from 'path';
 import { StorageManager } from '@/shared/storage-manager';
 import { signaturePath } from '@/shared';
+import { DoctorRepository } from '../doctor.repository';
+import { Doctor } from '../entities/doctor.entity';
 
 @Injectable()
 export class DoctorService {

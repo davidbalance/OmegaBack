@@ -1,16 +1,16 @@
 import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import { PatientExternalConnectionService } from "./patient-external-connection.service";
+import { ExternalConnectionService } from "../service/external-connection.service";
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { CreatePatientExternalRequestDTO, FindOnePatientAndUpdateRequestDTO, FindPatientResponseDTO } from "@/user/common";
 import { plainToInstance } from "class-transformer";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 
-@ApiTags('External Connections')
+@ApiTags('External/Connection', 'User/Patient')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
-@Controller('patient-external-connection')
+@Controller('external/connection/patients')
 export class PatientExternalConnectionController {
     constructor(
-        @Inject(PatientExternalConnectionService) private readonly service: PatientExternalConnectionService
+        @Inject(ExternalConnectionService) private readonly service: ExternalConnectionService
     ) { }
 
     @UseGuards(ApiKeyAuthGuard)

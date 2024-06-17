@@ -7,7 +7,7 @@ import { MedicalOrderService } from '../services/medical-order.service';
 
 @ApiTags('Medical/Order')
 @ApiBearerAuth()
-@Controller('orders')
+@Controller('medical/orders')
 export class MedicalOrderController {
   constructor(private readonly orderService: MedicalOrderService) { }
 

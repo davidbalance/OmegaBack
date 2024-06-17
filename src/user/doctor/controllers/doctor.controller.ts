@@ -1,14 +1,14 @@
 import { Body, Controller, Get, Param, ParseFilePipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { DoctorService } from './doctor.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FindDoctorsResponseDTO, FindOneDoctorAndUpdateResponseDTO, UploadSignatureRequestDTO } from '../common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { FileTypePipe } from '@/shared/pipes/file-type/file-type.pipe';
 import { MIME_TYPES } from '@/shared/pipes/file-type/constants';
+import { FindDoctorsResponseDTO, UploadSignatureRequestDTO, FindOneDoctorAndUpdateResponseDTO } from '@/user/common';
+import { DoctorService } from '../services/doctor.service';
 
-@ApiTags('User')
+@ApiTags('User/Doctor')
 @ApiBearerAuth()
 @Controller('doctors')
 export class DoctorController {

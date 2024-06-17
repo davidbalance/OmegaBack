@@ -6,7 +6,7 @@ import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { User } from '@/shared/decorator';
 
-@ApiTags('User')
+@ApiTags('User/User')
 @ApiBearerAuth()
 @Controller('users')
 export class UserController {

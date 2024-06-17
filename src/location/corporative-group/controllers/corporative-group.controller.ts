@@ -7,7 +7,7 @@ import { GETCorporativeGroupArrayResponseDTO } from '../dtos/corporative-group.r
 
 @ApiTags('Location/Corporative/Group')
 @ApiBearerAuth()
-@Controller('corporative-groups')
+@Controller('corporative/groups')
 export class CorporativeGroupController {
   constructor(private readonly corporativeGroupService: CorporativeGroupService) { }
 

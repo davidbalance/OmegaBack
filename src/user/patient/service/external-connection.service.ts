@@ -5,7 +5,7 @@ import { Patient } from "../entities/patient.entity";
 import { UserService } from "@/user/user/user.service";
 
 @Injectable()
-export class PatientExternalConnectionService {
+export class ExternalConnectionService {
     constructor(
         @Inject(PatientRepository) private readonly repository: PatientRepository,
         @Inject(UserService) private readonly userService: UserService
