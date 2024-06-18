@@ -24,7 +24,7 @@ export class UserCredentialService {
       await this.repository.findOne({ where: { email } });
       const conflictMessage = ['Email already', JSON.stringify({ email })];
       Logger.error(conflictMessage);
-      throw new ConflictException(conflictMessage)
+      throw new ConflictException(conflictMessage);
     } catch (error) {
       const hashedPassword = this.hashPassword(data.password);
       const credential: UserCredential = await this.repository.create({ ...data, password: hashedPassword, email: email });

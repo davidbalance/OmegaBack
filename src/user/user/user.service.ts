@@ -68,20 +68,17 @@ export class UserService {
 
   async findExtraAttribute(id: number, name: string): Promise<UserExtraAttribute> {
     const user = await this.repository.findOne({ where: { id }, relations: { extraAttributes: true } });
+    console.log(user);
     const extra = user.extraAttributes.find((e) => e.name === name);
     return extra;
   }
 
   async assignExtraAttribute(id: number, { name, value }: { name: string, value: any }): Promise<void> {
-    const user = await this.repository.findOne({ where: { id }, relations: { extraAttributes: false } });
-    try {
-      const selectedAttribute = user.extraAttributes.find((e) => e.name === name);
-      if (selectedAttribute) {
-        this.extraAttribute.update(selectedAttribute.id, value);
-      } else {
-        throw new NotFoundException('Not found attribute');
-      }
-    } catch (error) {
+    const user = await this.repository.findOne({ where: { id }, relations: { extraAttributes: true } });
+    const selectedAttribute = user.extraAttributes.find((e) => e.name === name);
+    if (selectedAttribute) {
+      this.extraAttribute.update(selectedAttribute.id, value);
+    } else {
       const newAttribute = await this.extraAttribute.create(name, JSON.stringify(value));
       this.repository.findOneAndUpdate({ id }, { extraAttributes: [...user.extraAttributes, newAttribute] });
     }

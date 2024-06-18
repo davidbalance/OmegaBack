@@ -23,6 +23,6 @@ class CreateUserRequestDTOOmittedType extends OmitType(CreateUserRequestDTO, ['d
 export class FindOneUserAndUpdateRequestDTO extends PartialType(CreateUserRequestDTOOmittedType) { }
 
 export class PATCHUserExtraAttributeRequestDTO {
-    @IsObject()
-    public readonly value: any;
+    @IsString()
+    public readonly value: string;
 }
