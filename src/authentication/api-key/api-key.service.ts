@@ -6,6 +6,8 @@ import dayjs from 'dayjs';
 import { LessThan } from 'typeorm';
 import { UserCredentialService } from '../user-credential/user-credential.service';
 import { PATCHApiKeyRequestDTO, POSTApiKeyRequestDTO } from './dto/api-key.request.dto';
+import { ApiKey } from './entities/api-key.entity';
+import { PATCHApiKeyResponseDTO, POSTApiKeyResponseDTO } from './dto/api-key.response.dto';
 
 @Injectable()
 export class ApiKeyService {
@@ -45,7 +47,7 @@ export class ApiKeyService {
    * @param param0 
    * @returns The resulting API-KEY
    */
-  async create({ user, ...valueKey }: POSTApiKeyRequestDTO & { user: number }): Promise<string> {
+  async create({ user, ...valueKey }: POSTApiKeyRequestDTO & { user: number }): Promise<POSTApiKeyResponseDTO> {
     const foundUser = await this.userService.findOneByUser(user);
     const apiKey: string = v4();
     const expiresIn: number = this.configService.get<number>('APIKEY_EXPIRES_IN');
@@ -56,7 +58,7 @@ export class ApiKeyService {
       credential: foundUser,
       expiresAt: expiresAt
     });
-    return newApiKey.value;
+    return { ...newApiKey, apikey: apiKey };
   }
 
   /**

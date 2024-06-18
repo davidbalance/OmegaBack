@@ -81,24 +81,11 @@ export class MedicalResultService implements FindFilePathService<number> {
   async insertMedicalReport(id: number, { ...data }: POSTMedicalReportRequestDTO): Promise<MedicalResult> {
     const medicalResult = await this.repository.findOne({
       where: { id },
-      select: {
-        id: true,
-        examName: true,
-        doctorDni: true,
-        doctorFullname: true,
-        doctorSignature: true,
-        order: {
-          id: true,
-          companyName: true,
-          patientDni: true,
-          patientFullname: true,
-          patientBirthday: true
-        }
-      },
       relations: {
         order: true
       }
     });
+    
     const medicalReport = await this.reportService.create({
       content: data.content,
       order: medicalResult.order.id,

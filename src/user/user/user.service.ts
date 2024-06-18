@@ -68,7 +68,6 @@ export class UserService {
 
   async findExtraAttribute(id: number, name: string): Promise<UserExtraAttribute> {
     const user = await this.repository.findOne({ where: { id }, relations: { extraAttributes: true } });
-    console.log(user);
     const extra = user.extraAttributes.find((e) => e.name === name);
     return extra;
   }

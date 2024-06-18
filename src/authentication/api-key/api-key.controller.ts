@@ -31,7 +31,7 @@ export class ApiKeyController {
     @User() user: number
   ): Promise<POSTApiKeyResponseDTO> {
     const apikey = await this.apiKeyService.create({ ...body, user });
-    return plainToInstance(POSTApiKeyResponseDTO, { apikey: apikey });
+    return plainToInstance(POSTApiKeyResponseDTO, apikey);
   }
 
   @UseGuards(JwtAuthGuard)

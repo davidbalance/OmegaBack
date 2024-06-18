@@ -66,7 +66,8 @@ export class UserController {
     @Param('id') id: number,
   ): Promise<GETAttributeResponseDTO> {
     const attribute = await this.userService.findExtraAttribute(id, 'look_for_company');
-    return plainToInstance(GETAttributeResponseDTO, attribute);
+    console.log(attribute);
+    return plainToInstance(GETAttributeResponseDTO, attribute || {});
   }
 
   @UseGuards(JwtAuthGuard)
@@ -75,7 +76,7 @@ export class UserController {
     @Param('id') id: number,
     @Body() body: PATCHUserExtraAttributeRequestDTO
   ): Promise<PATCHUserExtraAttributeResponseDTO> {
-    await this.userService.assignExtraAttribute(id, { name: 'look_for_company', value: body.value });
+    await this.userService.assignExtraAttribute(id, { name: 'look_for_company', ...body });
     return {};
   }
 
@@ -85,7 +86,7 @@ export class UserController {
     @Param('id') id: number,
   ): Promise<GETAttributeResponseDTO> {
     const attribute = await this.userService.findExtraAttribute(id, 'employee_of');
-    return plainToInstance(GETAttributeResponseDTO, attribute);
+    return plainToInstance(GETAttributeResponseDTO, attribute || {});
   }
 
   @UseGuards(JwtAuthGuard)
@@ -94,7 +95,26 @@ export class UserController {
     @Param('id') id: number,
     @Body() body: PATCHUserExtraAttributeRequestDTO
   ): Promise<PATCHUserExtraAttributeResponseDTO> {
-    await this.userService.assignExtraAttribute(id, { name: 'employee_of', value: body.value });
+    await this.userService.assignExtraAttribute(id, { name: 'employee_of', ...body });
+    return {};
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('doctor/of/:id')
+  async findDoctorOfAttribute(
+    @Param('id') id: number,
+  ): Promise<GETAttributeResponseDTO> {
+    const attribute = await this.userService.findExtraAttribute(id, 'doctor_of');
+    return plainToInstance(GETAttributeResponseDTO, attribute || {});
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('doctor/of/:id')
+  async findOneAndUpdateDoctorOfAttribute(
+    @Param('id') id: number,
+    @Body() body: PATCHUserExtraAttributeRequestDTO
+  ): Promise<PATCHUserExtraAttributeResponseDTO> {
+    await this.userService.assignExtraAttribute(id, { name: 'doctor_of', ...body });
     return {};
   }
 }

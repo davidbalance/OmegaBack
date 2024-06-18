@@ -13,7 +13,7 @@ export class GETApiKeyArrayResponseDTO {
     public readonly apiKeys: GETApiKeyResponseDTO[];
 }
 
-export class POSTApiKeyResponseDTO {
+export class POSTApiKeyResponseDTO extends GETApiKeyResponseDTO {
     @Expose()
     public readonly apikey: string;
 }
