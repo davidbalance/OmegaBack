@@ -41,22 +41,21 @@ export class MedicalReportService implements FindFilePathService<number> {
 
   private async createPdf(id: number): Promise<string> {
     const reportData = await this.repository.findOne({ where: { id } });
-
     const directory = path.resolve(reportData.doctorSignature);
     const signatureImg = readFileSync(directory);
     const base64 = Buffer.from(signatureImg).toString('base64');
-
+    
     const content = this.getContent(reportData, base64);
-
+    
     const templateDirectory = path.resolve('templates/medical-result/medical-report');
     const templateFile = path.join(templateDirectory, 'template.hbs');
-
+    
     const buffer = await this.pdfService.craft(templateFile, content);
-
+    
     const filePath = fileReportPath({ dni: reportData.patientDni, order: reportData.order });
-
+    
     const output = this.storageManager.saveFile(buffer, '.pdf', filePath);
-
+    
     return output;
   }
 

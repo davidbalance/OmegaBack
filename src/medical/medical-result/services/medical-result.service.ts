@@ -74,10 +74,8 @@ export class MedicalResultService implements FindFilePathService<number> {
         order: true
       }
     });
-
     const { order } = medicalResult;
     const { client } = order;
-
     const medicalReport = await this.reportService.create({
       content: data.content,
       order: order.id,

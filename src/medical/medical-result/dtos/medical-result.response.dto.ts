@@ -21,6 +21,7 @@ export class GETMedicalResultResponseDto {
     @Expose()
     public readonly diseaseGroupName: string;
 
+    @Type(() => GETMedicalReportResponseDto)
     @Expose()
     public readonly report?: GETMedicalReportResponseDto
 }
