@@ -8,10 +8,6 @@ export class PatientService {
   constructor(
     @Inject(PatientRepository) private readonly repository: PatientRepository) { }
 
-  /**
-   * Find all the active patients
-   * @returns Array of patient
-   */
   async find(): Promise<Patient[]> {
     const patients = await this.repository.find({
       where: {
@@ -64,11 +60,6 @@ export class PatientService {
     return patients;
   }
 
-  /**
-   * Find one patient by its dni
-   * @param dni 
-   * @returns Patient
-   */
   async findOneByDni(dni: string): Promise<Patient> {
     const patient = await this.repository.findOne({
       where: {

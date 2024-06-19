@@ -12,6 +12,8 @@ import { ExternalKey } from './entities/external-key.entity';
     ExternalKeyService,
     ExternalKeyRepository
   ],
-  exports: [ExternalKeyService]
+  exports: [
+    ExternalKeyService
+  ]
 })
 export class ExternalKeyModule { }

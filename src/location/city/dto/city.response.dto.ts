@@ -1,14 +1,14 @@
 import { Expose, Type } from "class-transformer";
 
-export class GETCityResponseDTO {
+export class GETCityResponseDto {
     @Expose()
     public readonly id: number;
     @Expose()
     public readonly name: string;
 }
 
-export class GETCityArrayResponseDTO {
-    @Type(() => GETCityResponseDTO)
+export class GETCityArrayResponseDto {
+    @Type(() => GETCityResponseDto)
     @Expose()
-    public readonly cities: GETCityResponseDTO[];
+    public readonly cities: GETCityResponseDto[];
 }

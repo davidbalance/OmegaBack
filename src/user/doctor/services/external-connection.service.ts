@@ -1,11 +1,9 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { DoctorRepository } from "../doctor.repository";
 import { Doctor } from "../entities/doctor.entity";
-import {
-    CreateDoctorExternalRequestDTO,
-    FindOneDoctorAndUpdateRequestDTO
-} from "@/user/common";
+
 import { UserService } from "@/user/user/user.service";
+import { PATCHDoctorRequestDto, POSTDoctorRequestDto } from "../dtos/doctor.request.dto";
 
 @Injectable()
 export class ExternalConnectionService {
@@ -14,13 +12,18 @@ export class ExternalConnectionService {
         @Inject(UserService) private readonly userService: UserService
     ) { }
 
-    async create({ ...user }: CreateDoctorExternalRequestDTO): Promise<Doctor> {
-        const newUser = await this.userService.create(user);
+    async create({ ...user }: POSTDoctorRequestDto): Promise<Doctor> {
+        let newUser;
+        try {
+            newUser = await this.userService.findOneByDni(user.dni);
+        } catch (error) {
+            newUser = await this.userService.create(user);
+        }
         const doctor = await this.repository.create({ user: newUser });
         return doctor;
     }
 
-    async findOneOrCreate({ ...user }: CreateDoctorExternalRequestDTO): Promise<Doctor> {
+    async findOneOrCreate({ ...user }: POSTDoctorRequestDto): Promise<Doctor> {
         try {
             const foundUser = await this.repository.findOne({
                 where: {
@@ -38,7 +41,7 @@ export class ExternalConnectionService {
         }
     }
 
-    async findOneAndUpdate(id: string, { ...user }: FindOneDoctorAndUpdateRequestDTO): Promise<Doctor> {
+    async findOneAndUpdate(id: string, { ...user }: PATCHDoctorRequestDto): Promise<Doctor> {
         const doctor = await this.repository.findOne({
             where: {
                 user: {

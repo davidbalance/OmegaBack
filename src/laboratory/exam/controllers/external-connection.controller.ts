@@ -2,9 +2,9 @@ import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { Controller, Inject, UseGuards, Post, Param, Body, Patch } from "@nestjs/common";
 import { ApiTags, ApiHeader } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { PATCHExamRequestDTO, POSTExamRequestDTO } from "../dtos/external-connection.request.dto";
-import { GETExamResponseDTO } from "../dtos/exam.response.dto";
 import { ExternalConnectionService } from "../services/external-connection.service";
+import { POSTExamRequestDto, PATCHExamRequestDto } from "../dtos/exam.request.dto";
+import { GETExamResponseDto } from "../dtos/exam.response.dto";
 
 @ApiTags('External/Connection', 'Laboratory/Exam')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -18,10 +18,10 @@ export class ExternalConnectionController {
     @Post()
     async create(
         @Param('source') source: string,
-        @Body() body: POSTExamRequestDTO
-    ): Promise<GETExamResponseDTO> {
+        @Body() body: POSTExamRequestDto
+    ): Promise<GETExamResponseDto> {
         const exam = await this.service.create({ source, ...body });
-        return plainToInstance(GETExamResponseDTO, exam);
+        return plainToInstance(GETExamResponseDto, exam);
     }
 
     @UseGuards(ApiKeyAuthGuard)
@@ -29,9 +29,9 @@ export class ExternalConnectionController {
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('id') id: string,
-        @Body() body: PATCHExamRequestDTO
-    ): Promise<GETExamResponseDTO> {
+        @Body() body: PATCHExamRequestDto
+    ): Promise<GETExamResponseDto> {
         const exam = await this.service.findOneAndUpdate({ source, key: id }, body);
-        return plainToInstance(GETExamResponseDTO, exam);
+        return plainToInstance(GETExamResponseDto, exam);
     }
 }

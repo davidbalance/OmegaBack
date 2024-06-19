@@ -3,8 +3,8 @@ import { BranchRepository } from "../branch.repository";
 import { Branch } from "../entities/branch.entity";
 import { ExternalConnectionService as CompanyExternalConnectionService } from "@/location/company/services/external-connection.service";
 import { CityService } from "@/location/city/services/city.service";
-import { PATCHBranchRequestDTO, POSTBranchRequestDTO } from "../dtos/external-connection.request.dto";
 import { ExternalKeyService } from "../external-key/external-key.service";
+import { PATCHBranchRequestDto, POSTBranchRequestDto } from "../dtos/branch.request.dto";
 
 @Injectable()
 export class ExternalConnectionService {
@@ -15,7 +15,7 @@ export class ExternalConnectionService {
         @Inject(CityService) private readonly cityService: CityService
     ) { }
 
-    async create({ source, key, company, city, ...branch }: POSTBranchRequestDTO & { source: string }): Promise<Branch> {
+    async create({ source, key, company, city, ...branch }: POSTBranchRequestDto & { source: string }): Promise<Branch> {
         const foundCompany = await this.externalService.findOneOrCreate({
             source: source,
             ...company
@@ -31,7 +31,7 @@ export class ExternalConnectionService {
         return newBranch;
     }
 
-    async findOneOrCreate({ source, key, ...branch }: POSTBranchRequestDTO & { source: string }): Promise<Branch> {
+    async findOneOrCreate({ source, key, ...branch }: POSTBranchRequestDto & { source: string }): Promise<Branch> {
         try {
             const foundBranch = await this.repository.findOne({
                 where: {
@@ -52,7 +52,7 @@ export class ExternalConnectionService {
         }
     }
 
-    async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHBranchRequestDTO): Promise<Branch> {
+    async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHBranchRequestDto): Promise<Branch> {
         const branch = await this.repository.findOneAndUpdate({
             externalKey: {
                 source: source,

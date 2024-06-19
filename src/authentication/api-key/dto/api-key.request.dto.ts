@@ -7,8 +7,4 @@ export class POSTApiKeyRequestDTO {
     public readonly name: string;
 }
 
-export class PATCHApiKeyRequestDTO {
-    @IsString()
-    @IsNotEmpty()
-    public readonly name: string;
-}
+export class PATCHApiKeyRequestDTO extends POSTApiKeyRequestDTO { }

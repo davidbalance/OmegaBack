@@ -2,10 +2,10 @@ import { Controller, Get, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { FindPatientsResponseDTO } from '@/user/common';
 import { PatientService } from '../service/patient.service';
 import { ExtraAttribute, User } from '@/shared/decorator';
 import { ExtraAttributeInterceptor } from '@/shared/interceptors/extra-attribute/extra-attribute.interceptor';
+import { GETPatientArrayResponseDto } from '../dtos/patient.response.dto';
 
 @ApiTags('User/Patient')
 @ApiBearerAuth()
@@ -15,9 +15,9 @@ export class PatientController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async find(): Promise<FindPatientsResponseDTO> {
+  async find(): Promise<GETPatientArrayResponseDto> {
     const patients = await this.patientService.find();
-    return plainToInstance(FindPatientsResponseDTO, { patients });
+    return plainToInstance(GETPatientArrayResponseDto, { patients });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -26,8 +26,8 @@ export class PatientController {
   @Get('look/company')
   async findByCompany(
     @User() ruc: string,
-  ): Promise<FindPatientsResponseDTO> {
+  ): Promise<GETPatientArrayResponseDto> {
     const patients = await this.patientService.findByExtraAttribute('employee_of', ruc);
-    return plainToInstance(FindPatientsResponseDTO, { patients });
+    return plainToInstance(GETPatientArrayResponseDto, { patients });
   }
 }

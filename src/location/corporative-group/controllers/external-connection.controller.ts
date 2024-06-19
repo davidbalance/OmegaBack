@@ -2,9 +2,9 @@ import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
-import { PATCHCorporativeGroupRequestDTO, POSTCorporativeGroupRequestDTO } from "../dtos/external-connection.request.dto";
-import { PATCHCorporativeGroupResponseDTO, POSTCorporativeGroupResponseDTO } from "../dtos/corporative-group.response.dto";
 import { ExternalConnectionService } from "../services/external-connection.service";
+import { POSTCorporativeGroupRequestDto, PATCHCorporativeGroupRequestDto } from "../dtos/corporative-group.request.dto";
+import { POSTCorporativeGroupResponseDto, PATCHCorporativeGroupResponseDto } from "../dtos/corporative-group.response.dto";
 
 @ApiTags('Location/Corporative/Group', 'External/Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -18,10 +18,10 @@ export class ExternalConnectionController {
     @Post()
     async create(
         @Param('source') source: string,
-        @Body() body: POSTCorporativeGroupRequestDTO
-    ): Promise<POSTCorporativeGroupResponseDTO> {
+        @Body() body: POSTCorporativeGroupRequestDto
+    ): Promise<POSTCorporativeGroupResponseDto> {
         const group = await this.service.create({ ...body, source });
-        return plainToInstance(POSTCorporativeGroupResponseDTO, group);
+        return plainToInstance(POSTCorporativeGroupResponseDto, group);
     }
 
     @UseGuards(ApiKeyAuthGuard)
@@ -29,9 +29,9 @@ export class ExternalConnectionController {
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('id') id: string,
-        @Body() body: PATCHCorporativeGroupRequestDTO
-    ): Promise<PATCHCorporativeGroupResponseDTO> {
+        @Body() body: PATCHCorporativeGroupRequestDto
+    ): Promise<PATCHCorporativeGroupResponseDto> {
         const group = await this.service.findOneAndUpdate({ key: id, source }, body);
-        return plainToInstance(PATCHCorporativeGroupResponseDTO, group);
+        return plainToInstance(PATCHCorporativeGroupResponseDto, group);
     }
 }

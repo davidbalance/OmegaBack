@@ -3,7 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { CorporativeGroupService } from '../services/corporative-group.service';
-import { GETCorporativeGroupArrayResponseDTO } from '../dtos/corporative-group.response.dto';
+import { GETCorporativeGroupArrayResponseDto } from '../dtos/corporative-group.response.dto';
 
 @ApiTags('Location/Corporative/Group')
 @ApiBearerAuth()
@@ -13,8 +13,8 @@ export class CorporativeGroupController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async find(): Promise<GETCorporativeGroupArrayResponseDTO> {
+  async find(): Promise<GETCorporativeGroupArrayResponseDto> {
     const groups = await this.corporativeGroupService.find();
-    return plainToInstance(GETCorporativeGroupArrayResponseDTO, { groups });
+    return plainToInstance(GETCorporativeGroupArrayResponseDto, { groups });
   }
 }

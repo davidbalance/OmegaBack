@@ -7,11 +7,11 @@ import { UserModule } from './user/user.module';
 import { OmegaWebModule } from './omega-web/omega-web.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { LaboratoryModule } from './laboratory/laboratory.module';
-import { MedicalModule } from './medical-result/medical.module';
 import { PdfManagerModule } from './shared/pdf-manager/pdf-manager.module';
 import { ApiKeyGuardModule } from './shared/guards/api-key-guard/api-key-guard.module';
 import { LoggerMiddleware } from './shared/middleware';
 import { HealthCheckModule } from './shared/health-status/health-check.module';
+import { MedicalModule } from './medical/medical.module';
 
 @Module({
   imports: [

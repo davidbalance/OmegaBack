@@ -3,8 +3,8 @@ import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { ExternalConnectionService } from "../services/external-connection.service";
-import { PATCHBranchRequestDTO, POSTBranchRequestDTO } from "../dtos/external-connection.request.dto";
-import { PATCHBranchResponseDTO, POSTBranchResponseDTO } from "../dtos/branch.response.dto";
+import { PATCHBranchRequestDto, POSTBranchRequestDto } from "../dtos/branch.request.dto";
+import { PATCHBranchResponseDto, POSTBranchResponseDto } from "../dtos/branch.response.dto";
 
 @ApiTags('Location/Branch', 'External/Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -18,10 +18,10 @@ export class ExternalConnectionController {
     @Post()
     async create(
         @Param('source') source: string,
-        @Body() body: POSTBranchRequestDTO,
-    ): Promise<POSTBranchResponseDTO> {
+        @Body() body: POSTBranchRequestDto,
+    ): Promise<POSTBranchResponseDto> {
         const branch = await this.service.create({ source, ...body });
-        return plainToInstance(POSTBranchResponseDTO, branch);
+        return plainToInstance(POSTBranchResponseDto, branch);
     }
 
     @UseGuards(ApiKeyAuthGuard)
@@ -29,9 +29,9 @@ export class ExternalConnectionController {
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('id') id: string,
-        @Body() body: PATCHBranchRequestDTO,
-    ): Promise<PATCHBranchResponseDTO> {
+        @Body() body: PATCHBranchRequestDto,
+    ): Promise<PATCHBranchResponseDto> {
         const branch = await this.service.findOneAndUpdate({ key: id, source: source }, body);
-        return plainToInstance(PATCHBranchResponseDTO, branch);
+        return plainToInstance(PATCHBranchResponseDto, branch);
     }
 }

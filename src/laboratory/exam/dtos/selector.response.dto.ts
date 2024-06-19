@@ -9,7 +9,7 @@ class SelectorOptionExam implements SelectorOption<number> {
     public readonly label: string;
 }
 
-export class GETSelectorOptionArrayResponseDTO {
+export class GETSelectorOptionArrayResponseDto {
     @Type(() => SelectorOptionExam)
     @Expose()
     public readonly options: SelectorOptionExam[];

@@ -1,7 +1,7 @@
-import { GETBranchResponseDTO } from "@/location/branch/dtos/branch.response.dto";
+import { GETBranchResponseDto } from "@/location/branch/dtos/branch.response.dto";
 import { Expose, Type } from "class-transformer";
 
-export class GETCompanyResponseDTO {
+export class GETCompanyResponseDto {
     @Expose()
     public readonly id: number;
 
@@ -17,17 +17,17 @@ export class GETCompanyResponseDTO {
     @Expose()
     public readonly phone: string;
 
-    @Type(() => GETBranchResponseDTO)
+    @Type(() => GETBranchResponseDto)
     @Expose()
-    public readonly branches: GETBranchResponseDTO[];
+    public readonly branches: GETBranchResponseDto[];
 }
 
-export class GETCompanyArrayResponseDTO {
-    @Type(() => GETCompanyResponseDTO)
+export class GETCompanyArrayResponseDto {
+    @Type(() => GETCompanyResponseDto)
     @Expose()
-    public readonly companies: GETCompanyResponseDTO[];
+    public readonly companies: GETCompanyResponseDto[];
 }
 
-export class POSTCompanyResponseDTO extends GETCompanyResponseDTO { }
+export class POSTCompanyResponseDto extends GETCompanyResponseDto { }
 
-export class PATCHCompanyResponseDTO extends GETCompanyResponseDTO { }
+export class PATCHCompanyResponseDto extends GETCompanyResponseDto { }

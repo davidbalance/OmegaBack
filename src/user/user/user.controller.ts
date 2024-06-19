@@ -1,10 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserRequestDTO, FindOneUserAndDeleteResponseDTO, FindOneUserAndUpdateRequestDTO, FindUserResponseDTO, FindUsersResponseDTO, GETAttributeResponseDTO, PATCHUserExtraAttributeRequestDTO, PATCHUserExtraAttributeResponseDTO } from '../common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { User } from '@/shared/decorator';
+import { PATCHUserExtraAttributeRequestDto, PATCHUserRequestDto, POSTUserRequestDto } from './dtos/user.request.dto';
+import { POSTUserResponseDto, PATCHUserResponseDto, DELETEUserResponseDto, GETAttributeResponseDto, PATCHUserExtraAttributeResponseDto, GETUserArrayResponseDto, GETUserResponseDto } from './dtos/user.response.dto';
 
 @ApiTags('User/User')
 @ApiBearerAuth()
@@ -18,44 +19,44 @@ export class UserController {
   @Get()
   async find(
     @User() user: number
-  ): Promise<FindUsersResponseDTO> {
+  ): Promise<GETUserArrayResponseDto> {
     const users = await this.userService.find(user);
-    return plainToInstance(FindUsersResponseDTO, { users });
+    return plainToInstance(GETUserArrayResponseDto, { users });
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('user')
   async findOne(
     @User() user: number
-  ): Promise<FindUserResponseDTO> {
+  ): Promise<GETUserResponseDto> {
     const foundUser = await this.userService.findOne(user);
-    return plainToInstance(FindUserResponseDTO, foundUser);
+    return plainToInstance(GETUserResponseDto, foundUser);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(
-    @Body() body: CreateUserRequestDTO
-  ): Promise<FindUserResponseDTO> {
+    @Body() body: POSTUserRequestDto
+  ): Promise<POSTUserResponseDto> {
     const user = await this.userService.create(body);
-    return plainToInstance(FindUserResponseDTO, user);
+    return plainToInstance(POSTUserResponseDto, user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
-    @Body() body: FindOneUserAndUpdateRequestDTO
-  ): Promise<FindUserResponseDTO> {
+    @Body() body: PATCHUserRequestDto
+  ): Promise<PATCHUserResponseDto> {
     const user = await this.userService.findOneAndUpdate(id, body)
-    return plainToInstance(FindUserResponseDTO, user);
+    return plainToInstance(PATCHUserResponseDto, user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async findOneAndInactive(
     @Param('id') id: number
-  ): Promise<FindOneUserAndDeleteResponseDTO> {
+  ): Promise<DELETEUserResponseDto> {
     await this.userService.findOneAndDelete(id);
     return {};
   }
@@ -64,18 +65,18 @@ export class UserController {
   @Get('look/for/company/:id')
   async findLookForCompanyAttribute(
     @Param('id') id: number,
-  ): Promise<GETAttributeResponseDTO> {
+  ): Promise<GETAttributeResponseDto> {
     const attribute = await this.userService.findExtraAttribute(id, 'look_for_company');
     console.log(attribute);
-    return plainToInstance(GETAttributeResponseDTO, attribute || {});
+    return plainToInstance(GETAttributeResponseDto, attribute || {});
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch('look/for/company/:id')
   async findOneAndUpdateLookForCompanyAttribute(
     @Param('id') id: number,
-    @Body() body: PATCHUserExtraAttributeRequestDTO
-  ): Promise<PATCHUserExtraAttributeResponseDTO> {
+    @Body() body: PATCHUserExtraAttributeRequestDto
+  ): Promise<PATCHUserExtraAttributeResponseDto> {
     await this.userService.assignExtraAttribute(id, { name: 'look_for_company', ...body });
     return {};
   }
@@ -84,17 +85,17 @@ export class UserController {
   @Get('employee/:id')
   async findEmployeeOfAttribute(
     @Param('id') id: number,
-  ): Promise<GETAttributeResponseDTO> {
+  ): Promise<GETAttributeResponseDto> {
     const attribute = await this.userService.findExtraAttribute(id, 'employee_of');
-    return plainToInstance(GETAttributeResponseDTO, attribute || {});
+    return plainToInstance(GETAttributeResponseDto, attribute || {});
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch('employee/:id')
   async findOneAndUpdateEmployeeOfAttribute(
     @Param('id') id: number,
-    @Body() body: PATCHUserExtraAttributeRequestDTO
-  ): Promise<PATCHUserExtraAttributeResponseDTO> {
+    @Body() body: PATCHUserExtraAttributeRequestDto
+  ): Promise<PATCHUserExtraAttributeResponseDto> {
     await this.userService.assignExtraAttribute(id, { name: 'employee_of', ...body });
     return {};
   }
@@ -103,17 +104,17 @@ export class UserController {
   @Get('doctor/of/:id')
   async findDoctorOfAttribute(
     @Param('id') id: number,
-  ): Promise<GETAttributeResponseDTO> {
+  ): Promise<GETAttributeResponseDto> {
     const attribute = await this.userService.findExtraAttribute(id, 'doctor_of');
-    return plainToInstance(GETAttributeResponseDTO, attribute || {});
+    return plainToInstance(GETAttributeResponseDto, attribute || {});
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch('doctor/of/:id')
   async findOneAndUpdateDoctorOfAttribute(
     @Param('id') id: number,
-    @Body() body: PATCHUserExtraAttributeRequestDTO
-  ): Promise<PATCHUserExtraAttributeResponseDTO> {
+    @Body() body: PATCHUserExtraAttributeRequestDto
+  ): Promise<PATCHUserExtraAttributeResponseDto> {
     await this.userService.assignExtraAttribute(id, { name: 'doctor_of', ...body });
     return {};
   }

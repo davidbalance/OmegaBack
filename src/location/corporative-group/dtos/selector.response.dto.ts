@@ -1,7 +1,7 @@
 import { SelectorOption } from "@/shared";
 import { Expose, Type } from "class-transformer";
 
-class SelectorOptionCorporativeGroupDTO implements SelectorOption<number> {
+class SelectorOptionCorporativeGroupDto implements SelectorOption<number> {
     @Expose()
     public readonly key: number;
 
@@ -9,8 +9,8 @@ class SelectorOptionCorporativeGroupDTO implements SelectorOption<number> {
     public readonly label: string;
 }
 
-export class GETSelectorOptionArrayResponseDTO {
-    @Type(() => SelectorOptionCorporativeGroupDTO)
+export class GETSelectorOptionArrayResponseDto {
+    @Type(() => SelectorOptionCorporativeGroupDto)
     @Expose()
-    public readonly options: SelectorOptionCorporativeGroupDTO[];
+    public readonly options: SelectorOptionCorporativeGroupDto[];
 }

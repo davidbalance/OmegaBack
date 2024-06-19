@@ -27,12 +27,11 @@ import { SelectorService } from './services/selector.service';
   providers: [
     BranchService,
     BranchRepository,
-    SelectorService,
     ExternalConnectionService,
+    SelectorService
   ],
   exports: [
-    BranchService,
-    ExternalConnectionService
+    BranchService
   ]
 })
 export class BranchModule { }

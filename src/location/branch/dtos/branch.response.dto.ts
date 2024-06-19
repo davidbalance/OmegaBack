@@ -1,25 +1,24 @@
-import { GETCityResponseDTO } from "@/location/city/dto/city.response.dto";
-import { SelectorOption } from "@/shared";
+import { GETCityResponseDto } from "@/location/city/dto/city.response.dto";
 import { Expose, Type } from "class-transformer";
 
-export class GETBranchResponseDTO {
+export class GETBranchResponseDto {
     @Expose()
     public readonly id: number;
 
     @Expose()
     public readonly name: string;
 
-    @Type(() => GETCityResponseDTO)
+    @Type(() => GETCityResponseDto)
     @Expose()
-    public readonly city: GETCityResponseDTO;
+    public readonly city: GETCityResponseDto;
 }
 
-export class GETBranchArrayResponseDTO {
-    @Type(() => GETBranchResponseDTO)
+export class GETBranchArrayResponseDto {
+    @Type(() => GETBranchResponseDto)
     @Expose()
-    public readonly branches: GETBranchResponseDTO[];
+    public readonly branches: GETBranchResponseDto[];
 }
 
-export class POSTBranchResponseDTO extends GETBranchResponseDTO { }
+export class POSTBranchResponseDto extends GETBranchResponseDto { }
 
-export class PATCHBranchResponseDTO extends GETBranchResponseDTO { }
+export class PATCHBranchResponseDto extends GETBranchResponseDto { }

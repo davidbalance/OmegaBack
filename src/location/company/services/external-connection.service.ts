@@ -2,24 +2,19 @@ import { Inject, Injectable } from "@nestjs/common";
 import { ExternalConnectionService as CorporativeGroupService } from "@/location/corporative-group/services/external-connection.service";
 import { Company } from "../entities/company.entity";
 import { CompanyRepository } from "../company.repository";
-import { ExternalKeyService as CorporativeGroupExternalKeyService } from "../external-key/external-key.service";
-import { PATCHCompanyRequestDTO, POSTCompanyRequestDTO } from "../dtos/external-key.request.dto";
+import { ExternalKeyService } from "../external-key/external-key.service";
+import { PATCHCompanyRequestDto, POSTCompanyRequestDto } from "../dtos/company.request.dto";
 
-type CreateCompanyType = POSTCompanyRequestDTO & { source: string };
+type CreateCompanyType = POSTCompanyRequestDto & { source: string };
 
 @Injectable()
 export class ExternalConnectionService {
     constructor(
         @Inject(CompanyRepository) private readonly repository: CompanyRepository,
         @Inject(CorporativeGroupService) private readonly externalService: CorporativeGroupService,
-        @Inject(CorporativeGroupExternalKeyService) private readonly keyService: CorporativeGroupExternalKeyService
+        @Inject(ExternalKeyService) private readonly keyService: ExternalKeyService
     ) { }
 
-    /**
-     * Creates a company by the given options
-     * @param param0 
-     * @returns Company
-     */
     async create({ source, key, corporativeGroup, ...company }: CreateCompanyType): Promise<Company> {
         const group = await this.externalService.findOneOrCreate({
             source: source,
@@ -34,11 +29,6 @@ export class ExternalConnectionService {
         return newCompany;
     }
 
-    /**
-     * Finds one company if not exists creates one by the given options
-     * @param param0 
-     * @returns Company
-     */
     async findOneOrCreate({ source, key, ...company }: CreateCompanyType): Promise<Company> {
         try {
             const foundCompany = await this.repository.findOne({
@@ -55,13 +45,7 @@ export class ExternalConnectionService {
         }
     }
 
-    /**
-     * Finds one company and updates by the given options
-     * @param param0 
-     * @param param1 
-     * @returns Company
-     */
-    async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHCompanyRequestDTO): Promise<Company> {
+    async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHCompanyRequestDto): Promise<Company> {
         const company = await this.repository.findOneAndUpdate({
             externalKey: {
                 source: source,

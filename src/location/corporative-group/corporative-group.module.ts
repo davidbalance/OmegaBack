@@ -3,18 +3,18 @@ import { CorporativeGroupService } from './services/corporative-group.service';
 import { CorporativeGroup } from './entities/corporative-group.entity';
 import { SqlDatabaseModule } from 'src/shared';
 import { CorporativeGroupRepository } from './corporative-group.repository';
-import { CorporativeGroupExternalKeyModule } from './corporative-group-external-key/corporative-group-external-key.module';
+import { ExternalKeyModule } from './external-key/external-key.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { CorporativeGroupController } from './controllers/corporative-group.controller';
 import { ExternalConnectionController } from './controllers/external-connection.controller';
 import { SelectorController } from './controllers/selector.controller';
-import { ExternalConnectionService } from './services/external-connection.service';
 import { SelectorService } from './services/selector.service';
+import { ExternalConnectionService } from './services/external-connection.service';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([CorporativeGroup]),
-    CorporativeGroupExternalKeyModule,
+    ExternalKeyModule,
     AuthenticationGuardModule,
   ],
   controllers: [
@@ -25,8 +25,8 @@ import { SelectorService } from './services/selector.service';
   providers: [
     SelectorService,
     CorporativeGroupService,
-    CorporativeGroupRepository, 
-    ExternalConnectionService,
+    CorporativeGroupRepository,
+    ExternalConnectionService
   ],
   exports: [
     CorporativeGroupService,

@@ -1,5 +1,5 @@
-import { POSTBranchRequestDTO } from "@/location/branch/dtos/external-connection.request.dto";
-import { CreatePatientExternalRequestDTO } from "@/user/common";
+import { POSTBranchRequestDto } from "@/location/branch/dtos/branch.request.dto";
+import { POSTPatientRequestDto } from "@/user/patient/dtos/patient.request.dto";
 
 export const OrderEvent = {
     FIND_OR_CREATE_PATIENT: 'order.patient.findOrCreate',
@@ -8,12 +8,12 @@ export const OrderEvent = {
 
 export class OrderFindOrCreatePatientEvent {
     constructor(
-        public readonly findOrCreateEvent: CreatePatientExternalRequestDTO & { source: string }
+        public readonly findOrCreateEvent: POSTPatientRequestDto & { source: string }
     ) { }
 }
 
 export class OrderFindOrCreateBranchEvent {
     constructor(
-        public readonly findOrCreateEvent: POSTBranchRequestDTO & { source: string }
+        public readonly findOrCreateEvent: POSTBranchRequestDto & { source: string }
     ) { }
 }

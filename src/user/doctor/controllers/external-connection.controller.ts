@@ -1,9 +1,10 @@
 import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
-import { CreateDoctorExternalRequestDTO, FindDoctorResponseDTO, FindOneDoctorAndUpdateRequestDTO } from "@/user/common";
 import { plainToInstance } from "class-transformer";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { ExternalConnectionService } from "../services/external-connection.service";
+import { PATCHDoctorRequestDto, POSTDoctorRequestDto } from "../dtos/doctor.request.dto";
+import { PATCHDoctorResponseDto, POSTDoctorResponseDto } from "../dtos/doctor.response.dto";
 
 @ApiTags('External/Connection', 'User/Doctor')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -16,19 +17,19 @@ export class ExternalConnectionController {
     @UseGuards(ApiKeyAuthGuard)
     @Post()
     async create(
-        @Body() body: CreateDoctorExternalRequestDTO
-    ): Promise<FindDoctorResponseDTO> {
+        @Body() body: POSTDoctorRequestDto
+    ): Promise<POSTDoctorResponseDto> {
         const doctor = await this.service.create(body);
-        return plainToInstance(FindDoctorResponseDTO, doctor);
+        return plainToInstance(POSTDoctorResponseDto, doctor);
     }
 
     @UseGuards(ApiKeyAuthGuard)
     @Patch(':dni')
     async findOneAndUpddate(
         @Param('dni') dni: string,
-        @Body() body: FindOneDoctorAndUpdateRequestDTO
-    ): Promise<FindDoctorResponseDTO> {
+        @Body() body: PATCHDoctorRequestDto
+    ): Promise<PATCHDoctorResponseDto> {
         const doctor = await this.service.findOneAndUpdate(dni, body);
-        return plainToInstance(FindDoctorResponseDTO, doctor);
+        return plainToInstance(PATCHDoctorResponseDto, doctor);
     }
 }

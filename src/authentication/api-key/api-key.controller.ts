@@ -38,7 +38,7 @@ export class ApiKeyController {
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,
-    @User() body: PATCHApiKeyRequestDTO
+    @Body() body: PATCHApiKeyRequestDTO
   ): Promise<PATCHApiKeyResponseDTO> {
     const apikey = await this.apiKeyService.findOneAndUpdate({ id, ...body });
     return plainToInstance(PATCHApiKeyResponseDTO, apikey);

@@ -1,7 +1,7 @@
 import { SelectorOption } from "@/shared";
 import { Expose, Type } from "class-transformer";
 
-class SelectorOptionBranchDTO implements SelectorOption<number> {
+class SelectorOptionBranchDto implements SelectorOption<number> {
     @Expose()
     public readonly key: number;
 
@@ -9,8 +9,8 @@ class SelectorOptionBranchDTO implements SelectorOption<number> {
     public readonly label: string;
 }
 
-export class GETSelectorOptionArrayResponseDTO {
-    @Type(() => SelectorOptionBranchDTO)
+export class GETSelectorOptionArrayResponseDto {
+    @Type(() => SelectorOptionBranchDto)
     @Expose()
-    public readonly options: SelectorOptionBranchDTO[];
+    public readonly options: SelectorOptionBranchDto[];
 }

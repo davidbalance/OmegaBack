@@ -13,10 +13,6 @@ export class DoctorService {
     @Inject(StorageManager) private readonly storage: StorageManager
   ) { }
 
-  /**
-   * Finds all the doctors inside the database
-   * @returns Array of Doctor
-   */
   async find(): Promise<Doctor[]> {
     const doctors = await this.repository.find({
       select: {
@@ -36,11 +32,6 @@ export class DoctorService {
     return doctors;
   }
 
-  /**
-   * Finds one doctor by its key
-   * @param id 
-   * @returns Doctor
-   */
   async findOne(id: number): Promise<Doctor> {
     const doctor = await this.repository.findOne({
       where: {
@@ -61,11 +52,6 @@ export class DoctorService {
     return doctor;
   }
 
-  /**
-   * Finds one doctor by its dni
-   * @param dni 
-   * @returns Doctor
-   */
   async findOneByDni(dni: string): Promise<Doctor> {
     const doctor = await this.repository.findOne({
       where: {
@@ -88,11 +74,6 @@ export class DoctorService {
     return doctor;
   }
 
-  /**
-   * Save a signature inside a directory
-   * @param id 
-   * @param signature 
-   */
   async uploadSignature(id: number, signature: Express.Multer.File): Promise<void> {
     const doctor = await this.repository.findOne({
       where: { id },

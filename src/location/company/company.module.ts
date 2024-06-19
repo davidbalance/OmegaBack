@@ -26,7 +26,7 @@ import { SelectorService } from './services/selector.service';
     CompanyService,
     SelectorService,
     CompanyRepository,
-    ExternalConnectionService,
+    ExternalConnectionService
   ],
   exports: [
     CompanyService,

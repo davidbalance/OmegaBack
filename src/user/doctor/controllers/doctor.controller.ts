@@ -5,8 +5,9 @@ import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { FileTypePipe } from '@/shared/pipes/file-type/file-type.pipe';
 import { MIME_TYPES } from '@/shared/pipes/file-type/constants';
-import { FindDoctorsResponseDTO, UploadSignatureRequestDTO, FindOneDoctorAndUpdateResponseDTO } from '@/user/common';
 import { DoctorService } from '../services/doctor.service';
+import { GETDoctorArrayResponseDto, PATCHDoctorSignatureResponseDto } from '../dtos/doctor.response.dto';
+import { PATCHDoctorSignatureRequestDto } from '../dtos/doctor.request.dto';
 
 @ApiTags('User/Doctor')
 @ApiBearerAuth()
@@ -16,9 +17,9 @@ export class DoctorController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async find(): Promise<FindDoctorsResponseDTO> {
+  async find(): Promise<GETDoctorArrayResponseDto> {
     const doctors = await this.doctorService.find();
-    return plainToInstance(FindDoctorsResponseDTO, { doctors });
+    return plainToInstance(GETDoctorArrayResponseDto, { doctors });
   }
 
   @ApiConsumes('multipart/form-data')
@@ -27,14 +28,14 @@ export class DoctorController {
   @UseInterceptors(FileInterceptor('signature'))
   async uploadSignature(
     @Param('id') id: number,
-    @Body() body: UploadSignatureRequestDTO,
+    @Body() body: PATCHDoctorSignatureRequestDto,
     @UploadedFile(new ParseFilePipe({
       validators: [
         new FileTypePipe({ acceptableTypes: MIME_TYPES.PNG })
       ],
       fileIsRequired: true
     })) file: Express.Multer.File
-  ): Promise<FindOneDoctorAndUpdateResponseDTO> {
+  ): Promise<PATCHDoctorSignatureResponseDto> {
     await this.doctorService.uploadSignature(id, file);
     return {};
   }
