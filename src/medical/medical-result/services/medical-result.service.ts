@@ -5,7 +5,7 @@ import { MedicalResultRepository } from "../medical-result.repository";
 import { MedicalResult } from "../entities/result.entity";
 import { MedicalReportService } from "@/medical/medical-report/medical-report.service";
 import { PATCHMedicalResultWithDiseaseRequestDto } from "../dtos/medical-result.request.dto";
-import { POSTMedicalReportRequestDto } from "@/medical/medical-report/dtos/medical-report.request.dto";
+import { PATCHMedicalReportRequestDto, POSTMedicalReportRequestDto } from "@/medical/medical-report/dtos/medical-report.request.dto";
 
 @Injectable()
 export class MedicalResultService implements FindFilePathService<number> {
@@ -67,7 +67,7 @@ export class MedicalResultService implements FindFilePathService<number> {
     return result;
   }
 
-  async insertMedicalReport(id: number, { ...data }: POSTMedicalReportRequestDto): Promise<MedicalResult> {
+  async insertMedicalReport(id: number, { ...data }: PATCHMedicalReportRequestDto): Promise<MedicalResult> {
     const medicalResult = await this.repository.findOne({
       where: { id },
       relations: {

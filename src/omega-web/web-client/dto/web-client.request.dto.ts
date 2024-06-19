@@ -1,23 +1,23 @@
 import { IsArray, IsEmpty, IsNotEmpty, IsNumber } from "class-validator";
 
-export class CreateWebClientRequestDTO {
+export class CreateWebClientRequestDto {
     @IsNumber()
     public readonly user: number;
 }
 
-export class UpdateWebClientRoutesRequestDTO {
+export class UpdateWebClientRoutesRequestDto {
     @IsArray()
     @IsEmpty()
     public readonly routes: number[];
 }
 
-export class UpdateWebClientWebLogoRequestDTO {
+export class UpdateWebClientWebLogoRequestDto {
     @IsNumber()
     @IsNotEmpty()
     public readonly logo: number;
 }
 
-export class UpdateWebClientWebResourcesRequestDTO {
+export class UpdateWebClientWebResourcesRequestDto {
     @IsArray()
     @IsNotEmpty()
     public readonly resources: number[];

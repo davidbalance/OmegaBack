@@ -1,6 +1,6 @@
 import { IsEmail, IsNumber, IsStrongPassword } from "class-validator";
 
-export class POSTCredentialRequestDTO {
+export class POSTCredentialRequestDto {
     @IsEmail()
     public readonly email: string;
 
@@ -11,7 +11,7 @@ export class POSTCredentialRequestDTO {
     public readonly user: number;
 }
 
-export class PATCHCredentialPasswordChangeRequestDTO {
+export class PATCHCredentialPasswordChangeRequestDto {
     @IsEmail()
     public readonly email: string;
 

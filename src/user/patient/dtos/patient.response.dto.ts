@@ -18,6 +18,7 @@ export class GETPatientResponseDto {
 
 export class GETPatientArrayResponseDto {
     @Type(() => GETPatientResponseDto)
+    @Expose()
     public readonly patients: GETPatientResponseDto[];
 }
 

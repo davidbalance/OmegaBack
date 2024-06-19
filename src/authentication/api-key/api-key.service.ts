@@ -5,9 +5,9 @@ import { ConfigService } from '@nestjs/config';
 import dayjs from 'dayjs';
 import { LessThan } from 'typeorm';
 import { UserCredentialService } from '../user-credential/user-credential.service';
-import { PATCHApiKeyRequestDTO, POSTApiKeyRequestDTO } from './dto/api-key.request.dto';
+import { PATCHApiKeyRequestDto, POSTApiKeyRequestDto } from './dto/api-key.request.dto';
 import { ApiKey } from './entities/api-key.entity';
-import { PATCHApiKeyResponseDTO, POSTApiKeyResponseDTO } from './dto/api-key.response.dto';
+import { PATCHApiKeyResponseDto, POSTApiKeyResponseDto } from './dto/api-key.response.dto';
 
 @Injectable()
 export class ApiKeyService {
@@ -47,7 +47,7 @@ export class ApiKeyService {
    * @param param0 
    * @returns The resulting API-KEY
    */
-  async create({ user, ...valueKey }: POSTApiKeyRequestDTO & { user: number }): Promise<POSTApiKeyResponseDTO> {
+  async create({ user, ...valueKey }: POSTApiKeyRequestDto & { user: number }): Promise<POSTApiKeyResponseDto> {
     const foundUser = await this.userService.findOneByUser(user);
     const apiKey: string = v4();
     const expiresIn: number = this.configService.get<number>('APIKEY_EXPIRES_IN');
@@ -66,7 +66,7 @@ export class ApiKeyService {
    * @param param0 
    * @returns 
    */
-  async findOneAndUpdate({ id, ...props }: PATCHApiKeyRequestDTO & { id: number }): Promise<{ name: string }> {
+  async findOneAndUpdate({ id, ...props }: PATCHApiKeyRequestDto & { id: number }): Promise<{ name: string }> {
     const keys = await this.repository.findOneAndUpdate({ id: id }, { ...props });
     return keys;
   }

@@ -38,7 +38,7 @@ class FileDto {
     public readonly type: 'result' | 'report';
 }
 
-export class GETMedicalOrderFilesResponseDTO {
+export class GETMedicalOrderFilesResponseDto {
     @Expose()
     public readonly dni: string;
     @Expose()

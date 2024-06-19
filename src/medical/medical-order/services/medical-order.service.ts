@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { MedicalOrderRepository } from '../medical-order.repository';
 import { MedicalOrder } from '../entities/medical-order.entity';
 import { MedicalEmail } from '@/medical/medical-client/entities/medical-email.entity';
-import { GETMedicalOrderFilesResponseDTO } from '../dtos/medical-order.response.dto';
+import { GETMedicalOrderFilesResponseDto } from '../dtos/medical-order.response.dto';
 
 @Injectable()
 export class MedicalOrderService {
@@ -16,7 +16,7 @@ export class MedicalOrderService {
     @Inject(ConfigService) private readonly config: ConfigService
   ) { }
 
-  async findOrderFilesById(id: number): Promise<GETMedicalOrderFilesResponseDTO> {
+  async findOrderFilesById(id: number): Promise<GETMedicalOrderFilesResponseDto> {
     const order = await this.repository.findOne({
       where: {
         id: id

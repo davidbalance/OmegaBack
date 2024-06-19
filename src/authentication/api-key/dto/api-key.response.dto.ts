@@ -1,23 +1,23 @@
 import { Expose, Type } from "class-transformer";
 
-export class GETApiKeyResponseDTO {
+export class GETApiKeyResponseDto {
     @Expose()
     public readonly id: number;
     @Expose()
     public readonly name: string;
 }
 
-export class GETApiKeyArrayResponseDTO {
+export class GETApiKeyArrayResponseDto {
     @Expose()
-    @Type(() => GETApiKeyResponseDTO)
-    public readonly apiKeys: GETApiKeyResponseDTO[];
+    @Type(() => GETApiKeyResponseDto)
+    public readonly apiKeys: GETApiKeyResponseDto[];
 }
 
-export class POSTApiKeyResponseDTO extends GETApiKeyResponseDTO {
+export class POSTApiKeyResponseDto extends GETApiKeyResponseDto {
     @Expose()
     public readonly apikey: string;
 }
 
-export class PATCHApiKeyResponseDTO extends GETApiKeyResponseDTO { }
+export class PATCHApiKeyResponseDto extends GETApiKeyResponseDto { }
 
-export class DELETEApiKeyResponseDTO { }
+export class DELETEApiKeyResponseDto { }

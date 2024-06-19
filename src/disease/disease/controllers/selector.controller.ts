@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { plainToInstance } from "class-transformer";
 import { SelectorService } from "../services/selector.service";
-import { GETSelectorOptionArrayResponseDTO } from "../dtos/selector.response.dto";
+import { GETSelectorOptionArrayResponseDto } from "../dtos/selector.response.dto";
 
 @ApiTags('Selector', 'Disease/Disease')
 @ApiBearerAuth()
@@ -12,11 +12,11 @@ export class SelectorController {
     constructor(private readonly service: SelectorService) { }
 
     @UseGuards(JwtAuthGuard)
-    @Get(':group')
+    @Get('by/group/:group')
     async findSelectorOptions(
         @Param("group") group: number
-    ): Promise<GETSelectorOptionArrayResponseDTO> {
+    ): Promise<GETSelectorOptionArrayResponseDto> {
         const options = await this.service.find(group);
-        return plainToInstance(GETSelectorOptionArrayResponseDTO, { options: options });
+        return plainToInstance(GETSelectorOptionArrayResponseDto, { options: options });
     }
 }

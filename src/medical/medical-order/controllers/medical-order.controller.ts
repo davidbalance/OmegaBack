@@ -3,7 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { MedicalOrderService } from '../services/medical-order.service';
-import { GETMedicalOrderArrayResponseDto, GETMedicalOrderFilesResponseDTO } from '../dtos/medical-order.response.dto';
+import { GETMedicalOrderArrayResponseDto, GETMedicalOrderFilesResponseDto } from '../dtos/medical-order.response.dto';
 import { POSTMailRequestDto } from '../dtos/medical-order.request.dto';
 
 @ApiTags('Medical/Order')
@@ -15,9 +15,9 @@ export class MedicalOrderController {
   @Get('files/:id')
   async findFilesById(
     @Param('id') id: number
-  ): Promise<GETMedicalOrderFilesResponseDTO> {
+  ): Promise<GETMedicalOrderFilesResponseDto> {
     const order = await this.orderService.findOrderFilesById(id);
-    return plainToInstance(GETMedicalOrderFilesResponseDTO, order);
+    return plainToInstance(GETMedicalOrderFilesResponseDto, order);
   }
 
   @UseGuards(JwtAuthGuard)

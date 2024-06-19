@@ -1,7 +1,7 @@
 import { Inject, Injectable, StreamableFile } from '@nestjs/common';
 import { FindFilePathService } from '@/shared';
 import { ZipperService } from '@/shared/zipper/zipper.service';
-import { FileSourceEnum, DownloadAndZipContentRequestDTO, FileSourceRequestDTO } from './dto/file-downloader.request.dto';
+import { FileSourceEnum, DownloadAndZipContentRequestDto, FileSourceRequestDto } from './dto/file-downloader.request.dto';
 import { StorageManager } from '@/shared/storage-manager';
 import { MedicalResultService } from '../medical-result/services/medical-result.service';
 import { MedicalReportService } from '../medical-report/medical-report.service';
@@ -23,13 +23,13 @@ export class FileDownloaderService {
         }
     }
 
-    async downloadFile({ id, type }: FileSourceRequestDTO): Promise<StreamableFile> {
+    async downloadFile({ id, type }: FileSourceRequestDto): Promise<StreamableFile> {
         const source = await this.filePathFinders[type].getpath(id);
         const stream = this.storage.readFile(source);
         return stream;
     }
 
-    async downloadMultipleFiles({ files }: DownloadAndZipContentRequestDTO): Promise<StreamableFile> {
+    async downloadMultipleFiles({ files }: DownloadAndZipContentRequestDto): Promise<StreamableFile> {
         const sources: string[] = [];
         for (const file of files) {
             const source = await this.filePathFinders[file.type].getpath(file.id);

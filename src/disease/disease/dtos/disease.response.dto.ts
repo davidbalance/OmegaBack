@@ -1,6 +1,6 @@
 import { Expose, Type } from "class-transformer";
 
-export class GETDiseaseResponseDTO {
+export class GETDiseaseResponseDto {
     @Expose()
     public readonly id: number;
 
@@ -8,14 +8,14 @@ export class GETDiseaseResponseDTO {
     public readonly name: string;
 }
 
-export class POSTDiseaseResponseDTO extends GETDiseaseResponseDTO { }
-
-export class PATCHDiseaseResponseDTO extends GETDiseaseResponseDTO { }
-
-export class GETDiseaseArrayResponseDTO {
-    @Type(() => GETDiseaseResponseDTO)
+export class GETDiseaseArrayResponseDto {
+    @Type(() => GETDiseaseResponseDto)
     @Expose()
-    public readonly diseases: GETDiseaseResponseDTO[]
+    public readonly diseases: GETDiseaseResponseDto[]
 }
 
-export class DELETEDiseaseResponseDTO { }
+export class POSTDiseaseResponseDto extends GETDiseaseResponseDto { }
+
+export class PATCHDiseaseResponseDto extends GETDiseaseResponseDto { }
+
+export class DELETEDiseaseResponseDto { }

@@ -40,7 +40,7 @@ export class POSTMedicalReportRequestDto {
     public readonly doctorSignature: string;
 }
 
-export class POSTMedicalReportRequestDTO {
+export class PATCHMedicalReportRequestDto {
     @IsString()
     @IsNotEmpty()
     public readonly content: string;

@@ -1,6 +1,6 @@
 import { Expose } from "class-transformer";
 
-export class HealthCheckResponseDTO {
+export class HealthCheckResponseDto {
     @Expose()
     health: string;
 }

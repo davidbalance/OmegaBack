@@ -64,7 +64,7 @@ INSERT INTO test.tbl_auth_api_keys (api_key_value, api_key_name, api_key_expires
 INSERT INTO test.tbl_ow_resources (resource_id, resource_name, resource_label, resource_address, resource_icon) VALUES 
 (1,'admin-users', 'Admin. Usuarios', '/omega/admin/user', 'user'),
 (2,'admin-patients', 'Admin. Pacientes', '/omega/admin/patient', 'patient'),
-(3,'doctors', 'Admin. Medicos', '/omega/doctor', 'doctor'),
+(3,'doctors', 'Admin. Medicos', '/omega/admin/doctor', 'doctor'),
 (4,'disease', 'Morbilidades', '/omega/disease', 'morbidity'),
 (5,'patients', 'Pacientes', '/omega/patient', 'patient'),
 (6,'medical-report', 'Reportes Medicos', '/omega/report', 'report'),

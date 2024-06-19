@@ -1,9 +1,10 @@
-import { Controller, Get, Param, Inject, UseGuards, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Inject, UseGuards, Delete, Patch, Body, Post } from '@nestjs/common';
 import { MedicalClientService } from './medical-client.service';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { DELETEMedicalEmailResponseDTO, GETMedicalEmailArrayResponseDto } from './dtos/medical-email.response.dto';
+import { DELETEMedicalEmailResponseDto, GETMedicalEmailArrayResponseDto, POSTMedicalEmailResponseDto } from './dtos/medical-email.response.dto';
+import { POSTMedicalEmailRequestDto } from './dtos/medical-email.request.dto';
 
 @ApiTags('Medical/Client')
 @ApiBearerAuth()
@@ -23,7 +24,17 @@ export class MedicalClientController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':dni/email/:id')
+  @Post(':dni/email')
+  async createEmail(
+    @Param('id') id: number,
+    @Body() body: POSTMedicalEmailRequestDto
+  ): Promise<POSTMedicalEmailResponseDto> {
+    const email = await this.medicalClientService.assignEmail(id, body);
+    return plainToInstance(POSTMedicalEmailResponseDto, { email });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':dni/email/:id')
   async updateEmailDefault(
     @Param('id') id: number,
     @Param('dni') dni: string,
@@ -36,7 +47,7 @@ export class MedicalClientController {
   @Delete('email/:id')
   async deleteEmailById(
     @Param('id') id: number
-  ): Promise<DELETEMedicalEmailResponseDTO> {
+  ): Promise<DELETEMedicalEmailResponseDto> {
     const email = await this.medicalClientService.deleteEmailById(id);
     return {}
   }

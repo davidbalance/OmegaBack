@@ -74,13 +74,13 @@ export class UserService {
     return extra;
   }
 
-  async assignExtraAttribute(id: number, { name, value }: { name: string, value: any }): Promise<void> {
+  async assignExtraAttribute(id: number, { name, value }: { name: string, value: string }): Promise<void> {
     const user = await this.repository.findOne({ where: { id }, relations: { extraAttributes: true } });
     const selectedAttribute = user.extraAttributes.find((e) => e.name === name);
     if (selectedAttribute) {
       this.extraAttribute.update(selectedAttribute.id, value);
     } else {
-      const newAttribute = await this.extraAttribute.create(name, JSON.stringify(value));
+      const newAttribute = await this.extraAttribute.create(name, value);
       this.repository.findOneAndUpdate({ id }, { extraAttributes: [...user.extraAttributes, newAttribute] });
     }
   }

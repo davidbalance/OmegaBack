@@ -2,7 +2,7 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { Controller, UseGuards, Get } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { GETSelectorOptionArrayResponseDTO } from "../dtos/selector.response.dto";
+import { GETSelectorOptionArrayResponseDto } from "../dtos/selector.response.dto";
 import { SelectorService } from "../services/selector.service";
 
 
@@ -14,8 +14,8 @@ export class SelectorController {
 
     @UseGuards(JwtAuthGuard)
     @Get()
-    async findSelectorOptions(): Promise<GETSelectorOptionArrayResponseDTO> {
+    async findSelectorOptions(): Promise<GETSelectorOptionArrayResponseDto> {
         const options = await this.service.find();
-        return plainToInstance(GETSelectorOptionArrayResponseDTO, { options: options });
+        return plainToInstance(GETSelectorOptionArrayResponseDto, { options: options });
     }
 }

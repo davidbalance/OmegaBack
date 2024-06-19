@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { WebClientRepository } from './web-client.repository';
 import { WebClient } from './entities/web-client.entity';
 import { WebLogoService } from '../web-logo/web-logo.service';
-import { UpdateWebClientWebLogoRequestDTO, UpdateWebClientWebResourcesRequestDTO } from './dto';
+import { UpdateWebClientWebLogoRequestDto, UpdateWebClientWebResourcesRequestDto } from './dto';
 import { WebResourceService } from '../web-resource/web-resource.service';
 import { WebResource } from '../web-resource/entities/web-resource.entity';
 
@@ -50,7 +50,7 @@ export class WebClientService {
     return client.resources;
   }
 
-  async updateWebLogoFromClient(user: number, { logo }: UpdateWebClientWebLogoRequestDTO): Promise<void> {
+  async updateWebLogoFromClient(user: number, { logo }: UpdateWebClientWebLogoRequestDto): Promise<void> {
     const foundLogo = await this.logoService.findOne(logo);
     await this.repository.findOneAndUpdate({
       user: user
@@ -59,7 +59,7 @@ export class WebClientService {
     });
   }
 
-  async updateWebResourcesFromClient(user: number, { resources }: UpdateWebClientWebResourcesRequestDTO): Promise<void> {
+  async updateWebResourcesFromClient(user: number, { resources }: UpdateWebClientWebResourcesRequestDto): Promise<void> {
     const webResources = await this.resourceService.findInIds(resources);
     await this.repository.findOneAndUpdate({
       user: user

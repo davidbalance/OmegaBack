@@ -3,8 +3,8 @@ import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete } from "@n
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { DiseaseGroupService } from "../services/disease-group.service";
-import { DELETEDiseaseGroupResponseDTO, GETDiseaseGroupArrayResponseDTO, PATCHDiseaseGroupResponseDTO, POSTDiseaseGroupResponseDTO } from "../dtos/disease-group.response.dto";
-import { PATCHDiseaseGroupRequestDTO, POSTDiseaseGroupRequestDTO } from "../dtos/disease-group.request.dto";
+import { DELETEDiseaseGroupResponseDto, GETDiseaseGroupArrayResponseDto, PATCHDiseaseGroupResponseDto, POSTDiseaseGroupResponseDto } from "../dtos/disease-group.response.dto";
+import { PATCHDiseaseGroupRequestDto, POSTDiseaseGroupRequestDto } from "../dtos/disease-group.request.dto";
 
 @ApiTags('Disease/Group')
 @ApiBearerAuth()
@@ -14,26 +14,26 @@ export class DiseaseGroupController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async find(): Promise<GETDiseaseGroupArrayResponseDTO> {
+  async find(): Promise<GETDiseaseGroupArrayResponseDto> {
     const groups = await this.diseaseGroupService.find();
-    return plainToInstance(GETDiseaseGroupArrayResponseDTO, { groups: groups });
+    return plainToInstance(GETDiseaseGroupArrayResponseDto, { groups: groups });
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(
-    @Body() body: POSTDiseaseGroupRequestDTO
-  ): Promise<POSTDiseaseGroupResponseDTO> {
+    @Body() body: POSTDiseaseGroupRequestDto
+  ): Promise<POSTDiseaseGroupResponseDto> {
     const group = await this.diseaseGroupService.create(body);
-    return plainToInstance(POSTDiseaseGroupResponseDTO, group);
+    return plainToInstance(POSTDiseaseGroupResponseDto, group);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(":id")
   async findOneAndUpdate(
     @Param('id') id: number,
-    @Body() body: PATCHDiseaseGroupRequestDTO
-  ): Promise<PATCHDiseaseGroupResponseDTO> {
+    @Body() body: PATCHDiseaseGroupRequestDto
+  ): Promise<PATCHDiseaseGroupResponseDto> {
     await this.diseaseGroupService.findOneAndUpdate(id, body);
     return {};
   }
@@ -42,7 +42,7 @@ export class DiseaseGroupController {
   @Delete(':id')
   async findOneAndDelete(
     @Param('id') id: number
-  ): Promise<DELETEDiseaseGroupResponseDTO> {
+  ): Promise<DELETEDiseaseGroupResponseDto> {
     await this.diseaseGroupService.findOneAndDelete(id);
     return {};
   }

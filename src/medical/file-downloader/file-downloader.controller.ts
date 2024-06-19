@@ -1,7 +1,7 @@
 import { Body, Controller, Inject, Post, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FileDownloaderService } from './file-downloader.service';
-import { DownloadAndZipContentRequestDTO, FileSourceRequestDTO } from './dto/file-downloader.request.dto';
+import { DownloadAndZipContentRequestDto, FileSourceRequestDto } from './dto/file-downloader.request.dto';
 import { Response } from 'express';
 
 @ApiTags('Medical/File')
@@ -13,7 +13,7 @@ export class FileDownloaderController {
 
     @Post()
     async getFile(
-        @Body() body: FileSourceRequestDTO,
+        @Body() body: FileSourceRequestDto,
         @Res() response: Response
     ) {
         const file = await this.service.downloadFile(body);
@@ -26,7 +26,7 @@ export class FileDownloaderController {
 
     @Post('multiple')
     async getZip(
-        @Body() body: DownloadAndZipContentRequestDTO,
+        @Body() body: DownloadAndZipContentRequestDto,
         @Res() response: Response
     ) {
         const zip = await this.service.downloadMultipleFiles(body);

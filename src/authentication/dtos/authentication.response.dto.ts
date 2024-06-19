@@ -1,6 +1,6 @@
 import { Expose } from "class-transformer";
 
-export class AuthenticationResponseDTO {
+export class AuthenticationResponseDto {
     @Expose()
     public readonly access: string;
 

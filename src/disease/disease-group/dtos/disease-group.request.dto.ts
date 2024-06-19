@@ -1,12 +1,12 @@
 import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
-export class POSTDiseaseGroupRequestDTO {
+export class POSTDiseaseGroupRequestDto {
     @IsString()
     @IsNotEmpty()
     public readonly name: string;
 }
 
-export class PATCHDiseaseGroupRequestDTO {
+export class PATCHDiseaseGroupRequestDto {
     @IsString()
     @IsOptional()
     public readonly name?: string;

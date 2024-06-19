@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { WebClientService } from './web-client.service';
 import { User } from '@/shared/decorator';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards';
-import { FindWebClientResponseDTO, UpdateWebClientWebLogoRequestDTO, UpdateWebClientWebLogoResponseDTO, UpdateWebClientWebResourceResponseDTO, UpdateWebClientWebResourcesRequestDTO } from './dto';
+import { FindWebClientResponseDto, UpdateWebClientWebLogoRequestDto, UpdateWebClientWebLogoResponseDto, UpdateWebClientWebResourceResponseDto, UpdateWebClientWebResourcesRequestDto } from './dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FindAllWebResourceResponseDto } from '../web-resource/dto/web-resource.response.dto';
@@ -17,19 +17,19 @@ export class WebClientController {
   @Get()
   async findOneWebClientConfiguration(
     @User() user: number
-  ): Promise<FindWebClientResponseDTO> {
+  ): Promise<FindWebClientResponseDto> {
     const webClient = await this.webClientService.findWebClient(user);
-    return plainToInstance(FindWebClientResponseDTO, webClient);
+    return plainToInstance(FindWebClientResponseDto, webClient);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch('logo/:user')
   async assignWebLogoToWebClient(
     @Param('user') user: number,
-    @Body() body: UpdateWebClientWebLogoRequestDTO
-  ): Promise<UpdateWebClientWebLogoResponseDTO> {
+    @Body() body: UpdateWebClientWebLogoRequestDto
+  ): Promise<UpdateWebClientWebLogoResponseDto> {
     await this.webClientService.updateWebLogoFromClient(user, body);
-    return plainToInstance(UpdateWebClientWebLogoResponseDTO, {});
+    return plainToInstance(UpdateWebClientWebLogoResponseDto, {});
   }
 
   @UseGuards(JwtAuthGuard)
@@ -45,9 +45,9 @@ export class WebClientController {
   @Patch('resource/:user')
   async assignWebResourceToWebClient(
     @Param('user') user: number,
-    @Body() body: UpdateWebClientWebResourcesRequestDTO
-  ): Promise<UpdateWebClientWebResourceResponseDTO> {
+    @Body() body: UpdateWebClientWebResourcesRequestDto
+  ): Promise<UpdateWebClientWebResourceResponseDto> {
     await this.webClientService.updateWebResourcesFromClient(user, body);
-    return plainToInstance(UpdateWebClientWebResourceResponseDTO, {});
+    return plainToInstance(UpdateWebClientWebResourceResponseDto, {});
   }
 }

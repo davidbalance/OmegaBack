@@ -15,8 +15,8 @@ export class GETMedicalEmailArrayResponseDto {
     public readonly email: GETMedicalEmailResponseDto[];
 }
 
-export class POSTMedicalEmailResponseDTO extends GETMedicalEmailResponseDto { }
+export class POSTMedicalEmailResponseDto extends GETMedicalEmailResponseDto { }
 
-export class PATCHMedicalEmailResponseDTO extends GETMedicalEmailResponseDto { }
+export class PATCHMedicalEmailResponseDto extends GETMedicalEmailResponseDto { }
 
-export class DELETEMedicalEmailResponseDTO { }
+export class DELETEMedicalEmailResponseDto { }

@@ -6,7 +6,7 @@ export enum FileSourceEnum {
     RESULT = 'result'
 }
 
-export class FileSourceRequestDTO {
+export class FileSourceRequestDto {
     @IsEnum(FileSourceEnum)
     public type: FileSourceEnum;
 
@@ -14,8 +14,8 @@ export class FileSourceRequestDTO {
     public id: number;
 }
 
-export class DownloadAndZipContentRequestDTO {
+export class DownloadAndZipContentRequestDto {
     @IsArray()
-    @Type(() => FileSourceRequestDTO)
-    public files: FileSourceRequestDTO[]
+    @Type(() => FileSourceRequestDto)
+    public files: FileSourceRequestDto[]
 }

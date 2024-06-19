@@ -3,8 +3,8 @@ import { DiseaseService } from '../services/disease.service';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { DELETEDiseaseResponseDTO, GETDiseaseArrayResponseDTO, PATCHDiseaseResponseDTO, POSTDiseaseResponseDTO } from '../dtos/disease.response.dto';
-import { PATCHDiseaseRequestDTO, POSTDiseaseRequestDTO } from '../dtos/disease.request.dto';
+import { DELETEDiseaseResponseDto, GETDiseaseArrayResponseDto, PATCHDiseaseResponseDto, POSTDiseaseResponseDto } from '../dtos/disease.response.dto';
+import { PATCHDiseaseRequestDto, POSTDiseaseRequestDto } from '../dtos/disease.request.dto';
 
 @ApiTags('Disease/Disease')
 @ApiBearerAuth()
@@ -14,35 +14,35 @@ export class DiseaseController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async find(): Promise<GETDiseaseArrayResponseDTO> {
+  async find(): Promise<GETDiseaseArrayResponseDto> {
     const diseases = await this.diseaseService.find();
-    return plainToInstance(GETDiseaseArrayResponseDTO, { diseases: diseases });
+    return plainToInstance(GETDiseaseArrayResponseDto, { diseases: diseases });
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(
-    @Body() body: POSTDiseaseRequestDTO
-  ): Promise<POSTDiseaseResponseDTO> {
+    @Body() body: POSTDiseaseRequestDto
+  ): Promise<POSTDiseaseResponseDto> {
     const disease = await this.diseaseService.create(body);
-    return plainToInstance(POSTDiseaseResponseDTO, disease);
+    return plainToInstance(POSTDiseaseResponseDto, disease);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(":id")
   async findOneAndUpdate(
     @Param('id') id: number,
-    @Body() body: PATCHDiseaseRequestDTO
-  ): Promise<PATCHDiseaseResponseDTO> {
+    @Body() body: PATCHDiseaseRequestDto
+  ): Promise<PATCHDiseaseResponseDto> {
     const disease = await this.diseaseService.findOneAndUpdate(id, body);
-    return plainToInstance(PATCHDiseaseResponseDTO, disease);
+    return plainToInstance(PATCHDiseaseResponseDto, disease);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async findOneAndDelete(
     @Param('id') id: number
-  ): Promise<DELETEDiseaseResponseDTO> {
+  ): Promise<DELETEDiseaseResponseDto> {
     await this.diseaseService.findOneAndDelete(id);
     return {};
   }

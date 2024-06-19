@@ -2,8 +2,8 @@ import { Controller, Post, Body, Patch, UseGuards } from '@nestjs/common';
 import { UserCredentialService } from './user-credential.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { PATCHCredentialPasswordChangeRequestDTO, POSTCredentialRequestDTO } from './dtos/user-credential.request.dto';
-import { PATCHCredentialPasswordChangeResponseDTO, POSTCredentialResponseDTO } from './dtos/user-credential.response.dto';
+import { PATCHCredentialPasswordChangeRequestDto, POSTCredentialRequestDto } from './dtos/user-credential.request.dto';
+import { PATCHCredentialPasswordChangeResponseDto, POSTCredentialResponseDto } from './dtos/user-credential.response.dto';
 
 @ApiTags('Authentication/Credential')
 @ApiBearerAuth()
@@ -14,8 +14,8 @@ export class UserCredentialController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(
-    @Body() body: POSTCredentialRequestDTO
-  ): Promise<POSTCredentialResponseDTO> {
+    @Body() body: POSTCredentialRequestDto
+  ): Promise<POSTCredentialResponseDto> {
     await this.userCredentialService.create(body);
     return {};
   }
@@ -23,8 +23,8 @@ export class UserCredentialController {
   @UseGuards(JwtAuthGuard)
   @Patch()
   async findOneCredentialAndUpdatePassword(
-    @Body() { email, password }: PATCHCredentialPasswordChangeRequestDTO
-  ): Promise<PATCHCredentialPasswordChangeResponseDTO> {
+    @Body() { email, password }: PATCHCredentialPasswordChangeRequestDto
+  ): Promise<PATCHCredentialPasswordChangeResponseDto> {
     await this.userCredentialService.findOneCredentialAndUpdatePassword(email, password);
     return {};
   }
