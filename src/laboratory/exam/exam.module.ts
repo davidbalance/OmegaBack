@@ -1,31 +1,30 @@
 import { Module } from '@nestjs/common';
-import { ExamService } from './exam.service';
-import { ExamController } from './exam.controller';
 import { SqlDatabaseModule } from 'src/shared';
 import { ExamRepository } from './exam.repository';
 import { Exam } from './entities/exam.entity';
-import { ExamExternalKeyModule } from './exam-external-key/exam-external-key.module';
-import { ExamExternalConnectionController } from './external-connections/exam-external-connection.controller';
-import { ExamExternalConnectionService } from './external-connections/exam-external-connection.service';
-import { ResultListener } from './listeners';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { ExternalConnectionController } from './controllers/external-connection.controller';
+import { SelectorService } from './services/selector.service';
+import { ExternalConnectionService } from './services/external-connection.service';
+import { MedicalResultListener } from './listeners/medical-result.listener';
+import { SelectorController } from './controllers/selector.controller';
+import { ExternalKeyModule } from './external-key/external-key.module';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Exam]),
-    ExamExternalKeyModule,
+    ExternalKeyModule,
     AuthenticationGuardModule
   ],
   controllers: [
-    ExamController,
-    ExamExternalConnectionController
+    SelectorController,
+    ExternalConnectionController
   ],
   providers: [
-    ExamService,
     ExamRepository,
-    ExamExternalConnectionService,
-    ResultListener
-  ],
-  exports: [ExamService]
+    SelectorService,
+    ExternalConnectionService,
+    MedicalResultListener
+  ]
 })
 export class ExamModule { }

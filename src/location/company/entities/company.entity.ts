@@ -2,7 +2,7 @@ import { Branch } from "src/location/branch/entities/branch.entity";
 import { CorporativeGroup } from "src/location/corporative-group/entities/corporative-group.entity";
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { CompanyExternalKey } from "../company-external-key/entities/company-external-key.entity";
+import { ExternalKey } from "../external-key/entities/external-key.entity";
 
 @Entity({ name: 'tbl_lo_companies' })
 @Index('company_ruc_idx', ['ruc'], { unique: true })
@@ -32,7 +32,7 @@ export class Company extends AbstractEntity<number> {
     @OneToMany(() => Branch, branch => branch.company, { eager: false })
     public branches: Branch[];
 
-    @OneToOne(() => CompanyExternalKey, { eager: false, nullable: true })
+    @OneToOne(() => ExternalKey, { eager: false, nullable: true })
     @JoinColumn({ referencedColumnName: 'id', name: 'external_key' })
-    public externalKey: CompanyExternalKey;
+    public externalKey: ExternalKey;
 }

@@ -1,11 +1,11 @@
 import { Expose, Type } from "class-transformer";
 
-export class CreateWebClientResponseDTO {
+export class CreateWebClientResponseDto {
     @Expose()
     public readonly user: number;
 }
 
-export class UpdateWebClientRoutesResponseDTO {
+export class UpdateWebClientRoutesResponseDto {
     @Expose()
     public readonly routes: number[];
 }
@@ -26,7 +26,7 @@ class WebClientResource {
     public readonly address: string;
 }
 
-export class FindWebClientResponseDTO {
+export class FindWebClientResponseDto {
     @Type(() => WebClientLogo)
     @Expose()
     public readonly logo: WebClientLogo;
@@ -36,6 +36,5 @@ export class FindWebClientResponseDTO {
     public readonly resources: WebClientResource[];
 }
 
-export class UpdateWebClientWebLogoResponseDTO {
-
-}
+export class UpdateWebClientWebLogoResponseDto {}
+export class UpdateWebClientWebResourceResponseDto {}

@@ -1,4 +1,4 @@
-import { DeepPartial, FindManyOptions, FindOneOptions, FindOptionsOrder, FindOptionsRelations, FindOptionsSelect, FindOptionsWhere, Repository } from "typeorm";
+import { DeepPartial, FindManyOptions, FindOneOptions, FindOptionsOrder, FindOptionsRelations, FindOptionsSelect, FindOptionsWhere, QueryRunner, Repository } from "typeorm";
 import { AbstractEntity } from "./abstract.entity";
 import { Logger, NotFoundException } from "@nestjs/common";
 
@@ -14,6 +14,10 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
     constructor(
         private readonly model: Repository<TEntity>
     ) { }
+
+    createQuery(alias?: string, queryRunner?: QueryRunner) {
+        return this.model.createQueryBuilder(alias, queryRunner);
+    }
 
     /**
      * Creates a new entity and saves it in the database

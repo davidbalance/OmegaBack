@@ -1,30 +1,24 @@
-import { SelectorOption } from "@/shared";
+import { GETCityResponseDto } from "@/location/city/dto/city.response.dto";
 import { Expose, Type } from "class-transformer";
 
-export class FindBranchResponseDTO {
+export class GETBranchResponseDto {
     @Expose()
     public readonly id: number;
 
     @Expose()
     public readonly name: string;
+
+    @Type(() => GETCityResponseDto)
+    @Expose()
+    public readonly city: GETCityResponseDto;
 }
 
-export class FindBranchesResponseDTO {
-    @Type(() => FindBranchResponseDTO)
+export class GETBranchArrayResponseDto {
+    @Type(() => GETBranchResponseDto)
     @Expose()
-    public readonly branches: FindBranchResponseDTO[];
+    public readonly branches: GETBranchResponseDto[];
 }
 
-class SelectorOptionBranchDTO implements SelectorOption<number> {
-    @Expose()
-    public readonly key: number;
+export class POSTBranchResponseDto extends GETBranchResponseDto { }
 
-    @Expose()
-    public readonly label: string;
-}
-
-export class FindSelectorOptionsBranchDTO {
-    @Type(() => SelectorOptionBranchDTO)
-    @Expose()
-    public readonly options: SelectorOptionBranchDTO[];
-}
+export class PATCHBranchResponseDto extends GETBranchResponseDto { }

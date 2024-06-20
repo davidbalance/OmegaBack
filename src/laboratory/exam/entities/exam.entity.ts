@@ -1,6 +1,6 @@
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { ExamExternalKey } from "../exam-external-key/entities/exam-external-key.entity";
+import { ExternalKey } from "../external-key/entities/external-key.entity";
 
 @Entity({ name: 'tbl_lab_exams' })
 export class Exam extends AbstractEntity<number> {
@@ -10,7 +10,7 @@ export class Exam extends AbstractEntity<number> {
     @Column({ name: 'exam_name', type: 'varchar', length: 256, unique: true })
     public name: string;
 
-    @OneToOne(() => ExamExternalKey, { eager: false })
+    @OneToOne(() => ExternalKey, { eager: false })
     @JoinColumn({ referencedColumnName: 'id', name: 'external_key' })
-    public externalKey: ExamExternalKey;
+    public externalKey: ExternalKey;
 }

@@ -1,24 +1,26 @@
 import { Module } from '@nestjs/common';
-import { DiseaseGroupService } from './disease-group.service';
-import { DiseaseGroupController } from './disease-group.controller';
 import { DiseaseGroup } from './entities/disease-group.entity';
 import { SqlDatabaseModule } from 'src/shared';
 import { DiseaseGroupRepository } from './disease-group.repository';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { DiseaseGroupController } from './controllers/disease-group.controller';
+import { DiseaseGroupService } from './services/disease-group.service';
+import { SelectorController } from './controllers/selector.controller';
+import { SelectorService } from './services/selector.service';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([DiseaseGroup]),
-    AuthenticationGuardModule,
-    LocalAuthorizationModule
+    AuthenticationGuardModule
   ],
-  controllers: [DiseaseGroupController],
+  controllers: [
+    DiseaseGroupController,
+    SelectorController
+  ],
   providers: [
     DiseaseGroupService,
-    DiseaseGroupRepository,
-    AuthorizationGuard
+    SelectorService,
+    DiseaseGroupRepository
   ],
   exports: [DiseaseGroupService]
 })

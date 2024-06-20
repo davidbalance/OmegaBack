@@ -4,9 +4,13 @@ import { WebResourceController } from './web-resource.controller';
 import { WebResource } from './entities/web-resource.entity';
 import { SqlDatabaseModule } from '@/shared';
 import { WebResourceRespository } from './web-resource.repository';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 
 @Module({
-  imports: [SqlDatabaseModule.forFeature([WebResource])],
+  imports: [
+    SqlDatabaseModule.forFeature([WebResource]),
+    AuthenticationGuardModule
+  ],
   controllers: [WebResourceController],
   providers: [
     WebResourceService,

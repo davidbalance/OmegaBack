@@ -1,37 +1,37 @@
 import { Module } from '@nestjs/common';
-import { BranchService } from './branch.service';
-import { BranchController } from './branch.controller';
 import { Branch } from './entities/branch.entity';
 import { SqlDatabaseModule } from 'src/shared';
 import { BranchRepository } from './branch.repository';
-import { BranchExternalKeyModule } from './branch-external-key/branch-external-key.module';
-import { BranchExternalConnectionController } from './external-connection/branch-external-connection.controller';
-import { BranchExternalConnectionService } from './external-connection/branch-external-connection.service';
 import { CompanyModule } from '../company/company.module';
 import { CityModule } from '../city/city.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
+import { SelectorController } from './controllers/selector.controller';
+import { ExternalConnectionController } from './controllers/external-connection.controller';
+import { BranchService } from './services/branch.service';
+import { ExternalConnectionService } from './services/external-connection.service';
+import { ExternalKeyModule } from './external-key/external-key.module';
+import { SelectorService } from './services/selector.service';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Branch]),
-    BranchExternalKeyModule,
+    ExternalKeyModule,
     CompanyModule,
     CityModule,
     AuthenticationGuardModule,
-    LocalAuthorizationModule
   ],
   controllers: [
-    BranchController,
-    BranchExternalConnectionController,
+    SelectorController,
+    ExternalConnectionController,
   ],
   providers: [
     BranchService,
     BranchRepository,
-    BranchExternalConnectionService,
-    AuthorizationGuard
+    ExternalConnectionService,
+    SelectorService
   ],
-  exports: [BranchService, BranchExternalConnectionService]
+  exports: [
+    BranchService
+  ]
 })
 export class BranchModule { }
