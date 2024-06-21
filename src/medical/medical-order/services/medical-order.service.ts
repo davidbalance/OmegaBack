@@ -62,19 +62,19 @@ export class MedicalOrderService {
     return orders;
   }
 
-  async sendMail(id: number, email?: number): Promise<void> {
+  async sendMail(order: number, mail: number): Promise<void> {
     const directory = path.resolve('static/images/omega.png');
-    const order = await this.repository.findOne({
-      where: { id: id },
+    const foundOrder = await this.repository.findOne({
+      where: { id: order },
       select: {
         id: true,
       }
     });
 
-    const { client } = order;
-    const clientEmail: MedicalEmail = client.email.find(e => email ? e.default : e.id === email);
+    const { client } = foundOrder;
+    const clientEmail: MedicalEmail = client.email.find(e => e.id === mail);
 
-    const url: string = `${this.config.get<string>('APP_TARGET_HOST')}/order/${order.id}`
+    const url: string = `${this.config.get<string>('APP_TARGET_HOST')}/order/${order}`
 
     try {
       await this.mailer.send({
@@ -98,10 +98,10 @@ export class MedicalOrderService {
         ]
       });
     } catch (error) {
-      this.repository.findOneAndUpdate({ id: id }, { mailStatus: false });
+      this.repository.findOneAndUpdate({ id: order }, { mailStatus: false });
       Logger.error(error);
       throw error;
     }
-    this.repository.findOneAndUpdate({ id: id }, { mailStatus: true });
+    this.repository.findOneAndUpdate({ id: order }, { mailStatus: true });
   }
 }

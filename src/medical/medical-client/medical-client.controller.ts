@@ -29,7 +29,7 @@ export class MedicalClientController {
     @Param('id') id: number,
     @Body() body: POSTMedicalEmailRequestDto
   ): Promise<POSTMedicalEmailResponseDto> {
-    const email = await this.medicalClientService.assignEmail(id, body);
+    const { email } = await this.medicalClientService.assignEmail(id, body);
     return plainToInstance(POSTMedicalEmailResponseDto, { email });
   }
 

@@ -1,4 +1,4 @@
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
 import { GETMedicalEmailResponseDto } from "./medical-email.response.dto";
 
 export class GETMedicalClientResponseDto {
@@ -6,6 +6,7 @@ export class GETMedicalClientResponseDto {
     public readonly dni: string;
     @Expose()
     public readonly fullname: string;
+    @Type(() => GETMedicalEmailResponseDto)
     @Expose()
     public readonly email: GETMedicalEmailResponseDto[];
 }

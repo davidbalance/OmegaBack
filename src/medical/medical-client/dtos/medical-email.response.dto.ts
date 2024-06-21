@@ -15,7 +15,11 @@ export class GETMedicalEmailArrayResponseDto {
     public readonly email: GETMedicalEmailResponseDto[];
 }
 
-export class POSTMedicalEmailResponseDto extends GETMedicalEmailResponseDto { }
+export class POSTMedicalEmailResponseDto {
+    @Type(() => GETMedicalEmailResponseDto)
+    @Expose()
+    public readonly email: GETMedicalEmailResponseDto[];
+}
 
 export class PATCHMedicalEmailResponseDto extends GETMedicalEmailResponseDto { }
 
