@@ -1,12 +1,12 @@
 import { OrderEvent, OrderFindOrCreatePatientEvent } from "@/shared";
 import { Inject, Injectable } from "@nestjs/common";
-import { PatientExternalConnectionService } from "../external-connection/patient-external-connection.service";
+import { ExternalConnectionService } from "../service/external-connection.service";
 import { OnEvent } from "@nestjs/event-emitter";
 
 @Injectable()
 export class OrderListener {
     constructor(
-        @Inject(PatientExternalConnectionService) private readonly externalService: PatientExternalConnectionService
+        @Inject(ExternalConnectionService) private readonly externalService: ExternalConnectionService
     ) { }
 
     @OnEvent(OrderEvent.FIND_OR_CREATE_PATIENT)

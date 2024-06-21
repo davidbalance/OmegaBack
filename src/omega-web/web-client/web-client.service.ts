@@ -2,14 +2,17 @@ import { Inject, Injectable } from '@nestjs/common';
 import { WebClientRepository } from './web-client.repository';
 import { WebClient } from './entities/web-client.entity';
 import { WebLogoService } from '../web-logo/web-logo.service';
-import { UpdateWebClientWebLogoRequestDTO } from './dto';
+import { UpdateWebClientWebLogoRequestDto, UpdateWebClientWebResourcesRequestDto } from './dto';
+import { WebResourceService } from '../web-resource/web-resource.service';
+import { WebResource } from '../web-resource/entities/web-resource.entity';
 
 @Injectable()
 export class WebClientService {
 
   constructor(
     @Inject(WebClientRepository) private readonly repository: WebClientRepository,
-    @Inject(WebLogoService) private readonly logoService: WebLogoService
+    @Inject(WebLogoService) private readonly logoService: WebLogoService,
+    @Inject(WebResourceService) private readonly resourceService: WebResourceService
   ) { }
 
   /**
@@ -34,12 +37,34 @@ export class WebClientService {
     return client;
   }
 
-  async updateWebLogoFromClient(user: number, { logo }: UpdateWebClientWebLogoRequestDTO): Promise<void> {
+  async findWebResources(user: number): Promise<WebResource[]> {
+    const client = await this.repository.findOne({
+      where: { user: user },
+      select: {
+        resources: {
+          id: true,
+          label: true
+        }
+      }
+    });
+    return client.resources;
+  }
+
+  async updateWebLogoFromClient(user: number, { logo }: UpdateWebClientWebLogoRequestDto): Promise<void> {
     const foundLogo = await this.logoService.findOne(logo);
     await this.repository.findOneAndUpdate({
       user: user
     }, {
       logo: foundLogo
+    });
+  }
+
+  async updateWebResourcesFromClient(user: number, { resources }: UpdateWebClientWebResourcesRequestDto): Promise<void> {
+    const webResources = await this.resourceService.findInIds(resources);
+    await this.repository.findOneAndUpdate({
+      user: user
+    }, {
+      resources: webResources
     });
   }
 }

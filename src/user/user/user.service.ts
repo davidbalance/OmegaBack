@@ -2,24 +2,22 @@ import { ConflictException, Inject, Injectable, Logger, NotFoundException } from
 import { UserRepository } from './user.repository';
 import { User } from './entities/user.entity';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CreateUserRequestDTO, FindOneUserAndUpdateRequestDTO } from '../common';
 import { UserEvent, UserRemoveEvent, UserUpdateEvent } from '@/shared';
 import { Not } from 'typeorm';
+import { UserExtraAttributeService } from './services/user-extra-attributes.service';
+import { UserExtraAttribute } from './entities/user-extra-attribute';
+import { PATCHUserRequestDto, POSTUserRequestDto } from './dtos/user.request.dto';
 
 @Injectable()
 export class UserService {
 
   constructor(
     @Inject(UserRepository) private readonly repository: UserRepository,
+    @Inject(UserExtraAttributeService) private readonly extraAttribute: UserExtraAttributeService,
     @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
   ) { }
 
-  /**
-   * Creates a user with the given options
-   * @param param0 
-   * @returns User
-   */
-  async create({ dni, email, ...data }: CreateUserRequestDTO): Promise<User> {
+  async create({ dni, email, ...data }: POSTUserRequestDto): Promise<User> {
     try {
       await this.repository.findOne({ where: [{ dni: dni }, { email: email }] });
       const conflictMessage = ['DNI or Email already un use', JSON.stringify({ dni, email })];
@@ -34,10 +32,6 @@ export class UserService {
     }
   }
 
-  /**
-   * Find all users that have credentials and are active
-   * @returns Array of User
-   */
   async find(not: number = -1): Promise<User[]> {
     return this.repository.find({
       where: {
@@ -56,33 +50,38 @@ export class UserService {
     });
   }
 
-  /**
-   * Find one user by it id
-   * @param id 
-   * @returns User
-   */
   async findOne(id: number): Promise<User> {
-    return this.repository.findOne({ where: { id: id } });
+    return this.repository.findOne({ where: { id: id }, relations: { extraAttributes: true } });
+  }
+  async findOneByDni(dni: string): Promise<User> {
+    return this.repository.findOne({ where: { dni: dni }, relations: { extraAttributes: true } });
   }
 
-  /**
-   * Find one user and update with the given values
-   * @param id 
-   * @param user 
-   * @returns User
-   */
-  async findOneAndUpdate(id: number, user: FindOneUserAndUpdateRequestDTO): Promise<User> {
+  async findOneAndUpdate(id: number, user: PATCHUserRequestDto): Promise<User> {
     const updateUser = await this.repository.findOneAndUpdate({ id }, user);
     this.eventEmitter.emit(UserEvent.UPDATE, new UserUpdateEvent({ id, email: user.email }));
     return updateUser;
   }
 
-  /**
-   * Change the user status to inactive
-   * @param id 
-   */
   async findOneAndDelete(id: number): Promise<void> {
     await this.repository.findOneAndDelete({ id: id });
     this.eventEmitter.emit(UserEvent.REMOVE, new UserRemoveEvent({ id }));
+  }
+
+  async findExtraAttribute(id: number, name: string): Promise<UserExtraAttribute> {
+    const user = await this.repository.findOne({ where: { id }, relations: { extraAttributes: true } });
+    const extra = user.extraAttributes.find((e) => e.name === name);
+    return extra;
+  }
+
+  async assignExtraAttribute(id: number, { name, value }: { name: string, value: string }): Promise<void> {
+    const user = await this.repository.findOne({ where: { id }, relations: { extraAttributes: true } });
+    const selectedAttribute = user.extraAttributes.find((e) => e.name === name);
+    if (selectedAttribute) {
+      this.extraAttribute.update(selectedAttribute.id, value);
+    } else {
+      const newAttribute = await this.extraAttribute.create(name, value);
+      this.repository.findOneAndUpdate({ id }, { extraAttributes: [...user.extraAttributes, newAttribute] });
+    }
   }
 }

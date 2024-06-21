@@ -11,7 +11,7 @@ type Tokens = {
   refresh: string;
 }
 
-export type TokenPayload = { token: string, expiresAt: Date }
+export type TokenPayload = { access: string, refresh: string, expiresAt: Date }
 
 @Injectable()
 export class TokenService {
@@ -27,19 +27,14 @@ export class TokenService {
    * @param sub 
    * @returns Access and refresh tokens
    */
-  async initToken(sub: number): Promise<{ access: TokenPayload, refresh: TokenPayload }> {
+  async initToken(sub: number): Promise<TokenPayload> {
     const { access, refresh } = await this.generateToken(sub);
-    const { expiresAccess, expiresRefresh } = this.getExpiresTime();
+    const { expiresRefresh } = this.getExpiresTime();
     await this.storeToken(sub, access);
     return {
-      access: {
-        token: access,
-        expiresAt: expiresAccess
-      },
-      refresh: {
-        token: refresh,
-        expiresAt: expiresRefresh
-      }
+      access: access,
+      refresh: refresh,
+      expiresAt: expiresRefresh
     };
   }
 
@@ -48,21 +43,16 @@ export class TokenService {
    * @param payload 
    * @returns Access and refresh tokens
    */
-  async refreshToken(payload: RefreshToken): Promise<{ access: TokenPayload, refresh: TokenPayload }> {
+  async refreshToken(payload: RefreshToken): Promise<TokenPayload> {
     const flag = await this.canRefresh(payload);
     if (!flag) throw new ForbiddenException(["Forbidden token"]);
     const { access, refresh } = await this.generateToken(payload.sub);
-    const { expiresAccess, expiresRefresh } = this.getExpiresTime();
+    const { expiresRefresh } = this.getExpiresTime();
     await this.storeToken(payload.sub, access);
     return {
-      access: {
-        token: access,
-        expiresAt: expiresAccess
-      },
-      refresh: {
-        token: refresh,
-        expiresAt: expiresRefresh
-      }
+      access: access,
+      refresh: refresh,
+      expiresAt: expiresRefresh
     };
   }
 
@@ -115,9 +105,9 @@ export class TokenService {
     try {
       const storedToken = await this.repository.findOne({ where: { key: token.sub } });
       const match = storedToken.token === token.token;
-      
+
       if (match) return true;
-      
+
       const secondsNeededToAllowRefresh = 60;
       const issuedAt = dayjs.unix(token.iat);
       const diff = dayjs().diff(issuedAt, 'seconds');

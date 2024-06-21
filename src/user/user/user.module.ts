@@ -6,22 +6,22 @@ import { SqlDatabaseModule } from 'src/shared';
 import { User } from './entities/user.entity';
 import { CredentialListener } from './listeners/credential.listener';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
 import { UserExtraAttribute } from './entities/user-extra-attribute';
+import { UserExtraAttributeRepository } from './repositories/user-extra-attribute.repository';
+import { UserExtraAttributeService } from './services/user-extra-attributes.service';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([User, UserExtraAttribute]),
     AuthenticationGuardModule,
-    LocalAuthorizationModule
   ],
   controllers: [UserController],
   providers: [
     UserService,
+    UserExtraAttributeService,
     CredentialListener,
     UserRepository,
-    AuthorizationGuard
+    UserExtraAttributeRepository
   ],
   exports: [UserService]
 })

@@ -1,15 +1,10 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
-export class CreateApiKeyRequestDTO {
+export class POSTApiKeyRequestDto {
 
     @IsString()
     @IsNotEmpty()
     public readonly name: string;
 }
 
-export class FindOneAndUpdateApiKeyRequestDTO {
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly name: string;
-}
+export class PATCHApiKeyRequestDto extends POSTApiKeyRequestDto { }

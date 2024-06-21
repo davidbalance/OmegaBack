@@ -1,20 +1,12 @@
-import { Expose, Type } from "class-transformer";
-import { TokenPayload } from "../token/token.service";
+import { Expose } from "class-transformer";
 
-export class TokenDTO implements TokenPayload {
+export class AuthenticationResponseDto {
     @Expose()
-    token: string;
+    public readonly access: string;
 
     @Expose()
-    expiresAt: Date;
-}
+    public readonly refresh: string;
 
-export class AuthenticationResponseDTO {
-    @Type(() => TokenDTO)
     @Expose()
-    public readonly access: TokenDTO;
-    
-    @Type(() => TokenDTO)
-    @Expose()
-    public readonly refresh: TokenDTO;
+    public readonly expiresAt: Date;
 }

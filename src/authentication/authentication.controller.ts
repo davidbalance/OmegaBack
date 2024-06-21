@@ -2,7 +2,7 @@ import { Controller, Inject, Post, UseGuards } from '@nestjs/common';
 import { TokenService } from './token/token.service';
 import { User } from '@/shared/decorator';
 import { RefreshToken } from './token/types';
-import { AuthenticationResponseDTO } from './dtos';
+import { AuthenticationResponseDto } from './dtos';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtRefreshGuard, LocalAuthGuard } from './guards';
@@ -18,17 +18,17 @@ export class AuthenticationController {
 
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    async login(@User() user: number): Promise<AuthenticationResponseDTO> {
+    async login(@User() user: number): Promise<AuthenticationResponseDto> {
         const tokens = await this.tokenService.initToken(user);
-        return plainToInstance(AuthenticationResponseDTO, tokens);
+        return plainToInstance(AuthenticationResponseDto, tokens);
     }
 
     @ApiBearerAuth()
     @UseGuards(JwtRefreshGuard)
     @Post('refresh')
-    async refresh(@User() token: RefreshToken): Promise<AuthenticationResponseDTO> {
+    async refresh(@User() token: RefreshToken): Promise<AuthenticationResponseDto> {
         const tokens = await this.tokenService.refreshToken(token);
-        return plainToInstance(AuthenticationResponseDTO, tokens);
+        return plainToInstance(AuthenticationResponseDto, tokens);
     }
     
     @ApiBearerAuth()

@@ -1,7 +1,7 @@
 import { Company } from "src/location/company/entities/company.entity";
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { CorporativeGroupExternalKey } from "../corporative-group-external-key/entities/corporative-group-external-key.entity";
+import { ExternalKey } from "../external-key/entities/external-key.entity";
 
 @Entity({ name: 'tbl_lo_corporative_groups' })
 @Index('corporative_name_idx', ['name'], { unique: true })
@@ -18,7 +18,7 @@ export class CorporativeGroup extends AbstractEntity<number> {
     @OneToMany(() => Company, company => company.corporativeGroup, { eager: false })
     public companies: Company[]
 
-    @OneToOne(() => CorporativeGroupExternalKey, { eager: false, nullable: true })
+    @OneToOne(() => ExternalKey, { eager: false, nullable: true })
     @JoinColumn({ referencedColumnName: 'id', name: 'external_key' })
-    public externalKey: CorporativeGroupExternalKey;
+    public externalKey: ExternalKey;
 }
