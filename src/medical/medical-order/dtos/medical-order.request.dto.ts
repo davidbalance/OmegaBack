@@ -26,5 +26,7 @@ export class POSTMedicalOrderRequestDto {
 
 export class POSTMailRequestDto {
     @IsNumber()
-    public readonly id: number;
+    public readonly order: number;
+    @IsNumber()
+    public readonly mail: number;
 }

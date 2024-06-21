@@ -16,6 +16,7 @@ export class GETMedicalOrderResponseDto {
     public readonly mailStatus?: boolean;
 
     @Type(() => GETMedicalClientResponseDto)
+    @Expose()
     public readonly client: GETMedicalClientResponseDto;
 
     @Type(() => GETMedicalResultResponseDto)
