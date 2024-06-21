@@ -33,7 +33,7 @@ export class MedicalOrderController {
   sendEmail(
     @Body() body: POSTMailRequestDto
   ): { message: string } {
-    this.orderService.sendMail(body.id);
+    this.orderService.sendMail(body.order, body.mail);
     return { message: "ok" };
   }
 }
