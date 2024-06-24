@@ -2,7 +2,7 @@ import { AbstractSendAttributeEntity } from "@/shared";
 import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { MedicalReport } from "../../entities/medical-report.entity";
 
-@Entity({ name: 'tbl_mr_reports_send_attributes' })
+@Entity({ name: 'tbl_m_reports_send_attributes' })
 export class SendAttribute extends AbstractSendAttributeEntity {
     @PrimaryGeneratedColumn('increment', { name: 'report_send_attribute_id' })
     public id: number;

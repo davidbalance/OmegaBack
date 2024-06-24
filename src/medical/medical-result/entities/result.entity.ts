@@ -5,7 +5,7 @@ import { SendAttribute } from "../send-attribute/entities/send-attribute.entity"
 import { MedicalOrder } from "@/medical/medical-order/entities/medical-order.entity";
 import { MedicalReport } from "@/medical/medical-report/entities/medical-report.entity";
 
-@Entity({ name: "tbl_mr_results" })
+@Entity({ name: "tbl_m_results" })
 @Index('result_disease_idx', ['diseaseId'])
 @Index('result_disease_group_idx', ['diseaseGroupId'])
 @Index('result_doctor_dni_idx', ['doctorDni'])
