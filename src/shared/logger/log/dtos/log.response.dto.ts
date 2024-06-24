@@ -10,7 +10,7 @@ export class FindLog {
 }
 
 
-export class FindLogs {
+export class GETLogsResponseDto {
     @Type(() => FindLog)
     @Expose()
     public logs: FindLog[];
