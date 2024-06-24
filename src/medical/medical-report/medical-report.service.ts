@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { MedicalReportRepository } from './medical-report.repository';
 import { MedicalReport } from './entities/medical-report.entity';
 import { FindFilePathService, PdfManagerService, fileReportPath } from '@/shared';
@@ -31,9 +31,25 @@ export class MedicalReportService implements FindFilePathService<number> {
     return file.fileAddress;
   }
 
-
   async create({ ...data }: POSTMedicalReportRequestDto): Promise<MedicalReport> {
     const report = await this.repository.create({ ...data });
+    const newReport = await this.processReportPdf(report);
+    return newReport;
+  }
+
+  async recreateReport(patientDni?: string): Promise<void> {
+    const reports = await this.repository.find({ where: { patientDni }, select: { id: true } });
+    try {
+      for (const report of reports) {
+        await this.processReportPdf(report);
+      }
+    } catch (error) {
+      Logger.error(error);
+      throw new InternalServerErrorException(error)
+    }
+  }
+
+  private async processReportPdf(report: MedicalReport): Promise<MedicalReport> {
     const filename = await this.createPdf(report.id);
     const newReport = await this.repository.findOneAndUpdate({ id: report.id }, { fileAddress: filename, hasFile: true });
     return newReport;
@@ -44,18 +60,18 @@ export class MedicalReportService implements FindFilePathService<number> {
     const directory = path.resolve(reportData.doctorSignature);
     const signatureImg = readFileSync(directory);
     const base64 = Buffer.from(signatureImg).toString('base64');
-    
+
     const content = this.getContent(reportData, base64);
-    
+
     const templateDirectory = path.resolve('templates/medical-result/medical-report');
     const templateFile = path.join(templateDirectory, 'template.hbs');
-    
+
     const buffer = await this.pdfService.craft(templateFile, content);
-    
+
     const filePath = fileReportPath({ dni: reportData.patientDni, order: reportData.order });
-    
-    const output = this.storageManager.saveFile(buffer, '.pdf', filePath);
-    
+
+    const output = this.storageManager.saveFile(buffer, '.pdf', filePath, reportData.examName.toLocaleLowerCase().replace(/\s/g, '_'));
+
     return output;
   }
 
