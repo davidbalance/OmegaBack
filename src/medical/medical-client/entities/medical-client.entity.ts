@@ -3,7 +3,7 @@ import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeor
 import { MedicalEmail } from "./medical-email.entity";
 import { MedicalOrder } from "@/medical/medical-order/entities/medical-order.entity";
 
-@Entity({ name: 'tbl_mr_medical_client' })
+@Entity({ name: 'tbl_m_client' })
 @Index('medical_dni_idx', ['dni'], { unique: true })
 export class MedicalClient extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'medical_client_id' })

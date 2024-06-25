@@ -2,6 +2,9 @@ import { Inject, Injectable } from "@nestjs/common";
 import { LogRepository } from "./log.repository";
 import { Log } from "./entities/log.entity";
 import { LoggerWritter } from "../interfaces/logger-writter.interface";
+import { POSTLogRequestDto } from "./dtos/log.request.dto";
+import { Between } from "typeorm";
+import dayjs from "dayjs";
 
 @Injectable()
 export class LogService implements LoggerWritter {
@@ -10,10 +13,15 @@ export class LogService implements LoggerWritter {
         @Inject(LogRepository) private readonly repository: LogRepository
     ) { }
 
-    async find(): Promise<Log[]> {
+    async find(params: POSTLogRequestDto): Promise<Log[]> {
+        const from = params.from || dayjs().subtract(1, 'day').toDate();
+        const to = params.to || dayjs().toDate()
         return await this.repository.find({
             order: { timestamp: 'desc' },
-            take: 20
+            where: {
+                timestamp: Between(from, to),
+                level: params.level
+            }
         });
     }
 

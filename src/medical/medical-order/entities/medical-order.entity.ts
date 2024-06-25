@@ -4,7 +4,7 @@ import { ExternalKey } from "../external-key/entities/external-key.entity";
 import { MedicalClient } from "@/medical/medical-client/entities/medical-client.entity";
 import { MedicalResult } from "@/medical/medical-result/entities/result.entity";
 
-@Entity({ name: 'tbl_mr_orders' })
+@Entity({ name: 'tbl_m_orders' })
 export class MedicalOrder extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'order_id' })
     public id: number;

@@ -5,7 +5,7 @@ import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards';
 import { FindWebClientResponseDto, UpdateWebClientWebLogoRequestDto, UpdateWebClientWebLogoResponseDto, UpdateWebClientWebResourceResponseDto, UpdateWebClientWebResourcesRequestDto } from './dto';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { FindAllWebResourceResponseDto } from '../web-resource/dto/web-resource.response.dto';
+import { GETWebResourceArrayResponseDto } from '../web-resource/dto/web-resource.response.dto';
 
 @ApiTags('Omega/Web/Client')
 @ApiBearerAuth()
@@ -36,9 +36,9 @@ export class WebClientController {
   @Get('resource/:user')
   async findOneWebResources(
     @Param('user') user: number,
-  ): Promise<FindAllWebResourceResponseDto> {
+  ): Promise<GETWebResourceArrayResponseDto> {
     const resources = await this.webClientService.findWebResources(user);
-    return plainToInstance(FindAllWebResourceResponseDto, { resources });
+    return plainToInstance(GETWebResourceArrayResponseDto, { resources });
   }
 
   @UseGuards(JwtAuthGuard)

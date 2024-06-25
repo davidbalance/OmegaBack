@@ -2,7 +2,7 @@ import { AbstractEntity } from "@/shared";
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { MedicalClient } from "./medical-client.entity";
 
-@Entity({ name: 'tbl_mr_medical_email' })
+@Entity({ name: 'tbl_m_email' })
 @Index('email_client_idx', ['email', 'client'], { unique: true })
 export class MedicalEmail extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'medical_email_id' })

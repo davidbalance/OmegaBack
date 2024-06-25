@@ -5,7 +5,7 @@ import { SendAttribute } from "../send-attribute/entities/send-attribute.entity"
 import { MedicalOrder } from "@/medical/medical-order/entities/medical-order.entity";
 import { MedicalReport } from "@/medical/medical-report/entities/medical-report.entity";
 
-@Entity({ name: "tbl_mr_results" })
+@Entity({ name: "tbl_m_results" })
 @Index('result_disease_idx', ['diseaseId'])
 @Index('result_disease_group_idx', ['diseaseGroupId'])
 @Index('result_doctor_dni_idx', ['doctorDni'])
@@ -13,8 +13,11 @@ export class MedicalResult extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: "result_id" })
     public id: number;
 
-    @Column({ name: 'result_file_path', type: 'varchar', length: 512, unique: true })
-    public filePath: string;
+    @Column({ name: 'result_file_path', type: 'varchar', length: 512, nullable: true, unique: true })
+    public filePath?: string;
+    
+    @Column({ name: 'result_has_file', type: 'boolean', default: false, nullable: false })
+    public hasFile: boolean;
 
     @Column({ name: 'exam_name', type: 'varchar', length: 128, nullable: false })
     public examName: string;

@@ -1,11 +1,13 @@
-import { FindFilePathService } from "@/shared";
+import { FindFilePathService, fileResultPath } from "@/shared";
 import { Injectable, Inject } from "@nestjs/common";
 import { SendAttributeService } from "../send-attribute/send-attribute.service";
 import { MedicalResultRepository } from "../medical-result.repository";
 import { MedicalResult } from "../entities/result.entity";
 import { MedicalReportService } from "@/medical/medical-report/medical-report.service";
 import { PATCHMedicalResultWithDiseaseRequestDto } from "../dtos/medical-result.request.dto";
-import { PATCHMedicalReportRequestDto, POSTMedicalReportRequestDto } from "@/medical/medical-report/dtos/medical-report.request.dto";
+import { PATCHMedicalReportRequestDto } from "@/medical/medical-report/dtos/medical-report.request.dto";
+import { extname } from "path";
+import { StorageManager } from "@/shared/storage-manager";
 
 @Injectable()
 export class MedicalResultService implements FindFilePathService<number> {
@@ -13,7 +15,8 @@ export class MedicalResultService implements FindFilePathService<number> {
   constructor(
     @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
     @Inject(MedicalReportService) private readonly reportService: MedicalReportService,
-    @Inject(SendAttributeService) private readonly attributeService: SendAttributeService
+    @Inject(SendAttributeService) private readonly attributeService: SendAttributeService,
+    @Inject(StorageManager) private readonly storageManager: StorageManager,
   ) { }
 
 
@@ -64,6 +67,15 @@ export class MedicalResultService implements FindFilePathService<number> {
 
   async findOneResultAndUpdateDisease(id: number, { ...data }: PATCHMedicalResultWithDiseaseRequestDto): Promise<MedicalResult> {
     const result = await this.repository.findOneAndUpdate({ id }, { ...data });
+    return result;
+  }
+
+  async findOneResultAndUploadFile(id: number, file: Express.Multer.File): Promise<MedicalResult> {
+    const { order, examName } = await this.repository.findOne({ where: { id }, relations: { order: true } });
+    const medicalResultPath = fileResultPath({ dni: order.client.dni, order: order.id });
+    const extension = extname(file.originalname);
+    const filePath = await this.storageManager.saveFile(file.buffer, extension, medicalResultPath, examName.toLocaleLowerCase().replace(/\s/g, '_'));
+    const result = await this.repository.findOneAndUpdate({ id }, { filePath: filePath, hasFile: true });
     return result;
   }
 
