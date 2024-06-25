@@ -16,5 +16,11 @@ export class WebResource extends AbstractEntity<number>{
     public address: string;
 
     @Column({ name: 'resource_icon', type: 'varchar', length: 64, nullable: true })
-    public icon?: string;
+    public icon: string;
+    
+    @Column({ name: 'resource_show', type: 'boolean', default: true, nullable: false })
+    public show: boolean;
+    
+    @Column({ name: 'resource_status', type: 'boolean', default: true, nullable: false })
+    public status: boolean;
 }

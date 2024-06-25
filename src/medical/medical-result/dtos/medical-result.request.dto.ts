@@ -37,8 +37,8 @@ export class POSTMedicalResultRequestDto {
 }
 
 export class POSTMedicalResultFileRequestDto extends POSTMedicalResultRequestDto {
-    @ApiProperty({ type: 'string', format: 'binary' })
-    file: Express.Multer.File;
+    @ApiProperty({ type: 'string', format: 'binary', nullable: true })
+    file?: Express.Multer.File;
 }
 
 export class PATCHMedicalResultWithDiseaseRequestDto {
@@ -55,4 +55,9 @@ export class PATCHMedicalResultWithDiseaseRequestDto {
     @IsString()
     @IsNotEmpty()
     public readonly diseaseGroupName: string;
+}
+
+export class PATCHMedicalResultFileRequestDto {
+    @ApiProperty({ type: 'string', format: 'binary' })
+    file: Express.Multer.File;
 }

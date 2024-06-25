@@ -6,7 +6,7 @@ import { FindOptionsWhere, Repository } from "typeorm";
 
 @Injectable()
 export class WebResourceRespository
-    extends AbstractRepository<number, WebResource>{
+    extends AbstractRepository<number, WebResource> {
     protected logger: Logger;
 
     constructor(
@@ -16,7 +16,7 @@ export class WebResourceRespository
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findOneAndDelete(_filterOptions: FindOptionsWhere<WebResource>): void | Promise<void> {
-        throw new Error("Method not implemented.");
+    findOneAndDelete(filterOptions: FindOptionsWhere<WebResource>): void | Promise<void> {
+        this.findOneAndUpdate(filterOptions, { status: false });
     }
 }

@@ -6,6 +6,7 @@ import { MedicalReportRepository } from './medical-report.repository';
 import { LocalStorageModule } from '@/shared/storage-manager';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { SendAttributeModule } from './send-attribute/send-attribute.module';
+import { MedicalReportController } from './medical-report.controller';
 
 @Module({
   imports: [
@@ -14,6 +15,9 @@ import { SendAttributeModule } from './send-attribute/send-attribute.module';
     PdfManagerModule,
     AuthenticationGuardModule,
     SendAttributeModule,
+  ],
+  controllers: [
+    MedicalReportController
   ],
   providers: [
     MedicalReportService,
