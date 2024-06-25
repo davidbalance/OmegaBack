@@ -1,13 +1,14 @@
-import { Body, Controller, Get, Param, Patch, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { User } from '@/shared/decorator';
 import { plainToInstance } from 'class-transformer';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
 import { MedicalResultService } from '../services/medical-result.service';
-import { GETMedicalResultArrayResponseDto, GETMedicalResultResponseDto, PATCHMedicalResultResponseDto } from '../dtos/medical-result.response.dto';
+import { GETMedicalResultArrayResponseDto, GETMedicalResultResponseDto, PATCHMedicalResultFileResponseDto, PATCHMedicalResultResponseDto } from '../dtos/medical-result.response.dto';
 import { PATCHMedicalReportRequestDto, POSTMedicalReportRequestDto } from '@/medical/medical-report/dtos/medical-report.request.dto';
-import { PATCHMedicalResultWithDiseaseRequestDto } from '../dtos/medical-result.request.dto';
+import { PATCHMedicalResultFileRequestDto, PATCHMedicalResultWithDiseaseRequestDto } from '../dtos/medical-result.request.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Medical/Result')
 @ApiBearerAuth()
@@ -42,6 +43,19 @@ export class MedicalResultController {
     return {};
   }
 
+  @ApiConsumes('multipart/form-data')
+  @UseGuards(JwtAuthGuard)
+  @Patch('file/:id')
+  @UseInterceptors(FileInterceptor('file'))
+  async findOneResultAndUploadFile(
+    @Param('id') id: number,
+    @Body() _: PATCHMedicalResultFileRequestDto,
+    @UploadedFile() file: Express.Multer.File
+  ): Promise<PATCHMedicalResultFileResponseDto> {
+    await this.resultService.findOneResultAndUploadFile(id, file);
+    return {};
+  }
+
   @UseGuards(JwtAuthGuard)
   @Patch('report/:id')
   async insertMedicalReport(
@@ -51,4 +65,6 @@ export class MedicalResultController {
     const result = await this.resultService.insertMedicalReport(id, body);
     return plainToInstance(GETMedicalResultResponseDto, result);
   }
+
+
 }

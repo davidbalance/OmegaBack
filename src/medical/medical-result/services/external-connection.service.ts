@@ -19,13 +19,18 @@ export class ExternalConnectionService {
         @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
     ) { }
 
-    async create({ source, key, order, doctor, exam }: POSTMedicalResultRequestDto & { source: string }, file: Express.Multer.File): Promise<MedicalResult> {
+    async create({ source, key, order, doctor, exam }: POSTMedicalResultRequestDto & { source: string }, file?: Express.Multer.File): Promise<MedicalResult> {
 
         const foundOrder = await this.orderService.findOneOrCreate({ source, key, ...order });
+        let filePath: string | undefined = undefined;
+        let hasFile: boolean = false;
 
-        const medicalResultPath = fileResultPath({ dni: order.patient.dni, order: foundOrder.id })
-        const extension = extname(file.originalname);
-        const filePath = await this.storageManager.saveFile(file.buffer, extension, medicalResultPath, exam.name.toLocaleLowerCase().replace(/\s/g, '_'));
+        if (file) {
+            const medicalResultPath = fileResultPath({ dni: order.patient.dni, order: foundOrder.id })
+            const extension = extname(file.originalname);
+            filePath = await this.storageManager.saveFile(file.buffer, extension, medicalResultPath, exam.name.toLocaleLowerCase().replace(/\s/g, '_'));
+            hasFile = true;
+        }
 
         const directory = signaturePath({ dni: doctor.dni });
         const signature = path.join(path.resolve(directory), `${doctor.dni}.png`);
@@ -33,6 +38,7 @@ export class ExternalConnectionService {
         const newKey = await this.externalKeyService.create({ key, source });
         const newResult = await this.repository.create({
             filePath: filePath,
+            hasFile: hasFile,
             order: foundOrder,
             externalKey: newKey,
             doctorDni: doctor.dni,

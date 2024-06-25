@@ -21,6 +21,9 @@ export class GETMedicalResultResponseDto {
     @Expose()
     public readonly diseaseGroupName: string;
 
+    @Expose()
+    public readonly hasFile: boolean;
+
     @Type(() => GETMedicalReportResponseDto)
     @Expose()
     public readonly report?: GETMedicalReportResponseDto
@@ -35,3 +38,5 @@ export class GETMedicalResultArrayResponseDto {
 export class POSTMedicalResultFileResponseDto extends GETMedicalResultResponseDto { }
 
 export class PATCHMedicalResultResponseDto { }
+
+export class PATCHMedicalResultFileResponseDto { }

@@ -13,8 +13,11 @@ export class MedicalResult extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: "result_id" })
     public id: number;
 
-    @Column({ name: 'result_file_path', type: 'varchar', length: 512, unique: true })
-    public filePath: string;
+    @Column({ name: 'result_file_path', type: 'varchar', length: 512, nullable: true, unique: true })
+    public filePath?: string;
+    
+    @Column({ name: 'result_has_file', type: 'boolean', default: false, nullable: false })
+    public hasFile: boolean;
 
     @Column({ name: 'exam_name', type: 'varchar', length: 128, nullable: false })
     public examName: string;
