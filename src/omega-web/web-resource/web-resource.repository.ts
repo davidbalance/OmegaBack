@@ -15,8 +15,7 @@ export class WebResourceRespository
         super(resourceModel);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findOneAndDelete(filterOptions: FindOptionsWhere<WebResource>): void | Promise<void> {
-        this.findOneAndUpdate(filterOptions, { status: false });
+    async findOneAndDelete(filterOptions: FindOptionsWhere<WebResource>): Promise<void> {
+        await this.resourceModel.delete(filterOptions)
     }
 }

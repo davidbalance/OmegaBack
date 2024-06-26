@@ -51,6 +51,6 @@ export class WebResourceService {
   }
 
   async delete(id: number): Promise<void> {
-    this.repository.findOneAndDelete({ id });
+    await this.repository.findOneAndDelete({ id });
   }
 }
