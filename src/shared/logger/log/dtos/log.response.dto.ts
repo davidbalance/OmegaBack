@@ -15,3 +15,14 @@ export class GETLogsResponseDto {
     @Expose()
     public logs: FindLog[];
 }
+
+export class GETLogLevelResponseDto {
+    @Expose()
+    public level: string[];
+}
+
+export class GETLogLevelArrayResponseDto {
+    @Type(() => GETLogLevelResponseDto)
+    @Expose()
+    public levels: GETLogLevelResponseDto[];
+}
