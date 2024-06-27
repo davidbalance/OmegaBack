@@ -24,6 +24,8 @@ export class GETFullWebResourceResponseDto {
     public readonly address: string;
     @Expose()
     public readonly icon: string;
+    @Expose()
+    public readonly status: boolean;
 }
 
 export class GETFullWebResourceArrayResponseDto {
