@@ -6,7 +6,7 @@
 **/reports/*
 **/medical-report-pdf/*
 
-**/*.values.sql
+**/default.values*.sql
 
 **/.env
 

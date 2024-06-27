@@ -13,6 +13,14 @@ export class LogService implements LoggerWritter {
         @Inject(LogRepository) private readonly repository: LogRepository
     ) { }
 
+    async findLevels(): Promise<{ level: string }[]> {
+        const levels = await this.repository.createQuery('log')
+            .select('log.log_level', 'level')
+            .distinct(true)
+            .getRawMany<{ level: string }>();
+        return levels;
+    }
+
     async find(params: POSTLogRequestDto): Promise<Log[]> {
         const from = params.from || dayjs().subtract(1, 'day').toDate();
         const to = params.to || dayjs().toDate()

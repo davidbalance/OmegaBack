@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { WebResourceService } from './web-resource.service';
 import { ApiTags } from '@nestjs/swagger';
 import { DELETEWebResourceResponseDto, GETFullWebResourceArrayResponseDto, GETWebResourceArrayResponseDto, PATCHWebResourceResponseDto, POSTWebResourceResponseDto } from './dto/web-resource.response.dto';
@@ -47,7 +47,7 @@ export class WebResourceController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
+  @Delete(':id')
   async deleteResource(
     @Param('id') id: number
   ): Promise<DELETEWebResourceResponseDto> {
