@@ -20,12 +20,14 @@ export class ExternalConnectionService {
     async findOneOrCreate({ source, key, ...data }: POSTCorporativeGroupRequestDto & { source: string }): Promise<CorporativeGroup> {
         try {
             const foundGroup = await this.repository.findOne({
-                where: {
+                where: [{
                     externalKey: {
                         source: source,
                         key: key
                     }
-                }
+                }, {
+                    name: data.name
+                }]
             });
             return foundGroup;
         } catch (error) {

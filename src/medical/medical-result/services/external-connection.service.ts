@@ -57,4 +57,18 @@ export class ExternalConnectionService {
 
         return newResult;
     }
+
+    async findOneResultAndUploadFile({ key, source }: { source: string, key: string }, file: Express.Multer.File): Promise<MedicalResult> {
+        const { order, examName, id } = await this.repository.findOne({
+            where: {
+                externalKey: { key, source }
+            },
+            relations: { order: true }
+        });
+        const medicalResultPath = fileResultPath({ dni: order.client.dni, order: order.id });
+        const extension = extname(file.originalname);
+        const filePath = await this.storageManager.saveFile(file.buffer, extension, medicalResultPath, examName.toLocaleLowerCase().replace(/\s/g, '_'));
+        const result = await this.repository.findOneAndUpdate({ id }, { filePath: filePath, hasFile: true });
+        return result;
+    }
 }
