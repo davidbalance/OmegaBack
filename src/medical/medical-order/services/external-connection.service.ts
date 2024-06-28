@@ -30,7 +30,6 @@ export class ExternalConnectionService {
     async create({ key, source, branch, patient, ...order }: POSTMedicalOrderExternalConnectionRequestDto & { source: string }): Promise<MedicalOrder> {
         const { company } = branch;
         const { corporativeGroup } = company;
-        const newKey = await this.externalKeyService.create({ key, source });
 
         const newClient = await this.client.findOneOrCreate({
             birthday: patient.birthday,
@@ -39,19 +38,25 @@ export class ExternalConnectionService {
             fullname: `${patient.lastname} ${patient.name}`
         });
 
-        const newOrder = await this.repository.create({
-            ...order,
-            companyRuc: company.ruc,
-            companyName: company.name,
-            corporativeName: corporativeGroup.name,
-            branchName: branch.name,
-            externalKey: newKey,
-            client: newClient,
-        });
+        try {
+            const newKey = await this.externalKeyService.create({ key, source });
+            const newOrder = await this.repository.create({
+                ...order,
+                companyRuc: company.ruc,
+                companyName: company.name,
+                corporativeName: corporativeGroup.name,
+                branchName: branch.name,
+                externalKey: newKey,
+                client: newClient,
+            });
 
-        this.eventEmitter.emit(OrderEvent.FIND_OR_CREATE_PATIENT, new OrderFindOrCreatePatientEvent({ source, ...patient }));
-        this.eventEmitter.emit(OrderEvent.FIND_OR_CREATE_BRANCH, new OrderFindOrCreateBranchEvent({ source, ...branch }));
-        return newOrder;
+            this.eventEmitter.emit(OrderEvent.FIND_OR_CREATE_PATIENT, new OrderFindOrCreatePatientEvent({ source, ...patient }));
+            this.eventEmitter.emit(OrderEvent.FIND_OR_CREATE_BRANCH, new OrderFindOrCreateBranchEvent({ source, ...branch }));
+            return newOrder;
+        } catch (error) {
+            this.externalKeyService.remove({ source, key })
+            throw error;
+        }
     }
 
     async findOneOrCreate({ key, source, branch, patient, ...order }: POSTMedicalOrderRequestDto & { key: string, source: string }): Promise<MedicalOrder> {

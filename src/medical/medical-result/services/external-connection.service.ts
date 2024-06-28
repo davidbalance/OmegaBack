@@ -41,21 +41,26 @@ export class ExternalConnectionService {
         const signature = path.join(path.resolve(directory), `${doctor.dni}.png`);
 
         const newKey = await this.externalKeyService.create({ key, source });
-        const newResult = await this.repository.create({
-            filePath: filePath,
-            hasFile: hasFile,
-            order: foundOrder,
-            externalKey: newKey,
-            doctorDni: doctor.dni,
-            doctorFullname: `${doctor.name} ${doctor.lastname}`,
-            doctorSignature: signature,
-            examName: exam.name,
-        });
+        try {
+            const newResult = await this.repository.create({
+                filePath: filePath,
+                hasFile: hasFile,
+                order: foundOrder,
+                externalKey: newKey,
+                doctorDni: doctor.dni,
+                doctorFullname: `${doctor.name} ${doctor.lastname}`,
+                doctorSignature: signature,
+                examName: exam.name,
+            });
 
-        this.eventEmitter.emit(ResultEvent.FIND_OR_CREATE_DOCTOR, new ResultFindOrCreateDoctorEvent(doctor));
-        this.eventEmitter.emit(ResultEvent.FIND_OR_CREATE_EXAM, new ResultFindOrCreateExamEvent({ source, ...exam }));
+            this.eventEmitter.emit(ResultEvent.FIND_OR_CREATE_DOCTOR, new ResultFindOrCreateDoctorEvent(doctor));
+            this.eventEmitter.emit(ResultEvent.FIND_OR_CREATE_EXAM, new ResultFindOrCreateExamEvent({ source, ...exam }));
 
-        return newResult;
+            return newResult;
+        } catch (error) {
+            this.externalKeyService.remove({ source, key });
+            throw error;
+        }
     }
 
     async findOneResultAndUploadFile({ key, source }: { source: string, key: string }, file: Express.Multer.File): Promise<MedicalResult> {

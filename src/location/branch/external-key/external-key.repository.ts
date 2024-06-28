@@ -14,9 +14,7 @@ export class ExternalKeyRepository extends AbstractRepository<number, ExternalKe
         super(keyModel);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async findOneAndDelete(filterOptions: FindOptionsWhere<ExternalKey>): Promise<void> {
         await this.keyModel.delete(filterOptions);
     }
-
 }
