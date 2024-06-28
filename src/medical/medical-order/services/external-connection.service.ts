@@ -17,6 +17,16 @@ export class ExternalConnectionService {
         @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
     ) { }
 
+    async findOrdersByPatient(dni: string): Promise<MedicalOrder[]> {
+        const orders = await this.repository.find({ where: { client: { dni } } });
+        return orders;
+    }
+
+    async findOrderBySourceAndKey(source: string, key: string): Promise<MedicalOrder> {
+        const order = await this.repository.findOne({ where: { externalKey: { source, key } } });
+        return order;
+    }
+
     async create({ key, source, branch, patient, ...order }: POSTMedicalOrderExternalConnectionRequestDto & { source: string }): Promise<MedicalOrder> {
         const { company } = branch;
         const { corporativeGroup } = company;

@@ -1,11 +1,11 @@
-import { Body, Controller, Inject, Param, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Param, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiConsumes, ApiHeader, ApiTags } from "@nestjs/swagger";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { ExternalConnectionService } from "../services/external-connection.service";
 import { POSTMedicalResultFileRequestDto } from "../dtos/medical-result.request.dto";
-import { POSTMedicalResultFileResponseDto } from "../dtos/medical-result.response.dto";
+import { GETMedicalResultResponseDto, POSTMedicalResultFileResponseDto } from "../dtos/medical-result.response.dto";
 
 @ApiTags('External/Connection', 'Medical/Result')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -14,6 +14,16 @@ export class ExternalConnectionController {
     constructor(
         @Inject(ExternalConnectionService) private readonly service: ExternalConnectionService
     ) { }
+
+    @UseGuards(ApiKeyAuthGuard)
+    @Get('key/:key')
+    async findResultBySourceAndKey(
+        @Param('source') source: string,
+        @Param('key') key: string
+    ): Promise<GETMedicalResultResponseDto> {
+        const medicalResult = await this.service.findBySourceAndKey(source, key);
+        return plainToInstance(GETMedicalResultResponseDto, medicalResult);
+    }
 
     @ApiConsumes('multipart/form-data')
     @UseGuards(ApiKeyAuthGuard)

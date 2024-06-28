@@ -19,6 +19,11 @@ export class ExternalConnectionService {
         @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
     ) { }
 
+    async findBySourceAndKey(source: string, key: string): Promise<MedicalResult> {
+        const medicalResult = await this.repository.findOne({ where: { externalKey: { source, key } } });
+        return medicalResult;
+    }
+
     async create({ source, key, order, doctor, exam }: POSTMedicalResultRequestDto & { source: string }, file?: Express.Multer.File): Promise<MedicalResult> {
 
         const foundOrder = await this.orderService.findOneOrCreate({ source, key, ...order });

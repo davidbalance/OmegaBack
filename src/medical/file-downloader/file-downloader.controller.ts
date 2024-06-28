@@ -4,7 +4,7 @@ import { FileDownloaderService } from './file-downloader.service';
 import { DownloadAndZipContentRequestDto, FileSourceRequestDto } from './dto/file-downloader.request.dto';
 import { Response } from 'express';
 
-@ApiTags('Medical/File')
+@ApiTags('Medical/File', 'External/Connection')
 @Controller('medical/file')
 export class FileDownloaderController {
     constructor(
