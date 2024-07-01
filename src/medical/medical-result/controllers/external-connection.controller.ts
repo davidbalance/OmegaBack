@@ -5,7 +5,7 @@ import { ApiConsumes, ApiHeader, ApiTags } from "@nestjs/swagger";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { ExternalConnectionService } from "../services/external-connection.service";
 import { PATCHMedicalResultFileRequestDto, POSTMedicalResultFileRequestDto } from "../dtos/medical-result.request.dto";
-import { GETMedicalResultResponseDto, POSTMedicalResultFileResponseDto } from "../dtos/medical-result.response.dto";
+import { GETMedicalResultExternalConnectionResponseDto, POSTMedicalResultFileResponseDto } from "../dtos/external-connection.response.dto";
 
 @ApiTags('External/Connection', 'Medical/Result')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -16,13 +16,13 @@ export class ExternalConnectionController {
     ) { }
 
     @UseGuards(ApiKeyAuthGuard)
-    @Get('key/:key')
+    @Get(':key')
     async findResultBySourceAndKey(
         @Param('source') source: string,
         @Param('key') key: string
-    ): Promise<GETMedicalResultResponseDto> {
+    ): Promise<GETMedicalResultExternalConnectionResponseDto> {
         const medicalResult = await this.service.findBySourceAndKey(source, key);
-        return plainToInstance(GETMedicalResultResponseDto, medicalResult);
+        return plainToInstance(GETMedicalResultExternalConnectionResponseDto, medicalResult);
     }
 
     @ApiConsumes('multipart/form-data')

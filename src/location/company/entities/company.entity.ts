@@ -13,7 +13,7 @@ export class Company extends AbstractEntity<number> {
     @Column({ name: 'company_ruc', type: 'varchar', length: 13, nullable: false, unique: true })
     public ruc: string;
 
-    @Column({ name: 'company_name', type: 'varchar', length: 64, nullable: false, unique: true })
+    @Column({ name: 'company_name', type: 'varchar', length: 64, nullable: false })
     public name: string;
 
     @Column({ name: 'company_address', type: 'varchar', length: 128, nullable: false })
