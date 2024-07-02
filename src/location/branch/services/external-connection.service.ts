@@ -22,13 +22,18 @@ export class ExternalConnectionService {
         });
         const foundCity = await this.cityService.findOneByName(city);
         const newKey = await this.keyService.create({ source: source, key: key });
-        const newBranch = await this.repository.create({
-            ...branch,
-            city: foundCity,
-            company: foundCompany,
-            externalKey: newKey
-        });
-        return newBranch;
+        try {
+            const newBranch = await this.repository.create({
+                ...branch,
+                city: foundCity,
+                company: foundCompany,
+                externalKey: newKey
+            });
+            return newBranch;
+        } catch (error) {
+            await this.keyService.remove({ source, key });
+            throw error;
+        }
     }
 
     async findOneOrCreate({ source, key, ...branch }: POSTBranchRequestDto & { source: string }): Promise<Branch> {

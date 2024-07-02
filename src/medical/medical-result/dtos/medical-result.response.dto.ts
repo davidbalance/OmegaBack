@@ -35,8 +35,6 @@ export class GETMedicalResultArrayResponseDto {
     public readonly results: GETMedicalResultResponseDto[]
 }
 
-export class POSTMedicalResultFileResponseDto extends GETMedicalResultResponseDto { }
-
 export class PATCHMedicalResultResponseDto { }
 
 export class PATCHMedicalResultFileResponseDto { }

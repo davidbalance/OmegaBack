@@ -9,13 +9,12 @@ export class ExternalKeyRepository extends AbstractRepository<number, ExternalKe
     protected logger: Logger = new Logger();
 
     constructor(
-        @InjectRepository(ExternalKey) private readonly companyModel: Repository<ExternalKey>
+        @InjectRepository(ExternalKey) private readonly keyRepository: Repository<ExternalKey>
     ) {
-        super(companyModel);
+        super(keyRepository);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findOneAndDelete(_filterOptions: FindOptionsWhere<ExternalKey>): void | Promise<void> {
-        throw new Error("Method not implemented.");
+    async findOneAndDelete(filterOptions: FindOptionsWhere<ExternalKey>): Promise<void> {
+        await this.keyRepository.delete(filterOptions);
     }
 }

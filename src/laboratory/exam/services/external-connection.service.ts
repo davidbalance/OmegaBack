@@ -14,12 +14,16 @@ export class ExternalConnectionService {
 
     async create({ key, source, ...exam }: POSTExamRequestDto & { source: string }): Promise<Exam> {
         const newKey = await this.externalKeyService.create({ key, source });
-        const newExam = await this.repository.create({
-            ...exam,
-            externalKey: newKey
-        });
-
-        return newExam;
+        try {
+            const newExam = await this.repository.create({
+                ...exam,
+                externalKey: newKey
+            });
+            return newExam;
+        } catch (error) {
+            this.externalKeyService.remove({ source, key })
+            throw error;
+        }
     }
 
     async findOneOrCreate({ key, source, ...exam }: POSTExamRequestDto & { source: string }): Promise<Exam> {
@@ -39,6 +43,12 @@ export class ExternalConnectionService {
     }
 
     async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHExamRequestDto): Promise<Exam> {
+        console.log({
+            externalKey: {
+                key: key,
+                source: source
+            }
+        });
         const foundExam = await this.repository.findOneAndUpdate({
             externalKey: {
                 key: key,

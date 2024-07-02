@@ -21,23 +21,33 @@ export class ExternalConnectionService {
             ...corporativeGroup
         });
         const newKey = await this.keyService.create({ source: source, key: key });
-        const newCompany = await this.repository.create({
-            ...company,
-            corporativeGroup: group,
-            externalKey: newKey
-        });
-        return newCompany;
+        try {
+            const newCompany = await this.repository.create({
+                ...company,
+                corporativeGroup: group,
+                externalKey: newKey
+            });
+            return newCompany;
+        } catch (error) {
+            await this.keyService.remove({ key, source });
+            throw error;
+        }
     }
 
     async findOneOrCreate({ source, key, ...company }: CreateCompanyType): Promise<Company> {
         try {
             const foundCompany = await this.repository.findOne({
-                where: {
-                    externalKey: {
-                        source: source,
-                        key: key
+                where: [
+                    {
+                        externalKey: {
+                            source: source,
+                            key: key
+                        }
+                    },
+                    {
+                        ruc: company.ruc
                     }
-                }
+                ]
             });
             return foundCompany;
         } catch (error) {

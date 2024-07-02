@@ -13,19 +13,26 @@ export class ExternalConnectionService {
 
     async create({ source, key, ...data }: POSTCorporativeGroupRequestDto & { source: string }): Promise<CorporativeGroup> {
         const newKey = await this.keyService.create({ key, source });
-        const group = await this.repository.create({ ...data, externalKey: newKey });
-        return group;
+        try {
+            const group = await this.repository.create({ ...data, externalKey: newKey });
+            return group;
+        } catch (error) {
+            this.keyService.remove({ source, key })
+            throw error;
+        }
     }
 
     async findOneOrCreate({ source, key, ...data }: POSTCorporativeGroupRequestDto & { source: string }): Promise<CorporativeGroup> {
         try {
             const foundGroup = await this.repository.findOne({
-                where: {
+                where: [{
                     externalKey: {
                         source: source,
                         key: key
                     }
-                }
+                }, {
+                    name: data.name
+                }]
             });
             return foundGroup;
         } catch (error) {

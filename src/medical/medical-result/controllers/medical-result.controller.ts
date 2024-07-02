@@ -6,7 +6,7 @@ import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
 import { MedicalResultService } from '../services/medical-result.service';
 import { GETMedicalResultArrayResponseDto, GETMedicalResultResponseDto, PATCHMedicalResultFileResponseDto, PATCHMedicalResultResponseDto } from '../dtos/medical-result.response.dto';
-import { PATCHMedicalReportRequestDto, POSTMedicalReportRequestDto } from '@/medical/medical-report/dtos/medical-report.request.dto';
+import { PATCHMedicalReportRequestDto } from '@/medical/medical-report/dtos/medical-report.request.dto';
 import { PATCHMedicalResultFileRequestDto, PATCHMedicalResultWithDiseaseRequestDto } from '../dtos/medical-result.request.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 

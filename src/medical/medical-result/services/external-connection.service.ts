@@ -19,6 +19,11 @@ export class ExternalConnectionService {
         @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
     ) { }
 
+    async findBySourceAndKey(source: string, key: string): Promise<MedicalResult> {
+        const medicalResult = await this.repository.findOne({ where: { externalKey: { source, key } } });
+        return medicalResult;
+    }
+
     async create({ source, key, order, doctor, exam }: POSTMedicalResultRequestDto & { source: string }, file?: Express.Multer.File): Promise<MedicalResult> {
 
         const foundOrder = await this.orderService.findOneOrCreate({ source, key, ...order });
@@ -36,20 +41,39 @@ export class ExternalConnectionService {
         const signature = path.join(path.resolve(directory), `${doctor.dni}.png`);
 
         const newKey = await this.externalKeyService.create({ key, source });
-        const newResult = await this.repository.create({
-            filePath: filePath,
-            hasFile: hasFile,
-            order: foundOrder,
-            externalKey: newKey,
-            doctorDni: doctor.dni,
-            doctorFullname: `${doctor.name} ${doctor.lastname}`,
-            doctorSignature: signature,
-            examName: exam.name,
+        try {
+            const newResult = await this.repository.create({
+                filePath: filePath,
+                hasFile: hasFile,
+                order: foundOrder,
+                externalKey: newKey,
+                doctorDni: doctor.dni,
+                doctorFullname: `${doctor.name} ${doctor.lastname}`,
+                doctorSignature: signature,
+                examName: exam.name,
+            });
+
+            this.eventEmitter.emit(ResultEvent.FIND_OR_CREATE_DOCTOR, new ResultFindOrCreateDoctorEvent(doctor));
+            this.eventEmitter.emit(ResultEvent.FIND_OR_CREATE_EXAM, new ResultFindOrCreateExamEvent({ source, ...exam }));
+
+            return newResult;
+        } catch (error) {
+            this.externalKeyService.remove({ source, key });
+            throw error;
+        }
+    }
+
+    async findOneResultAndUploadFile({ key, source }: { source: string, key: string }, file: Express.Multer.File): Promise<MedicalResult> {
+        const { order, examName, id } = await this.repository.findOne({
+            where: {
+                externalKey: { key, source }
+            },
+            relations: { order: true }
         });
-
-        this.eventEmitter.emit(ResultEvent.FIND_OR_CREATE_DOCTOR, new ResultFindOrCreateDoctorEvent(doctor));
-        this.eventEmitter.emit(ResultEvent.FIND_OR_CREATE_EXAM, new ResultFindOrCreateExamEvent({ source, ...exam }));
-
-        return newResult;
+        const medicalResultPath = fileResultPath({ dni: order.client.dni, order: order.id });
+        const extension = extname(file.originalname);
+        const filePath = await this.storageManager.saveFile(file.buffer, extension, medicalResultPath, examName.toLocaleLowerCase().replace(/\s/g, '_'));
+        const result = await this.repository.findOneAndUpdate({ id }, { filePath: filePath, hasFile: true });
+        return result;
     }
 }
