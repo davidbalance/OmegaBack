@@ -25,13 +25,13 @@ export class ExternalConnectionController {
     }
 
     @UseGuards(ApiKeyAuthGuard)
-    @Patch(':id')
+    @Patch(':key')
     async findOneAndUpdate(
         @Param('source') source: string,
-        @Param('id') id: string,
+        @Param('key') key: string,
         @Body() body: PATCHCompanyRequestDto
     ): Promise<PATCHCompanyResponseDto> {
-        const company = await this.service.findOneAndUpdate({ key: id, source: source }, body);
+        const company = await this.service.findOneAndUpdate({ key: key, source: source }, body);
         return plainToInstance(PATCHCompanyResponseDto, company);
     }
 

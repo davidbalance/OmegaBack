@@ -16,7 +16,7 @@ export class ExternalConnectionService {
         try {
             newUser = await this.userService.findOneByDni(user.dni);
         } catch (error) {
-            newUser = await this.userService.create(user);
+            newUser = await this.userService.create({ ...user, email: null });
         }
         const patient = await this.repository.create({ birthday, gender, user: newUser });
         return patient;
@@ -42,7 +42,7 @@ export class ExternalConnectionService {
 
     async findOneAndUpdate(id: string, { birthday, gender, ...user }: PATCHPatientRequestDto): Promise<Patient> {
         const patient = await this.repository.findOne({ where: { user: { dni: id } }, select: { user: { id: true } } });
-        await this.userService.findOneAndUpdate(patient.user.id, { ...user });
+        await this.userService.findOneAndUpdate(patient.user.id, { ...user, email: null });
         const updatedPatient = await this.repository.findOneAndUpdate({ user: { dni: id } }, patient);
         return updatedPatient;
     }
