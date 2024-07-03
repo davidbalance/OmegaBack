@@ -8,6 +8,11 @@ export class SelectorService {
         @Inject(DiseaseRepository) private readonly repository: DiseaseRepository
     ) { }
 
+    /**
+     * Encuentra todas las morbilidades activas y solo retorna un key y label.
+     * @param group 
+     * @returns 
+     */
     async find(group: number): Promise<SelectorOption<number>[]> {
         const diseases = await this.repository.createQuery('disease')
             .select('disease.id', 'key')

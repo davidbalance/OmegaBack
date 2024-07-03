@@ -9,6 +9,10 @@ export class SelectorService {
     @Inject(ExamRepository) private readonly repository: ExamRepository
   ) { }
 
+  /**
+   * Encuentra todos los examenes medicos activos y solo retorna un key y label.
+   * @returns 
+   */
   async find(): Promise<SelectorOption<number>[]> {
     const exams = await this.repository.createQuery('exam')
       .select('exam.id', 'key')

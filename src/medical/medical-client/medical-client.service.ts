@@ -15,6 +15,11 @@ export class MedicalClientService {
     @Inject(MedicalEmailRepository) private readonly emailRepository: MedicalEmailRepository
   ) { }
 
+  /**
+   * Encuentra un cliente medico sino lo crea.
+   * @param param0 
+   * @returns 
+   */
   async findOneOrCreate({ dni, email, ...data }: POSTMedicalClientRequestDto): Promise<MedicalClient> {
     try {
       const client = await this.clientRepository.findOne({
@@ -30,6 +35,11 @@ export class MedicalClientService {
     }
   }
 
+  /**
+   * Encuentra correos electronico dado un dni de un cliente medico.
+   * @param dni 
+   * @returns 
+   */
   async findEmailByDni(dni: string): Promise<MedicalEmail[]> {
     const client = await this.clientRepository.findOne({
       where: {
@@ -39,6 +49,12 @@ export class MedicalClientService {
     return client.email;
   }
 
+  /**
+   * Actualiza un correo por defecto para un cliente medico.
+   * @param dni 
+   * @param id 
+   * @returns 
+   */
   async updateEmailDefault(dni: string, id: number): Promise<MedicalEmail[]> {
     const { email } = await this.clientRepository.findOne({ where: { dni } });
     await this.emailRepository.findOneAndUpdate({ id: In(email.map(e => e.id)) }, { default: false });
@@ -47,10 +63,20 @@ export class MedicalClientService {
     return client.email;
   }
 
+  /**
+   * Elimina un correo electronico de un cliente medico.
+   * @param id 
+   */
   deleteEmailById(id: number): void {
     this.emailRepository.findOneAndDelete({ id });
   }
 
+  /**
+   * Añade un correo electronico a un cliente medico.
+   * @param id 
+   * @param param1 
+   * @returns 
+   */
   async assignEmail(id: number, { ...data }: POSTMedicalEmailRequestDto): Promise<MedicalClient> {
     const newEmail = await this.emailRepository.create({ ...data });
     const { email } = await this.clientRepository.findOne({ where: { id } });

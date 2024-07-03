@@ -9,6 +9,11 @@ export class BranchService {
     @Inject(BranchRepository) private readonly repository: BranchRepository
   ) { }
 
+  /**
+   * Retorna todos las surcursales activas del sistema.
+   * @param company 
+   * @returns 
+   */
   async find(company: number): Promise<Branch[]> {
     const branches = await this.repository.find({
       where: {
@@ -33,6 +38,11 @@ export class BranchService {
     return branches;
   }
 
+  /**
+   * Retorna todas las sucursales activas asociadas al ruc de una empresa.
+   * @param company 
+   * @returns 
+   */
   async findByCompanyRuc(company: string): Promise<Branch[]> {
     const branches = await this.repository.find({
       where: {

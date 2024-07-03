@@ -10,6 +10,11 @@ export class SelectorService {
     @Inject(CompanyRepository) private readonly repository: CompanyRepository
   ) { }
 
+  /**
+   * Encuentra todos las empresas activas y solo retorna un key y label.
+   * @param group 
+   * @returns 
+   */
   async find(group: number): Promise<SelectorOption<number>[]> {
     const companies = await this.repository.createQuery('company')
       .select('company.id', 'key')

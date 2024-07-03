@@ -15,9 +15,9 @@ export class UserCredentialService {
   ) { }
 
   /**
-   * Creates a new credential with the given options
+   * Crea credenciales para un usuario.
    * @param param0 
-   * @returns A new user credential
+   * @returns 
    */
   async create({ email, ...data }: POSTCredentialRequestDto): Promise<UserCredential> {
     try {
@@ -34,10 +34,10 @@ export class UserCredentialService {
   }
 
   /**
-   * Find one credetials by its username name, then updates the password
+   * Busca una credencial y actualiza la contraseña.
    * @param username 
    * @param password 
-   * @returns The updated credential
+   * @returns 
    */
   async findOneCredentialAndUpdatePassword(username: string, password: string): Promise<UserCredential> {
     const hashedPassword = this.hashPassword(password);
@@ -46,10 +46,10 @@ export class UserCredentialService {
   }
 
   /**
-   * Checks if there is a credential that matches its username or password
+   * Valida el usuario y contraseña.
    * @param username 
    * @param password 
-   * @returns The credential owner key
+   * @returns 
    */
   async validateCredentials(username: string, password: string): Promise<number> {
     const credentials = await this.repository.findOne({ where: { email: username, status: true }, select: { user: true, password: true } });
@@ -59,18 +59,29 @@ export class UserCredentialService {
   }
 
   /**
-   * Finds one credential by its owner key
+   * Encuentra credenciales usando al usuario.
    * @param user 
-   * @returns Credentials
+   * @returns 
    */
   async findOneByUser(user: number): Promise<UserCredential> {
     return this.repository.findOne({ where: { user: user } });
   }
 
+  /**
+   * Valida la contraseña.
+   * @param password 
+   * @param hash 
+   * @returns 
+   */
   private validatePassword(password: string, hash: string): boolean {
     return bcrypt.compareSync(password, hash);
   }
 
+  /**
+   * Encripta la contraseña antes de guardar o actualizarla.
+   * @param password 
+   * @returns 
+   */
   private hashPassword(password: string): string {
     const saltOrRounds = bcrypt.genSaltSync();
     return bcrypt.hashSync(password, saltOrRounds);

@@ -11,6 +11,11 @@ export class ExternalConnectionService {
         @Inject(ExternalKeyService) private keyService: ExternalKeyService
     ) { }
 
+    /**
+     * Crea un grupo corporativo.
+     * @param param0 
+     * @returns 
+     */
     async create({ source, key, ...data }: POSTCorporativeGroupRequestDto & { source: string }): Promise<CorporativeGroup> {
         const newKey = await this.keyService.create({ key, source });
         try {
@@ -22,6 +27,11 @@ export class ExternalConnectionService {
         }
     }
 
+    /**
+     * Encuentra un grupo corporativo si no existe lo crea.
+     * @param param0 
+     * @returns 
+     */
     async findOneOrCreate({ source, key, ...data }: POSTCorporativeGroupRequestDto & { source: string }): Promise<CorporativeGroup> {
         try {
             const foundGroup = await this.repository.findOne({
@@ -40,6 +50,12 @@ export class ExternalConnectionService {
         }
     }
 
+    /**
+     * Encuentra un grupo corporativo y lo modifica.
+     * @param param0 
+     * @param param1 
+     * @returns 
+     */
     async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHCorporativeGroupRequestDto): Promise<CorporativeGroup> {
         const group = await this.repository.findOneAndUpdate({
             externalKey: {

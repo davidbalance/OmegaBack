@@ -16,6 +16,11 @@ export class MedicalOrderService {
     @Inject(ConfigService) private readonly config: ConfigService
   ) { }
 
+  /**
+   * Retorna una orden medica mediante el identificador unico.
+   * @param id 
+   * @returns 
+   */
   async findOrderFilesById(id: number): Promise<GETMedicalOrderFilesResponseDto> {
     const order = await this.repository.findOne({
       where: {
@@ -35,6 +40,11 @@ export class MedicalOrderService {
     };
   }
 
+  /**
+   * Retorna varias ordenes medicas dado el dni de un cliente medico.
+   * @param dni 
+   * @returns 
+   */
   async findByPatient(dni: string): Promise<MedicalOrder[]> {
     const orders = await this.repository.find({
       where: {
@@ -62,6 +72,11 @@ export class MedicalOrderService {
     return orders;
   }
 
+  /**
+   * Envia un correo electornico basandose en una orden medica.
+   * @param order 
+   * @param mail 
+   */
   async sendMail(order: number, mail: number): Promise<void> {
     const directory = path.resolve('static/images/omega.png');
     const foundOrder = await this.repository.findOne({

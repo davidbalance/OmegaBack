@@ -9,6 +9,10 @@ export class SelectorService {
     @Inject(CorporativeGroupRepository) private readonly repository: CorporativeGroupRepository
   ) { }
 
+  /**
+   * Encuentra todos los grupos corporativos activos y solo retorna un key y label.
+   * @returns 
+   */
   async find(): Promise<SelectorOption<number>[]> {
     const group = await this.repository.createQuery('group')
       .select('group.id', 'key')

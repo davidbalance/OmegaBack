@@ -19,7 +19,11 @@ export class MedicalReportService implements FindFilePathService<number> {
     @Inject(SendAttributeService) private readonly attributeService: SendAttributeService
   ) { }
 
-
+  /**
+   * Obtiene la direccion donde se aloja un archivo.
+   * @param key 
+   * @returns 
+   */
   async getpath(key: number): Promise<string> {
     const file = await this.repository.findOne({
       where: { id: key },
@@ -31,12 +35,21 @@ export class MedicalReportService implements FindFilePathService<number> {
     return file.fileAddress;
   }
 
+  /**
+   * Crea un reporte medico.
+   * @param param0 
+   * @returns 
+   */
   async create({ ...data }: POSTMedicalReportRequestDto): Promise<MedicalReport> {
     const report = await this.repository.create({ ...data });
     const newReport = await this.processReportPdf(report);
     return newReport;
   }
 
+  /**
+   * Recrea un reporte medico dado un dni.
+   * @param patientDni 
+   */
   async recreateReport(patientDni?: string): Promise<void> {
     const reports = await this.repository.find({ where: { patientDni }, select: { id: true } });
     try {
@@ -49,12 +62,22 @@ export class MedicalReportService implements FindFilePathService<number> {
     }
   }
 
+  /**
+   * Procesa los datos del reporte medico para generar un pdf.
+   * @param report 
+   * @returns 
+   */
   private async processReportPdf(report: MedicalReport): Promise<MedicalReport> {
     const filename = await this.createPdf(report.id);
     const newReport = await this.repository.findOneAndUpdate({ id: report.id }, { fileAddress: filename, hasFile: true });
     return newReport;
   }
 
+  /**
+   * Crea el pdf y lo almacena en la memoria de la computadora.
+   * @param id 
+   * @returns 
+   */
   private async createPdf(id: number): Promise<string> {
     const reportData = await this.repository.findOne({ where: { id } });
     const directory = path.resolve(reportData.doctorSignature);
@@ -75,6 +98,12 @@ export class MedicalReportService implements FindFilePathService<number> {
     return output;
   }
 
+  /**
+   * Genera el contenido requerido para generar el pdf.
+   * @param report 
+   * @param base64 
+   * @returns 
+   */
   private getContent = (report: MedicalReport, base64: string) => ({
     title: 'Omega report',
     patientFullname: report.patientFullname,
@@ -89,6 +118,12 @@ export class MedicalReportService implements FindFilePathService<number> {
     doctorSignature: `data:image/png;base64,${base64}`
   });
 
+  /**
+   * Añade un atributo de envio a un resultado medico.
+   * @param id 
+   * @param value 
+   * @returns 
+   */
   async assignSendAttribute(id: number, value: string): Promise<MedicalReport> {
     const attribute = await this.attributeService.create({ value: value });
     const { sendAttributes } = await this.repository.findOne({ where: { id: id }, relations: { sendAttributes: true } });
