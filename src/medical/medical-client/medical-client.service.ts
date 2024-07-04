@@ -30,6 +30,15 @@ export class MedicalClientService {
     }
   }
 
+  async findClientsByDoctor(doctor: string): Promise<MedicalClient[]> {
+    const clients = await this.clientRepository.createQuery('client')
+      .leftJoinAndSelect('client.medicalOrders', 'medicalOrder')
+      .leftJoinAndSelect('medicalOrder.results', 'medicalResult')
+      .where('medicalResult.doctorDni = :dni', { dni: doctor })
+      .getMany();
+    return clients;
+  }
+
   async findEmailByDni(dni: string): Promise<MedicalEmail[]> {
     const client = await this.clientRepository.findOne({
       where: {
