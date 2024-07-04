@@ -42,6 +42,7 @@ export class MedicalResultService implements
         }
       });
       this.storageManager.deleteFile(file.filePath);
+      return true;
     } catch (error) {
       Logger.error(error);
       return false;

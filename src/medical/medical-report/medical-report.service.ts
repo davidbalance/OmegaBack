@@ -42,6 +42,7 @@ export class MedicalReportService implements
         }
       });
       this.storageManager.deleteFile(file.fileAddress);
+      return true;
     } catch (error) {
       Logger.error(error);
       return false;
