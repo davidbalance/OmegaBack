@@ -11,11 +11,12 @@ export class PdfManagerService {
      * @param templatePath 
      * @param data 
      * @param options 
-     * @returns Buffer
+     * @returns {Promise<Buffer>}
      */
     async craft(templatePath: string, data: any, options?: PDFOptions): Promise<Buffer> {
         try {
-            const browser = await puppeteer.launch();
+            // const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+            const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
             const page = await browser.newPage();
 
             const html = readFileSync(templatePath, 'utf-8');

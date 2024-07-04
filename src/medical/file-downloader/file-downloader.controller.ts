@@ -1,4 +1,4 @@
-import { Body, Controller, Inject, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Inject, Param, Post, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FileDownloaderService } from './file-downloader.service';
 import { DownloadAndZipContentRequestDto, FileSourceRequestDto } from './dto/file-downloader.request.dto';
@@ -35,5 +35,14 @@ export class FileDownloaderController {
             'Content-Disposition': 'attachment; filename="archivo-medico.zip"',
         })
         zip.getStream().pipe(response);
+    }
+
+    @Delete(':type/:id')
+    async deleteFile(
+        @Param('type') type: string,
+        @Param('id') id: number,
+    ) {
+        await this.service.deleteFile({ id, type: type as any });
+        return {};
     }
 }

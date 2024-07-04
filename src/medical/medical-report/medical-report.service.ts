@@ -1,7 +1,7 @@
 import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { MedicalReportRepository } from './medical-report.repository';
 import { MedicalReport } from './entities/medical-report.entity';
-import { FindFilePathService, PdfManagerService, fileReportPath } from '@/shared';
+import { FindFilePathService, PdfManagerService, RemoveFileService, fileReportPath } from '@/shared';
 import { readFileSync } from 'fs';
 import dayjs from 'dayjs';
 import path from 'path';
@@ -10,7 +10,9 @@ import { SendAttributeService } from './send-attribute/send-attribute.service';
 import { POSTMedicalReportRequestDto } from './dtos/medical-report.request.dto';
 
 @Injectable()
-export class MedicalReportService implements FindFilePathService<number> {
+export class MedicalReportService implements
+  FindFilePathService<number>,
+  RemoveFileService<number> {
 
   constructor(
     @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository,
@@ -18,7 +20,6 @@ export class MedicalReportService implements FindFilePathService<number> {
     @Inject(StorageManager) private readonly storageManager: StorageManager,
     @Inject(SendAttributeService) private readonly attributeService: SendAttributeService
   ) { }
-
 
   async getpath(key: number): Promise<string> {
     const file = await this.repository.findOne({
@@ -29,6 +30,22 @@ export class MedicalReportService implements FindFilePathService<number> {
       }
     });
     return file.fileAddress;
+  }
+
+  async removeFile(key: number): Promise<boolean> {
+    try {
+      const file = await this.repository.findOne({
+        where: { id: key },
+        select: {
+          id: true,
+          fileAddress: true
+        }
+      });
+      this.storageManager.deleteFile(file.fileAddress);
+    } catch (error) {
+      Logger.error(error);
+      return false;
+    }
   }
 
   async create({ ...data }: POSTMedicalReportRequestDto): Promise<MedicalReport> {
@@ -69,6 +86,7 @@ export class MedicalReportService implements FindFilePathService<number> {
     const buffer = await this.pdfService.craft(templateFile, content);
 
     const filePath = fileReportPath({ dni: reportData.patientDni, order: reportData.order });
+
 
     const output = this.storageManager.saveFile(buffer, '.pdf', filePath, reportData.examName.toLocaleLowerCase().replace(/\s/g, '_'));
 
