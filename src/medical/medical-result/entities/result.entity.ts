@@ -28,6 +28,9 @@ export class MedicalResult extends AbstractEntity<number> {
     @Column({ name: 'disease_name', type: 'varchar', length: 128, nullable: true })
     public diseaseName?: string;
 
+    @Column({ name: 'disease_commentary', type: 'varchar', length: 512, nullable: true })
+    public diseaseCommentary?: string;
+
     @Column({ name: 'disease_group_id', type: 'int', nullable: true })
     public diseaseGroupId?: number;
 
