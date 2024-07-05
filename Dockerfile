@@ -51,6 +51,7 @@ RUN mkdir old-ipeges
 
 COPY --chown=node:node --from=build /usr/src/app/dist dist
 COPY --chown=node:node --from=build /usr/src/app/node_modules node_modules
+COPY --chown=node:node --from=build /usr/src/app/static static
 COPY --chown=node:node --from=build /usr/src/app/templates templates
 COPY --chown=node:node --from=build /usr/src/app/templates/my-template-signatures signatures
 
