@@ -62,6 +62,15 @@ export class MedicalOrderService {
     return orders;
   }
 
+  async findByPatientAndDoctor(patient: string, doctor: string): Promise<MedicalOrder[]> {
+    const orders = await this.repository.createQuery('medicalOrder')
+      .leftJoinAndSelect('medicalOrder.results', 'medicalResult', 'medicalResult.doctorDni = :doctor', { doctor })
+      .leftJoinAndSelect('medicalOrder.client', 'medicalClient')
+      .where('medicalClient.dni = :patient', { patient })
+      .getMany();
+    return orders;
+  }
+
   async sendMail(order: number, mail: number): Promise<void> {
     const directory = path.resolve('static/images/omega.png');
     const foundOrder = await this.repository.findOne({

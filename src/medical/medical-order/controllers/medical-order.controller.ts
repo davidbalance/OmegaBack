@@ -1,10 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { MedicalOrderService } from '../services/medical-order.service';
 import { GETMedicalOrderArrayResponseDto, GETMedicalOrderFilesResponseDto } from '../dtos/medical-order.response.dto';
 import { POSTMailRequestDto } from '../dtos/medical-order.request.dto';
+import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
+import { User } from '@/shared/decorator';
 
 @ApiTags('Medical/Order')
 @ApiBearerAuth()
@@ -26,6 +28,17 @@ export class MedicalOrderController {
     @Param('dni') patient: string
   ): Promise<GETMedicalOrderArrayResponseDto> {
     const orders = await this.orderService.findByPatient(patient);
+    return plainToInstance(GETMedicalOrderArrayResponseDto, { orders });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(DniInterceptor)
+  @Get('patient/:dni/doctor')
+  async findByPatientAndDoctor(
+    @Param('dni') patient: string,
+    @User() doctor: string
+  ): Promise<GETMedicalOrderArrayResponseDto> {
+    const orders = await this.orderService.findByPatientAndDoctor(patient, doctor);
     return plainToInstance(GETMedicalOrderArrayResponseDto, { orders });
   }
 
