@@ -1,5 +1,5 @@
-import { Inject, Injectable, StreamableFile } from '@nestjs/common';
-import { FindFilePathService } from '@/shared';
+import { Inject, Injectable, NotFoundException, StreamableFile } from '@nestjs/common';
+import { FindFilePathService, RemoveFileService } from '@/shared';
 import { ZipperService } from '@/shared/zipper/zipper.service';
 import { FileSourceEnum, DownloadAndZipContentRequestDto, FileSourceRequestDto } from './dto/file-downloader.request.dto';
 import { StorageManager } from '@/shared/storage-manager';
@@ -10,17 +10,24 @@ import { MedicalReportService } from '../medical-report/medical-report.service';
 export class FileDownloaderService {
 
     private readonly filePathFinders: Record<FileSourceEnum, FindFilePathService<number>>;
+    private readonly fileRemovers: Record<FileSourceEnum, RemoveFileService<number>>;
 
     constructor(
         @Inject(ZipperService) private readonly zipper: ZipperService,
         @Inject(StorageManager) private readonly storage: StorageManager,
-        @Inject(MedicalResultService) private readonly medicalResultService: FindFilePathService<number>,
-        @Inject(MedicalReportService) private readonly medicalReportService: FindFilePathService<number>,
+        @Inject(MedicalResultService) private readonly pathResultService: FindFilePathService<number>,
+        @Inject(MedicalReportService) private readonly pathReportService: FindFilePathService<number>,
+        @Inject(MedicalResultService) private readonly deleteResultService: RemoveFileService<number>,
+        @Inject(MedicalReportService) private readonly deleteReportService: RemoveFileService<number>,
     ) {
         this.filePathFinders = {
-            report: medicalReportService,
-            result: medicalResultService
-        }
+            report: pathReportService,
+            result: pathResultService
+        };
+        this.fileRemovers = {
+            report: deleteReportService,
+            result: deleteResultService
+        };
     }
 
     async downloadFile({ id, type }: FileSourceRequestDto): Promise<StreamableFile> {
@@ -38,5 +45,12 @@ export class FileDownloaderService {
 
         const zip = await this.zipper.zip(sources);
         return zip;
+    }
+
+    async deleteFile({ id, type }: FileSourceRequestDto): Promise<void> {
+        const state = await this.fileRemovers[type].removeFile(id);
+        if(!state) {
+            throw new NotFoundException('Archivo no eliminado');
+        }
     }
 }
