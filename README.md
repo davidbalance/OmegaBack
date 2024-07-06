@@ -1056,6 +1056,101 @@ El modulo de descarga de archivos.
 - `GET /medical/file`: Retorna un archivo pdf dado su tipo e identificador.
 - `GET /medical/file/multiple`: Retorna un archivo zip con todos los archivos especificados.
 
+### 6. OmegaWeb Module
+
+El modulo encargado de gestionar los recursos web como clientes, paginas, logos, entre otros.
+
+#### Submodulos
+
+- Web Client
+- Web Logo
+- Web Resource
+
+#### Files
+
+- `web-client/`: Modulo de clientes web.
+- `web-logo/`: Modulo de logos.
+- `web-resource/`: Modulo de recursos web.
+
+#### 6.1. Web Client Module
+
+El modulo de clientes web se encarga de tener una referencia de los usuarios que usan el sistema, agregando funcionalidades para el manejo de la aplicacion web.
+
+##### Files
+
+- `web-client.module.ts`: Definicion del modulo.
+- `web-client.controller.ts`: Contiene los controladores para manejar peticiones HTTP.
+- `web-client.service.ts`: Contiene la logica de negocio para la gestion de clientes web.
+- `web-client.repository.ts`: Gestiona el acceso a la entidad Web Client en la base de datos.
+- `dtos/`: Objetos de transferencia de datos para clientes web.
+- `entities/`: Entidades de la base de datos para clientes web.
+- `listeners/`: Contiene la logica de ejecucion cuando es disparado un evento especifico.
+- `test/`: Pruebas de codigo.
+
+##### Services
+
+- `findWebClient`: Encuentra un cliente web.
+- `findWebResources`: Encuentra todas las paginas/recursos web asociados a un cliente web.
+- `updateWebLogoFromClient`: Actualiza un logo de un cliente web dado.
+- `updateWebResourcesFromClient`: Actualiza los recursos/paginas asociadas a un cliente web dado.
+
+##### Controller
+
+- `GET /omega/web/clients`: Retorna un cliente web dado un usuario.
+- `GET /medical/client/email/resource/:user`: Retorna un recursos/paginas pertenecientes a un usuario.
+- `PATCH /omega/web/clients/logo/:user`: Actualiza el logo de un cliente web.
+- `PATCH /medical/client/email/resource/:user`: Actualiza los recursos/paginas de un cliente web.
+
+#### 6.2. Web Logo Module
+
+El modulo de logo web se encarga de gestionar los logos disponibles para la aplicacion.
+
+##### Files
+
+- `web-logo.module.ts`: Definicion del modulo.
+- `web-logo.controller.ts`: Contiene los controladores para manejar peticiones HTTP.
+- `web-logo.service.ts`: Contiene la logica de negocio para la gestion de logos.
+- `web-logo.repository.ts`: Gestiona el acceso a la entidad Web Logo en la base de datos.
+- `dtos/`: Objetos de transferencia de datos para logos.
+- `entities/`: Entidades de la base de datos para logos.
+- `test/`: Pruebas de codigo.
+
+##### Services
+
+- `findOne`: Encuentra un logo.
+
+#### 6.3. Web Resource Module
+
+El modulo de recursos web se encarga de gestionar las paginas pertenecientes al sistema web.
+
+##### Files
+
+- `web-resource.module.ts`: Definicion del modulo.
+- `web-resource.controller.ts`: Contiene los controladores para manejar peticiones HTTP.
+- `web-resource.service.ts`: Contiene la logica de negocio para la gestion de recursos/paginas.
+- `web-resource.repository.ts`: Gestiona el acceso a la entidad Web Resource en la base de datos.
+- `dtos/`: Objetos de transferencia de datos para recursos/paginas.
+- `entities/`: Entidades de la base de datos para recursos/paginas.
+- `test/`: Pruebas de codigo.
+
+##### Services
+
+- `findInNames`: Encuentra una serie de recursos web en base al arreglo de nombres solicitado.
+- `findInIds`: Encuentra una serie de recursos web en base al arreglo de identificadores unicos proporcionado.
+- `findShowAndActiveResources`: Encuentra todos los recursos del sistema.
+- `findAll`: Encuentra los recursos web marcados como visibles.
+- `create`: Crea un recurso web.
+- `update`: Actualiza un recurso web.
+- `delete`: Elimina un recurso web.
+
+##### Controller
+
+- `GET /omega/web/resources/all`: Retorna todos los recursos web del sistema.
+- `GET /omega/web/resources`: Retorna unicamente aquellos recursos web marcados como observables.
+- `POST /omega/web/resources`: Crea un recurso web.
+- `PATCH /omega/web/resources/:id`: Actualiza un recurso web.
+- `DELETE /omega/web/resources/id`: Elimina un recurso web.
+
 <div id='patterns-and-practices'/>
 
 ## Patrones y Practicas
