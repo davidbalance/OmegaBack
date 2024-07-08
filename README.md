@@ -1151,6 +1151,71 @@ El modulo de recursos web se encarga de gestionar las paginas pertenecientes al 
 - `PATCH /omega/web/resources/:id`: Actualiza un recurso web.
 - `DELETE /omega/web/resources/id`: Elimina un recurso web.
 
+### 7. User Module
+
+El modulo usuarios, encargado de gestionar usuarios, pacientes y medicos del sistema.
+
+#### Submodulos
+
+- User
+- Patient
+- Doctor
+
+#### Files
+
+- `doctor/`: Modulo de archivos medicos.
+- `patient/`: Modulo de clientes medicas.
+- `user/`: Modulo de ordenes medicas.
+
+#### 7.1. User Module
+
+El modulo de usuarios del sistema, permite la gestion de los usuarios provee una capa de administracion en base a operaciones y CRUD, y actua como base para los modulos de pacientes y medicos.
+
+##### Files
+
+- `user.module.ts`: Definicion del modulo.
+- `user.controller.ts`: Contiene los controladores para manejar peticiones HTTP.
+- `user.service.ts`: Contiene la logica de negocio para la gestion de usuarios del sistema.
+- `dtos/`: Objetos de transferencia de datos para usuarios del sistema.
+- `entities/`: Entidades de la base de datos para usuarios del sistema.
+- `listeners/`: Contiene la logica de ejecucion cuando es disparado un evento especifico.
+- `repositories/`: Gestiona el acceso a la entidad Usuario en la base de datos.
+- `services/`: Contiene la logica de negocio para la gestion de usuarios.
+- `test/`: Pruebas de codigo.
+
+##### Services
+
+**User Service:**
+
+- `create`: Crea un usuario.
+- `find`: Encuantra todos los usuarios activos menos el usuario con el identificador unico indicado.
+- `findOne`: Encuentra un usuario en base a su identificador unico.
+- `findOneByDni`: Encuentra un usuario en base a su dni.
+- `findOneAndUpdate`: Encuentra un usuario y lo modifica.
+- `findOneAndDelete`: Encuentra un usuario y lo desactiva.
+- `findExtraAttribute`: Encuentra un atributo extra dentro de un usuario usando su identificador unico.
+- `assignExtraAttribute`: Crea un atributo unico y lo asocia al usuario.
+
+**User Extra Attribute Service:**
+
+- `create`: Crea un atributo extra.
+- `update`: Actualiza un atributo extra.
+- `delete`: Elimina un atributo extra.
+
+##### Controller
+
+- `GET /users`: Retorna todos los usuarios activos del sistema.
+- `GET /users/:user`: Retorna un unico usuario del sistema.
+- `POST /users`: Crea un usuario.
+- `PATCH /users/:id`: Modifica un usuario en base a su identificador unico.
+- `DELETE /users/:id`: Elimina un usuario en base a su identificador unico.
+- `GET /users/look/for/company/:id`: Crea un atributo `look_for_company` y lo asocia a un usuario.
+- `PATCH /users/look/for/company/:id`: Actualiza un atributo `look_for_company`.
+- `GET /users/employee/:id`: Crea un atributo `employee_of` y lo asocia a un usuario.
+- `PATCH /users/employee/:id`: Actualiza un atributo `employee_of`.
+- `GET /users/doctor/of/:id`: Crea un atributo `doctor_of` y lo asocia a un usuario.
+- `PATCH /users/doctor/of/:id`: Actualiza un atributo `doctor_of`.
+
 <div id='patterns-and-practices'/>
 
 ## Patrones y Practicas

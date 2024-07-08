@@ -17,6 +17,11 @@ export class UserService {
     @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
   ) { }
 
+  /**
+   * Crea un usuario.
+   * @param param0 
+   * @returns 
+   */
   async create({ dni, email, ...data }: POSTUserRequestDto): Promise<User> {
     try {
       await this.repository.findOne({ where: [{ dni: dni }, { email: email }] });
@@ -32,6 +37,11 @@ export class UserService {
     }
   }
 
+  /**
+   * Encuantra todos los usuarios activos menos el usuario con el identificador unico indicado.
+   * @param not 
+   * @returns 
+   */
   async find(not: number = -1): Promise<User[]> {
     return this.repository.find({
       where: {
@@ -50,30 +60,62 @@ export class UserService {
     });
   }
 
+  /**
+   * Encuentra un usuario en base a su identificador unico.
+   * @param id 
+   * @returns 
+   */
   async findOne(id: number): Promise<User> {
     return this.repository.findOne({ where: { id: id }, relations: { extraAttributes: true } });
   }
+
+  /**
+   * Encuentra un usuario en base a su dni.
+   * @param dni 
+   * @returns 
+   */
   async findOneByDni(dni: string): Promise<User> {
     return this.repository.findOne({ where: { dni: dni }, relations: { extraAttributes: true } });
   }
 
+  /**
+   * Encuentra un usuario y lo modifica.
+   * @param id 
+   * @param user 
+   * @returns 
+   */
   async findOneAndUpdate(id: number, user: PATCHUserRequestDto): Promise<User> {
     const updateUser = await this.repository.findOneAndUpdate({ id }, user);
     this.eventEmitter.emit(UserEvent.UPDATE, new UserUpdateEvent({ id, email: user.email }));
     return updateUser;
   }
 
+  /**
+   * Encuentra un usuario y lo desactiva.
+   * @param id 
+   */
   async findOneAndDelete(id: number): Promise<void> {
     await this.repository.findOneAndDelete({ id: id });
     this.eventEmitter.emit(UserEvent.REMOVE, new UserRemoveEvent({ id }));
   }
 
+  /**
+   * Encuentra un atributo extra dentro de un usuario usando su identificador unico.
+   * @param id 
+   * @param name 
+   * @returns 
+   */
   async findExtraAttribute(id: number, name: string): Promise<UserExtraAttribute> {
     const user = await this.repository.findOne({ where: { id }, relations: { extraAttributes: true } });
     const extra = user.extraAttributes.find((e) => e.name === name);
     return extra;
   }
 
+  /**
+   * Crea un atributo unico y lo asocia al usuario.
+   * @param id 
+   * @param param1 
+   */
   async assignExtraAttribute(id: number, { name, value }: { name: string, value: string }): Promise<void> {
     const user = await this.repository.findOne({ where: { id }, relations: { extraAttributes: true } });
     const selectedAttribute = user.extraAttributes.find((e) => e.name === name);
