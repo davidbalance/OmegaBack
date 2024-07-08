@@ -1224,7 +1224,7 @@ El modulo de pacientes del sistema, permite la gestion de los pacientes. Cabe de
 
 - `patient.module.ts`: Definicion del modulo.
 - `patient.repository.ts`: Gestiona el acceso a la entidad Paciente en la base de datos.
-- `common/`: Objetos de transferencia de datos para pacientes.
+- `common/`: Recursos y codigo que es compartido dentro del mismo modulo.
 - `controller/`: Contiene los controladores para manejar peticiones HTTP.
 - `dtos/`: Objetos de transferencia de datos para pacientes.
 - `entities/`: Entidades de la base de datos para pacientes.
@@ -1257,6 +1257,48 @@ El modulo de pacientes del sistema, permite la gestion de los pacientes. Cabe de
 
 - `POST /external/connection/patients/:source`: Crea un paciente.
 - `PATCH /external/connection/patients/:source/:key`: Encuentra un paciente y lo modifica.
+
+#### 7.3. Doctor Module
+
+El modulo de medicos, permite la gestion de los mismos. Cabe destacar que un medico es considerado como un usuario del sistema, por lo tanto comparte metodos y funciones con el modulo de usuarios.
+
+##### Files
+
+- `doctor.module.ts`: Definicion del modulo.
+- `doctor.repository.ts`: Gestiona el acceso a la entidad Doctor en la base de datos.
+- `controllers/`: Contiene los controladores para manejar peticiones HTTP.
+- `dtos/`: Objetos de transferencia de datos para medicos.
+- `entities/`: Entidades de la base de datos para medicos.
+- `listeners/`: Contiene la logica de ejecucion cuando es disparado un evento especifico.
+- `services/`: Contiene la logica de negocio para la gestion de usuarios.
+- `test/`: Pruebas de codigo.
+
+##### Services
+
+**Doctor Service**
+
+- `find`: Encuentra todos los medicos activos del sistema.
+- `findOne`: Encuentra un medico por su identificador unico.
+- `findOneByDni`: Encuentra un medico por su dni.
+- `uploadSignature`: Carga una imagen como firma del medico.
+
+**External Connection**
+
+- `create`: Crea un paciente.
+- `findOneOrCreate`: Encuentra un paciente si no existe lo crea.
+- `findOneAndUpdate`: Encuentra un paciente y lo modifica.
+
+##### Controller
+
+**Doctor Service**
+
+- `GET /doctors`: Retorna todos los medicos activos del sistema.
+- `POST /doctors/signature/:id`: Carga una imagen al sistema.
+
+**External Connection**
+
+- `POST /external/connection/doctor/:source`: Crea un medico.
+- `PATCH /external/connection/doctor/:source/:key`: Encuentra un medico y lo modifica.
 
 <div id='patterns-and-practices'/>
 
