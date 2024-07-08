@@ -2,23 +2,52 @@
 
 ## Tabla de Contenidos
 
-1. [Introducción](#introduction)
-1. [Tecnologias usadas](#used-technologies)
-1. [Guia de instalacion](#installation-guide)
-   1. [Desarrollo](#installation-guide-dev)
-   1. [Produccion](#installation-guide-prod)
-1. [Estructura de directorios](#directory-structure)
-1. [Variables de Entorno](#environment-variables)
-1. [Documentacion de Modulos](#module-documentation)
-1. [Patrones y Practicas](#patterns-and-practices)
-   1. [Nomenclatura](#patterns-and-practices-naming)
-   1. [Manejo de errores](#patterns-and-practices-error-handling)
-   1. [Logging](#patterns-and-practices-logging)
-1. [Pruebas de Software](#testing)
-   1. [Ejecucion de pruebas](#run-tests)
-   1. [Ejecucion de pruebas end-to-end](#run-tests-e2e)
-   1. [Estrategia de pruebas](#run-tests-strategy)
-1. [Recursos adicionales](#additional-resources)
+- [Introducción](#introduction)
+- [Tecnologias usadas](#used-technologies)
+- [Guia de instalacion](#installation-guide)
+  - [Desarrollo](#installation-guide-dev)
+  - [Produccion](#installation-guide-prod)
+- [Estructura de directorios](#directory-structure)
+- [Variables de Entorno](#environment-variables)
+- [Documentacion de Modulos](#module-documentation)
+  - [1. Authentication Module](#authentication-module)
+    - [1.1. ApiKey Module](#authentication-submodule-1)
+    - [1.2. Token Module](#authentication-submodule-2)
+    - [1.3. UserCredential Module](#authentication-submodule-3)
+  - [2. Disease Module](#disease-module)
+    - [2.1. DiseaseGroup Module](#disease-submodule-1)
+    - [2.2. Disease Module](#disease-submodule-2)
+  - [3. Laboratory Module](#laboratory-module)
+    - [3.1. Exam Module](#laboratory-submodule-1)
+  - [4. Location Module](#location-module)
+    - [4.1. Corporative Group Module](#location-submodule-1)
+    - [4.2. Company Module](#location-submodule-2)
+    - [4.3. Branch Module](#location-submodule-3)
+    - [4.4. City Module](#location-submodule-4)
+  - [5. Medical Module](#medical-module)
+    - [5.1. Medical Client Module](#medical-submodule-1)
+    - [5.2. Medical Order Module](#medical-submodule-2)
+    - [5.3. Medical Result Module](#medical-submodule-3)
+    - [5.4. Medical Report Module](#medical-submodule-4)
+    - [5.5. File Downloader Module](#medical-submodule-5)
+  - [6. OmegaWeb Module](#web-module)
+    - [6.1. Web Client Module](#web-submodule-1)
+    - [6.2. Web Logo Module](#web-submodule-2)
+    - [6.3. Web Resource Module](#web-submodule-3)
+  - [7. User Module](#user-module)
+    - [7.1. User Module](#user-submodule-1)
+    - [7.2. Patient Module](#user-submodule-2)
+    - [7.3. Doctor Module](#user-submodule-3)
+  - [8. Shared Module](#shared-module)
+- [Patrones y Practicas](#patterns-and-practices)
+  - [Nomenclatura](#patterns-and-practices-naming)
+  - [Manejo de errores](#patterns-and-practices-error-handling)
+  - [Logging](#patterns-and-practices-logging)
+- [Pruebas de Software](#testing)
+  - [Ejecucion de pruebas](#run-tests)
+  - [Ejecucion de pruebas end-to-end](#run-tests-e2e)
+  - [Estrategia de pruebas](#run-tests-strategy)
+- [Recursos adicionales](#additional-resources)
 
 <div id='introduction'/>
 
@@ -423,6 +452,8 @@ SMTP_DEFAULT_MAIL_FROM=your_smtp_mail_from
 
 La documentacion de las APIs pueden ser consultada en `/docs` siempre y cuando el sistema se encuentre en desarrollo, en produccion esta opcion no se encuentra disponible.
 
+<div id='authentication-module'/>
+
 ### 1. Authentication Module
 
 El modulo de autenticacion se encarga de gestionar las credenciales de los usuarios, validarlas y retornar tokens que autorizan el acceso de los usuarios. Asi mismo gestiona el acceso, creacion y validacion de API-KEYS.
@@ -448,6 +479,8 @@ El modulo de autenticacion se encarga de gestionar las credenciales de los usuar
 - `POST /auth/login`: Valida las credenciales de un usuario y retorna tokens de acceso.
 - `POST /auth/refresh`: Refresca el token de acceso.
 - `POST /auth/logout`: Elimina los valores de inicio de sesion del usuario.
+
+<div id='authentication-submodule-1'/>
 
 #### 1.1. ApiKey Module
 
@@ -477,6 +510,8 @@ El modulo de apikey se encarga de la gestion de apikeys, ademas de ser el respon
 - `POST /api/key`: Crea una nueva apikey.
 - `PATCH /api/key/:id`: Actualiza una apikey dado su identificador unico.
 
+<div id='authentication-submodule-2'/>
+
 #### 1.2. Token Module
 
 El modulo de token se encarga de la gestion de tokens, ademas de ser el responsable de la validacion de las mismas
@@ -502,6 +537,8 @@ El modulo de token se encarga de la gestion de tokens, ademas de ser el responsa
 - `removeToken`: Elimina un token usando el sub.
 - `removeExpireToken`: Elimina todos los token que han expirado.
 - `canRefresh`: Verifica la validez del token de refrescamiento.
+
+<div id='authentication-submodule-3'/>
 
 #### 1.3. UserCredential Module
 
@@ -532,6 +569,8 @@ El modulo de credenciales de usuario se encarga de la gestion y validacion de la
 - `POST /credentials`: Crea las credenciales de un usuario.
 - `PATCH /credentials`: Actualiza la contraseña de un usuario.
 
+<div id='disease-module'/>
+
 ### 2. Disease Module
 
 El modulo de morbilidades se encarga de gestionar las morbilidades y grupos de morbilidades.
@@ -545,6 +584,8 @@ El modulo de morbilidades se encarga de gestionar las morbilidades y grupos de m
 
 - `disease-group/`: Modulo de grupo de morbilidades.
 - `disease/`: Modulo de morbilidades.
+
+<div id='disease-submodule-1'/>
 
 #### 2.1. DiseaseGroup Module
 
@@ -587,6 +628,8 @@ El modulo de grupos de morbilidaes encarga de la gestion de los mismos.
 
 - `GET /selector/diseases/groups`: Retorna grupos de morbilidades para usar en selectores.
 
+<div id='disease-submodule-2'/>
+
 #### 2.2. Disease Module
 
 El modulo de morbilidaes encarga de la gestion de las mismas.
@@ -627,6 +670,8 @@ El modulo de morbilidaes encarga de la gestion de las mismas.
 
 - `GET /selector/diseases`: Retorna grupos de morbilidades para usar en selectores.
 
+<div id='laboratory-module'/>
+
 ### 3. Laboratory Module
 
 El modulo de laboratorio se encarga de gestionar varios items de un laboratorio.
@@ -638,6 +683,8 @@ El modulo de laboratorio se encarga de gestionar varios items de un laboratorio.
 #### Files
 
 - `exam/`: Modulo de examenes medicos.
+
+<div id='laboratory-submodule-1'/>
 
 #### 3.1. Exam Module
 
@@ -678,6 +725,8 @@ El modulo de examenes medicos se encarga de la gestion de los mismos.
 
 - `GET /selector/exams`: Retorna examenes medicos para usar en selectores.
 
+<div id='location-module'/>
+
 ### 4. Location Module
 
 El modulo de locaciones se encarga de gestionar ciudades, sucursales, empresas y grupos corporativos.
@@ -695,6 +744,8 @@ El modulo de locaciones se encarga de gestionar ciudades, sucursales, empresas y
 - `city/`: Modulo de examenes medicos.
 - `company/`: Modulo de examenes medicos.
 - `corporative-group/`: Modulo de examenes medicos.
+
+<div id='location-submodule-1'/>
 
 #### 4.1. Corporative Group Module
 
@@ -742,6 +793,8 @@ El modulo de grupos corporativos se encarga de la gestion de los mismos.
 
 - `GET /selector/corporative/groups`: Encuentra todos los grupos corporativos activos y solo retorna un key y label.
 
+<div id='location-submodule-2'/>
+
 #### 4.2. Company Module
 
 El modulo de empresas se encarga de la gestion de los mismos.
@@ -784,6 +837,8 @@ El modulo de empresas se encarga de la gestion de los mismos.
 **Selector**
 
 - `GET /selector/companies/:group`: Encuentra todas las empresas activas y solo retorna un key y label.
+
+<div id='location-submodule-3'/>
 
 #### 4.3. Branch Module
 
@@ -828,7 +883,9 @@ El modulo de sucursales se encarga de la gestion de las mismas.
 
 - `GET /selector/branches/:company`: Encuentra todas las sucursales activas y solo retorna un key y label.
 
-#### 4.3. City Module
+<div id='location-submodule-4'/>
+
+#### 4.4. City Module
 
 El modulo de ciudades se encarga de la gestion de las mismas.
 
@@ -860,6 +917,8 @@ El modulo de ciudades se encarga de la gestion de las mismas.
 
 - `GET /selector/cities`: Encuentra todas las ciudades activas y solo retorna un key y label.
 
+<div id='medical-module'/>
+
 ### 5. Medical Module
 
 El modulo medico se encarga de gestionar reportes, archivos, resultados y ordenes medicas.
@@ -879,6 +938,8 @@ El modulo medico se encarga de gestionar reportes, archivos, resultados y ordene
 - `medical-order/`: Modulo de ordenes medicas.
 - `medical-result/`: Modulo de resultados medicos.
 - `medical-report/`: Modulo de reporteria medica.
+
+<div id='medical-submodule-1'/>
 
 #### 5.1. Medical Client Module
 
@@ -908,6 +969,8 @@ El modulo de clientes medicos se encarga de tener una referencia de los paciente
 - `POST /medical/client/:dni/email`: Añade un correo electronico al cliente medico.
 - `PATCH /medical/client/:dni/email/:id`: Coloca a un correo electronico como correo por defecto para el cliente medico.
 - `DELETE /medical/client/email/:id`: Elimina el correo electronico solicitado.
+
+<div id='medical-submodule-2'/>
 
 #### 5.2. Medical Order Module
 
@@ -954,6 +1017,8 @@ El modulo de ordenes medicas se encarga de la gestion de las mismas.
 - `GET /external/connection/medical/order/:source/:key`: Encuentra una orden medica dada la fuente y una llave unica.
 - `POST /external/connection/medical/order/:source`: Crea una orden medica.
 - `PATCH /external/connection/medical/order/:source/:key`: Encuentra una orden medica y la modifica.
+
+<div id='medical-submodule-3'/>
 
 #### 5.3. Medical Result Module
 
@@ -1005,6 +1070,8 @@ El modulo de resultados medicos se encarga de la gestion de las mismas.
 - `POST /external/connection/medical/result/:source`: Crea un resultado medico.
 - `PATCH /external/connection/medical/result/:source/file/:key`: Encuentra un resultado medico y le asocia un archivo.
 
+<div id='medical-submodule-4'/>
+
 #### 5.4. Medical Report Module
 
 El modulo de reportes medicos se encarga de la gestion de las mismas.
@@ -1035,6 +1102,8 @@ El modulo de reportes medicos se encarga de la gestion de las mismas.
 - `GET /medical/report/recreate/pdf`: Recrea todos los reportes medicos presentes en la base de datos.
 - `GET /medical/report/recreate/pdf/:dni`: Recrea todos los reportes medicos presentes asociados a un paciente.
 
+<div id='medical-submodule-5'/>
+
 #### 5.5. File Downloader Module
 
 El modulo de descarga de archivos.
@@ -1056,6 +1125,8 @@ El modulo de descarga de archivos.
 - `GET /medical/file`: Retorna un archivo pdf dado su tipo e identificador.
 - `GET /medical/file/multiple`: Retorna un archivo zip con todos los archivos especificados.
 
+<div id='web-module'/>
+
 ### 6. OmegaWeb Module
 
 El modulo encargado de gestionar los recursos web como clientes, paginas, logos, entre otros.
@@ -1071,6 +1142,8 @@ El modulo encargado de gestionar los recursos web como clientes, paginas, logos,
 - `web-client/`: Modulo de clientes web.
 - `web-logo/`: Modulo de logos.
 - `web-resource/`: Modulo de recursos web.
+
+<div id='web-submodule-1'/>
 
 #### 6.1. Web Client Module
 
@@ -1101,6 +1174,8 @@ El modulo de clientes web se encarga de tener una referencia de los usuarios que
 - `PATCH /omega/web/clients/logo/:user`: Actualiza el logo de un cliente web.
 - `PATCH /medical/client/email/resource/:user`: Actualiza los recursos/paginas de un cliente web.
 
+<div id='web-submodule-2'/>
+
 #### 6.2. Web Logo Module
 
 El modulo de logo web se encarga de gestionar los logos disponibles para la aplicacion.
@@ -1118,6 +1193,8 @@ El modulo de logo web se encarga de gestionar los logos disponibles para la apli
 ##### Services
 
 - `findOne`: Encuentra un logo.
+
+<div id='web-submodule-3'/>
 
 #### 6.3. Web Resource Module
 
@@ -1151,6 +1228,8 @@ El modulo de recursos web se encarga de gestionar las paginas pertenecientes al 
 - `PATCH /omega/web/resources/:id`: Actualiza un recurso web.
 - `DELETE /omega/web/resources/id`: Elimina un recurso web.
 
+<div id='user-module'/>
+
 ### 7. User Module
 
 El modulo usuarios, encargado de gestionar usuarios, pacientes y medicos del sistema.
@@ -1166,6 +1245,8 @@ El modulo usuarios, encargado de gestionar usuarios, pacientes y medicos del sis
 - `doctor/`: Modulo de archivos medicos.
 - `patient/`: Modulo de clientes medicas.
 - `user/`: Modulo de ordenes medicas.
+
+<div id='user-submodule-1'/>
 
 #### 7.1. User Module
 
@@ -1216,6 +1297,8 @@ El modulo de usuarios del sistema, permite la gestion de los usuarios provee una
 - `GET /users/doctor/of/:id`: Crea un atributo `doctor_of` y lo asocia a un usuario.
 - `PATCH /users/doctor/of/:id`: Actualiza un atributo `doctor_of`.
 
+<div id='user-submodule-2'/>
+
 #### 7.2. Patient Module
 
 El modulo de pacientes del sistema, permite la gestion de los pacientes. Cabe destacar que un paciente es considerado como un usuario del sistema, por lo tanto comparte metodos y funciones con el modulo de usuarios.
@@ -1258,6 +1341,8 @@ El modulo de pacientes del sistema, permite la gestion de los pacientes. Cabe de
 - `POST /external/connection/patients/:source`: Crea un paciente.
 - `PATCH /external/connection/patients/:source/:key`: Encuentra un paciente y lo modifica.
 
+<div id='user-submodule-3'/>
+
 #### 7.3. Doctor Module
 
 El modulo de medicos, permite la gestion de los mismos. Cabe destacar que un medico es considerado como un usuario del sistema, por lo tanto comparte metodos y funciones con el modulo de usuarios.
@@ -1299,6 +1384,45 @@ El modulo de medicos, permite la gestion de los mismos. Cabe destacar que un med
 
 - `POST /external/connection/doctor/:source`: Crea un medico.
 - `PATCH /external/connection/doctor/:source/:key`: Encuentra un medico y lo modifica.
+
+<div id='shared-module'/>
+
+### 8. Shared Module
+
+El modulo compartido, este modulo engloba funcionalidades, servicios, controladores, modulos, entre otros. Estos son usados por varios modulos del sistema.
+
+#### Submodulos
+
+- `Health Status`: Modulo que ejecuta unicamente una respuesta de 'ok' para comprobar que el sistema funciona sin problema.
+- `Logger`: Modulo que contiene la configuracion del Logger usado en el sistema.
+- `Mailer`: Modulo encargado de la conexion con el servidor de correos.
+- `Pdf Manager`: Modulo encargado de generar y almacenar archivos pdf.
+- `Sql Database`: Modulo que encapsula la configuracion de la base de datos.
+- `Storage Manager`: Modulo encargado de proporcionar una interfaz para la gestion de archivos.
+- `Zipper`: Modulo encargado de generar archivos zip.
+
+#### Files
+
+- `decorator/`: Decoratores que ejecutan ciertas funciones para obtener o generar datos especificos.
+- `enums/`: Enums que suelen usarse de forma global en la aplicacion.
+- `events/`: Plantilla de eventos que pueden usarse para ejecutarse cuando un evento es disparado.
+- `external-key/`: LLaves externas que permite la administracion de datos que provienen de fuentes externas.
+- `extra-attribute/`: Atributos extra que no fueron considerados durante el levantamiento de requisitos o son volatiles.
+- `guards/`: Guards del sistema para la proteccion de rutas.
+- `health-status/`: Modulo que permite comprobar que el sistema este aceptando peticiones.
+- `interceptors/`: Interceptadores para la gestion de datos antes de ser pasados al controlador.
+- `logger/`: Logger del sistema.
+- `mailer/`: Modulo que gestion el envio de correos.
+- `middleware/`: Middleware para la gestion de peticiones.
+- `pdf-manager/`: Modulo de gestion de archivos pdfs.
+- `pipes/`: Pipes del sistema.
+- `send-attribute/`: Attributo que controla el envio de archivos a aplicaciones externas, esto con el fin de no hacer un duplicado de archivos ya enviados.
+- `shared-authentication/`: Expone guards y estrategias especificas para ser usuadas en guards.
+- `sql-database/`: Modulo que encapsula la condiguracion inicial de la base de datos.
+- `storage-manager/`: Expone una interfaz que expone metodos para la gestion de archivos.
+- `types/`: Tipos de datos.
+- `utils/`: Funcionalidades externas a los modulos.
+- `zipper/`: Modulo que genera un archivo comprimido.
 
 <div id='patterns-and-practices'/>
 
