@@ -36,6 +36,20 @@ export class MedicalClientService {
   }
 
   /**
+   * Encuentra los clientes medicos de pacientes que tengan un resultado asociado a un medico.
+   * @param doctor 
+   * @returns 
+   */
+  async findClientsByDoctor(doctor: string): Promise<MedicalClient[]> {
+    const clients = await this.clientRepository.createQuery('client')
+      .leftJoinAndSelect('client.medicalOrders', 'medicalOrder')
+      .leftJoinAndSelect('medicalOrder.results', 'medicalResult')
+      .where('medicalResult.doctorDni = :dni', { dni: doctor })
+      .getMany();
+    return clients;
+  }
+
+  /**
    * Encuentra correos electronico dado un dni de un cliente medico.
    * @param dni 
    * @returns 

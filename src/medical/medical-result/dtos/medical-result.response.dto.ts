@@ -20,6 +20,9 @@ export class GETMedicalResultResponseDto {
 
     @Expose()
     public readonly diseaseGroupName: string;
+    
+    @Expose()
+    public readonly diseaseCommentary: string;
 
     @Expose()
     public readonly hasFile: boolean;

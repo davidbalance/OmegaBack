@@ -73,6 +73,21 @@ export class MedicalOrderService {
   }
 
   /**
+   * Encuentra ordenes medicas usando al paciente, y todos los resultados asociados a un medico dado.
+   * @param patient 
+   * @param doctor 
+   * @returns 
+   */
+  async findByPatientAndDoctor(patient: string, doctor: string): Promise<MedicalOrder[]> {
+    const orders = await this.repository.createQuery('medicalOrder')
+      .leftJoinAndSelect('medicalOrder.results', 'medicalResult', 'medicalResult.doctorDni = :doctor', { doctor })
+      .leftJoinAndSelect('medicalOrder.client', 'medicalClient')
+      .where('medicalClient.dni = :patient', { patient })
+      .getMany();
+    return orders;
+  }
+
+  /**
    * Envia un correo electornico basandose en una orden medica.
    * @param order 
    * @param mail 

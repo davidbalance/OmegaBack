@@ -41,8 +41,8 @@
   - [8. Shared Module](#shared-module)
 - [Patrones y Practicas](#patterns-and-practices)
   - [Nomenclatura](#patterns-and-practices-naming)
-  <!-- - [Manejo de errores](#patterns-and-practices-error-handling) -->
-  <!-- - [Logging](#patterns-and-practices-logging) -->
+    <!-- - [Manejo de errores](#patterns-and-practices-error-handling) -->
+    <!-- - [Logging](#patterns-and-practices-logging) -->
 - [Pruebas de Software](#testing)
   - [Ejecucion de pruebas](#run-tests)
   - [Ejecucion de pruebas end-to-end](#run-tests-e2e)
@@ -958,6 +958,7 @@ El modulo de clientes medicos se encarga de tener una referencia de los paciente
 ##### Services
 
 - `findOneOrCreate`: Encuentra un cliente medico sino lo crea.
+- `findClientsByDoctor`: Encuentra los clientes medicos de pacientes que tengan un resultado asociado a un medico.
 - `findEmailByDni`: Encuentra correos electronico dado un dni de un cliente medico.
 - `updateEmailDefault`: Actualiza un correo por defecto para un cliente medico.
 - `deleteEmailById`: Elimina un correo electronico de un cliente medico.
@@ -993,6 +994,7 @@ El modulo de ordenes medicas se encarga de la gestion de las mismas.
 
 - `findOrderFilesById`: Retorna una orden medica mediante el identificador unico.
 - `findByPatient`: Retorna varias ordenes medicas dado el dni de un cliente medico.
+- `findByPatientAndDoctor`: Encuentra ordenes medicas usando al paciente, y todos los resultados asociados a un medico dado.
 - `sendMail`: Envia un correo electornico basandose en una orden medica.
 
 **External Connection**
@@ -1009,6 +1011,7 @@ El modulo de ordenes medicas se encarga de la gestion de las mismas.
 
 - `GET /medical/orders/files/:id`: Obtiene una orden medica dado un identificador unico.
 - `GET /medical/orders/patient/:dni`: Obtiene ordenes medicas dadas un paciente.
+- `GET /medical/orders/patient/:dni/doctor`: Obtiene las ordenes medicas asociadas a un paciente y resultados de un medico dado.
 - `POST /medical/orders/mail`: Envia un correo electronico basado en la orden medica.
 
 **External Connection**
@@ -1041,6 +1044,7 @@ El modulo de resultados medicos se encarga de la gestion de las mismas.
 **Medical Result**
 
 - `getpath`: Obtiene la direccion donde se aloja un archivo.
+- `removeFile`: Elimina un archivo asociado a un resultado medico.
 - `find`: Obtiene los resultados medicos presentes en el sistema.
 - `findResultsByDoctor`: Obtiene los resultados medicos asociados a un doctor.
 - `findOneResultAndUpdateDisease`: Encuentra un resultado medico y le asigna una morbilidad.
@@ -1090,6 +1094,7 @@ El modulo de reportes medicos se encarga de la gestion de las mismas.
 ##### Services
 
 - `getpath`: Obtiene la direccion donde se aloja un archivo.
+- `removeFile`: Elimina el archivo asociado al reporte medico.
 - `create`: Crea un reporte medico.
 - `recreateReport`: Recrea un reporte medico dado un dni.
 - `processReportPdf`: Procesa los datos del reporte medico para generar un pdf.

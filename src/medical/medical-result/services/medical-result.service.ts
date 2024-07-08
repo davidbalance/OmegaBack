@@ -1,5 +1,5 @@
-import { FindFilePathService, fileResultPath } from "@/shared";
-import { Injectable, Inject } from "@nestjs/common";
+import { FindFilePathService, RemoveFileService, fileResultPath } from "@/shared";
+import { Injectable, Inject, Logger } from "@nestjs/common";
 import { SendAttributeService } from "../send-attribute/send-attribute.service";
 import { MedicalResultRepository } from "../medical-result.repository";
 import { MedicalResult } from "../entities/result.entity";
@@ -10,7 +10,9 @@ import { extname } from "path";
 import { StorageManager } from "@/shared/storage-manager";
 
 @Injectable()
-export class MedicalResultService implements FindFilePathService<number> {
+export class MedicalResultService implements
+  FindFilePathService<number>,
+  RemoveFileService<number> {
 
   constructor(
     @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
@@ -33,6 +35,28 @@ export class MedicalResultService implements FindFilePathService<number> {
       }
     });
     return file.filePath;
+  }
+
+  /**
+   * Elimina un archivo asociado a un resultado medico.
+   * @param key 
+   * @returns 
+   */
+  async removeFile(key: number): Promise<boolean> {
+    try {
+      const file = await this.repository.findOne({
+        where: { id: key },
+        select: {
+          id: true,
+          filePath: true
+        }
+      });
+      this.storageManager.deleteFile(file.filePath);
+      return true;
+    } catch (error) {
+      Logger.error(error);
+      return false;
+    }
   }
 
   /**
