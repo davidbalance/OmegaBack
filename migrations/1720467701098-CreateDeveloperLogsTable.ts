@@ -26,6 +26,16 @@ export class CreateDeveloperLogsTable1720467701098 implements MigrationInterface
                 {
                     name: 'log_timestamp',
                     type: 'timestamp'
+                },
+                {
+                    name: 'create_at',
+                    type: 'timestamp',
+                    default: 'CURRENT_TIMESTAMP'
+                },
+                {
+                    name: 'update_at',
+                    type: 'timestamp',
+                    default: 'CURRENT_TIMESTAMP'
                 }
             ]
         }), true);
