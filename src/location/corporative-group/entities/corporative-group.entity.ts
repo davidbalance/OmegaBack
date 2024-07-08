@@ -9,26 +9,13 @@ export class CorporativeGroup extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'corporative_id' })
     public id: number;
 
-    @Column({
-        name: 'corporative_name',
-        type: 'varchar',
-        length: 64,
-        nullable: false,
-        unique: true
-    })
+    @Column({ name: 'corporative_name', type: 'varchar', length: 64, nullable: false, unique: true })
     public name: string;
 
-    @Column({
-        name: 'corporative_status',
-        type: 'boolean',
-        default: true,
-        nullable: false
-    })
+    @Column({ name: 'corporative_status', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
-    @OneToMany(() => Company,
-        company => company.corporativeGroup,
-        { eager: false })
+    @OneToMany(() => Company, company => company.corporativeGroup, { eager: false })
     public companies: Company[]
 
     @OneToOne(() => ExternalKey, { eager: false, nullable: true })

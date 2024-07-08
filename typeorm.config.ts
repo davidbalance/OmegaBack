@@ -16,6 +16,6 @@ export const connectionSource = new DataSource({
     // entities: ['dist/**/*.entity{.js,.ts}'],
     // migrations: ['dist/migrations/*{.js,.ts}'],
     entities: ['src/**/*.entity{.js,.ts}'],
-    migrations: ['migrations/*{.js,.ts}'],
+    migrations: ['database/migrations/*{.js,.ts}'],
     logging: true,
 });
