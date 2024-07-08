@@ -11,17 +11,17 @@ export class DiseaseGroupService {
   ) { }
 
   /**
-   * Creates a new disease group with the given options
+   * Crea grupos de morbilidades.
    * @param group 
-   * @returns DiseaseGroup
+   * @returns 
    */
   async create(group: POSTDiseaseGroupRequestDto): Promise<DiseaseGroup> {
     return await this.repository.create(group);
   }
 
   /**
-   * Finds all the active disease groups
-   * @returns Array of DiseaseGroup
+   * Encuentra todos los grupos de morbilidades que se encuentren activos.
+   * @returns 
    */
   async find(): Promise<DiseaseGroup[]> {
     return this.repository.createQuery('group')
@@ -33,26 +33,26 @@ export class DiseaseGroupService {
   }
 
   /**
-   * Find one group that matches with its id
+   * Encuentra un grupo de mobilidades por identificador unico.
    * @param id 
-   * @returns DiseaseGroup
+   * @returns 
    */
   async findOneById(id: number): Promise<DiseaseGroup> {
     return await this.repository.findOne({ where: { id } });
   }
 
   /**
-   * Finds one disease group and update its data with the given value
+   * Encuentra un grupo de morbilidades y lo modifica.
    * @param id 
    * @param update 
-   * @returns DiseaseGroup
+   * @returns 
    */
   async findOneAndUpdate(id: number, update: PATCHDiseaseGroupRequestDto): Promise<DiseaseGroup> {
     return await this.repository.findOneAndUpdate({ id }, update);
   }
 
   /**
-   * Finds one disease group and change its state to inactive
+   * Encuentra un grupo de morbilidades y lo elimina si no tiene morbilidades asociadas.
    * @param id 
    */
   async findOneAndDelete(id: number): Promise<void> {

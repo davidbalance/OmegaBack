@@ -19,11 +19,23 @@ export class ExternalConnectionService {
         @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
     ) { }
 
+    /**
+     * Encuentra un resultado medico en base a su origen e identificador externo.
+     * @param source 
+     * @param key 
+     * @returns 
+     */
     async findBySourceAndKey(source: string, key: string): Promise<MedicalResult> {
         const medicalResult = await this.repository.findOne({ where: { externalKey: { source, key } } });
         return medicalResult;
     }
 
+    /**
+     * Crea un resultado medico.
+     * @param param0 
+     * @param file 
+     * @returns 
+     */
     async create({ source, key, order, doctor, exam }: POSTMedicalResultRequestDto & { source: string }, file?: Express.Multer.File): Promise<MedicalResult> {
 
         const foundOrder = await this.orderService.findOneOrCreate({ source, key, ...order });
@@ -63,6 +75,12 @@ export class ExternalConnectionService {
         }
     }
 
+    /**
+     * Encuentra un resultado medico y le asocia un archivo.
+     * @param param0 
+     * @param file 
+     * @returns 
+     */
     async findOneResultAndUploadFile({ key, source }: { source: string, key: string }, file: Express.Multer.File): Promise<MedicalResult> {
         const { order, examName, id } = await this.repository.findOne({
             where: {

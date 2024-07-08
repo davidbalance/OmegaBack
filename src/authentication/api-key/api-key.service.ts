@@ -6,8 +6,7 @@ import dayjs from 'dayjs';
 import { LessThan } from 'typeorm';
 import { UserCredentialService } from '../user-credential/user-credential.service';
 import { PATCHApiKeyRequestDto, POSTApiKeyRequestDto } from './dto/api-key.request.dto';
-import { ApiKey } from './entities/api-key.entity';
-import { PATCHApiKeyResponseDto, POSTApiKeyResponseDto } from './dto/api-key.response.dto';
+import { POSTApiKeyResponseDto } from './dto/api-key.response.dto';
 
 @Injectable()
 export class ApiKeyService {
@@ -18,7 +17,7 @@ export class ApiKeyService {
   ) { }
 
   /**
-   * Finds a all the API KEYS assigned to a user
+   * Retorna todas las apikey asociadas a un usuario.
    * @param user 
    * @returns 
    */
@@ -43,9 +42,9 @@ export class ApiKeyService {
   }
 
   /**
-   * Creates a new API key with the given options
+   * Crea una nueva apikey.
    * @param param0 
-   * @returns The resulting API-KEY
+   * @returns 
    */
   async create({ user, ...valueKey }: POSTApiKeyRequestDto & { user: number }): Promise<POSTApiKeyResponseDto> {
     const foundUser = await this.userService.findOneByUser(user);
@@ -62,7 +61,7 @@ export class ApiKeyService {
   }
 
   /**
-   * Find one and update an API KEY
+   * Encuentra un apikey dado su identificador unico y lo actualiza.
    * @param param0 
    * @returns 
    */
@@ -72,7 +71,7 @@ export class ApiKeyService {
   }
 
   /**
-   * Find one and delete an API KEY
+   * Encuentra un apikey dado su identificador unico y lo desactiva.
    * @param param0 
    * @returns 
    */
@@ -81,9 +80,9 @@ export class ApiKeyService {
   }
 
   /**
-   * Check if the given key is valid
+   * Verifica que el apikey exista y sea valido.
    * @param key 
-   * @returns API-KEY owner
+   * @returns
    */
   async validate(key: string): Promise<number> {
     const apikey = await this.repository.findOne({ where: { value: key, status: true }, relations: { credential: true } })
@@ -91,7 +90,7 @@ export class ApiKeyService {
   }
 
   /**
-   * Removes all the API-KEYS that have been expired
+   * Remueve todos los apikey que se encuentren expirados.
    */
   async removeExpireKeys(): Promise<void> {
     await this.repository.findAndDelete({ expiresAt: LessThan(dayjs().toDate()) })

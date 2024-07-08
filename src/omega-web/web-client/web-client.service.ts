@@ -16,9 +16,9 @@ export class WebClientService {
   ) { }
 
   /**
-   * Finds a web client by its user key
+   * Encuentra un cliente web.
    * @param user 
-   * @returns WebClient
+   * @returns 
    */
   async findWebClient(user: number): Promise<WebClient> {
     const client = await this.repository.findOne({
@@ -37,6 +37,11 @@ export class WebClientService {
     return client;
   }
 
+  /**
+   * Encuentra todas las paginas/recursos web asociados a un cliente web.
+   * @param user 
+   * @returns 
+   */
   async findWebResources(user: number): Promise<WebResource[]> {
     const client = await this.repository.findOne({
       where: { user: user },
@@ -50,6 +55,11 @@ export class WebClientService {
     return client.resources;
   }
 
+  /**
+   * Actualiza un logo de un cliente web dado.
+   * @param user 
+   * @param param1 
+   */
   async updateWebLogoFromClient(user: number, { logo }: UpdateWebClientWebLogoRequestDto): Promise<void> {
     const foundLogo = await this.logoService.findOne(logo);
     await this.repository.findOneAndUpdate({
@@ -59,6 +69,11 @@ export class WebClientService {
     });
   }
 
+  /**
+   * Actualiza los recursos/paginas asociadas a un cliente web dado.
+   * @param user 
+   * @param param1 
+   */
   async updateWebResourcesFromClient(user: number, { resources }: UpdateWebClientWebResourcesRequestDto): Promise<void> {
     const webResources = await this.resourceService.findInIds(resources);
     await this.repository.findOneAndUpdate({

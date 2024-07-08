@@ -13,6 +13,10 @@ export class DoctorService {
     @Inject(StorageManager) private readonly storage: StorageManager
   ) { }
 
+  /**
+   * Encuentra todos los medicos activos del sistema.
+   * @returns 
+   */
   async find(): Promise<Doctor[]> {
     const doctors = await this.repository.find({
       select: {
@@ -32,6 +36,11 @@ export class DoctorService {
     return doctors;
   }
 
+  /**
+   * Encuentra un medico por su identificador unico.
+   * @param id 
+   * @returns 
+   */
   async findOne(id: number): Promise<Doctor> {
     const doctor = await this.repository.findOne({
       where: {
@@ -52,6 +61,11 @@ export class DoctorService {
     return doctor;
   }
 
+  /**
+   * Encuentra un medico por su dni.
+   * @param dni 
+   * @returns 
+   */
   async findOneByDni(dni: string): Promise<Doctor> {
     const doctor = await this.repository.findOne({
       where: {
@@ -74,6 +88,11 @@ export class DoctorService {
     return doctor;
   }
 
+  /**
+   * Carga una imagen como firma del medico.
+   * @param id 
+   * @param signature 
+   */
   async uploadSignature(id: number, signature: Express.Multer.File): Promise<void> {
     const doctor = await this.repository.findOne({
       where: { id },

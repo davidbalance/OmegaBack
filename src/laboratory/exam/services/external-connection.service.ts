@@ -12,6 +12,11 @@ export class ExternalConnectionService {
         @Inject(ExamRepository) private readonly repository: ExamRepository
     ) { }
 
+    /**
+     * Crea un examen medico.
+     * @param param0 
+     * @returns 
+     */
     async create({ key, source, ...exam }: POSTExamRequestDto & { source: string }): Promise<Exam> {
         const newKey = await this.externalKeyService.create({ key, source });
         try {
@@ -26,6 +31,11 @@ export class ExternalConnectionService {
         }
     }
 
+    /**
+     * Encuentra un examen medico si no existe lo crea.
+     * @param param0 
+     * @returns 
+     */
     async findOneOrCreate({ key, source, ...exam }: POSTExamRequestDto & { source: string }): Promise<Exam> {
         try {
             const foundExam = await this.repository.findOne({
@@ -42,6 +52,12 @@ export class ExternalConnectionService {
         }
     }
 
+    /**
+     * Encuentra un examen medico y lo modifica.
+     * @param param0 
+     * @param param1 
+     * @returns 
+     */
     async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHExamRequestDto): Promise<Exam> {
         console.log({
             externalKey: {

@@ -23,9 +23,9 @@ export class TokenService {
   ) { }
 
   /**
-   * Instantiate a new access and refresh tokens
+   * Instancia un nuevo token de acceso y refrescamiento.
    * @param sub 
-   * @returns Access and refresh tokens
+   * @returns 
    */
   async initToken(sub: number): Promise<TokenPayload> {
     const { access, refresh } = await this.generateToken(sub);
@@ -39,9 +39,9 @@ export class TokenService {
   }
 
   /**
-   * Check if the refresh token given is valid, so it can creates a new access and refresh tokens
+   * Verifica la validez del token y lo refresca.
    * @param payload 
-   * @returns Access and refresh tokens
+   * @returns 
    */
   async refreshToken(payload: RefreshToken): Promise<TokenPayload> {
     const flag = await this.canRefresh(payload);
@@ -56,13 +56,21 @@ export class TokenService {
     };
   }
 
+  /**
+   * Obtiene el tiempo de expiracion de los tokens.
+   * @returns 
+   */
   private getExpiresTime = (): { expiresAccess: Date, expiresRefresh: Date } => {
     const expiresAccess = dayjs().add(this.config.get<number>("JWT_DEFAULT_EXPIRES_IN"), 'seconds').toDate();
     const expiresRefresh = dayjs().add(this.config.get<number>("JWT_REFRESH_EXPIRES_IN"), 'seconds').toDate();
     return { expiresAccess, expiresRefresh }
   }
 
-
+  /**
+   * Genera el token.
+   * @param sub 
+   * @returns 
+   */
   private async generateToken(sub: number): Promise<Tokens> {
     const accessPayload: AccessToken = { sub: sub };
     const access = this.jwt.sign(accessPayload);
@@ -74,6 +82,11 @@ export class TokenService {
     return { access, refresh };
   }
 
+  /**
+   * Almacena el token en la base de datos.
+   * @param key 
+   * @param token 
+   */
   private async storeToken(key: number, token: string): Promise<void> {
     const expiresIn: number = this.config.get<number>('JWT_REFRESH_EXPIRES_IN');
     const expiresAt = dayjs().add(expiresIn, 'seconds').toDate();
@@ -85,7 +98,7 @@ export class TokenService {
   }
 
   /**
-   * Remove a token with a given sub key
+   * Elimina un token usando el sub.
    * @param sub 
    */
   async removeToken(sub: number): Promise<void> {
@@ -93,7 +106,7 @@ export class TokenService {
   }
 
   /**
-   * Removes all tokens that have expired
+   * Elimina todos los token que han expirado.
    */
   async removeExpireToken(): Promise<void> {
     const to = dayjs().toDate();
@@ -101,6 +114,11 @@ export class TokenService {
     await this.repository.findOneAndDelete({ expiresAt: Between(from, to) });
   }
 
+  /**
+   * Verifica la validez del token de refrescamineto.
+   * @param token 
+   * @returns 
+   */
   private async canRefresh(token: RefreshToken): Promise<boolean> {
     try {
       const storedToken = await this.repository.findOne({ where: { key: token.sub } });
