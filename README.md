@@ -41,8 +41,8 @@
   - [8. Shared Module](#shared-module)
 - [Patrones y Practicas](#patterns-and-practices)
   - [Nomenclatura](#patterns-and-practices-naming)
-  - [Manejo de errores](#patterns-and-practices-error-handling)
-  - [Logging](#patterns-and-practices-logging)
+  <!-- - [Manejo de errores](#patterns-and-practices-error-handling) -->
+  <!-- - [Logging](#patterns-and-practices-logging) -->
 - [Pruebas de Software](#testing)
   - [Ejecucion de pruebas](#run-tests)
   - [Ejecucion de pruebas end-to-end](#run-tests-e2e)
@@ -1432,13 +1432,34 @@ El modulo compartido, este modulo engloba funcionalidades, servicios, controlado
 
 ### Nomenclatura
 
-<div id='patterns-and-practices-error-handling'/>
+Los archivos son nombrados usando un guion medio en cada espacio y con minisculas:
 
-### Manejo de errores
+- `file`: file.ts
+- `My file`: my-file.ts
 
-<div id='patterns-and-practices-logging'/>
+Las variables se nombran con **_camel case_**:
 
-### Logging
+- `My variable`:
+
+```javascript
+const myVariable = 'data';
+```
+
+Las clases y tipos de datos se nombran con **_pascal case_**:
+
+- `My class`:
+
+```javascript
+class MyClass {}
+```
+
+<!-- <div id='patterns-and-practices-error-handling'/> -->
+
+<!-- ### Manejo de errores -->
+
+<!-- <div id='patterns-and-practices-logging'/> -->
+
+<!-- ### Logging -->
 
 <div id='testing'/>
 
