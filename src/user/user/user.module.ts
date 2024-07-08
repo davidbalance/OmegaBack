@@ -6,7 +6,7 @@ import { SqlDatabaseModule } from 'src/shared';
 import { User } from './entities/user.entity';
 import { CredentialListener } from './listeners/credential.listener';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { UserExtraAttribute } from './entities/user-extra-attribute';
+import { UserExtraAttribute } from './entities/user-extra-attribute.entity';
 import { UserExtraAttributeRepository } from './repositories/user-extra-attribute.repository';
 import { UserExtraAttributeService } from './services/user-extra-attributes.service';
 
