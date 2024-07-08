@@ -8,6 +8,10 @@ export class PatientService {
   constructor(
     @Inject(PatientRepository) private readonly repository: PatientRepository) { }
 
+  /**
+   * Encuentra todos los pacientes activos del sistema.
+   * @returns 
+   */
   async find(): Promise<Patient[]> {
     const patients = await this.repository.find({
       where: {
@@ -32,6 +36,12 @@ export class PatientService {
     return patients;
   }
 
+  /**
+   * Encuentra a todos los pacientes que compartan un atributo externo.
+   * @param name 
+   * @param value 
+   * @returns 
+   */
   async findByExtraAttribute(name: string, value: string): Promise<Patient[]> {
     const patients = await this.repository.find({
       where: {
@@ -60,6 +70,11 @@ export class PatientService {
     return patients;
   }
 
+  /**
+   * Encuentra un paciente por su dni.
+   * @param dni 
+   * @returns 
+   */
   async findOneByDni(dni: string): Promise<Patient> {
     const patient = await this.repository.findOne({
       where: {

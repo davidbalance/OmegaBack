@@ -1185,7 +1185,7 @@ El modulo de usuarios del sistema, permite la gestion de los usuarios provee una
 
 ##### Services
 
-**User Service:**
+**User Service**
 
 - `create`: Crea un usuario.
 - `find`: Encuantra todos los usuarios activos menos el usuario con el identificador unico indicado.
@@ -1196,7 +1196,7 @@ El modulo de usuarios del sistema, permite la gestion de los usuarios provee una
 - `findExtraAttribute`: Encuentra un atributo extra dentro de un usuario usando su identificador unico.
 - `assignExtraAttribute`: Crea un atributo unico y lo asocia al usuario.
 
-**User Extra Attribute Service:**
+**User Extra Attribute Service**
 
 - `create`: Crea un atributo extra.
 - `update`: Actualiza un atributo extra.
@@ -1215,6 +1215,48 @@ El modulo de usuarios del sistema, permite la gestion de los usuarios provee una
 - `PATCH /users/employee/:id`: Actualiza un atributo `employee_of`.
 - `GET /users/doctor/of/:id`: Crea un atributo `doctor_of` y lo asocia a un usuario.
 - `PATCH /users/doctor/of/:id`: Actualiza un atributo `doctor_of`.
+
+#### 7.2. Patient Module
+
+El modulo de pacientes del sistema, permite la gestion de los pacientes. Cabe destacar que un paciente es considerado como un usuario del sistema, por lo tanto comparte metodos y funciones con el modulo de usuarios.
+
+##### Files
+
+- `patient.module.ts`: Definicion del modulo.
+- `patient.repository.ts`: Gestiona el acceso a la entidad Paciente en la base de datos.
+- `common/`: Objetos de transferencia de datos para pacientes.
+- `controller/`: Contiene los controladores para manejar peticiones HTTP.
+- `dtos/`: Objetos de transferencia de datos para pacientes.
+- `entities/`: Entidades de la base de datos para pacientes.
+- `listeners/`: Contiene la logica de ejecucion cuando es disparado un evento especifico.
+- `services/`: Contiene la logica de negocio para la gestion de usuarios.
+- `test/`: Pruebas de codigo.
+
+##### Services
+
+**Patient Service**
+
+- `find`: Encuentra todos los pacientes activos del sistema.
+- `findByExtraAttribute`: Encuentra a todos los pacientes que compartan un atributo externo.
+- `findOneByDni`: Encuentra un paciente por su dni.
+
+**External Connection**
+
+- `create`: Crea un paciente.
+- `findOneOrCreate`: Encuentra un paciente si no existe lo crea.
+- `findOneAndUpdate`: Encuentra un paciente y lo modifica.
+
+##### Controller
+
+**Patient Service**
+
+- `GET /patients`: Retorna todos los usuarios activos del sistema.
+- `GET /patients/look/company`: Retorna todos los pacientes que poseean el atributo `employee_of` y el mismo valor del atributo `look_for_company` del usuario que realiza la consulta.
+
+**External Connection**
+
+- `POST /external/connection/patients/:source`: Crea un paciente.
+- `PATCH /external/connection/patients/:source/:key`: Encuentra un paciente y lo modifica.
 
 <div id='patterns-and-practices'/>
 
