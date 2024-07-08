@@ -3,7 +3,7 @@ import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeor
 import { SendAttribute } from "../send-attribute/entities/send-attribute.entity";
 
 @Entity({ name: 'tbl_m_reports' })
-@Index(['doctorDni', 'patientDni'], { unique: false })
+@Index('report_doctor_dni_idx', ['doctorDni', 'patientDni'], { unique: false })
 export class MedicalReport extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'report_id' })
     public id: number;
