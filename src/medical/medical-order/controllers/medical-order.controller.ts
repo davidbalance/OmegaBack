@@ -42,7 +42,7 @@ export class MedicalOrderController {
     return plainToInstance(GETMedicalOrderArrayResponseDto, { orders });
   }
 
-  @Post('/mail')
+  @Post('mail')
   sendEmail(
     @Body() body: POSTMailRequestDto
   ): { message: string } {

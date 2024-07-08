@@ -9,6 +9,11 @@ export class SelectorService {
     @Inject(BranchRepository) private readonly repository: BranchRepository
   ) { }
 
+  /**
+   * Encuentra todas las sucursales activas y solo retorna un key y label.
+   * @param company 
+   * @returns 
+   */
   async find(company: number): Promise<SelectorOption<number>[]> {
     const diseases = await this.repository.createQuery('branch')
       .select('branch.id', 'key')

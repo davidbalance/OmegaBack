@@ -10,6 +10,10 @@ export class CorporativeGroupService {
     @Inject(CorporativeGroupRepository) private readonly repository: CorporativeGroupRepository
   ) { }
 
+  /**
+   * Retorna todos los grupos corporativos activos del sistema.
+   * @returns 
+   */
   async find(): Promise<CorporativeGroup[]> {
     const groups = await this.repository.find({
       where: {
@@ -26,14 +30,4 @@ export class CorporativeGroupService {
 
     return groups;
   }
-
-  async findSelectorOptions(): Promise<SelectorOption<number>[]> {
-    const groups = await this.repository.find({ select: { id: true, name: true } });
-    const options = groups.map((e) => ({
-      key: e.id,
-      label: e.name
-    } as SelectorOption<number>));
-    return options;
-  }
-
 }

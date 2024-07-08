@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { SelectorOption } from '@/shared';
 import { CompanyRepository } from '../company.repository';
 import { Company } from '../entities/company.entity';
 
@@ -10,6 +9,11 @@ export class CompanyService {
     @Inject(CompanyRepository) private readonly repository: CompanyRepository
   ) { }
 
+  /**
+   * Retorna todos las empresas activas del sistema.
+   * @param group 
+   * @returns 
+   */
   async find(group: number): Promise<Company[]> {
     const companies = await this.repository.find({
       select: {
@@ -32,6 +36,11 @@ export class CompanyService {
     return companies;
   }
 
+  /**
+   * Retorna una empresa.
+   * @param group 
+   * @returns 
+   */
   async findOne(id: number): Promise<Company> {
     const company = await this.repository.findOne({ where: { id } });
     return company;

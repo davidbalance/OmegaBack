@@ -13,9 +13,9 @@ export class DiseaseService {
   ) { }
 
   /**
-   * Creates a new disease with the given options
+   * Crea morbilidades.
    * @param param0 
-   * @returns Disease
+   * @returns 
    */
   async create({ group, ...data }: POSTDiseaseRequestDto): Promise<Disease> {
     const diseaseGroup = await this.groupService.findOneById(group);
@@ -23,8 +23,8 @@ export class DiseaseService {
   }
 
   /**
-   * Finds all the active diseases
-   * @returns {Disease[]} Array of Disease objects
+   * Encuentra todos las morbilidades activas.
+   * @returns 
    */
   async find(): Promise<Disease[]> {
     const diseases = await this.repository.find({
@@ -45,10 +45,10 @@ export class DiseaseService {
   }
 
   /**
-   * Finds one disease and update its data with the given value
+   * Encuentra una morbilidad y lo modifica.
    * @param id 
    * @param param1 
-   * @returns Disease
+   * @returns 
    */
   async findOneAndUpdate(id: number, { group, ...data }: PATCHDiseaseRequestDto): Promise<Disease> {
     if (group) {
@@ -60,7 +60,7 @@ export class DiseaseService {
   }
 
   /**
-   * Finds one disease and change its state to inactive
+   * Encuentra una morbilidad.
    * @param id 
    */
   async findOneAndDelete(id: number): Promise<void> {

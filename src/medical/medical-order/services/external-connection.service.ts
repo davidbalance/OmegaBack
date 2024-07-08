@@ -17,16 +17,32 @@ export class ExternalConnectionService {
         @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
     ) { }
 
+    /**
+     * Encuentra ordenes medicas dado un paciente medico.
+     * @param dni 
+     * @returns 
+     */
     async findOrdersByPatient(dni: string): Promise<MedicalOrder[]> {
         const orders = await this.repository.find({ where: { client: { dni } } });
         return orders;
     }
 
+    /**
+     * Encuentra una orden medica dado una aplicacion de origen y una llave externa.
+     * @param source 
+     * @param key 
+     * @returns 
+     */
     async findOrderBySourceAndKey(source: string, key: string): Promise<MedicalOrder> {
         const order = await this.repository.findOne({ where: { externalKey: { source, key } } });
         return order;
     }
 
+    /**
+     * Crea una orden medica.
+     * @param param0 
+     * @returns 
+     */
     async create({ key, source, branch, patient, ...order }: POSTMedicalOrderExternalConnectionRequestDto & { source: string }): Promise<MedicalOrder> {
         const { company } = branch;
         const { corporativeGroup } = company;
@@ -59,6 +75,11 @@ export class ExternalConnectionService {
         }
     }
 
+    /**
+     * Encuentra una orden medica sino la crea.
+     * @param param0 
+     * @returns 
+     */
     async findOneOrCreate({ key, source, branch, patient, ...order }: POSTMedicalOrderRequestDto & { key: string, source: string }): Promise<MedicalOrder> {
         try {
             const foundOrder = await this.repository.findOne({
@@ -75,6 +96,12 @@ export class ExternalConnectionService {
         }
     }
 
+    /**
+     * Encuentra una orden medica y la modifica.
+     * @param param0 
+     * @param param1 
+     * @returns 
+     */
     async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHMedicalOrderProcessRequestDto): Promise<MedicalOrder> {
         const order = await this.repository.findOneAndUpdate({
             externalKey: {

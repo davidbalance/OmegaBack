@@ -15,6 +15,11 @@ export class ExternalConnectionService {
         @Inject(CityService) private readonly cityService: CityService
     ) { }
 
+    /**
+     * Crea una sucursal.
+     * @param param0 
+     * @returns 
+     */
     async create({ source, key, company, city, ...branch }: POSTBranchRequestDto & { source: string }): Promise<Branch> {
         const foundCompany = await this.externalService.findOneOrCreate({
             source: source,
@@ -36,6 +41,11 @@ export class ExternalConnectionService {
         }
     }
 
+    /**
+     * Encuentra una sucursal si no existe la crea.
+     * @param param0 
+     * @returns 
+     */
     async findOneOrCreate({ source, key, ...branch }: POSTBranchRequestDto & { source: string }): Promise<Branch> {
         try {
             const foundBranch = await this.repository.findOne({
@@ -57,6 +67,12 @@ export class ExternalConnectionService {
         }
     }
 
+    /**
+     * Encuentra una sucursal y la modifica.
+     * @param param0 
+     * @param param1 
+     * @returns 
+     */
     async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHBranchRequestDto): Promise<Branch> {
         const branch = await this.repository.findOneAndUpdate({
             externalKey: {

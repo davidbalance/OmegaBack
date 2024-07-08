@@ -11,6 +11,11 @@ export class ExternalConnectionService {
         @Inject(UserService) private readonly userService: UserService
     ) { }
 
+    /**
+     * Crea un paciente.
+     * @param param0 
+     * @returns 
+     */
     async create({ birthday, gender, ...user }: POSTPatientRequestDto): Promise<Patient> {
         let newUser;
         try {
@@ -22,6 +27,11 @@ export class ExternalConnectionService {
         return patient;
     }
 
+    /**
+     * Encuentra un paciente si no existe lo crea.
+     * @param param0 
+     * @returns 
+     */
     async findOneOrCreate({ birthday, gender, ...user }: POSTPatientRequestDto): Promise<Patient> {
         try {
             const foundUser = await this.repository.findOne({
@@ -40,6 +50,12 @@ export class ExternalConnectionService {
         }
     }
 
+    /**
+     * Encuentra un paciente y lo modifica.
+     * @param id 
+     * @param param1 
+     * @returns 
+     */
     async findOneAndUpdate(id: string, { birthday, gender, ...user }: PATCHPatientRequestDto): Promise<Patient> {
         const patient = await this.repository.findOne({ where: { user: { dni: id } }, select: { user: { id: true } } });
         await this.userService.findOneAndUpdate(patient.user.id, { ...user, email: null });

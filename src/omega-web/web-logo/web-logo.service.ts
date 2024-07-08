@@ -9,6 +9,11 @@ export class WebLogoService {
         @Inject(WebLogoRepository) private readonly repository: WebLogoRepository
     ) { }
 
+    /**
+     * Encuentra un logo.
+     * @param id 
+     * @returns 
+     */
     async findOne(id: number): Promise<WebLogo> {
         const logo = await this.repository.findOne({ where: { id: id } });
         return logo;
