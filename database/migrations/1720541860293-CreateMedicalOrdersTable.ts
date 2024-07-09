@@ -66,6 +66,7 @@ export class CreateMedicalOrdersTable1720541860293 implements MigrationInterface
                     {
                         name: 'external_key',
                         type: 'int',
+                        isNullable: true
                     },
                     {
                         name: 'medical_client_id',

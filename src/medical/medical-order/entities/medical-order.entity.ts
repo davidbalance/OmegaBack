@@ -31,7 +31,7 @@ export class MedicalOrder extends AbstractEntity<number> {
     @OneToMany(() => MedicalResult, result => result.order, { eager: false })
     public results: MedicalResult[];
 
-    @OneToOne(() => ExternalKey, { eager: false })
+    @OneToOne(() => ExternalKey, { eager: false, nullable: true })
     @JoinColumn({ foreignKeyConstraintName: 'fk_m_external_order', referencedColumnName: 'id', name: 'external_key' })
     public externalKey: ExternalKey;
 

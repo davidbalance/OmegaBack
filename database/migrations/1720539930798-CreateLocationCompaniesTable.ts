@@ -66,7 +66,8 @@ export class CreateLocationCompaniesTable1720539930798 implements MigrationInter
                     },
                     {
                         name: 'external_key',
-                        type: 'int'
+                        type: 'int',
+                        isNullable: true
                     }
                 ]
             }),

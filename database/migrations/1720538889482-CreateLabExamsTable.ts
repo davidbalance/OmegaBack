@@ -27,7 +27,8 @@ export class CreateLabExamsTable1720538889482 implements MigrationInterface {
                     },
                     {
                         name: 'external_key',
-                        type: 'int'
+                        type: 'int',
+                        isNullable: true
                     }
                 ]
             }),

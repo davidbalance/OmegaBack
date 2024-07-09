@@ -10,7 +10,7 @@ export class Exam extends AbstractEntity<number> {
     @Column({ name: 'exam_name', type: 'varchar', length: 256, unique: true })
     public name: string;
 
-    @OneToOne(() => ExternalKey, { eager: false })
+    @OneToOne(() => ExternalKey, { eager: false, nullable: true })
     @JoinColumn({ foreignKeyConstraintName: 'fk_external_exam', referencedColumnName: 'id', name: 'external_key' })
     public externalKey: ExternalKey;
 }

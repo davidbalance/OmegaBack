@@ -35,7 +35,8 @@ export class CreateLocationCorporativeGroupsTable1720539625561 implements Migrat
                     },
                     {
                         name: 'external_key',
-                        type: 'int'
+                        type: 'int',
+                        isNullable: true
                     }
                 ]
             }),

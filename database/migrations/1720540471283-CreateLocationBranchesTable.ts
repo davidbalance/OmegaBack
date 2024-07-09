@@ -57,7 +57,8 @@ export class CreateLocationBranchesTable1720540471283 implements MigrationInterf
                     },
                     {
                         name: 'external_key',
-                        type: 'int'
+                        type: 'int',
+                        isNullable: true
                     }
                 ]
             }),

@@ -13,8 +13,6 @@ export const connectionSource = new DataSource({
     username: configService.get<string>("DATABASE_SQL_USERNAME"),
     password: configService.get<string>("DATABASE_SQL_PASSWORD"),
     database: configService.get<string>("DATABASE_SQL_DATABASE"),
-    // entities: ['dist/**/*.entity{.js,.ts}'],
-    // migrations: ['dist/migrations/*{.js,.ts}'],
     entities: ['src/**/*.entity{.js,.ts}'],
     migrations: ['database/migrations/*{.js,.ts}'],
     logging: true,
