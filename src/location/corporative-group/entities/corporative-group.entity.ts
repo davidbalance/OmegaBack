@@ -4,7 +4,7 @@ import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne, PrimaryGenerate
 import { ExternalKey } from "../external-key/entities/external-key.entity";
 
 @Entity({ name: 'tbl_lo_corporative_groups' })
-@Index('corporative_name_idx', ['name'], { unique: true })
+@Index('idx_corporative_name', ['name'], { unique: true })
 export class CorporativeGroup extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'corporative_id' })
     public id: number;
@@ -19,6 +19,6 @@ export class CorporativeGroup extends AbstractEntity<number> {
     public companies: Company[]
 
     @OneToOne(() => ExternalKey, { eager: false, nullable: true })
-    @JoinColumn({ referencedColumnName: 'id', name: 'external_key' })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_lo_external_corporative', referencedColumnName: 'id', name: 'external_key' })
     public externalKey: ExternalKey;
 }

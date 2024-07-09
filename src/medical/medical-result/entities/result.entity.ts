@@ -6,16 +6,16 @@ import { MedicalOrder } from "@/medical/medical-order/entities/medical-order.ent
 import { MedicalReport } from "@/medical/medical-report/entities/medical-report.entity";
 
 @Entity({ name: "tbl_m_results" })
-@Index('result_disease_idx', ['diseaseId'])
-@Index('result_disease_group_idx', ['diseaseGroupId'])
-@Index('result_doctor_dni_idx', ['doctorDni'])
+@Index('idx_result_disease', ['diseaseId'])
+@Index('idx_result_disease_group', ['diseaseGroupId'])
+@Index('idx_result_doctor_dni', ['doctorDni'])
 export class MedicalResult extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: "result_id" })
     public id: number;
 
     @Column({ name: 'result_file_path', type: 'varchar', length: 512, nullable: true, unique: true })
     public filePath?: string;
-    
+
     @Column({ name: 'result_has_file', type: 'boolean', default: false, nullable: false })
     public hasFile: boolean;
 
@@ -47,15 +47,15 @@ export class MedicalResult extends AbstractEntity<number> {
     public doctorSignature: string;
 
     @ManyToOne(() => MedicalOrder, order => order.results, { eager: false, nullable: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'order_id' })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_m_order_result', referencedColumnName: 'id', name: 'order_id' })
     public order: MedicalOrder;
 
-    @OneToOne(() => MedicalReport, { nullable: true, eager: true })
-    @JoinColumn({ referencedColumnName: 'id', name: 'report_id' })
+    @OneToOne(() => MedicalReport, { eager: true, nullable: true })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_m_report_result', referencedColumnName: 'id', name: 'report_id' })
     public report: MedicalReport;
 
     @OneToOne(() => ExternalKey, { eager: false, nullable: true })
-    @JoinColumn({ referencedColumnName: 'id', name: 'external_key' })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_m_external_result', referencedColumnName: 'id', name: 'external_key' })
     public externalKey: ExternalKey;
 
     @OneToMany(() => SendAttribute, value => value.result, { eager: false })

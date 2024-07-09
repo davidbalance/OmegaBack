@@ -10,7 +10,7 @@ export class Doctor extends AbstractEntity<number> {
     @Column({ name: 'doctor_signature', type: 'varchar', length: 256, nullable: true })
     public signature: string;
 
-    @OneToOne(() => User, { eager: true })
-    @JoinColumn({ referencedColumnName: 'id', name: 'user_id' })
+    @OneToOne(() => User, { eager: true, nullable: false })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_u_user_doctor', referencedColumnName: 'id', name: 'user_id' })
     public user: User;
 }

@@ -1,10 +1,11 @@
 import { AbstractEntity } from "src/shared";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ExternalKey } from "../external-key/entities/external-key.entity";
 import { MedicalClient } from "@/medical/medical-client/entities/medical-client.entity";
 import { MedicalResult } from "@/medical/medical-result/entities/result.entity";
 
 @Entity({ name: 'tbl_m_orders' })
+@Index('idx_company_ruc', ['companyRuc'])
 export class MedicalOrder extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'order_id' })
     public id: number;
@@ -31,10 +32,10 @@ export class MedicalOrder extends AbstractEntity<number> {
     public results: MedicalResult[];
 
     @OneToOne(() => ExternalKey, { eager: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'external_key' })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_m_external_order', referencedColumnName: 'id', name: 'external_key' })
     public externalKey: ExternalKey;
 
-    @ManyToOne(() => MedicalClient, client => client.medicalOrders, { eager: true })
-    @JoinColumn({ referencedColumnName: 'id', name: 'medical_client_id' })
+    @ManyToOne(() => MedicalClient, client => client.medicalOrders, { eager: true, nullable: false })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_m_client_order', referencedColumnName: 'id', name: 'medical_client_id' })
     public client: MedicalClient;
 }

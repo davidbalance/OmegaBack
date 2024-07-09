@@ -3,7 +3,9 @@ import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeor
 import { SendAttribute } from "../send-attribute/entities/send-attribute.entity";
 
 @Entity({ name: 'tbl_m_reports' })
-@Index('report_doctor_dni_idx', ['doctorDni', 'patientDni'], { unique: false })
+@Index('idx_report_patient', ['patientDni'])
+@Index('idx_report_doctor', ['doctorDni'])
+@Index('idx_report_doctor_patient', ['doctorDni', 'patientDni'], { unique: false })
 export class MedicalReport extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'report_id' })
     public id: number;
@@ -20,7 +22,6 @@ export class MedicalReport extends AbstractEntity<number> {
     @Column({ name: 'order_id', type: 'int', nullable: false })
     public order: number;
 
-    @Index('report_patient_idx')
     @Column({ name: 'patient_dni', type: 'varchar', length: 10, nullable: false })
     public patientDni: string;
 
@@ -36,7 +37,6 @@ export class MedicalReport extends AbstractEntity<number> {
     @Column({ name: 'company_name', type: 'varchar', length: 128, nullable: false })
     public companyName: string;
 
-    @Index('report_doctor_idx')
     @Column({ name: 'doctor_dni', type: 'varchar', length: 10, nullable: false })
     public doctorDni: string;
 

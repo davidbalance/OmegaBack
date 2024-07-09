@@ -14,7 +14,7 @@ export class Patient extends AbstractEntity<number> {
     @Column({ name: 'patient_birthday', type: 'date', nullable: false })
     public birthday: Date;
 
-    @OneToOne(() => User, { eager: true })
-    @JoinColumn({ referencedColumnName: 'id', name: 'user_id' })
+    @OneToOne(() => User, { eager: true, nullable: false })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_u_user_patient', referencedColumnName: 'id', name: 'user_id' })
     public user: User;
 }

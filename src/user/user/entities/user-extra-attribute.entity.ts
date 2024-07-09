@@ -7,7 +7,7 @@ export class UserExtraAttribute extends ExtraAttribute {
     @PrimaryGeneratedColumn('increment', { name: 'user_attribute_id' })
     public id: number;
 
-    @ManyToOne(() => User, user => user.extraAttributes, { eager: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'user_id' })
+    @ManyToOne(() => User, user => user.extraAttributes, { eager: false, nullable: false })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_u_user_attribute', referencedColumnName: 'id', name: 'user_id' })
     public user: User;
 }
