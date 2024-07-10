@@ -6,6 +6,7 @@ import { MedicalOrderRepository } from '../medical-order.repository';
 import { MedicalOrder } from '../entities/medical-order.entity';
 import { MedicalEmail } from '@/medical/medical-client/entities/medical-email.entity';
 import { GETMedicalOrderFilesResponseDto } from '../dtos/medical-order.response.dto';
+import { OrderStatus } from '../enums';
 
 @Injectable()
 export class MedicalOrderService {
@@ -85,6 +86,17 @@ export class MedicalOrderService {
       .where('medicalClient.dni = :patient', { patient })
       .getMany();
     return orders;
+  }
+
+  /**
+   * Encuentra una orden y actualiza su estado
+   * @param id 
+   * @param status 
+   * @returns 
+   */
+  async findOneUpdateStatus(id: number, status: OrderStatus): Promise<MedicalOrder> {
+    const order = await this.repository.findOneAndUpdate({ id: id }, { orderStatus: status });
+    return order;
   }
 
   /**

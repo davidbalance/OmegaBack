@@ -3,6 +3,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, Prim
 import { ExternalKey } from "../external-key/entities/external-key.entity";
 import { MedicalClient } from "@/medical/medical-client/entities/medical-client.entity";
 import { MedicalResult } from "@/medical/medical-result/entities/result.entity";
+import { OrderStatus } from "../enums";
 
 @Entity({ name: 'tbl_m_orders' })
 @Index('idx_company_ruc', ['companyRuc'])
@@ -27,6 +28,9 @@ export class MedicalOrder extends AbstractEntity<number> {
 
     @Column({ name: 'mail_status', type: 'boolean', default: false, nullable: false })
     public mailStatus: boolean;
+
+    @Column({ name: 'order_status', type: 'enum', enum: OrderStatus, default: OrderStatus.CREATED, nullable: false })
+    public orderStatus: OrderStatus;
 
     @OneToMany(() => MedicalResult, result => result.order, { eager: false })
     public results: MedicalResult[];

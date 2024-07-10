@@ -995,6 +995,7 @@ El modulo de ordenes medicas se encarga de la gestion de las mismas.
 - `findOrderFilesById`: Retorna una orden medica mediante el identificador unico.
 - `findByPatient`: Retorna varias ordenes medicas dado el dni de un cliente medico.
 - `findByPatientAndDoctor`: Encuentra ordenes medicas usando al paciente, y todos los resultados asociados a un medico dado.
+- `findOneUpdateStatus`: Encuentra una orden y actualiza su estado.
 - `sendMail`: Envia un correo electornico basandose en una orden medica.
 
 **External Connection**
