@@ -3,7 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { MedicalOrderService } from '../services/medical-order.service';
-import { GETMedicalOrderArrayResponseDto, GETMedicalOrderFilesResponseDto } from '../dtos/medical-order.response.dto';
+import { GETMedicalOrderArrayResponseDto, GETMedicalOrderFilesResponseDto, GETMedicalOrderResponseDto } from '../dtos/medical-order.response.dto';
 import { POSTMailRequestDto } from '../dtos/medical-order.request.dto';
 import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
 import { User } from '@/shared/decorator';
@@ -56,9 +56,9 @@ export class MedicalOrderController {
   @Patch('order/:id/status/validate')
   async findOneAndValidateStatus(
     @Param('id') id: number
-  ): Promise<GETMedicalOrderArrayResponseDto> {
-    const orders = await this.orderService.findOneUpdateStatus(id, OrderStatus.VALIDATED);
-    return plainToInstance(GETMedicalOrderArrayResponseDto, { orders });
+  ): Promise<GETMedicalOrderResponseDto> {
+    const order = await this.orderService.findOneUpdateStatus(id, OrderStatus.VALIDATED);
+    return plainToInstance(GETMedicalOrderResponseDto, order);
   }
 
   @Post('mail')
