@@ -24,6 +24,8 @@
     - [4.2. Company Module](#location-submodule-2)
     - [4.3. Branch Module](#location-submodule-3)
     - [4.4. City Module](#location-submodule-4)
+    - [4.5. Management Module](#location-submodule-5)
+    - [4.6. Area Module](#location-submodule-6)
   - [5. Medical Module](#medical-module)
     - [5.1. Medical Client Module](#medical-submodule-1)
     - [5.2. Medical Order Module](#medical-submodule-2)
@@ -916,6 +918,67 @@ El modulo de ciudades se encarga de la gestion de las mismas.
 **Selector**
 
 - `GET /selector/cities`: Encuentra todas las ciudades activas y solo retorna un key y label.
+
+<div id='location-submodule-5'/>
+
+#### 4.5. Management Module
+
+El modulo de gerencias se encarga de la gestion de las mismas.
+
+##### Files
+
+- `management.module.ts`: Definicion del modulo.
+- `management.controllers.ts`: Contiene los controladores para manejar peticiones HTTP.
+- `management.repository.ts`: Gestiona el acceso a la entidad Gerencia en la base de datos.
+- `management.services.ts`: Contiene la logica de negocio para la gestion de gerencias.
+- `dtos/`: Objetos de transferencia de datos para gerencias.
+- `entities/`: Entidades de la base de datos para gerencias.
+- `test/`: Pruebas de codigo.
+
+##### Services
+
+- `create`: Crea una gerencia.
+- `find`: Encuentra todas las gerencias activas.
+- `findOneById`: Encuentra una gerencia usando su identificador unico.
+- `findOneByIdAndUpdate`: Encuentra una gerencia por su identificador unico y lo modifica.
+- `findOneAndDelete`: Encuentra una gerencia por su identificador unico y lo inactiva.
+
+##### Controller
+
+- `GET /management`: Obtiene todas las gerencias activas del sistema.
+- `POST /management`: Crea una gerencia.
+- `PATCH /management/:id`: Modifica una gerencia usando un identificador unico.
+- `DELETE /management/:id`: Elimina una gerencia usando un identificador unico.
+
+<div id='location-submodule-6'/>
+
+#### 4.6. Area Module
+
+El modulo de areas se encarga de la gestion de las mismas.
+
+##### Files
+
+- `area.module.ts`: Definicion del modulo.
+- `area.controllers.ts`: Contiene los controladores para manejar peticiones HTTP.
+- `area.repository.ts`: Gestiona el acceso a la entidad Area en la base de datos.
+- `area.services.ts`: Contiene la logica de negocio para la gestion de areas.
+- `dtos/`: Objetos de transferencia de datos para areas.
+- `entities/`: Entidades de la base de datos para areas.
+- `test/`: Pruebas de codigo.
+
+##### Services
+
+- `create`: Crea un area.
+- `find`: Encuentra todas las areas del sistema.
+- `findOneByIdAndUpdate`: Encuentra un area y lo modifica.
+- `findOneByIdAndDelete`: Encuentra un area y lo elimina.
+
+##### Controller
+
+- `GET /area`: Obtiene todas las areas activas del sistema.
+- `POST /area`: Crea un area.
+- `PATCH /area/:id`: Modifica un area usando un identificador unico.
+- `DELETE /area/:id`: Elimina un area usando un identificador unico.
 
 <div id='medical-module'/>
 

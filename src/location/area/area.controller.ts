@@ -17,7 +17,7 @@ export class AreaController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(): Promise<GETAreaArrayResponseDto> {
-    const areas = await this.service.findAllAreas();
+    const areas = await this.service.find();
     return plainToInstance(GETAreaArrayResponseDto, { areas });
   }
 

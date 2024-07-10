@@ -17,7 +17,7 @@ export class ManagementController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(): Promise<GETManagementArrayResponseDto> {
-    const managements = await this.service.findAllManagement();
+    const managements = await this.service.find();
     return plainToInstance(GETManagementArrayResponseDto, { managements });
   }
 

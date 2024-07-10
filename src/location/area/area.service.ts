@@ -12,23 +12,42 @@ export class AreaService {
     @Inject(ManagementService) private readonly managementService: ManagementService
   ) { }
 
+  /**
+   * Crea un area.
+   * @param param0 
+   * @returns 
+   */
   async create({ management, ...area }: POSTAreaRequestDto): Promise<Area> {
     const foundManagement = await this.managementService.findOneById(management);
     const createdArea = await this.repository.create({ ...area, management: foundManagement });
     return createdArea;
   }
 
-  async findAllAreas(): Promise<Area[]> {
+  /**
+   * Encuentra todas las areas del sistema.
+   * @returns 
+   */
+  async find(): Promise<Area[]> {
     const areas = await this.repository.find();
     return areas;
   }
 
+  /**
+   * Encuentra un area y lo modifica.
+   * @param id 
+   * @param param1 
+   * @returns 
+   */
   async findOneByIdAndUpdate(id: number, { management, ...area }: PATCHAreaRequestDto): Promise<Area> {
     const foundManagement = await this.managementService.findOneById(management);
     const updatedArea = await this.repository.findOneAndUpdate({ id: id }, { ...area, management: foundManagement });
     return updatedArea;
   }
 
+  /**
+   * Encuentra un area y lo elimina.
+   * @param id 
+   */
   async findOneByIdAndDelete(id: number): Promise<void> {
     await this.repository.findOneAndDelete({ id: id });
   }
