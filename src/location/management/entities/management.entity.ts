@@ -1,6 +1,6 @@
 import { Area } from "@/location/area/entities/area.entity";
 import { AbstractEntity } from "@/shared";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('tbl_lo_managements')
 export class Management extends AbstractEntity<number> {

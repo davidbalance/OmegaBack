@@ -1,34 +1,49 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, UseGuards } from '@nestjs/common';
 import { ManagementService } from './management.service';
-import { CreateManagementDto } from './dto/create-management.dto';
-import { UpdateManagementDto } from './dto/update-management.dto';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
+import { PATCHManagementRequestDto, POSTManagementRequestDto } from './dto/management.request.dto';
+import { DELETEManagementResponseDto, GETManagementArrayResponseDto, PATCHManagementResponseDto, POSTManagementResponseDto } from './dto/management.response.dto';
+import { plainToInstance } from 'class-transformer';
 
+@ApiTags('Location/Management')
+@ApiBearerAuth()
 @Controller('management')
 export class ManagementController {
-  constructor(private readonly managementService: ManagementService) {}
+  constructor(
+    @Inject(ManagementService) private readonly service: ManagementService
+  ) { }
 
-  @Post()
-  create(@Body() createManagementDto: CreateManagementDto) {
-    return this.managementService.create(createManagementDto);
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.managementService.findAll();
+  async findAll(): Promise<GETManagementArrayResponseDto> {
+    const managements = await this.service.findAllManagement();
+    return plainToInstance(GETManagementArrayResponseDto, { managements });
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.managementService.findOne(+id);
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  async create(@Body() createManagementDto: POSTManagementRequestDto): Promise<POSTManagementResponseDto> {
+    const management = await this.service.create(createManagementDto);
+    return plainToInstance(POSTManagementResponseDto, management);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateManagementDto: UpdateManagementDto) {
-    return this.managementService.update(+id, updateManagementDto);
+  async update(
+    @Param('id') id: number,
+    @Body() updateManagementDto: PATCHManagementRequestDto
+  ): Promise<PATCHManagementResponseDto> {
+    const management = await this.service.findOneByIdAndUpdate(id, updateManagementDto);
+    return plainToInstance(POSTManagementResponseDto, management);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.managementService.remove(+id);
+  async findOneAndDelete(
+    @Param('id') id: string
+  ): Promise<DELETEManagementResponseDto> {
+    await this.service.findOneAndDelete(+id);
+    return {};
   }
 }

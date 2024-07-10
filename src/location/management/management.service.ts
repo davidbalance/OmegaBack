@@ -1,26 +1,37 @@
-import { Injectable } from '@nestjs/common';
-import { CreateManagementDto } from './dto/create-management.dto';
-import { UpdateManagementDto } from './dto/update-management.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { PATCHManagementRequestDto, POSTManagementRequestDto } from './dto/management.request.dto';
+import { Management } from './entities/management.entity';
+import { ManagementRepository } from './management.repository';
 
 @Injectable()
 export class ManagementService {
-  create(createManagementDto: CreateManagementDto) {
-    return 'This action adds a new management';
+  constructor(
+    @Inject(ManagementRepository) private readonly repository: ManagementRepository
+  ) { }
+
+  async findAllManagement(): Promise<Management[]> {
+    const managements = await this.repository.find({
+      where: {
+        status: true
+      },
+      relations: {
+        areas: true
+      }
+    });
+    return managements;
   }
 
-  findAll() {
-    return `This action returns all management`;
+  async create(createManagementDto: POSTManagementRequestDto): Promise<Management> {
+    const management = await this.repository.create(createManagementDto);
+    return management;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} management`;
+  async findOneByIdAndUpdate(id: number, updateManagementDto: PATCHManagementRequestDto): Promise<Management> {
+    const management = await this.repository.findOneAndUpdate({ id: id }, updateManagementDto);
+    return management;
   }
 
-  update(id: number, updateManagementDto: UpdateManagementDto) {
-    return `This action updates a #${id} management`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} management`;
+  async findOneAndDelete(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id: id });
   }
 }
