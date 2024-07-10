@@ -26,12 +26,6 @@ export class CreateLocationAreasTable1720634458217 implements MigrationInterface
                         isNullable: false
                     },
                     {
-                        name: 'area_status',
-                        type: 'boolean',
-                        default: true,
-                        isNullable: false
-                    },
-                    {
                         name: 'management_id',
                         type: 'int',
                         isNullable: false

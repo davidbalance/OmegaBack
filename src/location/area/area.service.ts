@@ -1,26 +1,35 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAreaDto } from './dto/create-area.dto';
-import { UpdateAreaDto } from './dto/update-area.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { AreaRepository } from './area.repository';
+import { ManagementService } from '../management/management.service';
+import { PATCHAreaRequestDto, POSTAreaRequestDto } from './dto/area.request.dto';
+import { Area } from './entities/area.entity';
 
 @Injectable()
 export class AreaService {
-  create(createAreaDto: CreateAreaDto) {
-    return 'This action adds a new area';
+
+  constructor(
+    @Inject(AreaRepository) private readonly repository: AreaRepository,
+    @Inject(ManagementService) private readonly managementService: ManagementService
+  ) { }
+
+  async create({ management, ...area }: POSTAreaRequestDto): Promise<Area> {
+    const foundManagement = await this.managementService.findOneById(management);
+    const createdArea = await this.repository.create({ ...area, management: foundManagement });
+    return createdArea;
   }
 
-  findAll() {
-    return `This action returns all area`;
+  async findAllAreas(): Promise<Area[]> {
+    const areas = await this.repository.find();
+    return areas;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} area`;
+  async findOneByIdAndUpdate(id: number, { management, ...area }: PATCHAreaRequestDto): Promise<Area> {
+    const foundManagement = await this.managementService.findOneById(management);
+    const updatedArea = await this.repository.findOneAndUpdate({ id: id }, { ...area, management: foundManagement });
+    return updatedArea;
   }
 
-  update(id: number, updateAreaDto: UpdateAreaDto) {
-    return `This action updates a #${id} area`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} area`;
+  async findOneByIdAndDelete(id: number): Promise<void> {
+    await this.repository.findOneAndDelete({ id: id });
   }
 }

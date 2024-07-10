@@ -21,6 +21,11 @@ export class ManagementService {
     return managements;
   }
 
+  async findOneById(id: number): Promise<Management> {
+    const management = await this.repository.findOne({ where: { id: id } });
+    return management;
+  }
+
   async create(createManagementDto: POSTManagementRequestDto): Promise<Management> {
     const management = await this.repository.create(createManagementDto);
     return management;
