@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from "typeorm";
 
 const TABLE_NAME: string = 'tbl_m_results';
-const INDEX_DISEASE: TableIndex = new TableIndex({ name: 'idx_result_disease', columnNames: ['disease_id'] });
-const INDEX_DISEASE_GROUP: TableIndex = new TableIndex({ name: 'idx_result_disease_group', columnNames: ['disease_group_id'] });
 const INDEX_DOCTOR: TableIndex = new TableIndex({ name: 'idx_result_doctor_dni', columnNames: ['doctor_dni'] });
 
 const FK_M_ORDER_RESULT: TableForeignKey = new TableForeignKey({
@@ -56,34 +54,6 @@ export class CreateMedicalResultsTable1720553346544 implements MigrationInterfac
                         isNullable: false
                     },
                     {
-                        name: 'disease_id',
-                        type: 'int',
-                        isNullable: true
-                    },
-                    {
-                        name: 'disease_name',
-                        type: 'varchar',
-                        length: '128',
-                        isNullable: true
-                    },
-                    {
-                        name: 'disease_commentary',
-                        type: 'varchar',
-                        length: '512',
-                        isNullable: true
-                    },
-                    {
-                        name: 'disease_group_id',
-                        type: 'int',
-                        isNullable: true
-                    },
-                    {
-                        name: 'disease_group_name',
-                        type: 'varchar',
-                        length: '128',
-                        isNullable: true
-                    },
-                    {
                         name: 'doctor_dni',
                         type: 'varchar',
                         length: '10',
@@ -121,8 +91,6 @@ export class CreateMedicalResultsTable1720553346544 implements MigrationInterfac
             true,
         );
 
-        await queryRunner.createIndex(TABLE_NAME, INDEX_DISEASE);
-        await queryRunner.createIndex(TABLE_NAME, INDEX_DISEASE_GROUP);
         await queryRunner.createIndex(TABLE_NAME, INDEX_DOCTOR);
 
         await queryRunner.createForeignKey(TABLE_NAME, FK_M_ORDER_RESULT);
@@ -135,8 +103,6 @@ export class CreateMedicalResultsTable1720553346544 implements MigrationInterfac
         await queryRunner.dropForeignKey(TABLE_NAME, FK_M_REPORT_RESULT);
         await queryRunner.dropForeignKey(TABLE_NAME, FK_M_EXTERNAL_RESULT);
 
-        await queryRunner.dropIndex(TABLE_NAME, INDEX_DISEASE);
-        await queryRunner.dropIndex(TABLE_NAME, INDEX_DISEASE_GROUP);
         await queryRunner.dropIndex(TABLE_NAME, INDEX_DOCTOR);
 
         await queryRunner.dropTable(TABLE_NAME);

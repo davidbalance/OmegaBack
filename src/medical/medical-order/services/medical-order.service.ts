@@ -59,14 +59,11 @@ export class MedicalOrderService {
         results: {
           id: true,
           examName: true,
-          diseaseId: true,
-          diseaseName: true,
-          diseaseGroupId: true,
-          diseaseGroupName: true
+          diseases: true
         }
       },
       relations: {
-        results: true
+        results: true,
       },
       cache: 1000 * 900
     });

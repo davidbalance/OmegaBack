@@ -7,7 +7,7 @@ import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
 import { MedicalResultService } from '../services/medical-result.service';
 import { GETMedicalResultArrayResponseDto, GETMedicalResultResponseDto, PATCHMedicalResultFileResponseDto, PATCHMedicalResultResponseDto } from '../dtos/medical-result.response.dto';
 import { PATCHMedicalReportRequestDto } from '@/medical/medical-report/dtos/medical-report.request.dto';
-import { PATCHMedicalResultFileRequestDto, PATCHMedicalResultWithDiseaseRequestDto } from '../dtos/medical-result.request.dto';
+import { PATCHMedicalResultFileRequestDto, PATCHMedicalResultWithDiseaseArrayRequestDto, PATCHMedicalResultWithDiseaseRequestDto } from '../dtos/medical-result.request.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Medical/Result')
@@ -37,7 +37,7 @@ export class MedicalResultController {
   @Patch(':id')
   async findOneResultAndUpdateDisease(
     @Param('id') id: number,
-    @Body() body: PATCHMedicalResultWithDiseaseRequestDto
+    @Body() body: PATCHMedicalResultWithDiseaseArrayRequestDto
   ): Promise<PATCHMedicalResultResponseDto> {
     await this.resultService.findOneResultAndUpdateDisease(id, body);
     return {};

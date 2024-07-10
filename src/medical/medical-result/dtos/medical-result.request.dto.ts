@@ -55,10 +55,15 @@ export class PATCHMedicalResultWithDiseaseRequestDto {
     @IsString()
     @IsNotEmpty()
     public readonly diseaseGroupName: string;
-    
+
     @IsString()
     @IsNotEmpty()
     public readonly diseaseCommentary: string;
+}
+
+export class PATCHMedicalResultWithDiseaseArrayRequestDto {
+    @Type(() => PATCHMedicalResultWithDiseaseRequestDto)
+    public readonly diseases: PATCHMedicalResultWithDiseaseRequestDto[];
 }
 
 export class PATCHMedicalResultFileRequestDto {

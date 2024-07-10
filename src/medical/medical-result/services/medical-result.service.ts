@@ -1,13 +1,16 @@
 import { FindFilePathService, RemoveFileService, fileResultPath } from "@/shared";
 import { Injectable, Inject, Logger } from "@nestjs/common";
 import { SendAttributeService } from "../send-attribute/send-attribute.service";
-import { MedicalResultRepository } from "../medical-result.repository";
+import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { MedicalResult } from "../entities/result.entity";
 import { MedicalReportService } from "@/medical/medical-report/medical-report.service";
-import { PATCHMedicalResultWithDiseaseRequestDto } from "../dtos/medical-result.request.dto";
+import { PATCHMedicalResultWithDiseaseArrayRequestDto, PATCHMedicalResultWithDiseaseRequestDto } from "../dtos/medical-result.request.dto";
 import { PATCHMedicalReportRequestDto } from "@/medical/medical-report/dtos/medical-report.request.dto";
 import { extname } from "path";
 import { StorageManager } from "@/shared/storage-manager";
+import { MedicalResultDisease } from "../entities/result-disease.entity";
+import { MedicalResultDiseaseRepository } from "../repositories/medical-result-disease.repository";
+import { In } from "typeorm";
 
 @Injectable()
 export class MedicalResultService implements
@@ -19,6 +22,7 @@ export class MedicalResultService implements
     @Inject(MedicalReportService) private readonly reportService: MedicalReportService,
     @Inject(SendAttributeService) private readonly attributeService: SendAttributeService,
     @Inject(StorageManager) private readonly storageManager: StorageManager,
+    @Inject(MedicalResultDiseaseRepository) private readonly diseaseRepository: MedicalResultDiseaseRepository
   ) { }
 
   /**
@@ -68,8 +72,13 @@ export class MedicalResultService implements
       select: {
         id: true,
         examName: true,
-        diseaseId: true,
-        diseaseName: true,
+        diseases: {
+          diseaseId: true,
+          diseaseName: true,
+          diseaseGroupId: true,
+          diseaseGroupName: true,
+          diseaseCommentary: true
+        },
         report: {
           id: true,
           content: true
@@ -90,8 +99,13 @@ export class MedicalResultService implements
       select: {
         id: true,
         examName: true,
-        diseaseId: true,
-        diseaseName: true,
+        diseases: {
+          diseaseId: true,
+          diseaseName: true,
+          diseaseGroupId: true,
+          diseaseGroupName: true,
+          diseaseCommentary: true
+        },
         report: {
           id: true,
           content: true
@@ -108,8 +122,19 @@ export class MedicalResultService implements
    * @param param1 
    * @returns 
    */
-  async findOneResultAndUpdateDisease(id: number, { ...data }: PATCHMedicalResultWithDiseaseRequestDto): Promise<MedicalResult> {
-    const result = await this.repository.findOneAndUpdate({ id }, { ...data });
+  async findOneResultAndUpdateDisease(id: number, { diseases }: PATCHMedicalResultWithDiseaseArrayRequestDto): Promise<MedicalResult> {
+    const currentResult = await this.repository.findOne({ where: { id: id }, select: { diseases: true } });
+    if (currentResult.diseases && currentResult.diseases.length) {
+      const ids = currentResult.diseases.map(e => e.id);
+      await this.diseaseRepository.findOneAndDelete({ id: In(ids) });
+    }
+    const newDiseases: MedicalResultDisease[] = [];
+    for (const disease of diseases) {
+      const newDisease = await this.diseaseRepository.create(disease);
+      newDiseases.push(newDisease);
+    }
+
+    const result = await this.repository.findOneAndUpdate({ id }, { diseases: newDiseases });
     return result;
   }
 

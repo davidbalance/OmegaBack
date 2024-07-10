@@ -2,7 +2,7 @@ import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm
 
 const TABLE_NAME: string = 'tbl_lo_areas';
 
-const FK_M_MANAGEMENT_AREA: TableForeignKey = new TableForeignKey({
+const FK_LO_MANAGEMENT_AREA: TableForeignKey = new TableForeignKey({
     name: 'fk_lo_managements_areas',
     columnNames: ['management_id'],
     referencedColumnNames: ['management_id'],
@@ -35,11 +35,11 @@ export class CreateLocationAreasTable1720634458217 implements MigrationInterface
             true,
         );
 
-        await queryRunner.createForeignKey(TABLE_NAME, FK_M_MANAGEMENT_AREA)
+        await queryRunner.createForeignKey(TABLE_NAME, FK_LO_MANAGEMENT_AREA);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropForeignKey(TABLE_NAME, FK_M_MANAGEMENT_AREA);
+        await queryRunner.dropForeignKey(TABLE_NAME, FK_LO_MANAGEMENT_AREA);
 
         await queryRunner.dropTable(TABLE_NAME);
     }

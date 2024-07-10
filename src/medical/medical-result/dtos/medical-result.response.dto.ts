@@ -1,14 +1,7 @@
 import { GETMedicalReportResponseDto } from "@/medical/medical-report/dtos/medical-report.response.dto";
 import { Expose, Type } from "class-transformer";
 
-export class GETMedicalResultResponseDto {
-
-    @Expose()
-    public readonly id: number;
-
-    @Expose()
-    public readonly examName: string;
-
+class ResultDisease {
     @Expose()
     public readonly diseaseId: string;
 
@@ -20,12 +13,24 @@ export class GETMedicalResultResponseDto {
 
     @Expose()
     public readonly diseaseGroupName: string;
-    
+
     @Expose()
     public readonly diseaseCommentary: string;
+}
+
+export class GETMedicalResultResponseDto {
+
+    @Expose()
+    public readonly id: number;
+
+    @Expose()
+    public readonly examName: string;
 
     @Expose()
     public readonly hasFile: boolean;
+
+    @Type(() => ResultDisease)
+    public diseases: ResultDisease[]
 
     @Type(() => GETMedicalReportResponseDto)
     @Expose()

@@ -15,12 +15,14 @@ import { MedicalResultController } from "./controllers/medical-result.controller
 import { ExternalConnectionController } from "./controllers/external-connection.controller";
 import { MedicalResultService } from "./services/medical-result.service";
 import { ExternalConnectionService } from "./services/external-connection.service";
-import { MedicalResultRepository } from "./medical-result.repository";
+import { MedicalResultRepository } from "./repositories/medical-result.repository";
 import { MedicalOrderModule } from "../medical-order/medical-order.module";
+import { MedicalResultDisease } from "./entities/result-disease.entity";
+import { MedicalResultDiseaseRepository } from "./repositories/medical-result-disease.repository";
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([MedicalResult]),
+    SqlDatabaseModule.forFeature([MedicalResult, MedicalResultDisease]),
     DoctorModule,
     PatientModule,
     CompanyModule,
@@ -40,6 +42,7 @@ import { MedicalOrderModule } from "../medical-order/medical-order.module";
   providers: [
     MedicalResultService,
     MedicalResultRepository,
+    MedicalResultDiseaseRepository,
     ExternalConnectionService,
   ],
   exports: [MedicalResultService]

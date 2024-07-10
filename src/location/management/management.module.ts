@@ -19,7 +19,7 @@ import { Management } from './entities/management.entity';
     ManagementRepository
   ],
   exports: [
-    ManagementRepository
+    ManagementService
   ]
 })
 export class ManagementModule { }

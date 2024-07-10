@@ -6,7 +6,7 @@ import path, { extname } from "path";
 import { ResultEvent, ResultFindOrCreateDoctorEvent, ResultFindOrCreateExamEvent, fileResultPath, signaturePath } from "@/shared";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { MedicalResult } from "../entities/result.entity";
-import { MedicalResultRepository } from "../medical-result.repository";
+import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { POSTMedicalResultRequestDto } from "../dtos/medical-result.request.dto";
 
 @Injectable()

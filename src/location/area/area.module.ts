@@ -5,6 +5,7 @@ import { SqlDatabaseModule } from '@/shared';
 import { Area } from './entities/area.entity';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { ManagementModule } from '../management/management.module';
+import { AreaRepository } from './area.repository';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { ManagementModule } from '../management/management.module';
     AreaController
   ],
   providers: [
-    AreaService
+    AreaService,
+    AreaRepository
   ],
   exports: [
     AreaService
