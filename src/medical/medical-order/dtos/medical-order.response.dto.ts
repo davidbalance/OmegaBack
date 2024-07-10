@@ -16,7 +16,7 @@ export class GETMedicalOrderResponseDto {
     public readonly mailStatus?: boolean;
 
     @Expose()
-    public readonly orderStatus: "created" | "validated";
+    public readonly orderStatus: string;
 
     @Type(() => GETMedicalClientResponseDto)
     @Expose()

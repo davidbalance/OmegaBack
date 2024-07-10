@@ -56,6 +56,7 @@ export class MedicalOrderService {
         process: true,
         createAt: true,
         mailStatus: true,
+        orderStatus: true,
         results: {
           id: true,
           examName: true,
