@@ -45,6 +45,9 @@ export class CreateLocationAreasTable1720634458217 implements MigrationInterface
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropForeignKey(TABLE_NAME, FK_M_MANAGEMENT_AREA);
+
+        await queryRunner.dropTable(TABLE_NAME);
     }
 
 }
