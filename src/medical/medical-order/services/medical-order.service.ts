@@ -89,6 +89,16 @@ export class MedicalOrderService {
   }
 
   /**
+   * Encuentra ordenes medicas usando el ruc de una empresa.
+   * @param ruc 
+   * @returns 
+   */
+  async findByCompany(ruc: string): Promise<MedicalOrder[]> {
+    const orders = await this.repository.find({ where: { companyRuc: ruc } });
+    return orders;
+  }
+
+  /**
    * Encuentra una orden y actualiza su estado
    * @param id 
    * @param status 

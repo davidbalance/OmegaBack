@@ -44,7 +44,15 @@ export class MedicalOrderController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(DniInterceptor)
+  @Get('company/:ruc')
+  async findByRuc(
+    @Param('ruc') ruc: string
+  ): Promise<GETMedicalOrderArrayResponseDto> {
+    const orders = await this.orderService.findByCompany(ruc);
+    return plainToInstance(GETMedicalOrderArrayResponseDto, { orders });
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Patch('order/:id/status/validate')
   async findOneAndValidateStatus(
     @Param('id') id: number
