@@ -2,28 +2,28 @@ import { Expose, Type } from "class-transformer";
 
 class AreaResponseDto {
     @Expose()
-    private readonly id: number;
+    public readonly id: number;
 
     @Expose()
-    private readonly name: string;
+    public readonly name: string;
 }
 
 export class GETManagementResponseDto {
     @Expose()
-    private readonly id: number;
+    public readonly id: number;
 
     @Expose()
-    private readonly name: string;
+    public readonly name: string;
 
     @Type(() => AreaResponseDto)
     @Expose()
-    private readonly area: AreaResponseDto[];
+    public readonly areas: AreaResponseDto[];
 }
 
 export class GETManagementArrayResponseDto {
     @Type(() => GETManagementResponseDto)
     @Expose()
-    private readonly managements: GETManagementResponseDto[];
+    public readonly managements: GETManagementResponseDto[];
 }
 
 export class POSTManagementResponseDto extends GETManagementResponseDto { }

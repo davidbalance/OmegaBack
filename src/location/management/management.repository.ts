@@ -15,6 +15,6 @@ export class ManagementRepository extends AbstractRepository<number, Management>
     }
 
     async findOneAndDelete(filterOptions: FindOptionsWhere<Management>): Promise<void> {
-        await this.findOneAndUpdate(filterOptions, { status: false });
+        await this.repo.delete(filterOptions);
     }
 }
