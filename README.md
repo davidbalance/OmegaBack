@@ -1023,6 +1023,9 @@ El modulo de clientes medicos se encarga de tener una referencia de los paciente
 - `findOneOrCreate`: Encuentra un cliente medico sino lo crea.
 - `findClientsByDoctor`: Encuentra los clientes medicos de pacientes que tengan un resultado asociado a un medico.
 - `findEmailByDni`: Encuentra correos electronico dado un dni de un cliente medico.
+- `findOneClientByDniAndReturnManagementAndArea`: Encuentra un cliente medico y obtiene unicamente su area y gerencia.
+- `findOneClientByDniAndAssignManagementAndArea`: Encuentra un cliente medico y le asigna una gerencia y un area
+- `findOneClientByDniAndRemoveManagementAndArea`: Encuentra un cliente medico y le remueve una gerencia y un area
 - `updateEmailDefault`: Actualiza un correo por defecto para un cliente medico.
 - `deleteEmailById`: Elimina un correo electronico de un cliente medico.
 - `assignEmail`: Añade un correo electronico a un cliente medico.
@@ -1030,6 +1033,9 @@ El modulo de clientes medicos se encarga de tener una referencia de los paciente
 ##### Controller
 
 - `GET /medical/client/:dni/email`: Retorna todos los correos pertenecientes a un cliente medico.
+- `GET /medical/client/:dni/management/area`: Retorna unicamente la gerencia y area de un cliente medico.
+- `POST /medical/client/:dni/management/area`: Encuentra un cliente medico y obtiene unicamente su area y gerencia.
+- `DELETE /medical/client/:dni/management/area`: Encuentra un cliente medico y remueve su area y gerencia.
 - `POST /medical/client/:dni/email`: Añade un correo electronico al cliente medico.
 - `PATCH /medical/client/:dni/email/:id`: Coloca a un correo electronico como correo por defecto para el cliente medico.
 - `DELETE /medical/client/email/:id`: Elimina el correo electronico solicitado.
