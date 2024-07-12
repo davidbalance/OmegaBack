@@ -5,10 +5,10 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { DELETEMedicalEmailResponseDto, GETMedicalEmailArrayResponseDto, POSTMedicalEmailResponseDto } from './dtos/medical-email.response.dto';
 import { POSTMedicalEmailRequestDto } from './dtos/medical-email.request.dto';
-import { GETMedicalClientArrayResponseDto, GETMedicalClientManagementAreaResponseDto } from './dtos/medical-client.response.dto';
+import { DELETEMedicalClientManagementAreaResponseDto, GETMedicalClientArrayResponseDto, GETMedicalClientManagementAreaResponseDto, POSTMedicalClientManagementAreaResponseDto } from './dtos/medical-client.response.dto';
 import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
 import { User } from '@/shared/decorator';
-import { POSTMedicalClientManagementAndArea } from './dtos/medical-client.request.dto';
+import { POSTMedicalClientManagementAndAreaRequestDto } from './dtos/medical-client.request.dto';
 
 @ApiTags('Medical/Client')
 @ApiBearerAuth()
@@ -42,27 +42,27 @@ export class MedicalClientController {
   async findOneClientByDniAndReturnManagementAndArea(
     @Param('dni') dni: string
   ): Promise<GETMedicalClientManagementAreaResponseDto> {
-    const email = await this.medicalClientService.findOneClientByDniAndReturnManagementAndArea(dni);
-    return plainToInstance(GETMedicalClientManagementAreaResponseDto, { email });
+    const data = await this.medicalClientService.findOneClientByDniAndReturnManagementAndArea(dni);
+    return plainToInstance(GETMedicalClientManagementAreaResponseDto, data);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':dni/management/area')
   async findOneClientByDniAndAssignManagementAndArea(
     @Param('dni') dni: string,
-    @Body() body: POSTMedicalClientManagementAndArea
-  ): Promise<GETMedicalClientManagementAreaResponseDto> {
-    const email = await this.medicalClientService.findOneClientByDniAndAssignManagementAndArea(dni, body);
-    return plainToInstance(GETMedicalClientManagementAreaResponseDto, { email });
+    @Body() body: POSTMedicalClientManagementAndAreaRequestDto
+  ): Promise<POSTMedicalClientManagementAreaResponseDto> {
+    const data = await this.medicalClientService.findOneClientByDniAndAssignManagementAndArea(dni, body);
+    return plainToInstance(POSTMedicalClientManagementAreaResponseDto, data);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':dni/management/area')
   async findOneClientByDniAndRemoveManagementAndArea(
     @Param('dni') dni: string
-  ): Promise<GETMedicalClientManagementAreaResponseDto> {
-    const email = await this.medicalClientService.findOneClientByDniAndRemoveManagementAndArea(dni);
-    return plainToInstance(GETMedicalClientManagementAreaResponseDto, { email });
+  ): Promise<DELETEMedicalClientManagementAreaResponseDto> {
+    await this.medicalClientService.findOneClientByDniAndRemoveManagementAndArea(dni);
+    return {}
   }
 
   @UseGuards(JwtAuthGuard)

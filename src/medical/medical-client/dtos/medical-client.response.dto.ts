@@ -33,4 +33,14 @@ export class GETMedicalClientManagementAreaResponseDto {
     public areaId?: number;
 }
 
+export class POSTMedicalClientManagementAreaResponseDto {
+    @Expose()
+    public managementId?: number;
+
+    @Expose()
+    public areaId?: number;
+}
+
+export class DELETEMedicalClientManagementAreaResponseDto {}
+
 export class POSTMedicalClientResponseDto extends GETMedicalClientResponseDto { }

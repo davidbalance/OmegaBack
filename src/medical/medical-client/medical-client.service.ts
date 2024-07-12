@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { MedicalClientRepository } from './repositories/medical-client.repository';
 import { MedicalEmailRepository } from './repositories/medical-email.repository';
 import { MedicalClient } from './entities/medical-client.entity';
-import { POSTMedicalClientManagementAndArea, POSTMedicalClientRequestDto } from './dtos/medical-client.request.dto';
+import { POSTMedicalClientManagementAndAreaRequestDto, POSTMedicalClientRequestDto } from './dtos/medical-client.request.dto';
 import { POSTMedicalEmailRequestDto } from './dtos/medical-email.request.dto';
 import { MedicalEmail } from './entities/medical-email.entity';
 import { In } from 'typeorm';
@@ -86,7 +86,7 @@ export class MedicalClientService {
    * @param dni 
    * @returns 
    */
-  async findOneClientByDniAndAssignManagementAndArea(dni: string, newLocation: POSTMedicalClientManagementAndArea): Promise<MedicalClient> {
+  async findOneClientByDniAndAssignManagementAndArea(dni: string, newLocation: POSTMedicalClientManagementAndAreaRequestDto): Promise<MedicalClient> {
     const client = await this.clientRepository.findOneAndUpdate({ dni: dni }, { ...newLocation });
     return client;
   }

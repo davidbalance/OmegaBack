@@ -16,7 +16,7 @@ export class POSTMedicalClientRequestDto {
     public readonly email: string;
 }
 
-export class POSTMedicalClientManagementAndArea {
+export class POSTMedicalClientManagementAndAreaRequestDto {
     @IsNumber()
     public readonly managementId: number;
     
