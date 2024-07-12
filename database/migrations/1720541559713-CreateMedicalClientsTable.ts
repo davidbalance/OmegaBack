@@ -32,7 +32,8 @@ export class CreateMedicalClientsTable1720541559713 implements MigrationInterfac
                     },
                     {
                         name: 'location_management_name',
-                        type: 'int',
+                        type: 'varchar',
+                        length: '25',
                         isNullable: true
                     },
                     {
@@ -42,7 +43,8 @@ export class CreateMedicalClientsTable1720541559713 implements MigrationInterfac
                     },
                     {
                         name: 'location_area_name',
-                        type: 'int',
+                        type: 'varchar',
+                        length: '25',
                         isNullable: true
                     },
                     {

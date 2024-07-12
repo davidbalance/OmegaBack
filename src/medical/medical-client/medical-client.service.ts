@@ -72,10 +72,6 @@ export class MedicalClientService {
     const client = await this.clientRepository.findOne({
       where: {
         dni: dni
-      },
-      select: {
-        managementId: true,
-        areaId: true,
       }
     });
     return client;

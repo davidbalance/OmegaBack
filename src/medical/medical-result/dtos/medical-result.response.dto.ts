@@ -3,6 +3,9 @@ import { Expose, Type } from "class-transformer";
 
 class ResultDisease {
     @Expose()
+    public readonly id: number;
+
+    @Expose()
     public readonly diseaseId: string;
 
     @Expose()
@@ -30,6 +33,7 @@ export class GETMedicalResultResponseDto {
     public readonly hasFile: boolean;
 
     @Type(() => ResultDisease)
+    @Expose()
     public diseases: ResultDisease[]
 
     @Type(() => GETMedicalReportResponseDto)
@@ -43,6 +47,10 @@ export class GETMedicalResultArrayResponseDto {
     public readonly results: GETMedicalResultResponseDto[]
 }
 
-export class PATCHMedicalResultResponseDto { }
+export class POSTMedicalResultDiseaseResponseDto extends ResultDisease { }
+
+export class PATCHMedicalResultDiseaseResponseDto extends ResultDisease { }
+
+export class DELETEMedicalResultDiseaseResponseDto { }
 
 export class PATCHMedicalResultFileResponseDto { }

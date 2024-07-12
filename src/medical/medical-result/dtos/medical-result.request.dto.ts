@@ -41,7 +41,7 @@ export class POSTMedicalResultFileRequestDto extends POSTMedicalResultRequestDto
     file?: Express.Multer.File;
 }
 
-export class PATCHMedicalResultWithDiseaseRequestDto {
+export class POSTMedicalResultDiseaseRequestDto {
     @IsNumber()
     public readonly diseaseId: number;
 
@@ -61,10 +61,7 @@ export class PATCHMedicalResultWithDiseaseRequestDto {
     public readonly diseaseCommentary: string;
 }
 
-export class PATCHMedicalResultWithDiseaseArrayRequestDto {
-    @Type(() => PATCHMedicalResultWithDiseaseRequestDto)
-    public readonly diseases: PATCHMedicalResultWithDiseaseRequestDto[];
-}
+export class PATCHMedicalResultDiseaseRequestDto extends POSTMedicalResultDiseaseRequestDto { }
 
 export class PATCHMedicalResultFileRequestDto {
     @ApiProperty({ type: 'string', format: 'binary' })

@@ -30,7 +30,7 @@ export class MedicalResult extends AbstractEntity<number> {
     @Column({ name: 'doctor_signature', type: 'varchar', length: 512, nullable: false })
     public doctorSignature: string;
 
-    @OneToMany(() => MedicalResultDisease, morbidity => morbidity.result, { eager: false, nullable: true })
+    @OneToMany(() => MedicalResultDisease, morbidity => morbidity.result, { eager: true, nullable: true })
     public diseases?: MedicalResultDisease[];
 
     @ManyToOne(() => MedicalOrder, order => order.results, { eager: false, nullable: false })

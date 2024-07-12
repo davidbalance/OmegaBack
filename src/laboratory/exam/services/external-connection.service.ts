@@ -59,12 +59,6 @@ export class ExternalConnectionService {
      * @returns 
      */
     async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHExamRequestDto): Promise<Exam> {
-        console.log({
-            externalKey: {
-                key: key,
-                source: source
-            }
-        });
         const foundExam = await this.repository.findOneAndUpdate({
             externalKey: {
                 key: key,

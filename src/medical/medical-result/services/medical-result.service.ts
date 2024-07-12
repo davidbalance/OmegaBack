@@ -4,13 +4,12 @@ import { SendAttributeService } from "../send-attribute/send-attribute.service";
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { MedicalResult } from "../entities/result.entity";
 import { MedicalReportService } from "@/medical/medical-report/medical-report.service";
-import { PATCHMedicalResultWithDiseaseArrayRequestDto, PATCHMedicalResultWithDiseaseRequestDto } from "../dtos/medical-result.request.dto";
 import { PATCHMedicalReportRequestDto } from "@/medical/medical-report/dtos/medical-report.request.dto";
 import { extname } from "path";
 import { StorageManager } from "@/shared/storage-manager";
-import { MedicalResultDisease } from "../entities/result-disease.entity";
 import { MedicalResultDiseaseRepository } from "../repositories/medical-result-disease.repository";
-import { In } from "typeorm";
+import { PATCHMedicalResultDiseaseRequestDto, POSTMedicalResultDiseaseRequestDto } from "../dtos/medical-result.request.dto";
+import { MedicalResultDisease } from "../entities/result-disease.entity";
 
 @Injectable()
 export class MedicalResultService implements
@@ -118,24 +117,35 @@ export class MedicalResultService implements
 
   /**
    * Encuentra un resultado medico y le asigna una morbilidad.
-   * @param id 
-   * @param param1 
-   * @returns 
+   * @param result
+   * @param disease 
+   * @param data 
    */
-  async findOneResultAndUpdateDisease(id: number, { diseases }: PATCHMedicalResultWithDiseaseArrayRequestDto): Promise<MedicalResult> {
-    const currentResult = await this.repository.findOne({ where: { id: id }, select: { diseases: true } });
-    if (currentResult.diseases && currentResult.diseases.length) {
-      const ids = currentResult.diseases.map(e => e.id);
-      await this.diseaseRepository.findOneAndDelete({ id: In(ids) });
-    }
-    const newDiseases: MedicalResultDisease[] = [];
-    for (const disease of diseases) {
-      const newDisease = await this.diseaseRepository.create(disease);
-      newDiseases.push(newDisease);
-    }
+  async findOneResultAndInsertDisease(result: number, data: POSTMedicalResultDiseaseRequestDto): Promise<MedicalResultDisease> {
+    const currentResult = await this.repository.findOne({ where: { id: result } });
+    const currentDisease = await this.diseaseRepository.create({ ...data, result: currentResult });
+    return currentDisease;
+  }
 
-    const result = await this.repository.findOneAndUpdate({ id }, { diseases: newDiseases });
-    return result;
+  /**
+   * Encuentra un resultado medico y actualiza una morbilidad.
+   * @param result
+   * @param disease 
+   * @param data 
+   */
+  async findOneResultAndUpdateDisease(_: number, disease: number, data: PATCHMedicalResultDiseaseRequestDto): Promise<MedicalResultDisease> {
+    const currentDisease = await this.diseaseRepository.findOneAndUpdate({ id: disease }, data);
+    return currentDisease;
+  }
+
+  /**
+   * Encuentra un resultado medico y retira una morbilidad.
+   * @param result
+   * @param disease 
+   * @param data 
+   */
+  async findOneResultAndRemoveDisease(_: number, disease: number): Promise<void> {
+    await this.diseaseRepository.findOneAndDelete({ id: disease });
   }
 
   /**

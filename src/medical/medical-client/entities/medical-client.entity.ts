@@ -21,13 +21,13 @@ export class MedicalClient extends AbstractEntity<number> {
     @Column({ name: 'location_management_id', type: 'int', nullable: true })
     public managementId: number;
 
-    @Column({ name: 'location_management_name', type: 'int', nullable: true })
+    @Column({ name: 'location_management_name', type: 'varchar', length: 256, nullable: true })
     public managementName: string;
 
     @Column({ name: 'location_area_id', type: 'int', nullable: true })
     public areaId: number;
 
-    @Column({ name: 'location_area_name', type: 'int', nullable: true })
+    @Column({ name: 'location_area_name', type: 'varchar', length: 256, nullable: true })
     public areaName: string;
 
     @OneToMany(() => MedicalOrder, order => order.client, { eager: false })

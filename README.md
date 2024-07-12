@@ -1120,7 +1120,9 @@ El modulo de resultados medicos se encarga de la gestion de las mismas.
 - `removeFile`: Elimina un archivo asociado a un resultado medico.
 - `find`: Obtiene los resultados medicos presentes en el sistema.
 - `findResultsByDoctor`: Obtiene los resultados medicos asociados a un doctor.
-- `findOneResultAndUpdateDisease`: Encuentra un resultado medico y le asigna una morbilidad.
+- `findOneResultAndInsertDisease`: Encuentra un resultado medico y le asigna una morbilidad.
+- `findOneResultAndUpdateDisease`: Encuentra un resultado medico y actualiza una morbilidad.
+- `findOneResultAndRemoveDisease`: Encuentra un resultado medico y retira una morbilidad.
 - `findOneResultAndUploadFile`: Encuentra un resultado medico y le asigna un archivo.
 - `insertMedicalReport`: Añade un reporte medico a un resultado medico.
 - `assignSendAttribute`: Añade un atributo de envio a un resultado medico.
