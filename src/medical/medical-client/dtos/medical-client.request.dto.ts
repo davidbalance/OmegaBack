@@ -19,7 +19,13 @@ export class POSTMedicalClientRequestDto {
 export class POSTMedicalClientManagementAndAreaRequestDto {
     @IsNumber()
     public readonly managementId: number;
+
+    @IsString()
+    public readonly managementName: string;
     
     @IsNumber()
     public readonly areaId: number;
+
+    @IsString()
+    public readonly areaName: string;
 }

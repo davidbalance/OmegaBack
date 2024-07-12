@@ -17,12 +17,18 @@ export class MedicalClient extends AbstractEntity<number> {
 
     @Column({ name: 'medical_client_birthday', type: 'date', nullable: false })
     public birthday: Date;
-    
+
     @Column({ name: 'location_management_id', type: 'int', nullable: true })
     public managementId: number;
 
+    @Column({ name: 'location_management_name', type: 'int', nullable: true })
+    public managementName: string;
+
     @Column({ name: 'location_area_id', type: 'int', nullable: true })
     public areaId: number;
+
+    @Column({ name: 'location_area_name', type: 'int', nullable: true })
+    public areaName: string;
 
     @OneToMany(() => MedicalOrder, order => order.client, { eager: false })
     public medicalOrders: MedicalOrder[];

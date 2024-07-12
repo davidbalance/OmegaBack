@@ -28,17 +28,29 @@ export class GETMedicalClientArrayResponseDto {
 export class GETMedicalClientManagementAreaResponseDto {
     @Expose()
     public managementId?: number;
+    
+    @Expose()
+    public managementName?: string;
 
     @Expose()
     public areaId?: number;
+
+    @Expose()
+    public areaName?: string;
 }
 
 export class POSTMedicalClientManagementAreaResponseDto {
     @Expose()
     public managementId?: number;
+    
+    @Expose()
+    public managementName?: string;
 
     @Expose()
     public areaId?: number;
+
+    @Expose()
+    public areaName?: string;
 }
 
 export class DELETEMedicalClientManagementAreaResponseDto {}

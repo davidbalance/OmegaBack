@@ -97,7 +97,12 @@ export class MedicalClientService {
    * @returns 
    */
   async findOneClientByDniAndRemoveManagementAndArea(dni: string): Promise<MedicalClient> {
-    const client = await this.clientRepository.findOneAndUpdate({ dni: dni }, { areaId: null, managementId: null });
+    const client = await this.clientRepository.findOneAndUpdate({ dni: dni }, {
+      areaId: null,
+      areaName: null,
+      managementId: null,
+      managementName: null
+    });
     return client;
   }
 
