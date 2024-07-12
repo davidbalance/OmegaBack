@@ -31,7 +31,17 @@ export class CreateMedicalClientsTable1720541559713 implements MigrationInterfac
                         isNullable: true
                     },
                     {
+                        name: 'location_management_name',
+                        type: 'int',
+                        isNullable: true
+                    },
+                    {
                         name: 'location_area_id',
+                        type: 'int',
+                        isNullable: true
+                    },
+                    {
+                        name: 'location_area_name',
                         type: 'int',
                         isNullable: true
                     },
