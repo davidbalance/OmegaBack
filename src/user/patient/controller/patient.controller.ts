@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
@@ -12,7 +12,9 @@ import { GETPatientByFilterAndPaginationRequestDto } from '../dtos/patient.reque
 @ApiBearerAuth()
 @Controller('patients')
 export class PatientController {
-  constructor(private readonly patientService: PatientService) { }
+  constructor(
+    @Inject(PatientService) private readonly patientService: PatientService
+  ) { }
 
   @UseGuards(JwtAuthGuard)
   @Get()
