@@ -41,7 +41,7 @@ export class MedicalClientService {
    * @returns 
    */
   async findClientsByDoctor(doctor: string): Promise<MedicalClient[]> {
-    const clients = await this.clientRepository.createQuery('client')
+    const clients = await this.clientRepository.query('client')
       .leftJoinAndSelect('client.medicalOrders', 'medicalOrder')
       .leftJoinAndSelect('medicalOrder.results', 'medicalResult')
       .where('medicalResult.doctorDni = :dni', { dni: doctor })

@@ -1,11 +1,12 @@
-import { Controller, Get, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { PatientService } from '../service/patient.service';
 import { ExtraAttribute, User } from '@/shared/decorator';
 import { ExtraAttributeInterceptor } from '@/shared/interceptors/extra-attribute/extra-attribute.interceptor';
-import { GETPatientArrayResponseDto } from '../dtos/patient.response.dto';
+import { GETPatientArrayResponseDto, GETPatientArrayWithPageCountResponseDto } from '../dtos/patient.response.dto';
+import { GETPatientByFilterAndPaginationRequestDto } from '../dtos/patient.request.dto';
 
 @ApiTags('User/Patient')
 @ApiBearerAuth()
@@ -18,6 +19,16 @@ export class PatientController {
   async find(): Promise<GETPatientArrayResponseDto> {
     const patients = await this.patientService.find();
     return plainToInstance(GETPatientArrayResponseDto, { patients });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('paginate')
+  async findByFilterAndPagination(
+    @Body() { page, limit, filter, order }: GETPatientByFilterAndPaginationRequestDto
+  ): Promise<GETPatientArrayWithPageCountResponseDto> {
+    const patients = await this.patientService.findByFilterAndPagination(page, limit, filter, order);
+    const pages = await this.patientService.findByPageCount(limit, filter);
+    return plainToInstance(GETPatientArrayWithPageCountResponseDto, { patients, pages });
   }
 
   @UseGuards(JwtAuthGuard)

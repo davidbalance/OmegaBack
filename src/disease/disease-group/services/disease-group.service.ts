@@ -24,7 +24,7 @@ export class DiseaseGroupService {
    * @returns 
    */
   async find(): Promise<DiseaseGroup[]> {
-    return this.repository.createQuery('group')
+    return this.repository.query('group')
       .leftJoinAndSelect('group.diseases', 'disease', 'disease.status = :diseaseStatus', { diseaseStatus: true })
       .select(['group.id', 'group.name', 'disease.id', 'disease.name'])
       .cache('disease-group-find-all-cache', 1000 * 60 * 15)

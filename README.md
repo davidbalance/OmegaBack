@@ -1400,6 +1400,8 @@ El modulo de pacientes del sistema, permite la gestion de los pacientes. Cabe de
 **Patient Service**
 
 - `find`: Encuentra todos los pacientes activos del sistema.
+- `findByFilterAndPagination`: Encuentra todos los pacientes activos del sistema usando paginacion y filtros.
+- `findByPageCount`: Encuentra el numero de paginas de un filtro dado.
 - `findByExtraAttribute`: Encuentra a todos los pacientes que compartan un atributo externo.
 - `findOneByDni`: Encuentra un paciente por su dni.
 
@@ -1414,6 +1416,7 @@ El modulo de pacientes del sistema, permite la gestion de los pacientes. Cabe de
 **Patient Service**
 
 - `GET /patients`: Retorna todos los usuarios activos del sistema.
+- `GET /patients/paginate`: Retorna todos los usuarios activos del sistema en forma paginada.
 - `GET /patients/look/company`: Retorna todos los pacientes que poseean el atributo `employee_of` y el mismo valor del atributo `look_for_company` del usuario que realiza la consulta.
 
 **External Connection**

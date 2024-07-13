@@ -15,7 +15,7 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
         private readonly model: Repository<TEntity>
     ) { }
 
-    createQuery(alias?: string, queryRunner?: QueryRunner) {
+    query(alias?: string, queryRunner?: QueryRunner) {
         return this.model.createQueryBuilder(alias, queryRunner);
     }
 

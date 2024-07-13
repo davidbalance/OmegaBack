@@ -22,6 +22,11 @@ export class GETPatientArrayResponseDto {
     public readonly patients: GETPatientResponseDto[];
 }
 
+export class GETPatientArrayWithPageCountResponseDto extends GETPatientArrayResponseDto {
+    @Expose()
+    public readonly pages: number;
+}
+
 export class POSTPatientResponseDto extends GETPatientResponseDto { }
 
 export class PATCHPatientResponseDto extends GETPatientResponseDto { }
