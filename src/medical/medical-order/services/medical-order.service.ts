@@ -82,7 +82,9 @@ export class MedicalOrderService {
       .leftJoinAndSelect('medicalOrder.results', 'medicalResult', 'medicalResult.doctorDni = :doctor', { doctor })
       .leftJoinAndSelect('medicalOrder.client', 'medicalClient')
       .where('medicalClient.dni = :patient', { patient })
+      .andWhere('medicalResult.doctorDni = :doctor', { doctor })
       .getMany();
+
     return orders;
   }
 

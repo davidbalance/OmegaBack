@@ -46,6 +46,7 @@ export class MedicalClientService {
       .leftJoinAndSelect('medicalOrder.results', 'medicalResult')
       .where('medicalResult.doctorDni = :dni', { dni: doctor })
       .getMany();
+      console.log(clients);
     return clients;
   }
 
