@@ -3,8 +3,8 @@ import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { MedicalOrderService } from '../services/medical-order.service';
-import { GETMedicalOrderArrayResponseDto, GETMedicalOrderFilesResponseDto, GETMedicalOrderResponseDto } from '../dtos/medical-order.response.dto';
-import { POSTMailRequestDto } from '../dtos/medical-order.request.dto';
+import { GETMedicalOrderArrayResponseDto, GETMedicalOrderArrayWithPageCountResponseDto, GETMedicalOrderFilesResponseDto, GETMedicalOrderResponseDto, GETPlainMedicalOrderArrayWithPageCountResponseDto } from '../dtos/medical-order.response.dto';
+import { GETMedicalOrderByFilterAndPaginationRequestDto, POSTMailRequestDto } from '../dtos/medical-order.request.dto';
 import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
 import { User } from '@/shared/decorator';
 import { OrderStatus } from '../enums';
@@ -50,6 +50,15 @@ export class MedicalOrderController {
   ): Promise<GETMedicalOrderArrayResponseDto> {
     const orders = await this.orderService.findByCompany(ruc);
     return plainToInstance(GETMedicalOrderArrayResponseDto, { orders });
+  }
+
+  @Post('paginate')
+  async findByFilterAndPagination(
+    @Body() { page, filter, limit, order }: GETMedicalOrderByFilterAndPaginationRequestDto
+  ): Promise<GETPlainMedicalOrderArrayWithPageCountResponseDto> {
+    const orders = await this.orderService.findByFilterAndPagination(page, limit, filter, order);
+    const pages = await this.orderService.findByPageCount(limit, filter);
+    return plainToInstance(GETPlainMedicalOrderArrayWithPageCountResponseDto, { pages, orders });
   }
 
   @UseGuards(JwtAuthGuard)

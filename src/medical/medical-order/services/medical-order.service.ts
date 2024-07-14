@@ -5,8 +5,10 @@ import { ConfigService } from '@nestjs/config';
 import { MedicalOrderRepository } from '../medical-order.repository';
 import { MedicalOrder } from '../entities/medical-order.entity';
 import { MedicalEmail } from '@/medical/medical-client/entities/medical-email.entity';
-import { GETMedicalOrderFilesResponseDto } from '../dtos/medical-order.response.dto';
+import { GETMedicalOrderFilesResponseDto, PlainMedicalOrder } from '../dtos/medical-order.response.dto';
 import { OrderStatus } from '../enums';
+import { GETMedicalOrderOrderedRequestDto } from '../dtos/medical-order.request.dto';
+import { Brackets } from 'typeorm';
 
 @Injectable()
 export class MedicalOrderService {
@@ -96,6 +98,74 @@ export class MedicalOrderService {
   async findByCompany(ruc: string): Promise<MedicalOrder[]> {
     const orders = await this.repository.find({ where: { companyRuc: ruc } });
     return orders;
+  }
+
+  private flatMedicalOrder({ client, results, ...order }: MedicalOrder): Promise<PlainMedicalOrder> {
+    return new Promise((resolve, reject) => {
+      const { dni, fullname } = client;
+      const { branchName, corporativeName, externalKey, updateAt, ...values } = order;
+      console.log({ dni, fullname, ...values })
+      resolve(({ dni, fullname, ...values, results: results as any }));
+    });
+  }
+
+  /**
+   * Encuentra ordenes medicas usando un filtro.
+   * @param page 
+   * @param limit 
+   * @param filter 
+   * @param order 
+   * @returns 
+   */
+  async findByFilterAndPagination(
+    page: number = 0,
+    limit: number = 300,
+    filter: string = "",
+    order?: GETMedicalOrderOrderedRequestDto
+  ): Promise<PlainMedicalOrder[]> {
+    const orders = await this.repository.query('order')
+      .leftJoinAndSelect('order.client', 'client')
+      .leftJoinAndSelect('order.results', 'result')
+      .where(new Brackets(qr => {
+        qr.where('order.companyRuc LIKE :filter', { filter: `%${filter}%` })
+          .orWhere('order.companyName LIKE :filter', { filter: `%${filter}%` })
+      }))
+      .orWhere(new Brackets(qr => {
+        qr.where('client.fullname LIKE :filter', { filter: `%${filter}%` })
+          .orWhere('client.dni LIKE :filter', { filter: `%${filter}%` })
+      }))
+      .orderBy('order.createAt')
+      .take(limit)
+      .skip(page)
+      .getMany();
+
+    const flatten = await Promise.all(orders.map(this.flatMedicalOrder));
+    return flatten;
+  }
+
+  /**
+   * Encuentra el numero de paginas de un filtro dado.
+   * @param limit 
+   * @param filter 
+   * @returns 
+   */
+  async findByPageCount(
+    limit: number = 300,
+    filter: string = ""
+  ): Promise<number> {
+    const count = await this.repository.query('order')
+      .leftJoinAndSelect('order.client', 'client')
+      .leftJoinAndSelect('order.results', 'result')
+      .where(new Brackets(qr => {
+        qr.where('order.companyRuc LIKE :filter', { filter: `%${filter}%` })
+          .orWhere('order.companyName LIKE :filter', { filter: `%${filter}%` })
+      }))
+      .orWhere(new Brackets(qr => {
+        qr.where('client.fullname LIKE :filter', { filter: `%${filter}%` })
+          .orWhere('client.dni LIKE :filter', { filter: `%${filter}%` })
+      }))
+      .getCount();
+    return Math.floor(count / limit);
   }
 
   /**

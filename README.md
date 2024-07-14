@@ -1065,7 +1065,9 @@ El modulo de ordenes medicas se encarga de la gestion de las mismas.
 - `findByPatient`: Retorna varias ordenes medicas dado el dni de un cliente medico.
 - `findByPatientAndDoctor`: Encuentra ordenes medicas usando al paciente, y todos los resultados asociados a un medico dado.
 - `findOneUpdateStatus`: Encuentra una orden y actualiza su estado.
-- `findByCompany`: Encuentra ordenes medicas usando el ruc de una empresa..
+- `findByCompany`: Encuentra ordenes medicas usando el ruc de una empresa.
+- `findByFilterAndPagination`: Encuentra ordenes medicas usando un filtro.
+- `findByPageCount`: Encuentra el numero de paginas de un filtro dado.
 - `sendMail`: Envia un correo electornico basandose en una orden medica.
 
 **External Connection**
@@ -1086,6 +1088,7 @@ El modulo de ordenes medicas se encarga de la gestion de las mismas.
 - `GET /medical/orders/company/:ruc`: Obtiene las ordenes medicas usando el ruc de una empresa.
 - `PATCH /medical/orders/order/:id/status/validate`: Modifica el estado de la orden a `validated`.
 - `POST /medical/orders/mail`: Envia un correo electronico basado en la orden medica.
+- `POST /medical/orders/paginate`: Obtiene ordenes medicas mediante una paginacion.
 
 **External Connection**
 

@@ -33,6 +33,11 @@ export class GETMedicalOrderArrayResponseDto {
     public readonly orders: GETMedicalOrderResponseDto[]
 }
 
+export class GETMedicalOrderArrayWithPageCountResponseDto extends GETMedicalOrderArrayResponseDto {
+    @Expose()
+    public readonly pages: number;
+}
+
 class FileDto {
     @Expose()
     public readonly id: number;
@@ -53,4 +58,46 @@ export class GETMedicalOrderFilesResponseDto {
     @Type(() => FileDto)
     @Expose()
     public readonly fileReports: FileDto[];
+}
+
+
+export class PlainMedicalOrder {
+
+    @Expose()
+    public readonly id: number;
+
+    @Expose()
+    public readonly process: string;
+
+    @Expose()
+    public readonly createAt: Date;
+
+    @Expose()
+    public readonly mailStatus?: boolean;
+
+    @Expose()
+    public readonly orderStatus: string;
+
+    @Expose()
+    public readonly dni: string;
+
+    @Expose()
+    public readonly fullname: string;
+
+    @Type(() => GETMedicalResultResponseDto)
+    @Expose()
+    public readonly results: GETMedicalResultResponseDto[]
+}
+
+export class GETPlainMedicalOrderResponseDto extends PlainMedicalOrder { }
+
+export class GETPlainMedicalOrderArrayResponseDto {
+    @Type(() => GETPlainMedicalOrderResponseDto)
+    @Expose()
+    public readonly orders: GETPlainMedicalOrderResponseDto[];
+}
+
+export class GETPlainMedicalOrderArrayWithPageCountResponseDto extends GETPlainMedicalOrderArrayResponseDto {
+    @Expose()
+    public readonly pages: number;
 }
