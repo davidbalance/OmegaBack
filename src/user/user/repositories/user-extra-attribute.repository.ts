@@ -1,6 +1,6 @@
 import { AbstractRepository } from "@/shared";
 import { Injectable, Logger } from "@nestjs/common";
-import { UserExtraAttribute } from "../entities/user-extra-attribute";
+import { UserExtraAttribute } from "../entities/user-extra-attribute.entity";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 

@@ -1,7 +1,10 @@
 import { AbstractEntity } from "@/shared/sql-database";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_developer_logs' })
+@Index('idx_log_level', ['level'])
+@Index('idx_log_timestamp', ['timestamp'])
+@Index('idx_log_level_timestamp', ['level', 'timestamp'])
 export class Log extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'log_id' })
     public id: number;

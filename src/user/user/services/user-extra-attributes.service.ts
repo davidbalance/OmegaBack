@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { UserExtraAttributeRepository } from "../repositories/user-extra-attribute.repository";
-import { UserExtraAttribute } from "../entities/user-extra-attribute";
+import { UserExtraAttribute } from "../entities/user-extra-attribute.entity";
 
 @Injectable()
 export class UserExtraAttributeService {

@@ -5,7 +5,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserEvent, UserRemoveEvent, UserUpdateEvent } from '@/shared';
 import { Not } from 'typeorm';
 import { UserExtraAttributeService } from './services/user-extra-attributes.service';
-import { UserExtraAttribute } from './entities/user-extra-attribute';
+import { UserExtraAttribute } from './entities/user-extra-attribute.entity';
 import { PATCHUserRequestDto, POSTUserRequestDto } from './dtos/user.request.dto';
 
 @Injectable()

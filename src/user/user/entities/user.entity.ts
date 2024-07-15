@@ -1,10 +1,10 @@
 import { AbstractEntity } from "src/shared";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { UserExtraAttribute } from "./user-extra-attribute";
+import { UserExtraAttribute } from "./user-extra-attribute.entity";
 
 @Entity({ name: 'tbl_u_users' })
-@Index('user_dni_idx', ['dni'], { unique: true })
-@Index('user_dni_email_idx', ['dni', 'email'])
+@Index('idx_user_dni', ['dni'], { unique: true })
+@Index('idx_user_dni_email', ['dni', 'email'])
 export class User extends AbstractEntity<number> {
 
     @PrimaryGeneratedColumn('increment', { name: 'user_id' })

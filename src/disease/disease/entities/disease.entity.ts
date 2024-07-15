@@ -13,7 +13,7 @@ export class Disease extends AbstractEntity<number> {
     @Column({ name: 'disease_status', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
-    @ManyToOne(() => DiseaseGroup, group => group.diseases, { eager: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'disease_group_id' })
+    @ManyToOne(() => DiseaseGroup, group => group.diseases, { eager: false, nullable: false })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_disease_group_disease', referencedColumnName: 'id', name: 'disease_group_id' })
     public group: DiseaseGroup;
 }

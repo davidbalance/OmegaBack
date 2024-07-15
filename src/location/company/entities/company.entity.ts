@@ -5,7 +5,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, Prim
 import { ExternalKey } from "../external-key/entities/external-key.entity";
 
 @Entity({ name: 'tbl_lo_companies' })
-@Index('company_ruc_idx', ['ruc'], { unique: true })
+@Index('idx_company_ruc', ['ruc'], { unique: true })
 export class Company extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'company_id' })
     public id: number;
@@ -25,14 +25,14 @@ export class Company extends AbstractEntity<number> {
     @Column({ name: 'company_status', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
-    @ManyToOne(() => CorporativeGroup, group => group.companies, { eager: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'corporative_id' })
-    public corporativeGroup: CorporativeGroup;
-
     @OneToMany(() => Branch, branch => branch.company, { eager: false })
     public branches: Branch[];
 
+    @ManyToOne(() => CorporativeGroup, group => group.companies, { eager: false, nullable: false })
+    @JoinColumn({ referencedColumnName: 'id', name: 'corporative_id' })
+    public corporativeGroup: CorporativeGroup;
+
     @OneToOne(() => ExternalKey, { eager: false, nullable: true })
-    @JoinColumn({ referencedColumnName: 'id', name: 'external_key' })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_lo_external_company', referencedColumnName: 'id', name: 'external_key' })
     public externalKey: ExternalKey;
 }
