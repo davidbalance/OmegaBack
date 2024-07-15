@@ -102,7 +102,6 @@ export class CreateMedicalResultsTable1720553346544 implements MigrationInterfac
         await queryRunner.dropForeignKey(TABLE_NAME, FK_M_ORDER_RESULT);
         await queryRunner.dropForeignKey(TABLE_NAME, FK_M_REPORT_RESULT);
         await queryRunner.dropForeignKey(TABLE_NAME, FK_M_EXTERNAL_RESULT);
-
         await queryRunner.dropIndex(TABLE_NAME, INDEX_DOCTOR);
 
         await queryRunner.dropTable(TABLE_NAME);
