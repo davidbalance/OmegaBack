@@ -10,6 +10,8 @@ import { PatientService } from './service/patient.service';
 import { ExternalConnectionService } from './service/external-connection.service';
 import { ExtraAttributeInterceptorModule } from '@/shared/interceptors/extra-attribute/extra-attribute-interceptor.module';
 import { OrderListener } from './listeners/order.listener';
+import { EeqPatientController } from './controller/eeq-patient.controller';
+import { EeqPatientService } from './service/eeq-patient.service';
 
 @Module({
   imports: [
@@ -20,10 +22,12 @@ import { OrderListener } from './listeners/order.listener';
   ],
   controllers: [
     PatientController,
-    PatientExternalConnectionController
+    PatientExternalConnectionController,
+    EeqPatientController
   ],
   providers: [
     PatientService,
+    EeqPatientService,
     PatientRepository,
     ExternalConnectionService,
     OrderListener,

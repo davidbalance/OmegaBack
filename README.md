@@ -24,6 +24,8 @@
     - [4.2. Company Module](#location-submodule-2)
     - [4.3. Branch Module](#location-submodule-3)
     - [4.4. City Module](#location-submodule-4)
+    - [4.5. Management Module](#location-submodule-5)
+    - [4.6. Area Module](#location-submodule-6)
   - [5. Medical Module](#medical-module)
     - [5.1. Medical Client Module](#medical-submodule-1)
     - [5.2. Medical Order Module](#medical-submodule-2)
@@ -917,6 +919,67 @@ El modulo de ciudades se encarga de la gestion de las mismas.
 
 - `GET /selector/cities`: Encuentra todas las ciudades activas y solo retorna un key y label.
 
+<div id='location-submodule-5'/>
+
+#### 4.5. Management Module
+
+El modulo de gerencias se encarga de la gestion de las mismas.
+
+##### Files
+
+- `management.module.ts`: Definicion del modulo.
+- `management.controllers.ts`: Contiene los controladores para manejar peticiones HTTP.
+- `management.repository.ts`: Gestiona el acceso a la entidad Gerencia en la base de datos.
+- `management.services.ts`: Contiene la logica de negocio para la gestion de gerencias.
+- `dtos/`: Objetos de transferencia de datos para gerencias.
+- `entities/`: Entidades de la base de datos para gerencias.
+- `test/`: Pruebas de codigo.
+
+##### Services
+
+- `create`: Crea una gerencia.
+- `find`: Encuentra todas las gerencias activas.
+- `findOneById`: Encuentra una gerencia usando su identificador unico.
+- `findOneByIdAndUpdate`: Encuentra una gerencia por su identificador unico y lo modifica.
+- `findOneAndDelete`: Encuentra una gerencia por su identificador unico y lo inactiva.
+
+##### Controller
+
+- `GET /management`: Obtiene todas las gerencias activas del sistema.
+- `POST /management`: Crea una gerencia.
+- `PATCH /management/:id`: Modifica una gerencia usando un identificador unico.
+- `DELETE /management/:id`: Elimina una gerencia usando un identificador unico.
+
+<div id='location-submodule-6'/>
+
+#### 4.6. Area Module
+
+El modulo de areas se encarga de la gestion de las mismas.
+
+##### Files
+
+- `area.module.ts`: Definicion del modulo.
+- `area.controllers.ts`: Contiene los controladores para manejar peticiones HTTP.
+- `area.repository.ts`: Gestiona el acceso a la entidad Area en la base de datos.
+- `area.services.ts`: Contiene la logica de negocio para la gestion de areas.
+- `dtos/`: Objetos de transferencia de datos para areas.
+- `entities/`: Entidades de la base de datos para areas.
+- `test/`: Pruebas de codigo.
+
+##### Services
+
+- `create`: Crea un area.
+- `find`: Encuentra todas las areas del sistema.
+- `findOneByIdAndUpdate`: Encuentra un area y lo modifica.
+- `findOneByIdAndDelete`: Encuentra un area y lo elimina.
+
+##### Controller
+
+- `GET /area`: Obtiene todas las areas activas del sistema.
+- `POST /area`: Crea un area.
+- `PATCH /area/:id`: Modifica un area usando un identificador unico.
+- `DELETE /area/:id`: Elimina un area usando un identificador unico.
+
 <div id='medical-module'/>
 
 ### 5. Medical Module
@@ -960,6 +1023,9 @@ El modulo de clientes medicos se encarga de tener una referencia de los paciente
 - `findOneOrCreate`: Encuentra un cliente medico sino lo crea.
 - `findClientsByDoctor`: Encuentra los clientes medicos de pacientes que tengan un resultado asociado a un medico.
 - `findEmailByDni`: Encuentra correos electronico dado un dni de un cliente medico.
+- `findOneClientByDniAndReturnManagementAndArea`: Encuentra un cliente medico y obtiene unicamente su area y gerencia.
+- `findOneClientByDniAndAssignManagementAndArea`: Encuentra un cliente medico y le asigna una gerencia y un area
+- `findOneClientByDniAndRemoveManagementAndArea`: Encuentra un cliente medico y le remueve una gerencia y un area
 - `updateEmailDefault`: Actualiza un correo por defecto para un cliente medico.
 - `deleteEmailById`: Elimina un correo electronico de un cliente medico.
 - `assignEmail`: Añade un correo electronico a un cliente medico.
@@ -967,6 +1033,9 @@ El modulo de clientes medicos se encarga de tener una referencia de los paciente
 ##### Controller
 
 - `GET /medical/client/:dni/email`: Retorna todos los correos pertenecientes a un cliente medico.
+- `GET /medical/client/:dni/management/area`: Retorna unicamente la gerencia y area de un cliente medico.
+- `POST /medical/client/:dni/management/area`: Encuentra un cliente medico y obtiene unicamente su area y gerencia.
+- `DELETE /medical/client/:dni/management/area`: Encuentra un cliente medico y remueve su area y gerencia.
 - `POST /medical/client/:dni/email`: Añade un correo electronico al cliente medico.
 - `PATCH /medical/client/:dni/email/:id`: Coloca a un correo electronico como correo por defecto para el cliente medico.
 - `DELETE /medical/client/email/:id`: Elimina el correo electronico solicitado.
@@ -995,6 +1064,10 @@ El modulo de ordenes medicas se encarga de la gestion de las mismas.
 - `findOrderFilesById`: Retorna una orden medica mediante el identificador unico.
 - `findByPatient`: Retorna varias ordenes medicas dado el dni de un cliente medico.
 - `findByPatientAndDoctor`: Encuentra ordenes medicas usando al paciente, y todos los resultados asociados a un medico dado.
+- `findOneUpdateStatus`: Encuentra una orden y actualiza su estado.
+- `findByCompany`: Encuentra ordenes medicas usando el ruc de una empresa.
+- `findByFilterAndPagination`: Encuentra ordenes medicas usando un filtro.
+- `findByPageCount`: Encuentra el numero de paginas de un filtro dado.
 - `sendMail`: Envia un correo electornico basandose en una orden medica.
 
 **External Connection**
@@ -1012,7 +1085,10 @@ El modulo de ordenes medicas se encarga de la gestion de las mismas.
 - `GET /medical/orders/files/:id`: Obtiene una orden medica dado un identificador unico.
 - `GET /medical/orders/patient/:dni`: Obtiene ordenes medicas dadas un paciente.
 - `GET /medical/orders/patient/:dni/doctor`: Obtiene las ordenes medicas asociadas a un paciente y resultados de un medico dado.
+- `GET /medical/orders/company/:ruc`: Obtiene las ordenes medicas usando el ruc de una empresa.
+- `PATCH /medical/orders/order/:id/status/validate`: Modifica el estado de la orden a `validated`.
 - `POST /medical/orders/mail`: Envia un correo electronico basado en la orden medica.
+- `POST /medical/orders/paginate`: Obtiene ordenes medicas mediante una paginacion.
 
 **External Connection**
 
@@ -1047,7 +1123,9 @@ El modulo de resultados medicos se encarga de la gestion de las mismas.
 - `removeFile`: Elimina un archivo asociado a un resultado medico.
 - `find`: Obtiene los resultados medicos presentes en el sistema.
 - `findResultsByDoctor`: Obtiene los resultados medicos asociados a un doctor.
-- `findOneResultAndUpdateDisease`: Encuentra un resultado medico y le asigna una morbilidad.
+- `findOneResultAndInsertDisease`: Encuentra un resultado medico y le asigna una morbilidad.
+- `findOneResultAndUpdateDisease`: Encuentra un resultado medico y actualiza una morbilidad.
+- `findOneResultAndRemoveDisease`: Encuentra un resultado medico y retira una morbilidad.
 - `findOneResultAndUploadFile`: Encuentra un resultado medico y le asigna un archivo.
 - `insertMedicalReport`: Añade un reporte medico a un resultado medico.
 - `assignSendAttribute`: Añade un atributo de envio a un resultado medico.
@@ -1325,6 +1403,8 @@ El modulo de pacientes del sistema, permite la gestion de los pacientes. Cabe de
 **Patient Service**
 
 - `find`: Encuentra todos los pacientes activos del sistema.
+- `findByFilterAndPagination`: Encuentra todos los pacientes activos del sistema usando paginacion y filtros.
+- `findByPageCount`: Encuentra el numero de paginas de un filtro dado.
 - `findByExtraAttribute`: Encuentra a todos los pacientes que compartan un atributo externo.
 - `findOneByDni`: Encuentra un paciente por su dni.
 
@@ -1339,6 +1419,7 @@ El modulo de pacientes del sistema, permite la gestion de los pacientes. Cabe de
 **Patient Service**
 
 - `GET /patients`: Retorna todos los usuarios activos del sistema.
+- `GET /patients/paginate`: Retorna todos los usuarios activos del sistema en forma paginada.
 - `GET /patients/look/company`: Retorna todos los pacientes que poseean el atributo `employee_of` y el mismo valor del atributo `look_for_company` del usuario que realiza la consulta.
 
 **External Connection**

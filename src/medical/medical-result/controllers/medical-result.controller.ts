@@ -1,13 +1,13 @@
-import { Body, Controller, Get, Param, Patch, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { User } from '@/shared/decorator';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
 import { MedicalResultService } from '../services/medical-result.service';
-import { GETMedicalResultArrayResponseDto, GETMedicalResultResponseDto, PATCHMedicalResultFileResponseDto, PATCHMedicalResultResponseDto } from '../dtos/medical-result.response.dto';
+import { GETMedicalResultArrayResponseDto, GETMedicalResultResponseDto, PATCHMedicalResultFileResponseDto, PATCHMedicalResultDiseaseResponseDto, POSTMedicalResultDiseaseResponseDto, DELETEMedicalResultDiseaseResponseDto } from '../dtos/medical-result.response.dto';
 import { PATCHMedicalReportRequestDto } from '@/medical/medical-report/dtos/medical-report.request.dto';
-import { PATCHMedicalResultFileRequestDto, PATCHMedicalResultWithDiseaseRequestDto } from '../dtos/medical-result.request.dto';
+import { PATCHMedicalResultFileRequestDto, PATCHMedicalResultDiseaseRequestDto, POSTMedicalResultDiseaseRequestDto } from '../dtos/medical-result.request.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Medical/Result')
@@ -34,13 +34,34 @@ export class MedicalResultController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
+  @Post(':id/diseases')
+  async findOneResultAndInsertDisease(
+    @Param('id') id: number,
+    @Body() body: POSTMedicalResultDiseaseRequestDto
+  ): Promise<POSTMedicalResultDiseaseResponseDto> {
+    const result = await this.resultService.findOneResultAndInsertDisease(id, body);
+    return plainToInstance(POSTMedicalResultDiseaseResponseDto, result);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/diseases/:disease')
   async findOneResultAndUpdateDisease(
     @Param('id') id: number,
-    @Body() body: PATCHMedicalResultWithDiseaseRequestDto
-  ): Promise<PATCHMedicalResultResponseDto> {
-    await this.resultService.findOneResultAndUpdateDisease(id, body);
-    return {};
+    @Param('disease') disease: number,
+    @Body() body: PATCHMedicalResultDiseaseRequestDto
+  ): Promise<PATCHMedicalResultDiseaseResponseDto> {
+    const result = await this.resultService.findOneResultAndUpdateDisease(id, disease, body);
+    return plainToInstance(PATCHMedicalResultDiseaseResponseDto, result);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id/diseases/:disease')
+  async findOneResultAndRemoveDisease(
+    @Param('id') id: number,
+    @Param('disease') disease: number
+  ): Promise<DELETEMedicalResultDiseaseResponseDto> {
+    await this.resultService.findOneResultAndRemoveDisease(id, disease);
+    return {}
   }
 
   @ApiConsumes('multipart/form-data')

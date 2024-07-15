@@ -13,7 +13,7 @@ export class SelectorService {
      * @returns 
      */
     async find(): Promise<SelectorOption<number>[]> {
-        const diseases = await this.repository.createQuery('group')
+        const diseases = await this.repository.query('group')
             .select('group.id', 'key')
             .addSelect('group.name', 'label')
             .where('group.status = :status', { status: true })

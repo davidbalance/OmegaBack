@@ -14,7 +14,7 @@ export class SelectorService {
    * @returns 
    */
   async find(): Promise<SelectorOption<number>[]> {
-    const group = await this.repository.createQuery('group')
+    const group = await this.repository.query('group')
       .select('group.id', 'key')
       .addSelect('group.name', 'label')
       .where('group.status = :status', { status: true })

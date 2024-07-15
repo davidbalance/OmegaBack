@@ -15,7 +15,7 @@ export class SelectorService {
    * @returns 
    */
   async find(company: number): Promise<SelectorOption<number>[]> {
-    const diseases = await this.repository.createQuery('branch')
+    const diseases = await this.repository.query('branch')
       .select('branch.id', 'key')
       .addSelect('branch.name', 'label')
       .leftJoinAndSelect('branch.company', 'company', 'company.id = :companyId', { companyId: company })

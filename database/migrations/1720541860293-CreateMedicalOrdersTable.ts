@@ -64,6 +64,13 @@ export class CreateMedicalOrdersTable1720541860293 implements MigrationInterface
                         isNullable: false
                     },
                     {
+                        name: 'order_status',
+                        type: 'enum',
+                        enum: ["created", "validated"],
+                        default: "created",
+                        isNullable: false
+                    },
+                    {
                         name: 'external_key',
                         type: 'int',
                         isNullable: true

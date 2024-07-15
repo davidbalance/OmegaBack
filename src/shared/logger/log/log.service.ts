@@ -14,7 +14,7 @@ export class LogService implements LoggerWritter {
     ) { }
 
     async findLevels(): Promise<{ level: string }[]> {
-        const levels = await this.repository.createQuery('log')
+        const levels = await this.repository.query('log')
             .select('log.log_level', 'level')
             .distinct(true)
             .getRawMany<{ level: string }>();
