@@ -54,6 +54,37 @@ export class CreateMedicalResultsTable1720553346544 implements MigrationInterfac
                         isNullable: false
                     },
                     {
+<<<<<<< HEAD
+=======
+                        name: 'disease_id',
+                        type: 'int',
+                        isNullable: true
+                    },
+                    {
+                        name: 'disease_name',
+                        type: 'varchar',
+                        length: '128',
+                        isNullable: true
+                    },
+                    {
+                        name: 'disease_commentary',
+                        type: 'varchar',
+                        length: '512',
+                        isNullable: true
+                    },
+                    {
+                        name: 'disease_group_id',
+                        type: 'int',
+                        isNullable: true
+                    },
+                    {
+                        name: 'disease_group_name',
+                        type: 'varchar',
+                        length: '128',
+                        isNullable: true
+                    },
+                    {
+>>>>>>> develop
                         name: 'doctor_dni',
                         type: 'varchar',
                         length: '10',
@@ -91,6 +122,11 @@ export class CreateMedicalResultsTable1720553346544 implements MigrationInterfac
             true,
         );
 
+<<<<<<< HEAD
+=======
+        await queryRunner.createIndex(TABLE_NAME, INDEX_DISEASE);
+        await queryRunner.createIndex(TABLE_NAME, INDEX_DISEASE_GROUP);
+>>>>>>> develop
         await queryRunner.createIndex(TABLE_NAME, INDEX_DOCTOR);
 
         await queryRunner.createForeignKey(TABLE_NAME, FK_M_ORDER_RESULT);
@@ -103,6 +139,11 @@ export class CreateMedicalResultsTable1720553346544 implements MigrationInterfac
         await queryRunner.dropForeignKey(TABLE_NAME, FK_M_REPORT_RESULT);
         await queryRunner.dropForeignKey(TABLE_NAME, FK_M_EXTERNAL_RESULT);
 
+<<<<<<< HEAD
+=======
+        await queryRunner.dropIndex(TABLE_NAME, INDEX_DISEASE);
+        await queryRunner.dropIndex(TABLE_NAME, INDEX_DISEASE_GROUP);
+>>>>>>> develop
         await queryRunner.dropIndex(TABLE_NAME, INDEX_DOCTOR);
 
         await queryRunner.dropTable(TABLE_NAME);
