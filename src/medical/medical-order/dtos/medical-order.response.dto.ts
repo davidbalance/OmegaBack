@@ -46,6 +46,8 @@ class FileDto {
     public readonly examName: string;
     @Expose()
     public readonly type: 'result' | 'report';
+    @Expose()
+    public readonly hasFile: boolean;
 }
 
 export class GETMedicalOrderFilesResponseDto {

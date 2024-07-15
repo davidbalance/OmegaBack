@@ -38,7 +38,7 @@ export class MedicalOrderService {
     return {
       dni: client.dni,
       fullname: client.fullname,
-      fileReports: results.filter(e => !!e.report).map((e) => ({ ...e.report, type: 'report' })),
+      fileReports: results.filter(e => !!e.report).map((e) => ({ ...e.report, type: 'report', hasFile: true })),
       fileResults: results.map(e => ({ ...e, type: 'result' }))
     };
   }
