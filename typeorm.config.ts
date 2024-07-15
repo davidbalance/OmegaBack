@@ -14,8 +14,6 @@ export const connectionSource = new DataSource({
     username: configService.get<string>("DATABASE_SQL_USERNAME"),
     password: configService.get<string>("DATABASE_SQL_PASSWORD"),
     database: configService.get<string>("DATABASE_SQL_DATABASE"),
-    // entities: ['src/**/*.entity{.js,.ts}'],
-    // migrations: ['database/migrations/*{.js,.ts}'],
     entities: [path.join(__dirname, 'src', '**', '*.entity{.js,.ts}')],
     migrations: [path.join(__dirname, 'database/migrations', '*{.js,.ts}')],
     logging: true,
