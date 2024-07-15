@@ -104,7 +104,6 @@ export class MedicalOrderService {
     return new Promise((resolve, reject) => {
       const { dni, fullname, email } = client;
       const { branchName, corporativeName, externalKey, updateAt, ...values } = order;
-      console.log({ dni, fullname, ...values })
       resolve(({ dni, fullname, ...values, email: email, results: results as any }));
     });
   }
@@ -125,8 +124,9 @@ export class MedicalOrderService {
   ): Promise<PlainMedicalOrder[]> {
     const orders = await this.repository.query('order')
       .leftJoinAndSelect('order.client', 'client')
-      .leftJoinAndSelect('order.results', 'result')
       .leftJoinAndSelect('client.email', 'email')
+      .leftJoinAndSelect('order.results', 'result')
+      .leftJoinAndSelect('result.diseases', 'diseases')
       .where(new Brackets(qr => {
         qr.where('order.companyRuc LIKE :filter', { filter: `%${filter}%` })
           .orWhere('order.companyName LIKE :filter', { filter: `%${filter}%` })
