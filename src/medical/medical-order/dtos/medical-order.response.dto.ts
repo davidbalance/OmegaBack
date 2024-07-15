@@ -1,4 +1,5 @@
 import { GETMedicalClientResponseDto } from "@/medical/medical-client/dtos/medical-client.response.dto";
+import { GETMedicalEmailResponseDto } from "@/medical/medical-client/dtos/medical-email.response.dto";
 import { GETMedicalResultResponseDto } from "@/medical/medical-result/dtos/medical-result.response.dto";
 import { Expose, Type } from "class-transformer";
 
@@ -15,6 +16,9 @@ export class GETMedicalOrderResponseDto {
     @Expose()
     public readonly mailStatus?: boolean;
 
+    @Expose()
+    public readonly orderStatus: string;
+
     @Type(() => GETMedicalClientResponseDto)
     @Expose()
     public readonly client: GETMedicalClientResponseDto;
@@ -30,6 +34,11 @@ export class GETMedicalOrderArrayResponseDto {
     public readonly orders: GETMedicalOrderResponseDto[]
 }
 
+export class GETMedicalOrderArrayWithPageCountResponseDto extends GETMedicalOrderArrayResponseDto {
+    @Expose()
+    public readonly pages: number;
+}
+
 class FileDto {
     @Expose()
     public readonly id: number;
@@ -37,6 +46,8 @@ class FileDto {
     public readonly examName: string;
     @Expose()
     public readonly type: 'result' | 'report';
+    @Expose()
+    public readonly hasFile: boolean;
 }
 
 export class GETMedicalOrderFilesResponseDto {
@@ -50,4 +61,50 @@ export class GETMedicalOrderFilesResponseDto {
     @Type(() => FileDto)
     @Expose()
     public readonly fileReports: FileDto[];
+}
+
+
+export class PlainMedicalOrder {
+
+    @Expose()
+    public readonly id: number;
+
+    @Expose()
+    public readonly process: string;
+
+    @Expose()
+    public readonly createAt: Date;
+
+    @Expose()
+    public readonly mailStatus?: boolean;
+
+    @Expose()
+    public readonly orderStatus: string;
+
+    @Expose()
+    public readonly dni: string;
+
+    @Expose()
+    public readonly fullname: string;
+
+    @Type(() => GETMedicalEmailResponseDto)
+    @Expose()
+    public readonly email: GETMedicalEmailResponseDto[];
+
+    @Type(() => GETMedicalResultResponseDto)
+    @Expose()
+    public readonly results: GETMedicalResultResponseDto[]
+}
+
+export class GETPlainMedicalOrderResponseDto extends PlainMedicalOrder { }
+
+export class GETPlainMedicalOrderArrayResponseDto {
+    @Type(() => GETPlainMedicalOrderResponseDto)
+    @Expose()
+    public readonly orders: GETPlainMedicalOrderResponseDto[];
+}
+
+export class GETPlainMedicalOrderArrayWithPageCountResponseDto extends GETPlainMedicalOrderArrayResponseDto {
+    @Expose()
+    public readonly pages: number;
 }

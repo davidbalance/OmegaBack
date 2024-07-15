@@ -5,7 +5,10 @@ import { ConfigService } from '@nestjs/config';
 import { MedicalOrderRepository } from '../medical-order.repository';
 import { MedicalOrder } from '../entities/medical-order.entity';
 import { MedicalEmail } from '@/medical/medical-client/entities/medical-email.entity';
-import { GETMedicalOrderFilesResponseDto } from '../dtos/medical-order.response.dto';
+import { GETMedicalOrderFilesResponseDto, PlainMedicalOrder } from '../dtos/medical-order.response.dto';
+import { OrderStatus } from '../enums';
+import { GETMedicalOrderOrderedRequestDto } from '../dtos/medical-order.request.dto';
+import { Brackets } from 'typeorm';
 
 @Injectable()
 export class MedicalOrderService {
@@ -35,7 +38,7 @@ export class MedicalOrderService {
     return {
       dni: client.dni,
       fullname: client.fullname,
-      fileReports: results.filter(e => !!e.report).map((e) => ({ ...e.report, type: 'report' })),
+      fileReports: results.filter(e => !!e.report).map((e) => ({ ...e.report, type: 'report', hasFile: true })),
       fileResults: results.map(e => ({ ...e, type: 'result' }))
     };
   }
@@ -55,17 +58,15 @@ export class MedicalOrderService {
         process: true,
         createAt: true,
         mailStatus: true,
+        orderStatus: true,
         results: {
           id: true,
           examName: true,
-          diseaseId: true,
-          diseaseName: true,
-          diseaseGroupId: true,
-          diseaseGroupName: true
+          diseases: true
         }
       },
       relations: {
-        results: true
+        results: true,
       },
       cache: 1000 * 900
     });
@@ -79,12 +80,104 @@ export class MedicalOrderService {
    * @returns 
    */
   async findByPatientAndDoctor(patient: string, doctor: string): Promise<MedicalOrder[]> {
-    const orders = await this.repository.createQuery('medicalOrder')
+    const orders = await this.repository.query('medicalOrder')
       .leftJoinAndSelect('medicalOrder.results', 'medicalResult', 'medicalResult.doctorDni = :doctor', { doctor })
       .leftJoinAndSelect('medicalOrder.client', 'medicalClient')
       .where('medicalClient.dni = :patient', { patient })
+      .andWhere('medicalResult.doctorDni = :doctor', { doctor })
       .getMany();
+
     return orders;
+  }
+
+  /**
+   * Encuentra ordenes medicas usando el ruc de una empresa.
+   * @param ruc 
+   * @returns 
+   */
+  async findByCompany(ruc: string): Promise<MedicalOrder[]> {
+    const orders = await this.repository.find({ where: { companyRuc: ruc } });
+    return orders;
+  }
+
+  private flatMedicalOrder({ client, results, ...order }: MedicalOrder): Promise<PlainMedicalOrder> {
+    return new Promise((resolve, reject) => {
+      const { dni, fullname, email } = client;
+      const { branchName, corporativeName, externalKey, updateAt, ...values } = order;
+      resolve(({ dni, fullname, ...values, email: email, results: results as any }));
+    });
+  }
+
+  /**
+   * Encuentra ordenes medicas usando un filtro.
+   * @param page 
+   * @param limit 
+   * @param filter 
+   * @param order 
+   * @returns 
+   */
+  async findByFilterAndPagination(
+    page: number = 0,
+    limit: number = 300,
+    filter: string = "",
+    order?: GETMedicalOrderOrderedRequestDto
+  ): Promise<PlainMedicalOrder[]> {
+    const orders = await this.repository.query('order')
+      .leftJoinAndSelect('order.client', 'client')
+      .leftJoinAndSelect('client.email', 'email')
+      .leftJoinAndSelect('order.results', 'result')
+      .leftJoinAndSelect('result.diseases', 'diseases')
+      .where(new Brackets(qr => {
+        qr.where('order.companyRuc LIKE :filter', { filter: `%${filter}%` })
+          .orWhere('order.companyName LIKE :filter', { filter: `%${filter}%` })
+      }))
+      .orWhere(new Brackets(qr => {
+        qr.where('client.fullname LIKE :filter', { filter: `%${filter}%` })
+          .orWhere('client.dni LIKE :filter', { filter: `%${filter}%` })
+      }))
+      .orderBy('order.createAt')
+      .take(limit)
+      .skip(page)
+      .getMany();
+
+    const flatten = await Promise.all(orders.map(this.flatMedicalOrder));
+    return flatten;
+  }
+
+  /**
+   * Encuentra el numero de paginas de un filtro dado.
+   * @param limit 
+   * @param filter 
+   * @returns 
+   */
+  async findByPageCount(
+    limit: number = 300,
+    filter: string = ""
+  ): Promise<number> {
+    const count = await this.repository.query('order')
+      .leftJoinAndSelect('order.client', 'client')
+      .leftJoinAndSelect('order.results', 'result')
+      .where(new Brackets(qr => {
+        qr.where('order.companyRuc LIKE :filter', { filter: `%${filter}%` })
+          .orWhere('order.companyName LIKE :filter', { filter: `%${filter}%` })
+      }))
+      .orWhere(new Brackets(qr => {
+        qr.where('client.fullname LIKE :filter', { filter: `%${filter}%` })
+          .orWhere('client.dni LIKE :filter', { filter: `%${filter}%` })
+      }))
+      .getCount();
+    return Math.floor(count / limit);
+  }
+
+  /**
+   * Encuentra una orden y actualiza su estado
+   * @param id 
+   * @param status 
+   * @returns 
+   */
+  async findOneUpdateStatus(id: number, status: OrderStatus): Promise<MedicalOrder> {
+    const order = await this.repository.findOneAndUpdate({ id: id }, { orderStatus: status });
+    return order;
   }
 
   /**

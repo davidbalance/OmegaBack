@@ -14,7 +14,7 @@ export class SelectorService {
    * @returns 
    */
   async find(): Promise<SelectorOption<number>[]> {
-    const exams = await this.repository.createQuery('exam')
+    const exams = await this.repository.query('exam')
       .select('exam.id', 'key')
       .addSelect('exam.name', 'label')
       .getRawMany<SelectorOption<number>>();

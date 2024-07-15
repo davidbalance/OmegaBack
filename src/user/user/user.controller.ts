@@ -67,7 +67,6 @@ export class UserController {
     @Param('id') id: number,
   ): Promise<GETAttributeResponseDto> {
     const attribute = await this.userService.findExtraAttribute(id, 'look_for_company');
-    console.log(attribute);
     return plainToInstance(GETAttributeResponseDto, attribute || {});
   }
 

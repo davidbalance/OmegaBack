@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { MedicalClientRepository } from './repositories/medical-client.repository';
 import { MedicalEmailRepository } from './repositories/medical-email.repository';
 import { MedicalClient } from './entities/medical-client.entity';
-import { POSTMedicalClientRequestDto } from './dtos/medical-client.request.dto';
+import { POSTMedicalClientManagementAndAreaRequestDto, POSTMedicalClientRequestDto } from './dtos/medical-client.request.dto';
 import { POSTMedicalEmailRequestDto } from './dtos/medical-email.request.dto';
 import { MedicalEmail } from './entities/medical-email.entity';
 import { In } from 'typeorm';
@@ -41,7 +41,7 @@ export class MedicalClientService {
    * @returns 
    */
   async findClientsByDoctor(doctor: string): Promise<MedicalClient[]> {
-    const clients = await this.clientRepository.createQuery('client')
+    const clients = await this.clientRepository.query('client')
       .leftJoinAndSelect('client.medicalOrders', 'medicalOrder')
       .leftJoinAndSelect('medicalOrder.results', 'medicalResult')
       .where('medicalResult.doctorDni = :dni', { dni: doctor })
@@ -61,6 +61,45 @@ export class MedicalClientService {
       }
     });
     return client.email;
+  }
+
+  /**
+   * Encuentra un cliente medico y obtiene unicamente su area y gerencia
+   * @param dni 
+   * @returns 
+   */
+  async findOneClientByDniAndReturnManagementAndArea(dni: string): Promise<MedicalClient> {
+    const client = await this.clientRepository.findOne({
+      where: {
+        dni: dni
+      }
+    });
+    return client;
+  }
+
+  /**
+   * Encuentra un cliente medico y le asigna una gerencia y un area.
+   * @param dni 
+   * @returns 
+   */
+  async findOneClientByDniAndAssignManagementAndArea(dni: string, newLocation: POSTMedicalClientManagementAndAreaRequestDto): Promise<MedicalClient> {
+    const client = await this.clientRepository.findOneAndUpdate({ dni: dni }, { ...newLocation });
+    return client;
+  }
+
+  /**
+   * Encuentra un cliente medico y le remueve una gerencia y un area.
+   * @param dni 
+   * @returns 
+   */
+  async findOneClientByDniAndRemoveManagementAndArea(dni: string): Promise<MedicalClient> {
+    const client = await this.clientRepository.findOneAndUpdate({ dni: dni }, {
+      areaId: null,
+      areaName: null,
+      managementId: null,
+      managementName: null
+    });
+    return client;
   }
 
   /**

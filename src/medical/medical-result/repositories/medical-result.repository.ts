@@ -2,7 +2,7 @@ import { AbstractRepository } from "src/shared";
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
-import { MedicalResult } from "./entities/result.entity";
+import { MedicalResult } from "../entities/result.entity";
 
 @Injectable()
 export class MedicalResultRepository

@@ -4,10 +4,9 @@ import { ExternalKey } from "../external-key/entities/external-key.entity";
 import { SendAttribute } from "../send-attribute/entities/send-attribute.entity";
 import { MedicalOrder } from "@/medical/medical-order/entities/medical-order.entity";
 import { MedicalReport } from "@/medical/medical-report/entities/medical-report.entity";
+import { MedicalResultDisease } from "./result-disease.entity";
 
 @Entity({ name: "tbl_m_results" })
-@Index('idx_result_disease', ['diseaseId'])
-@Index('idx_result_disease_group', ['diseaseGroupId'])
 @Index('idx_result_doctor_dni', ['doctorDni'])
 export class MedicalResult extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: "result_id" })
@@ -22,21 +21,6 @@ export class MedicalResult extends AbstractEntity<number> {
     @Column({ name: 'exam_name', type: 'varchar', length: 128, nullable: false })
     public examName: string;
 
-    @Column({ name: 'disease_id', type: 'int', nullable: true })
-    public diseaseId?: number;
-
-    @Column({ name: 'disease_name', type: 'varchar', length: 128, nullable: true })
-    public diseaseName?: string;
-
-    @Column({ name: 'disease_commentary', type: 'varchar', length: 512, nullable: true })
-    public diseaseCommentary?: string;
-
-    @Column({ name: 'disease_group_id', type: 'int', nullable: true })
-    public diseaseGroupId?: number;
-
-    @Column({ name: 'disease_group_name', type: 'varchar', length: 128, nullable: true })
-    public diseaseGroupName?: string;
-
     @Column({ name: 'doctor_dni', type: 'varchar', length: 10, nullable: false })
     public doctorDni: string;
 
@@ -45,6 +29,9 @@ export class MedicalResult extends AbstractEntity<number> {
 
     @Column({ name: 'doctor_signature', type: 'varchar', length: 512, nullable: false })
     public doctorSignature: string;
+
+    @OneToMany(() => MedicalResultDisease, morbidity => morbidity.result, { eager: true, nullable: true })
+    public diseases?: MedicalResultDisease[];
 
     @ManyToOne(() => MedicalOrder, order => order.results, { eager: false, nullable: false })
     @JoinColumn({ foreignKeyConstraintName: 'fk_m_order_result', referencedColumnName: 'id', name: 'order_id' })
