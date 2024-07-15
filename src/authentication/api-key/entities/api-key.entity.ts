@@ -3,8 +3,8 @@ import { AbstractEntity } from "@/shared";
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_auth_api_keys' })
-@Index('api_key_value_idx', ['value'], { unique: true })
-@Index('api_key_id_name_idx', ['credential', 'name'], { unique: true })
+@Index('idx_api_key_value', ['value'], { unique: true })
+@Index('idx_api_key_id_name', ['credential', 'name'], { unique: true })
 export class ApiKey extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'api_key_id' })
     public id: number;
@@ -22,6 +22,6 @@ export class ApiKey extends AbstractEntity<number> {
     public status: boolean;
 
     @ManyToOne(() => UserCredential, user => user.apiKeys, { eager: false, nullable: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'credential_id' })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_auth_api_keys_credentials', referencedColumnName: 'id', name: 'credential_id' })
     public credential: UserCredential;
 }

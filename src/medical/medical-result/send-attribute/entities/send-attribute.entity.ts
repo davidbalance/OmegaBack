@@ -7,7 +7,7 @@ export class SendAttribute extends AbstractSendAttributeEntity {
     @PrimaryGeneratedColumn('increment', { name: 'result_send_attribute_id' })
     public id: number;
 
-    @ManyToOne(() => MedicalResult, result => result.sendAttributes, { eager: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'result_id' })
+    @ManyToOne(() => MedicalResult, result => result.sendAttributes, { eager: false, nullable: false })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_m_result_send', referencedColumnName: 'id', name: 'result_id' })
     public result: MedicalResult;
 }

@@ -3,7 +3,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } 
 import { MedicalClient } from "./medical-client.entity";
 
 @Entity({ name: 'tbl_m_email' })
-@Index('email_client_idx', ['email', 'client'], { unique: true })
+@Index('idx_email_client', ['email', 'client'], { unique: true })
 export class MedicalEmail extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'medical_email_id' })
     public id: number;
@@ -14,7 +14,7 @@ export class MedicalEmail extends AbstractEntity<number> {
     @Column({ name: 'medical_email_default', type: 'boolean', default: false, nullable: false })
     public default: boolean;
 
-    @ManyToOne(() => MedicalClient, client => client.email, { eager: false })
-    @JoinColumn({ referencedColumnName: 'id', name: 'medical_client_id' })
+    @ManyToOne(() => MedicalClient, client => client.email, { eager: false, nullable: false })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_m_client_email', referencedColumnName: 'id', name: 'medical_client_id' })
     public client: MedicalClient;
 }
