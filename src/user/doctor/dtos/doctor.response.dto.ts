@@ -1,4 +1,4 @@
-import { GETUserResponseDto } from "@/user/user/dtos/user.response.dto";
+import { GETUserResponseDto } from "@/user/user/dtos/get.user-management.dto";
 import { Expose, Type } from "class-transformer";
 
 export class GETDoctorResponseDto {
@@ -20,6 +20,6 @@ export class POSTDoctorResponseDto extends GETDoctorResponseDto { }
 
 export class PATCHDoctorResponseDto extends GETDoctorResponseDto { }
 
-export class PATCHDoctorSignatureResponseDto {}
+export class PATCHDoctorSignatureResponseDto { }
 
 export class DELETEDoctorResponseDto { }

@@ -1,4 +1,4 @@
-import { GETUserResponseDto } from "@/user/user/dtos/user.response.dto";
+import { UserResponseDto } from "@/user/user/dtos/user.dto";
 import { Expose, Type } from "class-transformer";
 
 export class GETPatientResponseDto {
@@ -11,9 +11,9 @@ export class GETPatientResponseDto {
     @Expose()
     public readonly gender: string;
 
-    @Type(() => GETUserResponseDto)
+    @Type(() => UserResponseDto)
     @Expose()
-    public readonly user: GETUserResponseDto;
+    public readonly user: UserResponseDto;
 }
 
 export class GETPatientArrayResponseDto {
