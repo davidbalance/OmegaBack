@@ -126,7 +126,7 @@ export class TokenService {
 
       if (match) return true;
 
-      const secondsNeededToAllowRefresh = 60;
+      const secondsNeededToAllowRefresh = 0;
       const issuedAt = dayjs.unix(token.iat);
       const diff = dayjs().diff(issuedAt, 'seconds');
 

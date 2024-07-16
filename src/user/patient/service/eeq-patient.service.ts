@@ -53,7 +53,7 @@ export class EeqPatientService {
     const query = this.repository.query('patient')
       .leftJoinAndSelect('patient.user', 'user', 'user.status = :status ', { status: true })
       .leftJoinAndSelect('user.extraAttributes', 'extraAttribute')
-      .leftJoin('user.extraAttributes', 'extraAttribute2', 'extraAttribute2.name = :name2 AND extraAttribute2.value = :value2', { name2: this.companyName, value2: this.companyValue })
+      .innerJoin('user.extraAttributes', 'extraAttribute2', 'extraAttribute2.name = :name2 AND extraAttribute2.value = :value2', { name2: this.companyName, value2: this.companyValue })
       .where('user.name LIKE :filter OR user.lastname LIKE :filter OR user.email LIKE :filter OR user.dni LIKE :filter OR extraAttribute.value LIKE :filter', { filter: `%${filter}%` })
       .andWhere('extraAttribute.name = :name1', { name1: this.roleKey });
 
@@ -77,7 +77,7 @@ export class EeqPatientService {
     const count = await this.repository.query('patient')
       .leftJoinAndSelect('patient.user', 'user', 'user.status = :status ', { status: true })
       .leftJoinAndSelect('user.extraAttributes', 'extraAttribute')
-      .leftJoin('user.extraAttributes', 'extraAttribute2', 'extraAttribute2.name = :name2 AND extraAttribute2.value = :value2', { name2: this.companyName, value2: this.companyValue })
+      .innerJoin('user.extraAttributes', 'extraAttribute2', 'extraAttribute2.name = :name2 AND extraAttribute2.value = :value2', { name2: this.companyName, value2: this.companyValue })
       .where('user.name LIKE :filter OR user.lastname LIKE :filter OR user.email LIKE :filter OR user.dni LIKE :filter OR extraAttribute.value LIKE :filter', { filter: `%${filter}%` })
       .andWhere('extraAttribute.name = :name1', { name1: this.roleKey })
       .getCount();
