@@ -14,9 +14,4 @@ export class DoctorRepository
     ) {
         super(doctorModel);
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findOneAndDelete(_filterOptions: FindOptionsWhere<Doctor>): void | Promise<void> {
-        throw new Error("Method not implemented.");
-    }
 }

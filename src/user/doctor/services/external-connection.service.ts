@@ -2,14 +2,14 @@ import { Inject, Injectable } from "@nestjs/common";
 import { DoctorRepository } from "../doctor.repository";
 import { Doctor } from "../entities/doctor.entity";
 
-import { UserService } from "@/user/user/user.service";
 import { PATCHDoctorRequestDto, POSTDoctorRequestDto } from "../dtos/doctor.request.dto";
+import { UserManagementService } from "@/user/user/services/user-management.service";
 
 @Injectable()
 export class ExternalConnectionService {
     constructor(
         @Inject(DoctorRepository) private readonly repository: DoctorRepository,
-        @Inject(UserService) private readonly userService: UserService
+        @Inject(UserManagementService) private readonly userService: UserManagementService
     ) { }
 
     /**
@@ -70,7 +70,7 @@ export class ExternalConnectionService {
                 }
             }
         });
-        const foundUser = await this.userService.findOneAndUpdate(doctor.user.id, user);
+        const foundUser = await this.userService.updateOne(doctor.user.id, user);
         doctor.user = foundUser;
         return doctor;
     }

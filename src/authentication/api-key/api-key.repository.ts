@@ -14,16 +14,16 @@ export class ApiKeyRepository extends AbstractRepository<number, ApiKey> {
         super(apikeyModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<ApiKey>): void | Promise<void> {
-        this.findOneAndUpdate(filterOptions, { status: false });
-    }
-
     /**
      * Delete all the items that matches the given options
      * @param filterOptions 
      */
     findAndDelete(filterOptions: FindOptionsWhere<ApiKey>): void | Promise<void> {
         this.apikeyModel.update(filterOptions, { status: false });
+    }
+
+    async findOneAndDelete(filterOptions: FindOptionsWhere<ApiKey>): Promise<void> {
+        this.findOneAndUpdate(filterOptions, { status: false });
     }
 
 }

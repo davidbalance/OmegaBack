@@ -14,9 +14,4 @@ export class WebClientRepository
     ) {
         super(clientModel);
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findOneAndDelete(_filterOptions: FindOptionsWhere<WebClient>): void | Promise<void> {
-        throw new Error("Method not implemented.");
-    }
 }

@@ -13,9 +13,4 @@ export class SendAttributeRepository extends AbstractRepository<number, SendAttr
     ) {
         super(attributeModel);
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findOneAndDelete(_filterOptions: FindOptionsWhere<SendAttribute>): void | Promise<void> {
-        throw new Error("Method not implemented.");
-    }
 }

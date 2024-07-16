@@ -15,7 +15,7 @@ export class MedicalEmailRepository extends AbstractRepository<number, MedicalEm
         super(repo);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<MedicalEmail>): void | Promise<void> {
-        this.repo.delete(filterOptions);
+    async findOneAndDelete(filterOptions: FindOptionsWhere<MedicalEmail>): Promise<void> {
+        await this.repo.delete(filterOptions);
     }
 }

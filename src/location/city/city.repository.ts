@@ -13,9 +13,4 @@ export class CityRepository extends AbstractRepository<number, City> {
     ) {
         super(cityModel);
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findOneAndDelete(_filterOptions: FindOptionsWhere<City>): void | Promise<void> {
-        throw new Error("Method not implemented.");
-    }
 }

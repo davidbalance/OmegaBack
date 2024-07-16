@@ -19,8 +19,4 @@ export class PatientRepository
     async count(filterOptions: FindManyOptions<Patient>): Promise<number> {
         return this.patientModel.count(filterOptions);
     }
-
-    findOneAndDelete(_filterOptions: FindOptionsWhere<Patient>): void | Promise<void> {
-        throw new Error("Method not implemented.");
-    }
 }

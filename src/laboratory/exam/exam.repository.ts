@@ -13,8 +13,4 @@ export class ExamRepository extends AbstractRepository<number, Exam>{
     ) {
         super(examModel)
     }
-
-    findOneAndDelete(filterOptions: FindOptionsWhere<Exam>): void | Promise<void> {
-        throw new Error("Method not implemented.");
-    }
 }

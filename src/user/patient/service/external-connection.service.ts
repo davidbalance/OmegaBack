@@ -1,14 +1,14 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { PatientRepository } from "../patient.repository";
 import { Patient } from "../entities/patient.entity";
-import { UserService } from "@/user/user/user.service";
 import { PATCHPatientRequestDto, POSTPatientRequestDto } from "../dtos/patient.request.dto";
+import { UserManagementService } from "@/user/user/services/user-management.service";
 
 @Injectable()
 export class ExternalConnectionService {
     constructor(
         @Inject(PatientRepository) private readonly repository: PatientRepository,
-        @Inject(UserService) private readonly userService: UserService
+        @Inject(UserManagementService) private readonly userService: UserManagementService
     ) { }
 
     /**
@@ -58,7 +58,7 @@ export class ExternalConnectionService {
      */
     async findOneAndUpdate(id: string, { birthday, gender, ...user }: PATCHPatientRequestDto): Promise<Patient> {
         const patient = await this.repository.findOne({ where: { user: { dni: id } }, select: { user: { id: true } } });
-        await this.userService.findOneAndUpdate(patient.user.id, { ...user, email: null });
+        await this.userService.updateOne(patient.user.id, { ...user, email: null });
         const updatedPatient = await this.repository.findOneAndUpdate({ user: { dni: id } }, patient);
         return updatedPatient;
     }

@@ -14,8 +14,4 @@ export class MedicalClientRepository extends AbstractRepository<number, MedicalC
     ) {
         super(repo);
     }
-
-    findOneAndDelete(filterOptions: FindOptionsWhere<MedicalClient>): void | Promise<void> {
-        throw new Error("Method not implemented.");
-    }
 }

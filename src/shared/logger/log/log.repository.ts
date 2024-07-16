@@ -13,8 +13,4 @@ export class LogRepository extends AbstractRepository<number, Log> {
         super(logModel);
     }
 
-    findOneAndDelete(filterOptions: FindOptionsWhere<Log>): void | Promise<void> {
-        throw new Error("Method not implemented.");
-    }
-
 }

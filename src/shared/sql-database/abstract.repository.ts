@@ -1,4 +1,4 @@
-import { DeepPartial, FindManyOptions, FindOneOptions, FindOptionsOrder, FindOptionsRelations, FindOptionsSelect, FindOptionsWhere, QueryRunner, Repository } from "typeorm";
+import { DeepPartial, FindManyOptions, FindOneOptions, FindOptionsWhere, QueryRunner, Repository } from "typeorm";
 import { AbstractEntity } from "./abstract.entity";
 import { Logger, NotFoundException } from "@nestjs/common";
 
@@ -8,8 +8,6 @@ import { Logger, NotFoundException } from "@nestjs/common";
  * @template TEntity Entity type
  */
 export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
-
-    protected abstract logger: Logger;
 
     constructor(
         private readonly model: Repository<TEntity>
@@ -76,5 +74,7 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
      * 
      * @param filterOptions Find one item and remove it from the database
      */
-    abstract findOneAndDelete(filterOptions: FindOptionsWhere<TEntity>): void | Promise<void>;
+    async findOneAndDelete(filterOptions: FindOptionsWhere<TEntity>): Promise<void> {
+        await this.model.delete(filterOptions);
+    }
 }
