@@ -2,7 +2,7 @@ import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
-import { ExternalConnectionService } from "../services/external-connection.service";
+import { ExternalConnectionService } from "../services/doctor-external-connection.service";
 import { PATCHDoctorRequestDto, POSTDoctorRequestDto } from "../dtos/doctor.request.dto";
 import { PATCHDoctorResponseDto, POSTDoctorResponseDto } from "../dtos/doctor.response.dto";
 

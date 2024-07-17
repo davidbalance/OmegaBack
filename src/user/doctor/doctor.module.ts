@@ -6,10 +6,11 @@ import { UserModule } from '../user/user.module';
 import { LocalStorageModule } from '@/shared/storage-manager';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { DoctorController } from './controllers/doctor.controller';
-import { DoctorService } from './services/doctor.service';
 import { ExternalConnectionController } from './controllers/external-connection.controller';
-import { ExternalConnectionService } from './services/external-connection.service';
 import { MedicalResultListener } from './listener/medical-result.listener';
+import { DoctorFileManagementService } from './services/doctor-file-management.service';
+import { DoctorManagementService } from './services/doctor-management.service';
+import { DoctorExternalConnectionService } from './services/doctor-external-connection.service';
 
 @Module({
   imports: [
@@ -23,11 +24,15 @@ import { MedicalResultListener } from './listener/medical-result.listener';
     ExternalConnectionController
   ],
   providers: [
-    DoctorService,
+    DoctorManagementService,
+    DoctorFileManagementService,
+    DoctorExternalConnectionService,
     DoctorRepository,
-    ExternalConnectionService,
     MedicalResultListener,
   ],
-  exports: [DoctorService]
+  exports: [
+    DoctorManagementService,
+    DoctorFileManagementService
+  ]
 })
 export class DoctorModule { }

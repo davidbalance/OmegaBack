@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ExternalKeyService } from "../external-key/external-key.service";
 import { ExternalConnectionService as MedicalOrderExternalConnectionService } from "@/medical/medical-order/services/external-connection.service";
-import { StorageManager } from "@/shared/storage-manager";
+import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import path, { extname } from "path";
 import { ResultEvent, ResultFindOrCreateDoctorEvent, ResultFindOrCreateExamEvent, fileResultPath, signaturePath } from "@/shared";
 import { EventEmitter2 } from "@nestjs/event-emitter";
@@ -15,7 +15,7 @@ export class ExternalConnectionService {
         @Inject(ExternalKeyService) private readonly externalKeyService: ExternalKeyService,
         @Inject(MedicalOrderExternalConnectionService) private readonly orderService: MedicalOrderExternalConnectionService,
         @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
-        @Inject(StorageManager) private readonly storageManager: StorageManager,
+        @Inject(INJECT_STORAGE_MANAGER) private readonly storageManager: StorageManager,
         @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2
     ) { }
 

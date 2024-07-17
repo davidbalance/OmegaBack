@@ -6,7 +6,7 @@ import { MedicalResult } from "../entities/result.entity";
 import { MedicalReportService } from "@/medical/medical-report/medical-report.service";
 import { PATCHMedicalReportRequestDto } from "@/medical/medical-report/dtos/medical-report.request.dto";
 import { extname } from "path";
-import { StorageManager } from "@/shared/storage-manager";
+import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import { MedicalResultDiseaseRepository } from "../repositories/medical-result-disease.repository";
 import { PATCHMedicalResultDiseaseRequestDto, POSTMedicalResultDiseaseRequestDto } from "../dtos/medical-result.request.dto";
 import { MedicalResultDisease } from "../entities/result-disease.entity";
@@ -20,7 +20,7 @@ export class MedicalResultService implements
     @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
     @Inject(MedicalReportService) private readonly reportService: MedicalReportService,
     @Inject(SendAttributeService) private readonly attributeService: SendAttributeService,
-    @Inject(StorageManager) private readonly storageManager: StorageManager,
+    @Inject(INJECT_STORAGE_MANAGER) private readonly storageManager: StorageManager,
     @Inject(MedicalResultDiseaseRepository) private readonly diseaseRepository: MedicalResultDiseaseRepository
   ) { }
 

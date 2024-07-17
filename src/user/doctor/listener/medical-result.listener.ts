@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { OnEvent } from "@nestjs/event-emitter";
-import { ExternalConnectionService } from "../services/external-connection.service";
+import { ExternalConnectionService } from "../services/doctor-external-connection.service";
 import { ResultEvent, ResultFindOrCreateDoctorEvent } from "@/shared";
 
 @Injectable()

@@ -5,7 +5,7 @@ import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { FileTypePipe } from '@/shared/pipes/file-type/file-type.pipe';
 import { MIME_TYPES } from '@/shared/pipes/file-type/constants';
-import { DoctorService } from '../services/doctor.service';
+import { DoctorService } from '../services/doctor-management.service';
 import { GETDoctorArrayResponseDto, PATCHDoctorSignatureResponseDto } from '../dtos/doctor.response.dto';
 import { PATCHDoctorSignatureRequestDto } from '../dtos/doctor.request.dto';
 

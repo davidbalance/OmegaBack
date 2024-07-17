@@ -4,19 +4,17 @@ import { Doctor } from "../entities/doctor.entity";
 
 import { PATCHDoctorRequestDto, POSTDoctorRequestDto } from "../dtos/doctor.request.dto";
 import { UserManagementService } from "@/user/user/services/user-management.service";
+import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
+
+type DoctorRequest = POSTDoctorRequestDto | PATCHDoctorRequestDto;
 
 @Injectable()
-export class ExternalConnectionService {
+export class DoctorExternalConnectionService implements IExternalConnectionService<DoctorRequest, Doctor> {
     constructor(
         @Inject(DoctorRepository) private readonly repository: DoctorRepository,
         @Inject(UserManagementService) private readonly userService: UserManagementService
     ) { }
 
-    /**
-     * Crea un paciente.
-     * @param param0 
-     * @returns 
-     */
     async create({ ...user }: POSTDoctorRequestDto): Promise<Doctor> {
         let newUser;
         try {
@@ -28,22 +26,13 @@ export class ExternalConnectionService {
         return doctor;
     }
 
-    /**
-     * Encuentra un paciente si no existe lo crea.
-     * @param param0 
-     * @returns 
-     */
     async findOneOrCreate({ ...user }: POSTDoctorRequestDto): Promise<Doctor> {
         try {
             const foundUser = await this.repository.findOne({
                 where: {
-                    user: {
-                        dni: user.dni
-                    }
+                    user: { dni: user.dni }
                 },
-                relations: {
-                    user: true
-                }
+                relations: { user: true }
             });
             return foundUser;
         } catch (error) {
@@ -51,23 +40,13 @@ export class ExternalConnectionService {
         }
     }
 
-    /**
-     * Encuentra un paciente y lo modifica.
-     * @param id 
-     * @param param1 
-     * @returns 
-     */
     async findOneAndUpdate(id: string, { ...user }: PATCHDoctorRequestDto): Promise<Doctor> {
         const doctor = await this.repository.findOne({
             where: {
-                user: {
-                    dni: id
-                }
+                user: { dni: id }
             },
             select: {
-                user: {
-                    id: true
-                }
+                user: { id: true }
             }
         });
         const foundUser = await this.userService.updateOne(doctor.user.id, user);
