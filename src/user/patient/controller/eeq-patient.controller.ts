@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { GETPatientByFilterAndPaginationRequestDto } from '../dtos/patient.request.dto';
-import { EeqPatientService } from '../service/eeq-patient.service';
+import { EeqPatientService } from '../service/eeq-patient-pagination.service';
 import { GETEEQPatientArrayResponseDto, GETEEQPatientArrayWithPageCountResponseDto } from '../dtos/eeq-patient.response.dto';
 
 @ApiTags('User/Patient/EEQ')

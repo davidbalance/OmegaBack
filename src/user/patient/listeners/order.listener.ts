@@ -1,6 +1,6 @@
 import { OrderEvent, OrderFindOrCreatePatientEvent } from "@/shared";
 import { Inject, Injectable } from "@nestjs/common";
-import { ExternalConnectionService } from "../service/external-connection.service";
+import { ExternalConnectionService } from "../service/patient-external-connection.service";
 import { OnEvent } from "@nestjs/event-emitter";
 
 @Injectable()

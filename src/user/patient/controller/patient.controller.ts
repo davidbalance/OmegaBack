@@ -2,7 +2,7 @@ import { Body, Controller, Get, Inject, Post, UseGuards, UseInterceptors } from 
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { PatientService } from '../service/patient.service';
+import { PatientService } from '../service/patient-management.service';
 import { ExtraAttribute, User } from '@/shared/decorator';
 import { ExtraAttributeInterceptor } from '@/shared/interceptors/extra-attribute/extra-attribute.interceptor';
 import { GETPatientArrayResponseDto, GETPatientArrayWithPageCountResponseDto } from '../dtos/patient.response.dto';

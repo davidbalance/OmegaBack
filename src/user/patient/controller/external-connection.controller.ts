@@ -1,5 +1,5 @@
 import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import { ExternalConnectionService } from "../service/external-connection.service";
+import { ExternalConnectionService } from "../service/patient-external-connection.service";
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
