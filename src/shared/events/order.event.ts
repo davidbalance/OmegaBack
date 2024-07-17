@@ -1,5 +1,5 @@
 import { POSTBranchRequestDto } from "@/location/branch/dtos/branch.request.dto";
-import { POSTPatientRequestDto } from "@/user/patient/dtos/patient.request.dto";
+import { POSTPatientRequestDto } from "@/user/patient/dtos/post.patient-management,dto";
 
 export const OrderEvent = {
     FIND_OR_CREATE_PATIENT: 'order.patient.findOrCreate',

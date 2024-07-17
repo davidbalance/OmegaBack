@@ -1,9 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { PatientRepository } from "../patient.repository";
 import { Patient } from "../entities/patient.entity";
-import { PATCHPatientRequestDto, POSTPatientRequestDto } from "../dtos/patient.request.dto";
 import { UserManagementService } from "@/user/user/services/user-management.service";
 import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
+import { PATCHPatientRequestDto } from "../dtos/patch.patient-management.dto";
+import { POSTPatientRequestDto } from "../dtos/post.patient-management,dto";
 
 @Injectable()
 export class PatientExternalConnectionService implements IExternalConnectionService<POSTPatientRequestDto | PATCHPatientRequestDto, Patient> {

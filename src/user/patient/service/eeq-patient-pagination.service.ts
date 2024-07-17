@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Patient } from '../entities/patient.entity';
 import { PatientRepository } from '../patient.repository';
-import { FlatEEQPatient } from '../dtos/eeq-patient.response.dto';
 import { IPagination, PaginationOrder } from '@/shared/utils/bases/base.pagination';
 import { Brackets } from 'typeorm';
+import { FlatEEQPatientResponseDto } from '../dtos/patient.dto';
 
 @Injectable()
-export class EeqPatientPaginationService implements IPagination<FlatEEQPatient> {
+export class EeqPatientPaginationService implements IPagination<FlatEEQPatientResponseDto> {
 
   private readonly companyName: string = 'employee_of';
   private readonly companyValue: string = '1790053881001'
@@ -21,7 +21,7 @@ export class EeqPatientPaginationService implements IPagination<FlatEEQPatient> 
     limit: number = 300,
     filter?: string,
     order?: PaginationOrder
-  ): Promise<[value: number, data: FlatEEQPatient[]]> {
+  ): Promise<[value: number, data: FlatEEQPatientResponseDto[]]> {
     const data = await this.findPaginatedByFilter(page, limit, filter, order);
     const pages = await this.findPageCount(limit, filter);
     return [pages, data];
@@ -32,7 +32,7 @@ export class EeqPatientPaginationService implements IPagination<FlatEEQPatient> 
     limit: number = 300,
     filter?: string,
     order?: PaginationOrder
-  ): Promise<FlatEEQPatient[]> {
+  ): Promise<FlatEEQPatientResponseDto[]> {
 
     const query = this.queryBuilder(filter);
 
@@ -53,11 +53,11 @@ export class EeqPatientPaginationService implements IPagination<FlatEEQPatient> 
     return Math.floor(count / limit);
   }
 
-  private async flatPatient(patient: Patient): Promise<FlatEEQPatient | null> {
+  private async flatPatient(patient: Patient): Promise<FlatEEQPatientResponseDto | null> {
     return new Promise((resolve, reject) => {
       const role = patient.user.extraAttributes.find(e => e.name === 'role');
       if (!role) resolve(null);
-      const flattenedPatient: FlatEEQPatient = { ...patient.user, ...patient, user: patient.user.id, role: role.value };
+      const flattenedPatient: FlatEEQPatientResponseDto = { ...patient.user, ...patient, user: patient.user.id, role: role.value };
       resolve(flattenedPatient);
     });
   }
