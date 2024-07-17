@@ -1,5 +1,5 @@
 import { DoctorFileManagementService } from '../doctor-file-management.service';
-import { DoctorRepository } from '../../doctor.repository';
+import { DoctorRepository } from '../../repositories/doctor.repository';
 import { TestBed } from '@automock/jest';
 import { mockDoctor } from './stub/doctor.stub';
 import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';

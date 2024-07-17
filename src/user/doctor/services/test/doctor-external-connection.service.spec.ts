@@ -1,4 +1,4 @@
-import { DoctorRepository } from '../../doctor.repository';
+import { DoctorRepository } from '../../repositories/doctor.repository';
 import { TestBed } from '@automock/jest';
 import { mockDoctor } from './stub/doctor.stub';
 import { DoctorExternalConnectionService } from '../doctor-external-connection.service';

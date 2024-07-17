@@ -1,7 +1,7 @@
 import { DoctorManagementService } from '../doctor-management.service';
-import { DoctorRepository } from '../../doctor.repository';
 import { TestBed } from '@automock/jest';
 import { mockDoctor, mockDoctors } from './stub/doctor.stub';
+import { DoctorRepository } from '../../repositories/doctor.repository';
 
 describe('DoctorManagementService', () => {
   let service: DoctorManagementService;

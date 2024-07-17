@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { DoctorRepository } from '../doctor.repository';
+import { DoctorRepository } from "../repositories/doctor.repository";
 import { signaturePath } from '@/shared';
 import path, { extname } from 'path';
 import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';
