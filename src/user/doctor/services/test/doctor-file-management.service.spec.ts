@@ -21,7 +21,10 @@ describe('DoctorFileManagementService', () => {
     jest.clearAllMocks();
   });
 
-  describe('find', () => {
+  describe('uploadFile', () => {
+
+    const mockedDoctor = mockDoctor();
+
     const id: number = 1;
     const signature: any = {
       originalname: 'test.png',
@@ -30,9 +33,9 @@ describe('DoctorFileManagementService', () => {
 
     it('should upload file successfully', async () => {
 
-      repository.findOne.mockResolvedValueOnce(mockDoctor);
+      repository.findOne.mockResolvedValueOnce(mockedDoctor);
       storage.saveFile.mockResolvedValueOnce(signature.originalname);
-      repository.findOneAndUpdate.mockResolvedValueOnce({ ...mockDoctor, hasFile: true });
+      repository.findOneAndUpdate.mockResolvedValueOnce({ ...mockedDoctor, hasFile: true });
 
       await service.uploadFile(id, signature);
 
@@ -46,7 +49,7 @@ describe('DoctorFileManagementService', () => {
         signature.buffer,
         '.png',
         expect.any(String),
-        mockDoctor.user.dni
+        mockedDoctor.user.dni
       );
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id }, { hasFile: true });
 

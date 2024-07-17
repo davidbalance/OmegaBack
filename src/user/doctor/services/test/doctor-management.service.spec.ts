@@ -18,25 +18,30 @@ describe('DoctorManagementService', () => {
 
   describe('find', () => {
 
+    const mockedDoctors = mockDoctors()
+
     it('should return an array of doctors', async () => {
-      repository.find.mockResolvedValueOnce(mockDoctors);
+      repository.find.mockResolvedValueOnce(mockedDoctors);
 
       const doctors = await service.find();
 
-      expect(doctors).toEqual(mockDoctors);
+      expect(doctors).toEqual(mockedDoctors);
     });
 
   });
 
   describe('findOne', () => {
+
+    const mockedDoctor = mockDoctor();
+
     const id: number = 1;
 
     it('should return a doctor by id', async () => {
-      repository.findOne.mockResolvedValueOnce(mockDoctor);
+      repository.findOne.mockResolvedValueOnce(mockedDoctor);
 
       const doctor = await service.findOne(id);
 
-      expect(doctor).toEqual(mockDoctor);
+      expect(doctor).toEqual(mockedDoctor);
       expect(repository.findOne).toHaveBeenCalledWith({
         where: { id: id },
         select: {
@@ -49,14 +54,17 @@ describe('DoctorManagementService', () => {
   });
 
   describe('findOneByDni', () => {
+
+    const mockedDoctor = mockDoctor();
+
     const dni: string = '1234567890';
 
     it('should return a doctor by dni', async () => {
-      repository.findOne.mockResolvedValueOnce(mockDoctor);
+      repository.findOne.mockResolvedValueOnce(mockedDoctor);
 
       const doctor = await service.findOneByDni(dni);
 
-      expect(doctor).toEqual(mockDoctor);
+      expect(doctor).toEqual(mockedDoctor);
       expect(repository.findOne).toHaveBeenCalledWith({
         where: {
           user: { dni: dni }

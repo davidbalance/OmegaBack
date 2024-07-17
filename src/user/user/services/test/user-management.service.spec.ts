@@ -24,6 +24,8 @@ describe('User Management Service', () => {
 
     describe('create', () => {
 
+        const mockedUser = mockUser();
+
         const mockDto: POSTUserRequestDto = {
             dni: '1234567890',
             name: 'User',
@@ -32,7 +34,7 @@ describe('User Management Service', () => {
         };
 
         it('should throw ConflictException if user with same dni or email exists', async () => {
-            repository.findOne.mockResolvedValueOnce(mockUser);
+            repository.findOne.mockResolvedValueOnce(mockedUser);
 
             await expect(service.create(mockDto))
                 .rejects
@@ -41,11 +43,11 @@ describe('User Management Service', () => {
 
         it('should create a new user if no conflict', async () => {
             repository.findOne.mockRejectedValueOnce(new NotFoundException());
-            repository.create.mockResolvedValueOnce(mockUser);
+            repository.create.mockResolvedValueOnce(mockedUser);
 
             const result = await service.create(mockDto);
 
-            expect(result).toEqual(mockUser);
+            expect(result).toEqual(mockedUser);
         });
 
         it('should throw a InternalServerException', async () => {
@@ -58,32 +60,41 @@ describe('User Management Service', () => {
     });
 
     describe('find', () => {
+
+        const mockedUsers = mockUsers();
+
         it('should return an array of users', async () => {
-            repository.find.mockResolvedValueOnce(mockUsers);
+            repository.find.mockResolvedValueOnce(mockedUsers);
             const result = await service.find();
-            expect(result).toEqual(mockUsers);
+            expect(result).toEqual(mockedUsers);
         });
     });
 
     describe('findOne', () => {
+        const mockedUser = mockUser();
+
         it('should return a user by id', async () => {
-            repository.findOne.mockResolvedValueOnce(mockUser);
+            repository.findOne.mockResolvedValueOnce(mockedUser);
             const result = await service.findOne(1);
-            expect(result).toEqual(mockUser);
+            expect(result).toEqual(mockedUser);
         });
     });
 
     describe('findOneByDni', () => {
+        const mockedUser = mockUser();
+        
         it('should return a user by dni', async () => {
-            repository.findOne.mockResolvedValueOnce(mockUser);
+            repository.findOne.mockResolvedValueOnce(mockedUser);
 
             const result = await service.findOneByDni('123');
 
-            expect(result).toEqual(mockUser);
+            expect(result).toEqual(mockedUser);
         });
     });
 
     describe('updateOne', () => {
+        const mockedUser = mockUser();
+
         const mockDto: PATCHUserRequestDto = {
             name: 'User',
             lastname: 'Stub',
@@ -91,11 +102,11 @@ describe('User Management Service', () => {
         };
 
         it('should update a user and emit an update event', async () => {
-            repository.findOneAndUpdate.mockResolvedValueOnce(mockUser);
+            repository.findOneAndUpdate.mockResolvedValueOnce(mockedUser);
 
             const result = await service.updateOne(1, mockDto);
 
-            expect(result).toEqual(mockUser);
+            expect(result).toEqual(mockedUser);
             expect(eventService.emitUserUpdateEvent).toHaveBeenCalledWith(1, mockDto.email);
         });
     });

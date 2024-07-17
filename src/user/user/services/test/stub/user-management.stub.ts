@@ -14,6 +14,6 @@ const stubUser = (id: number): User => ({
     updateAt: new Date(),
 });
 
-export const mockUser = stubUser(1);
+export const mockUser = () => stubUser(1);
 
-export const mockUsers = [1, 2, 3, 4].map(stubUser);
+export const mockUsers = () => [1, 2, 3, 4].map(stubUser);

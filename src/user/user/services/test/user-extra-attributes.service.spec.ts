@@ -23,6 +23,8 @@ describe('User Extra Attribute Service', () => {
 
     describe('assignAttribute', () => {
 
+        const mockedUser = mockUser();
+
         const mockDto: POSTUserExtraAttributeRequestDto = {
             name: 'my-stub-attribute',
             value: 'My attribute value'
@@ -32,7 +34,7 @@ describe('User Extra Attribute Service', () => {
 
         it('should update attribute if it already exists', async () => {
 
-            userRepository.findOne.mockResolvedValueOnce(mockUser);
+            userRepository.findOne.mockResolvedValueOnce(mockedUser);
             attributeRepository.findOneAndUpdate.mockResolvedValueOnce(undefined);
 
             await service.assignAttribute(id, mockDto);
@@ -49,7 +51,7 @@ describe('User Extra Attribute Service', () => {
 
         it('should create attribute if it does not exist', async () => {
 
-            userRepository.findOne.mockResolvedValueOnce(mockUser);
+            userRepository.findOne.mockResolvedValueOnce(mockedUser);
             attributeRepository.create.mockResolvedValueOnce(undefined);
 
             const newMockUserAttribute = { ...mockDto, name: 'not-matched-name' };
@@ -65,7 +67,7 @@ describe('User Extra Attribute Service', () => {
             expect(attributeRepository.create)
                 .toHaveBeenCalledWith({
                     ...newMockUserAttribute,
-                    user: mockUser,
+                    user: mockedUser,
                 });
         });
     });
