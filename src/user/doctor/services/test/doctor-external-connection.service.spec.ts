@@ -3,9 +3,10 @@ import { TestBed } from '@automock/jest';
 import { mockDoctor } from './stub/doctor.stub';
 import { DoctorExternalConnectionService } from '../doctor-external-connection.service';
 import { UserManagementService } from '@/user/user/services/user-management.service';
-import { PATCHDoctorRequestDto, POSTDoctorRequestDto } from '../../dtos/doctor.request.dto';
 import { mockUser } from '@/user/user/services/test/stub/user-management.stub';
 import { NotFoundException } from '@nestjs/common';
+import { PATCHDoctorRequestDto } from '../../dtos/patch.doctor-management.dto';
+import { POSTDoctorRequestDto } from '../../dtos/post.doctor-management.dto';
 
 describe('DoctorExternalConnectionService', () => {
   let service: DoctorExternalConnectionService;
