@@ -1,6 +1,5 @@
 import { DiseaseModule } from "@/disease/disease.module";
 import { CompanyModule } from "@/location/company/company.module";
-import { SqlDatabaseModule } from "@/shared";
 import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
 import { DniInterceptorModule } from "@/shared/interceptors/dni/dni-interceptor.module";
 import { LocalStorageModule } from "@/shared/storage-manager";
@@ -19,6 +18,7 @@ import { MedicalResultRepository } from "./repositories/medical-result.repositor
 import { MedicalOrderModule } from "../medical-order/medical-order.module";
 import { MedicalResultDisease } from "./entities/result-disease.entity";
 import { MedicalResultDiseaseRepository } from "./repositories/medical-result-disease.repository";
+import { SqlDatabaseModule } from "@/shared/sql-database";
 
 @Module({
   imports: [

@@ -1,5 +1,5 @@
 import { Area } from "@/location/area/entities/area.entity";
-import { AbstractEntity } from "@/shared";
+import { AbstractEntity } from "@/shared/sql-database";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('tbl_lo_managements')

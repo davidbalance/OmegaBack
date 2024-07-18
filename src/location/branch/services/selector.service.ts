@@ -1,25 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { SelectorOption } from '@/shared';
 import { BranchRepository } from '../branch.repository';
+import { ISelectorOption, ISelectorOptionService } from '@/shared/utils/bases/base.selector';
 
 @Injectable()
-export class SelectorService {
+export class SelectorService implements ISelectorOptionService<number> {
 
   constructor(
     @Inject(BranchRepository) private readonly repository: BranchRepository
   ) { }
 
-  /**
-   * Encuentra todas las sucursales activas y solo retorna un key y label.
-   * @param company 
-   * @returns 
-   */
-  async find(company: number): Promise<SelectorOption<number>[]> {
+  async find(company: number): Promise<ISelectorOption<number>[]> {
     const diseases = await this.repository.query('branch')
       .select('branch.id', 'key')
       .addSelect('branch.name', 'label')
       .leftJoinAndSelect('branch.company', 'company', 'company.id = :companyId', { companyId: company })
-      .getRawMany<SelectorOption<number>>();
+      .getRawMany<ISelectorOption<number>>();
     return diseases;
   }
+
 }

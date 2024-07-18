@@ -1,4 +1,4 @@
-import { AbstractRepository } from "@/shared";
+import { AbstractRepository } from "@/shared/sql-database";
 import { WebClient } from "./entities/web-client.entity";
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";

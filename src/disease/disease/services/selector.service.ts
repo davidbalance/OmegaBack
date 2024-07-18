@@ -1,25 +1,23 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { DiseaseRepository } from "../disease.repository";
-import { SelectorOption } from "@/shared";
+import { ISelectorOption, ISelectorOptionService } from "@/shared/utils/bases/base.selector";
+import { DiseaseRepository } from "../repositories/disease.repository";
 
 @Injectable()
-export class SelectorService {
+export class SelectorService implements ISelectorOptionService<number> {
     constructor(
         @Inject(DiseaseRepository) private readonly repository: DiseaseRepository
     ) { }
 
-    /**
-     * Encuentra todas las morbilidades activas y solo retorna un key y label.
-     * @param group 
-     * @returns 
-     */
-    async find(group: number): Promise<SelectorOption<number>[]> {
+
+    async find(group: number): Promise<ISelectorOption<number>[]> {
         const diseases = await this.repository.query('disease')
             .select('disease.id', 'key')
             .addSelect('disease.name', 'label')
             .leftJoinAndSelect('disease.group', 'group', 'group.id = :groupId', { groupId: group })
             .where('group.status = :status', { status: true })
-            .getRawMany<SelectorOption<number>>();
+            .getRawMany<ISelectorOption<number>>();
         return diseases;
     }
+
+
 }

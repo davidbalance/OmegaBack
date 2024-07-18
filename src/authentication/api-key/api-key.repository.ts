@@ -1,4 +1,4 @@
-import { AbstractRepository } from "@/shared";
+import { AbstractRepository } from "@/shared/sql-database";
 import { Injectable, Logger } from "@nestjs/common";
 import { ApiKey } from "./entities/api-key.entity";
 import { FindOptionsWhere, Repository } from "typeorm";

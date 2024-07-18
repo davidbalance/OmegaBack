@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { CredentialCreateEvent, CredentialEvent } from "@/shared";
 import { OnEvent } from "@nestjs/event-emitter";
 import { WebClientRepository } from "../web-client.repository";
+import { CredentialCreateEvent, CredentialEvent } from "@/shared/events";
 
 @Injectable()
 export class CredentialListener {

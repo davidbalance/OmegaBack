@@ -1,6 +1,6 @@
 import { City } from "@/location/city/entities/city.entity";
 import { Company } from "src/location/company/entities/company.entity";
-import { AbstractEntity } from "src/shared";
+import { AbstractEntity } from "@/shared/sql-database";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ExternalKey } from "../external-key/entities/external-key.entity";
 

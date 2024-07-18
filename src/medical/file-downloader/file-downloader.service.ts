@@ -1,10 +1,10 @@
 import { Inject, Injectable, NotFoundException, StreamableFile } from '@nestjs/common';
-import { FindFilePathService, RemoveFileService } from '@/shared';
 import { ZipperService } from '@/shared/zipper/zipper.service';
 import { FileSourceEnum, DownloadAndZipContentRequestDto, FileSourceRequestDto } from './dto/file-downloader.request.dto';
 import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';
 import { MedicalResultService } from '../medical-result/services/medical-result.service';
 import { MedicalReportService } from '../medical-report/medical-report.service';
+import { FindFilePathService, RemoveFileService } from '@/shared/utils/bases/base.file-service';
 
 @Injectable()
 export class FileDownloaderService {
@@ -49,7 +49,7 @@ export class FileDownloaderService {
 
     async deleteFile({ id, type }: FileSourceRequestDto): Promise<void> {
         const state = await this.fileRemovers[type].removeFile(id);
-        if(!state) {
+        if (!state) {
             throw new NotFoundException('Archivo no eliminado');
         }
     }

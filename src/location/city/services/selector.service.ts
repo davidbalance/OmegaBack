@@ -1,23 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CityRepository } from '../city.repository';
-import { SelectorOption } from '@/shared';
+import { ISelectorOption, ISelectorOptionService } from '@/shared/utils/bases/base.selector';
 
 @Injectable()
-export class SelectorService {
+export class SelectorService implements ISelectorOptionService<number> {
 
   constructor(
     @Inject(CityRepository) private readonly repository: CityRepository,
   ) { }
 
-  /**
-   * Encuentra todas las ciudades y solo retorna un key y label.
-   * @returns 
-   */
-  async find(): Promise<SelectorOption<number>[]> {
+  async find(params: any = null): Promise<ISelectorOption<number>[]> {
     const diseases = await this.repository.query('city')
       .select('city.id', 'key')
       .addSelect('city.name', 'label')
-      .getRawMany<SelectorOption<number>>();
+      .getRawMany<ISelectorOption<number>>();
     return diseases;
   }
 }

@@ -1,7 +1,7 @@
 
 import { WebLogo } from "@/omega-web/web-logo/entities/web-logo.entity";
 import { WebResource } from "@/omega-web/web-resource/entities/web-resource.entity";
-import { AbstractEntity } from "@/shared";
+import { AbstractEntity } from "@/shared/sql-database";
 import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_ow_clients' })

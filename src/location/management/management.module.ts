@@ -3,7 +3,7 @@ import { ManagementService } from './management.service';
 import { ManagementController } from './management.controller';
 import { ManagementRepository } from './management.repository';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { SqlDatabaseModule } from '@/shared';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Management } from './entities/management.entity';
 
 @Module({

@@ -1,25 +1,28 @@
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
-import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
+import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { DiseaseGroupService } from "../services/disease-group-management.service";
-import { DELETEDiseaseGroupResponseDto, GETDiseaseGroupArrayResponseDto, PATCHDiseaseGroupResponseDto, POSTDiseaseGroupResponseDto } from "../dtos/disease-group.response.dto";
-import { PATCHDiseaseGroupRequestDto, POSTDiseaseGroupRequestDto } from "../dtos/disease-group.request.dto";
+import { DiseaseGroupManagementService } from "../services/disease-group-management.service";
+import { DELETEDiseaseGroupResponseDto } from "../dtos/delete.disease-group.dto";
+import { GETDiseaseGroupArrayResponseDto } from "../dtos/get.disease-group.dto";
+import { PATCHDiseaseGroupRequestDto, PATCHDiseaseGroupResponseDto } from "../dtos/patch.disease-group.dto";
+import { POSTDiseaseGroupRequestDto, POSTDiseaseGroupResponseDto } from "../dtos/post.disease-group.dto";
 
 @ApiTags('Disease/Group')
 @ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('diseases/groups')
-export class DiseaseGroupController {
-  constructor(private readonly diseaseGroupService: DiseaseGroupService) { }
+export class DiseaseGroupManagementController {
+  constructor(
+    @Inject(DiseaseGroupManagementService) private readonly diseaseGroupService: DiseaseGroupManagementService
+  ) { }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<GETDiseaseGroupArrayResponseDto> {
     const groups = await this.diseaseGroupService.find();
     return plainToInstance(GETDiseaseGroupArrayResponseDto, { groups: groups });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() body: POSTDiseaseGroupRequestDto
@@ -28,22 +31,20 @@ export class DiseaseGroupController {
     return plainToInstance(POSTDiseaseGroupResponseDto, group);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(":id")
-  async findOneAndUpdate(
+  async updateOneById(
     @Param('id') id: number,
     @Body() body: PATCHDiseaseGroupRequestDto
   ): Promise<PATCHDiseaseGroupResponseDto> {
-    await this.diseaseGroupService.findOneAndUpdate(id, body);
+    await this.diseaseGroupService.updateOne(id, body);
     return {};
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async findOneAndDelete(
+  async deleteOneById(
     @Param('id') id: number
   ): Promise<DELETEDiseaseGroupResponseDto> {
-    await this.diseaseGroupService.findOneAndDelete(id);
+    await this.diseaseGroupService.deleteOne(id);
     return {};
   }
 }

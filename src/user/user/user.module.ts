@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { UserRepository } from './repositories/user.repository';
-import { SqlDatabaseModule } from 'src/shared';
 import { User } from './entities/user.entity';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { UserExtraAttribute } from './entities/user-extra-attribute.entity';
@@ -11,6 +10,7 @@ import { UserManagementService } from './services/user-management.service';
 import { CredentialUserListener } from './listeners/credential-user.listener';
 import { UserExtraAttributeController } from './controllers/user-extra-attribute.controller';
 import { UserManagementController } from './controllers/user-management.controller';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 
 @Module({
   imports: [

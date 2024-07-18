@@ -7,7 +7,8 @@ import { EventEmitter2 } from "@nestjs/event-emitter";
 import { MedicalResult } from "../entities/result.entity";
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { POSTMedicalResultRequestDto } from "../dtos/medical-result.request.dto";
-import { fileResultPath, MedicalResultEvent, MedicalResultFindOrCreateDoctorEvent, MedicalResultFindOrCreateExamEvent, signaturePath } from "@/shared";
+import { MedicalResultEvent, MedicalResultFindOrCreateDoctorEvent, MedicalResultFindOrCreateExamEvent } from "@/shared/events";
+import { fileResultPath, signaturePath } from "@/shared/utils";
 
 @Injectable()
 export class ExternalConnectionService {

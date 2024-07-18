@@ -1,8 +1,8 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { AbstractRepository } from "src/shared";
 import { DiseaseGroup } from "../entities/disease-group.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
+import { AbstractRepository } from "@/shared/sql-database";
 
 @Injectable()
 export class DiseaseGroupRepository

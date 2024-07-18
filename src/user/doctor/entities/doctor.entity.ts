@@ -1,4 +1,4 @@
-import { AbstractEntity } from "src/shared";
+import { AbstractEntity } from "@/shared/sql-database";
 import { User } from "src/user/user/entities/user.entity";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 

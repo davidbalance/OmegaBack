@@ -1,4 +1,4 @@
-import { SqlDatabaseModule } from '@/shared';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Module } from '@nestjs/common';
 import { ExternalKey } from './entities/external-key.entity';
 import { ExternalKeyRepository } from './external-key.repository';

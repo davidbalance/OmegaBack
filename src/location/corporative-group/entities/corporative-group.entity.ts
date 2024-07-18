@@ -1,5 +1,5 @@
 import { Company } from "src/location/company/entities/company.entity";
-import { AbstractEntity } from "src/shared";
+import { AbstractEntity } from "@/shared/sql-database";
 import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ExternalKey } from "../external-key/entities/external-key.entity";
 

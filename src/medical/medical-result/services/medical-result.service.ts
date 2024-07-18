@@ -1,4 +1,3 @@
-import { FindFilePathService, RemoveFileService, fileResultPath } from "@/shared";
 import { Injectable, Inject, Logger } from "@nestjs/common";
 import { SendAttributeService } from "../send-attribute/send-attribute.service";
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
@@ -10,6 +9,8 @@ import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager
 import { MedicalResultDiseaseRepository } from "../repositories/medical-result-disease.repository";
 import { PATCHMedicalResultDiseaseRequestDto, POSTMedicalResultDiseaseRequestDto } from "../dtos/medical-result.request.dto";
 import { MedicalResultDisease } from "../entities/result-disease.entity";
+import { fileResultPath } from "@/shared/utils";
+import { FindFilePathService, RemoveFileService } from "@/shared/utils/bases/base.file-service";
 
 @Injectable()
 export class MedicalResultService implements

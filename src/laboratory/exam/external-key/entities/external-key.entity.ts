@@ -1,4 +1,4 @@
-import { ExternalKeyEntity } from "@/shared";
+import { ExternalKeyEntity } from "@/shared/external-key";
 import { Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_lab_exam_external_key' })

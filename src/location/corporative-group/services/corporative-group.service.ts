@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CorporativeGroupRepository } from '../corporative-group.repository';
 import { CorporativeGroup } from '../entities/corporative-group.entity';
-import { SelectorOption } from '@/shared';
 
 @Injectable()
 export class CorporativeGroupService {

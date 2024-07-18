@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DiseaseGroupRepository } from '../repository/disease-group.repository';
 import { DiseaseGroup } from '../entities/disease-group.entity';
-import { PATCHDiseaseGroupRequestDto, POSTDiseaseGroupRequestDto } from '../dtos/disease-group.request.dto';
+import { PATCHDiseaseGroupRequestDto } from '../dtos/patch.disease-group.dto';
+import { POSTDiseaseGroupRequestDto } from '../dtos/post.disease-group.dto';
 
 @Injectable()
 export class DiseaseGroupManagementService {

@@ -1,24 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ExamRepository } from '../exam.repository';
-import { SelectorOption } from '@/shared';
+import { ISelectorOption, ISelectorOptionService } from '@/shared/utils/bases/base.selector';
 
 @Injectable()
-export class SelectorService {
+export class SelectorService implements ISelectorOptionService<number> {
 
   constructor(
     @Inject(ExamRepository) private readonly repository: ExamRepository
   ) { }
 
-  /**
-   * Encuentra todos los examenes medicos activos y solo retorna un key y label.
-   * @returns 
-   */
-  async find(): Promise<SelectorOption<number>[]> {
+  async find(params: any = null): Promise<ISelectorOption<number>[]> {
     const exams = await this.repository.query('exam')
       .select('exam.id', 'key')
       .addSelect('exam.name', 'label')
-      .getRawMany<SelectorOption<number>>();
+      .getRawMany<ISelectorOption<number>>();
     return exams;
   }
-
 }

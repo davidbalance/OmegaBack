@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { Branch } from './entities/branch.entity';
-import { SqlDatabaseModule } from 'src/shared';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { BranchRepository } from './branch.repository';
 import { CompanyModule } from '../company/company.module';
 import { CityModule } from '../city/city.module';

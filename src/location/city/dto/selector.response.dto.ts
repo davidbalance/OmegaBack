@@ -1,16 +1,3 @@
-import { SelectorOption } from "@/shared";
-import { Expose, Type } from "class-transformer";
+import { SelectorOptionArray } from "@/shared/utils/bases/base.selector";
 
-class SelectorOptionCitDto implements SelectorOption<number> {
-    @Expose()
-    public readonly key: number;
-
-    @Expose()
-    public readonly label: string;
-}
-
-export class GETSelectorOptionArrayResponseDto {
-    @Type(() => SelectorOptionCitDto)
-    @Expose()
-    public readonly options: SelectorOptionCitDto[];
-}
+export class GETSelectorOptionArrayResponseDto extends SelectorOptionArray<number> { }

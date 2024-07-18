@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { OnEvent } from "@nestjs/event-emitter";
 import { ExternalConnectionService } from "../services/external-connection.service";
-import { MedicalResultEvent, MedicalResultFindOrCreateExamEvent } from "@/shared";
+import { MedicalResultEvent, MedicalResultFindOrCreateExamEvent } from "@/shared/events";
 
 @Injectable()
 export class MedicalResultListener {

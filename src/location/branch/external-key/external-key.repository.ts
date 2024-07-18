@@ -1,8 +1,8 @@
-import { AbstractRepository } from '@/shared';
 import { Injectable, Logger } from '@nestjs/common';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExternalKey } from './entities/external-key.entity';
+import { AbstractRepository } from '@/shared/sql-database';
 
 @Injectable()
 export class ExternalKeyRepository extends AbstractRepository<number, ExternalKey> {

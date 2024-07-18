@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AbstractExternalKeyService } from '@/shared';
+import { AbstractExternalKeyService } from '@/shared/external-key';
 import { ExternalKey } from './entities/external-key.entity';
 import { ExternalKeyRepository } from './external-key.repository';
 

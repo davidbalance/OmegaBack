@@ -3,8 +3,8 @@ import { UserCredentialRepository } from './user-credential.repository';
 import { UserCredential } from './entities/user-credential.entity';
 import * as bcrypt from 'bcrypt';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CredentialCreateEvent, CredentialEvent } from '@/shared';
 import { POSTCredentialRequestDto } from './dtos/user-credential.request.dto';
+import { CredentialCreateEvent, CredentialEvent } from '@/shared/events';
 
 @Injectable()
 export class UserCredentialService {

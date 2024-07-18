@@ -1,7 +1,7 @@
-import { CredentialEvent, CredentialCreateEvent, CredentialRemoveEvent } from "@/shared";
 import { Inject, Injectable } from "@nestjs/common";
 import { OnEvent } from "@nestjs/event-emitter";
 import { UserManagementService } from "../services/user-management.service";
+import { CredentialCreateEvent, CredentialEvent, CredentialRemoveEvent } from "@/shared/events";
 
 @Injectable()
 export class CredentialUserListener {

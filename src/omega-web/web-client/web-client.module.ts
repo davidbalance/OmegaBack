@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { WebClientService } from './web-client.service';
 import { WebClientController } from './web-client.controller';
-import { SqlDatabaseModule } from '@/shared';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { WebClient } from './entities/web-client.entity';
 import { WebClientRepository } from './web-client.repository';
 import { JwtAuthStrategy } from '@/shared/guards/authentication-guard/strategies';

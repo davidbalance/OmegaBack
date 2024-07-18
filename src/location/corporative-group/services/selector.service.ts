@@ -1,24 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CorporativeGroupRepository } from '../corporative-group.repository';
-import { SelectorOption } from '@/shared';
+import { ISelectorOption, ISelectorOptionService } from '@/shared/utils/bases/base.selector';
 
 @Injectable()
-export class SelectorService {
+export class CorporativeGroupSelectorService implements ISelectorOptionService<number> {
 
   constructor(
     @Inject(CorporativeGroupRepository) private readonly repository: CorporativeGroupRepository
   ) { }
 
-  /**
-   * Encuentra todos los grupos corporativos activos y solo retorna un key y label.
-   * @returns 
-   */
-  async find(): Promise<SelectorOption<number>[]> {
+  async find(params: any = null): Promise<ISelectorOption<number>[]> {
     const group = await this.repository.query('group')
       .select('group.id', 'key')
       .addSelect('group.name', 'label')
       .where('group.status = :status', { status: true })
-      .getRawMany<SelectorOption<number>>();
+      .getRawMany<ISelectorOption<number>>();
     return group;
   }
 }

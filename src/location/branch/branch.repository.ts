@@ -2,7 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { Branch } from "./entities/branch.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
-import { AbstractRepository } from "@/shared";
+import { AbstractRepository } from "@/shared/sql-database";
 
 @Injectable()
 export class BranchRepository

@@ -1,4 +1,4 @@
-import { AbstractEntity } from "src/shared";
+import { AbstractEntity } from "@/shared/sql-database";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ExternalKey } from "../external-key/entities/external-key.entity";
 import { SendAttribute } from "../send-attribute/entities/send-attribute.entity";

@@ -1,4 +1,4 @@
-import { AbstractEntity } from "@/shared";
+import { AbstractEntity } from "@/shared/sql-database";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_ow_resources' })

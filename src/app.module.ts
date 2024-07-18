@@ -1,5 +1,4 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { LoggerModule, SqlDatabaseModule } from './shared';
 import { DiseaseModule } from './disease/disease.module';
 import { LocationModule } from './location/location.module';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -12,6 +11,8 @@ import { ApiKeyGuardModule } from './shared/guards/api-key-guard/api-key-guard.m
 import { LoggerMiddleware } from './shared/middleware';
 import { HealthCheckModule } from './shared/health-status/health-check.module';
 import { MedicalModule } from './medical/medical.module';
+import { LoggerModule } from './shared/logger';
+import { SqlDatabaseModule } from './shared/sql-database';
 
 @Module({
   imports: [

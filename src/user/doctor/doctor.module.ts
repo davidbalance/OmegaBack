@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SqlDatabaseModule } from 'src/shared';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Doctor } from './entities/doctor.entity';
 import { UserModule } from '../user/user.module';
 import { LocalStorageModule } from '@/shared/storage-manager';

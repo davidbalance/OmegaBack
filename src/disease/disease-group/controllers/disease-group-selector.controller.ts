@@ -1,18 +1,19 @@
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
-import { Controller, UseGuards, Get } from "@nestjs/common";
+import { Controller, UseGuards, Get, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { GETSelectorOptionArrayResponseDto } from "../dtos/selector.response.dto";
-import { SelectorService } from "../services/disease-group-selector.service";
-
+import { DiseaseGroupSelectorService } from "../services/disease-group-selector.service";
+import { GETSelectorOptionArrayResponseDto } from "@/disease/disease/dtos/selector.response.dto";
 
 @ApiTags('Selector', 'Disease/Group')
 @ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('selector/diseases/groups')
-export class SelectorController {
-    constructor(private readonly service: SelectorService) { }
+export class DiseaseGroupSelectorController {
+    constructor(
+        @Inject(DiseaseGroupSelectorService) private readonly service: DiseaseGroupSelectorService
+    ) { }
 
-    @UseGuards(JwtAuthGuard)
     @Get()
     async findSelectorOptions(): Promise<GETSelectorOptionArrayResponseDto> {
         const options = await this.service.find();

@@ -1,4 +1,4 @@
-import { AbstractRepository } from "@/shared";
+import { AbstractRepository } from "@/shared/sql-database";
 import { Injectable, Logger } from "@nestjs/common";
 import { UserExtraAttribute } from "../entities/user-extra-attribute.entity";
 import { Repository } from "typeorm";

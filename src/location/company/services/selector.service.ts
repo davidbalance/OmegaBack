@@ -1,27 +1,22 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { SelectorOption } from '@/shared';
 import { CompanyRepository } from '../company.repository';
-import { Company } from '../entities/company.entity';
+import { ISelectorOption, ISelectorOptionService } from '@/shared/utils/bases/base.selector';
 
 @Injectable()
-export class SelectorService {
+export class SelectorService implements ISelectorOptionService<number> {
 
   constructor(
     @Inject(CompanyRepository) private readonly repository: CompanyRepository
   ) { }
 
-  /**
-   * Encuentra todos las empresas activas y solo retorna un key y label.
-   * @param group 
-   * @returns 
-   */
-  async find(group: number): Promise<SelectorOption<number>[]> {
+  async find(group: number): Promise<ISelectorOption<number>[]> {
     const companies = await this.repository.query('company')
       .select('company.id', 'key')
       .addSelect('company.name', 'label')
       .leftJoinAndSelect('company.group', 'group', 'group.id = :groupId', { groupId: group })
       .where('group.status = :status', { status: true })
-      .getRawMany<SelectorOption<number>>();
+      .getRawMany<ISelectorOption<number>>();
     return companies;
   }
+
 }

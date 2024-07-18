@@ -1,13 +1,15 @@
 import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { MedicalReportRepository } from './medical-report.repository';
 import { MedicalReport } from './entities/medical-report.entity';
-import { FindFilePathService, PdfManagerService, RemoveFileService, fileReportPath } from '@/shared';
 import { readFileSync } from 'fs';
 import dayjs from 'dayjs';
 import path from 'path';
 import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';
 import { SendAttributeService } from './send-attribute/send-attribute.service';
 import { POSTMedicalReportRequestDto } from './dtos/medical-report.request.dto';
+import { PdfManagerService } from '@/shared/pdf-manager';
+import { fileReportPath } from '@/shared/utils';
+import { FindFilePathService, RemoveFileService } from '@/shared/utils/bases/base.file-service';
 
 @Injectable()
 export class MedicalReportService implements

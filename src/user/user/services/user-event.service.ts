@@ -1,4 +1,4 @@
-import { UserEvent, UserRemoveEvent, UserUpdateEvent } from "@/shared";
+import { UserEvent, UserUpdateEvent, UserRemoveEvent } from "@/shared/events";
 import { Inject, Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 
