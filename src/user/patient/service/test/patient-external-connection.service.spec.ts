@@ -5,8 +5,9 @@ import { NotFoundException } from '@nestjs/common'
 import { PatientExternalConnectionService } from '../patient-external-connection.service';
 import { PatientRepository } from '../../patient.repository';
 import { mockPatient } from './stub/patient.stub';
-import { PATCHPatientRequestDto, POSTPatientRequestDto } from '../../dtos/patient.request.dto';
 import { PatientGenderEnum } from '../../common/enums/patient.enum';
+import { PATCHPatientRequestDto } from '../../dtos/patch.patient-management.dto';
+import { POSTPatientRequestDto } from '../../dtos/post.patient-management,dto';
 
 describe('PatientExternalConnectionService', () => {
   let service: PatientExternalConnectionService;

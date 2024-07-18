@@ -3,7 +3,7 @@ import { Controller, UseGuards, Get } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { GETSelectorOptionArrayResponseDto } from "../dtos/selector.response.dto";
-import { SelectorService } from "../services/selector.service";
+import { SelectorService } from "../services/disease-group-selector.service";
 
 
 @ApiTags('Selector', 'Disease/Group')
