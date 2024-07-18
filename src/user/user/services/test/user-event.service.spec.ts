@@ -1,7 +1,7 @@
 import { TestBed } from '@automock/jest';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserEventService } from '../user-event.service';
-import { UserEvent, UserRemoveEvent, UserUpdateEvent } from '@/shared';
+import { UserEvent, UserUpdateEvent, UserRemoveEvent } from '@/shared/events';
 
 describe('User Event Service', () => {
     let service: UserEventService;

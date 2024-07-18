@@ -5,7 +5,7 @@ import { DiseaseGroupManagementService } from '@/disease/disease-group/services/
 import { DiseaseRepository } from '../repositories/disease.repository';
 
 @Injectable()
-export class DiseaseService {
+export class DiseaseManagementService {
 
   constructor(
     @Inject(DiseaseRepository) private readonly repository: DiseaseRepository,
@@ -23,19 +23,14 @@ export class DiseaseService {
       select: {
         id: true,
         name: true,
-        group: {
-          id: true,
-          name: true
-        }
+        group: { id: true, name: true }
       },
-      relations: {
-        group: true
-      }
+      relations: { group: true }
     });
     return diseases;
   }
 
-  async findOneAndUpdate(id: number, { group, ...data }: PATCHDiseaseRequestDto): Promise<Disease> {
+  async updateOne(id: number, { group, ...data }: PATCHDiseaseRequestDto): Promise<Disease> {
     if (group) {
       const diseaseGroup = await this.groupService.findOneById(group);
       return await this.repository.findOneAndUpdate({ id }, { ...data, group: diseaseGroup });
@@ -44,7 +39,7 @@ export class DiseaseService {
     }
   }
 
-  async findOneAndDelete(id: number): Promise<void> {
+  async deleteOne(id: number): Promise<void> {
     await this.repository.findOneAndDelete({ id });
   }
 }

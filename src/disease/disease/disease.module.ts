@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DiseaseService } from './services/disease.service';
+import { DiseaseManagementService } from './services/disease-management.service';
 import { DiseaseController } from './controllers/disease.controller';
 import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Disease } from './entities/disease.entity';
@@ -18,10 +18,12 @@ import { DiseaseRepository } from './repositories/disease.repository';
     SelectorController
   ],
   providers: [
-    DiseaseService,
+    DiseaseManagementService,
     DiseaseRepository,
     SelectorService,
   ],
-  exports: [DiseaseService]
+  exports: [
+    DiseaseManagementService
+  ]
 })
 export class DiseaseModule { }
