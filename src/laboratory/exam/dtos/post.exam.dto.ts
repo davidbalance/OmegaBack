@@ -9,10 +9,3 @@ export class POSTExamRequestDto {
     @IsNotEmpty()
     public readonly name: string;
 }
-
-
-export class PATCHExamRequestDto {
-    @IsString()
-    @IsNotEmpty()
-    public readonly name: string;
-}

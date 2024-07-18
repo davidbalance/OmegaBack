@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ExamRepository } from '../exam.repository';
 import { ISelectorOption, ISelectorOptionService } from '@/shared/utils/bases/base.selector';
+import { ExamRepository } from '../repositories/exam.repository';
 
 @Injectable()
-export class SelectorService implements ISelectorOptionService<number> {
+export class ExamSelectorService implements ISelectorOptionService<number> {
 
   constructor(
     @Inject(ExamRepository) private readonly repository: ExamRepository

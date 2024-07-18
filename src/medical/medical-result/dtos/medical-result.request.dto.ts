@@ -1,4 +1,4 @@
-import { POSTExamRequestDto } from "@/laboratory/exam/dtos/exam.request.dto";
+import { POSTExamRequestDto } from "@/laboratory/exam/dtos/post.exam.dto";
 import { POSTMedicalOrderRequestDto } from "@/medical/medical-order/dtos/medical-order.request.dto";
 import { POSTDoctorRequestDto } from "@/user/doctor/dtos/post.doctor-management.dto";
 import { ApiProperty } from "@nestjs/swagger";

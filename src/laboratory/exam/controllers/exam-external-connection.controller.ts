@@ -2,16 +2,17 @@ import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { Controller, Inject, UseGuards, Post, Param, Body, Patch } from "@nestjs/common";
 import { ApiTags, ApiHeader } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { ExternalConnectionService } from "../services/external-connection.service";
-import { POSTExamRequestDto, PATCHExamRequestDto } from "../dtos/exam.request.dto";
-import { GETExamResponseDto } from "../dtos/exam.response.dto";
+import { ExamExternalConnectionService } from "../services/exam-external-connection.service";
+import { GETExamResponseDto } from "../dtos/get.exam.dto";
+import { PATCHExamRequestDto } from "../dtos/patch.exam.dto";
+import { POSTExamRequestDto } from "../dtos/post.exam.dto";
 
 @ApiTags('External/Connection', 'Laboratory/Exam')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @Controller('external/connection/exams/:source')
-export class ExternalConnectionController {
+export class ExamExternalConnectionController {
     constructor(
-        @Inject(ExternalConnectionService) private readonly service: ExternalConnectionService
+        @Inject(ExamExternalConnectionService) private readonly service: ExamExternalConnectionService
     ) { }
 
     @UseGuards(ApiKeyAuthGuard)

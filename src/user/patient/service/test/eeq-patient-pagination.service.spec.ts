@@ -66,8 +66,6 @@ describe('EeqPatientPaginationService', () => {
       
       const expectedPatients = flattenPatients(mockedPatients);
 
-      console.log(data, expectedPatients);
-
       expect(pages).toEqual(1);
       expect(data).toEqual(expectedPatients);
       expect(repository.query).toHaveBeenCalledWith('patient');

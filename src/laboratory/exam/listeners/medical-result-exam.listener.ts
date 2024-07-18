@@ -1,12 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { OnEvent } from "@nestjs/event-emitter";
-import { ExternalConnectionService } from "../services/external-connection.service";
+import { ExamExternalConnectionService } from "../services/exam-external-connection.service";
 import { MedicalResultEvent, MedicalResultFindOrCreateExamEvent } from "@/shared/events";
 
 @Injectable()
-export class MedicalResultListener {
+export class MedicalResultExamListener {
     constructor(
-        @Inject(ExternalConnectionService) private readonly externalService: ExternalConnectionService
+        @Inject(ExamExternalConnectionService) private readonly externalService: ExamExternalConnectionService
     ) { }
 
     @OnEvent(MedicalResultEvent.FIND_OR_CREATE_EXAM)

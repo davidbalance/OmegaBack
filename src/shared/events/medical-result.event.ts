@@ -1,4 +1,4 @@
-import { POSTExamRequestDto } from "@/laboratory/exam/dtos/exam.request.dto";
+import { POSTExamRequestDto } from "@/laboratory/exam/dtos/post.exam.dto";
 import { POSTDoctorRequestDto } from "@/user/doctor/dtos/post.doctor-management.dto";
 
 export const MedicalResultEvent = {
