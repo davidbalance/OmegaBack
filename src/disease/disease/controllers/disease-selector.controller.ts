@@ -2,14 +2,14 @@ import { Controller, Get, Param, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { plainToInstance } from "class-transformer";
-import { SelectorService } from "../services/selector.service";
+import { DiseaseSelectorService } from "../services/disease-selector.service";
 import { GETSelectorOptionArrayResponseDto } from "../dtos/selector.response.dto";
 
 @ApiTags('Selector', 'Disease/Disease')
 @ApiBearerAuth()
 @Controller('selector/diseases')
-export class SelectorController {
-    constructor(private readonly service: SelectorService) { }
+export class DiseaseSelectorController {
+    constructor(private readonly service: DiseaseSelectorService) { }
 
     @UseGuards(JwtAuthGuard)
     @Get('by/group/:group')

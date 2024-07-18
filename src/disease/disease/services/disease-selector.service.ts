@@ -3,11 +3,10 @@ import { ISelectorOption, ISelectorOptionService } from "@/shared/utils/bases/ba
 import { DiseaseRepository } from "../repositories/disease.repository";
 
 @Injectable()
-export class SelectorService implements ISelectorOptionService<number> {
+export class DiseaseSelectorService implements ISelectorOptionService<number> {
     constructor(
         @Inject(DiseaseRepository) private readonly repository: DiseaseRepository
     ) { }
-
 
     async find(group: number): Promise<ISelectorOption<number>[]> {
         const diseases = await this.repository.query('disease')
