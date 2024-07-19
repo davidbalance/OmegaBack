@@ -2,16 +2,16 @@ import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
-import { ExternalConnectionService } from "../services/external-connection.service";
+import { CompanyExternalConnectionService } from "../services/company-external-connection.service";
 import { PATCHCompanyRequestDto, POSTCompanyRequestDto } from "../dtos/company.request.dto";
 import { PATCHCompanyResponseDto, POSTCompanyResponseDto } from "../dtos/company.response.dto";
 
 @ApiTags('Location/Company', 'External/Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @Controller('external/connection/company/:source')
-export class ExternalConnectionController {
+export class CompanyExternalConnectionController {
     constructor(
-        @Inject(ExternalConnectionService) private readonly service: ExternalConnectionService
+        @Inject(CompanyExternalConnectionService) private readonly service: CompanyExternalConnectionService
     ) { }
 
     @UseGuards(ApiKeyAuthGuard)

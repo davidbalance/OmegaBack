@@ -1,9 +1,9 @@
 
 import { AbstractRepository } from "@/shared/sql-database";
-import { Company } from "./entities/company.entity";
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
+import { Company } from "../entities/company.entity";
 
 @Injectable()
 export class CompanyRepository

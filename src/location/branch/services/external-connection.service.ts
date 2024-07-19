@@ -1,15 +1,18 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { BranchRepository } from "../branch.repository";
 import { Branch } from "../entities/branch.entity";
-import { ExternalConnectionService as CompanyExternalConnectionService } from "@/location/company/services/external-connection.service";
 import { CityService } from "@/location/city/services/city.service";
 import { ExternalKeyService } from "../external-key/external-key.service";
 import { PATCHBranchRequestDto, POSTBranchRequestDto } from "../dtos/branch.request.dto";
+import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
+import { Company } from "@/location/company/entities/company.entity";
+import { POSTCompanyRequestExternalConnectionDto } from "@/location/company/dtos/company.request.dto";
+import { INJECT_COMPANY_EXTERNAL_KEY } from "@/location/company/services/company-external-connection.service";
 
 @Injectable()
 export class ExternalConnectionService {
     constructor(
-        @Inject(CompanyExternalConnectionService) private readonly externalService: CompanyExternalConnectionService,
+        @Inject(INJECT_COMPANY_EXTERNAL_KEY) private readonly externalService: IExternalConnectionService<POSTCompanyRequestExternalConnectionDto, Company>,
         @Inject(BranchRepository) private readonly repository: BranchRepository,
         @Inject(ExternalKeyService) private readonly keyService: ExternalKeyService,
         @Inject(CityService) private readonly cityService: CityService

@@ -1,24 +1,24 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, Provider } from "@nestjs/common";
 import { Company } from "../entities/company.entity";
-import { CompanyRepository } from "../company.repository";
-import { ExternalKeyService } from "../external-key/external-key.service";
-import { PATCHCompanyRequestDto, POSTCompanyRequestDto } from "../dtos/company.request.dto";
+import { PATCHCompanyRequestDto, POSTCompanyRequestExternalConnectionDto } from "../dtos/company.request.dto";
 import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { CorporativeGroup } from "@/location/corporative-group/entities/corporative-group.entity";
-import { POSTCorporativeGroupExternalConnectionRequestDto } from "@/location/corporative-group/dtos/corporative-group.request.dto";
 import { INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION } from "@/location/corporative-group/services/corporative-group-external-connection.service";
+import { POSTCorporativeGroupExternalConnectionRequestDto } from "@/location/corporative-group/dtos/post.corporative-group-external-connection.dto";
+import { CompanyRepository } from "../repositories/company.repository";
+import { CompanyExternalKeyService } from "./company-external-key.service";
 
-type CreateCompanyType = POSTCompanyRequestDto & { source: string };
+type CompanyRequestType = POSTCompanyRequestExternalConnectionDto | PATCHCompanyRequestDto;
 
 @Injectable()
-export class ExternalConnectionService {
+export class CompanyExternalConnectionService implements IExternalConnectionService<CompanyRequestType, Company> {
     constructor(
         @Inject(CompanyRepository) private readonly repository: CompanyRepository,
         @Inject(INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION) private readonly externalService: IExternalConnectionService<POSTCorporativeGroupExternalConnectionRequestDto, CorporativeGroup>,
-        @Inject(ExternalKeyService) private readonly keyService: ExternalKeyService
+        @Inject(CompanyExternalKeyService) private readonly keyService: CompanyExternalKeyService
     ) { }
 
-    async create({ source, key, corporativeGroup, ...company }: CreateCompanyType): Promise<Company> {
+    async create({ source, key, corporativeGroup, ...company }: POSTCompanyRequestExternalConnectionDto): Promise<Company> {
         const group = await this.externalService.findOneOrCreate({
             source: source,
             ...corporativeGroup
@@ -37,7 +37,7 @@ export class ExternalConnectionService {
         }
     }
 
-    async findOneOrCreate({ source, key, ...company }: CreateCompanyType): Promise<Company> {
+    async findOneOrCreate({ source, key, ...company }: POSTCompanyRequestExternalConnectionDto): Promise<Company> {
         try {
             const foundCompany = await this.repository.findOne({
                 where: [
@@ -58,3 +58,7 @@ export class ExternalConnectionService {
         return company;
     }
 }
+
+
+export const INJECT_COMPANY_EXTERNAL_KEY = 'COMPANY_EXTERNAL_CONNECTION';
+export const CompanyExternalConnectionProvider: Provider = { provide: INJECT_COMPANY_EXTERNAL_KEY, useClass: CompanyExternalConnectionService }

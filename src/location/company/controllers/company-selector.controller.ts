@@ -1,15 +1,20 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Param, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { GETSelectorOptionArrayResponseDto } from '../dtos/selector.response.dto';
-import { SelectorService } from '../services/selector.service';
+import {
+  CompanySelectorService
+
+} from '../services/company-selector.service';
 
 @ApiTags('Location/Company', 'Selector')
 @ApiBearerAuth()
 @Controller('selector/companies')
-export class SelectorController {
-  constructor(private readonly service: SelectorService) { }
+export class CompanySelectorController {
+  constructor(
+    @Inject(CompanySelectorService) private readonly service: CompanySelectorService
+  ) { }
 
   @UseGuards(JwtAuthGuard)
   @Get(':group')
