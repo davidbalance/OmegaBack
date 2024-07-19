@@ -1,4 +1,4 @@
-import { AreaResponseDto } from "@/location/area/dto/area.response.dto";
+import { AreaResponseDto } from "@/location/area/dtos/area.dto";
 import { Expose, Type } from "class-transformer";
 
 export class ManagementResponseDto {

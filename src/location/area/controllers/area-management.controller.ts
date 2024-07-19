@@ -1,27 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Inject } from '@nestjs/common';
-import { AreaService } from './area.service';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { PATCHAreaRequestDto, POSTAreaRequestDto } from './dto/area.request.dto';
-import { DELETEAreaResponseDto, GETAreaArrayResponseDto, PATCHAreaResponseDto, POSTAreaResponseDto } from './dto/area.response.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Inject } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
+import { AreaManagementService } from '../services/area-management.service';
+import { DELETEAreaResponseDto } from '../dtos/delete.area.dto';
+import { GETAreaArrayResponseDto } from '../dtos/get.area.dto';
+import { PATCHAreaRequestDto, PATCHAreaResponseDto } from '../dtos/patch.area.dto';
+import { POSTAreaRequestDto, POSTAreaResponseDto } from '../dtos/post.area.dto';
 
 @ApiTags('Location/Area')
 @ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('area')
-export class AreaController {
+export class AreaManagementController {
   constructor(
-    @Inject(AreaService) private readonly service: AreaService
+    @Inject(AreaManagementService) private readonly service: AreaManagementService
   ) { }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(): Promise<GETAreaArrayResponseDto> {
     const areas = await this.service.find();
     return plainToInstance(GETAreaArrayResponseDto, { areas });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() createAreaDto: POSTAreaRequestDto
@@ -30,22 +31,20 @@ export class AreaController {
     return plainToInstance(POSTAreaResponseDto, area);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: string,
     @Body() updateAreaDto: PATCHAreaRequestDto
   ): Promise<PATCHAreaResponseDto> {
-    const area = await this.service.findOneByIdAndUpdate(+id, updateAreaDto);
+    const area = await this.service.updateOne(+id, updateAreaDto);
     return plainToInstance(PATCHAreaResponseDto, area);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async findOneAndDelete(
     @Param('id') id: string
   ): Promise<DELETEAreaResponseDto> {
-    await this.service.findOneByIdAndDelete(+id);
+    await this.service.deleteOne(+id);
     return {};
   }
 }

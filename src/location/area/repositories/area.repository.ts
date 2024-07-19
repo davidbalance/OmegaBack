@@ -1,6 +1,6 @@
 import { AbstractRepository } from "@/shared/sql-database";
 import { Injectable, Logger } from "@nestjs/common";
-import { Area } from "./entities/area.entity";
+import { Area } from "../entities/area.entity";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 

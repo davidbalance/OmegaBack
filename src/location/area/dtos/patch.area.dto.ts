@@ -1,13 +1,7 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { AreaResponseDto } from "./area.dto";
 
-export class POSTAreaRequestDto {
-    @IsNumber()
-    public readonly management: number;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly name: string;
-}
+export class PATCHAreaResponseDto extends AreaResponseDto { }
 
 export class PATCHAreaRequestDto {
     @IsNumber()
