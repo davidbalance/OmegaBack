@@ -1,5 +1,13 @@
 import { Expose, Type } from "class-transformer";
 
+export class AreaResponseDto {
+    @Expose()
+    public readonly id: number;
+    @Expose()
+    public readonly name: string;
+}
+
+
 export class GETAreaResponseDto {
     @Expose()
     private readonly id: number;

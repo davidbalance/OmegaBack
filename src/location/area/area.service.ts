@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AreaRepository } from './area.repository';
-import { ManagementService } from '../management/management.service';
+import { ManagementService } from '../management/services/management.service';
 import { PATCHAreaRequestDto, POSTAreaRequestDto } from './dto/area.request.dto';
 import { Area } from './entities/area.entity';
 
