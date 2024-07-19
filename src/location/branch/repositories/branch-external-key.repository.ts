@@ -1,20 +1,20 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExternalKey } from './entities/external-key.entity';
 import { AbstractRepository } from '@/shared/sql-database';
+import { BranchExternalKey } from '../entities/branch-external-key.entity';
 
 @Injectable()
-export class ExternalKeyRepository extends AbstractRepository<number, ExternalKey> {
+export class BranchExternalKeyRepository extends AbstractRepository<number, BranchExternalKey> {
     protected logger: Logger = new Logger();
 
     constructor(
-        @InjectRepository(ExternalKey) private readonly keyModel: Repository<ExternalKey>
+        @InjectRepository(BranchExternalKey) private readonly keyModel: Repository<BranchExternalKey>
     ) {
         super(keyModel);
     }
 
-    async findOneAndDelete(filterOptions: FindOptionsWhere<ExternalKey>): Promise<void> {
+    async findOneAndDelete(filterOptions: FindOptionsWhere<BranchExternalKey>): Promise<void> {
         await this.keyModel.delete(filterOptions);
     }
 }

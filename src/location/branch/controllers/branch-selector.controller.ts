@@ -3,13 +3,13 @@ import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { GETSelectorOptionArrayResponseDto } from '../dtos/selector.response.dto';
-import { SelectorService } from '../services/selector.service';
+import { BranchSelectorService } from '../services/branch-selector.service';
 
 @ApiTags('Location/Branch', 'Selector')
 @ApiBearerAuth()
 @Controller('selector/branches')
-export class SelectorController {
-  constructor(private readonly service: SelectorService) { }
+export class BranchSelectorController {
+  constructor(private readonly service: BranchSelectorService) { }
 
   @UseGuards(JwtAuthGuard)
   @Get(':company')

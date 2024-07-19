@@ -1,28 +1,24 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { BranchRepository } from "../branch.repository";
-import { Branch } from "../entities/branch.entity";
 import { CityService } from "@/location/city/services/city.service";
-import { ExternalKeyService } from "../external-key/external-key.service";
-import { PATCHBranchRequestDto, POSTBranchRequestDto } from "../dtos/branch.request.dto";
-import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
-import { Company } from "@/location/company/entities/company.entity";
 import { POSTCompanyRequestExternalConnectionDto } from "@/location/company/dtos/company.request.dto";
+import { Company } from "@/location/company/entities/company.entity";
 import { INJECT_COMPANY_EXTERNAL_KEY } from "@/location/company/services/company-external-connection.service";
+import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
+import { Injectable, Inject, Provider } from "@nestjs/common";
+import { POSTBranchRequestDto, PATCHBranchRequestDto } from "../dtos/branch.request.dto";
+import { Branch } from "../entities/branch.entity";
+import { BranchRepository } from "../repositories/branch.repository";
+import { BranchExternalKey } from "../entities/branch-external-key.entity";
+import { BranchExternalKeyService } from "./branch-external-key.service";
 
 @Injectable()
-export class ExternalConnectionService {
+export class BranchExternalConnectionService {
     constructor(
         @Inject(INJECT_COMPANY_EXTERNAL_KEY) private readonly externalService: IExternalConnectionService<POSTCompanyRequestExternalConnectionDto, Company>,
         @Inject(BranchRepository) private readonly repository: BranchRepository,
-        @Inject(ExternalKeyService) private readonly keyService: ExternalKeyService,
+        @Inject(BranchExternalKeyService) private readonly keyService: BranchExternalKeyService,
         @Inject(CityService) private readonly cityService: CityService
     ) { }
 
-    /**
-     * Crea una sucursal.
-     * @param param0 
-     * @returns 
-     */
     async create({ source, key, company, city, ...branch }: POSTBranchRequestDto & { source: string }): Promise<Branch> {
         const foundCompany = await this.externalService.findOneOrCreate({
             source: source,
@@ -44,25 +40,13 @@ export class ExternalConnectionService {
         }
     }
 
-    /**
-     * Encuentra una sucursal si no existe la crea.
-     * @param param0 
-     * @returns 
-     */
     async findOneOrCreate({ source, key, ...branch }: POSTBranchRequestDto & { source: string }): Promise<Branch> {
         try {
             const foundBranch = await this.repository.findOne({
                 where: {
-                    externalKey: {
-                        source: source,
-                        key: key
-                    }
+                    externalKey: { source: source, key: key }
                 },
-                relations: {
-                    company: {
-                        corporativeGroup: true
-                    }
-                }
+                relations: { company: { corporativeGroup: true } }
             });
             return foundBranch;
         } catch (error) {
@@ -70,19 +54,13 @@ export class ExternalConnectionService {
         }
     }
 
-    /**
-     * Encuentra una sucursal y la modifica.
-     * @param param0 
-     * @param param1 
-     * @returns 
-     */
     async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHBranchRequestDto): Promise<Branch> {
         const branch = await this.repository.findOneAndUpdate({
-            externalKey: {
-                source: source,
-                key: key
-            }
+            externalKey: { source: source, key: key }
         }, data);
         return branch;
     }
 }
+
+export const INJECT_BRANCH_EXTERNAL_CONNECTION: string = 'INJECT_BRANCH_EXTERNAL_CONNECTION';
+export const BranchExternalConnectionProvider: Provider = { provide: INJECT_BRANCH_EXTERNAL_CONNECTION, useClass: BranchExternalConnectionService };

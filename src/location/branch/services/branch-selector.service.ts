@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BranchRepository } from '../branch.repository';
 import { ISelectorOption, ISelectorOptionService } from '@/shared/utils/bases/base.selector';
+import { BranchRepository } from '../repositories/branch.repository';
 
 @Injectable()
-export class SelectorService implements ISelectorOptionService<number> {
+export class BranchSelectorService implements ISelectorOptionService<number> {
 
   constructor(
     @Inject(BranchRepository) private readonly repository: BranchRepository
@@ -17,5 +17,4 @@ export class SelectorService implements ISelectorOptionService<number> {
       .getRawMany<ISelectorOption<number>>();
     return diseases;
   }
-
 }
