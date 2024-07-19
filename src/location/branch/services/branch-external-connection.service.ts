@@ -4,14 +4,16 @@ import { Company } from "@/location/company/entities/company.entity";
 import { INJECT_COMPANY_EXTERNAL_KEY } from "@/location/company/services/company-external-connection.service";
 import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { Injectable, Inject, Provider } from "@nestjs/common";
-import { POSTBranchRequestDto, PATCHBranchRequestDto } from "../dtos/branch.request.dto";
 import { Branch } from "../entities/branch.entity";
 import { BranchRepository } from "../repositories/branch.repository";
-import { BranchExternalKey } from "../entities/branch-external-key.entity";
 import { BranchExternalKeyService } from "./branch-external-key.service";
+import { PATCHBranchRequestDto } from "../dtos/patch.branch.dto";
+import { POSTBranchExternalConnectionRequestDto } from "../dtos/post.branch.dto";
+
+type RequestType = POSTBranchExternalConnectionRequestDto | PATCHBranchRequestDto;
 
 @Injectable()
-export class BranchExternalConnectionService {
+export class BranchExternalConnectionService implements IExternalConnectionService<RequestType, Branch> {
     constructor(
         @Inject(INJECT_COMPANY_EXTERNAL_KEY) private readonly externalService: IExternalConnectionService<POSTCompanyRequestExternalConnectionDto, Company>,
         @Inject(BranchRepository) private readonly repository: BranchRepository,
@@ -19,7 +21,7 @@ export class BranchExternalConnectionService {
         @Inject(CityService) private readonly cityService: CityService
     ) { }
 
-    async create({ source, key, company, city, ...branch }: POSTBranchRequestDto & { source: string }): Promise<Branch> {
+    async create({ source, key, company, city, ...branch }: POSTBranchExternalConnectionRequestDto): Promise<Branch> {
         const foundCompany = await this.externalService.findOneOrCreate({
             source: source,
             ...company
@@ -40,7 +42,7 @@ export class BranchExternalConnectionService {
         }
     }
 
-    async findOneOrCreate({ source, key, ...branch }: POSTBranchRequestDto & { source: string }): Promise<Branch> {
+    async findOneOrCreate({ source, key, ...branch }: POSTBranchExternalConnectionRequestDto): Promise<Branch> {
         try {
             const foundBranch = await this.repository.findOne({
                 where: {

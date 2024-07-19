@@ -10,9 +10,10 @@ import { Company } from "@/location/company/entities/company.entity";
 import { mockBranchExternalKey } from "./stub/branch-external-key.stub";
 import { mockBranch } from "./stub/branch.stub";
 import { mockCompany } from "@/location/company/services/test/stub/company.stub";
-import { PATCHBranchRequestDto, POSTBranchRequestDto } from "../../dtos/branch.request.dto";
 import { CityService } from "@/location/city/services/city.service";
 import { mockCity } from "@/location/city/services/test/stub/city.stub";
+import { PATCHBranchRequestDto } from "../../dtos/patch.branch.dto";
+import { POSTBranchRequestDto } from "../../dtos/post.branch.dto";
 
 describe('BranchExternalConnectionService', () => {
     let service: BranchExternalConnectionService;

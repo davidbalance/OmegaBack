@@ -3,8 +3,8 @@ import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { BranchExternalConnectionService } from "../services/branch-external-connection.service";
-import { PATCHBranchRequestDto, POSTBranchRequestDto } from "../dtos/branch.request.dto";
-import { PATCHBranchResponseDto, POSTBranchResponseDto } from "../dtos/branch.response.dto";
+import { PATCHBranchRequestDto, PATCHBranchResponseDto } from "../dtos/patch.branch.dto";
+import { POSTBranchRequestDto, POSTBranchResponseDto } from "../dtos/post.branch.dto";
 
 @ApiTags('Location/Branch', 'External/Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })

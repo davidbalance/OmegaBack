@@ -1,4 +1,4 @@
-import { POSTBranchRequestDto } from "@/location/branch/dtos/branch.request.dto";
+import { POSTBranchExternalConnectionRequestDto } from "@/location/branch/dtos/post.branch.dto";
 import { POSTPatientRequestDto } from "@/user/patient/dtos/post.patient-management,dto";
 
 export const OrderEvent = {
@@ -14,6 +14,6 @@ export class OrderFindOrCreatePatientEvent {
 
 export class OrderFindOrCreateBranchEvent {
     constructor(
-        public readonly findOrCreateEvent: POSTBranchRequestDto & { source: string }
+        public readonly findOrCreateEvent: POSTBranchExternalConnectionRequestDto
     ) { }
 }

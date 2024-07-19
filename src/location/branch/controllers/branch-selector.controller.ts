@@ -2,7 +2,7 @@ import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { GETSelectorOptionArrayResponseDto } from '../dtos/selector.response.dto';
+import { GETSelectorOptionArrayResponseDto } from '../dtos/get.branch-selector.dto';
 import { BranchSelectorService } from '../services/branch-selector.service';
 
 @ApiTags('Location/Branch', 'Selector')
