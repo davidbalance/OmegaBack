@@ -5,7 +5,7 @@ import { ExternalKeyService } from "../external-key/external-key.service";
 import { PATCHCompanyRequestDto, POSTCompanyRequestDto } from "../dtos/company.request.dto";
 import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { CorporativeGroup } from "@/location/corporative-group/entities/corporative-group.entity";
-import { POSTCorporativeGroupExternalKeyRequestDto } from "@/location/corporative-group/dtos/corporative-group.request.dto";
+import { POSTCorporativeGroupExternalConnectionRequestDto } from "@/location/corporative-group/dtos/corporative-group.request.dto";
 import { INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION } from "@/location/corporative-group/services/corporative-group-external-connection.service";
 
 type CreateCompanyType = POSTCompanyRequestDto & { source: string };
@@ -14,7 +14,7 @@ type CreateCompanyType = POSTCompanyRequestDto & { source: string };
 export class ExternalConnectionService {
     constructor(
         @Inject(CompanyRepository) private readonly repository: CompanyRepository,
-        @Inject(INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION) private readonly externalService: IExternalConnectionService<POSTCorporativeGroupExternalKeyRequestDto, CorporativeGroup>,
+        @Inject(INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION) private readonly externalService: IExternalConnectionService<POSTCorporativeGroupExternalConnectionRequestDto, CorporativeGroup>,
         @Inject(ExternalKeyService) private readonly keyService: ExternalKeyService
     ) { }
 

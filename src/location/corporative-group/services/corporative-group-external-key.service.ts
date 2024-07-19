@@ -1,4 +1,4 @@
-import { Inject, Injectable, Provider } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AbstractExternalKeyService } from '@/shared/external-key';
 import { CorporativeGroupExternalKey } from '../entities/corporative-group-external-key.entity';
 import { CorporativeGroupExternalKeyRepository } from '../repositories/corporative-group-external-key.repository';

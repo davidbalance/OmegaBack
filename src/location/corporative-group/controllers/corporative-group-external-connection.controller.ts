@@ -1,10 +1,11 @@
 import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
-import { POSTCorporativeGroupRequestDto, PATCHCorporativeGroupRequestDto } from "../dtos/corporative-group.request.dto";
-import { POSTCorporativeGroupResponseDto, PATCHCorporativeGroupResponseDto } from "../dtos/corporative-group.response.dto";
+import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards"
 import { CorporativeGroupExternalConnectionService } from "../services/corporative-group-external-connection.service";
+import { PATCHCorporativeGroupRequestDto, PATCHCorporativeGroupResponseDto } from "../dtos/patch.corporative-group.dto";
+import { POSTCorporativeGroupResponseDto } from "../dtos/post.corporative-group-external-connection.dto";
+import { POSTCorporativeGroupRequestDto } from "../dtos/post.corporative-group.dto";
 
 @ApiTags('Location/Corporative/Group', 'External/Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })

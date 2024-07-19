@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
-export class CreateCorporativeGroupExternalKey {
+export class POSTCorporativeGroupExternalKeyRequestDto {
     @IsString()
     @IsNotEmpty()
     public readonly source: string;

@@ -1,11 +1,12 @@
 import { Inject, Injectable, Provider } from "@nestjs/common";
 import { CorporativeGroupRepository } from "../repositories/corporative-group.repository";
 import { CorporativeGroup } from "../entities/corporative-group.entity";
-import { PATCHCorporativeGroupRequestDto, POSTCorporativeGroupExternalKeyRequestDto, POSTCorporativeGroupRequestDto } from "../dtos/corporative-group.request.dto";
 import { CorporativeGroupExternalKeyService } from "./corporative-group-external-key.service";
 import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
+import { PATCHCorporativeGroupRequestDto } from "../dtos/patch.corporative-group.dto";
+import { POSTCorporativeGroupExternalConnectionRequestDto } from "../dtos/post.corporative-group-external-connection.dto";
 
-type RequestType = POSTCorporativeGroupExternalKeyRequestDto | PATCHCorporativeGroupRequestDto;
+type RequestType = POSTCorporativeGroupExternalConnectionRequestDto | PATCHCorporativeGroupRequestDto;
 
 @Injectable()
 export class CorporativeGroupExternalConnectionService implements IExternalConnectionService<RequestType, CorporativeGroup> {
@@ -14,7 +15,7 @@ export class CorporativeGroupExternalConnectionService implements IExternalConne
         @Inject(CorporativeGroupExternalKeyService) private keyService: CorporativeGroupExternalKeyService
     ) { }
 
-    async create({ source, key, ...data }: POSTCorporativeGroupExternalKeyRequestDto): Promise<CorporativeGroup> {
+    async create({ source, key, ...data }: POSTCorporativeGroupExternalConnectionRequestDto): Promise<CorporativeGroup> {
         const newKey = await this.keyService.create({ key, source });
         try {
             const group = await this.repository.create({ ...data, externalKey: newKey });
@@ -25,7 +26,7 @@ export class CorporativeGroupExternalConnectionService implements IExternalConne
         }
     }
 
-    async findOneOrCreate({ source, key, ...data }: POSTCorporativeGroupExternalKeyRequestDto): Promise<CorporativeGroup> {
+    async findOneOrCreate({ source, key, ...data }: POSTCorporativeGroupExternalConnectionRequestDto): Promise<CorporativeGroup> {
         try {
             const foundGroup = await this.repository.findOne({
                 where: [{

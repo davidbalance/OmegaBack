@@ -3,7 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { CorporativeGroupSelectorService } from '../services/corporative-group-selector.service';
-import { GETSelectorOptionArrayResponseDto } from '../dtos/selector.response.dto';
+import { GETSelectorOptionArrayResponseDto } from '../dtos/get.corporative-group-selector.dto';
 
 @ApiTags('Location/Corporative/Group', 'Selector')
 @ApiBearerAuth()
