@@ -4,6 +4,7 @@ export const stubExamType = (id: number): ExamType => ({
     id: id,
     name: "my-stub-name",
     status: true,
+    subtypes: [],
     createAt: new Date(),
     updateAt: new Date()
 });

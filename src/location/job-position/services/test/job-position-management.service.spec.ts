@@ -27,7 +27,7 @@ describe('JobPositionManagementService', () => {
     }
 
     it('should create a new job position and return it', async () => {
-      repository.create.mockResolvedValue(mockedJobPosition);
+      repository.create.mockResolvedValueOnce(mockedJobPosition);
 
       const result = await service.create(mockDto);
 
@@ -40,7 +40,7 @@ describe('JobPositionManagementService', () => {
     const mockedJobPositions = mockJobPositions();
 
     it('should return an array of job positions', async () => {
-      repository.find.mockResolvedValue(mockedJobPositions);
+      repository.find.mockResolvedValueOnce(mockedJobPositions);
 
       const result = await service.findAll();
 
@@ -53,7 +53,7 @@ describe('JobPositionManagementService', () => {
     const mockedJobPosition = mockJobPosition();
 
     it('should return an existing job position', async () => {
-      repository.findOne.mockResolvedValue(mockedJobPosition);
+      repository.findOne.mockResolvedValueOnce(mockedJobPosition);
 
       const result = await service.findOne(id);
 
@@ -70,7 +70,7 @@ describe('JobPositionManagementService', () => {
     }
 
     it('should update an existing job position', async () => {
-      repository.findOneAndUpdate.mockResolvedValue(mockedJobPosition);
+      repository.findOneAndUpdate.mockResolvedValueOnce(mockedJobPosition);
 
       const result = await service.updateOne(id, mockDto);
 

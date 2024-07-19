@@ -26,8 +26,8 @@ describe('ExamTypeManagementService', () => {
       name: "my-mocked-name"
     }
 
-    it('should create a new job position and return it', async () => {
-      repository.create.mockResolvedValue(mockedExamType);
+    it('should create a new exam type and return it', async () => {
+      repository.create.mockResolvedValueOnce(mockedExamType);
 
       const result = await service.create(mockDto);
 
@@ -39,8 +39,8 @@ describe('ExamTypeManagementService', () => {
   describe('findAll', () => {
     const mockedExamTypes = mockExamTypes();
 
-    it('should return an array of job positions', async () => {
-      repository.find.mockResolvedValue(mockedExamTypes);
+    it('should return an array of exam types', async () => {
+      repository.find.mockResolvedValueOnce(mockedExamTypes);
 
       const result = await service.findAll();
 
@@ -52,8 +52,8 @@ describe('ExamTypeManagementService', () => {
     const id: number = 1;
     const mockedExamType = mockExamType();
 
-    it('should return an existing job position', async () => {
-      repository.findOne.mockResolvedValue(mockedExamType);
+    it('should return an existing exam type', async () => {
+      repository.findOne.mockResolvedValueOnce(mockedExamType);
 
       const result = await service.findOne(id);
 
@@ -69,8 +69,8 @@ describe('ExamTypeManagementService', () => {
       name: "mocked-name"
     }
 
-    it('should update an existing job position', async () => {
-      repository.findOneAndUpdate.mockResolvedValue(mockedExamType);
+    it('should update an existing exam type', async () => {
+      repository.findOneAndUpdate.mockResolvedValueOnce(mockedExamType);
 
       const result = await service.updateOne(id, mockDto);
 
@@ -82,9 +82,9 @@ describe('ExamTypeManagementService', () => {
   describe('deleteOne', () => {
     const id: number = 1;
 
-    it('should delete an existing job position', async () => {
+    it('should delete an existing exam type', async () => {
 
-      const result = await service.deleteOne(id);
+      await service.deleteOne(id);
 
       expect(repository.findOneAndDelete).toHaveBeenCalledWith({ id: id });
     });
