@@ -11,6 +11,8 @@ import { CityModule } from "../city/city.module";
 import { CompanyModule } from "../company/company.module";
 import { BranchExternalKey } from "./entities/branch-external-key.entity";
 import { Branch } from "./entities/branch.entity";
+import { BranchExternalKeyService } from "./services/branch-external-key.service";
+import { BranchExternalKeyRepository } from "./repositories/branch-external-key.repository";
 
 @Module({
   imports: [
@@ -24,10 +26,12 @@ import { Branch } from "./entities/branch.entity";
     BranchExternalConnectionController,
   ],
   providers: [
-    BranchManagementService,
     BranchRepository,
-    BranchExternalConnectionService,
+    BranchExternalKeyRepository,
     BranchSelectorService,
+    BranchManagementService,
+    BranchExternalKeyService,
+    BranchExternalConnectionService,
     BranchExternalConnectionProvider
   ],
   exports: [
