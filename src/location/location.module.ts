@@ -5,6 +5,7 @@ import { CorporativeGroupModule } from './corporative-group/corporative-group.mo
 import { BranchModule } from './branch/branch.module';
 import { ManagementModule } from './management/management.module';
 import { AreaModule } from './area/area.module';
+import { JobPositionModule } from './job-position/job-position.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { AreaModule } from './area/area.module';
     CorporativeGroupModule,
     BranchModule,
     ManagementModule,
-    AreaModule
+    AreaModule,
+    JobPositionModule
   ]
 })
 export class LocationModule { }
