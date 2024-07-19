@@ -1,15 +1,17 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { CorporativeGroupService } from '../services/corporative-group.service';
 import { GETCorporativeGroupArrayResponseDto } from '../dtos/corporative-group.response.dto';
+import { CorporativeGroupManagementService } from '../services/corporative-group-management.service';
 
 @ApiTags('Location/Corporative/Group')
 @ApiBearerAuth()
 @Controller('corporative/groups')
-export class CorporativeGroupController {
-  constructor(private readonly corporativeGroupService: CorporativeGroupService) { }
+export class CorporativeGroupManagementController {
+  constructor(
+    @Inject(CorporativeGroupManagementService) private readonly corporativeGroupService: CorporativeGroupManagementService
+  ) { }
 
   @UseGuards(JwtAuthGuard)
   @Get()

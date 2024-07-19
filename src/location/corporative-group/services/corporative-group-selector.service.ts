@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CorporativeGroupRepository } from '../corporative-group.repository';
+import { CorporativeGroupRepository } from '../repositories/corporative-group.repository';
 import { ISelectorOption, ISelectorOptionService } from '@/shared/utils/bases/base.selector';
 
 @Injectable()

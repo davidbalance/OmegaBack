@@ -1,99 +1,44 @@
 import { TestBed } from "@automock/jest";
 import { DiseaseRepository } from "../../repositories/disease.repository";
-import { DiseaseManagementService } from "../disease-management.service";
 import { DiseaseGroupManagementService } from "@/disease/disease-group/services/disease-group-management.service";
 import { mockDiseaseGroup } from "@/disease/disease-group/services/test/stub/disease-group.stub";
 import { PATCHDiseaseRequestDto, POSTDiseaseRequestDto } from "../../dtos/disease.request.dto";
 import { mockDisease, mockDiseases } from "./stub/disease.stub";
+import { DiseaseSelectorService } from "../disease-selector.service";
+import { mockDiseaseSelectorOptions } from "./stub/disease-selector.stub";
 
-describe('DiseaseManagementService', () => {
-  let service: DiseaseManagementService;
+describe('DiseaseSelectorService', () => {
+  let service: DiseaseSelectorService;
   let repository: jest.Mocked<DiseaseRepository>;
-  let groupService: jest.Mocked<DiseaseGroupManagementService>;
 
   beforeEach(async () => {
-    const { unit, unitRef } = TestBed.create(DiseaseManagementService).compile();
+    const { unit, unitRef } = TestBed.create(DiseaseSelectorService).compile();
 
     service = unit;
     repository = unitRef.get(DiseaseRepository);
-    groupService = unitRef.get(DiseaseGroupManagementService);
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('create', () => {
-    const mockedGroup = mockDiseaseGroup();
-    const mockedDisease = mockDisease();
-    const mockDto: POSTDiseaseRequestDto = {
-      name: "my-mocked-name",
-      group: 1
-    }
+  describe('find', () => {
+    const group: number = 2;
+    const mockedDiseaseSelector = mockDiseaseSelectorOptions();
 
     it('should create a disease', async () => {
-      groupService.findOneById.mockResolvedValueOnce(mockedGroup);
-      repository.create.mockResolvedValueOnce(mockedDisease);
+      repository.query.mockReturnValue({
+        select: jest.fn().mockReturnThis(),
+        addSelect: jest.fn().mockReturnThis(),
+        leftJoinAndSelect: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
+        getRawMany: jest.fn().mockResolvedValueOnce(mockedDiseaseSelector),
+      } as any);
 
-      const result = await service.create(mockDto);
+      const result = await service.find(group);
 
-      expect(result).toEqual(mockedDisease);
-      expect(groupService.findOneById).toHaveBeenCalledWith(mockDto.group);
-      expect(repository.create).toHaveBeenCalledWith({ ...mockDto, group: mockedGroup });
-    });
-
-  });
-
-  describe('find', () => {
-    const mockedDiseases = mockDiseases();
-
-    it('should return an array of diseases', async () => {
-      repository.find.mockResolvedValueOnce(mockedDiseases);
-
-      const result = await service.find();
-
-      expect(result).toEqual(mockedDiseases);
+      expect(result).toEqual(mockedDiseaseSelector);
+      expect(repository.query).toHaveBeenCalledWith('disease');
     });
   });
-
-  describe('updateOne', () => {
-    const mockedDisease = mockDisease();
-    const mockedGroup = mockDiseaseGroup();
-
-    const id: number = 1;
-    const mockDto: PATCHDiseaseRequestDto = {
-      name: 'my-updated-name'
-    }
-
-    it('should update an existing disease and return it', async () => {
-      repository.findOneAndUpdate.mockResolvedValueOnce(mockedDisease);
-
-      const result = await service.updateOne(id, mockDto);
-
-      expect(result).toEqual(mockedDisease);
-      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, mockDto);
-    });
-
-    it('should update an existing disease with other group and return it', async () => {
-      repository.findOneAndUpdate.mockResolvedValueOnce(mockedDisease);
-      groupService.findOneById.mockResolvedValueOnce(mockedGroup);
-
-      const result = await service.updateOne(id, { ...mockDto, group: 1 });
-
-      expect(result).toEqual(mockedDisease);
-      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, { ...mockDto, group: mockedGroup });
-    });
-
-  });
-
-  describe('deleteOne', () => {
-    const id: number = 1;
-
-    it('should delete one disease', async () => {
-      await service.deleteOne(id);
-
-      expect(repository.findOneAndDelete).toHaveBeenCalledWith({ id: id });
-    });
-  });
-
 });

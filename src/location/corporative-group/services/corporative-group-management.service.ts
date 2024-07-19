@@ -1,18 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CorporativeGroupRepository } from '../corporative-group.repository';
+import { CorporativeGroupRepository } from '../repositories/corporative-group.repository';
 import { CorporativeGroup } from '../entities/corporative-group.entity';
 
 @Injectable()
-export class CorporativeGroupService {
+export class CorporativeGroupManagementService {
 
   constructor(
     @Inject(CorporativeGroupRepository) private readonly repository: CorporativeGroupRepository
   ) { }
 
-  /**
-   * Retorna todos los grupos corporativos activos del sistema.
-   * @returns 
-   */
   async find(): Promise<CorporativeGroup[]> {
     const groups = await this.repository.find({
       where: {
@@ -26,7 +22,6 @@ export class CorporativeGroupService {
         }
       }
     });
-
     return groups;
   }
 }

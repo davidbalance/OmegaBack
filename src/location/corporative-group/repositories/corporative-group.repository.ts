@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { AbstractRepository } from "@/shared/sql-database";
-import { CorporativeGroup } from "./entities/corporative-group.entity";
+import { CorporativeGroup } from "../entities/corporative-group.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
 

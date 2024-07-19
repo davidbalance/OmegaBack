@@ -1,9 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { ExternalConnectionService as CorporativeGroupService } from "@/location/corporative-group/services/external-connection.service";
 import { Company } from "../entities/company.entity";
 import { CompanyRepository } from "../company.repository";
 import { ExternalKeyService } from "../external-key/external-key.service";
 import { PATCHCompanyRequestDto, POSTCompanyRequestDto } from "../dtos/company.request.dto";
+import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
+import { CorporativeGroup } from "@/location/corporative-group/entities/corporative-group.entity";
+import { POSTCorporativeGroupExternalKeyRequestDto } from "@/location/corporative-group/dtos/corporative-group.request.dto";
+import { INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION } from "@/location/corporative-group/services/corporative-group-external-connection.service";
 
 type CreateCompanyType = POSTCompanyRequestDto & { source: string };
 
@@ -11,15 +14,10 @@ type CreateCompanyType = POSTCompanyRequestDto & { source: string };
 export class ExternalConnectionService {
     constructor(
         @Inject(CompanyRepository) private readonly repository: CompanyRepository,
-        @Inject(CorporativeGroupService) private readonly externalService: CorporativeGroupService,
+        @Inject(INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION) private readonly externalService: IExternalConnectionService<POSTCorporativeGroupExternalKeyRequestDto, CorporativeGroup>,
         @Inject(ExternalKeyService) private readonly keyService: ExternalKeyService
     ) { }
 
-    /**
-     * Crea una empresa.
-     * @param param0 
-     * @returns 
-     */
     async create({ source, key, corporativeGroup, ...company }: CreateCompanyType): Promise<Company> {
         const group = await this.externalService.findOneOrCreate({
             source: source,
@@ -39,24 +37,12 @@ export class ExternalConnectionService {
         }
     }
 
-    /**
-     * Encuentra una empresa si no existe la crea.
-     * @param param0 
-     * @returns 
-     */
     async findOneOrCreate({ source, key, ...company }: CreateCompanyType): Promise<Company> {
         try {
             const foundCompany = await this.repository.findOne({
                 where: [
-                    {
-                        externalKey: {
-                            source: source,
-                            key: key
-                        }
-                    },
-                    {
-                        ruc: company.ruc
-                    }
+                    { externalKey: { source: source, key: key } },
+                    { ruc: company.ruc }
                 ]
             });
             return foundCompany;
@@ -65,19 +51,10 @@ export class ExternalConnectionService {
         }
     }
 
-    /**
-     * Encuentra una empresa y la modifica.
-     * @param param0 
-     * @param param1 
-     * @returns 
-     */
     async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHCompanyRequestDto): Promise<Company> {
-        const company = await this.repository.findOneAndUpdate({
-            externalKey: {
-                source: source,
-                key: key
-            }
-        }, data);
+        const company = await this.repository.findOneAndUpdate(
+            { externalKey: { source: source, key: key } },
+            data);
         return company;
     }
 }
