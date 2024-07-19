@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table, TableIndex } from "typeorm";
 
-const TABLE_NAME: string = 'tbl_lo_job_position';
+const TABLE_NAME: string = 'tbl_lab_exam_type';
 const INDEX_EXAM_TYPE_NAME: TableIndex = new TableIndex({ name: 'idx_exam_type_name', columnNames: ['exam_type_name'], isUnique: true });
 
 export class CreateLaboratoryExamTypeTable1721426630764 implements MigrationInterface {

@@ -19,7 +19,7 @@ export class CreateLaboratoryExamSubtypeTable1721432173140 implements MigrationI
                 columns: [
                     { name: 'create_at', type: 'timestamp', default: 'CURRENT_TIMESTAMP' },
                     { name: 'update_at', type: 'timestamp', default: 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' },
-                    { name: 'exam_type_id', type: 'int', isPrimary: true, isGenerated: true, generationStrategy: 'increment' },
+                    { name: 'exam_subtype_id', type: 'int', isPrimary: true, isGenerated: true, generationStrategy: 'increment' },
                     {
                         name: 'exam_subtype_name',
                         type: 'varchar',
