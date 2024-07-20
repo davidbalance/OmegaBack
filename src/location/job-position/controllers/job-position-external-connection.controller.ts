@@ -3,7 +3,7 @@ import { Controller, Inject, UseGuards, Post, Param, Body, Patch } from "@nestjs
 import { ApiTags, ApiHeader } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { PATCHJobPositionRequestDto, PATCHJobPositionResponseDto } from "../dtos/patch.job-position.dto";
-import { POSTJobPositionRequestDto, POSTJobPositionResponseDto } from "../dtos/post.job-position.dto";
+import { POSTJobPositionResponseDto } from "../dtos/post.job-position.dto";
 import { JobPositionExternalConnectionService } from "../services/job-position-external-connection.service";
 import { POSTJobPositionExternalConnectionRequestDto } from "../dtos/post.job-position-external-connection.dto";
 

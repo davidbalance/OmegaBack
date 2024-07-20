@@ -9,6 +9,7 @@ import { JobPositionExternalKey } from './entities/job-position-external-key.ent
 import { JobPositionExternalKeyRepository } from './repositories/job-position-external-key.repository';
 import { JobPositionExternalConnectionService } from './services/job-position-external-connection.service';
 import { JobPositionExternalConnectionController } from './controllers/job-position-external-connection.controller';
+import { JobPositionExternalKeyService } from './services/job-position-external-key.service';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { JobPositionExternalConnectionController } from './controllers/job-posit
     JobPositionManagementService,
     JobPositionRepository,
     JobPositionExternalKeyRepository,
+    JobPositionExternalKeyService,
     JobPositionExternalConnectionService,
   ],
   exports: [
