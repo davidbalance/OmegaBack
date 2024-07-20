@@ -17,6 +17,9 @@ export class MedicalClient extends AbstractEntity<number> {
 
     @Column({ name: 'medical_client_birthday', type: 'date', nullable: false })
     public birthday: Date;
+    
+    @Column({ name: 'job_position_name', type: 'varchar', length: 128, nullable: true })
+    public jobPositionName: string;
 
     @Column({ name: 'location_management_id', type: 'int', nullable: true })
     public managementId: number;
