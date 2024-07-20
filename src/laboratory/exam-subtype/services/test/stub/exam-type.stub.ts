@@ -3,6 +3,7 @@ import { ExamSubtype } from "@/laboratory/exam-subtype/entities/exam-subtype.ent
 export const stubExamsSubtype = (id: number): ExamSubtype => ({
     id: id,
     name: "my-stub-name",
+    exams: undefined,
     status: true,
     type: undefined,
     createAt: new Date(),

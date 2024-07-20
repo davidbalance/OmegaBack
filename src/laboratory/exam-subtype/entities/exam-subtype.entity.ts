@@ -1,6 +1,7 @@
 import { ExamType } from "@/laboratory/exam-type/entities/exam-type.entity";
+import { Exam } from "@/laboratory/exam/entities/exam.entity";
 import { AbstractEntity } from "@/shared/sql-database";
-import { PrimaryGeneratedColumn, Column, Entity, Index, ManyToOne, JoinColumn } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, Index, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 
 @Entity('tbl_lab_exam_subtype')
 @Index('idx_exam_subtype_name', ['name'], { unique: true })
@@ -17,4 +18,7 @@ export class ExamSubtype extends AbstractEntity<number> {
     @ManyToOne(() => ExamType, type => type.subtypes, { eager: false, nullable: false })
     @JoinColumn({ foreignKeyConstraintName: 'fk_lab_exam_type_subtype', name: 'exam_type_id', referencedColumnName: 'id' })
     public type: ExamType;
+
+    @OneToMany(() => Exam, exam => exam.subtype, { eager: true })
+    public exams: Exam[];
 }

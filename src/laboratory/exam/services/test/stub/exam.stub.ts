@@ -5,6 +5,7 @@ const stubExam = (id: number): Exam => ({
     id: id,
     name: "my-stub-name",
     externalKey: {} as ExamExternalKey,
+    subtype: undefined,
     createAt: new Date(),
     updateAt: new Date()
 });
