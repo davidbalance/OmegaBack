@@ -23,7 +23,7 @@ export class AddLaboratoryRealtionSubtypeExam1721433308874 implements MigrationI
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.dropForeignKey(TABLE_NAME, FK_LAB_SUBTYPE_EXAM);
-        await queryRunner.dropTable(TABLE_NAME);
+        await queryRunner.dropColumn(TABLE_NAME, 'exam_subtype_id');
     }
 
 }
