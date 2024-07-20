@@ -6,6 +6,9 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
 import { JobPosition } from './entities/job-position.entity';
 import { SqlDatabaseModule } from '@/shared/sql-database';
 import { JobPositionExternalKey } from './entities/job-position-external-key.entity';
+import { JobPositionExternalKeyRepository } from './repositories/job-position-external-key.repository';
+import { JobPositionExternalConnectionService } from './services/job-position-external-connection.service';
+import { JobPositionExternalConnectionController } from './controllers/job-position-external-connection.controller';
 
 @Module({
   imports: [
@@ -13,11 +16,14 @@ import { JobPositionExternalKey } from './entities/job-position-external-key.ent
     AuthenticationGuardModule
   ],
   controllers: [
-    JobPositionManagementController
+    JobPositionManagementController,
+    JobPositionExternalConnectionController
   ],
   providers: [
     JobPositionManagementService,
-    JobPositionRepository
+    JobPositionRepository,
+    JobPositionExternalKeyRepository,
+    JobPositionExternalConnectionService,
   ],
   exports: [
     JobPositionManagementService
