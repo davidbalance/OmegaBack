@@ -5,7 +5,8 @@ const stubJobPosition = (id: number): JobPosition => ({
     name: "my-stub-name",
     status: true,
     createAt: new Date(),
-    updateAt: new Date()
+    updateAt: new Date(),
+    externalKey: undefined
 });
 
 export const mockJobPosition = () => stubJobPosition(1);
