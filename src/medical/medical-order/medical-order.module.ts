@@ -1,24 +1,31 @@
-import { Module } from '@nestjs/common';
-import { SqlDatabaseModule } from '@/shared/sql-database';
-import { UserModule } from '@/user/user/user.module';
-import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { MailerModule } from '@/shared/mailer/mailer.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MedicalOrder } from './entities/medical-order.entity';
-import { ExternalKeyModule } from './external-key/external-key.module';
-import { MedicalOrderController } from './controllers/medical-order.controller';
-import { ExternalConnectionController } from './controllers/external-connection.controller';
-import { MedicalOrderService } from './services/medical-order.service';
-import { MedicalOrderRepository } from './medical-order.repository';
-import { ExternalConnectionService } from './services/external-connection.service';
-import { DniInterceptorModule } from '@/shared/interceptors/dni/dni-interceptor.module';
-import { MedicalClientModule } from '../medical-client/medical-client.module';
+import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
+import { DniInterceptorModule } from "@/shared/interceptors/dni/dni-interceptor.module";
+import { MailerModule } from "@/shared/mailer/mailer.module";
+import { SqlDatabaseModule } from "@/shared/sql-database";
+import { UserModule } from "@/user/user.module";
+import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { MedicalClientModule } from "../medical-client/medical-client.module";
+import { MedicalOrderExternalConnectionController } from "./controllers/medical-order-external-connection.controller";
+import { MedicalOrderManagementController } from "./controllers/medical-order-management.controller";
+import { MedicalOrder } from "./entities/medical-order.entity";
+import { MedicalOrderExternalConnectionService } from "./services/medical-order-external-connection.service";
+import { MedicalOrderExternalKey } from "./entities/medical-order-external-key.entity";
+import { MedicalOrderManagementService } from "./services/medical-order-management.service";
+import { MedicalOrderEventService } from "./services/medical-order-event.service";
+import { MedicalOrderExternalKeyService } from "./services/medical-order-external-key.service";
+import { MedicalOrderMailService } from "./services/medical-order-mail.service";
+import { PlainMedicalOrderPaginationService } from "./services/plain-medical-order-pagination.service";
+import { MedicalOrderExternalKeyRepository } from "./repositories/medical-order-external-key.repository";
+import { MedicalOrderRepository } from "./repositories/medical-order.repository";
+import { MedicalOrderCloudController } from "./controllers/medical-order-cloud.controller";
+import { MedicalOrderMaitController } from "./controllers/medical-order-mail.controller";
+import { MedicalOrderPaginationController } from "./controllers/medical-order-pagination.controller";
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([MedicalOrder]),
+    SqlDatabaseModule.forFeature([MedicalOrder, MedicalOrderExternalKey]),
     UserModule,
-    ExternalKeyModule,
     AuthenticationGuardModule,
     DniInterceptorModule,
     MedicalClientModule,
@@ -47,17 +54,25 @@ import { MedicalClientModule } from '../medical-client/medical-client.module';
     }),
   ],
   controllers: [
-    MedicalOrderController,
-    ExternalConnectionController
+    MedicalOrderCloudController,
+    MedicalOrderExternalConnectionController,
+    MedicalOrderMaitController,
+    MedicalOrderManagementController,
+    MedicalOrderPaginationController
   ],
   providers: [
-    MedicalOrderService,
+    MedicalOrderExternalKeyRepository,
     MedicalOrderRepository,
-    ExternalConnectionService,
+    MedicalOrderEventService,
+    MedicalOrderExternalConnectionService,
+    MedicalOrderExternalKeyService,
+    MedicalOrderMailService,
+    MedicalOrderManagementService,
+    PlainMedicalOrderPaginationService
   ],
   exports: [
-    MedicalOrderService,
-    ExternalConnectionService
+    MedicalOrderManagementService,
+    MedicalOrderExternalConnectionService
   ]
 })
 export class MedicalOrderModule { }

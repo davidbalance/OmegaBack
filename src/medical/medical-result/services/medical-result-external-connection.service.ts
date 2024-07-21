@@ -1,17 +1,17 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { ExternalConnectionService as MedicalOrderExternalConnectionService } from "@/medical/medical-order/services/external-connection.service";
 import { MedicalResult } from "../entities/medical-result.entity";
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
-import { POSTMedicalResultExternalConnectionRequestDto } from "../dtos/post.medical-result-external-connection.dto";
 import { signaturePath } from "@/shared/utils";
 import path from "path";
 import { MedicalResultEventService } from "./medical-result-event.service";
 import { MedicalResultFileManagementService } from "./medical-result-file-management.service";
 import { MedicalResultExternalKeyService } from "./medical-result-external-key.service";
 import { PATCHMedicalResultFileRequestDto } from "../dtos/patch.medical-result.dto";
+import { MedicalOrderExternalConnectionService } from "@/medical/medical-order/services/medical-order-external-connection.service";
+import { POSTMedicalResultWithExternalKeyRequestDto } from "../dtos/post.medical-result-external-connection.dto";
 
-type RequestType = POSTMedicalResultExternalConnectionRequestDto | PATCHMedicalResultFileRequestDto
+type RequestType = POSTMedicalResultWithExternalKeyRequestDto | PATCHMedicalResultFileRequestDto
 
 @Injectable()
 export class MedicalResultExternalConnectionService implements IExternalConnectionService<RequestType, MedicalResult> {
@@ -28,7 +28,7 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
         return medicalResult;
     }
 
-    async create({ source, key, order, doctor, exam, file }: POSTMedicalResultExternalConnectionRequestDto): Promise<MedicalResult> {
+    async create({ source, key, order, doctor, exam, file }: POSTMedicalResultWithExternalKeyRequestDto): Promise<MedicalResult> {
         const foundOrder = await this.orderService.findOneOrCreate({ source, key, ...order });
 
         const directory = signaturePath({ dni: doctor.dni });
@@ -59,7 +59,7 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
         }
     }
 
-    findOneOrCreate(body: POSTMedicalResultExternalConnectionRequestDto): Promise<MedicalResult> {
+    findOneOrCreate(body: POSTMedicalResultWithExternalKeyRequestDto): Promise<MedicalResult> {
         throw new Error("Method not implemented.");
     }
 

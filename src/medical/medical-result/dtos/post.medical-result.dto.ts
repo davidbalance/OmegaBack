@@ -1,10 +1,10 @@
 import { POSTExamRequestDto } from "@/laboratory/exam/dtos/post.exam.dto";
-import { POSTMedicalOrderRequestDto } from "@/medical/medical-order/dtos/medical-order.request.dto";
 import { POSTDoctorRequestDto } from "@/user/doctor/dtos/post.doctor-management.dto";
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform, Type } from "class-transformer";
 import { IsDefined, IsObject, IsNotEmptyObject, ValidateNested } from "class-validator";
 import { MedicalResult } from "../entities/medical-result.entity";
+import { POSTMedicalOrderRequestDto } from "@/medical/medical-order/dtos/post.medical-order.dto";
 
 export class POSTMedicalResultRequestDto {
     @IsDefined()

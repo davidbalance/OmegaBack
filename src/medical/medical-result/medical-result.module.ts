@@ -21,6 +21,8 @@ import { MedicalResultFileManagementController } from "./controllers/medical-res
 import { MedicalResultManagementController } from "./controllers/medical-result-management.controller";
 import { MedicalResultRepository } from "./repositories/medical-result.repository";
 import { MedicalResultDiseaseRepository } from "./repositories/medical-result-disease.repository";
+import { MedicalResultExternalKeyRepository } from "./repositories/medical-result-external-key.respository";
+import { MedicalResultSendAttributeRepository } from "./repositories/medical-result-send-attribute.repository";
 
 @Module({
   imports: [
@@ -43,8 +45,8 @@ import { MedicalResultDiseaseRepository } from "./repositories/medical-result-di
   ],
   providers: [
     MedicalResultDiseaseRepository,
-    MedicalResultExternalKey,
-    MedicalResultSendAttribute,
+    MedicalResultExternalKeyRepository,
+    MedicalResultSendAttributeRepository,
     MedicalResultRepository,
     MedicalResultDiseaseManagementService,
     MedicalResultEventService,
@@ -55,7 +57,8 @@ import { MedicalResultDiseaseRepository } from "./repositories/medical-result-di
     MedicalResultSendAttributeService
   ],
   exports: [
-    MedicalResultManagementService
+    MedicalResultManagementService,
+    MedicalResultFileManagementService
   ]
 })
 export class MedicalResultModule { }

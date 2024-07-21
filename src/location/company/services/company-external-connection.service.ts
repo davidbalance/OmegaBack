@@ -1,7 +1,7 @@
 import { Inject, Injectable, Provider } from "@nestjs/common";
 import { Company } from "../entities/company.entity";
 import { PATCHCompanyRequestDto, POSTCompanyRequestExternalConnectionDto } from "../dtos/company.request.dto";
-import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
+import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { CorporativeGroup } from "@/location/corporative-group/entities/corporative-group.entity";
 import { INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION } from "@/location/corporative-group/services/corporative-group-external-connection.service";
 import { POSTCorporativeGroupExternalConnectionRequestDto } from "@/location/corporative-group/dtos/post.corporative-group-external-connection.dto";
@@ -17,6 +17,10 @@ export class CompanyExternalConnectionService implements IExternalConnectionServ
         @Inject(INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION) private readonly externalService: IExternalConnectionService<POSTCorporativeGroupExternalConnectionRequestDto, CorporativeGroup>,
         @Inject(CompanyExternalKeyService) private readonly keyService: CompanyExternalKeyService
     ) { }
+    
+    findOne(key: ExternalKeyParam | any): Promise<Company> {
+        throw new Error("Method not implemented.");
+    }
 
     async create({ source, key, corporativeGroup, ...company }: POSTCompanyRequestExternalConnectionDto): Promise<Company> {
         const group = await this.externalService.findOneOrCreate({

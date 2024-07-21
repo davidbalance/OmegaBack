@@ -1,37 +1,30 @@
-import { Inject, Injectable, NotFoundException, StreamableFile } from '@nestjs/common';
-import { ZipperService } from '@/shared/zipper/zipper.service';
-import { FileSourceEnum, DownloadAndZipContentRequestDto, FileSourceRequestDto } from './dto/file-downloader.request.dto';
-import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';
-import { MedicalResultService } from '../medical-result/services/medical-result.service';
-import { MedicalReportService } from '../medical-report/medical-report.service';
-import { FindFilePathService, RemoveFileService } from '@/shared/utils/bases/base.file-service';
+import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
+import { FileManagementService } from "@/shared/utils/bases/base.file-service";
+import { ZipperService } from "@/shared/zipper/zipper.service";
+import { Injectable, Inject, StreamableFile, NotFoundException } from "@nestjs/common";
+import { FileSourceEnum, FileSourceRequestDto, DownloadAndZipContentRequestDto } from "./dto/file-downloader.request.dto";
+import { MedicalResultFileManagementService } from "../medical-result/services/medical-result-file-management.service";
+import { MedicalReportFileManagementService } from "../medical-report/services/medical-report-file-management.service";
 
 @Injectable()
 export class FileDownloaderService {
 
-    private readonly filePathFinders: Record<FileSourceEnum, FindFilePathService<number>>;
-    private readonly fileRemovers: Record<FileSourceEnum, RemoveFileService<number>>;
+    private readonly fileServices: Record<FileSourceEnum, FileManagementService<number>>;
 
     constructor(
         @Inject(ZipperService) private readonly zipper: ZipperService,
         @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
-        @Inject(MedicalResultService) private readonly pathResultService: FindFilePathService<number>,
-        @Inject(MedicalReportService) private readonly pathReportService: FindFilePathService<number>,
-        @Inject(MedicalResultService) private readonly deleteResultService: RemoveFileService<number>,
-        @Inject(MedicalReportService) private readonly deleteReportService: RemoveFileService<number>,
+        @Inject(MedicalResultFileManagementService) private readonly medicalResultService: FileManagementService<number>,
+        @Inject(MedicalReportFileManagementService) private readonly medicalReportService: FileManagementService<number>,
     ) {
-        this.filePathFinders = {
-            report: pathReportService,
-            result: pathResultService
-        };
-        this.fileRemovers = {
-            report: deleteReportService,
-            result: deleteResultService
+        this.fileServices = {
+            report: medicalReportService,
+            result: medicalResultService
         };
     }
 
     async downloadFile({ id, type }: FileSourceRequestDto): Promise<StreamableFile> {
-        const source = await this.filePathFinders[type].getpath(id);
+        const source = await this.fileServices[type].getFilePath(id);
         const stream = this.storage.readFile(source);
         return stream;
     }
@@ -39,7 +32,7 @@ export class FileDownloaderService {
     async downloadMultipleFiles({ files }: DownloadAndZipContentRequestDto): Promise<StreamableFile> {
         const sources: string[] = [];
         for (const file of files) {
-            const source = await this.filePathFinders[file.type].getpath(file.id);
+            const source = await this.fileServices[file.type].getFilePath(file.id);
             sources.push(source);
         }
 
@@ -48,7 +41,7 @@ export class FileDownloaderService {
     }
 
     async deleteFile({ id, type }: FileSourceRequestDto): Promise<void> {
-        const state = await this.fileRemovers[type].removeFile(id);
+        const state = await this.fileServices[type].removeFile(id);
         if (!state) {
             throw new NotFoundException('Archivo no eliminado');
         }

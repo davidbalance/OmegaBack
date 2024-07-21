@@ -12,11 +12,13 @@ import { MedicalReportSendAttributeRepository } from "./repositories/medical-rep
 import { MedicalReportSendService } from "./services/medical-report-send.service";
 import { MedicalReportPdfService } from "./services/medical-report-pdf.service";
 import { MedicalReportFileManagementService } from "./services/medical-report-file-management.service";
+import { MedicalResultModule } from "../medical-result/medical-result.module";
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([MedicalReport, MedicalReportSendAttribute]),
     AuthenticationGuardModule,
+    MedicalResultModule,
     LocalStorageModule,
     PdfManagerModule
   ],
@@ -32,7 +34,8 @@ import { MedicalReportFileManagementService } from "./services/medical-report-fi
     MedicalReportFileManagementService
   ],
   exports: [
-    MedicalReportManagementService
+    MedicalReportManagementService,
+    MedicalReportFileManagementService
   ]
 })
 export class MedicalReportModule { }

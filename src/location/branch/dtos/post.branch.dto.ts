@@ -2,12 +2,9 @@ import { POSTCompanyRequestDto } from "@/location/company/dtos/company.request.d
 import { Type } from "class-transformer";
 import { IsDefined, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, ValidateNested } from "class-validator";
 import { BranchResponseDto } from "./branch.dto";
-import { ExternalConnectionRequest } from "@/shared/utils/bases/base.external-connection";
+import { ExternalConnectionKeyRequest, ExternalConnectionRequest } from "@/shared/utils/bases/base.external-connection";
 
 export class POSTBranchRequestDto {
-    @IsString()
-    @IsNotEmpty()
-    public readonly key: string;
 
     @IsString()
     @IsNotEmpty()
@@ -25,9 +22,22 @@ export class POSTBranchRequestDto {
     public readonly company: POSTCompanyRequestDto
 }
 
-export class POSTBranchExternalConnectionRequestDto 
-extends POSTBranchRequestDto
-implements ExternalConnectionRequest {
+export class POSTBranchWithKeyRequestDto
+    extends POSTBranchRequestDto
+    implements ExternalConnectionKeyRequest {
+    @IsString()
+    @IsNotEmpty()
+    public readonly key: string;
+}
+
+export class POSTBranchWithExternalKeyRequestDto
+    extends POSTBranchRequestDto
+    implements ExternalConnectionRequest {
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly key: string;
+
     @IsString()
     @IsNotEmpty()
     public readonly source: string;

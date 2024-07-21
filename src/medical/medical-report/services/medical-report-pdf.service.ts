@@ -5,8 +5,8 @@ import path from 'path';
 import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';
 import { PdfManagerService } from '@/shared/pdf-manager';
 import { fileReportPath } from '@/shared/utils';
-import { MedicalReportManagementService } from './medical-report-management.service';
 import { MedicalReport } from '../entities/medical-report.entity';
+import { MedicalReportRepository } from '../repositories/medical-report.repository';
 
 @Injectable()
 export class MedicalReportPdfService {
@@ -14,33 +14,33 @@ export class MedicalReportPdfService {
   constructor(
     @Inject(PdfManagerService) private readonly pdfService: PdfManagerService,
     @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
-    @Inject(MedicalReportManagementService) private readonly service: MedicalReportManagementService
+    @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository
   ) { }
 
   public async craft(data: MedicalReport): Promise<MedicalReport> {
     const filepath: string = await this.processPdf(data);
     try {
-      const newMedicalReport: MedicalReport = await this.service.updateOne(data.id, { fileAddress: filepath, hasFile: true });
+      const newMedicalReport: MedicalReport = await this.repository.findOneAndUpdate({ id: data.id }, { fileAddress: filepath, hasFile: true });
       return newMedicalReport;
     } catch (error) {
-      const newMedicalReport: MedicalReport = await this.service.updateOne(data.id, { fileAddress: null, hasFile: false });
+      const newMedicalReport: MedicalReport = await this.repository.findOneAndUpdate({ id: data.id }, { fileAddress: null, hasFile: false });
       return newMedicalReport;
     }
   }
 
   public async redoPdf(id: number): Promise<MedicalReport> {
-    const medicalReport = await this.service.findOne(id);
+    const medicalReport = await this.repository.findOne({ where: { id } });
     return this.craft(medicalReport);
   }
 
   public async redoPdfsByDni(dni: string): Promise<MedicalReport[]> {
-    const medicalReports = await this.service.findByDni(dni);
+    const medicalReports = await this.repository.find({ where: { patientDni: dni } });
     const redo = await Promise.all(medicalReports.map(this.craft));
     return redo;
   }
 
   public async redoPdfs(): Promise<MedicalReport[]> {
-    const medicalReports = await this.service.findAll();
+    const medicalReports = await this.repository.find();
     const redo = await Promise.all(medicalReports.map(this.craft));
     return redo;
   }

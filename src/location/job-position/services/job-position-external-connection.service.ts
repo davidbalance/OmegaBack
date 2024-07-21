@@ -14,6 +14,10 @@ export class JobPositionExternalConnectionService implements IExternalConnection
         @Inject(JobPositionRepository) private readonly repository: JobPositionRepository,
         @Inject(JobPositionExternalKeyService) private keyService: JobPositionExternalKeyService
     ) { }
+    
+    findOne(key: ExternalKeyParam | any): Promise<JobPosition> {
+        throw new Error("Method not implemented.");
+    }
 
     async create({ source, key, ...data }: POSTJobPositionExternalConnectionRequestDto): Promise<JobPosition> {
         const newKey = await this.keyService.create({ key, source });

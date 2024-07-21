@@ -5,9 +5,8 @@ import { ApiTags, ApiHeader, ApiConsumes } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { GETMedicalResultExternalConnectionResponseDto } from "../dtos/get.medical-result-external-connection.dto";
 import { PATCHMedicalResultFileRequestDto } from "../dtos/patch.medical-result.dto";
-import { POSTMedicalResultExternalConnectionRequestDto, POSTMedicalResultFileResponseDto } from "../dtos/post.medical-result-external-connection.dto";
+import { POSTMedicalResultFileResponseDto, POSTMedicalResultWithExternalKeyRequestDto } from "../dtos/post.medical-result-external-connection.dto";
 import { MedicalResultExternalConnectionService } from "../services/medical-result-external-connection.service";
-
 
 @ApiTags('External/Connection', 'Medical/Result')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -31,7 +30,7 @@ export class MedicalResultExternalConnectionController {
     @Post()
     @UseInterceptors(FileInterceptor('file'))
     async create(
-        @Body() body: POSTMedicalResultExternalConnectionRequestDto,
+        @Body() body: POSTMedicalResultWithExternalKeyRequestDto,
         @UploadedFile() _: Express.Multer.File
     ): Promise<POSTMedicalResultFileResponseDto> {
         const order = await this.service.create(body);

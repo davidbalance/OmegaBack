@@ -14,6 +14,10 @@ export class CorporativeGroupExternalConnectionService implements IExternalConne
         @Inject(CorporativeGroupRepository) private readonly repository: CorporativeGroupRepository,
         @Inject(CorporativeGroupExternalKeyService) private keyService: CorporativeGroupExternalKeyService
     ) { }
+    
+    findOne(key: ExternalKeyParam | any): Promise<CorporativeGroup> {
+        throw new Error("Method not implemented.");
+    }
 
     async create({ source, key, ...data }: POSTCorporativeGroupExternalConnectionRequestDto): Promise<CorporativeGroup> {
         const newKey = await this.keyService.create({ key, source });

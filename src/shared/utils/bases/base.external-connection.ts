@@ -1,5 +1,13 @@
 export type ExternalKeyParam = { key: string, source: string };
 
+export interface ExternalConnectionKeyRequest {
+    key: string;
+}
+
+export interface ExternalConnectionSourceRequest {
+    source: string;
+}
+
 export interface ExternalConnectionRequest {
     key: string;
     source: string;

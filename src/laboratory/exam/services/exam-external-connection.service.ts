@@ -2,12 +2,11 @@ import { Inject, Injectable } from "@nestjs/common";
 import { Exam } from "../entities/exam.entity";
 import { ExamRepository } from "../repositories/exam.repository";
 import { ExamExternalKeyService } from "./exam-external-key.service";
-import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
+import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { PATCHExamRequestDto } from "../dtos/patch.exam.dto";
-import { POSTExamRequestDto } from "../dtos/post.exam.dto";
+import { POSTExamExternalConnectionRequestDto, POSTExamRequestDto } from "../dtos/post.exam.dto";
 
-type POSTRequest = POSTExamRequestDto & { source: string };
-type ExternalKeyParam = { key: string, source: string };
+type POSTRequest = POSTExamExternalConnectionRequestDto;
 type RequestType = POSTRequest | PATCHExamRequestDto;
 
 @Injectable()
@@ -18,7 +17,11 @@ export class ExamExternalConnectionService implements IExternalConnectionService
         @Inject(ExamRepository) private readonly repository: ExamRepository
     ) { }
 
-    async create({ key, source, ...exam }: POSTRequest): Promise<Exam> {
+    findOne(key: ExternalKeyParam | any): Promise<Exam> {
+        throw new Error("Method not implemented.");
+    }
+
+    async create({ key, source, ...exam }: POSTExamExternalConnectionRequestDto): Promise<Exam> {
         const newKey = await this.externalKeyService.create({ key, source });
         try {
             const newExam = await this.repository.create({ ...exam, externalKey: newKey });

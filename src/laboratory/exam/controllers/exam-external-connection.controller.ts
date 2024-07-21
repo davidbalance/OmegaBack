@@ -5,11 +5,11 @@ import { plainToInstance } from "class-transformer";
 import { ExamExternalConnectionService } from "../services/exam-external-connection.service";
 import { GETExamResponseDto } from "../dtos/get.exam.dto";
 import { PATCHExamRequestDto } from "../dtos/patch.exam.dto";
-import { POSTExamRequestDto } from "../dtos/post.exam.dto";
+import { POSTExamExternalConnectionRequestDto, POSTExamRequestDto } from "../dtos/post.exam.dto";
 
 @ApiTags('External/Connection', 'Laboratory/Exam')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
-@Controller('external/connection/exams/:source')
+@Controller('external/connection/exams')
 export class ExamExternalConnectionController {
     constructor(
         @Inject(ExamExternalConnectionService) private readonly service: ExamExternalConnectionService
@@ -18,15 +18,14 @@ export class ExamExternalConnectionController {
     @UseGuards(ApiKeyAuthGuard)
     @Post()
     async create(
-        @Param('source') source: string,
-        @Body() body: POSTExamRequestDto
+        @Body() body: POSTExamExternalConnectionRequestDto
     ): Promise<GETExamResponseDto> {
-        const exam = await this.service.create({ source, ...body });
+        const exam = await this.service.create(body);
         return plainToInstance(GETExamResponseDto, exam);
     }
 
     @UseGuards(ApiKeyAuthGuard)
-    @Patch(':key')
+    @Patch(':source/:key')
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('key') key: string,

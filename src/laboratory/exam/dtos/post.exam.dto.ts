@@ -2,7 +2,6 @@ import { ExternalConnectionRequest } from "@/shared/utils/bases/base.external-co
 import { IsNotEmpty, IsString } from "class-validator";
 
 export class POSTExamRequestDto {
-
     @IsString()
     @IsNotEmpty()
     public readonly name: string;

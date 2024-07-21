@@ -4,7 +4,7 @@ import { plainToInstance } from "class-transformer";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { BranchExternalConnectionService } from "../services/branch-external-connection.service";
 import { PATCHBranchRequestDto, PATCHBranchResponseDto } from "../dtos/patch.branch.dto";
-import { POSTBranchRequestDto, POSTBranchResponseDto } from "../dtos/post.branch.dto";
+import { POSTBranchResponseDto, POSTBranchWithExternalKeyRequestDto } from "../dtos/post.branch.dto";
 
 @ApiTags('Location/Branch', 'External/Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -18,9 +18,9 @@ export class BranchExternalConnectionController {
     @Post()
     async create(
         @Param('source') source: string,
-        @Body() body: POSTBranchRequestDto,
+        @Body() body: POSTBranchWithExternalKeyRequestDto,
     ): Promise<POSTBranchResponseDto> {
-        const branch = await this.service.create({ source, ...body });
+        const branch = await this.service.create({ ...body, source });
         return plainToInstance(POSTBranchResponseDto, branch);
     }
 
