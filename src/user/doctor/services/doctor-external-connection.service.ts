@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Doctor } from "../entities/doctor.entity";
 import { UserManagementService } from "@/user/user/services/user-management.service";
-import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
+import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { PATCHDoctorRequestDto } from "../dtos/patch.doctor-management.dto";
 import { POSTDoctorRequestDto } from "../dtos/post.doctor-management.dto";
 import { DoctorRepository } from "../repositories/doctor.repository";
@@ -14,6 +14,10 @@ export class DoctorExternalConnectionService implements IExternalConnectionServi
         @Inject(DoctorRepository) private readonly repository: DoctorRepository,
         @Inject(UserManagementService) private readonly userService: UserManagementService
     ) { }
+    
+    findOne(key: ExternalKeyParam | any): Promise<Doctor> {
+        throw new Error("Method not implemented.");
+    }
 
     async create({ ...user }: POSTDoctorRequestDto): Promise<Doctor> {
         let newUser;

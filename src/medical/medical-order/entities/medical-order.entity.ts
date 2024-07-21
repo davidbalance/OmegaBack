@@ -2,8 +2,8 @@ import { AbstractEntity } from "@/shared/sql-database";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ExternalKey } from "../external-key/entities/external-key.entity";
 import { MedicalClient } from "@/medical/medical-client/entities/medical-client.entity";
-import { MedicalResult } from "@/medical/medical-result/entities/result.entity";
 import { OrderStatus } from "../enums";
+import { MedicalResult } from "@/medical/medical-result/entities/medical-result.entity";
 
 @Entity({ name: 'tbl_m_orders' })
 @Index('idx_company_ruc', ['companyRuc'])
