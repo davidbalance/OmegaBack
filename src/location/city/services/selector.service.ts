@@ -1,19 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CityRepository } from '../city.repository';
-import { ISelectorOption, ISelectorOptionService } from '@/shared/utils/bases/base.selector';
+import { SelectorOption, SelectorOptionService } from '@/shared/utils/bases/base.selector';
 
 @Injectable()
-export class SelectorService implements ISelectorOptionService<number> {
+export class SelectorService implements SelectorOptionService<number> {
 
   constructor(
     @Inject(CityRepository) private readonly repository: CityRepository,
   ) { }
 
-  async find(params: any = null): Promise<ISelectorOption<number>[]> {
+  async find(params: any = null): Promise<SelectorOption<number>[]> {
     const diseases = await this.repository.query('city')
       .select('city.id', 'key')
       .addSelect('city.name', 'label')
-      .getRawMany<ISelectorOption<number>>();
+      .getRawMany<SelectorOption<number>>();
     return diseases;
   }
 }

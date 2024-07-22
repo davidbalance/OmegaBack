@@ -1,6 +1,6 @@
-import { ISelectorOption } from "@/shared/utils/bases/base.selector";
+import { SelectorOption } from "@/shared/utils/bases/base.selector";
 
-const stubBranchSelector = (id: number): ISelectorOption<number> => ({
+const stubBranchSelector = (id: number): SelectorOption<number> => ({
     key: id,
     label: 'my-stub-key'
 });

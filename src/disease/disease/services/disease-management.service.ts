@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Disease } from '../entities/disease.entity';
-import { PATCHDiseaseRequestDto, POSTDiseaseRequestDto } from '../dtos/disease.request.dto';
 import { DiseaseGroupManagementService } from '@/disease/disease-group/services/disease-group-management.service';
 import { DiseaseRepository } from '../repositories/disease.repository';
+import { PostDiseaseRequestDto } from '../dtos/request/post.disease.request.dto';
+import { PatchDiseaseRequestDto } from '../dtos/request/patch.disease.request.dto';
 
 @Injectable()
 export class DiseaseManagementService {
@@ -12,7 +13,7 @@ export class DiseaseManagementService {
     @Inject(DiseaseGroupManagementService) private readonly groupService: DiseaseGroupManagementService
   ) { }
 
-  async create({ group, ...data }: POSTDiseaseRequestDto): Promise<Disease> {
+  async create({ group, ...data }: PostDiseaseRequestDto): Promise<Disease> {
     const diseaseGroup = await this.groupService.findOneById(group);
     return await this.repository.create({ ...data, group: diseaseGroup });
   }
@@ -30,7 +31,7 @@ export class DiseaseManagementService {
     return diseases;
   }
 
-  async updateOne(id: number, { group, ...data }: PATCHDiseaseRequestDto): Promise<Disease> {
+  async updateOne(id: number, { group, ...data }: PatchDiseaseRequestDto): Promise<Disease> {
     if (group) {
       const diseaseGroup = await this.groupService.findOneById(group);
       return await this.repository.findOneAndUpdate({ id }, { ...data, group: diseaseGroup });

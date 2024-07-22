@@ -2,8 +2,8 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { GETSelectorOptionArrayResponseDto } from '../dtos/get.exam-selector.dto';
 import { ExamSelectorService } from '../services/exam-selector.service';
+import { GetExamSelectorOptionArrayResponseDto } from '../dtos/get.exam-selector.dto';
 
 @ApiTags('Selector', 'Laboratory/Exam')
 @ApiBearerAuth()
@@ -13,8 +13,8 @@ export class ExamSelectorController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findSelectorOptions(): Promise<GETSelectorOptionArrayResponseDto> {
+  async findSelectorOptions(): Promise<GetExamSelectorOptionArrayResponseDto> {
     const options = await this.service.find();
-    return plainToInstance(GETSelectorOptionArrayResponseDto, { options });
+    return plainToInstance(GetExamSelectorOptionArrayResponseDto, { options });
   }
 }

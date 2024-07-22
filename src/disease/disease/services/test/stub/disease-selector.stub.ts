@@ -1,8 +1,8 @@
 import { mockDiseaseGroup } from "@/disease/disease-group/services/test/stub/disease-group.stub";
 import { Disease } from "@/disease/disease/entities/disease.entity";
-import { ISelectorOption } from "@/shared/utils/bases/base.selector";
+import { SelectorOption } from "@/shared/utils/bases/base.selector";
 
-const stubDiseaseSelector = (key: number): ISelectorOption<number> => ({
+const stubDiseaseSelector = (key: number): SelectorOption<number> => ({
     key: key,
     label: "my-stub-label"
 });

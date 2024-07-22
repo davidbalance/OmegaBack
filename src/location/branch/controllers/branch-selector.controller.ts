@@ -2,8 +2,8 @@ import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { GETSelectorOptionArrayResponseDto } from '../dtos/get.branch-selector.dto';
 import { BranchSelectorService } from '../services/branch-selector.service';
+import { GetBranchSelectorOptionArrayResponseDto } from '../dtos/get.branch-selector.dto';
 
 @ApiTags('Location/Branch', 'Selector')
 @ApiBearerAuth()
@@ -15,8 +15,8 @@ export class BranchSelectorController {
   @Get(':company')
   async findSelectorOptions(
     @Param(':company') company: number
-  ): Promise<GETSelectorOptionArrayResponseDto> {
+  ): Promise<GetBranchSelectorOptionArrayResponseDto> {
     const options = await this.service.find(company);
-    return plainToInstance(GETSelectorOptionArrayResponseDto, { options });
+    return plainToInstance(GetBranchSelectorOptionArrayResponseDto, { options });
   }
 }
