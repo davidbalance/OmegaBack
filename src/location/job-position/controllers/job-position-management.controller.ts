@@ -2,11 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, UseGuards } 
 import { JobPositionManagementService } from '../services/job-position-management.service';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { POSTJobPositionRequestDto, POSTJobPositionResponseDto } from '../dtos/post.job-position.dto';
-import { PATCHJobPositionRequestDto } from '../dtos/patch.job-position.dto';
+import { PostJobPositionRequestDto } from '../dtos/request/post.job-position.request.dto';
+import { PostJobPositionResponseDto } from '../dtos/response/post.job-position.dto';
 import { plainToInstance } from 'class-transformer';
-import { GETJobPositionArrayReponseDto, GETJobPositionResponseDto } from '../dtos/get.job-position.dto';
-import { DELETEJobPositionResponseDto } from '../dtos/delete.job-position.dto';
+import { GetJobPositionArrayReponseDto } from '../dtos/response/get.job-position-array.dto';
+import { GetJobPositionResponseDto } from '../dtos/response/get.job-position.dto';
+import { PatchJobPositionRequestDto } from '../dtos/request/patch.job-position.request.dto';
+import { PatchJobPositionResponseDto } from '../dtos/response/patch.job-position.dto';
+import { DeleteJobPositionResponseDto } from '../dtos/response/delete.job-position.dto';
 
 @ApiTags('Location/Job/Position')
 @ApiBearerAuth()
@@ -19,39 +22,39 @@ export class JobPositionManagementController {
 
   @Post()
   async create(
-    @Body() createJobPositionDto: POSTJobPositionRequestDto
-  ): Promise<POSTJobPositionResponseDto> {
+    @Body() createJobPositionDto: PostJobPositionRequestDto
+  ): Promise<PostJobPositionResponseDto> {
     const position = await this.jobPositionService.create(createJobPositionDto);
-    return plainToInstance(POSTJobPositionResponseDto, position);
+    return plainToInstance(PostJobPositionResponseDto, position);
   }
 
   @Get()
-  async findAll(): Promise<GETJobPositionArrayReponseDto> {
+  async findAll(): Promise<GetJobPositionArrayReponseDto> {
     const data = await this.jobPositionService.findAll();
-    return plainToInstance(GETJobPositionArrayReponseDto, { data });
+    return plainToInstance(GetJobPositionArrayReponseDto, { data });
   }
 
   @Get(':id')
   async findOne(
     @Param('id') id: string
-  ): Promise<GETJobPositionResponseDto> {
+  ): Promise<GetJobPositionResponseDto> {
     const position = await this.jobPositionService.findOne(+id);
-    return plainToInstance(GETJobPositionResponseDto, position);
+    return plainToInstance(GetJobPositionResponseDto, position);
   }
 
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateJobPositionDto: PATCHJobPositionRequestDto
-  ): Promise<PATCHJobPositionRequestDto> {
-    const position = await this.jobPositionService.updateOne(+id, updateJobPositionDto);
-    return plainToInstance(PATCHJobPositionRequestDto, position);
+    @Body() data: PatchJobPositionRequestDto
+  ): Promise<PatchJobPositionResponseDto> {
+    const position = await this.jobPositionService.updateOne(+id, data);
+    return plainToInstance(PatchJobPositionResponseDto, position);
   }
 
   @Delete(':id')
   async remove(
     @Param('id') id: string
-  ): Promise<DELETEJobPositionResponseDto> {
+  ): Promise<DeleteJobPositionResponseDto> {
     await this.jobPositionService.deleteOne(+id);
     return {};
   }

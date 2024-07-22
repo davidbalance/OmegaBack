@@ -1,8 +1,8 @@
 import { TestBed } from "@automock/jest";
 import { JobPositionRepository } from "../../repositories/job-position.repository";
-import { POSTJobPositionRequestDto } from "../../dtos/post.job-position.dto";
+import { POSTJobPositionRequestDto } from "../../dtos/request/post.job-position.request.dto";
 import { mockJobPosition, mockJobPositions } from "./stub/job-position.stub";
-import { PATCHJobPositionRequestDto } from "../../dtos/patch.job-position.dto";
+import { PATCHJobPositionRequestDto } from "../../dtos/request/patch.job-position.request.dto";
 import { JobPositionManagementService } from "../job-position-management.service";
 
 describe('JobPositionManagementService', () => {

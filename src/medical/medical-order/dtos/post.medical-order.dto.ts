@@ -1,4 +1,4 @@
-import { POSTBranchRequestDto } from "@/location/branch/dtos/post.branch.dto";
+import { PostBranchRequestDto } from "@/location/branch/dtos/request/post.branch.request.dto";
 import { POSTPatientRequestDto } from "@/user/patient/dtos/post.patient-management,dto";
 import { Type } from "class-transformer";
 import { IsDefined, IsObject, IsNotEmptyObject, ValidateNested, IsString, IsEmail } from "class-validator";
@@ -14,8 +14,8 @@ export class POSTMedicalOrderRequestDto {
     @IsObject()
     @IsNotEmptyObject()
     @ValidateNested()
-    @Type(() => POSTBranchRequestDto)
-    public readonly branch: POSTBranchRequestDto;
+    @Type(() => PostBranchRequestDto)
+    public readonly branch: PostBranchRequestDto;
 
     @IsDefined()
     @IsObject()

@@ -42,7 +42,7 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
                 client: newClient,
             });
 
-            this.eventService.emitMedicalOrderCreateEvent(patient, { ...branch, source });
+            // this.eventService.emitMedicalOrderCreateEvent({ key, source }, patient, branch);
             return newOrder;
         } catch (error) {
             this.externalkey.remove({ source, key })

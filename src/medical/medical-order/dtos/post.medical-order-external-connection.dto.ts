@@ -2,7 +2,7 @@ import { ExternalConnectionRequest } from "@/shared/utils/bases/base.external-co
 import { IsString, IsNotEmpty, IsDefined, IsNotEmptyObject, IsObject, ValidateNested } from "class-validator";
 import { POSTMedicalOrderRequestDto } from "./post.medical-order.dto";
 import { Type } from "class-transformer";
-import { POSTBranchWithExternalKeyRequestDto } from "@/location/branch/dtos/post.branch.dto";
+import { PostBranchRequestDto } from "@/location/branch/dtos/request/post.branch.request.dto";
 
 export class POSTMedicalOrderWithExternalKeyRequestDto
     extends POSTMedicalOrderRequestDto
@@ -12,8 +12,8 @@ export class POSTMedicalOrderWithExternalKeyRequestDto
     @IsObject()
     @IsNotEmptyObject()
     @ValidateNested()
-    @Type(() => POSTBranchWithExternalKeyRequestDto)
-    public readonly branch: POSTBranchWithExternalKeyRequestDto;
+    @Type(() => PostBranchRequestDto)
+    public readonly branch: PostBranchRequestDto;
 
     @IsString()
     @IsNotEmpty()

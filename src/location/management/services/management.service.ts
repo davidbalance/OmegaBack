@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Management } from '../entities/management.entity';
 import { ManagementRepository } from '../repositories/management.repository';
-import { PATCHManagementRequestDto } from '../dtos/patch.management.dto';
-import { POSTManagementRequestDto } from '../dtos/post.management.dto';
+import { PostManagementRequestDto } from '../dtos/request/post.management.request.dto';
+import { PatchMagementRequestDto } from '../dtos/request/patch.management.request.dto';
 
 @Injectable()
 export class ManagementService {
@@ -10,7 +10,7 @@ export class ManagementService {
     @Inject(ManagementRepository) private readonly repository: ManagementRepository
   ) { }
 
-  async create(createManagementDto: POSTManagementRequestDto): Promise<Management> {
+  async create(createManagementDto: PostManagementRequestDto): Promise<Management> {
     const management = await this.repository.create(createManagementDto);
     return management;
   }
@@ -28,7 +28,7 @@ export class ManagementService {
     return management;
   }
 
-  async updateOne(id: number, updateManagementDto: PATCHManagementRequestDto): Promise<Management> {
+  async updateOne(id: number, updateManagementDto: PatchMagementRequestDto): Promise<Management> {
     const management = await this.repository.findOneAndUpdate({ id: id }, updateManagementDto);
     return management;
   }

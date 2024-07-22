@@ -2,8 +2,8 @@ import { ManagementService } from "@/location/management/services/management.ser
 import { Injectable, Inject } from "@nestjs/common";
 import { Area } from "../entities/area.entity";
 import { AreaRepository } from "../repositories/area.repository";
-import { PATCHAreaRequestDto } from "../dtos/patch.area.dto";
-import { POSTAreaRequestDto } from "../dtos/post.area.dto";
+import { PostAreaRequestDto } from "../dtos/request/post.area.request.dto";
+import { PatchAreaRequestDto } from "../dtos/request/patch.area.request.dto";
 
 @Injectable()
 export class AreaManagementService {
@@ -13,7 +13,7 @@ export class AreaManagementService {
     @Inject(ManagementService) private readonly managementService: ManagementService
   ) { }
 
-  async create({ management, ...area }: POSTAreaRequestDto): Promise<Area> {
+  async create({ management, ...area }: PostAreaRequestDto): Promise<Area> {
     const foundManagement = await this.managementService.findOneById(management);
     const createdArea = await this.repository.create({ ...area, management: foundManagement });
     return createdArea;
@@ -24,7 +24,7 @@ export class AreaManagementService {
     return areas;
   }
 
-  async updateOne(id: number, { management, ...area }: PATCHAreaRequestDto): Promise<Area> {
+  async updateOne(id: number, { management, ...area }: PatchAreaRequestDto): Promise<Area> {
     const foundManagement = await this.managementService.findOneById(management);
     const updatedArea = await this.repository.findOneAndUpdate({ id: id }, { ...area, management: foundManagement });
     return updatedArea;

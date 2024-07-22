@@ -4,8 +4,8 @@ import { AreaManagementService } from "../area-management.service";
 import { ManagementService } from "@/location/management/services/management.service";
 import { mockArea, mockAreas } from "./stub/area.stub";
 import { mockManagement } from "@/location/management/services/test/stub/management.stub";
-import { PATCHAreaRequestDto } from "../../dtos/patch.area.dto";
-import { POSTAreaRequestDto } from "../../dtos/post.area.dto";
+import { PATCHAreaRequestDto } from "../../dtos/request/patch.area.request.dto";
+import { POSTAreaRequestDto } from "../../dtos/request/post.area.request.dto";
 
 describe('AreaManagementService', () => {
   let service: AreaManagementService;

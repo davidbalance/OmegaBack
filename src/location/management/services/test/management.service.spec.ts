@@ -2,8 +2,8 @@ import { TestBed } from "@automock/jest";
 import { ManagementRepository } from "../../repositories/management.repository";
 import { ManagementService } from "../management.service";
 import { mockManagement, mockManagements } from "./stub/management.stub";
-import { PATCHManagementRequestDto } from "../../dtos/patch.management.dto";
-import { POSTManagementRequestDto } from "../../dtos/post.management.dto";
+import { PATCHManagementRequestDto } from "../../dtos/request/patch.management.request.dto";
+import { POSTManagementRequestDto } from "../../dtos/request/post.management.request.dto";
 
 describe('ManagementService', () => {
   let service: ManagementService;

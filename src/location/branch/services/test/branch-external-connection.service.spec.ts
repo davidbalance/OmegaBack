@@ -12,8 +12,8 @@ import { mockBranch } from "./stub/branch.stub";
 import { mockCompany } from "@/location/company/services/test/stub/company.stub";
 import { CityService } from "@/location/city/services/city.service";
 import { mockCity } from "@/location/city/services/test/stub/city.stub";
-import { PATCHBranchRequestDto } from "../../dtos/patch.branch.dto";
-import { POSTBranchRequestDto } from "../../dtos/post.branch.dto";
+import { PATCHBranchRequestDto } from "../../dtos/request/patch.branch.request.dto";
+import { POSTBranchRequestDto } from "../../dtos/request/post.branch.request.dto";
 
 describe('BranchExternalConnectionService', () => {
     let service: BranchExternalConnectionService;

@@ -9,7 +9,7 @@ import { CompanyExternalConnectionService } from "../company-external-connection
 import { CompanyExternalKeyService } from "../company-external-key.service";
 import { INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION } from "@/location/corporative-group/services/corporative-group-external-connection.service";
 import { mockCompany } from "./stub/company.stub";
-import { PATCHCompanyRequestDto, POSTCompanyRequestDto } from "../../dtos/company.request.dto";
+import { PATCHCompanyRequestDto, POSTCompanyRequestDto } from "../../dtos/request/post.company.request.dto";
 import { mockCompanyExternalKey } from "./stub/company-external-key.stub";
 
 describe('CompanyExternalConnectionService', () => {

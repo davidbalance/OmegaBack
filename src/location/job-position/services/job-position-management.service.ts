@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JobPositionRepository } from '../repositories/job-position.repository';
 import { JobPosition } from '../entities/job-position.entity';
-import { POSTJobPositionRequestDto } from '../dtos/post.job-position.dto';
-import { PATCHJobPositionRequestDto } from '../dtos/patch.job-position.dto';
+import { PostJobPositionRequestDto } from '../dtos/request/post.job-position.request.dto';
+import { PatchJobPositionRequestDto } from '../dtos/request/patch.job-position.request.dto';
 
 @Injectable()
 export class JobPositionManagementService {
@@ -11,7 +11,7 @@ export class JobPositionManagementService {
     @Inject(JobPositionRepository) private readonly repository: JobPositionRepository
   ) { }
 
-  async create(data: POSTJobPositionRequestDto): Promise<JobPosition> {
+  async create(data: PostJobPositionRequestDto): Promise<JobPosition> {
     const result = await this.repository.create(data);
     return result;
   }
@@ -26,7 +26,7 @@ export class JobPositionManagementService {
     return position;
   }
 
-  async updateOne(id: number, data: PATCHJobPositionRequestDto): Promise<JobPosition> {
+  async updateOne(id: number, data: PatchJobPositionRequestDto): Promise<JobPosition> {
     const position = await this.repository.findOneAndUpdate({ id }, data);
     return position;
   }

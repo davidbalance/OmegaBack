@@ -1,6 +1,6 @@
 import { TestBed } from "@automock/jest";
-import { PATCHJobPositionRequestDto } from "../../dtos/patch.job-position.dto";
-import { POSTJobPositionExternalConnectionRequestDto } from "../../dtos/post.job-position-external-connection.dto";
+import { PATCHJobPositionRequestDto } from "../../dtos/request/patch.job-position.request.dto";
+import { POSTJobPositionExternalConnectionRequestDto } from "../../dtos/request/post.job-position-external-connection.request.dto";
 import { JobPositionRepository } from "../../repositories/job-position.repository";
 import { JobPositionExternalConnectionService } from "../job-position-external-connection.service";
 import { JobPositionExternalKeyService } from "../job-position-external-key.service";

@@ -1,33 +1,32 @@
 import { Inject, Injectable, Provider } from "@nestjs/common";
 import { Company } from "../entities/company.entity";
-import { PATCHCompanyRequestDto, POSTCompanyRequestExternalConnectionDto } from "../dtos/company.request.dto";
 import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { CorporativeGroup } from "@/location/corporative-group/entities/corporative-group.entity";
 import { INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION } from "@/location/corporative-group/services/corporative-group-external-connection.service";
-import { POSTCorporativeGroupExternalConnectionRequestDto } from "@/location/corporative-group/dtos/post.corporative-group-external-connection.dto";
 import { CompanyRepository } from "../repositories/company.repository";
 import { CompanyExternalKeyService } from "./company-external-key.service";
+import { PatchCompanyRequestDto } from "../dtos/request/patch.company.request.dto";
+import { PostCorporativeGroupRequestDto } from "@/location/corporative-group/dtos/request/post.corporative-group.dto";
+import { PostCompanyExternalRequestDto } from "../dtos/request/post.company-external.request.dto";
 
-type CompanyRequestType = POSTCompanyRequestExternalConnectionDto | PATCHCompanyRequestDto;
+type ConnectionRequestType = PostCompanyExternalRequestDto | PatchCompanyRequestDto;
 
 @Injectable()
-export class CompanyExternalConnectionService implements IExternalConnectionService<CompanyRequestType, Company> {
+export class CompanyExternalConnectionService implements IExternalConnectionService<ConnectionRequestType, Company> {
     constructor(
         @Inject(CompanyRepository) private readonly repository: CompanyRepository,
-        @Inject(INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION) private readonly externalService: IExternalConnectionService<POSTCorporativeGroupExternalConnectionRequestDto, CorporativeGroup>,
+        @Inject(INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION) private readonly externalService: IExternalConnectionService<PostCorporativeGroupRequestDto, CorporativeGroup>,
         @Inject(CompanyExternalKeyService) private readonly keyService: CompanyExternalKeyService
     ) { }
-    
+
     findOne(key: ExternalKeyParam | any): Promise<Company> {
         throw new Error("Method not implemented.");
     }
 
-    async create({ source, key, corporativeGroup, ...company }: POSTCompanyRequestExternalConnectionDto): Promise<Company> {
-        const group = await this.externalService.findOneOrCreate({
-            source: source,
-            ...corporativeGroup
-        });
-        const newKey = await this.keyService.create({ source: source, key: key });
+    async create(key: ExternalKeyParam, { corporativeGroup, ...company }: PostCompanyExternalRequestDto): Promise<Company> {
+        const { key: corporativeGroupKey, ...corporativeGroupData } = corporativeGroup;
+        const group = await this.externalService.findOneOrCreate({ ...key, key: corporativeGroupKey }, corporativeGroupData);
+        const newKey = await this.keyService.create(key);
         try {
             const newCompany = await this.repository.create({
                 ...company,
@@ -36,29 +35,27 @@ export class CompanyExternalConnectionService implements IExternalConnectionServ
             });
             return newCompany;
         } catch (error) {
-            await this.keyService.remove({ key, source });
+            await this.keyService.remove(key);
             throw error;
         }
     }
 
-    async findOneOrCreate({ source, key, ...company }: POSTCompanyRequestExternalConnectionDto): Promise<Company> {
+    async findOneOrCreate(key: ExternalKeyParam | any, body: PostCompanyExternalRequestDto): Promise<Company> {
         try {
             const foundCompany = await this.repository.findOne({
                 where: [
-                    { externalKey: { source: source, key: key } },
-                    { ruc: company.ruc }
+                    { externalKey: key },
+                    { ruc: body.ruc }
                 ]
             });
             return foundCompany;
         } catch (error) {
-            return this.create({ source, key, ...company });
+            return this.create(key, body);
         }
     }
 
-    async findOneAndUpdate({ key, source }: { key: string, source: string }, { ...data }: PATCHCompanyRequestDto): Promise<Company> {
-        const company = await this.repository.findOneAndUpdate(
-            { externalKey: { source: source, key: key } },
-            data);
+    async findOneAndUpdate(key: ExternalKeyParam | any, data: PatchCompanyRequestDto): Promise<Company> {
+        const company = await this.repository.findOneAndUpdate({ externalKey: key }, data);
         return company;
     }
 }
