@@ -21,6 +21,7 @@ import { MedicalOrderRepository } from "./repositories/medical-order.repository"
 import { MedicalOrderCloudController } from "./controllers/medical-order-cloud.controller";
 import { MedicalOrderMaitController } from "./controllers/medical-order-mail.controller";
 import { MedicalOrderPaginationController } from "./controllers/medical-order-pagination.controller";
+import { MedicalOrderCloudService } from "./services/medical-order-cloud.service";
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import { MedicalOrderPaginationController } from "./controllers/medical-order-pa
     MedicalOrderExternalConnectionService,
     MedicalOrderExternalKeyService,
     MedicalOrderMailService,
+    MedicalOrderCloudService,
     MedicalOrderManagementService,
     PlainMedicalOrderPaginationService
   ],

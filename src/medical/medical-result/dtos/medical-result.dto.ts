@@ -1,5 +1,4 @@
-import { MedicalReportResponse } from "@/medical/medical-report/dtos/medical-report.dto";
-import { ObjectArrayResponse } from "@/shared/utils/bases/base.object-array.response.dto";
+import { MedicalReportResponseDto } from "@/medical/medical-report/dtos/response/base.medical-report.response.dto";
 import { Expose, Type } from "class-transformer";
 import { IsNumber, IsString, IsNotEmpty } from "class-validator";
 
@@ -27,8 +26,8 @@ export class MedicalResultReponse {
     @Type(() => MedicalResultDiseaseResponse)
     @Expose() public diseases: MedicalResultDiseaseResponse[]
 
-    @Type(() => MedicalReportResponse)
-    @Expose() public readonly report?: MedicalReportResponse
+    @Type(() => MedicalReportResponseDto)
+    @Expose() public readonly report?: MedicalReportResponseDto
 }
 
 export class MedicalResultDiseaseRequest {

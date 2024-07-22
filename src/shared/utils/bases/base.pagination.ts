@@ -6,19 +6,9 @@ export enum PaginationOrderEnum {
     ASC = "ASC"
 }
 
-export class PaginationResponse<T> {
-    @Expose()
-    public readonly pages: number;
-
-    @Expose()
-    @Type((options) => options.newObject.dataType)
-    public readonly data: T[];
-
-    private dataType: any;
-
-    constructor(dataType: new () => T) {
-        this.dataType = dataType;
-    }
+export interface PaginationResponse<T> {
+    pages: number;
+    data: T[];
 }
 
 export class PaginationOrder {

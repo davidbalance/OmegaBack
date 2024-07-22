@@ -1,7 +1,6 @@
 import { Expose } from "class-transformer";
 
-export class MedicalReportResponse {
+export class MedicalReportResponseDto {
     @Expose() public readonly id: number;
-
     @Expose() public readonly content: string;
 }

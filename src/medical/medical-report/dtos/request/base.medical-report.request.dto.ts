@@ -1,6 +1,6 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNumber, IsString, IsNotEmpty } from "class-validator";
 
-export class POSTMedicalReportRequestDto {
+export class MedicalReportRequestDto {
     @IsNumber()
     public readonly medicalResult: number;
 

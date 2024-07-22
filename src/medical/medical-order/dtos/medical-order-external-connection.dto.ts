@@ -1,5 +1,5 @@
 import { GETMedicalResultExternalConnectionResponseDto } from "@/medical/medical-result/dtos/get.medical-result-external-connection.dto";
-import { ObjectArrayResponse } from "@/shared/utils/bases/base.object-array.response.dto";
+import { ObjectArrayResponse } from "@/shared/utils/bases/base.object-array.interface";
 import { Expose, Type } from "class-transformer";
 
 export class MedicalClientResponseDto {
@@ -24,4 +24,8 @@ export class MedicalOrderExternalConnectionResponse {
 
 export class GETMedicalOrderExternalConnectionResponseDto extends MedicalOrderExternalConnectionResponse { }
 
-export class GETMedicalOrderArrayExternalConnectionResponseDto extends ObjectArrayResponse<GETMedicalOrderExternalConnectionResponseDto> { }
+export class GETMedicalOrderArrayExternalConnectionResponseDto implements ObjectArrayResponse<GETMedicalOrderExternalConnectionResponseDto> {
+    @Expose()
+    @Type(() => GETMedicalOrderExternalConnectionResponseDto)
+    public readonly data: GETMedicalOrderExternalConnectionResponseDto[];
+}

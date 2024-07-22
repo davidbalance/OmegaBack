@@ -2,8 +2,8 @@ import { Injectable, Inject } from "@nestjs/common";
 import { MedicalReport } from "../entities/medical-report.entity";
 import { MedicalReportRepository } from "../repositories/medical-report.repository";
 import { MedicalReportPdfService } from "./medical-report-pdf.service";
-import { POSTMedicalReportRequestDto } from "../dtos/post.medical-report.dto";
 import { MedicalResultManagementService } from "@/medical/medical-result/services/medical-result-management.service";
+import { POSTMedicalReportRequestDto } from "../dtos/request/post.medical-report.request.dto";
 
 @Injectable()
 export class MedicalReportManagementService {
