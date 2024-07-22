@@ -1,8 +1,8 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { AbstractRepository } from "@/shared/sql-database";
-import { UserCredential } from "./entities/user-credential.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
+import { UserCredential } from "../entities/user-credential.entity";
 
 @Injectable()
 export class UserCredentialRepository

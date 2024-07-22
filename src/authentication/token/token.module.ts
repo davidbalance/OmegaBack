@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
-import { TokenService } from './token.service';
-import { SqlDatabaseModule } from '@/shared/sql-database';
-import { Token } from './entities/token.entity';
-import { TokenRepository } from './token.repository';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import { SqlDatabaseModule } from "@/shared/sql-database";
+import { ConfigService } from "@nestjs/config";
+import { JwtModule } from "@nestjs/jwt";
+import { Token } from "./entities/token.entity";
+import { TokenRepository } from "./repositories/token.repository";
+import { TokenService } from "./services/token.service";
+import { Module } from "@nestjs/common";
 
 @Module({
   imports: [

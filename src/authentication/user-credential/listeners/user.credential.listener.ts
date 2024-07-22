@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { UserCredentialRepository } from "../user-credential.repository";
 import { OnEvent } from "@nestjs/event-emitter";
 import { UserEvent, UserUpdateEvent, UserRemoveEvent } from "@/shared/events";
+import { UserCredentialRepository } from "../repositories/user-credential.repository";
 
 @Injectable()
-export class UserListener {
+export class UserCredentialListener {
     constructor(
         @Inject(UserCredentialRepository) private readonly repository: UserCredentialRepository
     ) { }

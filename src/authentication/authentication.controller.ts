@@ -1,12 +1,12 @@
 import { Controller, Inject, Post, UseGuards } from '@nestjs/common';
-import { TokenService } from './token/token.service';
+import { TokenService } from './token/services/token.service';
 import { User } from '@/shared/decorator';
-import { RefreshToken } from './token/types';
 import { AuthenticationResponseDto } from './dtos';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtRefreshGuard, LocalAuthGuard } from './guards';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards';
+import { RefreshToken } from './token/types/refresh-token.type';
 
 @ApiTags('Authentication')
 @Controller('auth')

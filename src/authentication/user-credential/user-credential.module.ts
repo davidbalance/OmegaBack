@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
-import { UserCredentialService } from './user-credential.service';
-import { UserCredentialController } from './user-credential.controller';
-import { SqlDatabaseModule } from '@/shared/sql-database';
 import { UserCredential } from './entities/user-credential.entity';
-import { UserCredentialRepository } from './user-credential.repository';
-import { UserListener } from './listeners';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { SqlDatabaseModule } from '@/shared/sql-database';
+import { UserCredentialController } from './controllers/user-credential.controller';
+import { UserCredentialRepository } from './repositories/user-credential.repository';
+import { UserCredentialService } from './services/user-credential.service';
+import { UserCredentialListener } from './listeners/user.credential.listener';
+import { UserCredentialValidatorService } from './services/user-credential-validator.service';
+import { UserCredentialEventService } from './services/user-credential-event.service';
 
 @Module({
   imports: [
@@ -16,10 +18,15 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
     UserCredentialController
   ],
   providers: [
-    UserCredentialService,
     UserCredentialRepository,
-    UserListener,
+    UserCredentialEventService,
+    UserCredentialValidatorService,
+    UserCredentialService,
+    UserCredentialListener,
   ],
-  exports: [UserCredentialService]
+  exports: [
+    UserCredentialService,
+    UserCredentialValidatorService
+  ]
 })
 export class UserCredentialModule { }
