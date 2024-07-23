@@ -4,9 +4,10 @@ import { CorporativeGroupExternalConnectionService } from "../corporative-group-
 import { CorporativeGroupExternalKeyService } from "../corporative-group-external-key.service";
 import { mockCorporativeGroupExternalKey } from "./stub/corporative-group-external-key.stub";
 import { mockCorporativeGroup } from "./stub/corporative-group.stub";
-import { PATCHExamRequestDto } from "@/laboratory/exam/dtos/request/patch.exam.request.dto";
+import { PatchExamRequestDto } from "@/laboratory/exam/dtos/request/patch.exam.request.dto";
 import { NotFoundException } from "@nestjs/common";
-import { POSTCorporativeGroupRequestDto } from "../../dtos/post.corporative-group.dto";
+import { PostCorporativeGroupRequestDto } from "../../dtos/request/post.corporative-group.dto";
+import { PatchCorporativeGroupRequestDto } from "../../dtos/request/patch.corporative-group.dto";
 
 describe('CorporativeGroupExternalConnectionService', () => {
     let service: CorporativeGroupExternalConnectionService;
@@ -28,9 +29,10 @@ describe('CorporativeGroupExternalConnectionService', () => {
     describe('create', () => {
         const mockedKey = mockCorporativeGroupExternalKey();
         const mockedCorporativeGroup = mockCorporativeGroup();
-        const source: string = 'source';
-        const mockDto: POSTCorporativeGroupRequestDto = {
-            key: "test-outbound-service",
+
+        const key: string = 'my-test-key';
+        const source: string = 'my-test-source';
+        const mockDto: PostCorporativeGroupRequestDto = {
             name: "my-test-corporative-group"
         };
 
@@ -38,13 +40,11 @@ describe('CorporativeGroupExternalConnectionService', () => {
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
             repository.create.mockResolvedValueOnce(mockedCorporativeGroup);
 
-            const result = await service.create({ ...mockDto, source });
-
-            const { key, ...exam } = mockDto;
+            const result = await service.create({ key, source }, mockDto);
 
             expect(result).toEqual(result);
             expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({ ...exam, externalKey: mockedKey });
+            expect(repository.create).toHaveBeenCalledWith({ ...mockDto, externalKey: mockedKey });
             expect(externalKeyService.remove).toHaveBeenCalledTimes(0);
         });
 
@@ -52,13 +52,11 @@ describe('CorporativeGroupExternalConnectionService', () => {
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
             repository.create.mockRejectedValueOnce(new Error());
 
-            const { key, ...exam } = mockDto;
-
-            await expect(service.create({ ...mockDto, source }))
+            await expect(service.create({ key, source }, mockDto))
                 .rejects
                 .toThrow(Error);
             expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({ ...exam, externalKey: mockedKey });
+            expect(repository.create).toHaveBeenCalledWith({ ...mockDto, externalKey: mockedKey });
             expect(externalKeyService.remove).toHaveBeenCalledWith({ source, key });
         });
     });
@@ -66,25 +64,23 @@ describe('CorporativeGroupExternalConnectionService', () => {
     describe('findOneOrCreate', () => {
         const mockedKey = mockCorporativeGroupExternalKey();
         const mockedCorporativeGroup = mockCorporativeGroup();
-        const source: string = 'source';
-        const mockDto: POSTCorporativeGroupRequestDto = {
-            key: "test-outbound-service",
+
+        const key: string = 'my-test-key';
+        const source: string = 'my-test-source';
+        const mockDto: PostCorporativeGroupRequestDto = {
             name: "my-test-corporative-group"
         };
-
         it('should find an existing exam and return it', async () => {
             repository.findOne.mockResolvedValueOnce(mockedCorporativeGroup);
 
-            const result = await service.findOneOrCreate({ ...mockDto, source });
+            const result = await service.findOneOrCreate({ key, source }, mockDto);
 
-            const { key } = mockDto;
             expect(result).toEqual(mockedCorporativeGroup);
             expect(repository.findOne).toHaveBeenCalledWith({
-                where: [{
-                    externalKey: { source: source, key: key }
-                }, {
-                    name: mockDto.name
-                }]
+                where: [
+                    { externalKey: { source: source, key: key } },
+                    { name: mockDto.name }
+                ]
             });
         });
 
@@ -93,29 +89,27 @@ describe('CorporativeGroupExternalConnectionService', () => {
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
             repository.create.mockResolvedValueOnce(mockedCorporativeGroup);
 
-            const result = await service.findOneOrCreate({ ...mockDto, source });
-
-            const { key, ...exam } = mockDto;
+            const result = await service.findOneOrCreate({ key, source }, mockDto);
 
             expect(result).toEqual(result);
             expect(repository.findOne).toHaveBeenCalledWith({
-                where: [{
-                    externalKey: { source: source, key: key }
-                }, {
-                    name: mockDto.name
-                }]
+                where: [
+                    { externalKey: { source, key } },
+                    { name: mockDto.name }
+                ]
             });
             expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({ ...exam, externalKey: mockedKey });
+            expect(repository.create).toHaveBeenCalledWith({ ...mockDto, externalKey: mockedKey });
             expect(externalKeyService.remove).toHaveBeenCalledTimes(0);
         });
     });
 
     describe('findOneAndUpdate', () => {
         const mockedCorporativeGroup = mockCorporativeGroup();
-        const source: string = 'source';
-        const key: string = 'key';
-        const mockDto: PATCHExamRequestDto = {
+
+        const key: string = 'my-test-key';
+        const source: string = 'my-test-source';
+        const mockDto: PatchCorporativeGroupRequestDto = {
             name: "my-test-corporative-group"
         };
 

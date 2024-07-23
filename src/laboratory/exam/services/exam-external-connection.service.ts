@@ -10,6 +10,7 @@ import { PostExamSubtypeRequestDto } from "@/laboratory/exam-subtype/dto/request
 import { ExamSubtype } from "@/laboratory/exam-subtype/entities/exam-subtype.entity";
 import { INJECT_EXAM_TYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-type/services/exam-type-external-connection.service";
 import { PostExamTypeRequestDto } from "@/laboratory/exam-type/dtos/request/post.exam-type.dto";
+import { ExamType } from "@/laboratory/exam-type/entities/exam-type.entity";
 
 type ConnectionRequestType = PostExamExternalRequestDto | PatchExamRequestDto;
 
@@ -20,7 +21,7 @@ export class ExamExternalConnectionService implements IExternalConnectionService
         @Inject(ExamExternalKeyService) private readonly externalKeyService: ExamExternalKeyService,
         @Inject(ExamRepository) private readonly repository: ExamRepository,
         @Inject(INJECT_EXAM_SUBTYPE_EXTERNAL_CONNECTION) private readonly subtypeService: IExternalConnectionService<PostExamSubtypeRequestDto, ExamSubtype>,
-        @Inject(INJECT_EXAM_TYPE_EXTERNAL_CONNECTION) private readonly typeService: IExternalConnectionService<PostExamTypeRequestDto, ExamSubtype>,
+        @Inject(INJECT_EXAM_TYPE_EXTERNAL_CONNECTION) private readonly typeService: IExternalConnectionService<PostExamTypeRequestDto, ExamType>,
     ) { }
 
     findOne(key: ExternalKeyParam | any): Promise<Exam> {
@@ -28,12 +29,14 @@ export class ExamExternalConnectionService implements IExternalConnectionService
     }
 
     async create(key: ExternalKeyParam, { type, subtype, ...data }: PostExamExternalRequestDto): Promise<Exam> {
-        let foundType = await this.typeService.findOneOrCreate(key, type);
+        const { key: typeKey, ...typeData } = type;
+        let foundType = await this.typeService.findOneOrCreate({ key: typeKey, source: key.source }, typeData);
         let foundSubtype: ExamSubtype;
         if (subtype) {
-            foundSubtype = await this.subtypeService.findOneOrCreate(key, { ...subtype, type: foundType.id });
+            const { key: subtypeKey, ...subtypeData } = subtype;
+            foundSubtype = await this.subtypeService.findOneOrCreate({ source: key.source, key: subtypeKey }, { ...subtypeData, type: foundType.id });
         } else {
-            foundSubtype = await this.subtypeService.findOneOrCreate(key, { name: 'default', type: foundType.id });
+            foundSubtype = await this.subtypeService.findOneOrCreate({ source: key.source, key: key.source }, { name: 'default', type: foundType.id });
         }
 
         const newKey = await this.externalKeyService.create(key);

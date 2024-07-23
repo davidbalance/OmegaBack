@@ -2,8 +2,8 @@ import { TestBed } from "@automock/jest";
 import { ExamTypeRepository } from "../../repositories/exam-type.repository";
 import { ExamTypeManagementService } from "../exam-type-management.service";
 import { mockExamType, mockExamTypes } from "./stub/exam-type.stub";
-import { POSTExamTypeRequestDto } from "../../dtos/request/post.exam-type.dto";
-import { PATCHExamTypeRequestDto } from "../../dtos/request/patch.exam-type.dto";
+import { PostExamTypeRequestDto } from "../../dtos/request/post.exam-type.dto";
+import { PatchExamTypeRequestDto } from "../../dtos/request/patch.exam-type.dto";
 
 describe('ExamTypeManagementService', () => {
   let service: ExamTypeManagementService;
@@ -22,7 +22,7 @@ describe('ExamTypeManagementService', () => {
 
   describe('create', () => {
     const mockedExamType = mockExamType();
-    const mockDto: POSTExamTypeRequestDto = {
+    const mockDto: PostExamTypeRequestDto = {
       name: "my-mocked-name"
     }
 
@@ -65,7 +65,7 @@ describe('ExamTypeManagementService', () => {
   describe('updateOne', () => {
     const id: number = 1;
     const mockedExamType = mockExamType();
-    const mockDto: PATCHExamTypeRequestDto = {
+    const mockDto: PatchExamTypeRequestDto = {
       name: "mocked-name"
     }
 

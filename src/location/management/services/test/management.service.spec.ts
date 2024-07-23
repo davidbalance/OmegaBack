@@ -2,8 +2,8 @@ import { TestBed } from "@automock/jest";
 import { ManagementRepository } from "../../repositories/management.repository";
 import { ManagementService } from "../management.service";
 import { mockManagement, mockManagements } from "./stub/management.stub";
-import { PATCHManagementRequestDto } from "../../dtos/request/patch.management.request.dto";
-import { POSTManagementRequestDto } from "../../dtos/request/post.management.request.dto";
+import { PatchMagementRequestDto } from "../../dtos/request/patch.management.request.dto";
+import { PostManagementRequestDto } from "../../dtos/request/post.management.request.dto";
 
 describe('ManagementService', () => {
   let service: ManagementService;
@@ -22,7 +22,7 @@ describe('ManagementService', () => {
 
   describe('create', () => {
     const mockedManagement = mockManagement();
-    const mockDto: POSTManagementRequestDto = {
+    const mockDto: PostManagementRequestDto = {
       name: "my-mocked-name"
     }
 
@@ -65,7 +65,7 @@ describe('ManagementService', () => {
   describe('updateOne', () => {
     const id: number = 1;
     const mockedManagement = mockManagement();
-    const mockDto: PATCHManagementRequestDto = {
+    const mockDto: PatchMagementRequestDto = {
       name: "mocked-name"
     }
 

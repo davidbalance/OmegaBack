@@ -2,8 +2,8 @@ import { TestBed } from "@automock/jest";
 import { DiseaseGroupRepository } from "../../repository/disease-group.repository";
 import { DiseaseGroupManagementService } from "../disease-group-management.service";
 import { mockDiseaseGroup, mockDiseaseGroups } from "./stub/disease-group.stub";
-import { PATCHDiseaseGroupRequestDto } from "../../dtos/request/patch.disease-group.request.dto";
-import { POSTDiseaseGroupRequestDto } from "../../dtos/request/post.disease-group.request.dto";
+import { PatchDiseaseGroupRequestDto } from "../../dtos/request/patch.disease-group.request.dto";
+import { PostDiseaseGroupRequestDto } from "../../dtos/request/post.disease-group.request.dto";
 
 describe('DiseaseGroupManagementService', () => {
   let service: DiseaseGroupManagementService;
@@ -22,7 +22,7 @@ describe('DiseaseGroupManagementService', () => {
 
   describe('create', () => {
     const mockedGroup = mockDiseaseGroup();
-    const mockDto: POSTDiseaseGroupRequestDto = {
+    const mockDto: PostDiseaseGroupRequestDto = {
       name: "my-mocked-group"
     }
 
@@ -73,7 +73,7 @@ describe('DiseaseGroupManagementService', () => {
   describe('updateOne', () => {
     const id: number = 1;
 
-    const mockDto: PATCHDiseaseGroupRequestDto = {
+    const mockDto: PatchDiseaseGroupRequestDto = {
       name: 'my-updated-mock'
     }
 

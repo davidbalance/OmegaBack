@@ -3,8 +3,9 @@ import { DiseaseRepository } from "../../repositories/disease.repository";
 import { DiseaseManagementService } from "../disease-management.service";
 import { DiseaseGroupManagementService } from "@/disease/disease-group/services/disease-group-management.service";
 import { mockDiseaseGroup } from "@/disease/disease-group/services/test/stub/disease-group.stub";
-import { PATCHDiseaseRequestDto, POSTDiseaseRequestDto } from "../../dtos/request/disease.request.dto";
 import { mockDisease, mockDiseases } from "./stub/disease.stub";
+import { PostDiseaseRequestDto } from "../../dtos/request/post.disease.request.dto";
+import { PatchDiseaseRequestDto } from "../../dtos/request/patch.disease.request.dto";
 
 describe('DiseaseManagementService', () => {
   let service: DiseaseManagementService;
@@ -26,7 +27,7 @@ describe('DiseaseManagementService', () => {
   describe('create', () => {
     const mockedGroup = mockDiseaseGroup();
     const mockedDisease = mockDisease();
-    const mockDto: POSTDiseaseRequestDto = {
+    const mockDto: PostDiseaseRequestDto = {
       name: "my-mocked-name",
       group: 1
     }
@@ -61,7 +62,7 @@ describe('DiseaseManagementService', () => {
     const mockedGroup = mockDiseaseGroup();
 
     const id: number = 1;
-    const mockDto: PATCHDiseaseRequestDto = {
+    const mockDto: PatchDiseaseRequestDto = {
       name: 'my-updated-name'
     }
 

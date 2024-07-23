@@ -1,12 +1,12 @@
 import { TestBed } from "@automock/jest";
-import { PATCHJobPositionRequestDto } from "../../dtos/request/patch.job-position.request.dto";
-import { POSTJobPositionExternalConnectionRequestDto } from "../../dtos/request/post.job-position-external-connection.request.dto";
+import { PatchJobPositionRequestDto } from "../../dtos/request/patch.job-position.request.dto";
 import { JobPositionRepository } from "../../repositories/job-position.repository";
 import { JobPositionExternalConnectionService } from "../job-position-external-connection.service";
 import { JobPositionExternalKeyService } from "../job-position-external-key.service";
 import { mockJobPositionExternalKey } from "./stub/job-position-external-key.stub";
 import { mockJobPosition } from "./stub/job-position.stub";
 import { NotFoundException } from "@nestjs/common";
+import { PostJobPositionRequestDto } from "../../dtos/request/post.job-position.request.dto";
 
 describe('JobPositionExternalConnectionService', () => {
     let service: JobPositionExternalConnectionService;
@@ -28,9 +28,10 @@ describe('JobPositionExternalConnectionService', () => {
     describe('create', () => {
         const mockedKey = mockJobPositionExternalKey();
         const mockedJobPosition = mockJobPosition();
-        const mockDto: POSTJobPositionExternalConnectionRequestDto = {
-            key: "my-test-key",
-            source: "my-test-source",
+
+        const key: string = 'my-test-key';
+        const source: string = 'my-test-source';
+        const mockDto: PostJobPositionRequestDto = {
             name: "my-test-corporative-group",
         };
 
@@ -38,13 +39,11 @@ describe('JobPositionExternalConnectionService', () => {
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
             repository.create.mockResolvedValueOnce(mockedJobPosition);
 
-            const { key, source, ...position } = mockDto;
-
-            const result = await service.create({ ...mockDto, source });
+            const result = await service.create({ key, source }, mockDto);
 
             expect(result).toEqual(result);
             expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({ ...position, externalKey: mockedKey });
+            expect(repository.create).toHaveBeenCalledWith({ ...mockDto, externalKey: mockedKey });
             expect(externalKeyService.remove).toHaveBeenCalledTimes(0);
         });
 
@@ -52,13 +51,11 @@ describe('JobPositionExternalConnectionService', () => {
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
             repository.create.mockRejectedValueOnce(new Error());
 
-            const { key, source, ...position } = mockDto;
-
-            await expect(service.create({ ...mockDto, source }))
+            await expect(service.create({ key, source }, mockDto))
                 .rejects
                 .toThrow(Error);
             expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({ ...position, externalKey: mockedKey });
+            expect(repository.create).toHaveBeenCalledWith({ ...mockDto, externalKey: mockedKey });
             expect(externalKeyService.remove).toHaveBeenCalledWith({ source, key });
         });
     });
@@ -66,26 +63,24 @@ describe('JobPositionExternalConnectionService', () => {
     describe('findOneOrCreate', () => {
         const mockedKey = mockJobPositionExternalKey();
         const mockedJobPosition = mockJobPosition();
-        const mockDto: POSTJobPositionExternalConnectionRequestDto = {
-            key: "my-test-key",
-            source: "my-test-source",
-            name: "my-test-corporative-group",
+
+        const key: string = 'my-test-key';
+        const source: string = 'my-test-source';
+        const mockDto: PostJobPositionRequestDto = {
+            name: "my-test-corporative-group"
         };
 
         it('should find an existing job position and return it', async () => {
             repository.findOne.mockResolvedValueOnce(mockedJobPosition);
 
-            const { key, source } = mockDto;
-
-            const result = await service.findOneOrCreate({ ...mockDto, source });
+            const result = await service.findOneOrCreate({ key, source }, mockDto);
 
             expect(result).toEqual(mockedJobPosition);
             expect(repository.findOne).toHaveBeenCalledWith({
-                where: [{
-                    externalKey: { source: source, key: key }
-                }, {
-                    name: mockDto.name
-                }]
+                where: [
+                    { externalKey: { source, key } },
+                    { name: mockDto.name }
+                ]
             });
         });
 
@@ -94,20 +89,17 @@ describe('JobPositionExternalConnectionService', () => {
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
             repository.create.mockResolvedValueOnce(mockedJobPosition);
 
-            const { key, source, ...position } = mockDto;
-
-            const result = await service.findOneOrCreate({ ...mockDto, source });
+            const result = await service.findOneOrCreate({ key, source }, mockDto);
 
             expect(result).toEqual(result);
             expect(repository.findOne).toHaveBeenCalledWith({
-                where: [{
-                    externalKey: { source: source, key: key }
-                }, {
-                    name: mockDto.name
-                }]
+                where: [
+                    { externalKey: { source, key } },
+                    { name: mockDto.name }
+                ]
             });
             expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({ ...position, externalKey: mockedKey });
+            expect(repository.create).toHaveBeenCalledWith({ ...mockDto, externalKey: mockedKey });
             expect(externalKeyService.remove).toHaveBeenCalledTimes(0);
         });
     });
@@ -116,7 +108,7 @@ describe('JobPositionExternalConnectionService', () => {
         const mockedJobPosition = mockJobPosition();
         const key: string = 'key';
         const source: string = 'source';
-        const mockDto: PATCHJobPositionRequestDto = {
+        const mockDto: PatchJobPositionRequestDto = {
             name: "my-test-corporative-group"
         };
 

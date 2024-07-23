@@ -1,9 +1,9 @@
 import { TestBed } from "@automock/jest";
 import { JobPositionRepository } from "../../repositories/job-position.repository";
-import { POSTJobPositionRequestDto } from "../../dtos/request/post.job-position.request.dto";
 import { mockJobPosition, mockJobPositions } from "./stub/job-position.stub";
-import { PATCHJobPositionRequestDto } from "../../dtos/request/patch.job-position.request.dto";
 import { JobPositionManagementService } from "../job-position-management.service";
+import { PostJobPositionRequestDto } from "../../dtos/request/post.job-position.request.dto";
+import { PatchJobPositionRequestDto } from "../../dtos/request/patch.job-position.request.dto";
 
 describe('JobPositionManagementService', () => {
   let service: JobPositionManagementService;
@@ -22,7 +22,7 @@ describe('JobPositionManagementService', () => {
 
   describe('create', () => {
     const mockedJobPosition = mockJobPosition();
-    const mockDto: POSTJobPositionRequestDto = {
+    const mockDto: PostJobPositionRequestDto = {
       name: "my-mocked-name"
     }
 
@@ -65,7 +65,7 @@ describe('JobPositionManagementService', () => {
   describe('updateOne', () => {
     const id: number = 1;
     const mockedJobPosition = mockJobPosition();
-    const mockDto: PATCHJobPositionRequestDto = {
+    const mockDto: PatchJobPositionRequestDto = {
       name: "mocked-name"
     }
 
