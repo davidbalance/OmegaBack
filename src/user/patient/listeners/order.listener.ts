@@ -10,7 +10,7 @@ export class OrderListener {
     ) { }
 
     @OnEvent(OrderEvent.FIND_OR_CREATE_PATIENT)
-    async findOrCreate({ findOrCreateEvent }: OrderFindOrCreatePatientEvent): Promise<void> {
-        await this.externalService.findOneOrCreate(findOrCreateEvent);
+    async findOrCreate({ data }: OrderFindOrCreatePatientEvent): Promise<void> {
+        await this.externalService.findOneOrCreate(data);
     }
 }

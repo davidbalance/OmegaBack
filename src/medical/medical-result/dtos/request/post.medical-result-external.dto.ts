@@ -1,7 +1,7 @@
 import { IsDefined, IsNotEmptyObject, IsObject, IsOptional, ValidateNested } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { PostExamWithKeyRequestDto } from "@/laboratory/exam/dtos/request/post.exam-with-key.request.dto";
-import { POSTDoctorRequestDto } from "@/user/doctor/dtos/post.doctor-management.dto";
+import { PostDoctorRequestDto } from "@/user/doctor/dtos/request/post.doctor.dto";
 import { Transform, Type } from "class-transformer";
 import { PostMedicalResultWithKeyExternalRequestDto } from "./post.medical-result-with-key.dto";
 
@@ -20,8 +20,8 @@ export class PostMedicalResultExternalRequestDto {
     @IsNotEmptyObject()
     @ValidateNested()
     @Transform(({ value }) => value)
-    @Type(() => POSTDoctorRequestDto)
-    public readonly doctor: POSTDoctorRequestDto;
+    @Type(() => PostDoctorRequestDto)
+    public readonly doctor: PostDoctorRequestDto;
 
     @IsDefined()
     @IsObject()

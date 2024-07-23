@@ -1,9 +1,9 @@
 import { PostBranchRequestDto } from "@/location/branch/dtos/request/post.branch.request.dto";
-import { POSTPatientRequestDto } from "@/user/patient/dtos/post.patient-management,dto";
+import { PostPatientRequestDto } from "@/user/patient/dtos/request/post.patient.request.dto";
 import { Type } from "class-transformer";
 import { IsDefined, IsObject, IsNotEmptyObject, ValidateNested, IsString, IsEmail } from "class-validator";
 
-class PatientWithEmailRequestDto extends POSTPatientRequestDto {
+class PatientWithEmailRequestDto extends PostPatientRequestDto {
     @IsEmail()
     public readonly email: string;
 }

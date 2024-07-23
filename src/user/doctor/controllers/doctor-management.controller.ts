@@ -3,7 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { DoctorManagementService } from '../services/doctor-management.service';
-import { GETDoctorArrayResponseDto } from '../dtos/get.doctor-management.dto';
+import { GetDoctorArrayResponseDto } from '../dtos/response/get.doctor-array.response.dto';
 
 @ApiTags('User/Doctor')
 @ApiBearerAuth()
@@ -15,8 +15,8 @@ export class DoctorManagementController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async find(): Promise<GETDoctorArrayResponseDto> {
-    const doctors = await this.doctorService.find();
-    return plainToInstance(GETDoctorArrayResponseDto, { doctors });
+  async find(): Promise<GetDoctorArrayResponseDto> {
+    const data = await this.doctorService.find();
+    return plainToInstance(GetDoctorArrayResponseDto, { data });
   }
 }

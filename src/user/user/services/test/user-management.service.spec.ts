@@ -4,8 +4,8 @@ import { UserRepository } from '../../repositories/user.repository';
 import { UserEventService } from '../user-event.service';
 import { mockUser, mockUsers } from './stub/user-management.stub';
 import { ConflictException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { PATCHUserRequestDto } from '../../dtos/patch.user-management.dto';
-import { POSTUserRequestDto } from '../../dtos/post.user-management.dto';
+import { PostUserRequestDto } from '../../dtos/request/post.user.request.dto';
+import { PatchUserRequestDto } from '../../dtos/request/patch.user.dto';
 
 describe('User Management Service', () => {
     let service: UserManagementService;
@@ -26,7 +26,7 @@ describe('User Management Service', () => {
 
         const mockedUser = mockUser();
 
-        const mockDto: POSTUserRequestDto = {
+        const mockDto: PostUserRequestDto = {
             dni: '1234567890',
             name: 'User',
             lastname: 'Stub',
@@ -82,7 +82,7 @@ describe('User Management Service', () => {
 
     describe('findOneByDni', () => {
         const mockedUser = mockUser();
-        
+
         it('should return a user by dni', async () => {
             repository.findOne.mockResolvedValueOnce(mockedUser);
 
@@ -95,10 +95,9 @@ describe('User Management Service', () => {
     describe('updateOne', () => {
         const mockedUser = mockUser();
 
-        const mockDto: PATCHUserRequestDto = {
+        const mockDto: PatchUserRequestDto = {
             name: 'User',
-            lastname: 'Stub',
-            email: 'my-email-stub@email.com'
+            lastname: 'Stub'
         };
 
         it('should update a user and emit an update event', async () => {
@@ -107,7 +106,7 @@ describe('User Management Service', () => {
             const result = await service.updateOne(1, mockDto);
 
             expect(result).toEqual(mockedUser);
-            expect(eventService.emitUserUpdateEvent).toHaveBeenCalledWith(1, mockDto.email);
+            expect(eventService.emitUserUpdateEvent).toHaveBeenCalledWith(1, mockDto);
         });
     });
 

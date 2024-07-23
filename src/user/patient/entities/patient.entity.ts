@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AbstractEntity } from "@/shared/sql-database";
 import { User } from "src/user/user/entities/user.entity";
-import { PatientGenderEnum } from "../common/enums/patient.enum";
+import { PatientGenderEnum } from "../enums/patient.enum";
 
 @Entity({ name: "tbl_u_patients" })
 export class Patient extends AbstractEntity<number> {

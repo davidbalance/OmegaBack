@@ -3,7 +3,7 @@ import { UserRepository } from "../repositories/user.repository";
 import { UserEventService } from "./user-event.service";
 import { User } from "../entities/user.entity";
 import { Not } from "typeorm";
-import { POSTUserRequestDto } from "../dtos/post.user-management.dto";
+import { PostUserRequestDto } from "../dtos/request/post.user.request.dto";
 
 @Injectable()
 export class UserManagementService {
@@ -12,7 +12,7 @@ export class UserManagementService {
         @Inject(UserEventService) private readonly eventService: UserEventService
     ) { }
 
-    async create({ dni, email, ...data }: POSTUserRequestDto): Promise<User> {
+    async create({ dni, email, ...data }: PostUserRequestDto): Promise<User> {
         try {
             await this.repository.findOne({
                 where: [{ dni: dni }, { email: email }]

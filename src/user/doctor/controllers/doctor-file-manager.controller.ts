@@ -5,7 +5,8 @@ import { Body, Controller, Inject, Param, ParseFilePipe, Post, UploadedFile, Use
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { DoctorFileManagementService } from '../services/doctor-file-management.service';
-import { PATCHDoctorSignatureRequestDto, PATCHDoctorSignatureResponseDto } from '../dtos/patch.doctor-signature.dto';
+import { PatchDoctorSignatureRequestDto } from '../dtos/request/patch.doctor-signature.dto';
+import { PatchDoctorSignatureResponseDto } from '../dtos/response/patch.doctor-signature.response.dto';
 
 @ApiTags('User/Doctor')
 @ApiBearerAuth()
@@ -22,14 +23,14 @@ export class DoctorFileManagerController {
     @UseInterceptors(FileInterceptor('signature'))
     async uploadSignature(
         @Param('id') id: number,
-        @Body() body: PATCHDoctorSignatureRequestDto,
+        @Body() body: PatchDoctorSignatureRequestDto,
         @UploadedFile(new ParseFilePipe({
             validators: [
                 new FileTypePipe({ acceptableTypes: MIME_TYPES.PNG })
             ],
             fileIsRequired: true
         })) file: Express.Multer.File
-    ): Promise<PATCHDoctorSignatureResponseDto> {
+    ): Promise<PatchDoctorSignatureResponseDto> {
         await this.service.uploadFile(id, file);
         return {};
     }

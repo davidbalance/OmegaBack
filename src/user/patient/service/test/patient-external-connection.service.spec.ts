@@ -5,9 +5,9 @@ import { NotFoundException } from '@nestjs/common'
 import { PatientExternalConnectionService } from '../patient-external-connection.service';
 import { PatientRepository } from '../../patient.repository';
 import { mockPatient } from './stub/patient.stub';
-import { PatientGenderEnum } from '../../common/enums/patient.enum';
-import { PATCHPatientRequestDto } from '../../dtos/patch.patient-management.dto';
-import { POSTPatientRequestDto } from '../../dtos/post.patient-management,dto';
+import { PatientGenderEnum } from '../../enums/patient.enum';
+import { PostPatientRequestDto } from '../../dtos/request/post.patient.request.dto';
+import { PatchPatientRequestDto } from '../../dtos/request/patch.patient.request.dto';
 
 describe('PatientExternalConnectionService', () => {
   let service: PatientExternalConnectionService;
@@ -31,7 +31,7 @@ describe('PatientExternalConnectionService', () => {
     const mockedUser = mockUser();
     const mockedPatient = mockPatient();
 
-    const mockDto: POSTPatientRequestDto = {
+    const mockDto: PostPatientRequestDto = {
       dni: '1234567890',
       name: 'Mocked Name',
       lastname: 'Mocked Lastname',
@@ -71,7 +71,7 @@ describe('PatientExternalConnectionService', () => {
     const mockedUser = mockUser();
     const mockedPatient = mockPatient();
 
-    const mockDto: POSTPatientRequestDto = {
+    const mockDto: PostPatientRequestDto = {
       dni: '1234567890',
       name: 'Mocked Name',
       lastname: 'Mocked Lastname',
@@ -119,7 +119,7 @@ describe('PatientExternalConnectionService', () => {
     const mockedPatient = mockPatient();
 
     const dni: string = '1234567890';
-    const mockDto: PATCHPatientRequestDto = {
+    const mockDto: PatchPatientRequestDto = {
       name: 'Mocked Name',
       lastname: 'Mocked Lastname',
       gender: PatientGenderEnum.MALE,

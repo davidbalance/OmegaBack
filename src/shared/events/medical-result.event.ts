@@ -1,5 +1,5 @@
 import { PostExamExternalRequestDto } from "@/laboratory/exam/dtos/request/post.exam-external.request.dto";
-import { POSTDoctorRequestDto } from "@/user/doctor/dtos/post.doctor-management.dto";
+import { PostDoctorRequestDto } from "@/user/doctor/dtos/request/post.doctor.dto";
 
 export const MedicalResultEvent = {
     FIND_OR_CREATE_DOCTOR: 'result.doctor.findOrCreate',
@@ -8,7 +8,7 @@ export const MedicalResultEvent = {
 
 export class MedicalResultFindOrCreateDoctorEvent {
     constructor(
-        public readonly findOrCreateEvent: POSTDoctorRequestDto
+        public readonly findOrCreateEvent: PostDoctorRequestDto
     ) { }
 }
 

@@ -3,16 +3,16 @@ import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Patient } from './entities/patient.entity';
 import { PatientRepository } from './patient.repository';
 import { UserModule } from '../user/user.module';
-import { PatientExternalConnectionController } from './controller/patient-external-connection.controller';
+import { PatientExternalConnectionController } from './controllers/patient-external-connection.controller';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { EeqPatientPaginationService } from './service/eeq-patient-pagination.service';
-import { PatientPaginationService } from './service/patient-pagination.service';
 import { ExtraAttributeInterceptorModule } from '@/shared/interceptors/extra-attribute/extra-attribute-interceptor.module';
+import { EeqPatientPaginationController } from './controllers/patient-eeq-pagination.controller';
+import { PatientManagementController } from './controllers/patient-management.controller';
 import { OrderListener } from './listeners/order.listener';
 import { PatientExternalConnectionService } from './service/patient-external-connection.service';
 import { PatientManagementService } from './service/patient-management.service';
-import { PatientManagementController } from './controller/patient-management.controller';
-import { EeqPatientPaginationController } from './controller/eeq-patient-pagination.controller';
+import { PatientPaginationService } from './service/patient-pagination.service';
+import { PatientEeqPaginationService } from './service/patient-eeq-pagination.service';
 
 @Module({
   imports: [
@@ -29,7 +29,7 @@ import { EeqPatientPaginationController } from './controller/eeq-patient-paginat
   providers: [
     PatientManagementService,
     PatientPaginationService,
-    EeqPatientPaginationService,
+    PatientEeqPaginationService,
     PatientExternalConnectionService,
     PatientRepository,
     OrderListener,

@@ -5,8 +5,7 @@ import { DoctorExternalConnectionService } from '../doctor-external-connection.s
 import { UserManagementService } from '@/user/user/services/user-management.service';
 import { mockUser } from '@/user/user/services/test/stub/user-management.stub';
 import { NotFoundException } from '@nestjs/common';
-import { PATCHDoctorRequestDto } from '../../dtos/patch.doctor-management.dto';
-import { POSTDoctorRequestDto } from '../../dtos/post.doctor-management.dto';
+import { PostDoctorRequestDto } from '../../dtos/request/post.doctor.dto';
 
 describe('DoctorExternalConnectionService', () => {
   let service: DoctorExternalConnectionService;
@@ -30,7 +29,7 @@ describe('DoctorExternalConnectionService', () => {
     const mockedUser = mockUser();
     const mockedDoctor = mockDoctor();
 
-    const mockDto: POSTDoctorRequestDto = {
+    const mockDto: PostDoctorRequestDto = {
       dni: '1234567890',
       name: 'Mocked Name',
       lastname: 'Mocked Lastname',
@@ -68,7 +67,7 @@ describe('DoctorExternalConnectionService', () => {
     const mockedUser = mockUser();
     const mockedDoctor = mockDoctor();
 
-    const mockDto: POSTDoctorRequestDto = {
+    const mockDto: PostDoctorRequestDto = {
       dni: '1234567890',
       name: 'Mocked Name',
       lastname: 'Mocked Lastname',
@@ -115,10 +114,11 @@ describe('DoctorExternalConnectionService', () => {
     const mockedDoctor = mockDoctor();
 
     const dni: string = '1234567890';
-    const mockDto: PATCHDoctorRequestDto = {
+    const mockDto: PostDoctorRequestDto = {
       name: 'Mocked Name',
       lastname: 'Mocked Lastname',
-      email: 'my-mocked@email.com'
+      email: 'my-mocked@email.com',
+      dni: '1234567890'
     }
 
     it('should update existing doctor', async () => {

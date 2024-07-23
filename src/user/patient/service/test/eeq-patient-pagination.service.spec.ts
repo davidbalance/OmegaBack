@@ -1,10 +1,10 @@
 import { TestBed } from '@automock/jest';
 import { PatientRepository } from '../../patient.repository';
-import { EeqPatientPaginationService } from '../eeq-patient-pagination.service';
-import { flattenPatients, mockPatient, mockPatients } from './stub/patient.stub';
+import { PatientEeqPaginationService } from '../patient-eeq-pagination.service';
+import { mockPatients } from './stub/patient.stub';
 
-describe('EeqPatientPaginationService', () => {
-  let service: EeqPatientPaginationService;
+describe('PatientEeqPaginationService', () => {
+  let service: PatientEeqPaginationService;
   let repository: jest.Mocked<PatientRepository>;
 
   const mockedPatients = mockPatients();
@@ -23,7 +23,7 @@ describe('EeqPatientPaginationService', () => {
   }
 
   beforeEach(async () => {
-    const { unit, unitRef } = TestBed.create(EeqPatientPaginationService).compile();
+    const { unit, unitRef } = TestBed.create(PatientEeqPaginationService).compile();
 
     service = unit;
     repository = unitRef.get(PatientRepository);
@@ -40,9 +40,9 @@ describe('EeqPatientPaginationService', () => {
 
       const result = await service.findPaginatedByFilter();
 
-      const expectedPatients = flattenPatients(mockedPatients);
+      // const expectedPatients = flattenPatients(mockedPatients);
 
-      expect(result).toEqual(expectedPatients);
+      expect(result).toEqual(mockedPatients);
       expect(repository.query).toHaveBeenCalledWith('patient');
     });
   });
@@ -64,10 +64,10 @@ describe('EeqPatientPaginationService', () => {
 
       const [pages, data] = await service.findPaginatedDataAndPageCount(1, limit);
       
-      const expectedPatients = flattenPatients(mockedPatients);
+      // const expectedPatients = flattenPatients(mockedPatients);
 
       expect(pages).toEqual(1);
-      expect(data).toEqual(expectedPatients);
+      expect(data).toEqual(mockedPatients);
       expect(repository.query).toHaveBeenCalledWith('patient');
       expect(repository.query).toHaveBeenCalledTimes(2);
     });
