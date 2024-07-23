@@ -8,11 +8,17 @@ import { mockPatient } from './stub/patient.stub';
 import { PatientGenderEnum } from '../../enums/patient.enum';
 import { PostPatientRequestDto } from '../../dtos/request/post.patient.request.dto';
 import { PatchPatientRequestDto } from '../../dtos/request/patch.patient.request.dto';
+import { FlatService } from '@/shared/utils/bases/base.flat-service';
+import { PatientResponseDto } from '../../dtos/response/base.patient.response.dto';
+import { Patient } from '../../entities/patient.entity';
+import { INJECT_PATIENT_FLAT_SERVICE } from '../patient-flat.service';
+import { mockFlatPatient } from './stub/patient-flat.stub';
 
 describe('PatientExternalConnectionService', () => {
   let service: PatientExternalConnectionService;
   let repository: jest.Mocked<PatientRepository>;
   let userService: jest.Mocked<UserManagementService>;
+  let flatService: jest.Mocked<FlatService<Patient, PatientResponseDto>>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(PatientExternalConnectionService).compile();
@@ -20,6 +26,8 @@ describe('PatientExternalConnectionService', () => {
     service = unit;
     repository = unitRef.get(PatientRepository);
     userService = unitRef.get(UserManagementService);
+    flatService = unitRef.get(INJECT_PATIENT_FLAT_SERVICE);
+
   });
 
   afterEach(() => {
@@ -30,6 +38,7 @@ describe('PatientExternalConnectionService', () => {
 
     const mockedUser = mockUser();
     const mockedPatient = mockPatient();
+    const mockedFlatPatient = mockFlatPatient();
 
     const mockDto: PostPatientRequestDto = {
       dni: '1234567890',
@@ -43,10 +52,11 @@ describe('PatientExternalConnectionService', () => {
 
       userService.findOneByDni.mockResolvedValueOnce(mockedUser);
       repository.create.mockResolvedValueOnce(mockedPatient);
+      flatService.flat.mockReturnValueOnce(mockedFlatPatient);
 
       const result = await service.create(mockDto);
 
-      expect(result).toEqual(mockedPatient);
+      expect(result).toEqual(mockedFlatPatient);
       expect(userService.findOneByDni).toHaveBeenCalledWith(mockDto.dni);
       expect(repository.create).toHaveBeenCalledWith({ birthday: mockDto.birthday, gender: mockDto.gender, user: mockedUser });
     });
@@ -55,11 +65,12 @@ describe('PatientExternalConnectionService', () => {
       userService.findOneByDni.mockRejectedValueOnce(new NotFoundException());
       userService.create.mockResolvedValueOnce(mockedUser);
       repository.create.mockResolvedValueOnce(mockedPatient);
+      flatService.flat.mockReturnValueOnce(mockedFlatPatient);
 
       const result = await service.create(mockDto);
       const { birthday, gender, ...user } = mockDto;
 
-      expect(result).toEqual(mockedPatient);
+      expect(result).toEqual(mockedFlatPatient);
       expect(userService.findOneByDni).toHaveBeenCalledWith(mockDto.dni);
       expect(userService.create).toHaveBeenCalledWith({ ...user, email: null });
       expect(repository.create).toHaveBeenCalledWith({ birthday: mockDto.birthday, gender: mockDto.gender, user: mockedUser });
@@ -70,6 +81,7 @@ describe('PatientExternalConnectionService', () => {
 
     const mockedUser = mockUser();
     const mockedPatient = mockPatient();
+    const mockedFlatPatient = mockFlatPatient();
 
     const mockDto: PostPatientRequestDto = {
       dni: '1234567890',
@@ -80,11 +92,12 @@ describe('PatientExternalConnectionService', () => {
     }
 
     it('should return an existing patient', async () => {
+      flatService.flat.mockReturnValueOnce(mockedFlatPatient);
       repository.findOne.mockResolvedValueOnce(mockedPatient);
 
       const result = await service.findOneOrCreate(mockDto);
 
-      expect(result).toEqual(mockedPatient);
+      expect(result).toEqual(mockedFlatPatient);
       expect(repository.findOne).toHaveBeenCalledWith({
         where: {
           user: { dni: mockDto.dni }
@@ -97,10 +110,11 @@ describe('PatientExternalConnectionService', () => {
       repository.findOne.mockRejectedValueOnce(new NotFoundException());
       userService.findOneByDni.mockResolvedValueOnce(mockedUser);
       repository.create.mockResolvedValueOnce(mockedPatient);
+      flatService.flat.mockReturnValueOnce(mockedFlatPatient);
 
       const result = await service.findOneOrCreate(mockDto);
 
-      expect(result).toEqual(mockedPatient);
+      expect(result).toEqual(mockedFlatPatient);
       expect(repository.findOne).toHaveBeenCalledWith({
         where: {
           user: { dni: mockDto.dni }
@@ -117,6 +131,7 @@ describe('PatientExternalConnectionService', () => {
 
     const mockedUser = mockUser();
     const mockedPatient = mockPatient();
+    const mockedFlatPatient = mockFlatPatient();
 
     const dni: string = '1234567890';
     const mockDto: PatchPatientRequestDto = {
@@ -130,12 +145,13 @@ describe('PatientExternalConnectionService', () => {
       repository.findOne.mockResolvedValueOnce(mockedPatient);
       userService.updateOne.mockResolvedValueOnce(mockedUser);
       repository.findOneAndUpdate.mockResolvedValueOnce(mockedPatient);
+      flatService.flat.mockReturnValueOnce(mockedFlatPatient);
 
       const result = await service.findOneAndUpdate(dni, mockDto);
 
       const { birthday, gender, ...user } = mockDto;
 
-      expect(result).toEqual(mockedPatient);
+      expect(result).toEqual(mockedFlatPatient);
       expect(repository.findOne).toHaveBeenCalledWith({
         where: { user: { dni: dni } },
         select: { user: { id: true } }

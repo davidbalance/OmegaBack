@@ -1,15 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Patient } from '../entities/patient.entity';
 import { PatientRepository } from '../patient.repository';
+import { PatientResponseDto } from '../dtos/response/base.patient.response.dto';
+import { FlatService } from '@/shared/utils/bases/base.flat-service';
+import { INJECT_PATIENT_FLAT_SERVICE } from './patient-flat.service';
 
 @Injectable()
 export class PatientManagementService {
 
   constructor(
-    @Inject(PatientRepository) private readonly repository: PatientRepository
+    @Inject(PatientRepository) private readonly repository: PatientRepository,
+    @Inject(INJECT_PATIENT_FLAT_SERVICE) private readonly flatService: FlatService<Patient, PatientResponseDto>
   ) { }
 
-  async find(): Promise<Patient[]> {
+  async find(): Promise<PatientResponseDto[]> {
     const patients = await this.repository.find({
       where: {
         user: { status: true }
@@ -22,10 +26,11 @@ export class PatientManagementService {
       },
       cache: 1000 * 900
     });
-    return patients;
+    const flatPatients = patients.map(this.flatService.flat);
+    return flatPatients;
   }
 
-  async findByExtraAttribute(name: string, value: string): Promise<Patient[]> {
+  async findByExtraAttribute(name: string, value: string): Promise<PatientResponseDto[]> {
     const patients = await this.repository.find({
       where: {
         user: {
@@ -41,10 +46,11 @@ export class PatientManagementService {
       },
       cache: 1000 * 900
     });
-    return patients;
+    const flatPatients = patients.map(this.flatService.flat);
+    return flatPatients;
   }
 
-  async findOneByDni(dni: string): Promise<Patient> {
+  async findOneByDni(dni: string): Promise<PatientResponseDto> {
     const patient = await this.repository.findOne({
       where: {
         user: { dni: dni }
@@ -57,6 +63,7 @@ export class PatientManagementService {
       },
       cache: 1000 * 900
     });
-    return patient;
+    const flatPatient = this.flatService.flat(patient);
+    return flatPatient;
   }
 }

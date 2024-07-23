@@ -52,7 +52,6 @@ export class UserManagementService {
 
     async updateOne(id: number, user: Partial<User>): Promise<User> {
         const updateUser = await this.repository.findOneAndUpdate({ id }, user);
-        this.eventService.emitUserUpdateEvent(id, user.email);
         return updateUser;
     }
 

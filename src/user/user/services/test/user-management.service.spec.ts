@@ -93,6 +93,7 @@ describe('User Management Service', () => {
     });
 
     describe('updateOne', () => {
+        const id: number = 1;
         const mockedUser = mockUser();
 
         const mockDto: PatchUserRequestDto = {
@@ -103,10 +104,10 @@ describe('User Management Service', () => {
         it('should update a user and emit an update event', async () => {
             repository.findOneAndUpdate.mockResolvedValueOnce(mockedUser);
 
-            const result = await service.updateOne(1, mockDto);
+            const result = await service.updateOne(id, mockDto);
 
             expect(result).toEqual(mockedUser);
-            expect(eventService.emitUserUpdateEvent).toHaveBeenCalledWith(1, mockDto);
+            expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, mockDto);
         });
     });
 

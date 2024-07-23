@@ -13,6 +13,8 @@ import { PatientExternalConnectionService } from './service/patient-external-con
 import { PatientManagementService } from './service/patient-management.service';
 import { PatientPaginationService } from './service/patient-pagination.service';
 import { PatientEeqPaginationService } from './service/patient-eeq-pagination.service';
+import { PatientFlatProvider } from './service/patient-flat.service';
+import { PatientEeqFlatProvider } from './service/patient-eeq-flat.service';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { PatientEeqPaginationService } from './service/patient-eeq-pagination.se
     PatientExternalConnectionService,
     PatientRepository,
     OrderListener,
+    PatientFlatProvider,
+    PatientEeqFlatProvider
   ],
   exports: [
     PatientManagementService

@@ -4,6 +4,8 @@ import { PatientRepository } from '../patient.repository';
 import { IPagination, PaginationOrder } from '@/shared/utils/bases/base.pagination';
 import { Brackets } from 'typeorm';
 import { PatientEeqResponseDto } from '../dtos/response/base.patient-eeq.response.dto';
+import { INJECT_PATIENT_EEQ_FLAT_SERVICE } from './patient-eeq-flat.service';
+import { FlatService } from '@/shared/utils/bases/base.flat-service';
 
 @Injectable()
 export class PatientEeqPaginationService implements IPagination<PatientEeqResponseDto> {
@@ -14,6 +16,7 @@ export class PatientEeqPaginationService implements IPagination<PatientEeqRespon
 
   constructor(
     @Inject(PatientRepository) private readonly repository: PatientRepository,
+    @Inject(INJECT_PATIENT_EEQ_FLAT_SERVICE) private readonly flatService: FlatService<Patient, PatientEeqResponseDto | null>
   ) { }
 
   async findPaginatedDataAndPageCount(
@@ -41,8 +44,8 @@ export class PatientEeqPaginationService implements IPagination<PatientEeqRespon
     }
 
     const patients = await query.take(limit).skip(page).getMany();
-    const flatten = await Promise.all(patients.map(this.flatPatient));
-    return flatten.filter(e => !!e);
+    const flatPatients = patients.map(this.flatService.flat).filter(e => !!e);
+    return flatPatients;
   }
 
   async findPageCount(
@@ -51,15 +54,6 @@ export class PatientEeqPaginationService implements IPagination<PatientEeqRespon
   ): Promise<number> {
     const count = await this.queryBuilder(filter).getCount();
     return Math.floor(count / limit);
-  }
-
-  private async flatPatient(patient: Patient): Promise<PatientEeqResponseDto | null> {
-    return new Promise((resolve, reject) => {
-      const role = patient.user.extraAttributes.find(e => e.name === 'role');
-      if (!role) resolve(null);
-      const flattenedPatient: PatientEeqResponseDto = { ...patient.user, ...patient, user: patient.user.id, role: role.value };
-      resolve(flattenedPatient);
-    });
   }
 
   private queryBuilder(filter: string) {
