@@ -1,6 +1,6 @@
 import { IsEmail } from "class-validator";
 
-export class POSTMedicalEmailRequestDto {
+export class PostMedicalEmailRequestDto {
     @IsEmail()
     public readonly email: string;
 }

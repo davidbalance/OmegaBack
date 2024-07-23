@@ -1,4 +1,4 @@
-import { MedicalClientResponseDto } from "@/medical/medical-client/dtos/medical-client.response.dto";
+import { MedicalClientResponseDto } from "@/medical/medical-client/dtos/response/base.medical-client.response.dto";
 import { MedicalResultResponseDto } from "@/medical/medical-result/dtos/response/base.medical-result.response.dto";
 import { OmitType } from "@nestjs/mapped-types";
 import { Expose, Type } from "class-transformer";

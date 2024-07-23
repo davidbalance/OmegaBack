@@ -1,4 +1,3 @@
-import { MedicalClientService } from "@/medical/medical-client/medical-client.service";
 import { Injectable, Inject, Provider } from "@nestjs/common";
 import { MedicalOrder } from "../entities/medical-order.entity";
 import { MedicalOrderRepository } from "../repositories/medical-order.repository";
@@ -7,6 +6,7 @@ import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bas
 import { MedicalOrderEventService } from "./medical-order-event.service";
 import { PatchMedicalOrderRequestDto } from "../dtos/request/patch.medical-order.request.dto";
 import { PostMedicalOrderExternalRequestDto } from "../dtos/request/post.medical-order-external.request.dto";
+import { MedicalClientService } from "@/medical/medical-client/services/medical-client.service";
 
 type ConnectionRequestType = PostMedicalOrderExternalRequestDto | PatchMedicalOrderRequestDto;
 

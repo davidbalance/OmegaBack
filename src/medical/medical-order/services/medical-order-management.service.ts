@@ -1,14 +1,13 @@
-import { MedicalClientService } from "@/medical/medical-client/medical-client.service";
 import { Injectable, Inject } from "@nestjs/common";
 import { MedicalOrder } from "../entities/medical-order.entity";
 import { MedicalOrderRepository } from "../repositories/medical-order.repository";
+import { MedicalClientService } from "@/medical/medical-client/services/medical-client.service";
 
 @Injectable()
 export class MedicalOrderManagementService {
 
   constructor(
-    @Inject(MedicalOrderRepository) private readonly repository: MedicalOrderRepository,
-    @Inject(MedicalClientService) private readonly service: MedicalClientService
+    @Inject(MedicalOrderRepository) private readonly repository: MedicalOrderRepository
   ) { }
 
   async find(): Promise<MedicalOrder[]> {

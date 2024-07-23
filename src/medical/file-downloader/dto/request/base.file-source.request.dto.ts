@@ -13,9 +13,3 @@ export class FileSourceRequestDto {
     @IsNumber()
     public id: number;
 }
-
-export class DownloadAndZipContentRequestDto {
-    @IsArray()
-    @Type(() => FileSourceRequestDto)
-    public files: FileSourceRequestDto[]
-}
