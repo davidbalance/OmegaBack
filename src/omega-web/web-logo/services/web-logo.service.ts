@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { WebLogoRepository } from './web-logo.repository';
-import { WebLogo } from './entities/web-logo.entity';
-
+import { WebLogo } from '../entities/web-logo.entity';
+import { WebLogoRepository } from '../repositories/web-logo.repository';
 @Injectable()
 export class WebLogoService {
 
@@ -9,11 +8,6 @@ export class WebLogoService {
         @Inject(WebLogoRepository) private readonly repository: WebLogoRepository
     ) { }
 
-    /**
-     * Encuentra un logo.
-     * @param id 
-     * @returns 
-     */
     async findOne(id: number): Promise<WebLogo> {
         const logo = await this.repository.findOne({ where: { id: id } });
         return logo;

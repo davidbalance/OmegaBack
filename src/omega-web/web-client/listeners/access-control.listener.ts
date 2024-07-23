@@ -1,8 +1,8 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { WebClientRepository } from "../web-client.repository";
-import { OnEvent } from "@nestjs/event-emitter";
-import { WebResourceService } from "@/omega-web/web-resource/web-resource.service";
+import { WebResourceService } from "@/omega-web/web-resource/services/web-resource.service";
 import { AccessControlEvent, AccessControlUpdateEvent } from "@/shared/events";
+import { Inject, Injectable } from "@nestjs/common";
+import { OnEvent } from "@nestjs/event-emitter";
+import { WebClientRepository } from "../repositories/web-client.repository";
 
 @Injectable()
 export class AccessControlListener {

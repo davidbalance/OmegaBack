@@ -1,8 +1,8 @@
 import { AbstractRepository } from "@/shared/sql-database";
 import { Injectable, Logger } from "@nestjs/common";
-import { WebLogo } from "./entities/web-logo.entity";
-import { FindOptionsWhere, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { WebLogo } from "../entities/web-logo.entity";
 
 @Injectable()
 export class WebLogoRepository

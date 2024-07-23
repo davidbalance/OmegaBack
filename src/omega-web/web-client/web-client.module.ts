@@ -1,31 +1,42 @@
-import { Module } from '@nestjs/common';
-import { WebClientService } from './web-client.service';
-import { WebClientController } from './web-client.controller';
+import { AuthenticationGuardModule, JwtAuthStrategy } from '@/shared/guards/authentication-guard';
 import { SqlDatabaseModule } from '@/shared/sql-database';
-import { WebClient } from './entities/web-client.entity';
-import { WebClientRepository } from './web-client.repository';
-import { JwtAuthStrategy } from '@/shared/guards/authentication-guard/strategies';
-import { CredentialListener } from './listeners';
-import { AccessControlListener } from './listeners/access-control.listener';
-import { WebResourceModule } from '../web-resource/web-resource.module';
-import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { Module } from '@nestjs/common';
 import { WebLogoModule } from '../web-logo/web-logo.module';
+import { WebResourceModule } from '../web-resource/web-resource.module';
+import { WebClientController } from './controllers/web-client.controller';
+import { WebClient } from './entities/web-client.entity';
+import { AccessControlListener } from './listeners/access-control.listener';
+import { WebClientRepository } from './repositories/web-client.repository';
+import { WebClientService } from './services/web-client.service';
+import { WebClientLogoController } from './controllers/web-client-logo.controller';
+import { WebClientResourceController } from './controllers/web-client-resource.controller';
+import { WebClientResourceService } from './services/web-client-resource.service';
+import { WebClientLogoService } from './services/web-client-logo.service';
+import { CredentialListener } from './listeners/credential.listener';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([WebClient]),
-    WebResourceModule,
     AuthenticationGuardModule,
+    WebResourceModule,
     WebLogoModule
   ],
-  controllers: [WebClientController],
+  controllers: [
+    WebClientLogoController,
+    WebClientResourceController,
+    WebClientController
+  ],
   providers: [
+    WebClientRepository,
+    WebClientLogoService,
+    WebClientResourceService,
     WebClientService,
     CredentialListener,
     AccessControlListener,
     JwtAuthStrategy,
-    WebClientRepository,
   ],
-  exports: [WebClientService]
+  exports: [
+    WebClientService
+  ]
 })
 export class WebClientModule { }

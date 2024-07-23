@@ -1,8 +1,8 @@
 import { AbstractRepository } from "@/shared/sql-database";
 import { Injectable, Logger } from "@nestjs/common";
-import { WebResource } from "./entities/web-resource.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { FindOptionsWhere, Repository } from "typeorm";
+import { Repository } from "typeorm";
+import { WebResource } from "../entities/web-resource.entity";
 
 @Injectable()
 export class WebResourceRespository
@@ -13,9 +13,5 @@ export class WebResourceRespository
         @InjectRepository(WebResource) private readonly resourceModel: Repository<WebResource>
     ) {
         super(resourceModel);
-    }
-
-    async findOneAndDelete(filterOptions: FindOptionsWhere<WebResource>): Promise<void> {
-        await this.resourceModel.delete(filterOptions)
     }
 }
