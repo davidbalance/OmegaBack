@@ -1,23 +1,18 @@
 import { Expose, Type } from "class-transformer";
 import { GETMedicalEmailResponseDto } from "./medical-email.response.dto";
 
-export class GETMedicalClientResponseDto {
-    @Expose()
-    public readonly dni: string;
-
-    @Expose()
-    public readonly fullname: string;
-
-    @Expose()
-    public managementId: number;
-
-    @Expose()
-    public areaId: number;
+export class MedicalClientResponseDto {
+    
+    @Expose() public readonly dni: string;
+    @Expose() public readonly fullname: string;
+    @Expose() public readonly managementId: number;
+    @Expose() public readonly areaId: number;
 
     @Type(() => GETMedicalEmailResponseDto)
-    @Expose()
-    public readonly email: GETMedicalEmailResponseDto[];
+    @Expose() public readonly email: GETMedicalEmailResponseDto[];
 }
+
+export class GETMedicalClientResponseDto { }
 
 export class GETMedicalClientArrayResponseDto {
     @Type(() => GETMedicalClientResponseDto)
@@ -28,7 +23,7 @@ export class GETMedicalClientArrayResponseDto {
 export class GETMedicalClientManagementAreaResponseDto {
     @Expose()
     public managementId?: number;
-    
+
     @Expose()
     public managementName?: string;
 
@@ -42,7 +37,7 @@ export class GETMedicalClientManagementAreaResponseDto {
 export class POSTMedicalClientManagementAreaResponseDto {
     @Expose()
     public managementId?: number;
-    
+
     @Expose()
     public managementName?: string;
 
@@ -53,6 +48,6 @@ export class POSTMedicalClientManagementAreaResponseDto {
     public areaName?: string;
 }
 
-export class DELETEMedicalClientManagementAreaResponseDto {}
+export class DELETEMedicalClientManagementAreaResponseDto { }
 
 export class POSTMedicalClientResponseDto extends GETMedicalClientResponseDto { }

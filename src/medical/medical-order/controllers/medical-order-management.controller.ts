@@ -6,7 +6,8 @@ import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { OrderStatus } from "../enums";
 import { MedicalOrderManagementService } from "../services/medical-order-management.service";
-import { GETMedicalOrderArrayResponseDto, GETMedicalOrderResponseDto } from "../dtos/get.medical-order.response.dto";
+import { GetMedicalOrderArrayResponseDto } from "../dtos/response/get.medical-order-array.response.dto";
+import { GetMedicalOrderResponseDto } from "../dtos/response/get.medical-order.response.dto";
 
 @ApiTags('Medical/Order')
 @ApiBearerAuth()
@@ -20,9 +21,9 @@ export class MedicalOrderManagementController {
   @Get('patient/:dni')
   async findByPatient(
     @Param('dni') patient: string
-  ): Promise<GETMedicalOrderArrayResponseDto> {
+  ): Promise<GetMedicalOrderArrayResponseDto> {
     const orders = await this.service.findAllByPatient(patient);
-    return plainToInstance(GETMedicalOrderArrayResponseDto, { orders });
+    return plainToInstance(GetMedicalOrderArrayResponseDto, { orders });
   }
 
   @UseInterceptors(DniInterceptor)
@@ -30,16 +31,16 @@ export class MedicalOrderManagementController {
   async findByPatientAndDoctor(
     @Param('dni') patient: string,
     @User() doctor: string
-  ): Promise<GETMedicalOrderArrayResponseDto> {
+  ): Promise<GetMedicalOrderArrayResponseDto> {
     const orders = await this.service.findAllByPatientAndDoctor(patient, doctor);
-    return plainToInstance(GETMedicalOrderArrayResponseDto, { orders });
+    return plainToInstance(GetMedicalOrderArrayResponseDto, { orders });
   }
 
   @Patch(':id/status/validate')
   async findOneAndValidateStatus(
     @Param('id') id: number
-  ): Promise<GETMedicalOrderResponseDto> {
+  ): Promise<GetMedicalOrderResponseDto> {
     const order = await this.service.updateOne(id, { orderStatus: OrderStatus.VALIDATED });
-    return plainToInstance(GETMedicalOrderResponseDto, order);
+    return plainToInstance(GetMedicalOrderResponseDto, order);
   }
 }

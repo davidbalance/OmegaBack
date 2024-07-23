@@ -2,8 +2,9 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { Controller, UseGuards, Post, Body, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { PlainMedicalOrderPaginationService } from "../services/plain-medical-order-pagination.service";
-import { GETPlainMedicalOrderPaginationRequestDto, GETPlainMedicalOrderPaginationResponseDto } from "../dtos/get.plain-medical-order-pagination.dto";
+import { MedicalOrderFlatPaginationService } from "../services/medical-order-flat-pagination.service";
+import { PostMedicalOrderFlatPaginationRequestDto } from "../dtos/request/post.medical-order-flat-pagination.request.dto";
+import { PostMedicalOrderFlatPaginationResponseDto } from "../dtos/response/post.medical-order-flat-pagination.response.dto";
 
 @ApiTags('Medical/Order')
 @ApiBearerAuth()
@@ -11,14 +12,14 @@ import { GETPlainMedicalOrderPaginationRequestDto, GETPlainMedicalOrderPaginatio
 @UseGuards(JwtAuthGuard)
 export class MedicalOrderPaginationController {
   constructor(
-    @Inject(PlainMedicalOrderPaginationService) private readonly service: PlainMedicalOrderPaginationService
+    @Inject(MedicalOrderFlatPaginationService) private readonly service: MedicalOrderFlatPaginationService
   ) { }
 
   @Post()
   async findByFilterAndPagination(
-    @Body() { page, limit, filter, order }: GETPlainMedicalOrderPaginationRequestDto
-  ): Promise<GETPlainMedicalOrderPaginationResponseDto> {
+    @Body() { page, limit, filter, order }: PostMedicalOrderFlatPaginationRequestDto
+  ): Promise<PostMedicalOrderFlatPaginationResponseDto> {
     const [pages, data] = await this.service.findPaginatedDataAndPageCount(page, limit, filter, order);
-    return plainToInstance(GETPlainMedicalOrderPaginationResponseDto, { pages, data });
+    return plainToInstance(PostMedicalOrderFlatPaginationResponseDto, { pages, data });
   }
 }

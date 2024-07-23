@@ -15,13 +15,13 @@ import { MedicalOrderManagementService } from "./services/medical-order-manageme
 import { MedicalOrderEventService } from "./services/medical-order-event.service";
 import { MedicalOrderExternalKeyService } from "./services/medical-order-external-key.service";
 import { MedicalOrderMailService } from "./services/medical-order-mail.service";
-import { PlainMedicalOrderPaginationService } from "./services/plain-medical-order-pagination.service";
 import { MedicalOrderExternalKeyRepository } from "./repositories/medical-order-external-key.repository";
 import { MedicalOrderRepository } from "./repositories/medical-order.repository";
 import { MedicalOrderCloudController } from "./controllers/medical-order-cloud.controller";
 import { MedicalOrderMaitController } from "./controllers/medical-order-mail.controller";
 import { MedicalOrderPaginationController } from "./controllers/medical-order-pagination.controller";
 import { MedicalOrderCloudService } from "./services/medical-order-cloud.service";
+import { MedicalOrderFlatPaginationService } from "./services/medical-order-flat-pagination.service";
 
 @Module({
   imports: [
@@ -70,7 +70,7 @@ import { MedicalOrderCloudService } from "./services/medical-order-cloud.service
     MedicalOrderMailService,
     MedicalOrderCloudService,
     MedicalOrderManagementService,
-    PlainMedicalOrderPaginationService,
+    MedicalOrderFlatPaginationService,
     MedicalOrderExternalConnectionProvider
   ],
   exports: [

@@ -2,7 +2,7 @@ import { Controller, Get, Param, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { MedicalOrderCloudService } from "../services/medical-order-cloud.service";
-import { GETMedicalOrderCloudResponseDto } from "../dtos/get.medical-order-cloud.dto";
+import { GetMedicalOrderCloudResponseDto } from "../dtos/response/get.medical-order-cloud.response.dto";
 
 @ApiTags('Medical/Order')
 @ApiBearerAuth()
@@ -15,8 +15,8 @@ export class MedicalOrderCloudController {
   @Get(':id')
   async findFilesById(
     @Param('id') id: number
-  ): Promise<GETMedicalOrderCloudResponseDto> {
+  ): Promise<GetMedicalOrderCloudResponseDto> {
     const order = await this.service.findOne(id);
-    return plainToInstance(GETMedicalOrderCloudResponseDto, order);
+    return plainToInstance(GetMedicalOrderCloudResponseDto, order);
   }
 }

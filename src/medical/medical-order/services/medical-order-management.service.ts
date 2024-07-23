@@ -2,7 +2,6 @@ import { MedicalClientService } from "@/medical/medical-client/medical-client.se
 import { Injectable, Inject } from "@nestjs/common";
 import { MedicalOrder } from "../entities/medical-order.entity";
 import { MedicalOrderRepository } from "../repositories/medical-order.repository";
-import { POSTMedicalOrderRequestDto } from "../dtos/post.medical-order.dto";
 
 @Injectable()
 export class MedicalOrderManagementService {
@@ -11,12 +10,6 @@ export class MedicalOrderManagementService {
     @Inject(MedicalOrderRepository) private readonly repository: MedicalOrderRepository,
     @Inject(MedicalClientService) private readonly service: MedicalClientService
   ) { }
-
-  async create({ patient, ...data }: POSTMedicalOrderRequestDto): Promise<MedicalOrder> {
-    const client = await this.service.findOneOrCreate({ ...patient, fullname: `${patient.name} ${patient.lastname}` });
-    const medicalOrder = await this.repository.create({ ...data, client: client });
-    return medicalOrder;
-  }
 
   async find(): Promise<MedicalOrder[]> {
     const medicalOrders = await this.repository.find();

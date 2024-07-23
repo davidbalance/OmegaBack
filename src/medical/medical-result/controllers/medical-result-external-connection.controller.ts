@@ -5,7 +5,7 @@ import { ApiTags, ApiHeader, ApiConsumes } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { MedicalResultExternalConnectionService } from "../services/medical-result-external-connection.service";
 import { GetMedicalResultResponseDto } from "../dtos/response/get.medical-result.response.dto";
-import { POSTMedicalResultExternalRequestDto } from "../dtos/request/post.medical-result-external.dto";
+import { PostMedicalResultExternalRequestDto } from "../dtos/request/post.medical-result-external.dto";
 import { PostMedicalResultResponseDto } from "../dtos/response/post.medical-result.response.dto";
 import { PatchMedicalResultFileRequestDto } from "../dtos/request/patch.medical-result-file.request.dto";
 import { PatchMedicalResultFileResponseDto } from "../dtos/response/patch.medical-result-file.response.dto";
@@ -34,7 +34,7 @@ export class MedicalResultExternalConnectionController {
     async create(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() body: POSTMedicalResultExternalRequestDto,
+        @Body() body: PostMedicalResultExternalRequestDto,
         @UploadedFile() _: Express.Multer.File
     ): Promise<PostMedicalResultResponseDto> {
         const order = await this.service.create({ source, key }, body);

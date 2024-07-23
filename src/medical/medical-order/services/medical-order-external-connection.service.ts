@@ -5,13 +5,13 @@ import { MedicalOrderRepository } from "../repositories/medical-order.repository
 import { MedicalOrderExternalKeyService } from "./medical-order-external-key.service";
 import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { MedicalOrderEventService } from "./medical-order-event.service";
-import { PATCHMedicalOrderProcessRequestDto } from "../dtos/patch.medical-order-external-connection.dto";
-import { POSTMedicalOrderWithExternalKeyRequestDto } from "../dtos/post.medical-order-external-connection.dto";
+import { PatchMedicalOrderRequestDto } from "../dtos/request/patch.medical-order.request.dto";
+import { PostMedicalOrderExternalRequestDto } from "../dtos/request/post.medical-order-external.request.dto";
 
-type RequestType = POSTMedicalOrderWithExternalKeyRequestDto | PATCHMedicalOrderProcessRequestDto;
+type ConnectionRequestType = PostMedicalOrderExternalRequestDto | PatchMedicalOrderRequestDto;
 
 @Injectable()
-export class MedicalOrderExternalConnectionService implements IExternalConnectionService<RequestType, MedicalOrder> {
+export class MedicalOrderExternalConnectionService implements IExternalConnectionService<ConnectionRequestType, MedicalOrder> {
     constructor(
         @Inject(MedicalOrderExternalKeyService) private readonly externalkey: MedicalOrderExternalKeyService,
         @Inject(MedicalOrderRepository) private readonly repository: MedicalOrderRepository,
@@ -24,45 +24,40 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
         return order;
     }
 
-    async create({ key, source, branch, patient, ...order }: POSTMedicalOrderWithExternalKeyRequestDto): Promise<MedicalOrder> {
-        const { company } = branch;
-        const { corporativeGroup } = company;
-
+    async create(key: ExternalKeyParam, { branch, patient, ...data }: PostMedicalOrderExternalRequestDto): Promise<MedicalOrder> {
         const newClient = await this.clientService.findOneOrCreate({ ...patient, fullname: `${patient.lastname} ${patient.name}` });
 
         try {
-            const newKey = await this.externalkey.create({ key, source });
+            const newKey = await this.externalkey.create(key);
             const newOrder = await this.repository.create({
-                ...order,
-                companyRuc: company.ruc,
-                companyName: company.name,
-                corporativeName: corporativeGroup.name,
+                ...data,
+                companyRuc: branch.company.ruc,
+                companyName: branch.company.name,
+                corporativeName: branch.company.corporativeGroup.name,
                 branchName: branch.name,
                 externalKey: newKey,
                 client: newClient,
             });
 
-            // this.eventService.emitMedicalOrderCreateEvent({ key, source }, patient, branch);
+            this.eventService.emitMedicalOrderCreateEvent(key.source, patient, branch);
             return newOrder;
         } catch (error) {
-            this.externalkey.remove({ source, key })
+            this.externalkey.remove(key)
             throw error;
         }
     }
 
-    async findOneOrCreate({ source, key, ...data }: POSTMedicalOrderWithExternalKeyRequestDto): Promise<MedicalOrder> {
+    async findOneOrCreate(key: ExternalKeyParam, data: PostMedicalOrderExternalRequestDto): Promise<MedicalOrder> {
         try {
-            const foundOrder = await this.repository.findOne({
-                where: { externalKey: { source: source, key: key } }
-            });
+            const foundOrder = await this.repository.findOne({ where: { externalKey: key } });
             return foundOrder;
         } catch (error) {
-            return this.create({ key, source, ...data });
+            return this.create(key, data);
         }
     }
 
-    async findOneAndUpdate({ key, source }: ExternalKeyParam, data: PATCHMedicalOrderProcessRequestDto): Promise<MedicalOrder> {
-        const order = await this.repository.findOneAndUpdate({ externalKey: { source: source, key: key } }, data);
+    async findOneAndUpdate(key: ExternalKeyParam, data: PatchMedicalOrderRequestDto): Promise<MedicalOrder> {
+        const order = await this.repository.findOneAndUpdate({ externalKey: key }, data);
         return order;
     }
 }

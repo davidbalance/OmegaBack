@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import path from 'path';
 import { MailerService } from '@/shared/mailer/mailer.service';
 import { ConfigService } from '@nestjs/config';

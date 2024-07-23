@@ -7,20 +7,20 @@ import path from "path";
 import { MedicalResultEventService } from "./medical-result-event.service";
 import { MedicalResultFileManagementService } from "./medical-result-file-management.service";
 import { MedicalResultExternalKeyService } from "./medical-result-external-key.service";
-import { INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION, MedicalOrderExternalConnectionService } from "@/medical/medical-order/services/medical-order-external-connection.service";
-import { POSTMedicalResultExternalRequestDto } from "../dtos/request/post.medical-result-external.dto";
+import { INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION } from "@/medical/medical-order/services/medical-order-external-connection.service";
+import { PostMedicalResultExternalRequestDto } from "../dtos/request/post.medical-result-external.dto";
 import { PatchMedicalResultFileRequestDto } from "../dtos/request/patch.medical-result-file.request.dto";
-import { POSTMedicalOrderRequestDto } from "@/medical/medical-order/dtos/post.medical-order.dto";
 import { MedicalOrder } from "@/medical/medical-order/entities/medical-order.entity";
+import { PostMedicalOrderExternalRequestDto } from "@/medical/medical-order/dtos/request/post.medical-order-external.request.dto";
 
-type RequestType = POSTMedicalResultExternalRequestDto | PatchMedicalResultFileRequestDto
+type RequestType = PostMedicalResultExternalRequestDto | PatchMedicalResultFileRequestDto
 
 @Injectable()
 export class MedicalResultExternalConnectionService implements IExternalConnectionService<RequestType, MedicalResult> {
     constructor(
         @Inject(MedicalResultExternalKeyService) private readonly externalkey: MedicalResultExternalKeyService,
         @Inject(MedicalResultEventService) private readonly eventService: MedicalResultEventService,
-        @Inject(INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION) private readonly orderService: IExternalConnectionService<POSTMedicalOrderRequestDto, MedicalOrder>,
+        @Inject(INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION) private readonly orderService: IExternalConnectionService<PostMedicalOrderExternalRequestDto, MedicalOrder>,
         @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
         @Inject(MedicalResultFileManagementService) private readonly storage: MedicalResultFileManagementService,
     ) { }
@@ -30,7 +30,7 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
         return medicalResult;
     }
 
-    async create(key: ExternalKeyParam, { doctor, exam, order, file }: POSTMedicalResultExternalRequestDto): Promise<MedicalResult> {
+    async create(key: ExternalKeyParam, { doctor, exam, order, file }: PostMedicalResultExternalRequestDto): Promise<MedicalResult> {
         const { key: medicalOrderKey, ...orderData } = order;
         const foundOrder = await this.orderService.findOneOrCreate({ ...key, key: medicalOrderKey }, orderData);
 
@@ -60,7 +60,7 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
         }
     }
 
-    findOneOrCreate(body: POSTMedicalResultExternalRequestDto): Promise<MedicalResult> {
+    findOneOrCreate(body: PostMedicalResultExternalRequestDto): Promise<MedicalResult> {
         throw new Error("Method not implemented.");
     }
 

@@ -2,7 +2,7 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { Controller, UseGuards, Post, Body, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { MedicalOrderMailService } from "../services/medical-order-mail.service";
-import { POSTMedicalOrderMailRequestDto } from "../dtos/post.medical-order-mail.dto";
+import { PostMedicalOrderMailRequestDto } from "../dtos/request/post.medical-order-mail.request.dto";
 
 @ApiTags('Medical/Order')
 @ApiBearerAuth()
@@ -15,7 +15,7 @@ export class MedicalOrderMaitController {
 
   @Post()
   async sendEmail(
-    @Body() body: POSTMedicalOrderMailRequestDto
+    @Body() body: PostMedicalOrderMailRequestDto
   ): Promise<{ message: string }> {
     await this.service.send(body.order, body.mail);
     return { message: "ok" };
