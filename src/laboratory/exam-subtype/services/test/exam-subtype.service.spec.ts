@@ -3,8 +3,8 @@ import { ExamSubtypeRepository } from "../../repositories/exam-subtype.repositor
 import { ExamSubtypeManagementService } from "../exam-subtype-management.service";
 import { TestBed } from "@automock/jest";
 import { mockExamsSubtype, mockExamsSubtypes } from "./stub/exam-type.stub";
-import { POSTExamSubtypeRequestDto } from "../../dto/post.exam-subtype.dto";
-import { PATCHExamSubtypeRequestDto } from "../../dto/patch.exam-subtype.dto";
+import { POSTExamSubtypeRequestDto } from "../../dto/request/post.exam-subtype.dto";
+import { PATCHExamSubtypeRequestDto } from "../../dto/request/patch.exam-subtype.dto";
 import { mockExamType } from "@/laboratory/exam-type/services/test/stub/exam-type.stub";
 
 describe('ExamSubtypeManagementService', () => {

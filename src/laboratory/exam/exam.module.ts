@@ -11,11 +11,15 @@ import { ExamSelectorService } from "./services/exam-selector.service";
 import { ExamExternalKeyService } from "./services/exam-external-key.service";
 import { ExamExternalConnectionService } from "./services/exam-external-connection.service";
 import { ExamExternalKeyRepository } from "./repositories/exam-external-key.repository";
+import { ExamSubtypeModule } from "../exam-subtype/exam-subtype.module";
+import { ExamTypeModule } from "../exam-type/exam-type.module";
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Exam, ExamExternalKey]),
-    AuthenticationGuardModule
+    AuthenticationGuardModule,
+    ExamSubtypeModule,
+    ExamTypeModule
   ],
   controllers: [
     ExamSelectorController,

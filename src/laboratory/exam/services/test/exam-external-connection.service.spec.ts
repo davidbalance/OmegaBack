@@ -5,8 +5,8 @@ import { ExamExternalKeyService } from "../exam-external-key.service";
 import { mockExamExternalKey } from "./stub/exam-external-key.stub";
 import { mockExam } from "./stub/exam.stub";
 import { NotFoundException } from "@nestjs/common";
-import { POSTExamRequestDto } from "../../dtos/post.exam.dto";
-import { PATCHExamRequestDto } from "../../dtos/patch.exam.dto";
+import { POSTExamRequestDto } from "../../dtos/request/post.exam.request.dto";
+import { PATCHExamRequestDto } from "../../dtos/request/patch.exam.request.dto";
 
 describe('ExamExternalConnectionService', () => {
     let service: ExamExternalConnectionService;

@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from "typeorm";
 
 const TABLE_NAME: string = 'tbl_lab_exam_subtype';
-const INDEX_EXAM_SUBTYPE_NAME: TableIndex = new TableIndex({ name: 'idx_exam_subtype_name', columnNames: ['exam_subtype_name'], isUnique: true });
+const INDEX_EXAM_SUBTYPE_NAME_TYPE: TableIndex = new TableIndex({ name: 'idx_exam_subtype_name_type', columnNames: ['exam_subtype_name', 'exam_type_id'], isUnique: true });
 
 const FK_LAB_EXAM_TYPE_SUBTYPE: TableForeignKey = new TableForeignKey({
     name: 'fk_lab_exam_type_subtype',
@@ -24,8 +24,7 @@ export class CreateLaboratoryExamSubtypeTable1721432173140 implements MigrationI
                         name: 'exam_subtype_name',
                         type: 'varchar',
                         length: '64',
-                        isNullable: false,
-                        isUnique: true
+                        isNullable: false
                     },
                     {
                         name: 'exam_subtype_status',
@@ -43,7 +42,7 @@ export class CreateLaboratoryExamSubtypeTable1721432173140 implements MigrationI
             true,
         );
 
-        await queryRunner.createIndex(TABLE_NAME, INDEX_EXAM_SUBTYPE_NAME);
+        await queryRunner.createIndex(TABLE_NAME, INDEX_EXAM_SUBTYPE_NAME_TYPE);
 
         await queryRunner.createForeignKey(TABLE_NAME, FK_LAB_EXAM_TYPE_SUBTYPE);
     }
@@ -51,7 +50,7 @@ export class CreateLaboratoryExamSubtypeTable1721432173140 implements MigrationI
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.dropForeignKey(TABLE_NAME, FK_LAB_EXAM_TYPE_SUBTYPE);
 
-        await queryRunner.dropIndex(TABLE_NAME, INDEX_EXAM_SUBTYPE_NAME);
+        await queryRunner.dropIndex(TABLE_NAME, INDEX_EXAM_SUBTYPE_NAME_TYPE);
 
         await queryRunner.dropTable(TABLE_NAME);
     }

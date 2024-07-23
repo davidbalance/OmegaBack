@@ -2,16 +2,19 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, UseGuards } 
 import { ExamSubtypeManagementService } from '../services/exam-subtype-management.service';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { POSTExamSubtypeRequestDto, POSTExamSubtypeResponseDto } from '../dto/post.exam-subtype.dto';
-import { PATCHExamSubtypeRequestDto, PATCHExamSubtypeResponseDto } from '../dto/patch.exam-subtype.dto';
+import { PostExamSubtypeRequestDto } from '../dto/request/post.exam-subtype.dto';
+import { PostExamSubtypeResponseDto } from '../dto/response/post.exam-subtype.response.dto';
+import { GetExamSubtypeArrayResponseDto } from '../dto/response/get.exam-subtype-array.response.dto';
+import { GetExamSubtypeResponseDto } from '../dto/response/get.exam-subtype.response.dto';
 import { plainToInstance } from 'class-transformer';
-import { GETExamSubtypeArrayResponseDto, GETExamSubtypeResponseDto } from '../dto/get.exam-subtype.dto';
-import { DELETEExamSubtypeResponseDto } from '../dto/delete.exam-subtype.dto';
+import { PatchExamSubtypeRequestDto } from '../dto/request/patch.exam-subtype.dto';
+import { PatchExamSubtypeResponseDto } from '../dto/response/patch.exam-subtype.response.dto';
+import { DeleteExamSubtypeResponseDto } from '../dto/response/delete.exam-subtype.response.dto';
 
 @ApiTags('Laboratory/Exam/Subtype')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller('exam/subtype')
+@Controller('exam/subtypes')
 export class ExamSubtypeManagementController {
   constructor(
     @Inject(ExamSubtypeManagementService) private readonly examSubtypeService: ExamSubtypeManagementService
@@ -19,39 +22,39 @@ export class ExamSubtypeManagementController {
 
   @Post()
   async create(
-    @Body() data: POSTExamSubtypeRequestDto
-  ): Promise<POSTExamSubtypeResponseDto> {
+    @Body() data: PostExamSubtypeRequestDto
+  ): Promise<PostExamSubtypeResponseDto> {
     const subtype = await this.examSubtypeService.create(data);
-    return plainToInstance(POSTExamSubtypeResponseDto, subtype);
+    return plainToInstance(PostExamSubtypeResponseDto, subtype);
   }
 
   @Get()
-  async findAll(): Promise<GETExamSubtypeArrayResponseDto> {
+  async findAll(): Promise<GetExamSubtypeArrayResponseDto> {
     const data = await this.examSubtypeService.findAll();
-    return plainToInstance(GETExamSubtypeArrayResponseDto, { data });
+    return plainToInstance(GetExamSubtypeArrayResponseDto, { data });
   }
 
   @Get(':id')
   async findOne(
     @Param('id') id: string
-  ): Promise<GETExamSubtypeResponseDto> {
+  ): Promise<GetExamSubtypeResponseDto> {
     const data = this.examSubtypeService.findOne(+id);
-    return plainToInstance(GETExamSubtypeResponseDto, data);
+    return plainToInstance(GetExamSubtypeResponseDto, data);
   }
 
   @Patch(':id')
   async updateOne(
     @Param('id') id: string,
-    @Body() updateExamSubtypeDto: PATCHExamSubtypeRequestDto
-  ): Promise<PATCHExamSubtypeResponseDto> {
+    @Body() updateExamSubtypeDto: PatchExamSubtypeRequestDto
+  ): Promise<PatchExamSubtypeResponseDto> {
     const data = await this.examSubtypeService.updateOne(+id, updateExamSubtypeDto);
-    return plainToInstance(PATCHExamSubtypeResponseDto, data);
+    return plainToInstance(PatchExamSubtypeResponseDto, data);
   }
 
   @Delete(':id')
   async remove(
     @Param('id') id: string
-  ): Promise<DELETEExamSubtypeResponseDto> {
+  ): Promise<DeleteExamSubtypeResponseDto> {
     await this.examSubtypeService.deleteOne(+id);
     return {};
   }

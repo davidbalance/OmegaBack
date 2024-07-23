@@ -6,7 +6,8 @@ export const stubExamType = (id: number): ExamType => ({
     status: true,
     subtypes: [],
     createAt: new Date(),
-    updateAt: new Date()
+    updateAt: new Date(),
+    externalKey: undefined
 });
 
 export const mockExamType = () => stubExamType(1);

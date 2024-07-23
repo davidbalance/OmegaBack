@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ExamTypeRepository } from '../repositories/exam-type.repository';
 import { ExamType } from '../entities/exam-type.entity';
-import { PATCHExamTypeRequestDto } from '../dtos/patch.exam-type.dto';
-import { POSTExamTypeRequestDto } from '../dtos/post.exam-type.dto';
+import { PostExamTypeRequestDto } from '../dtos/request/post.exam-type.dto';
+import { PatchExamTypeRequestDto } from '../dtos/request/patch.exam-type.dto';
 
 @Injectable()
 export class ExamTypeManagementService {
@@ -11,7 +11,7 @@ export class ExamTypeManagementService {
     @Inject(ExamTypeRepository) private readonly repository: ExamTypeRepository
   ) { }
 
-  async create(data: POSTExamTypeRequestDto): Promise<ExamType> {
+  async create(data: PostExamTypeRequestDto): Promise<ExamType> {
     const type = await this.repository.create(data);
     return type;
   }
@@ -26,7 +26,7 @@ export class ExamTypeManagementService {
     return type;
   }
 
-  async updateOne(id: number, data: PATCHExamTypeRequestDto): Promise<ExamType> {
+  async updateOne(id: number, data: PatchExamTypeRequestDto): Promise<ExamType> {
     const type = await this.repository.findOneAndUpdate({ id }, data);
     return type;
   }

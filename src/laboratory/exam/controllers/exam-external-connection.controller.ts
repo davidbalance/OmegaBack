@@ -3,35 +3,36 @@ import { Controller, Inject, UseGuards, Post, Param, Body, Patch } from "@nestjs
 import { ApiTags, ApiHeader } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ExamExternalConnectionService } from "../services/exam-external-connection.service";
-import { GETExamResponseDto } from "../dtos/get.exam.dto";
-import { PATCHExamRequestDto } from "../dtos/patch.exam.dto";
-import { POSTExamExternalConnectionRequestDto, POSTExamRequestDto } from "../dtos/post.exam.dto";
+import { PostExamExternalRequestDto } from "../dtos/request/post.exam-external.request.dto";
+import { PostExamResponseDto } from "../dtos/response/post.exam.response.dto";
+import { PatchExamRequestDto } from "../dtos/request/patch.exam.request.dto";
 
 @ApiTags('External/Connection', 'Laboratory/Exam')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
-@Controller('external/connection/exams')
+@UseGuards(ApiKeyAuthGuard)
+@Controller('external/connection/exams/:source/:key')
 export class ExamExternalConnectionController {
     constructor(
         @Inject(ExamExternalConnectionService) private readonly service: ExamExternalConnectionService
     ) { }
 
-    @UseGuards(ApiKeyAuthGuard)
     @Post()
     async create(
-        @Body() body: POSTExamExternalConnectionRequestDto
-    ): Promise<GETExamResponseDto> {
-        const exam = await this.service.create(body);
-        return plainToInstance(GETExamResponseDto, exam);
+        @Param('source') source: string,
+        @Param('key') key: string,
+        @Body() body: PostExamExternalRequestDto
+    ): Promise<PostExamResponseDto> {
+        const exam = await this.service.create({ source, key }, body);
+        return plainToInstance(PostExamResponseDto, exam);
     }
 
-    @UseGuards(ApiKeyAuthGuard)
     @Patch(':source/:key')
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() body: PATCHExamRequestDto
-    ): Promise<GETExamResponseDto> {
-        const exam = await this.service.findOneAndUpdate({ source, key: key }, body);
-        return plainToInstance(GETExamResponseDto, exam);
+        @Body() body: PatchExamRequestDto
+    ): Promise<PatchExamRequestDto> {
+        const exam = await this.service.findOneAndUpdate({ source, key }, body);
+        return plainToInstance(PatchExamRequestDto, exam);
     }
 }

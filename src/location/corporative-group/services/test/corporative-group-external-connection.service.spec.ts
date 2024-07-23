@@ -4,7 +4,7 @@ import { CorporativeGroupExternalConnectionService } from "../corporative-group-
 import { CorporativeGroupExternalKeyService } from "../corporative-group-external-key.service";
 import { mockCorporativeGroupExternalKey } from "./stub/corporative-group-external-key.stub";
 import { mockCorporativeGroup } from "./stub/corporative-group.stub";
-import { PATCHExamRequestDto } from "@/laboratory/exam/dtos/patch.exam.dto";
+import { PATCHExamRequestDto } from "@/laboratory/exam/dtos/request/patch.exam.request.dto";
 import { NotFoundException } from "@nestjs/common";
 import { POSTCorporativeGroupRequestDto } from "../../dtos/post.corporative-group.dto";
 

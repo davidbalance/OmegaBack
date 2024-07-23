@@ -2,8 +2,8 @@ import { TestBed } from "@automock/jest";
 import { ExamTypeRepository } from "../../repositories/exam-type.repository";
 import { ExamTypeManagementService } from "../exam-type-management.service";
 import { mockExamType, mockExamTypes } from "./stub/exam-type.stub";
-import { POSTExamTypeRequestDto } from "../../dtos/post.exam-type.dto";
-import { PATCHExamTypeRequestDto } from "../../dtos/patch.exam-type.dto";
+import { POSTExamTypeRequestDto } from "../../dtos/request/post.exam-type.dto";
+import { PATCHExamTypeRequestDto } from "../../dtos/request/patch.exam-type.dto";
 
 describe('ExamTypeManagementService', () => {
   let service: ExamTypeManagementService;

@@ -1,7 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { ExamSubtypeResponse } from "./exam-subtype.dto";
 
-export class POSTExamSubtypeRequestDto {
+export class PostExamSubtypeRequestDto {
     @IsString()
     @IsNotEmpty()
     public readonly name: string;
@@ -9,5 +8,3 @@ export class POSTExamSubtypeRequestDto {
     @IsNumber()
     public readonly type: number;
 }
-
-export class POSTExamSubtypeResponseDto extends ExamSubtypeResponse { }

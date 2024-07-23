@@ -1,4 +1,4 @@
-import { POSTExamExternalConnectionRequestDto } from "@/laboratory/exam/dtos/post.exam.dto";
+import { PostExamExternalRequestDto } from "@/laboratory/exam/dtos/request/post.exam-external.request.dto";
 import { POSTDoctorRequestDto } from "@/user/doctor/dtos/post.doctor-management.dto";
 
 export const MedicalResultEvent = {
@@ -14,6 +14,8 @@ export class MedicalResultFindOrCreateDoctorEvent {
 
 export class MedicalResultFindOrCreateExamEvent {
     constructor(
-        public readonly findOrCreateEvent: POSTExamExternalConnectionRequestDto
+        public readonly key: string,
+        public readonly source: string,
+        public readonly data: PostExamExternalRequestDto
     ) { }
 }

@@ -10,7 +10,7 @@ export class MedicalResultExamListener {
     ) { }
 
     @OnEvent(MedicalResultEvent.FIND_OR_CREATE_EXAM)
-    async findOrCreate({ findOrCreateEvent }: MedicalResultFindOrCreateExamEvent): Promise<void> {
-        await this.externalService.findOneOrCreate(findOrCreateEvent);
+    async findOrCreate({ key, source, data }: MedicalResultFindOrCreateExamEvent): Promise<void> {
+        await this.externalService.findOneOrCreate({ key, source }, data);
     }
 }

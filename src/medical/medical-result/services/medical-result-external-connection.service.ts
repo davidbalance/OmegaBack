@@ -46,7 +46,7 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
                 examName: exam.name,
             });
 
-            this.eventService.emitMedicalResultCreateEvent(doctor, { ...exam, source, key });
+            this.eventService.emitMedicalResultCreateEvent(source, doctor, exam);
 
             if (file) {
                 await this.storage.uploadFile(newResult.id, file);

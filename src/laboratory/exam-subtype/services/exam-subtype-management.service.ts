@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ExamSubtypeRepository } from '../repositories/exam-subtype.repository';
-import { POSTExamSubtypeRequestDto } from '../dto/post.exam-subtype.dto';
-import { ExamSubtype } from '../entities/exam-subtype.entity';
 import { ExamTypeManagementService } from '@/laboratory/exam-type/services/exam-type-management.service';
-import { PATCHExamSubtypeRequestDto } from '../dto/patch.exam-subtype.dto';
 import { ExamType } from '@/laboratory/exam-type/entities/exam-type.entity';
+import { ExamSubtype } from '../entities/exam-subtype.entity';
+import { PostExamSubtypeRequestDto } from '../dto/request/post.exam-subtype.dto';
+import { PatchExamRequestDto } from '@/laboratory/exam/dtos/request/patch.exam.request.dto';
+import { PatchExamSubtypeRequestDto } from '../dto/request/patch.exam-subtype.dto';
 
 @Injectable()
 export class ExamSubtypeManagementService {
@@ -14,7 +15,7 @@ export class ExamSubtypeManagementService {
     @Inject(ExamTypeManagementService) private readonly typeService: ExamTypeManagementService
   ) { }
 
-  async create({ type, ...data }: POSTExamSubtypeRequestDto): Promise<ExamSubtype> {
+  async create({ type, ...data }: PostExamSubtypeRequestDto): Promise<ExamSubtype> {
     const foundType = await this.typeService.findOne(type);
     const subtype = await this.repository.create({ ...data, type: foundType });
     return subtype;
@@ -30,13 +31,8 @@ export class ExamSubtypeManagementService {
     return subtype;
   }
 
-  async updateOne(id: number, { type, ...data }: PATCHExamSubtypeRequestDto): Promise<ExamSubtype> {
-    const { type: currentType } = await this.repository.findOne({ where: { id } });
-    let updateType: ExamType = currentType;
-    if (!!type && currentType.id !== type) {
-      updateType = await this.typeService.findOne(type);
-    }
-    const subtype = await this.repository.findOneAndUpdate({ id }, { ...data, type: updateType });
+  async updateOne(id: number, { ...data }: PatchExamSubtypeRequestDto): Promise<ExamSubtype> {
+    const subtype = await this.repository.findOneAndUpdate({ id }, { ...data });
     return subtype;
   }
 
