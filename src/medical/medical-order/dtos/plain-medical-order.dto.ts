@@ -1,5 +1,5 @@
 import { GETMedicalEmailResponseDto } from "@/medical/medical-client/dtos/medical-email.response.dto";
-import { GETMedicalResultResponseDto } from "@/medical/medical-result/dtos/get.medical-result.dto";
+import { MedicalResultResponseDto } from "@/medical/medical-result/dtos/response/base.medical-result.response.dto";
 import { Expose, Type } from "class-transformer";
 
 export class PlainMedicalOrder {
@@ -20,8 +20,8 @@ export class PlainMedicalOrder {
     @Type(() => GETMedicalEmailResponseDto)
     @Expose() public readonly email: GETMedicalEmailResponseDto[];
 
-    @Type(() => GETMedicalResultResponseDto)
-    @Expose() public readonly results: GETMedicalResultResponseDto[]
+    @Type(() => MedicalResultResponseDto)
+    @Expose() public readonly results: MedicalResultResponseDto[]
 }
 
 export class PlainMedicalOrderResponse extends PlainMedicalOrder { }

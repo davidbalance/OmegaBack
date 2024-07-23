@@ -9,7 +9,7 @@ import { MedicalClientModule } from "../medical-client/medical-client.module";
 import { MedicalOrderExternalConnectionController } from "./controllers/medical-order-external-connection.controller";
 import { MedicalOrderManagementController } from "./controllers/medical-order-management.controller";
 import { MedicalOrder } from "./entities/medical-order.entity";
-import { MedicalOrderExternalConnectionService } from "./services/medical-order-external-connection.service";
+import { MedicalOrderExternalConnectionProvider, MedicalOrderExternalConnectionService } from "./services/medical-order-external-connection.service";
 import { MedicalOrderExternalKey } from "./entities/medical-order-external-key.entity";
 import { MedicalOrderManagementService } from "./services/medical-order-management.service";
 import { MedicalOrderEventService } from "./services/medical-order-event.service";
@@ -70,11 +70,13 @@ import { MedicalOrderCloudService } from "./services/medical-order-cloud.service
     MedicalOrderMailService,
     MedicalOrderCloudService,
     MedicalOrderManagementService,
-    PlainMedicalOrderPaginationService
+    PlainMedicalOrderPaginationService,
+    MedicalOrderExternalConnectionProvider
   ],
   exports: [
     MedicalOrderManagementService,
-    MedicalOrderExternalConnectionService
+    MedicalOrderExternalConnectionService,
+    MedicalOrderExternalConnectionProvider
   ]
 })
 export class MedicalOrderModule { }

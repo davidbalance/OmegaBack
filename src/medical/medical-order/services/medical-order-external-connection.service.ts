@@ -1,5 +1,5 @@
 import { MedicalClientService } from "@/medical/medical-client/medical-client.service";
-import { Injectable, Inject } from "@nestjs/common";
+import { Injectable, Inject, Provider } from "@nestjs/common";
 import { MedicalOrder } from "../entities/medical-order.entity";
 import { MedicalOrderRepository } from "../repositories/medical-order.repository";
 import { MedicalOrderExternalKeyService } from "./medical-order-external-key.service";
@@ -66,3 +66,6 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
         return order;
     }
 }
+
+export const INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION = 'INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION';
+export const MedicalOrderExternalConnectionProvider: Provider = { provide: INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION, useClass: MedicalOrderExternalConnectionService }

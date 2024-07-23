@@ -1,7 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { MedicalResult } from "../entities/medical-result.entity";
-import { POSTMedicalResultRequestDto } from "../dtos/post.medical-result.dto";
 
 @Injectable()
 export class MedicalResultManagementService {
@@ -10,7 +9,7 @@ export class MedicalResultManagementService {
     @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
   ) { }
 
-  async create(data: POSTMedicalResultRequestDto): Promise<MedicalResult> {
+  async create(data: Omit<MedicalResult, 'id'>): Promise<MedicalResult> {
     const medicalResults = await this.repository.create(data);
     return medicalResults;
   }

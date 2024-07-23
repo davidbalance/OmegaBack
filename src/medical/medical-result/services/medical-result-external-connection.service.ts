@@ -7,35 +7,37 @@ import path from "path";
 import { MedicalResultEventService } from "./medical-result-event.service";
 import { MedicalResultFileManagementService } from "./medical-result-file-management.service";
 import { MedicalResultExternalKeyService } from "./medical-result-external-key.service";
-import { PATCHMedicalResultFileRequestDto } from "../dtos/patch.medical-result.dto";
-import { MedicalOrderExternalConnectionService } from "@/medical/medical-order/services/medical-order-external-connection.service";
-import { POSTMedicalResultWithExternalKeyRequestDto } from "../dtos/post.medical-result-external-connection.dto";
+import { INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION, MedicalOrderExternalConnectionService } from "@/medical/medical-order/services/medical-order-external-connection.service";
+import { POSTMedicalResultExternalRequestDto } from "../dtos/request/post.medical-result-external.dto";
+import { PatchMedicalResultFileRequestDto } from "../dtos/request/patch.medical-result-file.request.dto";
+import { POSTMedicalOrderRequestDto } from "@/medical/medical-order/dtos/post.medical-order.dto";
+import { MedicalOrder } from "@/medical/medical-order/entities/medical-order.entity";
 
-type RequestType = POSTMedicalResultWithExternalKeyRequestDto | PATCHMedicalResultFileRequestDto
+type RequestType = POSTMedicalResultExternalRequestDto | PatchMedicalResultFileRequestDto
 
 @Injectable()
 export class MedicalResultExternalConnectionService implements IExternalConnectionService<RequestType, MedicalResult> {
     constructor(
         @Inject(MedicalResultExternalKeyService) private readonly externalkey: MedicalResultExternalKeyService,
         @Inject(MedicalResultEventService) private readonly eventService: MedicalResultEventService,
-        @Inject(MedicalOrderExternalConnectionService) private readonly orderService: MedicalOrderExternalConnectionService,
+        @Inject(INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION) private readonly orderService: IExternalConnectionService<POSTMedicalOrderRequestDto, MedicalOrder>,
         @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
         @Inject(MedicalResultFileManagementService) private readonly storage: MedicalResultFileManagementService,
     ) { }
 
-    async findOne({ key, source }: ExternalKeyParam): Promise<MedicalResult> {
-        const medicalResult = await this.repository.findOne({ where: { externalKey: { key, source } } });
+    async findOne(key: ExternalKeyParam): Promise<MedicalResult> {
+        const medicalResult = await this.repository.findOne({ where: { externalKey: key } });
         return medicalResult;
     }
 
-    async create({ source, key, order, doctor, exam, file }: POSTMedicalResultWithExternalKeyRequestDto): Promise<MedicalResult> {
-        const foundOrder = await this.orderService.findOneOrCreate({ source, key, ...order });
+    async create(key: ExternalKeyParam, { doctor, exam, order, file }: POSTMedicalResultExternalRequestDto): Promise<MedicalResult> {
+        const { key: medicalOrderKey, ...orderData } = order;
+        const foundOrder = await this.orderService.findOneOrCreate({ ...key, key: medicalOrderKey }, orderData);
 
         const directory = signaturePath({ dni: doctor.dni });
         const signature = path.join(path.resolve(directory), `${doctor.dni}.png`);
 
-        const newKey = await this.externalkey.create({ key, source });
-
+        const newKey = await this.externalkey.create(key);
         try {
             const newResult = await this.repository.create({
                 order: foundOrder,
@@ -46,29 +48,24 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
                 examName: exam.name,
             });
 
+            const { source } = key;
             this.eventService.emitMedicalResultCreateEvent(source, doctor, exam);
-
             if (file) {
                 await this.storage.uploadFile(newResult.id, file);
             }
-
             return newResult;
         } catch (error) {
-            this.externalkey.remove({ source, key });
+            this.externalkey.remove(key);
             throw error;
         }
     }
 
-    findOneOrCreate(body: POSTMedicalResultWithExternalKeyRequestDto): Promise<MedicalResult> {
+    findOneOrCreate(body: POSTMedicalResultExternalRequestDto): Promise<MedicalResult> {
         throw new Error("Method not implemented.");
     }
 
-    async findOneAndUpdate({ key, source }: ExternalKeyParam, { file }: PATCHMedicalResultFileRequestDto): Promise<MedicalResult> {
-        const medicalResult = await this.repository.findOne({
-            where: {
-                externalKey: { key, source }
-            }
-        });
+    async findOneAndUpdate(key: ExternalKeyParam, { file }: PatchMedicalResultFileRequestDto): Promise<MedicalResult> {
+        const medicalResult = await this.repository.findOne({ where: { externalKey: key } });
         await this.storage.uploadFile(medicalResult.id, file);
         return medicalResult;
     }

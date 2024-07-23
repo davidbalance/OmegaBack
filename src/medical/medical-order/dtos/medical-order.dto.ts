@@ -1,5 +1,5 @@
 import { GETMedicalClientResponseDto } from "@/medical/medical-client/dtos/medical-client.response.dto";
-import { GETMedicalResultResponseDto } from "@/medical/medical-result/dtos/get.medical-result.dto";
+import { MedicalResultResponseDto } from "@/medical/medical-result/dtos/response/base.medical-result.response.dto";
 import { Expose, Type } from "class-transformer";
 
 export class MedicalOrderResponse {
@@ -22,7 +22,7 @@ export class MedicalOrderResponse {
     @Expose()
     public readonly client: GETMedicalClientResponseDto;
 
-    @Type(() => GETMedicalResultResponseDto)
+    @Type(() => MedicalResultResponseDto)
     @Expose()
-    public readonly results: GETMedicalResultResponseDto[]
+    public readonly results: MedicalResultResponseDto[]
 }

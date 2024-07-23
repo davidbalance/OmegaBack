@@ -2,8 +2,8 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { Controller, UseGuards, Inject, UseInterceptors, Patch, Param, Body, UploadedFile } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiTags, ApiBearerAuth, ApiConsumes } from "@nestjs/swagger";
-import { PATCHMedicalResultFileRequestDto, PATCHMedicalResultFileResponseDto } from "../dtos/patch.medical-result.dto";
 import { MedicalResultFileManagementService } from "../services/medical-result-file-management.service";
+import { PatchMedicalResultFileRequestDto } from "../dtos/request/patch.medical-result-file.request.dto";
 
 @ApiTags('Medical/Result')
 @ApiBearerAuth()
@@ -19,9 +19,9 @@ export class MedicalResultFileManagementController {
   @UseInterceptors(FileInterceptor('file'))
   async findOneResultAndUploadFile(
     @Param('id') id: number,
-    @Body() _: PATCHMedicalResultFileRequestDto,
+    @Body() _: PatchMedicalResultFileRequestDto,
     @UploadedFile() file: Express.Multer.File
-  ): Promise<PATCHMedicalResultFileResponseDto> {
+  ): Promise<any> {
     await this.service.uploadFile(id, file);
     return {};
   }

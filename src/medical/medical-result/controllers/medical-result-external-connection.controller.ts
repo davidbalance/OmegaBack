@@ -3,50 +3,54 @@ import { UseGuards, Controller, Inject, Get, Param, Post, UseInterceptors, Body,
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiTags, ApiHeader, ApiConsumes } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { GETMedicalResultExternalConnectionResponseDto } from "../dtos/get.medical-result-external-connection.dto";
-import { PATCHMedicalResultFileRequestDto } from "../dtos/patch.medical-result.dto";
-import { POSTMedicalResultFileResponseDto, POSTMedicalResultWithExternalKeyRequestDto } from "../dtos/post.medical-result-external-connection.dto";
 import { MedicalResultExternalConnectionService } from "../services/medical-result-external-connection.service";
+import { GetMedicalResultResponseDto } from "../dtos/response/get.medical-result.response.dto";
+import { POSTMedicalResultExternalRequestDto } from "../dtos/request/post.medical-result-external.dto";
+import { PostMedicalResultResponseDto } from "../dtos/response/post.medical-result.response.dto";
+import { PatchMedicalResultFileRequestDto } from "../dtos/request/patch.medical-result-file.request.dto";
+import { PatchMedicalResultFileResponseDto } from "../dtos/response/patch.medical-result-file.response.dto";
 
 @ApiTags('External/Connection', 'Medical/Result')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
-@Controller('external/connection/medical/result')
+@Controller('external/connection/medical/result/:source/:key')
 export class MedicalResultExternalConnectionController {
     constructor(
         @Inject(MedicalResultExternalConnectionService) private readonly service: MedicalResultExternalConnectionService
     ) { }
 
-    @Get(':source/:key')
+    @Get()
     async findOne(
         @Param('source') source: string,
         @Param('key') key: string
-    ): Promise<GETMedicalResultExternalConnectionResponseDto> {
+    ): Promise<GetMedicalResultResponseDto> {
         const medicalResult = await this.service.findOne({ key, source });
-        return plainToInstance(GETMedicalResultExternalConnectionResponseDto, medicalResult);
+        return plainToInstance(GetMedicalResultResponseDto, medicalResult);
     }
 
     @ApiConsumes('multipart/form-data')
     @Post()
     @UseInterceptors(FileInterceptor('file'))
     async create(
-        @Body() body: POSTMedicalResultWithExternalKeyRequestDto,
+        @Param('source') source: string,
+        @Param('key') key: string,
+        @Body() body: POSTMedicalResultExternalRequestDto,
         @UploadedFile() _: Express.Multer.File
-    ): Promise<POSTMedicalResultFileResponseDto> {
-        const order = await this.service.create(body);
-        return plainToInstance(POSTMedicalResultFileResponseDto, order);
+    ): Promise<PostMedicalResultResponseDto> {
+        const order = await this.service.create({ source, key }, body);
+        return plainToInstance(PostMedicalResultResponseDto, order);
     }
 
     @ApiConsumes('multipart/form-data')
-    @Patch('file/:source/:key')
+    @Patch('file')
     @UseInterceptors(FileInterceptor('file'))
     async uploadFile(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() _: PATCHMedicalResultFileRequestDto,
+        @Body() _: PatchMedicalResultFileRequestDto,
         @UploadedFile() file: Express.Multer.File
-    ): Promise<POSTMedicalResultFileResponseDto> {
+    ): Promise<PatchMedicalResultFileResponseDto> {
         const order = await this.service.findOneAndUpdate({ source, key }, { file });
-        return plainToInstance(POSTMedicalResultFileResponseDto, order);
+        return plainToInstance(PatchMedicalResultFileResponseDto, order);
     }
 }
