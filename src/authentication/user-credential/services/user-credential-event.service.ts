@@ -1,4 +1,4 @@
-import { CredentialCreateEvent, CredentialEvent } from "@/shared/events";
+import { CredentialEvent, OnCredentialCreateEvent, OnCredentialRemoveEvent } from "@/shared/events/credential.event";
 import { Inject, Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 
@@ -9,6 +9,10 @@ export class UserCredentialEventService {
     ) { }
 
     emitCredentialCreateEvent(user: number) {
-        this.eventEmitter.emit(CredentialEvent.CREATE, new CredentialCreateEvent(user));
+        this.eventEmitter.emit(CredentialEvent.ON_CREATE, new OnCredentialCreateEvent(user));
+    }
+
+    emitCredentialRemoveEvent(user: number) {
+        this.eventEmitter.emit(CredentialEvent.ON_REMOVE, new OnCredentialRemoveEvent(user));
     }
 }

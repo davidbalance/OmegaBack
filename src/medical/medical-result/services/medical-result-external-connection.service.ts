@@ -46,6 +46,8 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
                 doctorFullname: `${doctor.name} ${doctor.lastname}`,
                 doctorSignature: signature,
                 examName: exam.name,
+                examType: exam.type.name,
+                examSubtype: exam.subtype.name || null
             });
 
             const { source } = key;

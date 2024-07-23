@@ -8,7 +8,7 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
 import { ExtraAttributeInterceptorModule } from '@/shared/interceptors/extra-attribute/extra-attribute-interceptor.module';
 import { EeqPatientPaginationController } from './controllers/patient-eeq-pagination.controller';
 import { PatientManagementController } from './controllers/patient-management.controller';
-import { OrderListener } from './listeners/order.listener';
+import { PatientExternalListener } from './listeners/PatientExternal.listener';
 import { PatientExternalConnectionService } from './service/patient-external-connection.service';
 import { PatientManagementService } from './service/patient-management.service';
 import { PatientPaginationService } from './service/patient-pagination.service';
@@ -29,12 +29,12 @@ import { PatientEeqFlatProvider } from './service/patient-eeq-flat.service';
     EeqPatientPaginationController
   ],
   providers: [
-    PatientManagementService,
-    PatientPaginationService,
+    PatientRepository,
     PatientEeqPaginationService,
     PatientExternalConnectionService,
-    PatientRepository,
-    OrderListener,
+    PatientManagementService,
+    PatientPaginationService,
+    PatientExternalListener,
     PatientFlatProvider,
     PatientEeqFlatProvider
   ],

@@ -7,13 +7,15 @@ import { MedicalEmailRepository } from '../repositories/medical-email.repository
 import { PostMedicalClientRequestDto } from '../dtos/request/post.medical-client.request.dto';
 import { PostMedicalClientManagementAndAreaRequestDto } from '../dtos/request/post.medical-client-management-area.request.dto';
 import { PostMedicalEmailRequestDto } from '../dtos/request/post.medical-email.request.dto';
+import { MedicalClientEventService } from './medical-client-event.service';
 
 @Injectable()
 export class MedicalClientService {
 
   constructor(
     @Inject(MedicalClientRepository) private readonly clientRepository: MedicalClientRepository,
-    @Inject(MedicalEmailRepository) private readonly emailRepository: MedicalEmailRepository
+    @Inject(MedicalEmailRepository) private readonly emailRepository: MedicalEmailRepository,
+    @Inject(MedicalClientEventService) private readonly eventService: MedicalClientEventService
   ) { }
 
   async findOne(id: number): Promise<MedicalClient> {
@@ -26,7 +28,7 @@ export class MedicalClientService {
     return client;
   }
 
-  async findOneOrCreate({ dni, email, ...data }: PostMedicalClientRequestDto): Promise<MedicalClient> {
+  async findOneOrCreateWithSource(source: string, { dni, email, jobPosition, ...data }: PostMedicalClientRequestDto): Promise<MedicalClient> {
     try {
       const client = await this.clientRepository.findOne({
         where: {
@@ -36,7 +38,13 @@ export class MedicalClientService {
       return client;
     } catch (error) {
       const newEmail = await this.emailRepository.create({ email, default: false });
-      const newClient = await this.clientRepository.create({ ...data, dni, email: [newEmail] });
+      const newClient = await this.clientRepository.create({
+        ...data,
+        dni,
+        jobPositionName: jobPosition.name,
+        email: [newEmail]
+      });
+      this.eventService.emitMedicalClientCreateEvent(source, jobPosition)
       return newClient;
     }
   }

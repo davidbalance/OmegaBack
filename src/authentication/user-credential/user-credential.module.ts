@@ -5,7 +5,7 @@ import { SqlDatabaseModule } from '@/shared/sql-database';
 import { UserCredentialController } from './controllers/user-credential.controller';
 import { UserCredentialRepository } from './repositories/user-credential.repository';
 import { UserCredentialService } from './services/user-credential.service';
-import { UserCredentialListener } from './listeners/user.credential.listener';
+import { UserOnEventCredentialListener } from './listeners/user-on-event-credential.listener';
 import { UserCredentialValidatorService } from './services/user-credential-validator.service';
 import { UserCredentialEventService } from './services/user-credential-event.service';
 
@@ -22,7 +22,7 @@ import { UserCredentialEventService } from './services/user-credential-event.ser
     UserCredentialEventService,
     UserCredentialValidatorService,
     UserCredentialService,
-    UserCredentialListener,
+    UserOnEventCredentialListener,
   ],
   exports: [
     UserCredentialService,

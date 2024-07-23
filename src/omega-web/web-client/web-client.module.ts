@@ -5,14 +5,13 @@ import { WebLogoModule } from '../web-logo/web-logo.module';
 import { WebResourceModule } from '../web-resource/web-resource.module';
 import { WebClientController } from './controllers/web-client.controller';
 import { WebClient } from './entities/web-client.entity';
-import { AccessControlListener } from './listeners/access-control.listener';
 import { WebClientRepository } from './repositories/web-client.repository';
 import { WebClientService } from './services/web-client.service';
 import { WebClientLogoController } from './controllers/web-client-logo.controller';
 import { WebClientResourceController } from './controllers/web-client-resource.controller';
 import { WebClientResourceService } from './services/web-client-resource.service';
 import { WebClientLogoService } from './services/web-client-logo.service';
-import { CredentialListener } from './listeners/credential.listener';
+import { CredentialWebClientListener } from './listeners/credential-web-client.listener';
 
 @Module({
   imports: [
@@ -31,8 +30,7 @@ import { CredentialListener } from './listeners/credential.listener';
     WebClientLogoService,
     WebClientResourceService,
     WebClientService,
-    CredentialListener,
-    AccessControlListener,
+    CredentialWebClientListener,
     JwtAuthStrategy,
   ],
   exports: [

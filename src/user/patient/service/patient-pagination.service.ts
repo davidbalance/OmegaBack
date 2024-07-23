@@ -55,7 +55,6 @@ export class PatientPaginationService implements IPagination<PatientResponseDto>
       .take(limit)
       .skip(page)
       .getMany();
-    console.log(patients);
     const flatPatients = patients.map(this.flatService.flat);
     return flatPatients;
   }

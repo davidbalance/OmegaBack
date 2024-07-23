@@ -1,4 +1,4 @@
-import { UserEvent, UserUpdateEvent, UserRemoveEvent } from "@/shared/events";
+import { OnUserRemoveEvent, OnUserUpdateEvent, UserEvent } from "@/shared/events/user.event";
 import { Inject, Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 
@@ -9,10 +9,10 @@ export class UserEventService {
     ) { }
 
     emitUserUpdateEvent(id: number, email: string): void {
-        this.eventEmitter.emit(UserEvent.UPDATE, new UserUpdateEvent({ id, email }));
+        this.eventEmitter.emit(UserEvent.ON_UPDATE, new OnUserUpdateEvent(id, email));
     }
 
     emitUserDeleteEvent(id: number): void {
-        this.eventEmitter.emit(UserEvent.REMOVE, new UserRemoveEvent({ id }));
+        this.eventEmitter.emit(UserEvent.ON_REMOVE, new OnUserRemoveEvent(id));
     }
 }

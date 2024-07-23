@@ -1,5 +1,6 @@
 import { PostExamWithKeyRequestDto } from "@/laboratory/exam/dtos/request/post.exam-with-key.request.dto";
-import { MedicalResultEvent, MedicalResultFindOrCreateDoctorEvent, MedicalResultFindOrCreateExamEvent } from "@/shared/events";
+import { DoctorEvent, DoctorExternalCreateEvent } from "@/shared/events/doctor.event";
+import { ExamEvent, ExamExternalCreateEvent } from "@/shared/events/exam.event";
 import { PostDoctorRequestDto } from "@/user/doctor/dtos/request/post.doctor.dto";
 import { Inject, Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
@@ -15,7 +16,7 @@ export class MedicalResultEventService {
         doctor: PostDoctorRequestDto,
         { key: examKey, ...exam }: PostExamWithKeyRequestDto
     ): void {
-        this.eventEmitter.emit(MedicalResultEvent.FIND_OR_CREATE_DOCTOR, new MedicalResultFindOrCreateDoctorEvent(doctor));
-        this.eventEmitter.emit(MedicalResultEvent.FIND_OR_CREATE_EXAM, new MedicalResultFindOrCreateExamEvent(examKey, source, exam));
+        this.eventEmitter.emit(DoctorEvent.EXTERNAL_CREATE, new DoctorExternalCreateEvent(doctor));
+        this.eventEmitter.emit(ExamEvent.EXTERNAL_CREATE, new ExamExternalCreateEvent(examKey, source, exam));
     }
 }

@@ -1,10 +1,10 @@
-import { Injectable, Inject, ConflictException, ForbiddenException } from "@nestjs/common";
+import { Injectable, Inject, ConflictException } from "@nestjs/common";
 import { UserCredential } from "../entities/user-credential.entity";
 import { UserCredentialRepository } from "../repositories/user-credential.repository";
 import { PostCredentialRequestDto } from "../dtos/request/post.user-credential.request.dto";
 import bcrypt from "bcrypt"
 import { UserCredentialEventService } from "./user-credential-event.service";
-import { UserCredentialValidatorService } from "./user-credential-validator.service";
+import { Not } from "typeorm";
 
 @Injectable()
 export class UserCredentialService {
@@ -35,6 +35,19 @@ export class UserCredentialService {
     const hashedPassword = this.hashPassword(password);
     const credentials = await this.repository.findOneAndUpdate({ email: username }, { password: hashedPassword });
     return credentials;
+  }
+
+  async updateEmailByUser(user: number, email: string): Promise<UserCredential> {
+    const duplicateCredential = await this.repository.findOne({ where: { email: email, user: Not(user) } });
+    if (duplicateCredential) {
+      throw new ConflictException('Email already in user');
+    }
+    const credential = await this.repository.findOneAndUpdate({ user }, { email: email });
+    return credential;
+  }
+
+  async deleteOneByUser(user: number): Promise<void> {
+    await this.repository.findOneAndDelete({ user: user });
   }
 
   private hashPassword(password: string): string {

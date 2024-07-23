@@ -24,8 +24,8 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
         return order;
     }
 
-    async create(key: ExternalKeyParam, { branch, patient, ...data }: PostMedicalOrderExternalRequestDto): Promise<MedicalOrder> {
-        const newClient = await this.clientService.findOneOrCreate({ ...patient, fullname: `${patient.lastname} ${patient.name}` });
+    async create(key: ExternalKeyParam, { branch, patient, jobPosition, ...data }: PostMedicalOrderExternalRequestDto): Promise<MedicalOrder> {
+        const newClient = await this.clientService.findOneOrCreateWithSource(key.source, { ...patient, fullname: `${patient.lastname} ${patient.name}`, jobPosition });
 
         try {
             const newKey = await this.externalkey.create(key);

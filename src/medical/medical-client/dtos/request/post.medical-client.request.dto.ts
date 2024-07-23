@@ -1,17 +1,13 @@
+import { PostJobPositionWithKeyRequestDto } from "@/location/job-position/dtos/request/post.job-position-with-key.request.dto";
 import { Type } from "class-transformer";
-import { IsDate, IsEmail, IsString } from "class-validator";
+import { IsDefined, IsObject, IsNotEmptyObject, ValidateNested } from "class-validator";
+import { MedicalClientRequestDto } from "./base.medical-client.request.dto";
 
-export class PostMedicalClientRequestDto {
-    @IsString()
-    public readonly dni: string;
-
-    @IsString()
-    public readonly fullname: string;
-
-    @IsDate()
-    @Type(() => Date)
-    public readonly birthday: Date;
-
-    @IsEmail()
-    public readonly email: string;
+export class PostMedicalClientRequestDto extends MedicalClientRequestDto {
+    @IsDefined()
+    @IsObject()
+    @IsNotEmptyObject()
+    @ValidateNested()
+    @Type(() => PostJobPositionWithKeyRequestDto)
+    public readonly jobPosition: PostJobPositionWithKeyRequestDto;
 }

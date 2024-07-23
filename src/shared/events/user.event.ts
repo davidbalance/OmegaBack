@@ -1,23 +1,25 @@
 export const UserEvent = {
-    CREATE: 'user.create',
-    UPDATE: 'user.update',
-    REMOVE: 'user.remove'
+    ON_CREATE: 'user.on.create',
+    ON_UPDATE: 'user.on.update',
+    ON_REMOVE: 'user.on.remove'
 }
 
-export class UserCreateEvent {
+export class OnUserCreateEvent {
     constructor(
-        public readonly createEvent: { id: number, dni: string }
+        public readonly id: number,
+        public readonly dni: string
     ) { }
 }
 
-export class UserUpdateEvent {
+export class OnUserUpdateEvent {
     constructor(
-        public readonly updateEvent: { id: number, email: string }
+        public readonly id: number,
+        public readonly email: string
     ) { }
 }
 
-export class UserRemoveEvent {
+export class OnUserRemoveEvent {
     constructor(
-        public readonly removeEvent: { id: number }
+        public readonly id: number
     ) { }
 }

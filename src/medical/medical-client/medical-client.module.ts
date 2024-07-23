@@ -12,6 +12,7 @@ import { MedicalClientLocationService } from './services/medical-client-location
 import { MedicalClientEmailService } from './services/medical-client-email.service';
 import { MedicalClientEmailController } from './controllers/medical-client-email.controller';
 import { MedicalClientLocationController } from './controllers/medical-client-location.controller';
+import { MedicalClientEventService } from './services/medical-client-event.service';
 
 @Module({
   imports: [
@@ -27,8 +28,9 @@ import { MedicalClientLocationController } from './controllers/medical-client-lo
   providers: [
     MedicalClientRepository,
     MedicalEmailRepository,
-    MedicalClientLocationService,
     MedicalClientEmailService,
+    MedicalClientEventService,
+    MedicalClientLocationService,
     MedicalClientService,
   ],
   exports: [

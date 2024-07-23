@@ -5,7 +5,7 @@ import { UserModule } from '../user/user.module';
 import { LocalStorageModule } from '@/shared/storage-manager';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { DoctorExternalConnectionController } from './controllers/doctor-external-connection.controller';
-import { MedicalResultDoctorListener } from './listener/medical-result-doctor.listener';
+import { DoctorExternalListener } from './listener/doctor-external.listener';
 import { DoctorFileManagementService } from './services/doctor-file-management.service';
 import { DoctorManagementService } from './services/doctor-management.service';
 import { DoctorExternalConnectionService } from './services/doctor-external-connection.service';
@@ -30,7 +30,7 @@ import { DoctorRepository } from './repositories/doctor.repository';
     DoctorFileManagementService,
     DoctorExternalConnectionService,
     DoctorRepository,
-    MedicalResultDoctorListener,
+    DoctorExternalListener,
   ],
   exports: [
     DoctorManagementService,
