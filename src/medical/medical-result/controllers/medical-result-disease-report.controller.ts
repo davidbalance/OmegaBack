@@ -1,9 +1,10 @@
-import { Controller, Get, Inject, Param, Res } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Param, Post, Res } from "@nestjs/common";
 import { MedicalResultDiseaseReportService } from "../services/medical-result-disease-report.service";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";
 import { plainToInstance } from "class-transformer";
 import { GetMedicalResultYearArrayResponseDto } from "../dtos/response/get.medical-result-year-array.response.dto";
+import { PostMedicalResultDiseaseReportRequestDto } from "../dtos/request/post.medical-result-disease-report.request.dto";
 
 @ApiTags('Medical/Result')
 @ApiBearerAuth()
@@ -13,12 +14,12 @@ export class MedicalResultDiseaseReportController {
         @Inject(MedicalResultDiseaseReportService) private readonly service: MedicalResultDiseaseReportService
     ) { }
 
-    @Get('report/:year')
+    @Post('report')
     async generateReport(
-        @Param('year') year: number,
+        @Body() body: PostMedicalResultDiseaseReportRequestDto,
         @Res() response: Response
     ) {
-        const file = await this.service.generateReport(year);
+        const file = await this.service.generateReport(body);
         response.set({
             'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'Content-Disposition': 'attachment; filename="medical-result-disease-report.xlsx"',

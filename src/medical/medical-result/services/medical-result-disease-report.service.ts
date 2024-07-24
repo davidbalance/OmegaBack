@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { MedicalResultDiseaseRepository } from "../repositories/medical-result-disease.repository";
 import { SelectorOption } from "@/shared/utils/bases/base.selector";
 import { MedicalResultYearResponseDto } from "../dtos/response/base.medical-result-year.response.dto";
+import { PostMedicalResultDiseaseReportRequestDto } from "../dtos/request/post.medical-result-disease-report.request.dto";
 
 type ExcelReportType = (MedicalResultReport & {
     ageRange: string,
@@ -31,8 +32,8 @@ export class MedicalResultDiseaseReportService {
         return data;
     }
 
-    async generateReport(year: number): Promise<StreamableFile> {
-        const values = await this.find(year);
+    async generateReport(searchParam: PostMedicalResultDiseaseReportRequestDto): Promise<StreamableFile> {
+        const values = await this.find(searchParam);
 
         const processedValues: ExcelReportType[] = values.map((e) => ({
             ...e,
@@ -77,9 +78,9 @@ export class MedicalResultDiseaseReportService {
         return stream;
     }
 
-    private async find(year: number): Promise<MedicalResultReport[]> {
+    private async find({ year, corporativeName, companyRuc }: PostMedicalResultDiseaseReportRequestDto): Promise<MedicalResultReport[]> {
 
-        const data = await this.repository.query('medical_disease')
+        const query = this.repository.query('medical_disease')
             .leftJoinAndSelect('medical_disease.result', 'medical_result')
             .leftJoinAndSelect('medical_result.order', 'medical_order')
             .leftJoinAndSelect('medical_order.client', 'medical_client')
@@ -105,9 +106,19 @@ export class MedicalResultDiseaseReportService {
                 'medical_disease.diseaseName AS disease',
                 'medical_disease.diseaseGroupName AS diseaseGroup',
                 'medical_disease.diseaseCommentary AS diseaseCommentary'])
-            .where('YEAR(medical_result.createAt) = :year', { year: year })
-            .setParameter('year', year)
-            .getRawMany<MedicalResultReport>();
+            .where('1');
+
+        if (year) {
+            query.andWhere('YEAR(medical_result.createAt) = :year', { year: year });
+        }
+        if (corporativeName) {
+            query.andWhere('medical_order.corporativeName LIKE :corporativeName', { corporativeName: corporativeName });
+        }
+        if (companyRuc) {
+            query.andWhere('medical_order.companyRuc LIKE :companyRuc', { companyRuc: companyRuc });
+        }
+
+        const data = await query.setParameter('year', year).getRawMany<MedicalResultReport>();
         return data;
     }
 }
