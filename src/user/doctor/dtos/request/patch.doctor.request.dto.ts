@@ -1,4 +1,4 @@
-import { PartialType } from "@nestjs/mapped-types";
+import { OmitType, PartialType } from "@nestjs/mapped-types";
 import { DoctorRequestDto } from "./base.doctor.request.dto";
 
-export class PatchDoctorRequestDto extends PartialType(DoctorRequestDto) { }
+export class PatchDoctorRequestDto extends PartialType(OmitType(DoctorRequestDto, ['dni', 'email'])) { }

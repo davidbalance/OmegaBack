@@ -12,6 +12,7 @@ import { DoctorExternalConnectionService } from './services/doctor-external-conn
 import { DoctorManagementController } from './controllers/doctor-management.controller';
 import { DoctorFileManagerController } from './controllers/doctor-file-manager.controller';
 import { DoctorRepository } from './repositories/doctor.repository';
+import { DoctorFlatService } from './services/doctor-flat.service';
 
 @Module({
   imports: [
@@ -26,10 +27,11 @@ import { DoctorRepository } from './repositories/doctor.repository';
     DoctorExternalConnectionController
   ],
   providers: [
-    DoctorManagementService,
-    DoctorFileManagementService,
-    DoctorExternalConnectionService,
     DoctorRepository,
+    DoctorExternalConnectionService,
+    DoctorFileManagementService,
+    DoctorFlatService,
+    DoctorManagementService,
     DoctorExternalListener,
   ],
   exports: [

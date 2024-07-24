@@ -16,6 +16,6 @@ export class MedicalOrderEventService {
         patient: PostPatientRequestDto,
         { key: branchKey, ...branch }: PostBranchWithKeyRequestDto): void {
         this.eventEmitter.emit(PatientEvent.EXTERNAL_CREATE, new PatientExternalCreateEvent(patient));
-        this.eventEmitter.emit(BranchEvent.EXTERNAL_BRANCH, new BranchExternalCreateEvent(branchKey, source, branch));
+        this.eventEmitter.emit(BranchEvent.EXTERNAL_CREATE, new BranchExternalCreateEvent(source, branchKey, branch));
     }
 }

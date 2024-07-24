@@ -35,9 +35,9 @@ export class MedicalResultExternalConnectionController {
         @Param('source') source: string,
         @Param('key') key: string,
         @Body() body: PostMedicalResultExternalRequestDto,
-        @UploadedFile() _: Express.Multer.File
+        @UploadedFile() file: Express.Multer.File
     ): Promise<PostMedicalResultResponseDto> {
-        const order = await this.service.create({ source, key }, body);
+        const order = await this.service.create({ source, key }, { ...body, file });
         return plainToInstance(PostMedicalResultResponseDto, order);
     }
 

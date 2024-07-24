@@ -19,36 +19,33 @@ export class JobPositionExternalConnectionService implements IExternalConnection
         throw new Error("Method not implemented.");
     }
 
-    async create({ key, source }: ExternalKeyParam, body: PostJobPositionRequestDto): Promise<JobPosition> {
-        const newKey = await this.keyService.create({ key, source });
+    async create(key: ExternalKeyParam, body: PostJobPositionRequestDto): Promise<JobPosition> {
+        const newKey = await this.keyService.create(key);
         try {
-            const group = await this.repository.create({ ...body, externalKey: newKey });
-            return group;
+            const position = await this.repository.create({ ...body, externalKey: newKey });
+            return position;
         } catch (error) {
-            this.keyService.remove({ source, key })
+            this.keyService.remove(key)
             throw error;
         }
     }
 
-    async findOneOrCreate({ key, source }: ExternalKeyParam, { name, ...data }: PostJobPositionRequestDto): Promise<JobPosition> {
+    async findOneOrCreate(key: ExternalKeyParam, { name, ...data }: PostJobPositionRequestDto): Promise<JobPosition> {
         try {
             const foundGroup = await this.repository.findOne({
                 where: [
-                    { externalKey: { source: source, key: key } },
+                    { externalKey: key },
                     { name: name }
                 ]
             });
             return foundGroup;
         } catch (error) {
-            return this.create({ source, key }, { name, ...data });
+            return this.create(key, { name, ...data });
         }
     }
 
-    async findOneAndUpdate({ key, source }: ExternalKeyParam, { ...data }: PatchJobPositionRequestDto): Promise<JobPosition> {
-        const group = await this.repository.findOneAndUpdate(
-            { externalKey: { source: source, key: key } },
-            data
-        );
-        return group;
+    async findOneAndUpdate(key: ExternalKeyParam, { ...data }: PatchJobPositionRequestDto): Promise<JobPosition> {
+        const position = await this.repository.findOneAndUpdate({ externalKey: key }, data);
+        return position;
     }
 }

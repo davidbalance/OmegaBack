@@ -3,7 +3,6 @@ import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { BranchExternalConnectionService } from "../services/branch-external-connection.service";
-import { PostBranchRequestDto } from "../dtos/request/post.branch.request.dto";
 import { PostBranchResponseDto } from "../dtos/response/post.branch.response.dto";
 import { PatchBranchRequestDto } from "../dtos/request/patch.branch.request.dto";
 import { PatchBranchResponseDto } from "../dtos/response/patch.branch.response.dto";

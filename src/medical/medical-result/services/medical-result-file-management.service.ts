@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from "@nestjs/common";
+import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import { FileManagementService } from "@/shared/utils/bases/base.file-service";
 import { fileResultPath } from "@/shared/utils";
@@ -14,15 +14,24 @@ export class MedicalResultFileManagementService implements FileManagementService
   ) { }
 
   async uploadFile(key: number, file: Express.Multer.File): Promise<string> {
-    const { order, examName } = await this.repository
-      .query('medical-result')
-      .select('medical-result.examName', 'examName')
-      .leftJoinAndSelect('medical-result.order', 'order')
-      .leftJoinAndSelect('order.client', 'client')
-      .where('medical-result.id = :id', { id: key })
-      .getOne();
 
-    const medicalResultPath = fileResultPath({ dni: order.client.dni, order: order.id });
+    const medicalResult = await this.repository
+      .query('medical_result')
+      .leftJoinAndSelect('medical_result.order', 'medical_order')
+      .leftJoinAndSelect('medical_order.client', 'medical_client')
+      .select('medical_result.examName', 'examName')
+      .addSelect('medical_order.id', 'orderId')
+      .addSelect('medical_client.dni', 'clientDni')
+      .where('medical_result.id = :id', { id: key })
+      .getRawOne<{ examName: string, orderId: number, clientDni: string }>();
+
+    if (!medicalResult) {
+      throw new NotFoundException('Medical result not found to associate file');
+    }
+
+    const { examName, clientDni, orderId } = medicalResult;
+
+    const medicalResultPath = fileResultPath({ dni: clientDni, order: orderId });
     const extension = extname(file.originalname);
     const filepath = await this.storage.saveFile(
       file.buffer,

@@ -26,9 +26,8 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
 
     async create(key: ExternalKeyParam, { branch, patient, jobPosition, ...data }: PostMedicalOrderExternalRequestDto): Promise<MedicalOrder> {
         const newClient = await this.clientService.findOneOrCreateWithSource(key.source, { ...patient, jobPosition });
-
+        const newKey = await this.externalkey.create(key);
         try {
-            const newKey = await this.externalkey.create(key);
             const newOrder = await this.repository.create({
                 ...data,
                 companyRuc: branch.company.ruc,
@@ -42,6 +41,7 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
             this.eventService.emitMedicalOrderCreateEvent(key.source, patient, branch);
             return newOrder;
         } catch (error) {
+            console.log(error);
             this.externalkey.remove(key)
             throw error;
         }

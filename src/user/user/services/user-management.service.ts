@@ -4,15 +4,18 @@ import { UserEventService } from "./user-event.service";
 import { User } from "../entities/user.entity";
 import { Not } from "typeorm";
 import { PostUserRequestDto } from "../dtos/request/post.user.request.dto";
+import { UserExtraAttribute } from "../entities/user-extra-attribute.entity";
+import { UserExtraAttributeService } from "./user-extra-attributes.service";
 
 @Injectable()
 export class UserManagementService {
     constructor(
         @Inject(UserRepository) private readonly repository: UserRepository,
-        @Inject(UserEventService) private readonly eventService: UserEventService
+        @Inject(UserEventService) private readonly eventService: UserEventService,
+        @Inject(UserExtraAttributeService) private readonly attributeService: UserExtraAttributeService
     ) { }
 
-    async create({ dni, email, ...data }: PostUserRequestDto): Promise<User> {
+    async create({ dni, email, role, ...data }: PostUserRequestDto): Promise<User> {
         try {
             await this.repository.findOne({
                 where: [{ dni: dni }, { email: email }]
@@ -22,6 +25,9 @@ export class UserManagementService {
         } catch (error) {
             if (error instanceof NotFoundException) {
                 const newUser = await this.repository.create({ dni, email, ...data });
+                if (role) { 
+                    this.attributeService.assignAttribute(newUser.id, { name: 'role', value: role });
+                }
                 return newUser;
             }
             throw error;

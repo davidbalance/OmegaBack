@@ -1,5 +1,5 @@
 import { AbstractEntity } from "@/shared/sql-database";
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ExamExternalKey } from "./exam-external-key.entity";
 import { ExamSubtype } from "@/laboratory/exam-subtype/entities/exam-subtype.entity";
 
@@ -11,11 +11,11 @@ export class Exam extends AbstractEntity<number> {
     @Column({ name: 'exam_name', type: 'varchar', length: 256, unique: true })
     public name: string;
 
-    @OneToMany(() => ExamSubtype, subtype => subtype.exams, { eager: false, nullable: false })
+    @ManyToOne(() => ExamSubtype, subtype => subtype.exams, { eager: false, nullable: false })
     @JoinColumn({ foreignKeyConstraintName: 'fk_lab_subtype_exam', referencedColumnName: 'id', name: 'exam_subtype_id' })
     public subtype: ExamSubtype;
 
     @OneToOne(() => ExamExternalKey, { eager: false, nullable: true })
-    @JoinColumn({ foreignKeyConstraintName: 'fk_external_exam', referencedColumnName: 'id', name: 'external_key' })
+    @JoinColumn({ foreignKeyConstraintName: 'fk_lab_external_exam', referencedColumnName: 'id', name: 'external_key' })
     public externalKey: ExamExternalKey;
 }

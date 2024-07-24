@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsEmail, Length } from "class-validator";
+import { IsString, IsNotEmpty, IsEmail, Length, IsOptional } from "class-validator";
 
 export class UserRequestDto {
     @IsString()
@@ -16,4 +16,9 @@ export class UserRequestDto {
     @IsNotEmpty()
     @Length(10, 10)
     public readonly dni: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    public readonly role?: string;
 }

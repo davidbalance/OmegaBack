@@ -7,7 +7,7 @@ import { JobPositionEvent, JobPositionExternalCreateEvent } from "@/shared/event
 export class JobPositionExternalListener {
 
     constructor(
-        @Inject() private readonly service: JobPositionExternalConnectionService
+        @Inject(JobPositionExternalConnectionService) private readonly service: JobPositionExternalConnectionService
     ) { }
 
     @OnEvent(JobPositionEvent.EXTERNAL_CREATE)

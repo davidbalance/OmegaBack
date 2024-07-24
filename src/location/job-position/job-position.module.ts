@@ -10,6 +10,7 @@ import { JobPositionExternalKeyRepository } from './repositories/job-position-ex
 import { JobPositionExternalConnectionService } from './services/job-position-external-connection.service';
 import { JobPositionExternalConnectionController } from './controllers/job-position-external-connection.controller';
 import { JobPositionExternalKeyService } from './services/job-position-external-key.service';
+import { JobPositionExternalListener } from './listeners/job-position-external.listener';
 
 @Module({
   imports: [
@@ -21,11 +22,12 @@ import { JobPositionExternalKeyService } from './services/job-position-external-
     JobPositionExternalConnectionController
   ],
   providers: [
-    JobPositionManagementService,
     JobPositionRepository,
     JobPositionExternalKeyRepository,
-    JobPositionExternalKeyService,
     JobPositionExternalConnectionService,
+    JobPositionExternalKeyService,
+    JobPositionManagementService,
+    JobPositionExternalListener
   ],
   exports: [
     JobPositionManagementService

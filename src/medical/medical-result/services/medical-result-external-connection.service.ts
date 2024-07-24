@@ -54,6 +54,7 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
             this.eventService.emitMedicalResultCreateEvent(source, doctor, exam);
             if (file) {
                 await this.storage.uploadFile(newResult.id, file);
+                newResult.hasFile = true;
             }
             return newResult;
         } catch (error) {
@@ -69,6 +70,7 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
     async findOneAndUpdate(key: ExternalKeyParam, { file }: PatchMedicalResultFileRequestDto): Promise<MedicalResult> {
         const medicalResult = await this.repository.findOne({ where: { externalKey: key } });
         await this.storage.uploadFile(medicalResult.id, file);
+        medicalResult.hasFile = true;
         return medicalResult;
     }
 }

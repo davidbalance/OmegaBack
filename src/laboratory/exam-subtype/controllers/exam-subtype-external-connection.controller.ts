@@ -27,7 +27,7 @@ export class ExamSubtypeExternalConnectionController {
         return plainToInstance(PostExamSubtypeResponseDto, exam);
     }
 
-    @Patch(':source/:key')
+    @Patch()
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('key') key: string,

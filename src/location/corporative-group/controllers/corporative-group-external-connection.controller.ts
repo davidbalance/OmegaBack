@@ -28,7 +28,7 @@ export class CorporativeGroupExternalConnectionController {
     }
 
     @UseGuards(ApiKeyAuthGuard)
-    @Patch(':key')
+    @Patch()
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('key') key: string,

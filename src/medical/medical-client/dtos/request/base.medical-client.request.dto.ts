@@ -1,20 +1,8 @@
-import { Type } from "class-transformer";
-import { IsDate, IsEmail, IsString } from "class-validator";
+import { PatientRequestDto } from "@/user/patient/dtos/request/base.patient.request.dto";
+import { IsEmail, IsOptional } from "class-validator";
 
-export class MedicalClientRequestDto {
-    @IsString()
-    public readonly dni: string;
-
-    @IsString()
-    public readonly name: string;
-    
-    @IsString()
-    public readonly lastname: string;
-
-    @IsDate()
-    @Type(() => Date)
-    public readonly birthday: Date;
-
+export class MedicalClientRequestDto extends PatientRequestDto {
     @IsEmail()
+    @IsOptional()
     public readonly email: string;
 }

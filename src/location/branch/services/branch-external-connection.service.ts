@@ -7,7 +7,6 @@ import { Branch } from "../entities/branch.entity";
 import { BranchRepository } from "../repositories/branch.repository";
 import { BranchExternalKeyService } from "./branch-external-key.service";
 import { PatchBranchRequestDto } from "../dtos/request/patch.branch.request.dto";
-import { PostCompanyRequestDto } from "@/location/company/dtos/request/post.company.request.dto";
 import { PostBranchExternalRequestDto } from "../dtos/request/post.branch-external.request.dto";
 import { PostCompanyExternalRequestDto } from "@/location/company/dtos/request/post.company-external.request.dto";
 
@@ -22,7 +21,7 @@ export class BranchExternalConnectionService implements IExternalConnectionServi
         @Inject(CityService) private readonly cityService: CityService
     ) { }
 
-    findOne(key: ExternalKeyParam | any): Promise<Branch> {
+    findOne(key: ExternalKeyParam): Promise<Branch> {
         throw new Error("Method not implemented.");
     }
 
@@ -45,7 +44,7 @@ export class BranchExternalConnectionService implements IExternalConnectionServi
         }
     }
 
-    async findOneOrCreate(key: ExternalKeyParam | any, body: PostBranchExternalRequestDto): Promise<Branch> {
+    async findOneOrCreate(key: ExternalKeyParam, body: PostBranchExternalRequestDto): Promise<Branch> {
         try {
             const foundBranch = await this.repository.findOne({
                 where: { externalKey: key },
@@ -57,7 +56,7 @@ export class BranchExternalConnectionService implements IExternalConnectionServi
         }
     }
 
-    async findOneAndUpdate(key: ExternalKeyParam | any, body: PatchBranchRequestDto): Promise<Branch> {
+    async findOneAndUpdate(key: ExternalKeyParam, body: PatchBranchRequestDto): Promise<Branch> {
         const branch = await this.repository.findOneAndUpdate({ externalKey: key }, body);
         return branch;
     }

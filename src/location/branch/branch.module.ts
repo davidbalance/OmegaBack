@@ -13,6 +13,7 @@ import { BranchExternalKey } from "./entities/branch-external-key.entity";
 import { Branch } from "./entities/branch.entity";
 import { BranchExternalKeyService } from "./services/branch-external-key.service";
 import { BranchExternalKeyRepository } from "./repositories/branch-external-key.repository";
+import { BranchExternalListener } from "./listeners/branch-external.listener";
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { BranchExternalKeyRepository } from "./repositories/branch-external-key.
     BranchManagementService,
     BranchExternalKeyService,
     BranchExternalConnectionService,
-    BranchExternalConnectionProvider
+    BranchExternalConnectionProvider,
+    BranchExternalListener
   ],
   exports: [
     BranchManagementService,

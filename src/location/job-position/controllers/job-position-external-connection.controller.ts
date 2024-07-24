@@ -6,6 +6,7 @@ import { JobPositionExternalConnectionService } from "../services/job-position-e
 import { PostJobPositionRequestDto } from "../dtos/request/post.job-position.request.dto";
 import { PostJobPositionResponseDto } from "../dtos/response/post.job-position.dto";
 import { PatchJobPositionRequestDto } from "../dtos/request/patch.job-position.request.dto";
+import { PatchJobPositionResponseDto } from "../dtos/response/patch.job-position.dto";
 
 @ApiTags('Location/Corporative/Group', 'External/Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -22,18 +23,18 @@ export class JobPositionExternalConnectionController {
         @Param('key') key: string,
         @Body() body: PostJobPositionRequestDto
     ): Promise<PostJobPositionResponseDto> {
-        const group = await this.service.create({ source, key }, body);
-        return plainToInstance(PostJobPositionResponseDto, group);
+        const position = await this.service.create({ source, key }, body);
+        return plainToInstance(PostJobPositionResponseDto, position);
     }
 
     @UseGuards(ApiKeyAuthGuard)
-    @Patch(':source/:key')
+    @Patch()
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('key') key: string,
         @Body() body: PatchJobPositionRequestDto
-    ): Promise<PatchJobPositionRequestDto> {
-        const group = await this.service.findOneAndUpdate({ source, key }, body);
-        return plainToInstance(PatchJobPositionRequestDto, group);
+    ): Promise<PatchJobPositionResponseDto> {
+        const position = await this.service.findOneAndUpdate({ source, key }, body);
+        return plainToInstance(PatchJobPositionResponseDto, position);
     }
 }

@@ -33,13 +33,13 @@ export class MedicalClientService {
       });
       return client;
     } catch (error) {
-      const newEmail = await this.emailRepository.create({ email, default: false });
+
       const newClient = await this.clientRepository.create({
         ...data,
         dni,
-        jobPositionName: jobPosition.name,
-        email: [newEmail]
+        jobPositionName: jobPosition.name
       });
+      await this.emailRepository.create({ email, default: false, client: newClient });
       this.eventService.emitMedicalClientCreateEvent(source, jobPosition)
       return newClient;
     }

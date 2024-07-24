@@ -55,9 +55,9 @@ export class PatientExternalConnectionService implements IExternalConnectionServ
             where: { user: { dni: id } },
             select: { user: { id: true } }
         });
-        await this.userService.updateOne(patient.user.id, { ...user, email: null });
+        const updatedUser = await this.userService.updateOne(patient.user.id, { ...user, email: null });
         const updatedPatient = await this.repository.findOneAndUpdate({ user: { dni: id } }, patient);
-        const flatPatient = this.flatService.flat(updatedPatient);
+        const flatPatient = this.flatService.flat({ ...updatedPatient, user: updatedUser });
         return flatPatient;
     }
 }

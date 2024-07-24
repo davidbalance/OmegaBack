@@ -14,7 +14,7 @@ export class JobPosition extends AbstractEntity<number> {
     @Column({ name: 'job_position_status', type: 'boolean', default: true })
     public status: boolean;
 
-    @OneToOne(() => JobPosition, { eager: false, nullable: true })
+    @OneToOne(() => JobPositionExternalKey, { eager: false, nullable: true })
     @JoinColumn({ foreignKeyConstraintName: 'fk_lo_external_job_position', referencedColumnName: 'id', name: 'external_key' })
     public readonly externalKey: JobPositionExternalKey;
 }

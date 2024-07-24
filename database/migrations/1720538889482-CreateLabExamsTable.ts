@@ -2,8 +2,8 @@ import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm
 
 const TABLE_NAME: string = 'tbl_lab_exams';
 
-const FK_EXTERNAL_EXAM: TableForeignKey = new TableForeignKey({
-    name: 'fk_external_exam',
+const FK_LAB_EXTERNAL_EXAM: TableForeignKey = new TableForeignKey({
+    name: 'fk_lab_external_exam',
     columnNames: ['external_key'],
     referencedColumnNames: ['exam_external_key_id'],
     referencedTableName: 'tbl_lab_exam_external_key'
@@ -35,11 +35,11 @@ export class CreateLabExamsTable1720538889482 implements MigrationInterface {
             true,
         );
 
-        await queryRunner.createForeignKey(TABLE_NAME, FK_EXTERNAL_EXAM);
+        await queryRunner.createForeignKey(TABLE_NAME, FK_LAB_EXTERNAL_EXAM);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropForeignKey(TABLE_NAME, FK_EXTERNAL_EXAM);
+        await queryRunner.dropForeignKey(TABLE_NAME, FK_LAB_EXTERNAL_EXAM);
 
         await queryRunner.dropTable(TABLE_NAME);
     }

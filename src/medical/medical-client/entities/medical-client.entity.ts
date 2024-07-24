@@ -38,6 +38,9 @@ export class MedicalClient extends AbstractEntity<number> {
 
     @Column({ name: 'location_area_name', type: 'varchar', length: 128, nullable: true })
     public areaName: string;
+    
+    @Column({ name: 'patient_role', type: 'varchar', length: 256, nullable: true })
+    public role?: string;
 
     @OneToMany(() => MedicalOrder, order => order.client, { eager: false })
     public medicalOrders: MedicalOrder[];

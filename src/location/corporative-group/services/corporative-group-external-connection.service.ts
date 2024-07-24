@@ -51,4 +51,4 @@ export class CorporativeGroupExternalConnectionService implements IExternalConne
 }
 
 export const INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION = 'CORPORATIVE_GROUP_EXTERNAL_CONNECTION';
-export const CorporativeGroupExternalConnectionProvider: Provider = { provide: INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION, useClass: CorporativeGroupExternalKeyService }
+export const CorporativeGroupExternalConnectionProvider: Provider = { provide: INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION, useClass: CorporativeGroupExternalConnectionService }

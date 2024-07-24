@@ -24,7 +24,7 @@ export class ExamSubtypeExternalConnectionService implements IExternalConnection
 
   async create(key: ExternalKeyParam, { type, ...data }: PostExamSubtypeRequestDto): Promise<ExamSubtype> {
     const foundType = await this.typeService.findOne(type);
-    if (!!foundType) throw new NotFoundException('Exam type not created');
+    if (!foundType) throw new NotFoundException('Exam type not created');
     const newKey = await this.externalkey.create(key);
     try {
       const newExam = await this.repository.create({ ...data, externalKey: newKey, type: foundType });
