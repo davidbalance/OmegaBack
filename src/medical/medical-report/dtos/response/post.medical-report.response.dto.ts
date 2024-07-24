@@ -1,3 +1,3 @@
 import { MedicalReportResponseDto } from "./base.medical-report.response.dto";
 
-export class GetMedicalReportResponseDto extends MedicalReportResponseDto { }
+export class PostMedicalReportResponseDto extends MedicalReportResponseDto { }

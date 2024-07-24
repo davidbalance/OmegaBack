@@ -1,5 +1,4 @@
-import { Expose, Type } from "class-transformer";
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { PaginationOrder } from "./base.pagination.dto";
 
 export enum PaginationOrderEnum {
     DESC = "DESC",
@@ -9,33 +8,6 @@ export enum PaginationOrderEnum {
 export interface PaginationResponse<T> {
     pages: number;
     data: T[];
-}
-
-export class PaginationOrder {
-    @IsString()
-    @IsNotEmpty()
-    key: string;
-
-    @IsEnum(PaginationOrderEnum)
-    order: PaginationOrderEnum;
-}
-
-export class PaginationRequest {
-
-    @IsNumber()
-    public readonly page: number;
-
-    @IsNumber()
-    public readonly limit: number;
-
-    @IsString()
-    @IsOptional()
-    @IsNotEmpty()
-    public readonly filter?: string;
-
-    @IsEnum(PaginationOrder)
-    @IsOptional()
-    public readonly order?: PaginationOrder;
 }
 
 export interface IPagination<T> {

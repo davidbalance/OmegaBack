@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { MedicalOrder } from '../entities/medical-order.entity';
-import { IPagination, PaginationOrder } from '@/shared/utils/bases/base.pagination';
+import { IPagination } from '@/shared/utils/bases/base.pagination';
 import { MedicalOrderRepository } from '../repositories/medical-order.repository';
 import { Brackets } from 'typeorm';
 import { MedicalOrderFlatResponseDto } from '../dtos/response/base.medical-order-flat.response.dto';
+import { PaginationOrder } from '@/shared/utils/bases/base.pagination.dto';
 
 @Injectable()
 export class MedicalOrderFlatPaginationService implements IPagination<MedicalOrderFlatResponseDto> {

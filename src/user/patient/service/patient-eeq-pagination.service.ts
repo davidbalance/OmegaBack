@@ -1,11 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Patient } from '../entities/patient.entity';
 import { PatientRepository } from '../patient.repository';
-import { IPagination, PaginationOrder } from '@/shared/utils/bases/base.pagination';
+import { IPagination } from '@/shared/utils/bases/base.pagination';
 import { Brackets } from 'typeorm';
 import { PatientEeqResponseDto } from '../dtos/response/base.patient-eeq.response.dto';
 import { INJECT_PATIENT_EEQ_FLAT_SERVICE } from './patient-eeq-flat.service';
 import { FlatService } from '@/shared/utils/bases/base.flat-service';
+import { PaginationOrder } from '@/shared/utils/bases/base.pagination.dto';
 
 @Injectable()
 export class PatientEeqPaginationService implements IPagination<PatientEeqResponseDto> {

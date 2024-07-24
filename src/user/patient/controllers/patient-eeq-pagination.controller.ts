@@ -10,7 +10,7 @@ import { PatientEeqPaginationService } from '../service/patient-eeq-pagination.s
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('patients/eeq')
-export class EeqPatientPaginationController {
+export class PatientEeqPaginationController {
   constructor(
     @Inject(PatientEeqPaginationService) private readonly service: PatientEeqPaginationService
   ) { }

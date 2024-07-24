@@ -43,10 +43,10 @@ import { MedicalResultDiseaseReportController } from "./controllers/medical-resu
   ],
   controllers: [
     MedicalResultDiseaseManagementController,
+    MedicalResultDiseaseReportController,
     MedicalResultExternalConnectionController,
     MedicalResultFileManagementController,
     MedicalResultManagementController,
-    MedicalResultDiseaseReportController
   ],
   providers: [
     MedicalResultDiseaseRepository,

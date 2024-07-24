@@ -10,7 +10,7 @@ export class MedicalReportFileManagementService implements FileManagementService
     @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository,
     @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
   ) { }
-  
+
   uploadFile(key: number, file: Express.Multer.File): string | Promise<string> {
     throw new Error("Method not implemented.");
   }
@@ -28,6 +28,7 @@ export class MedicalReportFileManagementService implements FileManagementService
     try {
       const filepath = await this.getFilePath(key);
       await this.storage.deleteFile(filepath);
+      await this.repository.findOneAndUpdate({ id: key }, { hasFile: false });
       return true;
     } catch (error) {
       Logger.error(error);

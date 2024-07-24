@@ -4,6 +4,7 @@ import { MedicalReportRepository } from "../repositories/medical-report.reposito
 import { MedicalReportPdfService } from "./medical-report-pdf.service";
 import { MedicalResultManagementService } from "@/medical/medical-result/services/medical-result-management.service";
 import { POSTMedicalReportRequestDto } from "../dtos/request/post.medical-report.request.dto";
+import { MedicalReportFileManagementService } from "./medical-report-file-management.service";
 
 @Injectable()
 export class MedicalReportManagementService {
@@ -11,7 +12,8 @@ export class MedicalReportManagementService {
   constructor(
     @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository,
     @Inject(MedicalReportPdfService) private readonly pdf: MedicalReportPdfService,
-    @Inject(MedicalResultManagementService) private readonly service: MedicalResultManagementService
+    @Inject(MedicalResultManagementService) private readonly service: MedicalResultManagementService,
+    @Inject(MedicalReportFileManagementService) private file: MedicalReportFileManagementService
   ) { }
 
   async create({ medicalResult: medicalResultId, ...data }: POSTMedicalReportRequestDto): Promise<MedicalReport> {
@@ -57,6 +59,7 @@ export class MedicalReportManagementService {
   }
 
   async deleteOne(id: number): Promise<void> {
+    await this.file.removeFile(id);
     await this.repository.findOneAndDelete({ id });
   }
 }

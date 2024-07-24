@@ -2,7 +2,7 @@ import { ObjectArrayResponse } from "@/shared/utils/bases/base.object-array.inte
 import { MedicalReportResponseDto } from "./base.medical-report.response.dto";
 import { Expose, Type } from "class-transformer";
 
-export class GETMedicalReportArrayResponseDto implements ObjectArrayResponse<MedicalReportResponseDto> {
+export class GetMedicalReportArrayResponseDto implements ObjectArrayResponse<MedicalReportResponseDto> {
     @Expose()
     @Type(() => MedicalReportResponseDto)
     public readonly data: MedicalReportResponseDto[];

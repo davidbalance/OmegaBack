@@ -13,6 +13,7 @@ import { MedicalReportSendService } from "./services/medical-report-send.service
 import { MedicalReportPdfService } from "./services/medical-report-pdf.service";
 import { MedicalReportFileManagementService } from "./services/medical-report-file-management.service";
 import { MedicalResultModule } from "../medical-result/medical-result.module";
+import { MedicalReportManagementController } from "./controllers/medical-report-management.controller";
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { MedicalResultModule } from "../medical-result/medical-result.module";
     PdfManagerModule
   ],
   controllers: [
+    MedicalReportManagementController,
     MedicalReportPdfController
   ],
   providers: [
