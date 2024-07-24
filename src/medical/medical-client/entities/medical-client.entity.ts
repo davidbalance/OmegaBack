@@ -12,12 +12,18 @@ export class MedicalClient extends AbstractEntity<number> {
     @Column({ name: 'medical_client_dni', type: 'varchar', length: 10, nullable: false })
     public dni: string;
 
-    @Column({ name: 'medical_client_fullname', type: 'varchar', length: 128, nullable: false })
-    public fullname: string;
+    @Column({ name: 'medical_client_name', type: 'varchar', length: 128, nullable: false })
+    public name: string;
+
+    @Column({ name: 'medical_client_lastname', type: 'varchar', length: 128, nullable: false })
+    public lastname: string;
 
     @Column({ name: 'medical_client_birthday', type: 'date', nullable: false })
     public birthday: Date;
-    
+
+    @Column({ name: 'medical_client_gender', type: 'varchar', length: 6, nullable: false })
+    public gender: string;
+
     @Column({ name: 'job_position_name', type: 'varchar', length: 128, nullable: true })
     public jobPositionName: string;
 

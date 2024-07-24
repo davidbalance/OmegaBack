@@ -6,7 +6,10 @@ export class MedicalClientRequestDto {
     public readonly dni: string;
 
     @IsString()
-    public readonly fullname: string;
+    public readonly name: string;
+    
+    @IsString()
+    public readonly lastname: string;
 
     @IsDate()
     @Type(() => Date)

@@ -18,13 +18,14 @@ export class MedicalReportManagementService {
     const medicalResult = await this.service.findOne(medicalResultId);
     const { order } = medicalResult;
     const { client } = order;
+    const fullname = `${client.name} ${client.lastname}`;
     const report = await this.repository.create({
       content: data.content,
       order: order.id,
       companyName: order.companyName,
       patientDni: client.dni,
       patientBirthday: client.birthday,
-      patientFullname: client.fullname,
+      patientFullname: fullname,
       examName: medicalResult.examName,
       doctorDni: medicalResult.doctorDni,
       doctorFullname: medicalResult.doctorFullname,

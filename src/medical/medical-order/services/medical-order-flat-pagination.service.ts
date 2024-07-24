@@ -14,9 +14,9 @@ export class MedicalOrderFlatPaginationService implements IPagination<MedicalOrd
 
   private flatMedicalOrder({ client, results, ...order }: MedicalOrder): Promise<MedicalOrderFlatResponseDto> {
     return new Promise((resolve, reject) => {
-      const { dni, fullname, email } = client;
+      const { dni, name, lastname, email } = client;
       const { branchName, corporativeName, externalKey, updateAt, ...values } = order;
-      resolve(({ dni, fullname, ...values, email: email, results: results as any }));
+      resolve(({ dni, fullname: `${name} ${lastname}`, ...values, email: email, results: results as any }));
     });
   }
 

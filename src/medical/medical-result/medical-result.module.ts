@@ -23,6 +23,9 @@ import { MedicalResultRepository } from "./repositories/medical-result.repositor
 import { MedicalResultDiseaseRepository } from "./repositories/medical-result-disease.repository";
 import { MedicalResultExternalKeyRepository } from "./repositories/medical-result-external-key.respository";
 import { MedicalResultSendAttributeRepository } from "./repositories/medical-result-send-attribute.repository";
+import { MedicalResultDiseaseReportService } from "./services/medical-result-disease-report.service";
+import { ExcelManagerModule } from "@/shared/excel-manager/excel-manager.module";
+import { MedicalResultDiseaseReportController } from "./controllers/medical-result-disease-report.controller";
 
 @Module({
   imports: [
@@ -35,13 +38,15 @@ import { MedicalResultSendAttributeRepository } from "./repositories/medical-res
     AuthenticationGuardModule,
     MedicalOrderModule,
     LocalStorageModule,
-    DniInterceptorModule
+    DniInterceptorModule,
+    ExcelManagerModule
   ],
   controllers: [
     MedicalResultDiseaseManagementController,
     MedicalResultExternalConnectionController,
     MedicalResultFileManagementController,
-    MedicalResultManagementController
+    MedicalResultManagementController,
+    MedicalResultDiseaseReportController
   ],
   providers: [
     MedicalResultDiseaseRepository,
@@ -54,11 +59,13 @@ import { MedicalResultSendAttributeRepository } from "./repositories/medical-res
     MedicalResultExternalKeyService,
     MedicalResultFileManagementService,
     MedicalResultManagementService,
+    MedicalResultDiseaseReportService,
     MedicalResultSendAttributeService
   ],
   exports: [
     MedicalResultManagementService,
-    MedicalResultFileManagementService
+    MedicalResultFileManagementService,
+    MedicalResultDiseaseReportService
   ]
 })
 export class MedicalResultModule { }

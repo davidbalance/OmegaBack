@@ -1,12 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { In } from 'typeorm';
 import { MedicalClient } from '../entities/medical-client.entity';
-import { MedicalEmail } from '../entities/medical-email.entity';
 import { MedicalClientRepository } from '../repositories/medical-client.repository';
 import { MedicalEmailRepository } from '../repositories/medical-email.repository';
 import { PostMedicalClientRequestDto } from '../dtos/request/post.medical-client.request.dto';
-import { PostMedicalClientManagementAndAreaRequestDto } from '../dtos/request/post.medical-client-management-area.request.dto';
-import { PostMedicalEmailRequestDto } from '../dtos/request/post.medical-email.request.dto';
 import { MedicalClientEventService } from './medical-client-event.service';
 
 @Injectable()

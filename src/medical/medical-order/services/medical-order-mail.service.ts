@@ -27,12 +27,14 @@ export class MedicalOrderMailService {
 
     const url: string = `${this.config.get<string>('APP_TARGET_HOST')}/order/${order}`
 
+    const fullname = `${client.name} ${client.lastname}`;
+
     try {
       await this.mailer.send({
-        recipients: [{ name: client.fullname, address: clientEmail.email }],
+        recipients: [{ name: fullname, address: clientEmail.email }],
         subject: 'Resultados exámenes ocupacionales',
         placeholderReplacements: {
-          patientFullname: client.fullname,
+          patientFullname: fullname,
           url: url
         },
         attachments: [

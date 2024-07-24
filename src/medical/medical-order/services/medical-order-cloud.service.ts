@@ -21,7 +21,7 @@ export class MedicalOrderCloudService {
 
     const cloudItem: MedicalOrderCloudResponseDto = {
       dni: client.dni,
-      fullname: client.fullname,
+      fullname: `${client.name} ${client.lastname}`,
       fileResults: fileReports,
       fileReports: fileResults
     };

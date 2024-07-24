@@ -1,7 +1,7 @@
 import { TestBed } from '@automock/jest';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserEventService } from '../user-event.service';
-import { UserEvent, UserUpdateEvent, UserRemoveEvent } from '@/shared/events';
+import { OnUserRemoveEvent, OnUserUpdateEvent, UserEvent } from '@/shared/events/user.event';
 
 describe('User Event Service', () => {
     let service: UserEventService;
@@ -24,7 +24,7 @@ describe('User Event Service', () => {
 
             service.emitUserUpdateEvent(id, email);
 
-            expect(eventEmitter.emit).toHaveBeenCalledWith(UserEvent.UPDATE, expect.any(UserUpdateEvent));
+            expect(eventEmitter.emit).toHaveBeenCalledWith(UserEvent.ON_UPDATE, expect.any(OnUserUpdateEvent));
             expect(eventEmitter.emit).toHaveBeenCalledTimes(1);
         });
     });
@@ -36,7 +36,7 @@ describe('User Event Service', () => {
 
             service.emitUserDeleteEvent(id);
 
-            expect(eventEmitter.emit).toHaveBeenCalledWith(UserEvent.REMOVE, expect.any(UserRemoveEvent));
+            expect(eventEmitter.emit).toHaveBeenCalledWith(UserEvent.ON_REMOVE, expect.any(OnUserRemoveEvent));
             expect(eventEmitter.emit).toHaveBeenCalledTimes(1);
         });
     });
