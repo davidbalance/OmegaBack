@@ -27,8 +27,9 @@ export class UserExtraAttributeService {
     async findUserAttribute(id: number, name: string): Promise<UserExtraAttribute> {
         const foundAttribute = await this.attributeRepository
             .query('attribute')
-            .leftJoin('attribute.user', 'user', 'user.id = :id', { id: id })
-            .where('attribute = :name', { name: name })
+            .leftJoin('attribute.user', 'user')
+            .where('attribute.name = :name', { name: name })
+            .andWhere('user.id = :id', { id: id })
             .getOne();
         return foundAttribute;
     }
