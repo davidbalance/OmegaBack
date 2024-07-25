@@ -22,7 +22,7 @@ export class UserCredentialService {
     } catch (error) {
       const hashedPassword = this.hashPassword(data.password);
       const credential: UserCredential = await this.repository.create({ ...data, password: hashedPassword, email: email });
-      this.eventService.emitCredentialCreateEvent(credential.id);
+      this.eventService.emitCredentialCreateEvent(credential.user);
       return credential;
     }
   }

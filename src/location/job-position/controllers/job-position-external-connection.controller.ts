@@ -8,7 +8,7 @@ import { PostJobPositionResponseDto } from "../dtos/response/post.job-position.d
 import { PatchJobPositionRequestDto } from "../dtos/request/patch.job-position.request.dto";
 import { PatchJobPositionResponseDto } from "../dtos/response/patch.job-position.dto";
 
-@ApiTags('Location/Corporative/Group', 'External/Connection')
+@ApiTags('Location/Job/Position', 'External/Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @Controller('external/connection/job/position/:source/:key')
 export class JobPositionExternalConnectionController {

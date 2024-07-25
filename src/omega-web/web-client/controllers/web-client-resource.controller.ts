@@ -10,7 +10,7 @@ import { PatchWebClientResourceResponseDto } from '../dtos/response/patch.web-cl
 
 @ApiTags('Omega/Web/Client')
 @ApiBearerAuth()
-@Controller('omega/web/client/resources')
+@Controller('omega/web/clients/resources')
 export class WebClientResourceController {
   constructor(
     @Inject(WebClientResourceService) private readonly service: WebClientResourceService
@@ -21,8 +21,8 @@ export class WebClientResourceController {
   async findOneWebResources(
     @Param('user') user: number,
   ): Promise<GetNavResourceArrayResponseDto> {
-    const resources = await this.service.findAll(user);
-    return plainToInstance(GetNavResourceArrayResponseDto, { resources });
+    const data = await this.service.findAll(user);
+    return plainToInstance(GetNavResourceArrayResponseDto, { data });
   }
 
   @UseGuards(JwtAuthGuard)
