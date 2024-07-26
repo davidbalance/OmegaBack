@@ -49,15 +49,16 @@ export class MedicalReportPdfService {
     const directory = path.resolve(data.doctorSignature);
     const signatureImg = readFileSync(directory);
     const base64 = Buffer.from(signatureImg).toString('base64');
-
+    
     const content = this.getContent(data, base64);
-
+    
     const templateDirectory = path.resolve('templates/medical-result/medical-report');
     const templateFile = path.join(templateDirectory, 'template.hbs');
-
+    
     const buffer = await this.pdfService.craft(templateFile, content);
-
+    
     const filePath = fileReportPath({ dni: data.patientDni, order: data.order });
+    
 
     const output = this.storage.saveFile(buffer, '.pdf', filePath, data.examName.toLocaleLowerCase().replace(/\s/g, '_'));
 

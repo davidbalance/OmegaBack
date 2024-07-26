@@ -21,7 +21,7 @@ export class MedicalClientController {
   async findMedicalClientsByDoctorDni(
     @User() doctor: string
   ): Promise<GetMedicalClientArrayResponseDto> {
-    const clients = await this.medicalClientService.findClientsByDoctor(doctor);
-    return plainToInstance(GetMedicalClientArrayResponseDto, { clients });
+    const data = await this.medicalClientService.findClientsByDoctor(doctor);
+    return plainToInstance(GetMedicalClientArrayResponseDto, { data });
   }
 }

@@ -8,7 +8,7 @@ export class MedicalOrderFlatService implements FlatService<MedicalOrder, Medica
     public flat({ client, results, ...order }: MedicalOrder): MedicalOrderFlatResponseDto {
         const { dni, name, lastname, email } = client;
         const { branchName, corporativeName, externalKey, updateAt, ...values } = order;
-        return { dni, fullname: `${name} ${lastname}`, ...values, email: email, results: results as any }
+        return { dni, ...values, email: email, fullname: `${name} ${lastname}`, results: results as any }
     }
 
 }
