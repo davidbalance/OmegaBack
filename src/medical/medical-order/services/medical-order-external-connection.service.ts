@@ -41,7 +41,6 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
             this.eventService.emitMedicalOrderCreateEvent(key.source, patient, branch);
             return newOrder;
         } catch (error) {
-            console.log(error);
             this.externalkey.remove(key)
             throw error;
         }
