@@ -22,8 +22,8 @@ export class MedicalOrderManagementController {
   async findByPatient(
     @Param('dni') patient: string
   ): Promise<GetMedicalOrderArrayResponseDto> {
-    const orders = await this.service.findAllByPatient(patient);
-    return plainToInstance(GetMedicalOrderArrayResponseDto, { orders });
+    const data = await this.service.findAllByPatient(patient);
+    return plainToInstance(GetMedicalOrderArrayResponseDto, { data });
   }
 
   @UseInterceptors(DniInterceptor)
@@ -32,8 +32,8 @@ export class MedicalOrderManagementController {
     @Param('dni') patient: string,
     @User() doctor: string
   ): Promise<GetMedicalOrderArrayResponseDto> {
-    const orders = await this.service.findAllByPatientAndDoctor(patient, doctor);
-    return plainToInstance(GetMedicalOrderArrayResponseDto, { orders });
+    const data = await this.service.findAllByPatientAndDoctor(patient, doctor);
+    return plainToInstance(GetMedicalOrderArrayResponseDto, { data });
   }
 
   @Patch(':id/status/validate')

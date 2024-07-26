@@ -21,7 +21,14 @@ export class MedicalOrderManagementService {
   }
 
   async findAllByPatient(dni: string): Promise<MedicalOrder[]> {
-    const medicalOrders = await this.repository.find({ where: { client: { dni } } });
+    const medicalOrders = await this.repository.find({
+      where: { client: { dni } },
+      relations: {
+        results: {
+          diseases: true
+        }
+      }
+    });
     return medicalOrders;
   }
 

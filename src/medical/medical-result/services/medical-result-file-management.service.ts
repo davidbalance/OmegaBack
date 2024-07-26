@@ -37,7 +37,7 @@ export class MedicalResultFileManagementService implements FileManagementService
       file.buffer,
       extension,
       medicalResultPath,
-      examName.toLocaleLowerCase().replace(/\s/g, '_')
+      examName.toLocaleLowerCase().replace(/[^A-Z0-9]+/ig, '_')
     );
 
     await this.repository.findOneAndUpdate({ id: key }, { filePath: filepath, hasFile: true });

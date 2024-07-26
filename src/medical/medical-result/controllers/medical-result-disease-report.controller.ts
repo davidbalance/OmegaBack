@@ -8,7 +8,7 @@ import { PostMedicalResultDiseaseReportRequestDto } from "../dtos/request/post.m
 
 @ApiTags('Medical/Result')
 @ApiBearerAuth()
-@Controller('medical/result/diseases')
+@Controller('medical/results/diseases')
 export class MedicalResultDiseaseReportController {
     constructor(
         @Inject(MedicalResultDiseaseReportService) private readonly service: MedicalResultDiseaseReportService
