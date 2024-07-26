@@ -57,6 +57,7 @@ export class MedicalResultFileManagementService implements FileManagementService
     try {
       const filepath = await this.getFilePath(key);
       await this.storage.deleteFile(filepath);
+      await this.repository.findOneAndUpdate({ id: key }, { hasFile: false });
       return true;
     } catch (error) {
       Logger.error(error);
