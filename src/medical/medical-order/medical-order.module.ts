@@ -22,6 +22,7 @@ import { MedicalOrderMaitController } from "./controllers/medical-order-mail.con
 import { MedicalOrderPaginationController } from "./controllers/medical-order-pagination.controller";
 import { MedicalOrderCloudService } from "./services/medical-order-cloud.service";
 import { MedicalOrderFlatPaginationService } from "./services/medical-order-flat-pagination.service";
+import { MedicalOrderFlatService } from "./services/medical-order-flat.service";
 
 @Module({
   imports: [
@@ -64,13 +65,14 @@ import { MedicalOrderFlatPaginationService } from "./services/medical-order-flat
   providers: [
     MedicalOrderExternalKeyRepository,
     MedicalOrderRepository,
+    MedicalOrderCloudService,
     MedicalOrderEventService,
     MedicalOrderExternalConnectionService,
     MedicalOrderExternalKeyService,
-    MedicalOrderMailService,
-    MedicalOrderCloudService,
-    MedicalOrderManagementService,
     MedicalOrderFlatPaginationService,
+    MedicalOrderFlatService,
+    MedicalOrderMailService,
+    MedicalOrderManagementService,
     MedicalOrderExternalConnectionProvider
   ],
   exports: [

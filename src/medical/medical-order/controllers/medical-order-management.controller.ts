@@ -43,4 +43,12 @@ export class MedicalOrderManagementController {
     const order = await this.service.updateOne(id, { orderStatus: OrderStatus.VALIDATED });
     return plainToInstance(GetMedicalOrderResponseDto, order);
   }
+
+  @Patch(':id/status/created')
+  async findOneAndCratedStatus(
+    @Param('id') id: number
+  ): Promise<GetMedicalOrderResponseDto> {
+    const order = await this.service.updateOne(id, { orderStatus: OrderStatus.CREATED });
+    return plainToInstance(GetMedicalOrderResponseDto, order);
+  }
 }
