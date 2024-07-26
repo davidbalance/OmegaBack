@@ -44,7 +44,6 @@ export class PatientManagementService {
         gender: true,
         user: { id: true, dni: true, email: true, lastname: true, name: true }
       },
-      cache: 1000 * 900
     });
     const flatPatients = patients.map(this.flatService.flat);
     return flatPatients;

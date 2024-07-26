@@ -34,7 +34,7 @@ export class PatientEeqPaginationService implements IPagination<PatientEeqRespon
   async findPaginatedByFilter(
     page: number = 0,
     limit: number = 300,
-    filter?: string,
+    filter: string = '',
     order?: PaginationOrder
   ): Promise<PatientEeqResponseDto[]> {
 
@@ -45,8 +45,9 @@ export class PatientEeqPaginationService implements IPagination<PatientEeqRespon
     }
 
     const patients = await query.take(limit).skip(page).getMany();
-    const flatPatients = patients.map(this.flatService.flat).filter(e => !!e);
-    return flatPatients;
+    const flatPatients = patients.map(this.flatService.flat);
+    return flatPatients.filter(e => !!e
+    );
   }
 
   async findPageCount(

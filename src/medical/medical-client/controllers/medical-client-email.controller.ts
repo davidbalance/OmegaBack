@@ -31,8 +31,8 @@ export class MedicalClientEmailController {
     @Param('dni') dni: string,
     @Body() body: PostMedicalEmailRequestDto
   ): Promise<PostMedicalEmailResponseDto> {
-    const { email } = await this.service.assignEmail(dni, body);
-    return plainToInstance(PostMedicalEmailResponseDto, { email });
+    const data = await this.service.assignEmail(dni, body);
+    return plainToInstance(PostMedicalEmailResponseDto, data);
   }
 
   @Patch(':id')
