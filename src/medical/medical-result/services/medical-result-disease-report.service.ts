@@ -22,10 +22,7 @@ export class MedicalResultDiseaseReportService {
     async getCurrentYears(): Promise<MedicalResultYearResponseDto[]> {
         const data = await this.repository.query('medical_disease')
             .leftJoinAndSelect('medical_disease.result', 'medical_result')
-            .leftJoinAndSelect('medical_result.order', 'medical_order')
-            .leftJoinAndSelect('medical_order.client', 'medical_client')
-            .leftJoinAndSelect('medical_client.email', 'medical_email', 'medical_email.default = :emailFlag', { emailFlag: true })
-            .select('YEAR(medical_result.createAt) AS year')
+            .select('YEAR(medical_result.createAt)', 'year')
             .distinct(true)
             .orderBy('year', 'ASC')
             .getRawMany<MedicalResultYearResponseDto>();

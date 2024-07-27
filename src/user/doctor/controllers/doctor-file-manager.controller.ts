@@ -1,12 +1,13 @@
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { MIME_TYPES } from '@/shared/pipes/file-type/constants';
 import { FileTypePipe } from '@/shared/pipes/file-type/file-type.pipe';
-import { Body, Controller, Inject, Param, ParseFilePipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, ParseFilePipe, Post, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { DoctorFileManagementService } from '../services/doctor-file-management.service';
 import { PatchDoctorSignatureRequestDto } from '../dtos/request/patch.doctor-signature.dto';
 import { PatchDoctorSignatureResponseDto } from '../dtos/response/patch.doctor-signature.response.dto';
+import { Response } from 'express';
 
 @ApiTags('User/Doctor')
 @ApiBearerAuth()
@@ -18,6 +19,19 @@ export class DoctorFileManagerController {
     constructor(
         @Inject(DoctorFileManagementService) private readonly service: DoctorFileManagementService
     ) { }
+
+    @Get('signature/:id')
+    async findSignature(
+        @Param('id') id: number,
+        @Res() response: Response
+    ) {
+        const image = await this.service.findFile(id);
+        response.set({
+            'Content-Type': 'image/png',
+            'Content-Disposition': 'attachment; filename="firma.png"',
+        });
+        image.getStream().pipe(response);
+    }
 
     @Post('signature/:id')
     @UseInterceptors(FileInterceptor('signature'))
