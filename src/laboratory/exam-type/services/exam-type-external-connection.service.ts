@@ -21,7 +21,7 @@ export class ExamTypeExternalConnectionService implements IExternalConnectionSer
     throw new Error('Method not implemented.');
   }
 
-  async create(key: ExternalKeyParam, data: ConnectionRequestType): Promise<ExamType> {
+  async create(key: ExternalKeyParam, data: PostExamTypeRequestDto): Promise<ExamType> {
     const newKey = await this.externalkey.create(key);
     try {
       const newExam = await this.repository.create({ ...data, externalKey: newKey });
