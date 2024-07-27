@@ -33,7 +33,7 @@ export class ExamSubtypeManagementService {
   async updateOne(id: number, { type, ...data }: PatchExamSubtypeRequestDto): Promise<ExamSubtype> {
     const foundSubtype = await this.repository.findOne({ where: { id: id } });
     let newType: ExamType | undefined = undefined;
-    if (type !== foundSubtype.id) {
+    if (type !== undefined && type !== foundSubtype.id) {
       newType = await this.typeService.findOne(type);
     }
     const subtype = await this.repository.findOneAndUpdate({ id }, { ...data, type: newType });

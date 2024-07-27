@@ -71,8 +71,7 @@ describe('PatientManagementService', () => {
           birthday: true,
           gender: true,
           user: { id: true, dni: true, email: true, lastname: true, name: true }
-        },
-        cache: 1000 * 900
+        }
       });
     });
   });

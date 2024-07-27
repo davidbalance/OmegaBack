@@ -2,7 +2,7 @@ import { ExamTypeManagementService } from "@/laboratory/exam-type/services/exam-
 import { ExamSubtypeRepository } from "../../repositories/exam-subtype.repository";
 import { ExamSubtypeManagementService } from "../exam-subtype-management.service";
 import { TestBed } from "@automock/jest";
-import { mockExamsSubtype, mockExamsSubtypes } from "./stub/exam-type.stub";
+import { mockExamsSubtype, mockExamsSubtypes } from "./stub/exam-subtype.stub";
 import { PostExamSubtypeRequestDto } from "../../dto/request/post.exam-subtype.dto";
 import { PatchExamSubtypeRequestDto } from "../../dto/request/patch.exam-subtype.dto";
 import { mockExamType } from "@/laboratory/exam-type/services/test/stub/exam-type.stub";
@@ -72,17 +72,34 @@ describe('ExamSubtypeManagementService', () => {
   describe('updateOne', () => {
     const id: number = 1;
     const mockedExamSubtype = mockExamsSubtype();
+    const mockedExamType = mockExamType();
     const mockDto: PatchExamSubtypeRequestDto = {
       name: "mocked-name"
     }
 
-    it('should update an existing exam subtype', async () => {
+    it('should update an existing exam subtype without changing the type', async () => {
+      repository.findOne.mockResolvedValueOnce({ ...mockedExamSubtype, type: mockedExamType });
       repository.findOneAndUpdate.mockResolvedValueOnce(mockedExamSubtype);
 
       const result = await service.updateOne(id, mockDto);
 
       expect(result).toEqual(mockedExamSubtype);
+      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id } });
+      expect(typeService.findOne).toHaveBeenCalledTimes(0);
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, mockDto);
+    });
+
+    it('should update an existing exam subtype with changing the type', async () => {
+      repository.findOne.mockResolvedValueOnce({ ...mockedExamSubtype, type: mockedExamType });
+      typeService.findOne.mockResolvedValueOnce(mockedExamType);
+      repository.findOneAndUpdate.mockResolvedValueOnce(mockedExamSubtype);
+
+      const result = await service.updateOne(id, { ...mockDto, type: 0 });
+
+      expect(result).toEqual(mockedExamSubtype);
+      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id } });
+      expect(typeService.findOne).toHaveBeenCalledWith(0);
+      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, { ...mockDto, type: mockedExamType });
     });
   });
 

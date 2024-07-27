@@ -7,7 +7,6 @@ import { mockExam } from "./stub/exam.stub";
 import { NotFoundException } from "@nestjs/common";
 import { PostExamExternalRequestDto } from "../../dtos/request/post.exam-external.request.dto";
 import { mockExamType } from "@/laboratory/exam-type/services/test/stub/exam-type.stub";
-import { mockExamsSubtype } from "@/laboratory/exam-subtype/services/test/stub/exam-type.stub";
 import { PostExamSubtypeRequestDto } from "@/laboratory/exam-subtype/dto/request/post.exam-subtype.dto";
 import { ExamSubtype } from "@/laboratory/exam-subtype/entities/exam-subtype.entity";
 import { PostExamTypeRequestDto } from "@/laboratory/exam-type/dtos/request/post.exam-type.dto";
@@ -16,6 +15,7 @@ import { INJECT_EXAM_SUBTYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-subty
 import { INJECT_EXAM_TYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-type/services/exam-type-external-connection.service";
 import { ExamType } from "@/laboratory/exam-type/entities/exam-type.entity";
 import { PatchExamRequestDto } from "../../dtos/request/patch.exam.request.dto";
+import { mockExamsSubtype } from "@/laboratory/exam-subtype/services/test/stub/exam-subtype.stub";
 
 describe('ExamExternalConnectionService', () => {
     let service: ExamExternalConnectionService;

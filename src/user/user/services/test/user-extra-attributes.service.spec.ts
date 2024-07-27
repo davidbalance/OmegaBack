@@ -80,6 +80,7 @@ describe('User Extra Attribute Service', () => {
 
             attributeRepository.query.mockReturnValue({
                 leftJoin: jest.fn().mockReturnThis(),
+                andWhere: jest.fn().mockReturnThis(),
                 where: jest.fn().mockReturnThis(),
                 getOne: jest.fn().mockResolvedValueOnce(mockUserAttribute),
             } as any);
