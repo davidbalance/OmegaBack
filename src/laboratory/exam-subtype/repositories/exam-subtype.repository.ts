@@ -11,8 +11,4 @@ export class ExamSubtypeRepository extends AbstractRepository<number, ExamSubtyp
     ) {
         super(repo);
     }
-
-    async findOneAndDelete(filterOptions: FindOptionsWhere<ExamSubtype>): Promise<void> {
-        await this.findOneAndUpdate(filterOptions, { status: false });
-    }
 }

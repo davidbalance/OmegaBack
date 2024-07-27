@@ -4,7 +4,6 @@ import { ExamTypeManagementService } from '@/laboratory/exam-type/services/exam-
 import { ExamType } from '@/laboratory/exam-type/entities/exam-type.entity';
 import { ExamSubtype } from '../entities/exam-subtype.entity';
 import { PostExamSubtypeRequestDto } from '../dto/request/post.exam-subtype.dto';
-import { PatchExamRequestDto } from '@/laboratory/exam/dtos/request/patch.exam.request.dto';
 import { PatchExamSubtypeRequestDto } from '../dto/request/patch.exam-subtype.dto';
 
 @Injectable()
@@ -31,8 +30,13 @@ export class ExamSubtypeManagementService {
     return subtype;
   }
 
-  async updateOne(id: number, { ...data }: PatchExamSubtypeRequestDto): Promise<ExamSubtype> {
-    const subtype = await this.repository.findOneAndUpdate({ id }, { ...data });
+  async updateOne(id: number, { type, ...data }: PatchExamSubtypeRequestDto): Promise<ExamSubtype> {
+    const foundSubtype = await this.repository.findOne({ where: { id: id } });
+    let newType: ExamType | undefined = undefined;
+    if (type !== foundSubtype.id) {
+      newType = await this.typeService.findOne(type);
+    }
+    const subtype = await this.repository.findOneAndUpdate({ id }, { ...data, type: newType });
     return subtype;
   }
 

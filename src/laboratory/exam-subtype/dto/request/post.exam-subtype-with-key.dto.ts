@@ -1,10 +1,9 @@
 import { IsNotEmpty, IsString } from "class-validator";
-import { PostExamSubtypeRequestDto } from "./post.exam-subtype.dto";
 import { ExternalConnectionKeyRequest } from "@/shared/utils/bases/base.external-connection";
-import { OmitType } from "@nestjs/mapped-types";
+import { PostExamSubtypeExternalRequestDto } from "./post.exam-subtype-external.dto";
 
 export class PostExamSubtypeWithKeyRequestDto
-    extends OmitType(PostExamSubtypeRequestDto, ['type'])
+    extends PostExamSubtypeExternalRequestDto
     implements ExternalConnectionKeyRequest {
     @IsString()
     @IsNotEmpty()

@@ -6,6 +6,7 @@ import { ExternalKeyParam, IExternalConnectionService } from '@/shared/utils/bas
 import { PatchExamSubtypeRequestDto } from '../dto/request/patch.exam-subtype.dto';
 import { PostExamSubtypeRequestDto } from '../dto/request/post.exam-subtype.dto';
 import { ExamSubtypeExternalKeyService } from './exam-subtype-external-key.service';
+import { PatchExamSubtypeExternalRequestDto } from '../dto/request/patch.exam-subtype-external.dto';
 
 type ConnectionRequestType = PostExamSubtypeRequestDto | PatchExamSubtypeRequestDto;
 
@@ -52,7 +53,7 @@ export class ExamSubtypeExternalConnectionService implements IExternalConnection
     }
   }
 
-  async findOneAndUpdate(key: ExternalKeyParam, data: PatchExamSubtypeRequestDto): Promise<ExamSubtype> {
+  async findOneAndUpdate(key: ExternalKeyParam, data: PatchExamSubtypeExternalRequestDto): Promise<ExamSubtype> {
     const foundExam = await this.repository.findOneAndUpdate({ externalKey: key }, data);
     return foundExam;
   }

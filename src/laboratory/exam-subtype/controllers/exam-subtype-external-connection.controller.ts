@@ -7,6 +7,7 @@ import { PostExamSubtypeRequestDto } from "../dto/request/post.exam-subtype.dto"
 import { PostExamSubtypeResponseDto } from "../dto/response/post.exam-subtype.response.dto";
 import { PatchExamSubtypeRequestDto } from "../dto/request/patch.exam-subtype.dto";
 import { PatchExamSubtypeResponseDto } from "../dto/response/patch.exam-subtype.response.dto";
+import { PatchExamSubtypeExternalRequestDto } from "../dto/request/patch.exam-subtype-external.dto";
 
 @ApiTags('External/Connection', 'Laboratory/Exam/Subtype')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -31,7 +32,7 @@ export class ExamSubtypeExternalConnectionController {
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() body: PatchExamSubtypeRequestDto
+        @Body() body: PatchExamSubtypeExternalRequestDto
     ): Promise<PatchExamSubtypeResponseDto> {
         const exam = await this.service.findOneAndUpdate({ source, key }, body);
         return plainToInstance(PatchExamSubtypeResponseDto, exam);
