@@ -4,7 +4,6 @@ import { UserEventService } from "./user-event.service";
 import { User } from "../entities/user.entity";
 import { Not } from "typeorm";
 import { PostUserRequestDto } from "../dtos/request/post.user.request.dto";
-import { UserExtraAttribute } from "../entities/user-extra-attribute.entity";
 import { UserExtraAttributeService } from "./user-extra-attributes.service";
 
 @Injectable()

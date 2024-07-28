@@ -29,6 +29,16 @@ describe('ExamSubtypeExternalConnectionService', () => {
         jest.clearAllMocks();
     });
 
+    describe('findOne', () => {
+        it('should throw an error when findOne is called', async () => {
+            // Arrange
+            const key = {}; // You can adjust this to be any value since it's not used in this case
+
+            // Act & Assert
+            await expect(service.findOne(key)).rejects.toThrow('Method not implemented.');
+        });
+    });
+
     describe('create', () => {
         const mockedKey = mockExamSubtypeExternalKey();
         const mockedExamType = mockExamType();

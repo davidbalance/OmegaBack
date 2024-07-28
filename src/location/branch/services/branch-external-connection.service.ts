@@ -21,7 +21,7 @@ export class BranchExternalConnectionService implements IExternalConnectionServi
         @Inject(CityService) private readonly cityService: CityService
     ) { }
 
-    findOne(key: ExternalKeyParam): Promise<Branch> {
+    async findOne(key: ExternalKeyParam | any): Promise<Branch> {
         throw new Error("Method not implemented.");
     }
 

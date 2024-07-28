@@ -3,7 +3,7 @@ import { CityRepository } from '../city.repository';
 import { SelectorOption, SelectorOptionService } from '@/shared/utils/bases/base.selector';
 
 @Injectable()
-export class SelectorService implements SelectorOptionService<number> {
+export class CitySelectorService implements SelectorOptionService<number> {
 
   constructor(
     @Inject(CityRepository) private readonly repository: CityRepository,

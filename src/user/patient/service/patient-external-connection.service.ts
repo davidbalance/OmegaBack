@@ -19,7 +19,7 @@ export class PatientExternalConnectionService implements IExternalConnectionServ
         @Inject(INJECT_PATIENT_FLAT_SERVICE) private readonly flatService: FlatService<Patient, PatientResponseDto>
     ) { }
 
-    findOne(key: ExternalKeyParam | any): Promise<PatientResponseDto> {
+    async findOne(key: ExternalKeyParam | any): Promise<PatientResponseDto> {
         throw new Error("Method not implemented.");
     }
 

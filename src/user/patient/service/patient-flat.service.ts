@@ -6,7 +6,12 @@ import { PatientResponseDto } from "../dtos/response/base.patient.response.dto";
 @Injectable()
 export class PatientFlatService implements FlatService<Patient, PatientResponseDto> {
     flat({ user, ...patient }: Patient): PatientResponseDto {
-        return { ...user, ...patient, user: user.id }
+        const { extraAttributes, id, status, hasCredential, email, ...userData } = user;
+        return {
+            ...userData,
+            ...patient,
+            user: user.id
+        };
     }
 }
 

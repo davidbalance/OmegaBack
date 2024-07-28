@@ -19,7 +19,7 @@ export class ExamSubtypeExternalConnectionService implements IExternalConnection
     @Inject(ExamTypeManagementService) private readonly typeService: ExamTypeManagementService,
   ) { }
 
-  findOne(key: ExternalKeyParam | any): Promise<ExamSubtype> {
+  async findOne(key: ExternalKeyParam | any): Promise<ExamSubtype> {
     throw new Error('Method not implemented.');
   }
 

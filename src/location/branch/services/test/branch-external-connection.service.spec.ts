@@ -12,7 +12,6 @@ import { mockCompany } from "@/location/company/services/test/stub/company.stub"
 import { CityService } from "@/location/city/services/city.service";
 import { mockCity } from "@/location/city/services/test/stub/city.stub";
 import { PatchBranchRequestDto } from "../../dtos/request/patch.branch.request.dto";
-import { PostBranchRequestDto } from "../../dtos/request/post.branch.request.dto";
 import { PostCompanyExternalRequestDto } from "@/location/company/dtos/request/post.company-external.request.dto";
 import { PostBranchExternalRequestDto } from "../../dtos/request/post.branch-external.request.dto";
 
@@ -36,6 +35,16 @@ describe('BranchExternalConnectionService', () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
+
+    describe('findOne', () => {
+        it('should throw an error when findOne is called', async () => {
+            // Arrange
+            const key = {}; // You can adjust this to be any value since it's not used in this case
+
+            // Act & Assert
+            await expect(service.findOne(key)).rejects.toThrow('Method not implemented.');
+        });
+    })
 
     describe('create', () => {
         const mockedCompany = mockCompany();

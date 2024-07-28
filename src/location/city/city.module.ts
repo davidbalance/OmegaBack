@@ -4,7 +4,7 @@ import { City } from './entities/city.entity';
 import { SqlDatabaseModule } from '@/shared/sql-database';
 import { CityRepository } from './city.repository';
 import { SelectorController } from './controllers/selector.controller';
-import { SelectorService } from './services/selector.service';
+import { CitySelectorService } from './services/city-selector.service';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { SelectorService } from './services/selector.service';
   providers: [
     CityService,
     CityRepository,
-    SelectorService,
+    CitySelectorService,
   ],
   exports: [CityService]
 })

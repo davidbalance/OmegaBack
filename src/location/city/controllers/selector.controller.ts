@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { SelectorService } from '../services/selector.service';
+import { SelectorService } from '../services/city-selector.service';
 import { GETSelectorOptionArrayResponseDto } from '../dto/response/selector.response.dto';
 
 @ApiTags('Location/City', 'Selector')

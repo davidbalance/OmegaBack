@@ -38,6 +38,17 @@ describe('ExamExternalConnectionService', () => {
         jest.clearAllMocks();
     });
 
+    describe('findOne', () => {
+
+        it('should throw an error when findOne is called', async () => {
+            // Arrange
+            const key = {};
+
+            // Act & Assert
+            await expect(service.findOne(key)).rejects.toThrow('Method not implemented.');
+        });
+    });
+
     describe('create', () => {
         const mockedKey = mockExamExternalKey();
         const mockedExam = mockExam();

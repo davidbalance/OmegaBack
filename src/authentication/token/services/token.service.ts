@@ -43,8 +43,10 @@ export class TokenService {
   }
 
   private getExpiresTime = (): { expiresAccess: Date, expiresRefresh: Date } => {
-    const expiresAccess = dayjs().add(this.config.get<number>("JWT_DEFAULT_EXPIRES_IN"), 'seconds').toDate();
-    const expiresRefresh = dayjs().add(this.config.get<number>("JWT_REFRESH_EXPIRES_IN"), 'seconds').toDate();
+    const defaultTime: number = this.config.get<number>("JWT_DEFAULT_EXPIRES_IN");
+    const refreshTime: number = this.config.get<number>("JWT_REFRESH_EXPIRES_IN");
+    const expiresAccess = dayjs().add(defaultTime, 'seconds').toDate();
+    const expiresRefresh = dayjs().add(refreshTime, 'seconds').toDate();
     return { expiresAccess, expiresRefresh }
   }
 

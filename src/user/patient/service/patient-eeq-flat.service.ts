@@ -6,9 +6,15 @@ import { PatientEeqResponseDto } from "../dtos/response/base.patient-eeq.respons
 @Injectable()
 export class PatientEeqFlatService implements FlatService<Patient, PatientEeqResponseDto | null> {
     flat({ user, ...patient }: Patient): PatientEeqResponseDto | null {
-        const role = user.extraAttributes.find(e => e.name === 'role');
+        const { extraAttributes, id, status, hasCredential, email, ...userData } = user;
+        const role = extraAttributes.find(e => e.name === 'role');
         if (!role) return null;
-        return { ...user, ...patient, user: user.id, role: role.value };
+        return {
+            ...userData,
+            ...patient,
+            user: user.id,
+            role: role.value,
+        };
     }
 }
 

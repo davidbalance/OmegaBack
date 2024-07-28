@@ -17,7 +17,7 @@ export class ExamTypeExternalConnectionService implements IExternalConnectionSer
 
   ) { }
 
-  findOne(key: ExternalKeyParam | any): Promise<ExamType> {
+  async findOne(key: ExternalKeyParam | any): Promise<ExamType> {
     throw new Error('Method not implemented.');
   }
 

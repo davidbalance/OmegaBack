@@ -51,9 +51,4 @@ export class ApiKeyManagementService {
   async deleteOne(id: number): Promise<void> {
     await this.repository.findOneAndDelete({ id: id });
   }
-
-  async validate(key: string): Promise<number> {
-    const apikey = await this.repository.findOne({ where: { value: key, status: true }, relations: { credential: true } })
-    return apikey.credential.user;
-  }
 }

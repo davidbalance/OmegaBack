@@ -24,7 +24,7 @@ export class ExamExternalConnectionService implements IExternalConnectionService
         @Inject(INJECT_EXAM_TYPE_EXTERNAL_CONNECTION) private readonly typeService: IExternalConnectionService<PostExamTypeRequestDto, ExamType>,
     ) { }
 
-    findOne(key: ExternalKeyParam | any): Promise<Exam> {
+    async findOne(key: ExternalKeyParam | any): Promise<Exam> {
         throw new Error("Method not implemented.");
     }
 
