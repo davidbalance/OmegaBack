@@ -8,7 +8,7 @@ import { PostDiseaseRequestDto } from '../dtos/request/post.disease.request.dto'
 import { PostDiseaseResponseDto } from '../dtos/response/post.disease.response.dto';
 import { PatchDiseaseRequestDto } from '../dtos/request/patch.disease.request.dto';
 import { PatchDiseaseResponseDto } from '../dtos/response/patch.disease.response.dto';
-import { DELETEDiseaseResponseDto } from '../dtos/response/delete.disease.response.dto';
+import { DeleteDiseaseResponseDto } from '../dtos/response/delete.disease.response.dto';
 
 @ApiTags('Disease/Disease')
 @ApiBearerAuth()
@@ -46,7 +46,7 @@ export class DiseaseController {
   @Delete(":id")
   async findOneAndDelete(
     @Param('id') id: number
-  ): Promise<DELETEDiseaseResponseDto> {
+  ): Promise<DeleteDiseaseResponseDto> {
     await this.diseaseService.deleteOne(id);
     return {};
   }

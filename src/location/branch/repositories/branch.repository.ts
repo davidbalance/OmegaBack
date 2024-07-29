@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { AbstractRepository } from "@/shared/sql-database";
@@ -7,8 +7,6 @@ import { Branch } from "../entities/branch.entity";
 @Injectable()
 export class BranchRepository
     extends AbstractRepository<number, Branch>{
-
-    protected logger: Logger = new Logger();
 
     constructor(
         @InjectRepository(Branch) private readonly branchModel: Repository<Branch>

@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { CityService } from './services/city.service';
 import { City } from './entities/city.entity';
 import { SqlDatabaseModule } from '@/shared/sql-database';
-import { CityRepository } from './city.repository';
-import { SelectorController } from './controllers/selector.controller';
+import { CityRepository } from './repositories/city.repository';
+import { CitySelectorController } from './controllers/city-selector.controller';
 import { CitySelectorService } from './services/city-selector.service';
 
 @Module({
@@ -11,13 +11,15 @@ import { CitySelectorService } from './services/city-selector.service';
     SqlDatabaseModule.forFeature([City]),
   ],
   controllers: [
-    SelectorController
+    CitySelectorController
   ],
   providers: [
     CityService,
     CityRepository,
     CitySelectorService,
   ],
-  exports: [CityService]
+  exports: [
+    CityService
+  ]
 })
 export class CityModule { }

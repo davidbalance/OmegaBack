@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { PatientRepository } from "../patient.repository";
+import { PatientRepository } from "../repositories/patient.repository";
 import { Patient } from "../entities/patient.entity";
 import { UserManagementService } from "@/user/user/services/user-management.service";
 import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";

@@ -1,4 +1,3 @@
-
 export interface SelectorOption<K> {
     key: K;
     label: string;

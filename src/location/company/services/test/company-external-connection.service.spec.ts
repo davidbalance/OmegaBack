@@ -10,7 +10,6 @@ import { INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION } from "@/location/corpora
 import { mockCompany } from "./stub/company.stub";
 import { mockCompanyExternalKey } from "./stub/company-external-key.stub";
 import { PostCorporativeGroupRequestDto } from "@/location/corporative-group/dtos/request/post.corporative-group.dto";
-import { PostCompanyRequestDto } from "../../dtos/request/post.company.request.dto";
 import { PostCompanyExternalRequestDto } from "../../dtos/request/post.company-external.request.dto";
 import { PatchCompanyRequestDto } from "../../dtos/request/patch.company.request.dto";
 

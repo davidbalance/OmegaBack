@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Patient } from '../entities/patient.entity';
-import { PatientRepository } from '../patient.repository';
+import { PatientRepository } from '../repositories/patient.repository';
 import { IPagination } from '@/shared/utils/bases/base.pagination';
 import { Brackets } from 'typeorm';
 import { PatientResponseDto } from '../dtos/response/base.patient.response.dto';

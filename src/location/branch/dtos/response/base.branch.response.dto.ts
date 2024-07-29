@@ -1,4 +1,4 @@
-import { CityResponseDto } from "@/location/city/dto/response/base.get.city.response.dto";
+import { CityResponseDto } from "@/location/city/dtos/response/base.get.city.response.dto";
 import { Expose, Type } from "class-transformer";
 
 export class BranchResponseDto {

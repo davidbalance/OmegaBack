@@ -3,7 +3,6 @@ import { ApiKeyRepository } from "../../repositories/api-key.repository";
 import { ApiKeyManagementService } from "../api-key-management.service";
 import { UserCredentialService } from "@/authentication/user-credential/services/user-credential.service";
 import { ConfigService } from "@nestjs/config";
-import dayjs from "dayjs";
 import { mockApiKey, mockApiKeys } from "./stub/api-key.stub";
 import { PatchApiKeyRequestDto } from "../../dtos/request/patch.api-key.request.dto";
 import { mockCredential } from "@/authentication/user-credential/services/tests/stub/credential.stub";

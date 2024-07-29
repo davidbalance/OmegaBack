@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Patient } from '../entities/patient.entity';
-import { PatientRepository } from '../patient.repository';
+import { PatientRepository } from '../repositories/patient.repository';
 import { PatientResponseDto } from '../dtos/response/base.patient.response.dto';
 import { FlatService } from '@/shared/utils/bases/base.flat-service';
 import { INJECT_PATIENT_FLAT_SERVICE } from './patient-flat.service';

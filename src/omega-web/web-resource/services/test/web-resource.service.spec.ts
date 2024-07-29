@@ -72,9 +72,9 @@ describe('WebResourceService', () => {
         const mockedWebResource = mockWebResource();
         const mockDto: PostWebResourceRequestDto = {
             name: "mock-resource",
-            label: "Mock resource",
-            address: "mock/resource",
-            icon: "mock-icon"
+            label: "Mocked Label",
+            address: "mocked/resource",
+            icon: "mocked-icon"
         }
 
         it('should create and return a new web resource', async () => {
@@ -94,10 +94,7 @@ describe('WebResourceService', () => {
         const id = 1;
         const mockedWebResource = mockWebResource();
         const mockDto: PatchWebResourceRequestDto = {
-            name: "mock-resource",
-            label: "Mock resource",
-            address: "mock/resource",
-            icon: "mock-icon"
+            name: "mock-resource"
         }
 
         it('should update and return the web resource by id', async () => {

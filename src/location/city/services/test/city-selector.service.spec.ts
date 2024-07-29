@@ -1,5 +1,5 @@
 import { TestBed } from "@automock/jest";
-import { CityRepository } from "../../city.repository";
+import { CityRepository } from "../../repositories/city.repository";
 import { CitySelectorService } from "../city-selector.service";
 import { mockCitySelectorOptions } from "./stub/city-selector";
 

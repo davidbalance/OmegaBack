@@ -1,5 +1,5 @@
 import { TestBed } from '@automock/jest';
-import { PatientRepository } from '../../patient.repository';
+import { PatientRepository } from '../../repositories/patient.repository';
 import { mockPatients } from './stub/patient.stub';
 import { PatientPaginationService } from '../patient-pagination.service';
 import { FlatService } from '@/shared/utils/bases/base.flat-service';

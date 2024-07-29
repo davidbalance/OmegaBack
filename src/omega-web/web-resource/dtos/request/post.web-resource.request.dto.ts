@@ -5,7 +5,7 @@ export class PostWebResourceRequestDto {
     @IsString()
     @IsNotEmpty()
     public readonly name: string;
-
+    
     @IsString()
     @IsNotEmpty()
     public readonly label: string;

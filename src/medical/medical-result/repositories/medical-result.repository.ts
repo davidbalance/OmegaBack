@@ -1,5 +1,5 @@
 import { AbstractRepository } from "@/shared/sql-database";
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { MedicalResult } from "../entities/medical-result.entity";
@@ -7,8 +7,6 @@ import { MedicalResult } from "../entities/medical-result.entity";
 @Injectable()
 export class MedicalResultRepository
     extends AbstractRepository<number, MedicalResult> {
-
-    protected logger: Logger = new Logger();
 
     constructor(
         @InjectRepository(MedicalResult) private readonly resultModel: Repository<MedicalResult>

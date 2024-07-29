@@ -1,6 +1,6 @@
 import { TestBed } from '@automock/jest';
 import { PatientManagementService } from '../patient-management.service';
-import { PatientRepository } from '../../patient.repository';
+import { PatientRepository } from '../../repositories/patient.repository';
 import { mockPatient, mockPatients } from './stub/patient.stub';
 import { PatientResponseDto } from '../../dtos/response/base.patient.response.dto';
 import { FlatService } from '@/shared/utils/bases/base.flat-service';

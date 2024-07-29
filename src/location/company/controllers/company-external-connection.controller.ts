@@ -3,7 +3,6 @@ import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { CompanyExternalConnectionService } from "../services/company-external-connection.service";
-import { PostCompanyRequestDto } from "../dtos/request/post.company.request.dto";
 import { PostCompanyResponseDto } from "../dtos/response/post.company.response.dto";
 import { PatchCompanyRequestDto } from "../dtos/request/patch.company.request.dto";
 import { PatchCompanyResponseDto } from "../dtos/response/patch.company.response.dto";

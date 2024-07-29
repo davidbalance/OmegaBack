@@ -3,7 +3,7 @@ import { UserManagementService } from '@/user/user/services/user-management.serv
 import { mockUser } from '@/user/user/services/test/stub/user-management.stub';
 import { NotFoundException } from '@nestjs/common'
 import { PatientExternalConnectionService } from '../patient-external-connection.service';
-import { PatientRepository } from '../../patient.repository';
+import { PatientRepository } from '../../repositories/patient.repository';
 import { mockPatient } from './stub/patient.stub';
 import { PatientGenderEnum } from '../../enums/patient.enum';
 import { PostPatientRequestDto } from '../../dtos/request/post.patient.request.dto';

@@ -6,7 +6,6 @@ import { Exam } from "../entities/exam.entity";
 
 @Injectable()
 export class ExamRepository extends AbstractRepository<number, Exam>{
-
     constructor(
         @InjectRepository(Exam) private readonly examModel: Repository<Exam>
     ) {

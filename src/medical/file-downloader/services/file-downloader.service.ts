@@ -4,8 +4,8 @@ import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager
 import { FileManagementService } from "@/shared/utils/bases/base.file-service";
 import { ZipperService } from "@/shared/zipper/zipper.service";
 import { Injectable, Inject, StreamableFile, NotFoundException } from "@nestjs/common";
-import { FileSourceEnum, FileSourceRequestDto } from "../dto/request/base.file-source.request.dto";
-import { PostDownloadZipRequestDto } from "../dto/request/post.download-zip.request.dto";
+import { FileSourceEnum, FileSourceRequestDto } from "../dtos/request/base.file-source.request.dto";
+import { PostDownloadZipRequestDto } from "../dtos/request/post.download-zip.request.dto";
 
 @Injectable()
 export class FileDownloaderService {

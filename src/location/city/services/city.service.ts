@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CityRepository } from '../city.repository';
+import { CityRepository } from '../repositories/city.repository';
 import { City } from '../entities/city.entity';
 
 @Injectable()

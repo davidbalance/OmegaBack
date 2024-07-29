@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { AbstractRepository } from "@/shared/sql-database";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
@@ -7,8 +7,6 @@ import { UserCredential } from "../entities/user-credential.entity";
 @Injectable()
 export class UserCredentialRepository
     extends AbstractRepository<number, UserCredential>{
-
-    protected logger: Logger = new Logger();
 
     constructor(
         @InjectRepository(UserCredential) private readonly userCredentialModel: Repository<UserCredential>

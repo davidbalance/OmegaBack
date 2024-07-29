@@ -1,5 +1,4 @@
 import { ConflictException, Inject, Injectable } from "@nestjs/common";
-import { Doctor } from "../entities/doctor.entity";
 import { UserManagementService } from "@/user/user/services/user-management.service";
 import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { PostDoctorRequestDto } from "../dtos/request/post.doctor.dto";

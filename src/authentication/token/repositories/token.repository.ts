@@ -6,8 +6,6 @@ import { Token } from "../entities/token.entity";
 
 @Injectable()
 export class TokenRepository extends AbstractRepository<number, Token> {
-    protected logger: Logger = new Logger();
-
     constructor(
         @InjectRepository(Token) private readonly tokenModel: Repository<Token>
     ) {

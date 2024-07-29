@@ -82,7 +82,7 @@ describe('User Management Service', () => {
 
     describe('findOneByDni', () => {
         const mockedUser = mockUser();
-
+        
         it('should return a user by dni', async () => {
             repository.findOne.mockResolvedValueOnce(mockedUser);
 

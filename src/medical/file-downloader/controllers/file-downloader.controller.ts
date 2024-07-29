@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Inject, Param, Post, Res } from '@nestjs/comm
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { FileDownloaderService } from '../services/file-downloader.service';
-import { PostFileSourceRequestDto } from '../dto/request/post.file-source.request.dto';
-import { PostDownloadZipRequestDto } from '../dto/request/post.download-zip.request.dto';
+import { PostFileSourceRequestDto } from '../dtos/request/post.file-source.request.dto';
+import { PostDownloadZipRequestDto } from '../dtos/request/post.download-zip.request.dto';
 
 @ApiTags('Medical/File', 'External/Connection')
 @Controller('medical/file')

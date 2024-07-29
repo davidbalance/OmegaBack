@@ -6,7 +6,7 @@ class CompanyGroupOption implements SelectorOption<number> {
     @Expose() public readonly label: string;
 }
 
-export class GETCompanySelectorOptionArrayResponseDto implements SelectorOptionArray<CompanyGroupOption> {
+export class GetCompanySelectorOptionArrayResponseDto implements SelectorOptionArray<CompanyGroupOption> {
     @Type(() => CompanyGroupOption)
     @Expose() options: CompanyGroupOption[];
 }

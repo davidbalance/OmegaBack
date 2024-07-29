@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CityRepository } from '../city.repository';
+import { CityRepository } from '../repositories/city.repository';
 import { SelectorOption, SelectorOptionService } from '@/shared/utils/bases/base.selector';
 
 @Injectable()
