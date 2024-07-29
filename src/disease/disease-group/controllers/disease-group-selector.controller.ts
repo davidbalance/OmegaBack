@@ -3,7 +3,7 @@ import { Controller, UseGuards, Get, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { DiseaseGroupSelectorService } from "../services/disease-group-selector.service";
-import { GETSelectorOptionArrayResponseDto } from "@/disease/disease/dtos/selector.response.dto";
+import { GetDiseaseGroupSelectorOptionArrayResponseDto } from "../dtos/response/get.disease-group-selector.response.dto";
 
 @ApiTags('Selector', 'Disease/Group')
 @ApiBearerAuth()
@@ -15,8 +15,8 @@ export class DiseaseGroupSelectorController {
     ) { }
 
     @Get()
-    async findSelectorOptions(): Promise<GETSelectorOptionArrayResponseDto> {
+    async findSelectorOptions(): Promise<GetDiseaseGroupSelectorOptionArrayResponseDto> {
         const options = await this.service.find();
-        return plainToInstance(GETSelectorOptionArrayResponseDto, { options: options });
+        return plainToInstance(GetDiseaseGroupSelectorOptionArrayResponseDto, { options });
     }
 }

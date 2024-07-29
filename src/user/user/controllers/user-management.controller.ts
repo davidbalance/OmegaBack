@@ -4,10 +4,13 @@ import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete, Inject } 
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { UserManagementService } from "../services/user-management.service";
-import { DELETEUserResponseDto } from "../dtos/delete.user-management.dto";
-import { GETUserArrayResponseDto, GETUserResponseDto } from "../dtos/get.user-management.dto";
-import { PATCHUserRequestDto, PATCHUserResponseDto } from "../dtos/patch.user-management.dto";
-import { POSTUserRequestDto, POSTUserResponseDto } from "../dtos/post.user-management.dto";
+import { GetUserArrayResponseDto } from "../dtos/response/get.user.response.dto";
+import { GetUserResponseDto } from "../dtos/response/get.user-array.response.dto";
+import { PostUserRequestDto } from "../dtos/request/post.user.request.dto";
+import { PostUserResponseDto } from "../dtos/response/post.user.response.dto";
+import { PatchUserRequestDto } from "../dtos/request/patch.user.dto";
+import { PatchUserResponseDto } from "../dtos/response/patch.user.response.dto";
+import { DeleteUserResponseDto } from "../dtos/response/delete.user.response.dto";
 
 @ApiTags('User/User')
 @ApiBearerAuth()
@@ -21,40 +24,40 @@ export class UserManagementController {
   @Get()
   async find(
     @User() user: number
-  ): Promise<GETUserArrayResponseDto> {
-    const users = await this.userService.find(user);
-    return plainToInstance(GETUserArrayResponseDto, { users });
+  ): Promise<GetUserArrayResponseDto> {
+    const data = await this.userService.find(user);
+    return plainToInstance(GetUserArrayResponseDto, { data });
   }
 
   @Get('user')
   async findOne(
     @User() user: number
-  ): Promise<GETUserResponseDto> {
+  ): Promise<GetUserResponseDto> {
     const foundUser = await this.userService.findOne(user);
-    return plainToInstance(GETUserResponseDto, foundUser);
+    return plainToInstance(GetUserResponseDto, foundUser);
   }
 
   @Post()
   async create(
-    @Body() body: POSTUserRequestDto
-  ): Promise<POSTUserResponseDto> {
+    @Body() body: PostUserRequestDto
+  ): Promise<PostUserResponseDto> {
     const user = await this.userService.create(body);
-    return plainToInstance(POSTUserResponseDto, user);
+    return plainToInstance(PostUserResponseDto, user);
   }
 
   @Patch(':id')
   async updateOne(
     @Param('id') id: number,
-    @Body() body: PATCHUserRequestDto
-  ): Promise<PATCHUserResponseDto> {
+    @Body() body: PatchUserRequestDto
+  ): Promise<PatchUserResponseDto> {
     const user = await this.userService.updateOne(id, body)
-    return plainToInstance(PATCHUserResponseDto, user);
+    return plainToInstance(PatchUserResponseDto, user);
   }
 
   @Delete(':id')
   async deleteOne(
     @Param('id') id: number
-  ): Promise<DELETEUserResponseDto> {
+  ): Promise<DeleteUserResponseDto> {
     await this.userService.deleteOne(id);
     return {};
   }

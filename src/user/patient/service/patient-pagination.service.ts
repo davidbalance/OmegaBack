@@ -1,14 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Patient } from '../entities/patient.entity';
-import { PatientRepository } from '../patient.repository';
-import { IPagination, PaginationOrder } from '@/shared/utils/bases/base.pagination';
+import { PatientRepository } from '../repositories/patient.repository';
+import { IPagination } from '@/shared/utils/bases/base.pagination';
 import { Brackets } from 'typeorm';
+import { PatientResponseDto } from '../dtos/response/base.patient.response.dto';
+import { FlatService } from '@/shared/utils/bases/base.flat-service';
+import { INJECT_PATIENT_FLAT_SERVICE } from './patient-flat.service';
+import { PaginationOrder } from '@/shared/utils/bases/base.pagination.dto';
 
 @Injectable()
-export class PatientPaginationService implements IPagination<Patient> {
+export class PatientPaginationService implements IPagination<PatientResponseDto> {
 
   constructor(
-    @Inject(PatientRepository) private readonly repository: PatientRepository
+    @Inject(PatientRepository) private readonly repository: PatientRepository,
+    @Inject(INJECT_PATIENT_FLAT_SERVICE) private readonly flatService: FlatService<Patient, PatientResponseDto>
   ) { }
 
   private queryBuilder(filter: string) {
@@ -28,7 +33,7 @@ export class PatientPaginationService implements IPagination<Patient> {
     limit: number = 300,
     filter: string = '',
     order?: PaginationOrder
-  ): Promise<[value: number, data: Patient[]]> {
+  ): Promise<[value: number, data: PatientResponseDto[]]> {
     const pages = await this.findPageCount(limit, filter);
     const data = await this.findPaginatedByFilter(page, limit, filter, order);
     return [pages, data];
@@ -39,7 +44,7 @@ export class PatientPaginationService implements IPagination<Patient> {
     limit: number = 300,
     filter: string = '',
     order?: PaginationOrder
-  ): Promise<Patient[]> {
+  ): Promise<PatientResponseDto[]> {
 
     const query = this.queryBuilder(filter);
 
@@ -47,11 +52,12 @@ export class PatientPaginationService implements IPagination<Patient> {
       query.orderBy(`user.${order.key}`, order.order);
     }
 
-    const patients = query
+    const patients = await query
       .take(limit)
       .skip(page)
       .getMany();
-    return patients;
+    const flatPatients = patients.map(this.flatService.flat);
+    return flatPatients;
   }
 
   async findPageCount(

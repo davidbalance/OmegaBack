@@ -4,7 +4,8 @@ import { TokenModule } from './token/token.module';
 import { AuthenticationController } from './authentication.controller';
 import { ApiKeyModule } from './api-key/api-key.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard/authentication-guard.module';
-import { JwtRefreshStrategy, LocalAuthStrategy } from './strategies';
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
+import { LocalAuthStrategy } from './strategies/local-auth.strategy';
 
 @Module({
   imports: [

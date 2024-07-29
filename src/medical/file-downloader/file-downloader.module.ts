@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { FileDownloaderService } from './file-downloader.service';
 import { ZipperModule } from '@/shared/zipper/zipper.module';
 import { MedicalReportModule } from '../medical-report/medical-report.module';
-import { FileDownloaderController } from './file-downloader.controller';
+import { FileDownloaderController } from './controllers/file-downloader.controller';
 import { LocalStorageModule } from '@/shared/storage-manager';
 import { MedicalResultModule } from '../medical-result/medical-result.module';
+import { FileDownloaderService } from './services/file-downloader.service';
 
 @Module({
     imports: [
@@ -13,7 +13,11 @@ import { MedicalResultModule } from '../medical-result/medical-result.module';
         LocalStorageModule,
         ZipperModule.register({})
     ],
-    providers: [FileDownloaderService],
-    controllers: [FileDownloaderController]
+    controllers: [
+        FileDownloaderController
+    ],
+    providers: [
+        FileDownloaderService
+    ],
 })
 export class FileDownloaderModule { }

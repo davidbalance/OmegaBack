@@ -2,11 +2,8 @@ import { Controller, Get, Inject, Param, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
-import { GETSelectorOptionArrayResponseDto } from '../dtos/selector.response.dto';
-import {
-  CompanySelectorService
-
-} from '../services/company-selector.service';
+import { CompanySelectorService } from '../services/company-selector.service';
+import { GetCompanySelectorOptionArrayResponseDto } from '../dtos/response/get.company-selector.response.dto';
 
 @ApiTags('Location/Company', 'Selector')
 @ApiBearerAuth()
@@ -20,8 +17,8 @@ export class CompanySelectorController {
   @Get(':group')
   async findSelectorOptions(
     @Param('group') group: number
-  ): Promise<GETSelectorOptionArrayResponseDto> {
+  ): Promise<GetCompanySelectorOptionArrayResponseDto> {
     const options = await this.service.find(group);
-    return plainToInstance(GETSelectorOptionArrayResponseDto, { options });
+    return plainToInstance(GetCompanySelectorOptionArrayResponseDto, { options });
   }
 }

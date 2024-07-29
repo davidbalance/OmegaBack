@@ -1,10 +1,10 @@
-import { ApiKeyService } from "@/authentication/api-key/api-key.service";
+import { ApiKeyValidatorService } from "@/authentication/api-key/services/api-key-validator.service";
 import { Inject, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import Strategy from "passport-headerapikey";
 
 export class ApiKeyAuthStrategy extends PassportStrategy(Strategy, 'api-key-auth') {
-    constructor(@Inject(ApiKeyService) private readonly service: ApiKeyService) {
+    constructor(@Inject(ApiKeyValidatorService) private readonly service: ApiKeyValidatorService) {
         super(
             { header: 'x-api-key', prefix: '' },
             true,

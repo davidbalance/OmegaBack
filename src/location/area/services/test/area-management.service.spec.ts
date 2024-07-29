@@ -4,8 +4,8 @@ import { AreaManagementService } from "../area-management.service";
 import { ManagementService } from "@/location/management/services/management.service";
 import { mockArea, mockAreas } from "./stub/area.stub";
 import { mockManagement } from "@/location/management/services/test/stub/management.stub";
-import { PATCHAreaRequestDto } from "../../dtos/patch.area.dto";
-import { POSTAreaRequestDto } from "../../dtos/post.area.dto";
+import { PatchAreaRequestDto } from "../../dtos/request/patch.area.request.dto";
+import { PostAreaRequestDto } from "../../dtos/request/post.area.request.dto";
 
 describe('AreaManagementService', () => {
   let service: AreaManagementService;
@@ -27,7 +27,7 @@ describe('AreaManagementService', () => {
   describe('create', () => {
     const mockedArea = mockArea();
     const mockedManagement = mockManagement();
-    const mockDto: POSTAreaRequestDto = {
+    const mockDto: PostAreaRequestDto = {
       name: "my-mocked-name",
       management: 1
     }
@@ -60,7 +60,7 @@ describe('AreaManagementService', () => {
     const id: number = 1;
     const mockedArea = mockArea();
     const mockedManagement = mockManagement();
-    const mockDto: PATCHAreaRequestDto = {
+    const mockDto: PatchAreaRequestDto = {
       name: "mocked-name",
       management: 1
     }

@@ -1,16 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DoctorRepository } from "../repositories/doctor.repository";
 import { Doctor } from '../entities/doctor.entity';
-
+import { DoctorFlatService } from './doctor-flat.service';
+import { DoctorResponseDto } from '../dtos/response/base.doctor.response.dto';
 
 @Injectable()
 export class DoctorManagementService {
 
   constructor(
-    @Inject(DoctorRepository) private readonly repository: DoctorRepository
+    @Inject(DoctorRepository) private readonly repository: DoctorRepository,
+    @Inject(DoctorFlatService) private readonly flatService: DoctorFlatService
   ) { }
 
-  async find(): Promise<Doctor[]> {
+  async find(): Promise<DoctorResponseDto[]> {
     const doctors = await this.repository.find({
       select: {
         id: true,
@@ -19,10 +21,11 @@ export class DoctorManagementService {
       },
       cache: 1000 * 900
     });
-    return doctors;
+    const flat = doctors.map(this.flatService.flat);
+    return flat;
   }
 
-  async findOne(id: number): Promise<Doctor> {
+  async findOne(id: number): Promise<DoctorResponseDto> {
     const doctor = await this.repository.findOne({
       where: { id: id },
       select: {
@@ -31,10 +34,11 @@ export class DoctorManagementService {
         user: { id: true, dni: true, email: true, name: true, lastname: true }
       }
     });
-    return doctor;
+    const flat = this.flatService.flat(doctor);
+    return flat;
   }
 
-  async findOneByDni(dni: string): Promise<Doctor> {
+  async findOneByDni(dni: string): Promise<DoctorResponseDto> {
     const doctor = await this.repository.findOne({
       where: {
         user: { dni: dni }
@@ -45,6 +49,7 @@ export class DoctorManagementService {
         user: { id: true, dni: true, email: true, name: true, lastname: true }
       }
     });
-    return doctor;
+    const flat = this.flatService.flat(doctor);
+    return flat;
   }
 }

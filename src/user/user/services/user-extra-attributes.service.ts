@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { UserExtraAttributeRepository } from "../repositories/user-extra-attribute.repository";
 import { UserExtraAttribute } from "../entities/user-extra-attribute.entity";
-import { POSTUserExtraAttributeRequestDto } from "../dtos/post.user-extra-attribute.dto";
+import { PostUserExtraAttributeRequestDto } from "../dtos/request/post.user-extra-attribute.request.dto";
 import { UserRepository } from "../repositories/user.repository";
 
 @Injectable()
@@ -11,7 +11,7 @@ export class UserExtraAttributeService {
         @Inject(UserExtraAttributeRepository) private readonly attributeRepository: UserExtraAttributeRepository
     ) { }
 
-    async assignAttribute(id: number, attribute: POSTUserExtraAttributeRequestDto): Promise<void> {
+    async assignAttribute(id: number, attribute: PostUserExtraAttributeRequestDto): Promise<void> {
         const user = await this.userRepository.findOne({
             where: { id },
             relations: { extraAttributes: true }
@@ -27,8 +27,9 @@ export class UserExtraAttributeService {
     async findUserAttribute(id: number, name: string): Promise<UserExtraAttribute> {
         const foundAttribute = await this.attributeRepository
             .query('attribute')
-            .leftJoin('attribute.user', 'user', 'user.id = :id', { id: id })
-            .where('attribute = :name', { name: name })
+            .leftJoin('attribute.user', 'user')
+            .where('attribute.name = :name', { name: name })
+            .andWhere('user.id = :id', { id: id })
             .getOne();
         return foundAttribute;
     }

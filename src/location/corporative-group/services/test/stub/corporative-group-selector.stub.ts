@@ -1,6 +1,6 @@
-import { ISelectorOption } from "@/shared/utils/bases/base.selector";
+import { SelectorOption } from "@/shared/utils/bases/base.selector";
 
-const stubCorporativeGroup = (key: number): ISelectorOption<number> => ({
+const stubCorporativeGroup = (key: number): SelectorOption<number> => ({
     key: key,
     label: "my-stub-label"
 });

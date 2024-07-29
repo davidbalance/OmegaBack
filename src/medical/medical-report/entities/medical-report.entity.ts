@@ -1,6 +1,6 @@
 import { AbstractEntity } from "@/shared/sql-database";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { SendAttribute } from "../send-attribute/entities/send-attribute.entity";
+import { MedicalReportSendAttribute } from "./medical-report-send-attribute.entity";
 
 @Entity({ name: 'tbl_m_reports' })
 @Index('idx_report_patient', ['patientDni'])
@@ -46,6 +46,6 @@ export class MedicalReport extends AbstractEntity<number> {
     @Column({ name: 'doctor_signature', type: 'varchar', length: 256, nullable: false })
     public doctorSignature: string;
 
-    @OneToMany(() => SendAttribute, value => value.report, { eager: false })
-    public sendAttributes: SendAttribute[]
+    @OneToMany(() => MedicalReportSendAttribute, value => value.report, { eager: false })
+    public sendAttributes: MedicalReportSendAttribute[]
 }

@@ -3,10 +3,10 @@ import { CorporativeGroupRepository } from "../repositories/corporative-group.re
 import { CorporativeGroup } from "../entities/corporative-group.entity";
 import { CorporativeGroupExternalKeyService } from "./corporative-group-external-key.service";
 import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
-import { PATCHCorporativeGroupRequestDto } from "../dtos/patch.corporative-group.dto";
-import { POSTCorporativeGroupExternalConnectionRequestDto } from "../dtos/post.corporative-group-external-connection.dto";
+import { PostCorporativeGroupRequestDto } from "../dtos/request/post.corporative-group.dto";
+import { PatchCorporativeGroupRequestDto } from "../dtos/request/patch.corporative-group.dto";
 
-type RequestType = POSTCorporativeGroupExternalConnectionRequestDto | PATCHCorporativeGroupRequestDto;
+type RequestType = PostCorporativeGroupRequestDto | PatchCorporativeGroupRequestDto;
 
 @Injectable()
 export class CorporativeGroupExternalConnectionService implements IExternalConnectionService<RequestType, CorporativeGroup> {
@@ -15,44 +15,40 @@ export class CorporativeGroupExternalConnectionService implements IExternalConne
         @Inject(CorporativeGroupExternalKeyService) private keyService: CorporativeGroupExternalKeyService
     ) { }
 
-    async create({ source, key, ...data }: POSTCorporativeGroupExternalConnectionRequestDto): Promise<CorporativeGroup> {
-        const newKey = await this.keyService.create({ key, source });
+    findOne(key: ExternalKeyParam | any): Promise<CorporativeGroup> {
+        throw new Error("Method not implemented.");
+    }
+
+    async create(key: ExternalKeyParam, data: PostCorporativeGroupRequestDto): Promise<CorporativeGroup> {
+        const newKey = await this.keyService.create(key);
         try {
             const group = await this.repository.create({ ...data, externalKey: newKey });
             return group;
         } catch (error) {
-            this.keyService.remove({ source, key })
+            this.keyService.remove(key);
             throw error;
         }
     }
 
-    async findOneOrCreate({ source, key, ...data }: POSTCorporativeGroupExternalConnectionRequestDto): Promise<CorporativeGroup> {
+    async findOneOrCreate(key: ExternalKeyParam, data: PostCorporativeGroupRequestDto): Promise<CorporativeGroup> {
         try {
             const foundGroup = await this.repository.findOne({
-                where: [{
-                    externalKey: { source: source, key: key }
-                }, {
-                    name: data.name
-                }]
+                where: [
+                    { externalKey: key },
+                    { name: data.name }
+                ]
             });
             return foundGroup;
         } catch (error) {
-            return this.create({ source, key, ...data });
+            return this.create(key, data);
         }
     }
 
-    async findOneAndUpdate({ key, source }: ExternalKeyParam, { ...data }: PATCHCorporativeGroupRequestDto): Promise<CorporativeGroup> {
-        const group = await this.repository.findOneAndUpdate({
-            externalKey: {
-                source: source,
-                key: key
-            }
-        }, data);
+    async findOneAndUpdate(key: ExternalKeyParam | any, data: PatchCorporativeGroupRequestDto): Promise<CorporativeGroup> {
+        const group = await this.repository.findOneAndUpdate({ externalKey: key }, data);
         return group;
     }
 }
 
-
-
 export const INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION = 'CORPORATIVE_GROUP_EXTERNAL_CONNECTION';
-export const CorporativeGroupExternalConnectionProvider: Provider = { provide: INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION, useClass: CorporativeGroupExternalKeyService }
+export const CorporativeGroupExternalConnectionProvider: Provider = { provide: INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION, useClass: CorporativeGroupExternalConnectionService }

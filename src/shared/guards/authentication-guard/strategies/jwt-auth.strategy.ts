@@ -1,8 +1,8 @@
+import { AccessToken } from "@/authentication/token/types/access-token.type";
 import { Inject } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { AccessToken } from "../../../../authentication/token/types";
 
 export class JwtAuthStrategy extends PassportStrategy(Strategy, 'jwt-auth') {
     constructor(

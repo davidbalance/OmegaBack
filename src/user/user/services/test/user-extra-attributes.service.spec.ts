@@ -2,9 +2,9 @@ import { TestBed } from '@automock/jest';
 import { UserRepository } from '../../repositories/user.repository';
 import { mockUser } from './stub/user-management.stub';
 import { UserExtraAttributeRepository } from '../../repositories/user-extra-attribute.repository';
-import { POSTUserExtraAttributeRequestDto } from '../../dtos/post.user-extra-attribute.dto';
 import { UserExtraAttributeService } from '../user-extra-attributes.service';
 import { mockUserAttribute } from './stub/user-extra-attribute.stub';
+import { PostUserExtraAttributeRequestDto } from '../../dtos/request/post.user-extra-attribute.request.dto';
 
 describe('User Extra Attribute Service', () => {
     let service: UserExtraAttributeService;
@@ -25,7 +25,7 @@ describe('User Extra Attribute Service', () => {
 
         const mockedUser = mockUser();
 
-        const mockDto: POSTUserExtraAttributeRequestDto = {
+        const mockDto: PostUserExtraAttributeRequestDto = {
             name: 'my-stub-attribute',
             value: 'My attribute value'
         };
@@ -80,6 +80,7 @@ describe('User Extra Attribute Service', () => {
 
             attributeRepository.query.mockReturnValue({
                 leftJoin: jest.fn().mockReturnThis(),
+                andWhere: jest.fn().mockReturnThis(),
                 where: jest.fn().mockReturnThis(),
                 getOne: jest.fn().mockResolvedValueOnce(mockUserAttribute),
             } as any);

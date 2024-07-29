@@ -1,9 +1,5 @@
 import { TestBed } from "@automock/jest";
 import { DiseaseRepository } from "../../repositories/disease.repository";
-import { DiseaseGroupManagementService } from "@/disease/disease-group/services/disease-group-management.service";
-import { mockDiseaseGroup } from "@/disease/disease-group/services/test/stub/disease-group.stub";
-import { PATCHDiseaseRequestDto, POSTDiseaseRequestDto } from "../../dtos/disease.request.dto";
-import { mockDisease, mockDiseases } from "./stub/disease.stub";
 import { DiseaseSelectorService } from "../disease-selector.service";
 import { mockDiseaseSelectorOptions } from "./stub/disease-selector.stub";
 

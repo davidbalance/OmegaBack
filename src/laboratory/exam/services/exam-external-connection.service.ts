@@ -2,52 +2,66 @@ import { Inject, Injectable } from "@nestjs/common";
 import { Exam } from "../entities/exam.entity";
 import { ExamRepository } from "../repositories/exam.repository";
 import { ExamExternalKeyService } from "./exam-external-key.service";
-import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
-import { PATCHExamRequestDto } from "../dtos/patch.exam.dto";
-import { POSTExamRequestDto } from "../dtos/post.exam.dto";
+import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
+import { PostExamExternalRequestDto } from "../dtos/request/post.exam-external.request.dto";
+import { PatchExamRequestDto } from "../dtos/request/patch.exam.request.dto";
+import { INJECT_EXAM_SUBTYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-subtype/services/exam-subtype-external-connection.service";
+import { PostExamSubtypeRequestDto } from "@/laboratory/exam-subtype/dtos/request/post.exam-subtype.dto";
+import { ExamSubtype } from "@/laboratory/exam-subtype/entities/exam-subtype.entity";
+import { INJECT_EXAM_TYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-type/services/exam-type-external-connection.service";
+import { PostExamTypeRequestDto } from "@/laboratory/exam-type/dtos/request/post.exam-type.dto";
+import { ExamType } from "@/laboratory/exam-type/entities/exam-type.entity";
 
-type POSTRequest = POSTExamRequestDto & { source: string };
-type ExternalKeyParam = { key: string, source: string };
-type RequestType = POSTRequest | PATCHExamRequestDto;
+type ConnectionRequestType = PostExamExternalRequestDto | PatchExamRequestDto;
 
 @Injectable()
-export class ExamExternalConnectionService implements IExternalConnectionService<RequestType, Exam> {
+export class ExamExternalConnectionService implements IExternalConnectionService<ConnectionRequestType, Exam> {
 
     constructor(
         @Inject(ExamExternalKeyService) private readonly externalKeyService: ExamExternalKeyService,
-        @Inject(ExamRepository) private readonly repository: ExamRepository
+        @Inject(ExamRepository) private readonly repository: ExamRepository,
+        @Inject(INJECT_EXAM_SUBTYPE_EXTERNAL_CONNECTION) private readonly subtypeService: IExternalConnectionService<PostExamSubtypeRequestDto, ExamSubtype>,
+        @Inject(INJECT_EXAM_TYPE_EXTERNAL_CONNECTION) private readonly typeService: IExternalConnectionService<PostExamTypeRequestDto, ExamType>,
     ) { }
 
-    async create({ key, source, ...exam }: POSTRequest): Promise<Exam> {
-        const newKey = await this.externalKeyService.create({ key, source });
+    async findOne(key: ExternalKeyParam | any): Promise<Exam> {
+        throw new Error("Method not implemented.");
+    }
+
+    async create(key: ExternalKeyParam, { type, subtype, ...data }: PostExamExternalRequestDto): Promise<Exam> {
+        const { key: typeKey, ...typeData } = type;
+        let foundType = await this.typeService.findOneOrCreate({ key: typeKey, source: key.source }, typeData);
+        let foundSubtype: ExamSubtype;
+        if (subtype) {
+            const { key: subtypeKey, ...subtypeData } = subtype;
+            foundSubtype = await this.subtypeService.findOneOrCreate({ source: key.source, key: subtypeKey }, { ...subtypeData, type: foundType.id });
+        } else {
+            foundSubtype = await this.subtypeService.findOneOrCreate({ source: key.source, key: key.source }, { name: 'default', type: foundType.id });
+        }
+
+        const newKey = await this.externalKeyService.create(key);
         try {
-            const newExam = await this.repository.create({ ...exam, externalKey: newKey });
+            const newExam = await this.repository.create({ ...data, externalKey: newKey, subtype: foundSubtype });
             return newExam;
         } catch (error) {
-            await this.externalKeyService.remove({ source, key })
+            await this.externalKeyService.remove(key);
             throw error;
         }
     }
 
-    async findOneOrCreate({ key, source, ...exam }: POSTRequest): Promise<Exam> {
+    async findOneOrCreate(key: ExternalKeyParam | any, body: PostExamExternalRequestDto): Promise<Exam> {
         try {
             const foundExam = await this.repository.findOne({
-                where: { externalKey: { key: key, source: source } }
+                where: { externalKey: key }
             });
             return foundExam;
         } catch (error) {
-            return this.create({ key, source, ...exam });
+            return this.create(key, body);
         }
     }
 
-    async findOneAndUpdate(
-        { key, source }: ExternalKeyParam,
-        { ...data }: PATCHExamRequestDto
-    ): Promise<Exam> {
-        const foundExam = await this.repository.findOneAndUpdate({
-            externalKey: { key: key, source: source }
-        }, data);
+    async findOneAndUpdate(key: ExternalKeyParam, data: PatchExamRequestDto): Promise<Exam> {
+        const foundExam = await this.repository.findOneAndUpdate({ externalKey: key }, data);
         return foundExam;
-
     }
 }

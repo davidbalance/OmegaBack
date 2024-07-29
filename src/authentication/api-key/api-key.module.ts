@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ApiKeyService } from './api-key.service';
-import { ApiKeyController } from './api-key.controller';
+import { ApiKeyManagementService } from './services/api-key-management.service';
 import { SqlDatabaseModule } from '@/shared/sql-database';
 import { ApiKey } from './entities/api-key.entity';
-import { ApiKeyRepository } from './api-key.repository';
+import { ApiKeyRepository } from './repositories/api-key.repository';
 import { UserCredentialModule } from '../user-credential/user-credential.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { ApiKeyValidatorService } from './services/api-key-validator.service';
+import { ApiKeyManagementController } from './controllers/api-key-management.controller';
 
 @Module({
   imports: [
@@ -13,11 +14,17 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
     UserCredentialModule,
     AuthenticationGuardModule,
   ],
-  controllers: [ApiKeyController],
-  providers: [
-    ApiKeyService,
-    ApiKeyRepository,
+  controllers: [
+    ApiKeyManagementController
   ],
-  exports: [ApiKeyService]
+  providers: [
+    ApiKeyRepository,
+    ApiKeyManagementService,
+    ApiKeyValidatorService,
+  ],
+  exports: [
+    ApiKeyManagementService,
+    ApiKeyValidatorService
+  ]
 })
 export class ApiKeyModule { }

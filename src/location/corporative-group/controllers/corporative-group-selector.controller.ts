@@ -3,7 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { CorporativeGroupSelectorService } from '../services/corporative-group-selector.service';
-import { GETSelectorOptionArrayResponseDto } from '../dtos/get.corporative-group-selector.dto';
+import { GetCorporativeGroupSelectorOptionArrayResponseDto } from '../dtos/response/get.corporative-group-selector-response.dto';
 
 @ApiTags('Location/Corporative/Group', 'Selector')
 @ApiBearerAuth()
@@ -15,8 +15,8 @@ export class CorporativeGroupSelectorController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findSelectorOptions(): Promise<GETSelectorOptionArrayResponseDto> {
+  async findSelectorOptions(): Promise<GetCorporativeGroupSelectorOptionArrayResponseDto> {
     const options = await this.service.find();
-    return plainToInstance(GETSelectorOptionArrayResponseDto, { options });
+    return plainToInstance(GetCorporativeGroupSelectorOptionArrayResponseDto, { options });
   }
 }

@@ -1,17 +1,16 @@
 export const CredentialEvent = {
-    CREATE: 'credential.create',
-    REMOVE: 'credential.remove'
+    ON_CREATE: 'credential.on.create',
+    ON_REMOVE: 'credential.on.remove'
 }
 
-export class CredentialCreateEvent {
+export class OnCredentialCreateEvent {
     constructor(
         public readonly id: number
     ) { }
 }
 
-export class CredentialRemoveEvent {
+export class OnCredentialRemoveEvent {
     constructor(
-        public readonly id: number,
-        public readonly email: string
+        public readonly id: number
     ) { }
 }

@@ -1,7 +1,5 @@
-export interface FindFilePathService<K> {
-    getpath(key: K): string | Promise<string>;
-}
-
-export interface RemoveFileService<K> {
+export interface FileManagementService<K> {
+    getFilePath(key: K): string | Promise<string>;
+    uploadFile(key: K, file: Express.Multer.File): string | Promise<string>;
     removeFile(key: K): boolean | Promise<boolean>;
 }
