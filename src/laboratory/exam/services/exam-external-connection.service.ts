@@ -6,7 +6,7 @@ import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bas
 import { PostExamExternalRequestDto } from "../dtos/request/post.exam-external.request.dto";
 import { PatchExamRequestDto } from "../dtos/request/patch.exam.request.dto";
 import { INJECT_EXAM_SUBTYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-subtype/services/exam-subtype-external-connection.service";
-import { PostExamSubtypeRequestDto } from "@/laboratory/exam-subtype/dto/request/post.exam-subtype.dto";
+import { PostExamSubtypeRequestDto } from "@/laboratory/exam-subtype/dtos/request/post.exam-subtype.dto";
 import { ExamSubtype } from "@/laboratory/exam-subtype/entities/exam-subtype.entity";
 import { INJECT_EXAM_TYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-type/services/exam-type-external-connection.service";
 import { PostExamTypeRequestDto } from "@/laboratory/exam-type/dtos/request/post.exam-type.dto";

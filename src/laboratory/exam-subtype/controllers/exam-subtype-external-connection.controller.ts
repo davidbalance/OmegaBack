@@ -3,11 +3,11 @@ import { Controller, Inject, UseGuards, Post, Param, Body, Patch } from "@nestjs
 import { ApiTags, ApiHeader } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ExamSubtypeExternalConnectionService } from "../services/exam-subtype-external-connection.service";
-import { PostExamSubtypeRequestDto } from "../dto/request/post.exam-subtype.dto";
-import { PostExamSubtypeResponseDto } from "../dto/response/post.exam-subtype.response.dto";
-import { PatchExamSubtypeRequestDto } from "../dto/request/patch.exam-subtype.dto";
-import { PatchExamSubtypeResponseDto } from "../dto/response/patch.exam-subtype.response.dto";
-import { PatchExamSubtypeExternalRequestDto } from "../dto/request/patch.exam-subtype-external.dto";
+import { PostExamSubtypeRequestDto } from "../dtos/request/post.exam-subtype.dto";
+import { PostExamSubtypeResponseDto } from "../dtos/response/post.exam-subtype.response.dto";
+import { PatchExamSubtypeRequestDto } from "../dtos/request/patch.exam-subtype.dto";
+import { PatchExamSubtypeResponseDto } from "../dtos/response/patch.exam-subtype.response.dto";
+import { PatchExamSubtypeExternalRequestDto } from "../dtos/request/patch.exam-subtype-external.dto";
 
 @ApiTags('External/Connection', 'Laboratory/Exam/Subtype')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })

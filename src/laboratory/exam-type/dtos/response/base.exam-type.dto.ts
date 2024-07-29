@@ -1,4 +1,4 @@
-import { ExamSubtypeResponseDto } from "@/laboratory/exam-subtype/dto/response/base.exam-subtype.response.dto";
+import { ExamSubtypeResponseDto } from "@/laboratory/exam-subtype/dtos/response/base.exam-subtype.response.dto";
 import { ExamSubtype } from "@/laboratory/exam-subtype/entities/exam-subtype.entity";
 import { Expose, Type } from "class-transformer";
 

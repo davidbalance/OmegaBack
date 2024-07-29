@@ -2,14 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, UseGuards } 
 import { ExamSubtypeManagementService } from '../services/exam-subtype-management.service';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { PostExamSubtypeRequestDto } from '../dto/request/post.exam-subtype.dto';
-import { PostExamSubtypeResponseDto } from '../dto/response/post.exam-subtype.response.dto';
-import { GetExamSubtypeArrayResponseDto } from '../dto/response/get.exam-subtype-array.response.dto';
-import { GetExamSubtypeResponseDto } from '../dto/response/get.exam-subtype.response.dto';
+import { PostExamSubtypeRequestDto } from '../dtos/request/post.exam-subtype.dto';
+import { PostExamSubtypeResponseDto } from '../dtos/response/post.exam-subtype.response.dto';
+import { GetExamSubtypeArrayResponseDto } from '../dtos/response/get.exam-subtype-array.response.dto';
+import { GetExamSubtypeResponseDto } from '../dtos/response/get.exam-subtype.response.dto';
 import { plainToInstance } from 'class-transformer';
-import { PatchExamSubtypeRequestDto } from '../dto/request/patch.exam-subtype.dto';
-import { PatchExamSubtypeResponseDto } from '../dto/response/patch.exam-subtype.response.dto';
-import { DeleteExamSubtypeResponseDto } from '../dto/response/delete.exam-subtype.response.dto';
+import { PatchExamSubtypeRequestDto } from '../dtos/request/patch.exam-subtype.dto';
+import { PatchExamSubtypeResponseDto } from '../dtos/response/patch.exam-subtype.response.dto';
+import { DeleteExamSubtypeResponseDto } from '../dtos/response/delete.exam-subtype.response.dto';
 
 @ApiTags('Laboratory/Exam/Subtype')
 @ApiBearerAuth()

@@ -6,9 +6,9 @@ import { TestBed } from "@automock/jest";
 import { mockExamSubtypeExternalKey } from "./stub/exam-subtype-external-key.stub";
 import { mockExamType } from "@/laboratory/exam-type/services/test/stub/exam-type.stub";
 import { mockExamsSubtype } from "./stub/exam-subtype.stub";
-import { PostExamSubtypeRequestDto } from "../../dto/request/post.exam-subtype.dto";
+import { PostExamSubtypeRequestDto } from "../../dtos/request/post.exam-subtype.dto";
 import { NotFoundException } from "@nestjs/common";
-import { PatchExamSubtypeExternalRequestDto } from "../../dto/request/patch.exam-subtype-external.dto";
+import { PatchExamSubtypeExternalRequestDto } from "../../dtos/request/patch.exam-subtype-external.dto";
 
 describe('ExamSubtypeExternalConnectionService', () => {
     let service: ExamSubtypeExternalConnectionService;

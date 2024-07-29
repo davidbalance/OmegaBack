@@ -1,4 +1,4 @@
-import { PostExamSubtypeWithKeyRequestDto } from "@/laboratory/exam-subtype/dto/request/post.exam-subtype-with-key.dto";
+import { PostExamSubtypeWithKeyRequestDto } from "@/laboratory/exam-subtype/dtos/request/post.exam-subtype-with-key.dto";
 import { PostExamRequestDto } from "./post.exam.request.dto";
 import { PostExamTypeWithKeyRequestDto } from "@/laboratory/exam-type/dtos/request/post.exam-type-with-key.dto";
 import { Type } from "class-transformer";

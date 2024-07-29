@@ -7,7 +7,7 @@ import { mockExam } from "./stub/exam.stub";
 import { NotFoundException } from "@nestjs/common";
 import { PostExamExternalRequestDto } from "../../dtos/request/post.exam-external.request.dto";
 import { mockExamType } from "@/laboratory/exam-type/services/test/stub/exam-type.stub";
-import { PostExamSubtypeRequestDto } from "@/laboratory/exam-subtype/dto/request/post.exam-subtype.dto";
+import { PostExamSubtypeRequestDto } from "@/laboratory/exam-subtype/dtos/request/post.exam-subtype.dto";
 import { ExamSubtype } from "@/laboratory/exam-subtype/entities/exam-subtype.entity";
 import { PostExamTypeRequestDto } from "@/laboratory/exam-type/dtos/request/post.exam-type.dto";
 import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";

@@ -3,10 +3,10 @@ import { ExamSubtypeRepository } from '../repositories/exam-subtype.repository';
 import { ExamTypeManagementService } from '@/laboratory/exam-type/services/exam-type-management.service';
 import { ExamSubtype } from '../entities/exam-subtype.entity';
 import { ExternalKeyParam, IExternalConnectionService } from '@/shared/utils/bases/base.external-connection';
-import { PatchExamSubtypeRequestDto } from '../dto/request/patch.exam-subtype.dto';
-import { PostExamSubtypeRequestDto } from '../dto/request/post.exam-subtype.dto';
+import { PatchExamSubtypeRequestDto } from '../dtos/request/patch.exam-subtype.dto';
+import { PostExamSubtypeRequestDto } from '../dtos/request/post.exam-subtype.dto';
 import { ExamSubtypeExternalKeyService } from './exam-subtype-external-key.service';
-import { PatchExamSubtypeExternalRequestDto } from '../dto/request/patch.exam-subtype-external.dto';
+import { PatchExamSubtypeExternalRequestDto } from '../dtos/request/patch.exam-subtype-external.dto';
 
 type ConnectionRequestType = PostExamSubtypeRequestDto | PatchExamSubtypeRequestDto;
 
