@@ -1,4 +1,4 @@
-import { AbstractRepository } from "@/shared";
+import { AbstractRepository } from "@/shared/sql-database";
 import { Injectable, Logger } from "@nestjs/common";
 import { SendAttribute } from "./entities/send-attribute.entity";
 import { FindOptionsWhere, Repository } from "typeorm";
@@ -12,10 +12,5 @@ export class SendAttributeRepository extends AbstractRepository<number, SendAttr
         @InjectRepository(SendAttribute) private readonly attributeModel: Repository<SendAttribute>
     ) {
         super(attributeModel);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findOneAndDelete(_filterOptions: FindOptionsWhere<SendAttribute>): void | Promise<void> {
-        throw new Error("Method not implemented.");
     }
 }

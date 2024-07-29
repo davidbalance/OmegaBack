@@ -1,36 +1,40 @@
 import { Module } from '@nestjs/common';
-import { CorporativeGroupService } from './services/corporative-group.service';
+import { CorporativeGroupManagementService } from './services/corporative-group-management.service';
 import { CorporativeGroup } from './entities/corporative-group.entity';
-import { SqlDatabaseModule } from 'src/shared';
-import { CorporativeGroupRepository } from './corporative-group.repository';
-import { ExternalKeyModule } from './external-key/external-key.module';
+import { SqlDatabaseModule } from '@/shared/sql-database';
+import { CorporativeGroupRepository } from './repositories/corporative-group.repository';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { CorporativeGroupController } from './controllers/corporative-group.controller';
-import { ExternalConnectionController } from './controllers/external-connection.controller';
-import { SelectorController } from './controllers/selector.controller';
-import { SelectorService } from './services/selector.service';
-import { ExternalConnectionService } from './services/external-connection.service';
+import { CorporativeGroupSelectorService } from './services/corporative-group-selector.service';
+import { CorporativeGroupExternalKey } from './entities/corporative-group-external-key.entity';
+import { CorporativeGroupExternalConnectionProvider, CorporativeGroupExternalConnectionService } from './services/corporative-group-external-connection.service';
+import { CorporativeGroupManagementController } from './controllers/corporative-group-management.controller';
+import { CorporativeGroupSelectorController } from './controllers/corporative-group-selector.controller';
+import { CorporativeGroupExternalConnectionController } from './controllers/corporative-group-external-connection.controller';
+import { CorporativeGroupExternalKeyService } from './services/corporative-group-external-key.service';
+import { CorporativeGroupExternalKeyRepository } from './repositories/corporative-group-external-key.repository';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([CorporativeGroup]),
-    ExternalKeyModule,
+    SqlDatabaseModule.forFeature([CorporativeGroup, CorporativeGroupExternalKey]),
     AuthenticationGuardModule,
   ],
   controllers: [
-    CorporativeGroupController,
-    ExternalConnectionController,
-    SelectorController
+    CorporativeGroupManagementController,
+    CorporativeGroupExternalConnectionController,
+    CorporativeGroupSelectorController
   ],
   providers: [
-    SelectorService,
-    CorporativeGroupService,
+    CorporativeGroupSelectorService,
+    CorporativeGroupManagementService,
     CorporativeGroupRepository,
-    ExternalConnectionService
+    CorporativeGroupExternalKeyRepository,
+    CorporativeGroupExternalKeyService,
+    CorporativeGroupExternalConnectionService,
+    CorporativeGroupExternalConnectionProvider
   ],
   exports: [
-    CorporativeGroupService,
-    ExternalConnectionService
+    CorporativeGroupManagementService,
+    CorporativeGroupExternalConnectionProvider
   ]
 })
 export class CorporativeGroupModule { }

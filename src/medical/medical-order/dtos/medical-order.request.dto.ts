@@ -1,6 +1,5 @@
-
-import { POSTBranchRequestDto } from "@/location/branch/dtos/branch.request.dto";
-import { POSTPatientRequestDto } from "@/user/patient/dtos/patient.request.dto";
+import { POSTBranchRequestDto } from "@/location/branch/dtos/post.branch.dto";
+import { POSTPatientRequestDto } from "@/user/patient/dtos/post.patient-management,dto";
 import { Transform, Type } from "class-transformer";
 import { IsDefined, IsEmail, IsEnum, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
 

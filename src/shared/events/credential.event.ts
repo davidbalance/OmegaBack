@@ -5,12 +5,13 @@ export const CredentialEvent = {
 
 export class CredentialCreateEvent {
     constructor(
-        public readonly createEvent: { id: number }
+        public readonly id: number
     ) { }
 }
 
 export class CredentialRemoveEvent {
     constructor(
-        public readonly removeEvent: { id: number, email: string }
+        public readonly id: number,
+        public readonly email: string
     ) { }
 }

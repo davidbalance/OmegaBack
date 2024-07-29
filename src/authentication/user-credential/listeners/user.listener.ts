@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { UserCredentialRepository } from "../user-credential.repository";
-import { UserEvent, UserRemoveEvent, UserUpdateEvent } from "@/shared";
 import { OnEvent } from "@nestjs/event-emitter";
+import { UserEvent, UserUpdateEvent, UserRemoveEvent } from "@/shared/events";
 
 @Injectable()
 export class UserListener {

@@ -1,38 +1,39 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { UserExtraAttributeRepository } from "../repositories/user-extra-attribute.repository";
 import { UserExtraAttribute } from "../entities/user-extra-attribute.entity";
+import { POSTUserExtraAttributeRequestDto } from "../dtos/post.user-extra-attribute.dto";
+import { UserRepository } from "../repositories/user.repository";
 
 @Injectable()
 export class UserExtraAttributeService {
-    constructor(@Inject(UserExtraAttributeRepository) private readonly repository: UserExtraAttributeRepository) { }
+    constructor(
+        @Inject(UserRepository) private readonly userRepository: UserRepository,
+        @Inject(UserExtraAttributeRepository) private readonly attributeRepository: UserExtraAttributeRepository
+    ) { }
 
-    /**
-     * Crea un atributo extra.
-     * @param name 
-     * @param value 
-     * @returns 
-     */
-    async create(name: string, value: string): Promise<UserExtraAttribute> {
-        const extraAttribute = this.repository.create({ name, value });
-        return extraAttribute;
+    async assignAttribute(id: number, attribute: POSTUserExtraAttributeRequestDto): Promise<void> {
+        const user = await this.userRepository.findOne({
+            where: { id },
+            relations: { extraAttributes: true }
+        });
+        const selectedAttribute = user.extraAttributes.find((e) => e.name === attribute.name);
+        if (selectedAttribute) {
+            await this.attributeRepository.findOneAndUpdate({ id: selectedAttribute.id }, { value: attribute.value });
+        } else {
+            await this.attributeRepository.create({ ...attribute, user: user });
+        }
     }
 
-    /**
-     * Actualiza un atributo extra.
-     * @param id 
-     * @param value 
-     * @returns 
-     */
-    async update(id: number, value: string): Promise<UserExtraAttribute> {
-        const extraAttribute = this.repository.findOneAndUpdate({ id }, { value });
-        return extraAttribute;
+    async findUserAttribute(id: number, name: string): Promise<UserExtraAttribute> {
+        const foundAttribute = await this.attributeRepository
+            .query('attribute')
+            .leftJoin('attribute.user', 'user', 'user.id = :id', { id: id })
+            .where('attribute = :name', { name: name })
+            .getOne();
+        return foundAttribute;
     }
 
-    /**
-     * Elimina un atributo extra.
-     * @param id 
-     */
     async delete(id: number): Promise<void> {
-        this.repository.findOneAndDelete({ id });
+        this.attributeRepository.findOneAndDelete({ id });
     }
 }

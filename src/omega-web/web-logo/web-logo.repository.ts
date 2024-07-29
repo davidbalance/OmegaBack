@@ -1,4 +1,4 @@
-import { AbstractRepository } from "@/shared";
+import { AbstractRepository } from "@/shared/sql-database";
 import { Injectable, Logger } from "@nestjs/common";
 import { WebLogo } from "./entities/web-logo.entity";
 import { FindOptionsWhere, Repository } from "typeorm";
@@ -14,11 +14,6 @@ export class WebLogoRepository
         @InjectRepository(WebLogo) private readonly logoModel: Repository<WebLogo>
     ) {
         super(logoModel);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findOneAndDelete(_filterOptions: FindOptionsWhere<WebLogo>): void | Promise<void> {
-        throw new Error("Method not implemented.");
     }
 
 }

@@ -32,3 +32,6 @@ export abstract class StorageManager {
      */
     abstract deleteFile(dir: string): boolean | Promise<boolean>;
 }
+
+
+export const INJECT_STORAGE_MANAGER = typeof StorageManager;

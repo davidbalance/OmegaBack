@@ -1,12 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { OrderEvent, OrderFindOrCreateBranchEvent, OrderFindOrCreatePatientEvent } from "@/shared";
 import { ExternalKeyService } from "../external-key/external-key.service";
 import { MedicalOrderRepository } from "../medical-order.repository";
 import { MedicalOrder } from "../entities/medical-order.entity";
 import { MedicalClientService } from "@/medical/medical-client/medical-client.service";
 import { PATCHMedicalOrderProcessRequestDto, POSTMedicalOrderExternalConnectionRequestDto } from "../dtos/medical-order-external-connection.request.dto";
 import { POSTMedicalOrderRequestDto } from "../dtos/medical-order.request.dto";
+import { OrderEvent, OrderFindOrCreatePatientEvent, OrderFindOrCreateBranchEvent } from "@/shared/events";
 
 @Injectable()
 export class ExternalConnectionService {

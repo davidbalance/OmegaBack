@@ -1,8 +1,8 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { AbstractRepository } from "src/shared";
 import { Patient } from "./entities/patient.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindManyOptions, FindOptionsWhere, Repository } from "typeorm";
+import { AbstractRepository } from "@/shared/sql-database";
 
 @Injectable()
 export class PatientRepository
@@ -18,9 +18,5 @@ export class PatientRepository
 
     async count(filterOptions: FindManyOptions<Patient>): Promise<number> {
         return this.patientModel.count(filterOptions);
-    }
-
-    findOneAndDelete(_filterOptions: FindOptionsWhere<Patient>): void | Promise<void> {
-        throw new Error("Method not implemented.");
     }
 }

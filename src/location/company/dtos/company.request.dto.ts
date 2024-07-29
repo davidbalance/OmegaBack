@@ -1,6 +1,7 @@
-import { POSTCorporativeGroupRequestDto } from "@/location/corporative-group/dtos/corporative-group.request.dto";
+import { POSTCorporativeGroupRequestDto } from "@/location/corporative-group/dtos/post.corporative-group.dto";
+import { ExternalConnectionRequest } from "@/shared/utils/bases/base.external-connection";
 import { Type } from "class-transformer";
-import { IsDefined, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, ValidateNested } from "class-validator";
+import { IsDefined, IsEmpty, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, ValidateNested } from "class-validator";
 
 export class POSTCompanyRequestDto {
     @IsString()
@@ -44,4 +45,13 @@ export class PATCHCompanyRequestDto {
     @IsString()
     @IsNotEmpty()
     public readonly phone: string;
+}
+
+
+export class POSTCompanyRequestExternalConnectionDto
+    extends POSTCompanyRequestDto
+    implements ExternalConnectionRequest {
+    @IsString()
+    @IsEmpty()
+    public readonly source: string;
 }

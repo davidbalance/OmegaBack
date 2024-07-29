@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { CredentialCreateEvent, CredentialEvent } from "@/shared";
 import { OnEvent } from "@nestjs/event-emitter";
 import { WebClientRepository } from "../web-client.repository";
+import { CredentialCreateEvent, CredentialEvent } from "@/shared/events";
 
 @Injectable()
 export class CredentialListener {
@@ -10,8 +10,7 @@ export class CredentialListener {
     ) { }
 
     @OnEvent(CredentialEvent.CREATE)
-    async createWebClient({ createEvent }: CredentialCreateEvent): Promise<void> {
-        const { id } = createEvent;
+    async createWebClient({ id }: CredentialCreateEvent): Promise<void> {
         await this.repository.create({ user: id });
     }
 }

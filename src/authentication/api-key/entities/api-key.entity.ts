@@ -1,5 +1,5 @@
 import { UserCredential } from "@/authentication/user-credential/entities/user-credential.entity";
-import { AbstractEntity } from "@/shared";
+import { AbstractEntity } from "@/shared/sql-database";
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_auth_api_keys' })

@@ -1,4 +1,4 @@
-import { AbstractRepository } from "@/shared";
+import { AbstractRepository } from "@/shared/sql-database";
 import { Injectable, Logger } from "@nestjs/common";
 import { MedicalClient } from "../entities/medical-client.entity";
 import { FindOptionsWhere, Repository } from "typeorm";
@@ -13,9 +13,5 @@ export class MedicalClientRepository extends AbstractRepository<number, MedicalC
         @InjectRepository(MedicalClient) private readonly repo: Repository<MedicalClient>
     ) {
         super(repo);
-    }
-
-    findOneAndDelete(filterOptions: FindOptionsWhere<MedicalClient>): void | Promise<void> {
-        throw new Error("Method not implemented.");
     }
 }

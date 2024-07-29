@@ -1,4 +1,4 @@
-import { GETBranchResponseDto } from "@/location/branch/dtos/branch.response.dto";
+import { GETBranchResponseDto } from "@/location/branch/dtos/get.branch.dto";
 import { Expose, Type } from "class-transformer";
 
 export class GETCompanyResponseDto {

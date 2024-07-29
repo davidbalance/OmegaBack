@@ -1,5 +1,5 @@
 import { WebClient } from "@/omega-web/web-client/entities/web-client.entity";
-import { AbstractEntity } from "@/shared";
+import { AbstractEntity } from "@/shared/sql-database";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_ow_logos' })

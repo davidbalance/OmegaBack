@@ -1,36 +1,41 @@
 import { Module } from '@nestjs/common';
 import { Company } from './entities/company.entity';
-import { SqlDatabaseModule } from 'src/shared';
-import { CompanyRepository } from './company.repository';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { CorporativeGroupModule } from '../corporative-group/corporative-group.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { ExternalKeyModule } from './external-key/external-key.module';
-import { CompanyService } from './services/company.service';
-import { ExternalConnectionService } from './services/external-connection.service';
-import { ExternalConnectionController } from './controllers/external-connection.controller';
-import { SelectorController } from './controllers/selector.controller';
-import { SelectorService } from './services/selector.service';
+import { CompanyManagementService } from './services/company-management.service';
+import { CompanyExternalConnectionController } from './controllers/company-external-connection.controller';
+import { CompanySelectorController } from './controllers/company-selector.controller';
+import { CompanySelectorService } from './services/company-selector.service';
+import { CompanyRepository } from './repositories/company.repository';
+import { CompanyExternalConnectionProvider, CompanyExternalConnectionService } from './services/company-external-connection.service';
+import { CompanyExternalKey } from './entities/company-external-key.entity';
+import { CompanyExternalKeyService } from './services/company-external-key.service';
+import { CompanyExternalKeyRepository } from './repositories/company-external-key.repository';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([Company]),
-    ExternalKeyModule,
+    SqlDatabaseModule.forFeature([Company, CompanyExternalKey]),
     CorporativeGroupModule,
     AuthenticationGuardModule,
   ],
   controllers: [
-    SelectorController,
-    ExternalConnectionController
+    CompanySelectorController,
+    CompanyExternalConnectionController
   ],
   providers: [
-    CompanyService,
-    SelectorService,
+    CompanyManagementService,
+    CompanySelectorService,
     CompanyRepository,
-    ExternalConnectionService
+    CompanyExternalKeyService,
+    CompanyExternalKeyRepository,
+    CompanyExternalConnectionService,
+    CompanyExternalConnectionProvider
   ],
   exports: [
-    CompanyService,
-    ExternalConnectionService
+    CompanyManagementService,
+    CompanyExternalConnectionService,
+    CompanyExternalConnectionProvider
   ]
 })
 export class CompanyModule { }

@@ -1,15 +1,17 @@
 import { Module } from '@nestjs/common';
-import { SqlDatabaseModule } from 'src/shared';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Doctor } from './entities/doctor.entity';
-import { DoctorRepository } from './doctor.repository';
 import { UserModule } from '../user/user.module';
 import { LocalStorageModule } from '@/shared/storage-manager';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { DoctorController } from './controllers/doctor.controller';
-import { DoctorService } from './services/doctor.service';
-import { ExternalConnectionController } from './controllers/external-connection.controller';
-import { ExternalConnectionService } from './services/external-connection.service';
-import { MedicalResultListener } from './listener/medical-result.listener';
+import { DoctorExternalConnectionController } from './controllers/doctor-external-connection.controller';
+import { MedicalResultDoctorListener } from './listener/medical-result-doctor.listener';
+import { DoctorFileManagementService } from './services/doctor-file-management.service';
+import { DoctorManagementService } from './services/doctor-management.service';
+import { DoctorExternalConnectionService } from './services/doctor-external-connection.service';
+import { DoctorManagementController } from './controllers/doctor-management.controller';
+import { DoctorFileManagerController } from './controllers/doctor-file-manager.controller';
+import { DoctorRepository } from './repositories/doctor.repository';
 
 @Module({
   imports: [
@@ -19,15 +21,20 @@ import { MedicalResultListener } from './listener/medical-result.listener';
     AuthenticationGuardModule,
   ],
   controllers: [
-    DoctorController,
-    ExternalConnectionController
+    DoctorManagementController,
+    DoctorFileManagerController,
+    DoctorExternalConnectionController
   ],
   providers: [
-    DoctorService,
+    DoctorManagementService,
+    DoctorFileManagementService,
+    DoctorExternalConnectionService,
     DoctorRepository,
-    ExternalConnectionService,
-    MedicalResultListener,
+    MedicalResultDoctorListener,
   ],
-  exports: [DoctorService]
+  exports: [
+    DoctorManagementService,
+    DoctorFileManagementService
+  ]
 })
 export class DoctorModule { }

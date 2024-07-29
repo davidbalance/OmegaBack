@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CityService } from './services/city.service';
 import { City } from './entities/city.entity';
-import { SqlDatabaseModule } from 'src/shared';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { CityRepository } from './city.repository';
 import { SelectorController } from './controllers/selector.controller';
 import { SelectorService } from './services/selector.service';

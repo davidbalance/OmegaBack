@@ -1,4 +1,4 @@
-import { AbstractEntity } from "@/shared";
+import { AbstractEntity } from "@/shared/sql-database";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { MedicalEmail } from "./medical-email.entity";
 import { MedicalOrder } from "@/medical/medical-order/entities/medical-order.entity";

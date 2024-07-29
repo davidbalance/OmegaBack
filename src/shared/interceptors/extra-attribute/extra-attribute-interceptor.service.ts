@@ -1,10 +1,10 @@
-import { UserService } from "@/user/user/user.service";
+import { UserManagementService } from "@/user/user/services/user-management.service";
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class ExtraAttributeInterceptorService {
     constructor(
-        @Inject(UserService) private readonly userService: UserService
+        @Inject(UserManagementService) private readonly userService: UserManagementService
     ) { }
 
     async getExtraAttribute(id: number, attributeName: string): Promise<string> {

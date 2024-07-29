@@ -1,4 +1,4 @@
-import { AbstractRepository } from "@/shared";
+import { AbstractRepository } from "@/shared/sql-database";
 import { WebClient } from "./entities/web-client.entity";
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -13,10 +13,5 @@ export class WebClientRepository
         @InjectRepository(WebClient) private readonly clientModel: Repository<WebClient>
     ) {
         super(clientModel);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findOneAndDelete(_filterOptions: FindOptionsWhere<WebClient>): void | Promise<void> {
-        throw new Error("Method not implemented.");
     }
 }

@@ -1,17 +1,18 @@
 import { Module } from '@nestjs/common';
-import { SqlDatabaseModule } from 'src/shared';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Patient } from './entities/patient.entity';
 import { PatientRepository } from './patient.repository';
 import { UserModule } from '../user/user.module';
-import { PatientExternalConnectionController } from './controller/external-connection.controller';
+import { PatientExternalConnectionController } from './controller/patient-external-connection.controller';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { PatientController } from './controller/patient.controller';
-import { PatientService } from './service/patient.service';
-import { ExternalConnectionService } from './service/external-connection.service';
+import { EeqPatientPaginationService } from './service/eeq-patient-pagination.service';
+import { PatientPaginationService } from './service/patient-pagination.service';
 import { ExtraAttributeInterceptorModule } from '@/shared/interceptors/extra-attribute/extra-attribute-interceptor.module';
 import { OrderListener } from './listeners/order.listener';
-import { EeqPatientController } from './controller/eeq-patient.controller';
-import { EeqPatientService } from './service/eeq-patient.service';
+import { PatientExternalConnectionService } from './service/patient-external-connection.service';
+import { PatientManagementService } from './service/patient-management.service';
+import { PatientManagementController } from './controller/patient-management.controller';
+import { EeqPatientPaginationController } from './controller/eeq-patient-pagination.controller';
 
 @Module({
   imports: [
@@ -21,17 +22,20 @@ import { EeqPatientService } from './service/eeq-patient.service';
     ExtraAttributeInterceptorModule
   ],
   controllers: [
-    PatientController,
+    PatientManagementController,
     PatientExternalConnectionController,
-    EeqPatientController
+    EeqPatientPaginationController
   ],
   providers: [
-    PatientService,
-    EeqPatientService,
+    PatientManagementService,
+    PatientPaginationService,
+    EeqPatientPaginationService,
+    PatientExternalConnectionService,
     PatientRepository,
-    ExternalConnectionService,
     OrderListener,
   ],
-  exports: [PatientService]
+  exports: [
+    PatientManagementService
+  ]
 })
 export class PatientModule { }

@@ -1,4 +1,4 @@
-import { AbstractEntity } from "src/shared";
+import { AbstractEntity } from "@/shared/sql-database";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { SendAttribute } from "../send-attribute/entities/send-attribute.entity";
 

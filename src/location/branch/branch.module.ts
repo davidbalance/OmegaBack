@@ -1,37 +1,42 @@
-import { Module } from '@nestjs/common';
-import { Branch } from './entities/branch.entity';
-import { SqlDatabaseModule } from 'src/shared';
-import { BranchRepository } from './branch.repository';
-import { CompanyModule } from '../company/company.module';
-import { CityModule } from '../city/city.module';
-import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { SelectorController } from './controllers/selector.controller';
-import { ExternalConnectionController } from './controllers/external-connection.controller';
-import { BranchService } from './services/branch.service';
-import { ExternalConnectionService } from './services/external-connection.service';
-import { ExternalKeyModule } from './external-key/external-key.module';
-import { SelectorService } from './services/selector.service';
+import { Module } from "@nestjs/common";
+import { BranchManagementService } from "./services/branch-management.service";
+import { BranchExternalConnectionProvider, BranchExternalConnectionService } from "./services/branch-external-connection.service";
+import { BranchSelectorService } from "./services/branch-selector.service";
+import { BranchRepository } from "./repositories/branch.repository";
+import { BranchSelectorController } from "./controllers/branch-selector.controller";
+import { BranchExternalConnectionController } from "./controllers/branch-external-connection.controller";
+import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
+import { SqlDatabaseModule } from "@/shared/sql-database";
+import { CityModule } from "../city/city.module";
+import { CompanyModule } from "../company/company.module";
+import { BranchExternalKey } from "./entities/branch-external-key.entity";
+import { Branch } from "./entities/branch.entity";
+import { BranchExternalKeyService } from "./services/branch-external-key.service";
+import { BranchExternalKeyRepository } from "./repositories/branch-external-key.repository";
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([Branch]),
-    ExternalKeyModule,
+    SqlDatabaseModule.forFeature([Branch, BranchExternalKey]),
     CompanyModule,
     CityModule,
     AuthenticationGuardModule,
   ],
   controllers: [
-    SelectorController,
-    ExternalConnectionController,
+    BranchSelectorController,
+    BranchExternalConnectionController,
   ],
   providers: [
-    BranchService,
     BranchRepository,
-    ExternalConnectionService,
-    SelectorService
+    BranchExternalKeyRepository,
+    BranchSelectorService,
+    BranchManagementService,
+    BranchExternalKeyService,
+    BranchExternalConnectionService,
+    BranchExternalConnectionProvider
   ],
   exports: [
-    BranchService
+    BranchManagementService,
+    BranchExternalConnectionProvider
   ]
 })
 export class BranchModule { }

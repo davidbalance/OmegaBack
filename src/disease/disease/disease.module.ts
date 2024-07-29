@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { DiseaseService } from './services/disease.service';
-import { DiseaseController } from './controllers/disease.controller';
-import { SqlDatabaseModule } from 'src/shared';
+import { DiseaseManagementService } from './services/disease-management.service';
+import { DiseaseController } from './controllers/disease-management.controller';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Disease } from './entities/disease.entity';
-import { DiseaseRepository } from './disease.repository';
 import { DiseaseGroupModule } from '../disease-group/disease-group.module';
-import { SelectorController } from './controllers/selector.controller';
-import { SelectorService } from './services/selector.service';
+import { DiseaseSelectorController } from './controllers/disease-selector.controller';
+import { DiseaseSelectorService } from './services/disease-selector.service';
+import { DiseaseRepository } from './repositories/disease.repository';
 
 @Module({
   imports: [
@@ -15,13 +15,15 @@ import { SelectorService } from './services/selector.service';
   ],
   controllers: [
     DiseaseController,
-    SelectorController
+    DiseaseSelectorController
   ],
   providers: [
-    DiseaseService,
+    DiseaseManagementService,
     DiseaseRepository,
-    SelectorService,
+    DiseaseSelectorService,
   ],
-  exports: [DiseaseService]
+  exports: [
+    DiseaseManagementService
+  ]
 })
 export class DiseaseModule { }

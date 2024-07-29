@@ -1,4 +1,4 @@
-import { AbstractRepository } from "src/shared";
+import { AbstractRepository } from "@/shared/sql-database";
 import { Injectable, Logger } from "@nestjs/common";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -14,10 +14,5 @@ export class MedicalReportRepository
         @InjectRepository(MedicalReport) private readonly reportModel: Repository<MedicalReport>
     ) {
         super(reportModel);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    findOneAndDelete(_filterOptions: FindOptionsWhere<MedicalReport>): void | Promise<void> {
-        throw new Error("Method not implemented.");
     }
 }

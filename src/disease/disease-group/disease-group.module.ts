@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { DiseaseGroup } from './entities/disease-group.entity';
-import { SqlDatabaseModule } from 'src/shared';
-import { DiseaseGroupRepository } from './disease-group.repository';
+import { SqlDatabaseModule } from '@/shared/sql-database';
+import { DiseaseGroupRepository } from './repository/disease-group.repository';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { DiseaseGroupController } from './controllers/disease-group.controller';
-import { DiseaseGroupService } from './services/disease-group.service';
-import { SelectorController } from './controllers/selector.controller';
-import { SelectorService } from './services/selector.service';
+import { DiseaseGroupSelectorController } from './controllers/disease-group-selector.controller';
+import { DiseaseGroupManagementController } from './controllers/disease-group-management.controller';
+import { DiseaseGroupManagementService } from './services/disease-group-management.service';
+import { DiseaseGroupSelectorService } from './services/disease-group-selector.service';
 
 @Module({
   imports: [
@@ -14,14 +14,16 @@ import { SelectorService } from './services/selector.service';
     AuthenticationGuardModule
   ],
   controllers: [
-    DiseaseGroupController,
-    SelectorController
+    DiseaseGroupManagementController,
+    DiseaseGroupSelectorController
   ],
   providers: [
-    DiseaseGroupService,
-    SelectorService,
+    DiseaseGroupManagementService,
+    DiseaseGroupSelectorService,
     DiseaseGroupRepository
   ],
-  exports: [DiseaseGroupService]
+  exports: [
+    DiseaseGroupManagementService
+  ]
 })
 export class DiseaseGroupModule { }

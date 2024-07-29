@@ -1,30 +1,33 @@
-import { Module } from '@nestjs/common';
-import { SqlDatabaseModule } from 'src/shared';
-import { ExamRepository } from './exam.repository';
-import { Exam } from './entities/exam.entity';
-import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { ExternalConnectionController } from './controllers/external-connection.controller';
-import { SelectorService } from './services/selector.service';
-import { ExternalConnectionService } from './services/external-connection.service';
-import { MedicalResultListener } from './listeners/medical-result.listener';
-import { SelectorController } from './controllers/selector.controller';
-import { ExternalKeyModule } from './external-key/external-key.module';
+import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
+import { SqlDatabaseModule } from "@/shared/sql-database";
+import { Module } from "@nestjs/common";
+import { ExamExternalConnectionController } from "./controllers/exam-external-connection.controller";
+import { ExamSelectorController } from "./controllers/exam-selector.controller";
+import { ExamExternalKey } from "./entities/exam-external-key.entity";
+import { Exam } from "./entities/exam.entity";
+import { MedicalResultExamListener } from "./listeners/medical-result-exam.listener";
+import { ExamRepository } from "./repositories/exam.repository";
+import { ExamSelectorService } from "./services/exam-selector.service";
+import { ExamExternalKeyService } from "./services/exam-external-key.service";
+import { ExamExternalConnectionService } from "./services/exam-external-connection.service";
+import { ExamExternalKeyRepository } from "./repositories/exam-external-key.repository";
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([Exam]),
-    ExternalKeyModule,
+    SqlDatabaseModule.forFeature([Exam, ExamExternalKey]),
     AuthenticationGuardModule
   ],
   controllers: [
-    SelectorController,
-    ExternalConnectionController
+    ExamSelectorController,
+    ExamExternalConnectionController
   ],
   providers: [
     ExamRepository,
-    SelectorService,
-    ExternalConnectionService,
-    MedicalResultListener
+    ExamSelectorService,
+    MedicalResultExamListener,
+    ExamExternalKeyService,
+    ExamExternalKeyRepository,
+    ExamExternalConnectionService
   ]
 })
 export class ExamModule { }
