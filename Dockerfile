@@ -44,6 +44,8 @@ ENV APP_ENVIRONMENT production
 # RUN addgroup --system --gid 1001 node
 # RUN adduser --system --uid 1001 node
 
+RUN npx puppeteer browsers install chrome
+
 RUN mkdir medical-report-pdf
 RUN mkdir signatures
 RUN mkdir old-eeq
