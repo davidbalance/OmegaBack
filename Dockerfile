@@ -36,15 +36,36 @@ USER node
 
 # ------------------------------PRODUCTION STAGE------------------------------
 FROM node:22-alpine AS production
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat \
+    bash \
+    chromium \
+    nss \
+    freetype \
+    ttf-dejavu \
+    harfbuzz \
+    ca-certificates \
+    libx11 \
+    libxcomposite \
+    libxdamage \
+    libxrandr \
+    libxss \
+    libxtst \
+    libnss3 \
+    libatk \
+    libgtk-3 \
+    gdk-pixbuf \
+    alsa-lib \
+    udev \
+    libdrm \
+    libgbm
+
 WORKDIR /usr/src/app
 
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 ENV APP_ENVIRONMENT production
 
 # RUN addgroup --system --gid 1001 node
 # RUN adduser --system --uid 1001 node
-
-RUN npx puppeteer browsers install chrome
 
 RUN mkdir medical-report-pdf
 RUN mkdir signatures
