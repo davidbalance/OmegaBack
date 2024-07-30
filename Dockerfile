@@ -36,24 +36,13 @@ USER node
 
 # ------------------------------PRODUCTION STAGE------------------------------
 FROM node:22-alpine AS production
-RUN apk add --no-cache \
-libc6-compat \
-chromium \
-nss \
-freetype \
-ttf-dejavu \
-harfbuzz \
-ca-certificates \
-libx11 \
-libxcomposite \
-libxdamage \
-libxrandr \
-libxss \
-libxtst \
-libnss3 \
-libatk \
-libgtk-3 \
-gdk-pixbuf
+RUN apk add --no-cache libc6-compat \
+    chromium \
+    nss \
+    freetype \
+    ttf-freefont \
+    harfbuzz \
+    ca-certificates
 
 WORKDIR /usr/src/app
 
