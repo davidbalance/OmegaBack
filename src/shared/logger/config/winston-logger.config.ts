@@ -27,7 +27,6 @@ export class WinstonLoggerConfig implements WinstonModuleOptionsFactory {
         return {
             transports: [
                 this.consoleTransport(loggerFormat),
-                this.typeOrmTransport({ level: 'info', format: loggerFormat }),
                 this.typeOrmTransport({ level: 'warn', format: loggerFormat }),
                 this.typeOrmTransport({ level: 'error', format: loggerFormat }),
             ]

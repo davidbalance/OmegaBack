@@ -10,7 +10,7 @@ import { PatchWebClientLogoResponseDto } from '../dtos/response/patch.web-client
 @ApiTags('Omega/Web/Client')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller('omega/web/client/logos')
+@Controller('omega/web/clients/logos')
 export class WebClientLogoController {
 
   constructor(

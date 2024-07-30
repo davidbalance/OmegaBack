@@ -11,21 +11,18 @@ export class MedicalOrderCloudService {
   ) { }
 
   async findOne(id: number): Promise<MedicalOrderCloudResponseDto> {
-    const { client, results } = await this.repository.findOne({ where: { id } });
-
+    const { client, results } = await this.repository.findOne({ where: { id }, relations: { client: true, results: true } });
     const fileReports: MedicalOrderCloudFileResponseDto[] = results
       .filter(e => !!e.report)
       .map(e => ({ ...e, type: 'report' }))
     const fileResults: MedicalOrderCloudFileResponseDto[] = results
       .map(e => ({ ...e, type: 'result' }));
-
     const cloudItem: MedicalOrderCloudResponseDto = {
       dni: client.dni,
       fullname: `${client.name} ${client.lastname}`,
       fileResults: fileReports,
       fileReports: fileResults
     };
-
     return cloudItem;
   }
 }

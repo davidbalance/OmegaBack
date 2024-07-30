@@ -3,6 +3,7 @@ import { MedicalEmail } from '../entities/medical-email.entity';
 import { MedicalEmailRepository } from '../repositories/medical-email.repository';
 import { PostMedicalEmailRequestDto } from '../dtos/request/post.medical-email.request.dto';
 import { MedicalClientService } from './medical-client.service';
+import { In } from 'typeorm';
 
 @Injectable()
 export class MedicalClientEmailService {
@@ -24,7 +25,13 @@ export class MedicalClientEmailService {
   }
 
   async updateEmailDefault(id: number): Promise<MedicalEmail> {
-    const email = await this.emailRepository.findOne({ where: { id } });
+    const currentEmail = await this.emailRepository.findOne({ where: { id }, relations: { client: true } });
+    const currentClient = await this.clientService.findOne(currentEmail.client.id);
+    const ids = currentClient.email.map(e => e.id);
+    for (const oldId of ids) {
+      await this.emailRepository.findOneAndUpdate({ id: oldId }, { default: false });
+    }
+    const email = await this.emailRepository.findOneAndUpdate({ id }, { default: true });
     return email;
   }
 

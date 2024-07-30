@@ -13,6 +13,8 @@ import { MedicalClientEmailService } from './services/medical-client-email.servi
 import { MedicalClientEmailController } from './controllers/medical-client-email.controller';
 import { MedicalClientLocationController } from './controllers/medical-client-location.controller';
 import { MedicalClientEventService } from './services/medical-client-event.service';
+import { MedicalClientJobPositionController } from './controllers/medical-client-job-position.controller';
+import { MedicalClientJobPositionService } from './services/medical-client-job-position.service';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { MedicalClientEventService } from './services/medical-client-event.servi
   ],
   controllers: [
     MedicalClientEmailController,
+    MedicalClientJobPositionController,
     MedicalClientLocationController,
     MedicalClientController
   ],
@@ -30,6 +33,7 @@ import { MedicalClientEventService } from './services/medical-client-event.servi
     MedicalEmailRepository,
     MedicalClientEmailService,
     MedicalClientEventService,
+    MedicalClientJobPositionService,
     MedicalClientLocationService,
     MedicalClientService,
   ],
