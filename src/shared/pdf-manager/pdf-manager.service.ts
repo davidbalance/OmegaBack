@@ -22,7 +22,8 @@ export class PdfManagerService {
             const html = readFileSync(templatePath, 'utf-8');
             const compile = handlebars.compile(html)
             const content = compile(data);
-            await page.setContent(content);
+            // await page.setContent(content);
+            await page.setContent(content, { waitUntil: 'networkidle0', timeout: 60000 });
 
             const buffer = await page.pdf({
                 format: 'A4',
