@@ -23,4 +23,4 @@ jobs:
             docker-compose pull
             docker-compose up -d
             docker rmi $(docker images -f "dangling=true" -q) || true
-            docker exec -i ${{ secrets.MYSQL_CONTAINER_NAME }} bash -c "mysql -h localhost -P 3306 -u ${{ secrets.MYSQL_USER }} -p ${{ secrets.MYSQL_PASSWORD }} ${{ secrets.MYSQL_DATABASE }} < $latest_file"
+            docker exec -i ${{ secrets.MYSQL_CONTAINER_NAME }} bash -c "mysql -h localhost -P 3306 -u ${{ secrets.MYSQL_USER }} -p${{ secrets.MYSQL_PASSWORD }} ${{ secrets.MYSQL_DATABASE }} < $latest_file"
