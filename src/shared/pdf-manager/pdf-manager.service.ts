@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { readFileSync } from 'fs';
 import handlebars from 'handlebars';
-import { chromium } from 'playwright';
+import puppeteer, { PDFOptions } from 'puppeteer-core';
 
 @Injectable()
 export class PdfManagerService {
@@ -13,10 +13,10 @@ export class PdfManagerService {
      * @param options 
      * @returns {Promise<Buffer>}
      */
-    async craft(templatePath: string, data: any, options?: any): Promise<Buffer> {
+    async craft(templatePath: string, data: any, options?: PDFOptions): Promise<Buffer> {
         try {
             // const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
-            const browser = await chromium.launch({
+            const browser = await puppeteer.launch({
                 headless: true,
                 executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
                 args: [
@@ -24,7 +24,9 @@ export class PdfManagerService {
                     '--headless',
                     '--disable-gpu',
                     '--disable-dev-shm-usage'
-                ]
+                ],
+                timeout: 60000,
+                dumpio: true
             });
             const page = await browser.newPage();
 
@@ -32,7 +34,7 @@ export class PdfManagerService {
             const compile = handlebars.compile(html)
             const content = compile(data);
             // await page.setContent(content);
-            await page.setContent(content, { waitUntil: 'networkidle' });
+            await page.setContent(content, { waitUntil: 'networkidle0', timeout: 60000 });
 
             const buffer = await page.pdf({
                 format: 'A4',

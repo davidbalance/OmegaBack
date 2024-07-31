@@ -39,15 +39,25 @@ USER node
 # ------------------------------PRODUCTION STAGE------------------------------
 FROM node:22-alpine AS production
 RUN apk add --no-cache libc6-compat \
-    chromium \
-    nss \
-    freetype \
-    font-noto \
-    harfbuzz \
-    ca-certificates
+chromium \
+nss \
+freetype \
+font-noto \
+harfbuzz \
+ca-certificates \
+libx11 \
+libxcomposite \
+libxdamage \
+libxrandr \
+libxtst \
+libxfixes \
+libxi \
+alsa-lib \
+udev
 
 WORKDIR /usr/src/app
 
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 ENV APP_ENVIRONMENT production
 
 # RUN addgroup --system --gid 1001 node
