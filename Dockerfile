@@ -1,14 +1,9 @@
 # ------------------------------DEVELOPMENT STAGE------------------------------
 FROM node:22-alpine AS development
 RUN apk add --no-cache libc6-compat \
-chromium \
-nss \
-freetype \
-harfbuzz \
-ca-certificates \
+udev \
 ttf-freefont \
-dumb-init \
-udev
+chromium
 
 WORKDIR /usr/src/app
 
@@ -28,14 +23,9 @@ USER node
 # ------------------------------BUILD STAGE-----------------------------------
 FROM node:22-alpine AS build
 RUN apk add --no-cache libc6-compat \
-chromium \
-nss \
-freetype \
-harfbuzz \
-ca-certificates \
+udev \
 ttf-freefont \
-dumb-init \
-udev
+chromium
 
 WORKDIR /usr/src/app
 
@@ -59,14 +49,9 @@ USER node
 # ------------------------------PRODUCTION STAGE------------------------------
 FROM node:22-alpine AS production
 RUN apk add --no-cache libc6-compat \
-chromium \
-nss \
-freetype \
-harfbuzz \
-ca-certificates \
+udev \
 ttf-freefont \
-dumb-init \
-udev
+chromium
 
 WORKDIR /usr/src/app
 
