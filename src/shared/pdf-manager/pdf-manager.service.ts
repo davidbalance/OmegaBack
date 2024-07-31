@@ -16,8 +16,9 @@ export class PdfManagerService {
     async craft(templatePath: string, data: any, options?: PDFOptions): Promise<Buffer> {
         try {
             // const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
-            const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'], timeout: 60000 });
+            const browser = await puppeteer.launch({ headless: false, args: ['--no-sandbox'], timeout: 60000, dumpio: true });
             const page = await browser.newPage();
+            page.on('console', consoleObj => console.log(consoleObj.text()));
 
             const html = readFileSync(templatePath, 'utf-8');
             const compile = handlebars.compile(html)
