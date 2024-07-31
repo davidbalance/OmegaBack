@@ -29,7 +29,6 @@ export class PdfManagerService {
                 dumpio: true
             });
             const page = await browser.newPage();
-            page.on('console', consoleObj => console.log(consoleObj.text()));
 
             const html = readFileSync(templatePath, 'utf-8');
             const compile = handlebars.compile(html)

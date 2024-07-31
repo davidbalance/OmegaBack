@@ -1,15 +1,16 @@
 # ------------------------------DEVELOPMENT STAGE------------------------------
 FROM node:22-alpine AS development
 RUN apk add --no-cache libc6-compat \
-dumb-init \
-udev \
-ttf-freefont \
-chromium
+  dumb-init \
+  chromium \
+  nss \
+  freetype \
+  harfbuzz \
+  ttf-freefont
 
 WORKDIR /usr/src/app
 
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV APP_ENVIRONMENT development
 
 # RUN addgroup --system --gid 1001 node
@@ -24,15 +25,16 @@ USER node
 # ------------------------------BUILD STAGE-----------------------------------
 FROM node:22-alpine AS build
 RUN apk add --no-cache libc6-compat \
-dumb-init \
-udev \
-ttf-freefont \
-chromium
+  dumb-init \
+  chromium \
+  nss \
+  freetype \
+  harfbuzz \
+  ttf-freefont
 
 WORKDIR /usr/src/app
 
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV APP_ENVIRONMENT production
 
 # RUN addgroup --system --gid 1001 node
@@ -51,15 +53,16 @@ USER node
 # ------------------------------PRODUCTION STAGE------------------------------
 FROM node:22-alpine AS production
 RUN apk add --no-cache libc6-compat \
-dumb-init \
-udev \
-ttf-freefont \
-chromium
+  dumb-init \
+  chromium \
+  nss \
+  freetype \
+  harfbuzz \
+  ttf-freefont
 
 WORKDIR /usr/src/app
 
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV APP_ENVIRONMENT production
 
 # RUN addgroup --system --gid 1001 node
