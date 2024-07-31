@@ -42,7 +42,6 @@ RUN apk add --no-cache libc6-compat
 
 WORKDIR /usr/src/app
 
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 ENV APP_ENVIRONMENT production
 
 # RUN addgroup --system --gid 1001 node
