@@ -8,7 +8,8 @@ harfbuzz \
 ca-certificates \
 ttf-freefont \
 dumb-init \
-udev
+udev \
+dbus
 
 WORKDIR /usr/src/app
 
@@ -35,7 +36,8 @@ harfbuzz \
 ca-certificates \
 ttf-freefont \
 dumb-init \
-udev
+udev \
+dbus
 
 WORKDIR /usr/src/app
 
@@ -66,7 +68,8 @@ harfbuzz \
 ca-certificates \
 ttf-freefont \
 dumb-init \
-udev
+udev \
+dbus
 
 WORKDIR /usr/src/app
 
