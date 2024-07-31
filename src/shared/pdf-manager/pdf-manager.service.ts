@@ -21,9 +21,9 @@ export class PdfManagerService {
                 executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
                 args: [
                     '--no-sandbox',
-                    '--headless',
+                    '--disable-setuid-sandbox',
                     '--disable-gpu',
-                    '--disable-dev-shm-usage'
+                    '--disable-dev-shm-usage',
                 ],
                 timeout: 60000,
                 dumpio: true
