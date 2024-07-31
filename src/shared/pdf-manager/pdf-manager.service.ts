@@ -17,7 +17,7 @@ export class PdfManagerService {
         try {
             // const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
             const browser = await puppeteer.launch({
-                headless: true,
+                headless: false,
                 executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
                 args: [
                     '--no-sandbox',
