@@ -1,6 +1,7 @@
 # ------------------------------DEVELOPMENT STAGE------------------------------
 FROM node:22-alpine AS development
 RUN apk add --no-cache libc6-compat \
+dumb-init \
 udev \
 ttf-freefont \
 chromium
@@ -23,6 +24,7 @@ USER node
 # ------------------------------BUILD STAGE-----------------------------------
 FROM node:22-alpine AS build
 RUN apk add --no-cache libc6-compat \
+dumb-init \
 udev \
 ttf-freefont \
 chromium
@@ -49,6 +51,7 @@ USER node
 # ------------------------------PRODUCTION STAGE------------------------------
 FROM node:22-alpine AS production
 RUN apk add --no-cache libc6-compat \
+dumb-init \
 udev \
 ttf-freefont \
 chromium
