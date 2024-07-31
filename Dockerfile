@@ -1,12 +1,12 @@
 # ------------------------------DEVELOPMENT STAGE------------------------------
 FROM node:22-alpine AS development
 RUN apk add --no-cache libc6-compat \
-  dumb-init \
-  chromium \
-  nss \
-  freetype \
-  harfbuzz \
-  ttf-freefont
+    chromium \
+    nss \
+    freetype \
+    font-noto \
+    harfbuzz \
+    ca-certificates
 
 WORKDIR /usr/src/app
 
@@ -25,12 +25,12 @@ USER node
 # ------------------------------BUILD STAGE-----------------------------------
 FROM node:22-alpine AS build
 RUN apk add --no-cache libc6-compat \
-  dumb-init \
-  chromium \
-  nss \
-  freetype \
-  harfbuzz \
-  ttf-freefont
+    chromium \
+    nss \
+    freetype \
+    font-noto \
+    harfbuzz \
+    ca-certificates
 
 WORKDIR /usr/src/app
 
@@ -53,12 +53,12 @@ USER node
 # ------------------------------PRODUCTION STAGE------------------------------
 FROM node:22-alpine AS production
 RUN apk add --no-cache libc6-compat \
-  dumb-init \
-  chromium \
-  nss \
-  freetype \
-  harfbuzz \
-  ttf-freefont
+    chromium \
+    nss \
+    freetype \
+    font-noto \
+    harfbuzz \
+    ca-certificates
 
 WORKDIR /usr/src/app
 
@@ -81,4 +81,4 @@ COPY --chown=node:node --from=build /usr/src/app/templates/my-template-signature
 
 USER node
 
-CMD ["dumb-init", "node", "dist/src/main.js"]
+CMD ["node", "dist/src/main.js"]
