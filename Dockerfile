@@ -39,6 +39,7 @@ USER node
 # ------------------------------PRODUCTION STAGE------------------------------
 FROM node:22-alpine AS production
 RUN apk add --no-cache libc6-compat \
+libc6-compat \
 chromium \
 nss \
 freetype \
@@ -53,7 +54,13 @@ libxtst \
 libxfixes \
 libxi \
 alsa-lib \
-udev
+udev \
+ttf-freefont \
+--repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+--allow-untrusted \
+xorg-server \
+xf86-video-fbdev \
+xf86-input-evdev
 
 WORKDIR /usr/src/app
 
