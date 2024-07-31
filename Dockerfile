@@ -1,6 +1,15 @@
 # ------------------------------DEVELOPMENT STAGE------------------------------
 FROM node:22-alpine AS development
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat \
+chromium \
+nss \
+freetype \
+harfbuzz \
+ca-certificates \
+ttf-freefont \
+dumb-init \
+udev
+
 WORKDIR /usr/src/app
 
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
@@ -18,7 +27,16 @@ USER node
 
 # ------------------------------BUILD STAGE-----------------------------------
 FROM node:22-alpine AS build
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat \
+chromium \
+nss \
+freetype \
+harfbuzz \
+ca-certificates \
+ttf-freefont \
+dumb-init \
+udev
+
 WORKDIR /usr/src/app
 
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
