@@ -16,7 +16,20 @@ export class PdfManagerService {
     async craft(templatePath: string, data: any, options?: PDFOptions): Promise<Buffer> {
         try {
             // const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
-            const browser = await puppeteer.launch({ headless: false, args: ['--no-sandbox'], timeout: 60000, dumpio: true });
+            const browser = await puppeteer.launch({
+                headless: false, args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-accelerated-2d-canvas',
+                    '--no-first-run',
+                    '--no-zygote',
+                    '--single-process',
+                    '--disable-gpu'
+                ],
+                timeout: 60000,
+                dumpio: true
+            });
             const page = await browser.newPage();
             page.on('console', consoleObj => console.log(consoleObj.text()));
 

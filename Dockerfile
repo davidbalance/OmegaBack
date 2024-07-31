@@ -37,12 +37,14 @@ USER node
 # ------------------------------PRODUCTION STAGE------------------------------
 FROM node:22-alpine AS production
 RUN apk add --no-cache libc6-compat \
-    chromium \
-    nss \
-    freetype \
-    ttf-freefont \
-    harfbuzz \
-    ca-certificates
+chromium \
+nss \
+freetype \
+harfbuzz \
+ca-certificates \
+ttf-freefont \
+dumb-init \
+udev
 
 WORKDIR /usr/src/app
 
