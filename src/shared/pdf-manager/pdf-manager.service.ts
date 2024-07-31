@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { readFileSync } from 'fs';
-import puppeteer, { PDFOptions } from 'puppeteer';
 import handlebars from 'handlebars';
+import puppeteer, { PDFOptions } from 'puppeteer-core';
 
 @Injectable()
 export class PdfManagerService {
