@@ -7,6 +7,7 @@ import { PdfManagerService } from '@/shared/pdf-manager';
 import { fileReportPath } from '@/shared/utils';
 import { MedicalReport } from '../entities/medical-report.entity';
 import { MedicalReportRepository } from '../repositories/medical-report.repository';
+import { medicalReportDocumentLayout } from '../utils/medical-rreport-document-layout';
 
 @Injectable()
 export class MedicalReportPdfService {
@@ -49,23 +50,26 @@ export class MedicalReportPdfService {
     const directory = path.resolve(data.doctorSignature);
     const signatureImg = readFileSync(directory);
     const base64 = Buffer.from(signatureImg).toString('base64');
-    
-    const content = this.getContent(data, base64);
-    
-    const templateDirectory = path.resolve('templates/medical-result/medical-report');
-    const templateFile = path.join(templateDirectory, 'template.hbs');
-    
-    const buffer = await this.pdfService.craft(templateFile, content);
-    
+
+    const newContent = this.pdfService.parseHtml(data.content);
+
+    const baseContent = this.getContent(data, base64);
+
+    const docLayout = medicalReportDocumentLayout(baseContent, newContent);
+
+    // const templateDirectory = path.resolve('templates/medical-result/medical-report');
+    // const templateFile = path.join(templateDirectory, 'template.hbs');
+
+    const buffer = await this.pdfService.craft(docLayout);
+
     const filePath = fileReportPath({ dni: data.patientDni, order: data.order });
-    
 
     const output = this.storage.saveFile(buffer, '.pdf', filePath, data.examName.toLocaleLowerCase().replace(/\s/g, '_'));
 
     return output;
   }
 
-  private getContent = (data: MedicalReport, base64: string) => ({
+  private getContent = (data: Omit<MedicalReport, 'content'>, base64: string) => ({
     title: 'Omega report',
     patientFullname: data.patientFullname,
     patientAge: dayjs().diff(data.patientBirthday, 'years'),
@@ -73,7 +77,6 @@ export class MedicalReportPdfService {
     date: dayjs(data.createAt).format('dddd, MMMM D, YYYY'),
     company: data.companyName,
     examName: data.examName,
-    content: data.content,
     doctorFullname: data.doctorFullname,
     doctorDni: data.doctorDni,
     doctorSignature: `data:image/png;base64,${base64}`
