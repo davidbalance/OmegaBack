@@ -1,7 +1,3 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { ExamRequestDto } from "./base.request.dto";
 
-export class PostExamRequestDto {
-    @IsString()
-    @IsNotEmpty()
-    public readonly name: string;
-}
+export class PostExamRequestDto extends ExamRequestDto { }

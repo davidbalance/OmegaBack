@@ -3,8 +3,9 @@ import { PostExamRequestDto } from "./post.exam.request.dto";
 import { PostExamTypeWithKeyRequestDto } from "@/laboratory/exam-type/dtos/request/post.exam-type-with-key.dto";
 import { Type } from "class-transformer";
 import { IsDefined, IsObject, IsNotEmptyObject, ValidateNested, IsOptional } from "class-validator";
+import { OmitType } from "@nestjs/mapped-types";
 
-export class PostExamExternalRequestDto extends PostExamRequestDto {
+export class PostExamExternalRequestDto extends OmitType(PostExamRequestDto, ['subtype']) {
 
     @IsDefined()
     @IsObject()
