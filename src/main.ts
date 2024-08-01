@@ -29,17 +29,17 @@ async function bootstrap() {
   const env = app.get(ConfigService);
   const currentEnvironment = env.get<string>("APP_ENVIRONMENT");
 
-  if (!whitelistEnviroment.includes(currentEnvironment)) {
-    const swaggerConfig = new DocumentBuilder()
-      .addBearerAuth()
-      .setTitle('Omega API')
-      .setDescription('')
-      .setVersion('1.0')
-      .build();
+  // if (!whitelistEnviroment.includes(currentEnvironment)) {
+  const swaggerConfig = new DocumentBuilder()
+    .addBearerAuth()
+    .setTitle('Omega API')
+    .setDescription('')
+    .setVersion('1.0')
+    .build();
 
-    const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
-    SwaggerModule.setup('docs', app, swaggerDocument);
-  }
+  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('docs', app, swaggerDocument);
+  // }
 
   const port: number = env.get<number>("APP_PORT", 3000);
 

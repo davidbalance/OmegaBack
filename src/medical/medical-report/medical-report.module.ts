@@ -14,6 +14,7 @@ import { MedicalReportPdfService } from "./services/medical-report-pdf.service";
 import { MedicalReportFileManagementService } from "./services/medical-report-file-management.service";
 import { MedicalResultModule } from "../medical-result/medical-result.module";
 import { MedicalReportManagementController } from "./controllers/medical-report-management.controller";
+import { MedicalReportFileManagementController } from "./controllers/medical-report-file-management.controller";
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MedicalReportManagementController } from "./controllers/medical-report-
     PdfManagerModule
   ],
   controllers: [
+    MedicalReportFileManagementController,
     MedicalReportManagementController,
     MedicalReportPdfController
   ],
