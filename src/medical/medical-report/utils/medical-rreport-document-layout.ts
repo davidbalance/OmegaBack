@@ -46,22 +46,22 @@ export const medicalReportDocumentLayout = (data: ReportContent, body: Content):
                                 {
                                     text: [
                                         { text: `PACIENTE: `, style: 'field' },
-                                        { text: `data.patientFullname`, style: 'fieldText' }]
+                                        { text: data.patientFullname, style: 'fieldText' }]
                                 },
                                 {
                                     text: [
                                         { text: `EDAD: `, style: 'field' },
-                                        { text: `data.patientAge años`, style: 'fieldText' }]
+                                        { text: `${data.patientAge} años`, style: 'fieldText' }]
                                 },
                                 {
                                     text: [
                                         { text: `FECHA: `, style: 'field' },
-                                        { text: `data.date`, style: 'fieldText' }]
+                                        { text: data.date, style: 'fieldText' }]
                                 },
                                 {
                                     text: [
                                         { text: `INSTITUCIÓN: `, style: 'field' },
-                                        { text: `data.company`, style: 'fieldText' }]
+                                        { text: data.company, style: 'fieldText' }]
                                 }
                             ],
                         },
@@ -71,14 +71,13 @@ export const medicalReportDocumentLayout = (data: ReportContent, body: Content):
                                 {
                                     text: [
                                         { text: `CEDULA: `, style: 'field' },
-                                        { text: `data.patientDni`, style: 'fieldText' }]
+                                        { text: data.patientDni, style: 'fieldText' }]
                                 }
                             ],
                         },
                     ],
                 },
-                { text: `ESTUDIO: data.examName`, style: 'field' },
-                // { text: 'data.content', style: 'content' },
+                { text: `ESTUDIO: ${data.examName}`, style: 'field' },
                 body
             ],
         },
@@ -90,8 +89,8 @@ export const medicalReportDocumentLayout = (data: ReportContent, body: Content):
                     {
                         width: '50%',
                         stack: [
-                            { text: `Dr/a. data.doctorFullname`, style: 'doctor' },
-                            { text: `CI: data.doctorDni`, style: 'field' },
+                            { text: `Dr/a. ${data.doctorFullname}`, style: 'doctor' },
+                            { text: `CI: ${data.doctorDni}`, style: 'field' },
                         ],
                     },
                     {
@@ -139,117 +138,3 @@ export const medicalReportDocumentLayout = (data: ReportContent, body: Content):
         },
     },
 });
-/* export const medicalReportDocumentLayout = (data: ReportContent, body: Content): TDocumentDefinitions => ({
-    header: {
-        table: {
-            widths: ['*'],
-            body: [
-                [
-                    {
-                        text: 'omega',
-                        style: 'header',
-                        fillColor: 'orange',
-                        color: 'white',
-                        alignment: 'center',
-                        margin: [0, 0, 0, 10],
-                    },
-                ],
-            ],
-        },
-        layout: 'noBorders',
-    },
-    content: [
-        {
-            columns: [
-                {
-                    width: '*',
-                    text: [
-                        { text: 'PACIENTE: ', style: 'label' },
-                        { text: data.patientFullname, style: 'value' }
-                    ]
-                },
-                {
-                    width: '*',
-                    text: [
-                        { text: 'CEDULA: ', style: 'label' },
-                        { text: data.patientDni, style: 'value' }
-                    ]
-                }
-            ]
-        },
-        {
-            columns: [
-                {
-                    width: '*',
-                    text: [
-                        { text: 'EDAD: ', style: 'label' },
-                        { text: `${data.patientAge} años`, style: 'value' }
-                    ]
-                },
-                {
-                    width: '*',
-                    text: [
-                        { text: 'INSTITUCIÓN: ', style: 'label' },
-                        { text: data.company, style: 'value' }
-                    ]
-                }
-            ]
-        },
-        {
-            text: [
-                { text: 'FECHA: ', style: 'label' },
-                { text: data.date, style: 'value' }
-            ]
-        },
-        {
-            text: [
-                { text: 'ESTUDIO: ', style: 'label' },
-                { text: data.examName, style: 'value' }
-            ],
-            margin: [0, 10]
-        },
-        body,
-        {
-            columns: [
-                {
-                    width: '*',
-                    text: [
-                        { text: `Dr/a.${data.doctorFullname}`, style: 'doctorInfo' },
-                        {
-                            text: [
-                                { text: 'CI: ', style: 'label' },
-                                { text: data.doctorDni, style: 'value' }
-                            ]
-                        }
-                    ],
-                    alignment: 'center'
-                },
-                {
-                    image: data.doctorSignature,
-                    fit: [200, 100],
-                    alignment: 'right'
-                }
-            ],
-            margin: [0, 10]
-        }
-    ],
-    styles: {
-        bannerTitle: {
-            fontSize: 20,
-            bold: true,
-            color: 'white',
-            background: 'orange',
-            margin: [0, 10],
-            alignment: 'center'
-        },
-        label: {
-            bold: true
-        },
-        value: {
-            fontSize: 12
-        },
-        doctorInfo: {
-            fontSize: 12
-        }
-    }
-}); */
