@@ -117,7 +117,8 @@ export class MedicalResultDiseaseReportService {
         }
 
 
-        const data = await query.setParameter('year', year).printSql().getRawMany<MedicalResultReport>();
+        const data = await query.setParameter('year', year)
+            .orderBy('medical_order.create_at', 'ASC').getRawMany<MedicalResultReport>();
         return data;
     }
 }
