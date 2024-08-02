@@ -1,17 +1,18 @@
 import { Module } from '@nestjs/common';
-import { DoctorService } from './doctor.service';
-import { DoctorController } from './doctor.controller';
-import { SqlDatabaseModule } from 'src/shared';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Doctor } from './entities/doctor.entity';
-import { DoctorRepository } from './doctor.repository';
 import { UserModule } from '../user/user.module';
 import { LocalStorageModule } from '@/shared/storage-manager';
-import { DoctorExternalConnectionService } from './external-connection/doctor-external-connection.service';
-import { DoctorExternalConnectionController } from './external-connection/doctor-external-connection.controller';
-import { ResultListener } from './listener';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
+import { DoctorExternalConnectionController } from './controllers/doctor-external-connection.controller';
+import { DoctorExternalListener } from './listener/doctor-external.listener';
+import { DoctorFileManagementService } from './services/doctor-file-management.service';
+import { DoctorManagementService } from './services/doctor-management.service';
+import { DoctorExternalConnectionService } from './services/doctor-external-connection.service';
+import { DoctorManagementController } from './controllers/doctor-management.controller';
+import { DoctorFileManagerController } from './controllers/doctor-file-manager.controller';
+import { DoctorRepository } from './repositories/doctor.repository';
+import { DoctorFlatService } from './services/doctor-flat.service';
 
 @Module({
   imports: [
@@ -19,19 +20,23 @@ import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-au
     UserModule,
     LocalStorageModule,
     AuthenticationGuardModule,
-    LocalAuthorizationModule
   ],
   controllers: [
-    DoctorController,
+    DoctorManagementController,
+    DoctorFileManagerController,
     DoctorExternalConnectionController
   ],
   providers: [
-    DoctorService,
     DoctorRepository,
     DoctorExternalConnectionService,
-    ResultListener,
-    AuthorizationGuard
+    DoctorFileManagementService,
+    DoctorFlatService,
+    DoctorManagementService,
+    DoctorExternalListener,
   ],
-  exports: [DoctorService]
+  exports: [
+    DoctorManagementService,
+    DoctorFileManagementService
+  ]
 })
 export class DoctorModule { }

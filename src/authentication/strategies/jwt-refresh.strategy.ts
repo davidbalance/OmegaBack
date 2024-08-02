@@ -2,7 +2,7 @@ import { Inject } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { RefreshToken } from "../token/types";
+import { RefreshToken } from "../token/types/refresh-token.type";
 
 export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
     constructor(
@@ -11,7 +11,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: true,
-            secretOrKey: config.get<string>("jwt.refresh.secret")
+            secretOrKey: config.get<string>("JWT_REFRESH_SECRET")
         });
     }
 

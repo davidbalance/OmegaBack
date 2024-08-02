@@ -29,4 +29,15 @@ export abstract class AbstractExternalKeyService<
             return newKey;
         }
     }
+
+    async remove(key: { source: string, key: string }): Promise<void> {
+        try {
+            await this._prRepository.findOneAndDelete({
+                key: key.key as any,
+                source: key.source as any
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
 }

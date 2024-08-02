@@ -1,5 +1,5 @@
-import { Injectable, StreamableFile } from '@nestjs/common';
-import { createReadStream, createWriteStream, existsSync, mkdirSync } from 'fs';
+import { Injectable, InternalServerErrorException, Logger, NotFoundException, StreamableFile } from '@nestjs/common';
+import { createReadStream, createWriteStream, existsSync, mkdirSync, unlinkSync } from 'fs';
 import path from 'path';
 import { v4 } from 'uuid';
 import { StorageManager } from '../storage-manager.service';
@@ -24,8 +24,17 @@ export class LocalStorageService implements StorageManager {
 
     readFile(dir: string): StreamableFile | Promise<StreamableFile> {
         const filepath = path.resolve(dir);
-        const file = createReadStream(filepath);
-        return new StreamableFile(file);
+        if (!existsSync(filepath)) {
+            Logger.error(`File not found: ${dir}`);
+            throw new NotFoundException(['File not found', filepath]);
+        }
+        try {
+            const file = createReadStream(filepath);
+            return new StreamableFile(file);
+        } catch (error) {
+            Logger.error(error);
+            throw new InternalServerErrorException(error);
+        }
     }
 
 
@@ -35,7 +44,19 @@ export class LocalStorageService implements StorageManager {
     moveFile(): Promise<boolean> {
         throw new Error('Method not implemented.');
     }
-    deleteFile(): Promise<boolean> {
-        throw new Error('Method not implemented.');
+
+    deleteFile(dir: string): boolean {
+        const filepath = path.resolve(dir);
+        if (!existsSync(filepath)) {
+            Logger.error(`File not found: ${dir}`);
+            throw new NotFoundException(['File not found', filepath]);
+        }
+        try {
+            unlinkSync(filepath);
+            return true;
+        } catch (error) {
+            Logger.error(error);
+            throw new InternalServerErrorException(error);
+        }
     }
 }

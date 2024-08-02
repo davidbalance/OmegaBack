@@ -1,12 +1,17 @@
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Module } from '@nestjs/common';
-import { WebLogoService } from './web-logo.service';
-import { WebLogoController } from './web-logo.controller';
-import { SqlDatabaseModule } from '@/shared';
 import { WebLogo } from './entities/web-logo.entity';
+import { WebLogoRepository } from './repositories/web-logo.repository';
+import { WebLogoService } from './services/web-logo.service';
 
 @Module({
   imports: [SqlDatabaseModule.forFeature([WebLogo])],
-  controllers: [WebLogoController],
-  providers: [WebLogoService]
+  providers: [
+    WebLogoRepository,
+    WebLogoService,
+  ],
+  exports: [
+    WebLogoService
+  ]
 })
 export class WebLogoModule { }

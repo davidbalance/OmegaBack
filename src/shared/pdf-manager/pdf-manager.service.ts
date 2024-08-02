@@ -1,44 +1,48 @@
 import { Injectable } from '@nestjs/common';
-import { readFileSync } from 'fs';
-import puppeteer, { PDFOptions } from 'puppeteer';
-import handlebars from 'handlebars';
+import htmlToPdfmake from 'html-to-pdfmake';
+import { JSDOM } from 'jsdom'
+import PdfPrinter from 'pdfmake';
+import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
+import path from 'path';
 
 @Injectable()
 export class PdfManagerService {
+    private printer: PdfPrinter;
+
+    constructor() {
+        this.printer = new PdfPrinter({
+            Roboto: {
+                normal: path.join(path.resolve('static'), 'fonts/roboto', 'Roboto-Regular.ttf'),
+                bold: path.join(path.resolve('static'), 'fonts/roboto', 'Roboto-Medium.ttf'),
+                italics: path.join(path.resolve('static'), 'fonts/roboto', 'Roboto-Italic.ttf'),
+                bolditalics: path.join(path.resolve('static'), 'fonts/roboto', 'Roboto-BoldItalic.ttf')
+            },
+        });
+    }
 
     /**
      * Creates a pdf using a handlebars template
      * @param templatePath 
      * @param data 
      * @param options 
-     * @returns Buffer
+     * @returns {Promise<Buffer>}
      */
-    async craft(templatePath: string, data: any, options?: PDFOptions): Promise<Buffer> {
-        try {
-            const browser = await puppeteer.launch();
-            const page = await browser.newPage();
+    async craft(content: TDocumentDefinitions): Promise<Buffer> {
 
-            const html = readFileSync(templatePath, 'utf-8');
-            const compile = handlebars.compile(html)
-            const content = compile(data);
-            await page.setContent(content);
+        return new Promise((resolve, reject) => {
+            const doc = this.printer.createPdfKitDocument(content);
+            const chunks: Buffer[] = [];
 
-            const buffer = await page.pdf({
-                format: 'A4',
-                printBackground: true,
-                margin: {
-                    left: '10mm',
-                    right: '10mm',
-                    top: '10mm',
-                    bottom: '10mm',
-                },
-                ...options
-            });
+            doc.on('data', (chunk) => chunks.push(chunk));
+            doc.on('end', () => resolve(Buffer.concat(chunks)));
+            doc.on('error', reject);
 
-            await browser.close();
-            return buffer;
-        } catch (error) {
-            throw error;
-        }
+            doc.end();
+        })
+    }
+
+    parseHtml(content: string): Content {
+        const doc = htmlToPdfmake(content, new JSDOM());
+        return doc;
     }
 }

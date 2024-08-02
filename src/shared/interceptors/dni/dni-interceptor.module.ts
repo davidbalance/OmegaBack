@@ -5,7 +5,12 @@ import { DataInterceptorService } from './data-interceptor.service';
 
 @Module({
     imports: [UserModule],
-    providers: [DniInterceptor, DataInterceptorService],
-    exports: [DniInterceptor, DataInterceptorService]
+    providers: [
+        DniInterceptor,
+        DataInterceptorService],
+    exports: [
+        DniInterceptor,
+        DataInterceptorService
+    ]
 })
-export class DniInterceptorModule {}
+export class DniInterceptorModule { }

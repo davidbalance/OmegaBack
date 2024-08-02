@@ -1,27 +1,30 @@
 import { Module } from '@nestjs/common';
-import { ApiKeyService } from './api-key.service';
-import { ApiKeyController } from './api-key.controller';
-import { SqlDatabaseModule } from '@/shared';
+import { ApiKeyManagementService } from './services/api-key-management.service';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { ApiKey } from './entities/api-key.entity';
-import { ApiKeyRepository } from './api-key.repository';
+import { ApiKeyRepository } from './repositories/api-key.repository';
 import { UserCredentialModule } from '../user-credential/user-credential.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
-import { AuthorizationModule } from '@/authorization/authorization.module';
+import { ApiKeyValidatorService } from './services/api-key-validator.service';
+import { ApiKeyManagementController } from './controllers/api-key-management.controller';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([ApiKey]),
     UserCredentialModule,
     AuthenticationGuardModule,
-    LocalAuthorizationModule
   ],
-  controllers: [ApiKeyController],
+  controllers: [
+    ApiKeyManagementController
+  ],
   providers: [
-    ApiKeyService,
     ApiKeyRepository,
-    AuthorizationModule
+    ApiKeyManagementService,
+    ApiKeyValidatorService,
   ],
-  exports: [ApiKeyService]
+  exports: [
+    ApiKeyManagementService,
+    ApiKeyValidatorService
+  ]
 })
 export class ApiKeyModule { }
