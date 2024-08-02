@@ -1,4 +1,4 @@
-import { PostExamSubtypeRequestDto } from "@/laboratory/exam-subtype/dtos/request/post.exam-subtype.dto";
-import { OmitType } from "@nestjs/mapped-types";
+import { PartialType } from "@nestjs/mapped-types";
+import { ExamRequestDto } from "./base.request.dto";
 
-export class PatchExamRequestDto extends OmitType(PostExamSubtypeRequestDto, ['type']) { }
+export class PatchExamRequestDto extends PartialType(ExamRequestDto) { }

@@ -35,6 +35,7 @@ export class MedicalOrderManagementService {
   async findAllByPatientAndDoctor(patient: string, doctor: string): Promise<MedicalOrder[]> {
     const orders = await this.repository.query('medicalOrder')
       .leftJoinAndSelect('medicalOrder.results', 'medicalResult', 'medicalResult.doctorDni = :doctor', { doctor })
+      .leftJoinAndSelect('medicalResult.report', 'medicalReport')
       .leftJoinAndSelect('medicalOrder.client', 'medicalClient')
       .where('medicalClient.dni = :patient', { patient })
       .andWhere('medicalResult.doctorDni = :doctor', { doctor })

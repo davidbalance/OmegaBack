@@ -4,15 +4,15 @@ import { ExamRepository } from "../repositories/exam.repository";
 import { ExamExternalKeyService } from "./exam-external-key.service";
 import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { PostExamExternalRequestDto } from "../dtos/request/post.exam-external.request.dto";
-import { PatchExamRequestDto } from "../dtos/request/patch.exam.request.dto";
 import { INJECT_EXAM_SUBTYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-subtype/services/exam-subtype-external-connection.service";
 import { PostExamSubtypeRequestDto } from "@/laboratory/exam-subtype/dtos/request/post.exam-subtype.dto";
 import { ExamSubtype } from "@/laboratory/exam-subtype/entities/exam-subtype.entity";
 import { INJECT_EXAM_TYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-type/services/exam-type-external-connection.service";
 import { PostExamTypeRequestDto } from "@/laboratory/exam-type/dtos/request/post.exam-type.dto";
 import { ExamType } from "@/laboratory/exam-type/entities/exam-type.entity";
+import { PatchExamExternalRequestDto } from "../dtos/request/patch.exam-external.request.dto";
 
-type ConnectionRequestType = PostExamExternalRequestDto | PatchExamRequestDto;
+type ConnectionRequestType = PostExamExternalRequestDto | PatchExamExternalRequestDto;
 
 @Injectable()
 export class ExamExternalConnectionService implements IExternalConnectionService<ConnectionRequestType, Exam> {
@@ -60,7 +60,7 @@ export class ExamExternalConnectionService implements IExternalConnectionService
         }
     }
 
-    async findOneAndUpdate(key: ExternalKeyParam, data: PatchExamRequestDto): Promise<Exam> {
+    async findOneAndUpdate(key: ExternalKeyParam, data: PatchExamExternalRequestDto): Promise<Exam> {
         const foundExam = await this.repository.findOneAndUpdate({ externalKey: key }, data);
         return foundExam;
     }

@@ -94,7 +94,7 @@ export class MedicalResultDiseaseReportService {
                 'medical_client.name AS name',
                 'medical_client.lastname AS lastname',
                 'medical_email.email AS email',
-                ':year - CAST(YEAR(medical_client.birthday) AS SIGNED) AS age',
+                'YEAR(NOW()) - CAST(YEAR(medical_client.birthday) AS SIGNED) AS age',
                 'medical_client.birthday AS birthday',
                 'medical_client.gender AS gender',
                 'medical_result.examName AS exam',
@@ -104,6 +104,7 @@ export class MedicalResultDiseaseReportService {
                 'medical_disease.diseaseGroupName AS diseaseGroup',
                 'medical_disease.diseaseCommentary AS diseaseCommentary'])
             .where('1');
+
 
         if (year) {
             query.andWhere('YEAR(medical_result.createAt) = :year', { year: year });
@@ -115,7 +116,9 @@ export class MedicalResultDiseaseReportService {
             query.andWhere('medical_order.companyRuc LIKE :companyRuc', { companyRuc: companyRuc });
         }
 
-        const data = await query.setParameter('year', year).getRawMany<MedicalResultReport>();
+
+        const data = await query.setParameter('year', year)
+            .orderBy('medical_order.create_at', 'ASC').getRawMany<MedicalResultReport>();
         return data;
     }
 }

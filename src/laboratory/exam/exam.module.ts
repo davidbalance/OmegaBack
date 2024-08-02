@@ -13,6 +13,8 @@ import { ExamExternalConnectionService } from "./services/exam-external-connecti
 import { ExamExternalKeyRepository } from "./repositories/exam-external-key.repository";
 import { ExamSubtypeModule } from "../exam-subtype/exam-subtype.module";
 import { ExamTypeModule } from "../exam-type/exam-type.module";
+import { ExamManagementService } from "./services/exam-management.service";
+import { ExamManagementController } from "./controllers/exam-management.controller";
 
 @Module({
   imports: [
@@ -22,16 +24,18 @@ import { ExamTypeModule } from "../exam-type/exam-type.module";
     ExamTypeModule
   ],
   controllers: [
+    ExamExternalConnectionController,
+    ExamManagementController,
     ExamSelectorController,
-    ExamExternalConnectionController
   ],
   providers: [
+    ExamExternalKeyRepository,
     ExamRepository,
+    ExamExternalConnectionService,
+    ExamExternalKeyService,
+    ExamManagementService,
     ExamSelectorService,
     ExamExternalListener,
-    ExamExternalKeyService,
-    ExamExternalKeyRepository,
-    ExamExternalConnectionService
   ]
 })
 export class ExamModule { }

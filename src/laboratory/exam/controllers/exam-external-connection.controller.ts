@@ -5,8 +5,8 @@ import { plainToInstance } from "class-transformer";
 import { ExamExternalConnectionService } from "../services/exam-external-connection.service";
 import { PostExamExternalRequestDto } from "../dtos/request/post.exam-external.request.dto";
 import { PostExamResponseDto } from "../dtos/response/post.exam.response.dto";
-import { PatchExamRequestDto } from "../dtos/request/patch.exam.request.dto";
 import { PatchExamResponseDto } from "../dtos/response/patch.exam.response.dto";
+import { PatchExamExternalRequestDto } from "../dtos/request/patch.exam-external.request.dto";
 
 @ApiTags('External/Connection', 'Laboratory/Exam')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -31,7 +31,7 @@ export class ExamExternalConnectionController {
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() body: PatchExamRequestDto
+        @Body() body: PatchExamExternalRequestDto
     ): Promise<PatchExamResponseDto> {
         const exam = await this.service.findOneAndUpdate({ source, key }, body);
         return plainToInstance(PatchExamResponseDto, exam);

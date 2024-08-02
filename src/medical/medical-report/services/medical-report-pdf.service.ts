@@ -7,7 +7,7 @@ import { PdfManagerService } from '@/shared/pdf-manager';
 import { fileReportPath } from '@/shared/utils';
 import { MedicalReport } from '../entities/medical-report.entity';
 import { MedicalReportRepository } from '../repositories/medical-report.repository';
-import { medicalReportDocumentLayout } from '../utils/medical-rreport-document-layout';
+import { medicalReportDocumentLayout } from '../utils/medical-report-document-layout';
 
 @Injectable()
 export class MedicalReportPdfService {
