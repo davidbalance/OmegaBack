@@ -1,6 +1,6 @@
 import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import { FileManagementService } from "@/shared/utils/bases/base.file-service";
-import { Injectable, Inject, Logger, NotFoundException } from "@nestjs/common";
+import { Injectable, Inject, Logger, NotFoundException, StreamableFile } from "@nestjs/common";
 import { MedicalReportRepository } from "../repositories/medical-report.repository";
 import { fileReportPath } from "@/shared/utils";
 
@@ -11,6 +11,21 @@ export class MedicalReportFileManagementService implements FileManagementService
     @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository,
     @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
   ) { }
+
+  async getFile(key: number): Promise<StreamableFile> {
+    const medicalReport = await this.repository
+      .query('medical-report')
+      .select('medical-report.fileAddress', 'filepath')
+      .where('medical-report.id = :id', { id: key })
+      .getRawOne<{ filepath: string }>();
+    try {
+      const file = await this.storage.readFile(medicalReport.filepath);
+      return file;
+    } catch (error) {
+      await this.repository.findOneAndUpdate({ id: key }, { hasFile: false });
+      throw error;
+    }
+  }
 
   async uploadFile(key: number, file: Express.Multer.File): Promise<string> {
     const medicalReport = await this.repository.findOne({
@@ -39,6 +54,8 @@ export class MedicalReportFileManagementService implements FileManagementService
   }
 
   async getFilePath(key: number): Promise<string> {
+    await this.getFile(key);
+
     const medicalReport = await this.repository
       .query('medical-report')
       .select('medical-report.fileAddress', 'filepath')
