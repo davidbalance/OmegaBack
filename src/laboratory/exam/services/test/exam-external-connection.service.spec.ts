@@ -16,6 +16,7 @@ import { INJECT_EXAM_TYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-type/ser
 import { ExamType } from "@/laboratory/exam-type/entities/exam-type.entity";
 import { PatchExamRequestDto } from "../../dtos/request/patch.exam.request.dto";
 import { mockExamsSubtype } from "@/laboratory/exam-subtype/services/test/stub/exam-subtype.stub";
+import { PatchExamExternalRequestDto } from "../../dtos/request/patch.exam-external.request.dto";
 
 describe('ExamExternalConnectionService', () => {
     let service: ExamExternalConnectionService;
@@ -193,7 +194,7 @@ describe('ExamExternalConnectionService', () => {
 
         const key: string = "my-test-key";
         const source: string = 'my-test-source';
-        const mockDto: PatchExamRequestDto = {
+        const mockDto: PatchExamExternalRequestDto = {
             name: "my-test-exam"
         };
 
