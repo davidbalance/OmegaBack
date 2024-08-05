@@ -15,16 +15,10 @@ export class UserCredentialService {
   ) { }
 
   async create({ email, ...data }: PostCredentialRequestDto): Promise<UserCredential> {
-    try {
-      await this.repository.findOne({ where: { email } });
-      const conflictMessage = ['Email already', JSON.stringify({ email })];
-      throw new ConflictException(conflictMessage);
-    } catch (error) {
-      const hashedPassword = this.hashPassword(data.password);
-      const credential: UserCredential = await this.repository.create({ ...data, password: hashedPassword, email: email });
-      this.eventService.emitCredentialCreateEvent(credential.user);
-      return credential;
-    }
+    const hashedPassword = this.hashPassword(data.password);
+    const credential: UserCredential = await this.repository.create({ ...data, password: hashedPassword, email: email });
+    this.eventService.emitCredentialCreateEvent(credential.user);
+    return credential;
   }
 
   async findOneByUser(user: number): Promise<UserCredential> {
