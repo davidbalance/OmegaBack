@@ -25,64 +25,93 @@ describe('DiseaseManagementService', () => {
   });
 
   describe('create', () => {
-    const mockedGroup = mockDiseaseGroup();
+    const mockedDiseaseGroup = mockDiseaseGroup();
     const mockedDisease = mockDisease();
     const mockDto: PostDiseaseRequestDto = {
       name: "my-mocked-name",
       group: 1
     }
 
-    it('should create a disease', async () => {
-      groupService.findOneById.mockResolvedValueOnce(mockedGroup);
-      repository.create.mockResolvedValueOnce(mockedDisease);
+    it('should create a new disease', async () => {
+      // Arrange
+      groupService.findOneById.mockResolvedValue(mockedDiseaseGroup);
+      repository.create.mockResolvedValue(mockedDisease);
 
+      // Act
       const result = await service.create(mockDto);
 
-      expect(result).toEqual(mockedDisease);
+      // Assert
       expect(groupService.findOneById).toHaveBeenCalledWith(mockDto.group);
-      expect(repository.create).toHaveBeenCalledWith({ ...mockDto, group: mockedGroup });
+      expect(repository.create).toHaveBeenCalledWith({ ...mockDto, group: mockedDiseaseGroup });
+      expect(result).toEqual(mockedDisease);
     });
-
   });
 
   describe('find', () => {
     const mockedDiseases = mockDiseases();
 
-    it('should return an array of diseases', async () => {
-      repository.find.mockResolvedValueOnce(mockedDiseases);
+    it('should find all diseases', async () => {
+      // Arrange
+      repository.find.mockResolvedValue(mockedDiseases);
 
+      // Act
       const result = await service.find();
 
+      // Assert
+      expect(repository.find).toHaveBeenCalledWith({
+        where: { status: true },
+        select: {
+          id: true,
+          name: true,
+          group: { id: true, name: true }
+        },
+        relations: { group: true }
+      });
       expect(result).toEqual(mockedDiseases);
     });
+
   });
 
   describe('updateOne', () => {
     const mockedDisease = mockDisease();
-    const mockedGroup = mockDiseaseGroup();
+    const mockedDiseaseGroup = mockDiseaseGroup();
 
     const id: number = 1;
     const mockDto: PatchDiseaseRequestDto = {
-      name: 'my-updated-name'
+      name: 'my-updated-name',
+      group: 1
     }
 
-    it('should update an existing disease and return it', async () => {
-      repository.findOneAndUpdate.mockResolvedValueOnce(mockedDisease);
-
-      const result = await service.updateOne(id, mockDto);
-
-      expect(result).toEqual(mockedDisease);
-      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, mockDto);
+    beforeEach(() => {
+      repository.findOneAndUpdate.mockResolvedValue(mockedDisease);
     });
 
-    it('should update an existing disease with other group and return it', async () => {
-      repository.findOneAndUpdate.mockResolvedValueOnce(mockedDisease);
-      groupService.findOneById.mockResolvedValueOnce(mockedGroup);
+    it('should update a disease with a new group', async () => {
+      // Arrange
+      groupService.findOneById.mockResolvedValue(mockedDiseaseGroup);
 
-      const result = await service.updateOne(id, { ...mockDto, group: 1 });
+      // Act
+      const result = await service.updateOne(id, mockDto);
 
+      // Assert
+      expect(groupService.findOneById).toHaveBeenCalledWith(mockDto.group);
+      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id }, { ...mockDto, group: mockedDiseaseGroup });
       expect(result).toEqual(mockedDisease);
-      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, { ...mockDto, group: mockedGroup });
+    });
+
+
+    it('should update a disease without changing the group', async () => {
+      // Arrange
+      const { group, ...data } = mockDto;
+      const mockDtoWithoutGroup: PatchDiseaseRequestDto = data;
+
+      // Act
+      const result = await service.updateOne(id, mockDtoWithoutGroup);
+
+      // Assert
+      expect(groupService.findOneById).not.toHaveBeenCalled();
+      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id }, mockDtoWithoutGroup);
+      expect(result).toEqual(mockedDisease);
     });
 
   });
@@ -90,10 +119,15 @@ describe('DiseaseManagementService', () => {
   describe('deleteOne', () => {
     const id: number = 1;
 
-    it('should delete one disease', async () => {
+    it('should delete a disease', async () => {
+      // Arrange
+      repository.findOneAndDelete.mockResolvedValue(undefined);
+
+      // Act
       await service.deleteOne(id);
 
-      expect(repository.findOneAndDelete).toHaveBeenCalledWith({ id: id });
+      // Assert
+      expect(repository.findOneAndDelete).toHaveBeenCalledWith({ id });
     });
   });
 
