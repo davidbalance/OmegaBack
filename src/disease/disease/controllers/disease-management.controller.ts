@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
@@ -14,12 +14,14 @@ import { DeleteDiseaseResponseDto } from '../dtos/response/delete.disease.respon
 @ApiBearerAuth()
 @Controller('diseases')
 export class DiseaseController {
-  constructor(private readonly diseaseService: DiseaseManagementService) { }
+  constructor(
+    @Inject(DiseaseManagementService) private readonly service: DiseaseManagementService
+  ) { }
 
   @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<GetDiseaseArrayResponseDto> {
-    const data = await this.diseaseService.find();
+    const data = await this.service.find();
     return plainToInstance(GetDiseaseArrayResponseDto, { data });
   }
 
@@ -28,7 +30,7 @@ export class DiseaseController {
   async create(
     @Body() body: PostDiseaseRequestDto
   ): Promise<PostDiseaseResponseDto> {
-    const disease = await this.diseaseService.create(body);
+    const disease = await this.service.create(body);
     return plainToInstance(PostDiseaseResponseDto, disease);
   }
 
@@ -38,7 +40,7 @@ export class DiseaseController {
     @Param('id') id: number,
     @Body() body: PatchDiseaseRequestDto
   ): Promise<PatchDiseaseResponseDto> {
-    const disease = await this.diseaseService.updateOne(id, body);
+    const disease = await this.service.updateOne(id, body);
     return plainToInstance(PatchDiseaseResponseDto, disease);
   }
 
@@ -47,7 +49,7 @@ export class DiseaseController {
   async findOneAndDelete(
     @Param('id') id: number
   ): Promise<DeleteDiseaseResponseDto> {
-    await this.diseaseService.deleteOne(id);
+    await this.service.deleteOne(id);
     return {};
   }
 }

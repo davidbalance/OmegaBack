@@ -5,5 +5,5 @@ export class DiseaseResponseDto {
     public readonly id: number;
 
     @Expose()
-    public readonly name: number;
+    public readonly name: string;
 }
