@@ -43,7 +43,7 @@ describe('DiseaseGroupManagementService', () => {
     const mockedGroups = mockDiseaseGroups();
 
     beforeEach(() => {
-      repository.query.mockReturnValueOnce({
+      repository.query.mockReturnValue({
         leftJoinAndSelect: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
         cache: jest.fn().mockReturnThis(),
