@@ -21,8 +21,8 @@ export class AreaManagementController {
 
   @Get()
   async findAll(): Promise<GetAreaArrayResponseDto> {
-    const areas = await this.service.find();
-    return plainToInstance(GetAreaArrayResponseDto, { areas });
+    const data = await this.service.find();
+    return plainToInstance(GetAreaArrayResponseDto, { data });
   }
 
   @Post()
