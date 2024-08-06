@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
@@ -10,7 +10,9 @@ import { GetExamSelectorOptionArrayResponseDto } from '../dtos/response/get.exam
 @UseGuards(JwtAuthGuard)
 @Controller('selector/exams')
 export class ExamSelectorController {
-  constructor(private readonly service: ExamSelectorService) { }
+  constructor(
+    @Inject(ExamSelectorService) private readonly service: ExamSelectorService
+  ) { }
 
   @Get()
   async findSelectorOptions(): Promise<GetExamSelectorOptionArrayResponseDto> {
