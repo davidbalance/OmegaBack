@@ -4,7 +4,8 @@ import { BranchExternalKey } from '../entities/branch-external-key.entity';
 import { BranchExternalKeyRepository } from '../repositories/branch-external-key.repository';
 
 @Injectable()
-export class BranchExternalKeyService extends AbstractExternalKeyService<BranchExternalKey, BranchExternalKeyRepository> {
+export class BranchExternalKeyService
+  extends AbstractExternalKeyService<BranchExternalKey, BranchExternalKeyRepository> {
 
   constructor(
     @Inject(BranchExternalKeyRepository) private readonly repository: BranchExternalKeyRepository
