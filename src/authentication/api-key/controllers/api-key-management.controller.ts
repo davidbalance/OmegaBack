@@ -3,7 +3,7 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { Controller, Inject, UseGuards, Get, Post, Body, Patch, Param } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { PATCHApiKeyResponseDto } from "../dtos/response/patch.api-key.response.dto";
+import { PatchApiKeyResponseDto } from "../dtos/response/patch.api-key.response.dto";
 import { ApiKeyManagementService } from "../services/api-key-management.service";
 import { GetApiKeyArrayResponseDto } from "../dtos/response/get.api-key-array.response.dto";
 import { PostApiKeyRequestDto } from "../dtos/request/post.api-key.request.dto";
@@ -42,8 +42,8 @@ export class ApiKeyManagementController {
   async findOneAndUpdate(
     @Param('id') id: number,
     @Body() body: PatchApiKeyRequestDto
-  ): Promise<PATCHApiKeyResponseDto> {
+  ): Promise<PatchApiKeyResponseDto> {
     const apikey = await this.service.updateOne(id, body);
-    return plainToInstance(PATCHApiKeyResponseDto, apikey);
+    return plainToInstance(PatchApiKeyResponseDto, apikey);
   }
 }

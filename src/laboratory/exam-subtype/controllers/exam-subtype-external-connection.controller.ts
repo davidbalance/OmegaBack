@@ -5,7 +5,6 @@ import { plainToInstance } from "class-transformer";
 import { ExamSubtypeExternalConnectionService } from "../services/exam-subtype-external-connection.service";
 import { PostExamSubtypeRequestDto } from "../dtos/request/post.exam-subtype.dto";
 import { PostExamSubtypeResponseDto } from "../dtos/response/post.exam-subtype.response.dto";
-import { PatchExamSubtypeRequestDto } from "../dtos/request/patch.exam-subtype.dto";
 import { PatchExamSubtypeResponseDto } from "../dtos/response/patch.exam-subtype.response.dto";
 import { PatchExamSubtypeExternalRequestDto } from "../dtos/request/patch.exam-subtype-external.dto";
 

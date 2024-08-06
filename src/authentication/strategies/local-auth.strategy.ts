@@ -1,7 +1,6 @@
 import { Inject, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-local";
-import { UserCredentialService } from "../user-credential/services/user-credential.service";
 import { UserCredentialValidatorService } from "../user-credential/services/user-credential-validator.service";
 
 export class LocalAuthStrategy extends PassportStrategy(Strategy, 'local-auth') {
