@@ -32,7 +32,7 @@ describe('ExamSubtypeExternalConnectionService', () => {
     describe('findOne', () => {
         it('should throw an error when findOne is called', async () => {
             // Arrange
-            const key = {}; // You can adjust this to be any value since it's not used in this case
+            const key = {};
 
             // Act & Assert
             await expect(service.findOne(key)).rejects.toThrow('Method not implemented.');
@@ -52,14 +52,17 @@ describe('ExamSubtypeExternalConnectionService', () => {
         };
 
         it('should create an exam with a given key with given subtype', async () => {
+            // Arrange
             typeService.findOne.mockResolvedValueOnce(mockedExamType);
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
             repository.create.mockResolvedValueOnce(mockedExamSubtype);
 
             const { type, ...testData } = mockDto;
 
+            // Act
             const result = await service.create({ key, source }, mockDto);
 
+            // Assert
             expect(result).toEqual(mockedExamSubtype);
             expect(typeService.findOne).toHaveBeenCalledWith(mockDto.type);
             expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
@@ -68,14 +71,15 @@ describe('ExamSubtypeExternalConnectionService', () => {
         });
 
         it('should returns an undefined type so throws NotFoundException', async () => {
+            // Arrange
             typeService.findOne.mockResolvedValueOnce(undefined);
 
             const { type, ...testData } = mockDto;
 
+            // Act & Assert
             await expect(service.create({ key, source }, mockDto))
                 .rejects
                 .toThrow(NotFoundException);
-
             expect(typeService.findOne).toHaveBeenCalledWith(mockDto.type);
             expect(externalKeyService.create).toHaveBeenCalledTimes(0);
             expect(repository.create).toHaveBeenCalledTimes(0);
@@ -83,12 +87,14 @@ describe('ExamSubtypeExternalConnectionService', () => {
         });
 
         it('should throw an error so not create the exam', async () => {
+            // Arrange
             typeService.findOne.mockResolvedValueOnce(mockedExamType);
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
             repository.create.mockRejectedValueOnce(new Error());
 
             const { type, ...testData } = mockDto;
 
+            // Act & Assert
             await expect(service.create({ key, source }, mockDto))
                 .rejects
                 .toThrow(Error);
@@ -111,12 +117,14 @@ describe('ExamSubtypeExternalConnectionService', () => {
             type: 0
         };
 
-
         it('should find an existing exam and return it', async () => {
+            // Arrange
             repository.findOne.mockResolvedValueOnce(mockedExamSubtype);
 
+            // Act
             const result = await service.findOneOrCreate({ key, source }, mockDto);
 
+            // Assert
             expect(result).toEqual(mockedExamSubtype);
             expect(repository.findOne).toHaveBeenCalledWith({
                 where: [
@@ -130,6 +138,7 @@ describe('ExamSubtypeExternalConnectionService', () => {
         });
 
         it('should not find exam so creates it', async () => {
+            // Arrange
             repository.findOne.mockRejectedValueOnce(new NotFoundException());
             typeService.findOne.mockResolvedValueOnce(mockedExamType);
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
@@ -137,8 +146,10 @@ describe('ExamSubtypeExternalConnectionService', () => {
 
             const { type, ...testData } = mockDto;
 
+            // Act
             const result = await service.findOneOrCreate({ key, source }, mockDto);
 
+            // Assert
             expect(result).toEqual(mockedExamSubtype);
             expect(repository.findOne).toHaveBeenCalledWith({
                 where: [
@@ -175,10 +186,13 @@ describe('ExamSubtypeExternalConnectionService', () => {
         };
 
         it('should update an existing exam', async () => {
+            // Arrange
             repository.findOneAndUpdate.mockResolvedValueOnce(mockedExamSubtype);
 
+            // Act
             const result = await service.findOneAndUpdate({ key, source }, mockDto);
 
+            // Assert
             expect(result).toEqual(mockedExamSubtype);
             expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ externalKey: { key, source } }, mockDto);
         });
