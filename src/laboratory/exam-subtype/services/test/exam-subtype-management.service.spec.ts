@@ -33,11 +33,14 @@ describe('ExamSubtypeManagementService', () => {
     }
 
     it('should create a new exam subtype and return it', async () => {
+      // Arrange
       typeService.findOne.mockResolvedValueOnce(mockedExamType);
       repository.create.mockResolvedValueOnce(mockedExamSubtype);
 
+      // Act
       const result = await service.create(mockDto);
 
+      // Assert
       expect(result).toEqual(mockedExamSubtype);
       expect(repository.create).toHaveBeenCalledWith({ ...mockDto, type: mockedExamType });
     });
@@ -47,10 +50,13 @@ describe('ExamSubtypeManagementService', () => {
     const mockedExamSubtypes = mockExamsSubtypes();
 
     it('should return an array of exam subtypes', async () => {
+      // Arrange
       repository.find.mockResolvedValueOnce(mockedExamSubtypes);
 
+      // Act
       const result = await service.findAll();
 
+      // Assert
       expect(result).toEqual(mockedExamSubtypes);
     });
   });
@@ -60,10 +66,13 @@ describe('ExamSubtypeManagementService', () => {
     const mockedExamSubtype = mockExamsSubtype();
 
     it('should return an existing exam subtype', async () => {
+      // Arrange
       repository.findOne.mockResolvedValueOnce(mockedExamSubtype);
 
+      // Act
       const result = await service.findOne(id);
 
+      // Assert
       expect(result).toEqual(mockedExamSubtype);
       expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id } });
     });
@@ -78,11 +87,14 @@ describe('ExamSubtypeManagementService', () => {
     }
 
     it('should update an existing exam subtype without changing the type', async () => {
+      // Arrange
       repository.findOne.mockResolvedValueOnce({ ...mockedExamSubtype, type: mockedExamType });
       repository.findOneAndUpdate.mockResolvedValueOnce(mockedExamSubtype);
 
+      // Act
       const result = await service.updateOne(id, mockDto);
 
+      // Assert
       expect(result).toEqual(mockedExamSubtype);
       expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id } });
       expect(typeService.findOne).toHaveBeenCalledTimes(0);
@@ -90,12 +102,15 @@ describe('ExamSubtypeManagementService', () => {
     });
 
     it('should update an existing exam subtype with changing the type', async () => {
+      // Arrange
       repository.findOne.mockResolvedValueOnce({ ...mockedExamSubtype, type: mockedExamType });
       typeService.findOne.mockResolvedValueOnce(mockedExamType);
       repository.findOneAndUpdate.mockResolvedValueOnce(mockedExamSubtype);
 
+      // Act
       const result = await service.updateOne(id, { ...mockDto, type: 0 });
 
+      // Assert
       expect(result).toEqual(mockedExamSubtype);
       expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id } });
       expect(typeService.findOne).toHaveBeenCalledWith(0);
@@ -107,9 +122,11 @@ describe('ExamSubtypeManagementService', () => {
     const id: number = 1;
 
     it('should delete an existing exam subtype', async () => {
-
+      // Arrange
+      // Act
       await service.deleteOne(id);
 
+      // Assert
       expect(repository.findOneAndDelete).toHaveBeenCalledWith({ id: id });
     });
   });
