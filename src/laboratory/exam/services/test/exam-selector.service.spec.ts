@@ -21,18 +21,25 @@ describe('ExamSelectorService', () => {
   describe('find', () => {
     const mockedExams = mockExamOptions();
 
-    it('should return an array of options based on medical exams', async () => {
-      repository.query.mockReturnValueOnce({
+    beforeEach(() => {
+      repository.query.mockReturnValue({
         select: jest.fn().mockReturnThis(),
         addSelect: jest.fn().mockReturnThis(),
-        where: jest.fn().mockReturnThis(),
         getRawMany: jest.fn().mockReturnValueOnce(mockedExams),
       } as any);
+    });
 
+    it('should return an array of options based on exams', async () => {
+      // Arrange
+      // Act
       const result = await service.find();
 
+      // Assert
       expect(result).toEqual(mockedExams);
       expect(repository.query).toHaveBeenCalledWith('exam');
+      expect(repository.query().select).toHaveBeenCalledWith('exam.id', 'key');
+      expect(repository.query().addSelect).toHaveBeenCalledWith('exam.name', 'label');
+      expect(repository.query().getRawMany).toHaveBeenCalled();
     });
 
   });

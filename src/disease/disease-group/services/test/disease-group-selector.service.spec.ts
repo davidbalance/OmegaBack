@@ -31,9 +31,11 @@ describe('DiseaseGroupSelectorService', () => {
     });
 
     it('should return an array of options based on disease groups', async () => {
-
+      // Arrange
+      // Act
       const result = await service.find();
 
+      // Assert
       expect(result).toEqual(mockedGroup);
       expect(repository.query).toHaveBeenCalledWith('group');
       expect(repository.query().select).toHaveBeenCalledWith('group.id', 'key');
