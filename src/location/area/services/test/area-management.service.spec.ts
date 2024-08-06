@@ -25,66 +25,81 @@ describe('AreaManagementService', () => {
   });
 
   describe('create', () => {
-    const mockedArea = mockArea();
-    const mockedManagement = mockManagement();
     const mockDto: PostAreaRequestDto = {
-      name: "my-mocked-name",
+      name: 'New Area',
       management: 1
     }
+    const mockedArea = mockArea();
+    const mockedManagement = mockManagement();
 
-    it('should create a new management and return it', async () => {
-      managementService.findOneById.mockResolvedValueOnce(mockedManagement);
+    it('should create a new area', async () => {
+      // Arrange
+      managementService.findOneById.mockResolvedValue(mockedManagement);
       repository.create.mockResolvedValue(mockedArea);
 
+      // Act
       const result = await service.create(mockDto);
 
-      expect(result).toEqual(mockedArea);
-      expect(repository.create).toHaveBeenCalledWith({ ...mockDto, management: mockedManagement });
+      // Assert
       expect(managementService.findOneById).toHaveBeenCalledWith(mockDto.management);
+      expect(repository.create).toHaveBeenCalledWith({ ...mockDto, management: mockedManagement });
+      expect(result).toEqual(mockedArea);
     });
   });
 
   describe('find', () => {
     const mockedAreas = mockAreas();
 
-    it('should return an array of managements', async () => {
+    it('should find all areas', async () => {
+      // Arrange
       repository.find.mockResolvedValue(mockedAreas);
 
+      // Act
       const result = await service.find();
 
+      // Assert
+      expect(repository.find).toHaveBeenCalled();
       expect(result).toEqual(mockedAreas);
     });
   });
 
   describe('updateOne', () => {
     const id: number = 1;
-    const mockedArea = mockArea();
-    const mockedManagement = mockManagement();
     const mockDto: PatchAreaRequestDto = {
       name: "mocked-name",
       management: 1
     }
+    const mockedArea = mockArea();
+    const mockedManagement = mockManagement();
 
-    it('should update an existing management', async () => {
-      managementService.findOneById.mockResolvedValueOnce(mockedManagement);
+    it('should update an area', async () => {
+      // Arrange
+      managementService.findOneById.mockResolvedValue(mockedManagement);
       repository.findOneAndUpdate.mockResolvedValue(mockedArea);
 
+      // Act
       const result = await service.updateOne(id, mockDto);
 
-      expect(result).toEqual(mockedArea);
-      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, { ...mockDto, management: mockedManagement });
+      // Assert
       expect(managementService.findOneById).toHaveBeenCalledWith(mockDto.management);
+      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, { ...mockDto, management: mockedManagement });
+      expect(result).toEqual(mockedArea);
     });
+
   });
 
   describe('deleteOne', () => {
     const id: number = 1;
 
-    it('should delete an existing management', async () => {
+    it('should delete an area', async () => {
+      // Arrange
+      repository.findOneAndDelete.mockResolvedValue(undefined);
 
+      // Act
       await service.deleteOne(id);
+
+      // Assert
       expect(repository.findOneAndDelete).toHaveBeenCalledWith({ id: id });
     });
   });
-
 });
