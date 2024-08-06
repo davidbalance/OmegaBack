@@ -18,5 +18,4 @@ export class CompanySelectorService implements SelectorOptionService<number> {
       .getRawMany<SelectorOption<number>>();
     return companies;
   }
-
 }

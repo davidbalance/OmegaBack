@@ -19,22 +19,32 @@ describe('CompanySelectorService', () => {
   });
 
   describe('find', () => {
-    const group: number = 1;
-    const mockedGroupSelector = mockCompanySelectorOptions();
+    const group: number = 2;
+    const mockedCompanySelector = mockCompanySelectorOptions();
 
-    it('should create a disease', async () => {
+    beforeEach(() => {
       repository.query.mockReturnValue({
         select: jest.fn().mockReturnThis(),
         addSelect: jest.fn().mockReturnThis(),
         leftJoinAndSelect: jest.fn().mockReturnThis(),
         where: jest.fn().mockReturnThis(),
-        getRawMany: jest.fn().mockResolvedValueOnce(mockedGroupSelector),
+        getRawMany: jest.fn().mockResolvedValueOnce(mockedCompanySelector),
       } as any);
+    })
 
+    it('should find selector options for a given group', async () => {
+      // Arrange
+      // Act
       const result = await service.find(group);
 
-      expect(result).toEqual(mockedGroupSelector);
+      // Assert
+      expect(result).toEqual(mockedCompanySelector);
       expect(repository.query).toHaveBeenCalledWith('company');
+      expect(repository.query().select).toHaveBeenCalledWith('company.id', 'key');
+      expect(repository.query().addSelect).toHaveBeenCalledWith('company.name', 'label');
+      expect(repository.query().leftJoinAndSelect).toHaveBeenCalledWith('company.group', 'group', 'group.id = :groupId', { groupId: group });
+      expect(repository.query().where).toHaveBeenCalledWith('group.status = :status', { status: true });
+      expect(repository.query().getRawMany).toHaveBeenCalled();
     });
   });
 });

@@ -23,9 +23,13 @@ describe('CompanyManagementService', () => {
     const mockedCompanies = mockCompanies();
 
     it('should return corporative groups', async () => {
+      // Arrange
       repository.find.mockResolvedValueOnce(mockedCompanies);
+
+      // Act
       const result = await service.find(group);
 
+      // Assert
       expect(result).toEqual(mockedCompanies);
       expect(repository.find).toHaveBeenCalledWith({
         select: {
@@ -49,10 +53,13 @@ describe('CompanyManagementService', () => {
     const mockedCompany = mockCompany();
 
     it('should return corporative groups', async () => {
+      // Arrange
       repository.findOne.mockResolvedValueOnce(mockedCompany);
 
+      // Act
       const result = await service.findOne(id);
 
+      // Assert
       expect(result).toEqual(mockedCompany);
       expect(repository.findOne).toHaveBeenCalledWith({ where: { id } });
     });
