@@ -23,9 +23,13 @@ describe('BranchManagementService', () => {
     const mockedBranches = mockBranches();
 
     it('should return branches', async () => {
+      // Arrange
       repository.find.mockResolvedValueOnce(mockedBranches);
+
+      // Act
       const result = await service.find(company);
 
+      // Assert
       expect(result).toEqual(mockedBranches);
       expect(repository.find).toHaveBeenCalledWith({
         where: {
@@ -53,10 +57,13 @@ describe('BranchManagementService', () => {
     const mockedBranches = mockBranches();
 
     it('should return branches by ruc', async () => {
+      // Arrange
       repository.find.mockResolvedValueOnce(mockedBranches);
 
+      // Act
       const result = await service.findByCompanyRuc(ruc);
 
+      // Assert
       expect(result).toEqual(mockedBranches);
       expect(repository.find).toHaveBeenCalledWith({
         where: {
