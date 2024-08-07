@@ -54,6 +54,7 @@ export class MedicalResultDiseaseReportService {
             { header: 'Proceso', key: 'process' },
             { header: 'Fecha', key: 'date' },
             { header: 'Puesto de Trabajo', key: 'jobPosition' },
+            { header: 'Rol', key: 'role' },
             { header: 'Cedula', key: 'dni' },
             { header: 'Nombres', key: 'name' },
             { header: 'Apellidos', key: 'lastname' },
@@ -84,6 +85,7 @@ export class MedicalResultDiseaseReportService {
             .leftJoinAndSelect('medical_client.email', 'medical_email', 'medical_email.default = :emailFlag', { emailFlag: true })
             .select(['medical_order.companyName AS company',
                 'medical_order.branchName AS branch',
+                'medical_client.patient_role AS role',
                 'medical_client.managementName AS management',
                 'medical_client.areaName AS area',
                 'YEAR(medical_result.createAt) AS year',
