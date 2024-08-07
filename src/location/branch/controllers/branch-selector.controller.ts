@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Param, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
@@ -9,7 +9,9 @@ import { GetBranchSelectorOptionArrayResponseDto } from '../dtos/response/get.br
 @ApiBearerAuth()
 @Controller('selector/branches')
 export class BranchSelectorController {
-  constructor(private readonly service: BranchSelectorService) { }
+  constructor(
+    @Inject(BranchSelectorService) private readonly service: BranchSelectorService
+  ) { }
 
   @UseGuards(JwtAuthGuard)
   @Get(':company')

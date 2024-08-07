@@ -39,17 +39,24 @@ describe('ApiKeyManagementService', () => {
         const expiresIn = 3600;
 
         it('should create and return a new API key', async () => {
-
+            // Arrange
             credentialService.findOneByUser.mockResolvedValue(mockedCredential);
             configService.get.mockReturnValue(expiresIn);
             repository.create.mockResolvedValue(mockedApiKey);
 
+            // Act
             const result = await service.create(user, mockDto);
 
+            // Assert
             expect(result).toEqual(mockedApiKey);
             expect(credentialService.findOneByUser).toHaveBeenCalledWith(user);
             expect(configService.get).toHaveBeenCalledWith('APIKEY_EXPIRES_IN');
-            expect(repository.create).toHaveBeenCalledTimes(1);
+            expect(repository.create).toHaveBeenCalledWith({
+                name: mockDto.name,
+                value: expect.any(String),
+                credential: mockedCredential,
+                expiresAt: expect.any(Date)
+            });
         });
     });
 

@@ -50,16 +50,22 @@ describe('CompanyExternalConnectionService', () => {
             }
         };
 
-        it('should create an company with a given key', async () => {
+        beforeEach(() => {
             externalService.findOneOrCreate.mockResolvedValueOnce(mockedCorporativeGroup);
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
+        });
+
+        it('should create an company with a given key', async () => {
+            // Arrange
             repository.create.mockResolvedValueOnce(mockedCompany);
 
             const { corporativeGroup, ...company } = mockDto;
-
-            const result = await service.create({ key, source }, mockDto);
             const { key: corporativeKey, ...corporativeTest } = corporativeGroup
 
+            // Act
+            const result = await service.create({ key, source }, mockDto);
+
+            // Assert
             expect(result).toEqual(result);
             expect(externalService.findOneOrCreate).toHaveBeenCalledWith({ key: corporativeKey, source }, corporativeTest);
             expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
@@ -68,16 +74,15 @@ describe('CompanyExternalConnectionService', () => {
                 corporativeGroup: mockedCorporativeGroup,
                 externalKey: mockedKey
             });
-            expect(externalKeyService.remove).toHaveBeenCalledTimes(0);
+            expect(externalKeyService.remove).not.toHaveBeenCalled();
         });
 
         it('should throw an error so not create the company', async () => {
-            externalService.findOneOrCreate.mockResolvedValueOnce(mockedCorporativeGroup);
-            externalKeyService.create.mockResolvedValueOnce(mockedKey);
+            // Arrange
             repository.create.mockRejectedValueOnce(new Error());
-
             const { corporativeGroup, ...company } = mockDto;
 
+            // Act & Assert
             await expect(service.create({ key, source }, mockDto))
                 .rejects
                 .toThrow(Error);
@@ -110,9 +115,13 @@ describe('CompanyExternalConnectionService', () => {
         };
 
         it('should find an existing company and return it', async () => {
+            // Arrange
             repository.findOne.mockResolvedValueOnce(mockedCompany);
 
+            // Act
             const result = await service.findOneOrCreate({ key, source }, mockDto);
+
+            // Assert
             expect(result).toEqual(mockedCompany);
             expect(repository.findOne).toHaveBeenCalledWith({
                 where: [
@@ -120,18 +129,24 @@ describe('CompanyExternalConnectionService', () => {
                     { ruc: mockDto.ruc }
                 ]
             });
+            expect(externalService.findOneOrCreate).not.toHaveBeenCalled();
+            expect(externalKeyService.create).not.toHaveBeenCalled();
+            expect(repository.create).not.toHaveBeenCalled();
+            expect(externalKeyService.remove).not.toHaveBeenCalled();
         });
 
         it('should not find company so creates it', async () => {
+            // Arrange
             repository.findOne.mockRejectedValueOnce(new NotFoundException());
             externalService.findOneOrCreate.mockReturnValueOnce(mockedCorporativeGroup);
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
             repository.create.mockResolvedValueOnce({ ...mockedCompany, corporativeGroup: mockedCorporativeGroup });
-
-            const result = await service.findOneOrCreate({ key, source }, mockDto);
-
             const { corporativeGroup, ...company } = mockDto;
 
+            // Act
+            const result = await service.findOneOrCreate({ key, source }, mockDto);
+
+            // Assert
             expect(result).toEqual(result);
             expect(repository.findOne).toHaveBeenCalledWith({
                 where: [
@@ -160,10 +175,13 @@ describe('CompanyExternalConnectionService', () => {
         };
 
         it('should update an existing exam', async () => {
+            // Arrange
             repository.findOneAndUpdate.mockResolvedValueOnce(mockedCompany);
 
+            // Act
             const result = await service.findOneAndUpdate({ key, source }, mockDto);
 
+            // Assert
             expect(result).toEqual(mockedCompany);
             expect(repository.findOneAndUpdate).toHaveBeenCalledWith(
                 { externalKey: { key: key, source: source } },

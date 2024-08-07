@@ -21,19 +21,29 @@ describe('DiseaseGroupSelectorService', () => {
   describe('find', () => {
     const mockedGroup = mockDiseaseGroupOptions();
 
-    it('should return an array of options based on disease groups', async () => {
-      repository.query.mockReturnValueOnce({
+    beforeEach(() => {
+      repository.query.mockReturnValue({
         select: jest.fn().mockReturnThis(),
         addSelect: jest.fn().mockReturnThis(),
         where: jest.fn().mockReturnThis(),
         getRawMany: jest.fn().mockReturnValueOnce(mockedGroup),
       } as any);
+    });
 
+    it('should return an array of options based on disease groups', async () => {
+      // Arrange
+      // Act
       const result = await service.find();
 
+      // Assert
       expect(result).toEqual(mockedGroup);
       expect(repository.query).toHaveBeenCalledWith('group');
+      expect(repository.query().select).toHaveBeenCalledWith('group.id', 'key');
+      expect(repository.query().addSelect).toHaveBeenCalledWith('group.name', 'label');
+      expect(repository.query().where).toHaveBeenCalledWith('group.status = :status', { status: true });
+      expect(repository.query().getRawMany).toHaveBeenCalled();
     });
+
 
   });
 

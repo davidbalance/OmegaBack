@@ -2,7 +2,6 @@ import { SelectorOption, SelectorOptionService } from "@/shared/utils/bases/base
 import { Injectable, Inject } from "@nestjs/common";
 import { DiseaseRepository } from "../repositories/disease.repository";
 
-
 @Injectable()
 export class DiseaseSelectorService implements SelectorOptionService<number> {
     constructor(
@@ -18,6 +17,4 @@ export class DiseaseSelectorService implements SelectorOptionService<number> {
             .getRawMany<SelectorOption<number>>();
         return diseases;
     }
-
-
 }

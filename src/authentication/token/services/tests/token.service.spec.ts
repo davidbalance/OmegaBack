@@ -2,24 +2,25 @@ import { TokenService } from "../token.service";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { TestBed } from "@automock/jest";
-import { ForbiddenException, NotFoundException } from "@nestjs/common";
 import { TokenRepository } from "../../repositories/token.repository";
-import dayjs from "dayjs";
+import { mockToken } from "./stub/token.stub";
+import { RefreshToken } from "../../types/refresh-token.type";
+import { ForbiddenException } from "@nestjs/common";
 import { Between } from "typeorm";
 
 describe('TokenService', () => {
     let service: TokenService;
     let repository: jest.Mocked<TokenRepository>;
-    let jwt: jest.Mocked<JwtService>;
-    let config: jest.Mocked<ConfigService>;
+    let jwtService: jest.Mocked<JwtService>;
+    let configService: jest.Mocked<ConfigService>;
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(TokenService).compile();
 
         service = unit;
         repository = unitRef.get(TokenRepository);
-        jwt = unitRef.get(JwtService);
-        config = unitRef.get(ConfigService);
+        jwtService = unitRef.get(JwtService);
+        configService = unitRef.get(ConfigService);
     });
 
     afterEach(() => {
@@ -27,72 +28,185 @@ describe('TokenService', () => {
     });
 
     describe('initToken', () => {
-        it('should generate and store tokens', async () => {
-            const sub = 1;
-            const access = 'accessToken';
-            const refresh = 'refreshToken';
-            const expiresRefresh = new Date();
-            const tokenPayload = { access, refresh, expiresAt: expiresRefresh };
+        const sub = 1;
+        const access = 'test-access-token';
+        const refresh = 'test-refresh-token';
+        const expiresIn = 3600;
 
-            jest.spyOn<any, any>(service, 'generateToken').mockResolvedValue({ access, refresh });
-            jest.spyOn<any, any>(service, 'getExpiresTime').mockReturnValue({ expiresAccess: new Date(), expiresRefresh });
-            jest.spyOn<any, any>(service, 'storeToken').mockResolvedValue(undefined);
+        beforeEach(() => {
+            jwtService.sign.mockReturnValueOnce(access);
+            jwtService.sign.mockReturnValueOnce(refresh);
+            configService.get.mockReturnValueOnce(expiresIn);
+        });
 
+        it('should generate and store access and refresh tokens', async () => {
+            // Arrange
+            repository.findOneAndUpdate.mockResolvedValueOnce(undefined);
+
+            // Act
             const result = await service.initToken(sub);
 
-            expect(result).toEqual(tokenPayload);
-            expect(service['generateToken']).toHaveBeenCalledWith(sub);
-            expect(service['storeToken']).toHaveBeenCalledWith(sub, access);
+            // Assert
+            expect(result).toEqual({
+                access: access,
+                refresh: refresh,
+                expiresAt: expect.any(Date),
+            });
+            expect(jwtService.sign).toHaveBeenCalledTimes(2);
+            expect(configService.get).toHaveBeenCalledWith('JWT_REFRESH_EXPIRES_IN');
+            expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ key: sub }, {
+                token: access,
+                expiresAt: expect.any(Date),
+            });
+        });
+
+        it('should create a new token if it does not exist', async () => {
+            // Arrange
+            repository.findOneAndUpdate.mockRejectedValueOnce(new Error());
+            repository.create.mockResolvedValueOnce(undefined);
+
+            // Act
+            const result = await service.initToken(sub);
+
+            // Assert
+            expect(result).toEqual({
+                access: access,
+                refresh: refresh,
+                expiresAt: expect.any(Date),
+            });
+            expect(jwtService.sign).toHaveBeenCalledTimes(2);
+            expect(configService.get).toHaveBeenCalledWith('JWT_REFRESH_EXPIRES_IN');
+            expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ key: sub }, {
+                token: access,
+                expiresAt: expect.any(Date),
+            });
+            expect(repository.create).toHaveBeenCalledWith({
+                key: sub,
+                token: access,
+                expiresAt: expect.any(Date),
+            });
+        });
+
+        it('should create a new token if it does not exist', async () => {
+            // Arrange
+            repository.findOneAndUpdate.mockRejectedValueOnce(new Error());
+            repository.create.mockResolvedValueOnce(undefined);
+
+            // Act
+            const result = await service.initToken(sub);
+
+            // Assert
+            expect(result).toEqual({
+                access: access,
+                refresh: refresh,
+                expiresAt: expect.any(Date),
+            });
+            expect(jwtService.sign).toHaveBeenCalledTimes(2);
+            expect(configService.get).toHaveBeenCalledWith('JWT_REFRESH_EXPIRES_IN');
+            expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ key: sub }, {
+                token: access,
+                expiresAt: expect.any(Date),
+            });
+            expect(repository.create).toHaveBeenCalledWith({
+                key: sub,
+                token: access,
+                expiresAt: expect.any(Date),
+            });
         });
     });
 
     describe('refreshToken', () => {
-        it('should refresh tokens if the refresh token is valid', async () => {
-            const payload = { sub: 1, token: 'refreshToken', iat: dayjs().unix() };
-            const access = 'newAccessToken';
-            const refresh = 'newRefreshToken';
-            const expiresRefresh = new Date();
-            const tokenPayload = { access, refresh, expiresAt: expiresRefresh };
+        const sub = 1;
+        const access = 'test-access-token';
+        const refresh = 'test-refresh-token';
+        const expiresIn = 3600;
+        const token: RefreshToken = { sub, token: refresh, iat: 1678886400 };
+        const mockedToken = mockToken();
 
-            jest.spyOn<any, any>(service, 'canRefresh').mockResolvedValue(true);
-            jest.spyOn<any, any>(service, 'generateToken').mockResolvedValue({ access, refresh });
-            jest.spyOn<any, any>(service, 'getExpiresTime').mockReturnValue({ expiresAccess: new Date(), expiresRefresh });
-            jest.spyOn<any, any>(service, 'storeToken').mockResolvedValue(undefined);
-
-            const result = await service.refreshToken(payload);
-
-            expect(result).toEqual(tokenPayload);
-            expect(service['canRefresh']).toHaveBeenCalledWith(payload);
-            expect(service['generateToken']).toHaveBeenCalledWith(payload.sub);
-            expect(service['storeToken']).toHaveBeenCalledWith(payload.sub, access);
+        beforeEach(() => {
+            jwtService.sign.mockReturnValueOnce(access);
+            jwtService.sign.mockReturnValueOnce(refresh);
+            configService.get.mockReturnValueOnce(expiresIn);
         });
 
-        it('should throw ForbiddenException if the refresh token is invalid', async () => {
-            const payload = { sub: 1, token: 'invalidToken', iat: dayjs().unix() };
+        it('should refresh tokens if the refresh token is valid', async () => {
+            // Arrange
+            repository.findOne.mockResolvedValueOnce({ ...mockedToken, token: refresh });
+            repository.findOneAndUpdate.mockResolvedValueOnce(undefined);
 
-            jest.spyOn<any, any>(service, 'canRefresh').mockResolvedValue(false);
+            // Act
+            const result = await service.refreshToken(token);
 
-            await expect(service['refreshToken'](payload)).rejects.toThrow(ForbiddenException);
-            expect(service['canRefresh']).toHaveBeenCalledWith(payload);
+            // Assert
+            expect(result).toEqual({
+                access: access,
+                refresh: refresh,
+                expiresAt: expect.any(Date),
+            });
+            expect(jwtService.sign).toHaveBeenCalledTimes(2);
+            expect(configService.get).toHaveBeenCalledWith('JWT_REFRESH_EXPIRES_IN');
+            expect(repository.findOne).toHaveBeenCalledWith({ where: { key: sub } });
+            expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ key: sub }, {
+                token: access,
+                expiresAt: expect.any(Date),
+            });
+        });
+
+        it('should throw a ForbiddenException if the refresh token is invalid', async () => {
+            // Arrange
+            repository.findOne.mockResolvedValueOnce(mockedToken);
+
+            // Act & Assert
+            await expect(service.refreshToken(token))
+                .rejects
+                .toThrowError(ForbiddenException);
+            expect(jwtService.sign).not.toHaveBeenCalled();
+            expect(repository.findOne).toHaveBeenCalledWith({ where: { key: sub } });
+            expect(repository.findOneAndUpdate).not.toHaveBeenCalled();
+        });
+
+        it('should delete the token and throw a ForbiddenException if the refresh token is expired and outside the allowed time', async () => {
+            // Arrange
+            repository.findOne.mockResolvedValueOnce({ ...mockedToken, token: 'invalid-token' });
+            repository.findOneAndDelete.mockResolvedValueOnce(undefined);
+
+            // Act & Assert
+            await expect(service.refreshToken(token))
+                .rejects
+                .toThrowError(ForbiddenException);
+            expect(jwtService.sign).not.toHaveBeenCalled();
+            expect(repository.findOne).toHaveBeenCalledWith({ where: { key: sub } });
+            expect(repository.findOneAndDelete).toHaveBeenCalledWith({ key: sub });
         });
     });
 
     describe('removeToken', () => {
-        it('should delete the token associated with the given sub', async () => {
-            const sub = 1;
+        const sub = 1;
 
+        it('should delete the token by user ID', async () => {
+            // Arrange
+            repository.findOneAndDelete.mockResolvedValue(undefined);
+
+            // Act
             await service.removeToken(sub);
 
+            // Assert
             expect(repository.findOneAndDelete).toHaveBeenCalledWith({ key: sub });
         });
     });
 
     describe('removeExpireToken', () => {
         it('should delete expired tokens', async () => {
+            // Arrange
+            repository.findOneAndDelete.mockResolvedValue(undefined);
 
+            // Act
             await service.removeExpireToken();
 
-            expect(repository.findOneAndDelete).toHaveBeenCalledTimes(1);
+            // Assert
+            expect(repository.findOneAndDelete).toHaveBeenCalledWith({
+                expiresAt: Between(expect.any(Date), expect.any(Date)),
+            });
         });
     });
 });

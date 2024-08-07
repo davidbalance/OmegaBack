@@ -19,20 +19,28 @@ describe('CitySelectorService', () => {
   });
 
   describe('find', () => {
-    const group: number = 1;
     const mockedCitySelector = mockCitySelectorOptions();
 
-    it('should find selector for city', async () => {
+    beforeEach(() => {
       repository.query.mockReturnValue({
         select: jest.fn().mockReturnThis(),
         addSelect: jest.fn().mockReturnThis(),
-        getRawMany: jest.fn().mockResolvedValueOnce(mockedCitySelector),
+        getRawMany: jest.fn().mockReturnValueOnce(mockedCitySelector),
       } as any);
+    })
 
-      const result = await service.find(group);
+    it('should return an array of options based on cities', async () => {
+      // Arrange
+      // Act
+      const result = await service.find();
 
+      // Assert
       expect(result).toEqual(mockedCitySelector);
       expect(repository.query).toHaveBeenCalledWith('city');
+      expect(repository.query().select).toHaveBeenCalledWith('city.id', 'key');
+      expect(repository.query().addSelect).toHaveBeenCalledWith('city.name', 'label');
+      expect(repository.query().getRawMany).toHaveBeenCalled();
     });
+
   });
 });

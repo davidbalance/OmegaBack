@@ -16,12 +16,12 @@ import { DeleteDiseaseGroupResponseDto } from "../dtos/response/delete.disease-g
 @Controller('diseases/groups')
 export class DiseaseGroupManagementController {
   constructor(
-    @Inject(DiseaseGroupManagementService) private readonly diseaseGroupService: DiseaseGroupManagementService
+    @Inject(DiseaseGroupManagementService) private readonly service: DiseaseGroupManagementService
   ) { }
 
   @Get()
   async find(): Promise<GetDiseaseGroupArrayResponseDto> {
-    const data = await this.diseaseGroupService.find();
+    const data = await this.service.find();
     return plainToInstance(GetDiseaseGroupArrayResponseDto, { data });
   }
 
@@ -29,7 +29,7 @@ export class DiseaseGroupManagementController {
   async create(
     @Body() body: PostDiseaseGroupRequestDto
   ): Promise<PostDiseaseGroupResponseDto> {
-    const group = await this.diseaseGroupService.create(body);
+    const group = await this.service.create(body);
     return plainToInstance(PostDiseaseGroupResponseDto, group);
   }
 
@@ -38,7 +38,7 @@ export class DiseaseGroupManagementController {
     @Param('id') id: number,
     @Body() body: PatchDiseaseGroupRequestDto
   ): Promise<PatchDiseaseGroupResponseDto> {
-    const data = await this.diseaseGroupService.updateOne(id, body);
+    const data = await this.service.updateOne(id, body);
     return plainToInstance(PatchDiseaseGroupResponseDto, data);
   }
 
@@ -46,7 +46,7 @@ export class DiseaseGroupManagementController {
   async deleteOne(
     @Param('id') id: number
   ): Promise<DeleteDiseaseGroupResponseDto> {
-    await this.diseaseGroupService.deleteOne(id);
+    await this.service.deleteOne(id);
     return {};
   }
 }
