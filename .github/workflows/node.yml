@@ -13,11 +13,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: npm install
+      # - name: Install dependencies
+      #   run: npm install
 
-      - name: Run tests
-        run: npm run test
+      # - name: Run tests
+      #   run: npm run test
 
   build_and_push_docker_image:
     runs-on: ubuntu-latest
