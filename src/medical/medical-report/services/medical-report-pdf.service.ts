@@ -48,18 +48,22 @@ export class MedicalReportPdfService {
   }
 
   private async processPdf(data: MedicalReport): Promise<string> {
-    const directory = path.resolve(data.doctorSignature);
-    const signatureImg = readFileSync(directory);
-    const base64 = Buffer.from(signatureImg).toString('base64');
+    const signatureDirectory = path.resolve(data.doctorSignature);
+    const signatureImg = readFileSync(signatureDirectory);
+    const signatureBase64 = Buffer.from(signatureImg).toString('base64');
+
+    const headerDirectory = path.resolve('templates/medical-result/medical-report/header.png');
+    const headerImg = readFileSync(headerDirectory);
+    const headerBase64 = Buffer.from(headerImg).toString('base64');
 
     const newContent = this.pdfService.parseHtml(data.content);
 
-    const baseContent = this.getContent(data, base64);
+    const baseContent = this.getContent(data, {
+      signature: signatureBase64,
+      header: headerBase64
+    });
 
     const docLayout = medicalReportDocumentLayout(baseContent, newContent);
-
-    // const templateDirectory = path.resolve('templates/medical-result/medical-report');
-    // const templateFile = path.join(templateDirectory, 'template.hbs');
 
     const buffer = await this.pdfService.craft(docLayout);
 
@@ -70,7 +74,8 @@ export class MedicalReportPdfService {
     return output;
   }
 
-  private getContent = (data: Omit<MedicalReport, 'content'>, base64: string) => ({
+  private getContent = (data: Omit<MedicalReport, 'content'>, image: { signature: string, header: string }) => ({
+    header: `data:image/png;base64,${image.header}`,
     title: 'Omega report',
     patientFullname: data.patientFullname,
     patientAge: dayjs().diff(data.patientBirthday, 'years'),
@@ -80,6 +85,6 @@ export class MedicalReportPdfService {
     examName: data.examName,
     doctorFullname: data.doctorFullname,
     doctorDni: data.doctorDni,
-    doctorSignature: `data:image/png;base64,${base64}`
+    doctorSignature: `data:image/png;base64,${image.signature}`,
   });
 }
