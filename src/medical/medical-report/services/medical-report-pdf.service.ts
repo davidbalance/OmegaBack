@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { readFileSync } from 'fs';
 import dayjs from 'dayjs';
+import es from "dayjs/locale/es";
 import path from 'path';
 import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';
 import { PdfManagerService } from '@/shared/pdf-manager';
@@ -74,7 +75,7 @@ export class MedicalReportPdfService {
     patientFullname: data.patientFullname,
     patientAge: dayjs().diff(data.patientBirthday, 'years'),
     patientDni: data.patientDni,
-    date: dayjs(data.createAt).format('dddd, MMMM D, YYYY'),
+    date: dayjs(data.createAt).locale(es).format('dddd, MMMM D, YYYY'),
     company: data.companyName,
     examName: data.examName,
     doctorFullname: data.doctorFullname,
