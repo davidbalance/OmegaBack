@@ -8,7 +8,7 @@ export type MedicalResultReport = {
     date: Date,
     jobPosition: string;
     dni: string;
-    // role: string;
+    role: string;
     name: string;
     lastname: string;
     email: string;
