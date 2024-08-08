@@ -34,14 +34,14 @@ describe('AreaManagementService', () => {
 
     it('should create a new area', async () => {
       // Arrange
-      managementService.findOneById.mockResolvedValue(mockedManagement);
+      managementService.findOne.mockResolvedValue(mockedManagement);
       repository.create.mockResolvedValue(mockedArea);
 
       // Act
       const result = await service.create(mockDto);
 
       // Assert
-      expect(managementService.findOneById).toHaveBeenCalledWith(mockDto.management);
+      expect(managementService.findOne).toHaveBeenCalledWith(mockDto.management);
       expect(repository.create).toHaveBeenCalledWith({ ...mockDto, management: mockedManagement });
       expect(result).toEqual(mockedArea);
     });
@@ -74,14 +74,14 @@ describe('AreaManagementService', () => {
 
     it('should update an area', async () => {
       // Arrange
-      managementService.findOneById.mockResolvedValue(mockedManagement);
+      managementService.findOne.mockResolvedValue(mockedManagement);
       repository.findOneAndUpdate.mockResolvedValue(mockedArea);
 
       // Act
       const result = await service.updateOne(id, mockDto);
 
       // Assert
-      expect(managementService.findOneById).toHaveBeenCalledWith(mockDto.management);
+      expect(managementService.findOne).toHaveBeenCalledWith(mockDto.management);
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, { ...mockDto, management: mockedManagement });
       expect(result).toEqual(mockedArea);
     });

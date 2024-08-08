@@ -14,7 +14,7 @@ export class AreaManagementService {
   ) { }
 
   async create({ management, ...area }: PostAreaRequestDto): Promise<Area> {
-    const foundManagement = await this.managementService.findOneById(management);
+    const foundManagement = await this.managementService.findOne(management);
     const createdArea = await this.repository.create({ ...area, management: foundManagement });
     return createdArea;
   }
@@ -25,7 +25,7 @@ export class AreaManagementService {
   }
 
   async updateOne(id: number, { management, ...area }: PatchAreaRequestDto): Promise<Area> {
-    const foundManagement = await this.managementService.findOneById(management);
+    const foundManagement = await this.managementService.findOne(management);
     const updatedArea = await this.repository.findOneAndUpdate({ id: id }, { ...area, management: foundManagement });
     return updatedArea;
   }
