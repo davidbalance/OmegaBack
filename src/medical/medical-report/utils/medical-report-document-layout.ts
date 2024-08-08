@@ -101,6 +101,11 @@ export const medicalReportDocumentLayout = (data: ReportContent, body: Content):
         ],
         style: 'footer',
     },
+    pageBreakBefore: function (currentNode) {
+        if(!Array.isArray(currentNode.text)) return false;
+        const actualNode: any = currentNode.text[0];
+        return actualNode.nodeName === 'BR';
+    },
     styles: {
         field: {
             margin: [30, 2],
