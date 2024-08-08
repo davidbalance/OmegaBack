@@ -16,6 +16,7 @@ import { PatientEeqPaginationService } from './service/patient-eeq-pagination.se
 import { PatientFlatProvider } from './service/patient-flat.service';
 import { PatientEeqFlatProvider } from './service/patient-eeq-flat.service';
 import { PatientPaginationController } from './controllers/patient-pagination.controller';
+import { PatientEventService } from './service/patient-event.service';
 
 @Module({
   imports: [
@@ -31,8 +32,10 @@ import { PatientPaginationController } from './controllers/patient-pagination.co
     PatientPaginationController,
   ],
   providers: [
+    PatientExternalListener,
     PatientRepository,
     PatientEeqPaginationService,
+    PatientEventService,
     PatientExternalConnectionService,
     PatientManagementService,
     PatientPaginationService,

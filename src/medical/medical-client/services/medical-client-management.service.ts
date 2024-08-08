@@ -1,18 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { MedicalClient } from '../entities/medical-client.entity';
 import { MedicalClientRepository } from '../repositories/medical-client.repository';
-import { MedicalEmailRepository } from '../repositories/medical-email.repository';
+import { PatchMedicalClientRequestDto } from '../dtos/request/patch.medical-client.request.dto';
 import { PostMedicalClientRequestDto } from '../dtos/request/post.medical-client.request.dto';
-import { MedicalClientEventService } from './medical-client-event.service';
 
 @Injectable()
-export class MedicalClientService {
+export class MedicalClientManagementService {
 
   constructor(
     @Inject(MedicalClientRepository) private readonly clientRepository: MedicalClientRepository,
-    @Inject(MedicalEmailRepository) private readonly emailRepository: MedicalEmailRepository,
-    @Inject(MedicalClientEventService) private readonly eventService: MedicalClientEventService
   ) { }
+
+  async create({ dni, email, ...data }: PostMedicalClientRequestDto): Promise<MedicalClient> {
+    const client = await this.clientRepository.create({ ...data, dni });
+    return client;
+  }
 
   async findOne(id: number): Promise<MedicalClient> {
     const client = await this.clientRepository.findOne({ where: { id } });
@@ -24,27 +26,6 @@ export class MedicalClientService {
     return client;
   }
 
-  async findOneOrCreateWithSource(source: string, { dni, email, jobPosition, ...data }: PostMedicalClientRequestDto): Promise<MedicalClient> {
-    try {
-      const client = await this.clientRepository.findOne({
-        where: {
-          dni: dni
-        }
-      });
-      return client;
-    } catch (error) {
-
-      const newClient = await this.clientRepository.create({
-        ...data,
-        dni,
-        jobPositionName: jobPosition.name
-      });
-      await this.emailRepository.create({ email, default: false, client: newClient });
-      this.eventService.emitMedicalClientCreateEvent(source, jobPosition)
-      return newClient;
-    }
-  }
-
   async findClientsByDoctor(doctor: string): Promise<MedicalClient[]> {
     const clients = await this.clientRepository.query('client')
       .leftJoinAndSelect('client.medicalOrders', 'medicalOrder')
@@ -52,5 +33,13 @@ export class MedicalClientService {
       .where('medicalResult.doctorDni = :dni', { dni: doctor })
       .getMany();
     return clients;
+  }
+
+  async updateOne(dni: string, data: PatchMedicalClientRequestDto): Promise<MedicalClient> {
+    return this.clientRepository.findOneAndUpdate({ dni }, data);
+  }
+
+  async deleteOne(dni: string): Promise<void> {
+    await this.clientRepository.findOneAndDelete({ dni });
   }
 }

@@ -2,14 +2,13 @@ import { Inject, Injectable } from '@nestjs/common';
 import { MedicalEmail } from '../entities/medical-email.entity';
 import { MedicalEmailRepository } from '../repositories/medical-email.repository';
 import { PostMedicalEmailRequestDto } from '../dtos/request/post.medical-email.request.dto';
-import { MedicalClientService } from './medical-client.service';
-import { In } from 'typeorm';
+import { MedicalClientManagementService } from './medical-client-management.service';
 
 @Injectable()
 export class MedicalClientEmailService {
 
   constructor(
-    @Inject(MedicalClientService) private readonly clientService: MedicalClientService,
+    @Inject(MedicalClientManagementService) private readonly clientService: MedicalClientManagementService,
     @Inject(MedicalEmailRepository) private readonly emailRepository: MedicalEmailRepository
   ) { }
 
