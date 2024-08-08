@@ -1,7 +1,7 @@
 import { TestBed } from "@automock/jest";
 import { JobPositionRepository } from "../../repositories/job-position.repository";
-import { mockJobPosition, mockJobPositions } from "./stub/job-position.stub";
 import { JobPositionManagementService } from "../job-position-management.service";
+import { mockJobPosition, mockJobPositions } from "./stub/job-position.stub";
 import { PostJobPositionRequestDto } from "../../dtos/request/post.job-position.request.dto";
 import { PatchJobPositionRequestDto } from "../../dtos/request/patch.job-position.request.dto";
 
@@ -22,29 +22,36 @@ describe('JobPositionManagementService', () => {
 
   describe('create', () => {
     const mockedJobPosition = mockJobPosition();
-    const mockDto: PostJobPositionRequestDto = {
-      name: "my-mocked-name"
+    const body: PostJobPositionRequestDto = {
+      name: "Job Position Name",
     }
 
-    it('should create a new job position and return it', async () => {
+    it('should create a job position', async () => {
+      // Arrange
       repository.create.mockResolvedValueOnce(mockedJobPosition);
 
-      const result = await service.create(mockDto);
+      // Act
+      const result = await service.create(body);
 
+      // Assert
       expect(result).toEqual(mockedJobPosition);
-      expect(repository.create).toHaveBeenCalledWith(mockDto);
+      expect(repository.create).toHaveBeenCalledWith(body);
     });
   });
 
   describe('findAll', () => {
     const mockedJobPositions = mockJobPositions();
 
-    it('should return an array of job positions', async () => {
+    it('should return all job positions', async () => {
+      // Arrange
       repository.find.mockResolvedValueOnce(mockedJobPositions);
 
+      // Act
       const result = await service.findAll();
 
+      // Assert
       expect(result).toEqual(mockedJobPositions);
+      expect(repository.find).toHaveBeenCalledWith({ where: { status: true } });
     });
   });
 
@@ -52,42 +59,51 @@ describe('JobPositionManagementService', () => {
     const id: number = 1;
     const mockedJobPosition = mockJobPosition();
 
-    it('should return an existing job position', async () => {
+    it('should return a job position by id', async () => {
+      // Arrange
       repository.findOne.mockResolvedValueOnce(mockedJobPosition);
 
+      // Act
       const result = await service.findOne(id);
 
+      // Assert
       expect(result).toEqual(mockedJobPosition);
-      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id } });
+      expect(repository.findOne).toHaveBeenCalledWith({ where: { id } });
     });
   });
 
   describe('updateOne', () => {
     const id: number = 1;
     const mockedJobPosition = mockJobPosition();
-    const mockDto: PatchJobPositionRequestDto = {
-      name: "mocked-name"
+    const body: PatchJobPositionRequestDto = {
+      name: "Updated Job Position Name"
     }
 
-    it('should update an existing job position', async () => {
+    it('should update a job position', async () => {
+      // Arrange
       repository.findOneAndUpdate.mockResolvedValueOnce(mockedJobPosition);
 
-      const result = await service.updateOne(id, mockDto);
+      // Act
+      const result = await service.updateOne(id, body);
 
+      // Assert
       expect(result).toEqual(mockedJobPosition);
-      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, mockDto);
+      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id }, body);
     });
   });
 
   describe('deleteOne', () => {
     const id: number = 1;
 
-    it('should delete an existing job position', async () => {
+    it('should delete a job position', async () => {
+      // Arrange
+      repository.findOneAndDelete.mockResolvedValueOnce(undefined);
 
-      const result = await service.deleteOne(id);
+      // Act
+      await service.deleteOne(id);
 
-      expect(repository.findOneAndDelete).toHaveBeenCalledWith({ id: id });
+      // Assert
+      expect(repository.findOneAndDelete).toHaveBeenCalledWith({ id });
     });
   });
-
 });
