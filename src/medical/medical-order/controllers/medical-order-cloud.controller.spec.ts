@@ -1,7 +1,6 @@
 import { TestBed } from "@automock/jest";
 import { MedicalOrderCloudService } from "../services/medical-order-cloud.service";
 import { MedicalOrderCloudController } from "./medical-order-cloud.controller";
-import { mockMedicalOrder } from "../services/test/stub/medical-order.stub";
 import { mockMedicalOrderCloud } from "../services/test/stub/medical-order-cloud.stub";
 import { GetMedicalOrderCloudResponseDto } from "../dtos/response/get.medical-order-cloud.response.dto";
 
