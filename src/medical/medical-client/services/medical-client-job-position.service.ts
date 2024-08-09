@@ -7,16 +7,16 @@ import { PatchMedicalClientJobPositionRequestDto } from '../dtos/request/patch.m
 export class MedicalClientJobPositionService {
 
   constructor(
-    @Inject(MedicalClientRepository) private readonly clientRepository: MedicalClientRepository,
+    @Inject(MedicalClientRepository) private readonly repository: MedicalClientRepository,
   ) { }
 
   async findOnePosition(dni: string): Promise<MedicalClient> {
-    const client = await this.clientRepository.findOne({ where: { dni } });
+    const client = await this.repository.findOne({ where: { dni } });
     return client;
   }
 
   async assignJobPosition(dni: string, data: PatchMedicalClientJobPositionRequestDto): Promise<MedicalClient> {
-    const client = await this.clientRepository.findOneAndUpdate({ dni: dni }, data);
+    const client = await this.repository.findOneAndUpdate({ dni: dni }, data);
     return client;
   }
 }
