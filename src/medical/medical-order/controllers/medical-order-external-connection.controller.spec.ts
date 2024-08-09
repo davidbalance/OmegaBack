@@ -5,7 +5,6 @@ import { MedicalOrderExternalConnectionController } from "./medical-order-extern
 import { PostMedicalOrderExternalRequestDto } from "../dtos/request/post.medical-order-external.request.dto";
 import { mockMedicalOrder, mockMedicalOrders } from "../services/test/stub/medical-order.stub";
 import { GetMedicalOrderArrayResponseDto } from "../dtos/response/get.medical-order-array.response.dto";
-import { mockMedicalOrderFlatArray } from "../services/test/stub/medical-order-result.stub";
 import { GetMedicalOrderResponseDto } from "../dtos/response/get.medical-order.response.dto";
 import { PatchMedicalOrderRequestDto } from "../dtos/request/patch.medical-order.request.dto";
 

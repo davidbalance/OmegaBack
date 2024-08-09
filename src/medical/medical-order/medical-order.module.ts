@@ -18,7 +18,7 @@ import { MedicalOrderMailService } from "./services/medical-order-mail.service";
 import { MedicalOrderExternalKeyRepository } from "./repositories/medical-order-external-key.repository";
 import { MedicalOrderRepository } from "./repositories/medical-order.repository";
 import { MedicalOrderCloudController } from "./controllers/medical-order-cloud.controller";
-import { MedicalOrderMaitController } from "./controllers/medical-order-mail.controller";
+import { MedicalOrderMailController } from "./controllers/medical-order-mail.controller";
 import { MedicalOrderPaginationController } from "./controllers/medical-order-pagination.controller";
 import { MedicalOrderCloudService } from "./services/medical-order-cloud.service";
 import { MedicalOrderFlatPaginationService } from "./services/medical-order-flat-pagination.service";
@@ -58,7 +58,7 @@ import { MedicalOrderFlatService } from "./services/medical-order-flat.service";
   controllers: [
     MedicalOrderCloudController,
     MedicalOrderExternalConnectionController,
-    MedicalOrderMaitController,
+    MedicalOrderMailController,
     MedicalOrderManagementController,
     MedicalOrderPaginationController
   ],
