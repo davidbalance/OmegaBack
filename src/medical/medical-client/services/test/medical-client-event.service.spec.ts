@@ -2,7 +2,6 @@ import { EventEmitter2 } from "@nestjs/event-emitter";
 import { MedicalClientEventService } from "../medical-client-event.service";
 import { TestBed } from "@automock/jest";
 import { PostPatientRequestDto } from "@/user/patient/dtos/request/post.patient.request.dto";
-import { PostJobPositionWithKeyRequestDto } from "@/location/job-position/dtos/request/post.job-position-with-key.request.dto";
 import { PatientGenderEnum } from "@/user/patient/enums/patient.enum";
 import { JobPositionEvent, JobPositionExternalCreateEvent } from "@/shared/events/job-position.event";
 import { PatientEvent, PatientExternalCreateEvent } from "@/shared/events/patient.event";
