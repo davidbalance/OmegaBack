@@ -1,4 +1,5 @@
 import { MedicalClient } from "@/medical/medical-client/entities/medical-client.entity";
+import { mockMedicalEmails } from "./medical-email.stub";
 
 const stubMedicalClient = (id: number): MedicalClient => ({
     id: id,
@@ -13,7 +14,7 @@ const stubMedicalClient = (id: number): MedicalClient => ({
     areaId: 1,
     areaName: "Test area",
     medicalOrders: [],
-    email: [],
+    email: mockMedicalEmails(),
     createAt: new Date(),
     updateAt: new Date()
 });
