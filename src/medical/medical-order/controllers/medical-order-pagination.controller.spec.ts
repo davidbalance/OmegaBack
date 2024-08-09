@@ -1,7 +1,6 @@
 import { TestBed } from "@automock/jest";
 import { MedicalOrderFlatPaginationService } from "../services/medical-order-flat-pagination.service";
 import { MedicalOrderPaginationController } from "./medical-order-pagination.controller";
-import { mockMedicalOrders } from "../services/test/stub/medical-order.stub";
 import { PostMedicalOrderFlatPaginationResponseDto } from "../dtos/response/post.medical-order-flat-pagination.response.dto";
 import { mockMedicalOrderFlatArray } from "../services/test/stub/medical-order-result.stub";
 

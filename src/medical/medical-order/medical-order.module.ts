@@ -23,6 +23,7 @@ import { MedicalOrderPaginationController } from "./controllers/medical-order-pa
 import { MedicalOrderCloudService } from "./services/medical-order-cloud.service";
 import { MedicalOrderFlatPaginationService } from "./services/medical-order-flat-pagination.service";
 import { MedicalOrderFlatService } from "./services/medical-order-flat.service";
+import { MedicalOrderStatusController } from "./controllers/medical-order-status.controller";
 
 @Module({
   imports: [
@@ -60,7 +61,8 @@ import { MedicalOrderFlatService } from "./services/medical-order-flat.service";
     MedicalOrderExternalConnectionController,
     MedicalOrderMailController,
     MedicalOrderManagementController,
-    MedicalOrderPaginationController
+    MedicalOrderPaginationController,
+    MedicalOrderStatusController
   ],
   providers: [
     MedicalOrderExternalKeyRepository,

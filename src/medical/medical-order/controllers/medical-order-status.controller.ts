@@ -10,7 +10,7 @@ import { GetMedicalOrderResponseDto } from "../dtos/response/get.medical-order.r
 @ApiBearerAuth()
 @Controller('medical/orders/:id/status')
 @UseGuards(JwtAuthGuard)
-export class MedicalOrderManagementController {
+export class MedicalOrderStatusController {
   constructor(
     @Inject(MedicalOrderManagementService) private readonly service: MedicalOrderManagementService
   ) { }
