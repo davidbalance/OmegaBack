@@ -13,7 +13,7 @@ import { MedicalClientLocationController } from './controllers/medical-client-lo
 import { MedicalClientEventService } from './services/medical-client-event.service';
 import { MedicalClientJobPositionController } from './controllers/medical-client-job-position.controller';
 import { MedicalClientJobPositionService } from './services/medical-client-job-position.service';
-import { MedicalClientManagementController } from './controllers/medical-client.controller';
+import { MedicalClientManagementController } from './controllers/medical-client-management.controller';
 import { MedicalClientManagementService } from './services/medical-client-management.service';
 import { MedicalClientExternalService } from './services/medical-client-external.service';
 import { MedicalClientExternalListener } from './listeners/medical-client-external.listener';

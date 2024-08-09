@@ -1,6 +1,6 @@
 import { TestBed } from "@automock/jest";
 import { MedicalClientManagementService } from "../services/medical-client-management.service";
-import { MedicalClientManagementController } from "./medical-client.controller";
+import { MedicalClientManagementController } from "./medical-client-management.controller";
 import { mockMedicalClients } from "../services/test/stub/medical-client.stub";
 import { GetMedicalClientArrayResponseDto } from "../dtos/response/get.medical-client-array.response.dto";
 
