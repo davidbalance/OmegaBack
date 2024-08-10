@@ -14,14 +14,14 @@ import { medicalReportDocumentLayout } from '../utils/medical-report-document-la
 export class MedicalReportPdfService {
 
   constructor(
+    @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository,
     @Inject(PdfManagerService) private readonly pdfService: PdfManagerService,
     @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
-    @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository
   ) { }
 
   public async craft(data: MedicalReport): Promise<MedicalReport> {
-    const filepath: string = await this.processPdf(data);
     try {
+      const filepath: string = await this.processPdf(data);
       const newMedicalReport: MedicalReport = await this.repository.findOneAndUpdate({ id: data.id }, { fileAddress: filepath, hasFile: true });
       return newMedicalReport;
     } catch (error) {
@@ -51,13 +51,13 @@ export class MedicalReportPdfService {
     const signatureDirectory = path.resolve(data.doctorSignature);
     const signatureImg = readFileSync(signatureDirectory);
     const signatureBase64 = Buffer.from(signatureImg).toString('base64');
-
+    
     const headerDirectory = path.resolve('templates/medical-result/medical-report/header.png');
     const headerImg = readFileSync(headerDirectory);
     const headerBase64 = Buffer.from(headerImg).toString('base64');
-
+    
     const newContent = this.pdfService.parseHtml(data.content);
-
+    
     const baseContent = this.getContent(data, {
       signature: signatureBase64,
       header: headerBase64

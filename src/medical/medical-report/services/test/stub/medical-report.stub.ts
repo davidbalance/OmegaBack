@@ -13,7 +13,7 @@ const stubMedicalReport = (id: number): MedicalReport => ({
     companyName: "Company",
     doctorDni: "1234567891",
     doctorFullname: "Doctor",
-    doctorSignature: "/path/to/signature",
+    doctorSignature: "signatures/0000000000/0000000000.png",
     sendAttributes: [],
     createAt: new Date(),
     updateAt: new Date()
