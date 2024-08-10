@@ -75,7 +75,16 @@ const stubMedicalOrder = (id: number): MedicalOrder => ({
         areaId: 1,
         areaName: "Test area",
         medicalOrders: [],
-        email: [],
+        email: [
+            {
+                id: 1,
+                email: 'test@email.com',
+                default: false,
+                client: undefined,
+                createAt: new Date(),
+                updateAt: new Date()
+            }
+        ],
         createAt: undefined,
         updateAt: undefined
     },
