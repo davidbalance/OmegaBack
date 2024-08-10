@@ -9,6 +9,8 @@ const stubMedicalOrderFlat = (id: number): MedicalOrderFlatResponseDto => ({
     process: "Test process",
     results: [],
     dni: "1234567890",
+    createAt: new Date(),
+    mailStatus: false,
     email: []
 })
 
