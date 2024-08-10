@@ -39,7 +39,7 @@ export class MedicalResultManagementController {
     @User() user: string
   ): Promise<GetMedicalResultArrayResponseDto> {
     const results = await this.service.findAllByDoctor(user);
-    return plainToInstance(GetMedicalResultArrayResponseDto, { results: results });
+    return plainToInstance(GetMedicalResultArrayResponseDto, { data: results });
   }
 
   @Patch(':id')
