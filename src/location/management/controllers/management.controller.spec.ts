@@ -92,5 +92,4 @@ describe('ManagementController', () => {
       expect(service.deleteOne).toHaveBeenCalledWith(id);
     });
   });
-
 });

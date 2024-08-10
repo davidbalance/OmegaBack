@@ -14,14 +14,24 @@ export class MedicalOrderCloudService {
     const { client, results } = await this.repository.findOne({ where: { id }, relations: { client: true, results: true } });
     const fileReports: MedicalOrderCloudFileResponseDto[] = results
       .filter(e => !!e.report)
-      .map(e => ({ ...e, type: 'report' }))
+      .map<MedicalOrderCloudFileResponseDto>(e => ({
+        id: e.id,
+        examName: e.examName,
+        hasFile: e.hasFile,
+        type: 'report'
+      }))
     const fileResults: MedicalOrderCloudFileResponseDto[] = results
-      .map(e => ({ ...e, type: 'result' }));
+      .map<MedicalOrderCloudFileResponseDto>(e => ({
+        id: e.id,
+        examName: e.examName,
+        hasFile: e.hasFile,
+        type: 'result'
+      }));
     const cloudItem: MedicalOrderCloudResponseDto = {
       dni: client.dni,
       fullname: `${client.name} ${client.lastname}`,
-      fileResults: fileReports,
-      fileReports: fileResults
+      fileResults: fileResults,
+      fileReports: fileReports
     };
     return cloudItem;
   }
