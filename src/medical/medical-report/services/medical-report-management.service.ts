@@ -3,7 +3,7 @@ import { MedicalReport } from "../entities/medical-report.entity";
 import { MedicalReportRepository } from "../repositories/medical-report.repository";
 import { MedicalReportPdfService } from "./medical-report-pdf.service";
 import { MedicalResultManagementService } from "@/medical/medical-result/services/medical-result-management.service";
-import { POSTMedicalReportRequestDto } from "../dtos/request/post.medical-report.request.dto";
+import { PostMedicalReportRequestDto } from "../dtos/request/post.medical-report.request.dto";
 import { MedicalReportFileManagementService } from "./medical-report-file-management.service";
 
 @Injectable()
@@ -16,7 +16,7 @@ export class MedicalReportManagementService {
     @Inject(MedicalReportFileManagementService) private file: MedicalReportFileManagementService
   ) { }
 
-  async create({ medicalResult: medicalResultId, ...data }: POSTMedicalReportRequestDto): Promise<MedicalReport> {
+  async create({ medicalResult: medicalResultId, ...data }: PostMedicalReportRequestDto): Promise<MedicalReport> {
     const medicalResult = await this.service.findOne(medicalResultId);
     const { order } = medicalResult;
     const { client } = order;
