@@ -2,8 +2,6 @@ import { TestBed } from "@automock/jest";
 import { MedicalResultDiseaseManagementService } from "../services/medical-result-disease-management.service";
 import { MedicalResultDiseaseManagementController } from "./medical-result-disease-management.controller";
 import { PostMedicalResultDiseaseRequestDto } from "../dtos/request/post.medical-result-disease.dto";
-import { mockMedicalResult } from "../services/test/stub/medical-result.stub";
-import { PostMedicalResultDiseaseResponseDto } from "../dtos/response/post.medical-result-disease.response.dto";
 import { mockMedicalResultDisease, mockMedicalResultDiseaseArray } from "../services/test/stub/medical-result-disease.stub";
 import { GetMedicalResultDiseaseArrayResponseDto } from "../dtos/response/get.medical-result-disease-array.response.dto";
 import { GetMedicalResultDiseaseResponseDto } from "../dtos/response/get.medical-result-disease.response.dto";

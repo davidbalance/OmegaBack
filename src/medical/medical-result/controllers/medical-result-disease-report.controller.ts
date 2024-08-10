@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Post, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Post, Res, UseGuards } from "@nestjs/common";
 import { MedicalResultDiseaseReportService } from "../services/medical-result-disease-report.service";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";

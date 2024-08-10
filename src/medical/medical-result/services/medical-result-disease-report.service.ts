@@ -3,7 +3,6 @@ import { MedicalResultReport } from "../types/medical-result-report.type";
 import { ExcelManagerService } from "@/shared/excel-manager/excel-manager.service";
 import dayjs from "dayjs";
 import { MedicalResultDiseaseRepository } from "../repositories/medical-result-disease.repository";
-import { SelectorOption } from "@/shared/utils/bases/base.selector";
 import { MedicalResultYearResponseDto } from "../dtos/response/base.medical-result-year.response.dto";
 import { PostMedicalResultDiseaseReportRequestDto } from "../dtos/request/post.medical-result-disease-report.request.dto";
 
