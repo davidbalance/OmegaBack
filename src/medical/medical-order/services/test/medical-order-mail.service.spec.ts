@@ -4,7 +4,6 @@ import { MailerService } from "@/shared/mailer/mailer.service";
 import { ConfigService } from "@nestjs/config";
 import { MedicalOrderRepository } from "../../repositories/medical-order.repository";
 import { mockMedicalOrder } from "./stub/medical-order.stub";
-import { MedicalEmail } from "@/medical/medical-client/entities/medical-email.entity";
 import path from "path";
 
 describe('MedicalOrderMailService', () => {
