@@ -7,15 +7,14 @@ import { MedicalReport } from '../entities/medical-report.entity';
 export class MedicalReportSendService {
 
   constructor(
-    @Inject(MedicalReportSendAttributeRepository) private readonly sendRepository: MedicalReportSendAttributeRepository,
+    @Inject(MedicalReportSendAttributeRepository) private readonly repository: MedicalReportSendAttributeRepository,
     @Inject(MedicalReportManagementService) private readonly medicalReportService: MedicalReportManagementService
   ) { }
 
   async send(id: number, value: string): Promise<MedicalReport> {
-    const attribute = await this.sendRepository.create({ value });
+    const attribute = await this.repository.create({ value });
     const { sendAttributes } = await this.medicalReportService.findOne(id);
-    sendAttributes.concat(attribute);
-    const report = await this.medicalReportService.updateOne(id, { sendAttributes: sendAttributes });
+    const report = await this.medicalReportService.updateOne(id, { sendAttributes: [...sendAttributes, attribute] });
     return report;
   }
 }
