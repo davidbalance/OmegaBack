@@ -13,7 +13,7 @@ export class MedicalReportManagementService {
     @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository,
     @Inject(MedicalReportPdfService) private readonly pdf: MedicalReportPdfService,
     @Inject(MedicalResultManagementService) private readonly service: MedicalResultManagementService,
-    @Inject(MedicalReportFileManagementService) private file: MedicalReportFileManagementService
+    @Inject(MedicalReportFileManagementService) private readonly file: MedicalReportFileManagementService
   ) { }
 
   async create({ medicalResult: medicalResultId, ...data }: PostMedicalReportRequestDto): Promise<MedicalReport> {
