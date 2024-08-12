@@ -1,8 +1,9 @@
 import { AbstractEntity } from "@/shared/sql-database";
 import { User } from "src/user/user/entities/user.entity";
-import { Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity({ name: 'tbl_u_doctors' })
+@Unique('unique_doctor_user', ['id', 'user'])
 export class Doctor extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'doctor_id' })
     public id: number;
