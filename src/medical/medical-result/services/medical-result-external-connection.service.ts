@@ -19,16 +19,11 @@ type RequestType = PostMedicalResultExternalRequestDto | PatchMedicalResultFileR
 export class MedicalResultExternalConnectionService implements IExternalConnectionService<RequestType, MedicalResult> {
     constructor(
         @Inject(MedicalResultExternalKeyService) private readonly externalkey: MedicalResultExternalKeyService,
-        @Inject(MedicalResultEventService) private readonly eventService: MedicalResultEventService,
-        @Inject(INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION) private readonly orderService: IExternalConnectionService<PostMedicalOrderExternalRequestDto, MedicalOrder>,
         @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
         @Inject(MedicalResultFileManagementService) private readonly storage: MedicalResultFileManagementService,
+        @Inject(MedicalResultEventService) private readonly eventService: MedicalResultEventService,
+        @Inject(INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION) private readonly orderService: IExternalConnectionService<PostMedicalOrderExternalRequestDto, MedicalOrder>,
     ) { }
-
-    async findOne(key: ExternalKeyParam): Promise<MedicalResult> {
-        const medicalResult = await this.repository.findOne({ where: { externalKey: key } });
-        return medicalResult;
-    }
 
     async create(key: ExternalKeyParam, { doctor, exam, order, file }: PostMedicalResultExternalRequestDto): Promise<MedicalResult> {
         const { key: medicalOrderKey, ...orderData } = order;
@@ -47,7 +42,7 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
                 doctorSignature: signature,
                 examName: exam.name,
                 examType: exam.type.name,
-                examSubtype: exam.subtype.name || null
+                examSubtype: exam.subtype ? exam.subtype.name : null
             });
 
             const { source } = key;
@@ -61,6 +56,11 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
             this.externalkey.remove(key);
             throw error;
         }
+    }
+
+    async findOne(key: ExternalKeyParam): Promise<MedicalResult> {
+        const medicalResult = await this.repository.findOne({ where: { externalKey: key } });
+        return medicalResult;
     }
 
     findOneOrCreate(body: PostMedicalResultExternalRequestDto): Promise<MedicalResult> {
