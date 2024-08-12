@@ -1,6 +1,6 @@
 import { DoctorManagementService } from '../doctor-management.service';
 import { TestBed } from '@automock/jest';
-import { mockDoctor, mockDoctors } from './stub/doctor.stub';
+import { mockDoctor, mockDoctorArray } from './stub/doctor.stub';
 import { DoctorRepository } from '../../repositories/doctor.repository';
 import { DoctorFlatService } from '../doctor-flat.service';
 
@@ -23,7 +23,7 @@ describe('DoctorManagementService', () => {
 
   describe('find', () => {
 
-    const mockedDoctors = mockDoctors();
+    const mockedDoctors = mockDoctorArray();
     const mockedFlat = mockedDoctors.map(e => ({ ...e.user, ...e, user: e.user.id }))
 
     it('should return an array of doctors', async () => {
