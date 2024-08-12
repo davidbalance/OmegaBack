@@ -4,7 +4,8 @@ import { MedicalResultSendAttribute } from "../entities/medical-result-send-attr
 import { MedicalResultSendAttributeRepository } from "../repositories/medical-result-send-attribute.repository";
 
 @Injectable()
-export class MedicalResultSendAttributeService extends AbstractSendAttributeService<MedicalResultSendAttribute, MedicalResultSendAttributeRepository> {
+export class MedicalResultSendAttributeService
+    extends AbstractSendAttributeService<MedicalResultSendAttribute, MedicalResultSendAttributeRepository> {
 
     constructor(
         @Inject(MedicalResultSendAttributeRepository) private readonly repository: MedicalResultSendAttributeRepository

@@ -21,18 +21,27 @@ describe('CorporativeGroupSelectorService', () => {
   describe('find', () => {
     const mockedGroupSelector = mockCorporativeGroupSelectorOptions();
 
-    it('should create a disease', async () => {
+    beforeEach(() => {
       repository.query.mockReturnValue({
         select: jest.fn().mockReturnThis(),
         addSelect: jest.fn().mockReturnThis(),
         where: jest.fn().mockReturnThis(),
         getRawMany: jest.fn().mockResolvedValueOnce(mockedGroupSelector),
       } as any);
+    })
 
+    it('should create a disease', async () => {
+      // Arrange
+      // Act
       const result = await service.find();
 
+      // Assert
       expect(result).toEqual(mockedGroupSelector);
       expect(repository.query).toHaveBeenCalledWith('group');
+      expect(repository.query().select).toHaveBeenCalledWith('group.id', 'key');
+      expect(repository.query().addSelect).toHaveBeenCalledWith('group.name', 'label');
+      expect(repository.query().where).toHaveBeenCalledWith('group.status = :status', { status: true });
+      expect(repository.query().getRawMany).toHaveBeenCalled();
     });
   });
 });

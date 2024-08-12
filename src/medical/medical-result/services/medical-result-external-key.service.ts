@@ -4,7 +4,8 @@ import { MedicalResultExternalKey } from "../entities/medical-result-external-ke
 import { MedicalResultExternalKeyRepository } from "../repositories/medical-result-external-key.respository";
 
 @Injectable()
-export class MedicalResultExternalKeyService extends AbstractExternalKeyService<MedicalResultExternalKey, MedicalResultExternalKeyRepository> {
+export class MedicalResultExternalKeyService
+  extends AbstractExternalKeyService<MedicalResultExternalKey, MedicalResultExternalKeyRepository> {
   constructor(
     @Inject(MedicalResultExternalKeyRepository) private readonly repository: MedicalResultExternalKeyRepository
   ) {

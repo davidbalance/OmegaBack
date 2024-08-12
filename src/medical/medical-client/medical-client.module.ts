@@ -6,8 +6,6 @@ import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard'
 import { MedicalClientRepository } from './repositories/medical-client.repository';
 import { MedicalEmailRepository } from './repositories/medical-email.repository';
 import { DniInterceptorModule } from '@/shared/interceptors/dni/dni-interceptor.module';
-import { MedicalClientController } from './controllers/medical-client.controller';
-import { MedicalClientService } from './services/medical-client.service';
 import { MedicalClientLocationService } from './services/medical-client-location.service';
 import { MedicalClientEmailService } from './services/medical-client-email.service';
 import { MedicalClientEmailController } from './controllers/medical-client-email.controller';
@@ -15,6 +13,10 @@ import { MedicalClientLocationController } from './controllers/medical-client-lo
 import { MedicalClientEventService } from './services/medical-client-event.service';
 import { MedicalClientJobPositionController } from './controllers/medical-client-job-position.controller';
 import { MedicalClientJobPositionService } from './services/medical-client-job-position.service';
+import { MedicalClientManagementController } from './controllers/medical-client-management.controller';
+import { MedicalClientManagementService } from './services/medical-client-management.service';
+import { MedicalClientExternalService } from './services/medical-client-external.service';
+import { MedicalClientExternalListener } from './listeners/medical-client-external.listener';
 
 @Module({
   imports: [
@@ -26,19 +28,22 @@ import { MedicalClientJobPositionService } from './services/medical-client-job-p
     MedicalClientEmailController,
     MedicalClientJobPositionController,
     MedicalClientLocationController,
-    MedicalClientController
+    MedicalClientManagementController
   ],
   providers: [
+    MedicalClientExternalListener,
     MedicalClientRepository,
     MedicalEmailRepository,
     MedicalClientEmailService,
     MedicalClientEventService,
+    MedicalClientExternalService,
     MedicalClientJobPositionService,
     MedicalClientLocationService,
-    MedicalClientService,
+    MedicalClientManagementService,
   ],
   exports: [
-    MedicalClientService
+    MedicalClientManagementService,
+    MedicalClientExternalService
   ]
 })
 export class MedicalClientModule { }

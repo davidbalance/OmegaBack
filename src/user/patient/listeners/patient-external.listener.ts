@@ -1,16 +1,20 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { OnEvent } from "@nestjs/event-emitter";
-import { PatientExternalConnectionService } from "../service/patient-external-connection.service";
 import { PatientEvent, PatientExternalCreateEvent } from "@/shared/events/patient.event";
+import { PatientManagementService } from "../service/patient-management.service";
 
 @Injectable()
 export class PatientExternalListener {
     constructor(
-        @Inject(PatientExternalConnectionService) private readonly service: PatientExternalConnectionService
+        @Inject(PatientManagementService) private readonly service: PatientManagementService
     ) { }
 
     @OnEvent(PatientEvent.EXTERNAL_CREATE)
     async onExternalCreate({ data }: PatientExternalCreateEvent): Promise<void> {
-        await this.service.findOneOrCreate(data);
+        try {
+            await this.service.findOneByDni(data.dni)
+        } catch (error) {
+            await this.service.create(data);
+        }
     }
 }

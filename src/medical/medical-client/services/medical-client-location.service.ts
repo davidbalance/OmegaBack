@@ -7,16 +7,16 @@ import { PostMedicalClientManagementAndAreaRequestDto } from '../dtos/request/po
 export class MedicalClientLocationService {
 
   constructor(
-    @Inject(MedicalClientRepository) private readonly clientRepository: MedicalClientRepository,
+    @Inject(MedicalClientRepository) private readonly repository: MedicalClientRepository,
   ) { }
 
   async assignManagementAndArea(dni: string, newLocation: PostMedicalClientManagementAndAreaRequestDto): Promise<MedicalClient> {
-    const client = await this.clientRepository.findOneAndUpdate({ dni: dni }, { ...newLocation });
+    const client = await this.repository.findOneAndUpdate({ dni: dni }, { ...newLocation });
     return client;
   }
 
   async removeManagementAndArea(dni: string): Promise<MedicalClient> {
-    const client = await this.clientRepository.findOneAndUpdate({ dni: dni }, {
+    const client = await this.repository.findOneAndUpdate({ dni: dni }, {
       areaId: null,
       areaName: null,
       managementId: null,

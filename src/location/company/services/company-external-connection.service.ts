@@ -60,6 +60,5 @@ export class CompanyExternalConnectionService implements IExternalConnectionServ
     }
 }
 
-
 export const INJECT_COMPANY_EXTERNAL_KEY = 'COMPANY_EXTERNAL_CONNECTION';
 export const CompanyExternalConnectionProvider: Provider = { provide: INJECT_COMPANY_EXTERNAL_KEY, useClass: CompanyExternalConnectionService }

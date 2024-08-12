@@ -14,8 +14,8 @@ export interface ExternalConnectionRequest {
 }
 
 export interface IExternalConnectionService<T, R> {
-    findOne(key: ExternalKeyParam | any): Promise<R>;
     create(key: ExternalKeyParam | any, body: T): R | Promise<R>;
+    findOne(key: ExternalKeyParam | any): Promise<R>;
     findOneOrCreate(key: ExternalKeyParam | any, body: T): R | Promise<R>;
     findOneAndUpdate(key: ExternalKeyParam | any, body: T): R | Promise<R>;
 }

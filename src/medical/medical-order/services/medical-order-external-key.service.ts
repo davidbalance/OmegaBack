@@ -4,7 +4,8 @@ import { MedicalOrderExternalKey } from "../entities/medical-order-external-key.
 import { MedicalOrderExternalKeyRepository } from "../repositories/medical-order-external-key.repository";
 
 @Injectable()
-export class MedicalOrderExternalKeyService extends AbstractExternalKeyService<MedicalOrderExternalKey, MedicalOrderExternalKeyRepository> {
+export class MedicalOrderExternalKeyService
+  extends AbstractExternalKeyService<MedicalOrderExternalKey, MedicalOrderExternalKeyRepository> {
   constructor(
     @Inject(MedicalOrderExternalKeyRepository) private readonly repository: MedicalOrderExternalKeyRepository
   ) {

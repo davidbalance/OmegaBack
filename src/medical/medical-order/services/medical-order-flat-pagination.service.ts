@@ -28,7 +28,6 @@ export class MedicalOrderFlatPaginationService implements IPagination<MedicalOrd
       .skip(page)
       .getMany();
 
-
     const flatten = orders.map(this.flatService.flat);
     return flatten;
   }

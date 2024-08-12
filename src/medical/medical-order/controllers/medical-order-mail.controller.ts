@@ -8,7 +8,7 @@ import { PostMedicalOrderMailRequestDto } from "../dtos/request/post.medical-ord
 @ApiBearerAuth()
 @Controller('medical/orders/mail')
 @UseGuards(JwtAuthGuard)
-export class MedicalOrderMaitController {
+export class MedicalOrderMailController {
   constructor(
     @Inject(MedicalOrderMailService) private readonly service: MedicalOrderMailService
   ) { }

@@ -23,7 +23,7 @@ export class ManagementService {
     return managements;
   }
 
-  async findOneById(id: number): Promise<Management> {
+  async findOne(id: number): Promise<Management> {
     const management = await this.repository.findOne({ where: { id: id } });
     return management;
   }

@@ -1,9 +1,9 @@
 import { TestBed } from "@automock/jest";
 import { ManagementRepository } from "../../repositories/management.repository";
 import { ManagementService } from "../management.service";
+import { PostManagementRequestDto } from "../../dtos/request/post.management.request.dto";
 import { mockManagement, mockManagements } from "./stub/management.stub";
 import { PatchMagementRequestDto } from "../../dtos/request/patch.management.request.dto";
-import { PostManagementRequestDto } from "../../dtos/request/post.management.request.dto";
 
 describe('ManagementService', () => {
   let service: ManagementService;
@@ -22,29 +22,39 @@ describe('ManagementService', () => {
 
   describe('create', () => {
     const mockedManagement = mockManagement();
-    const mockDto: PostManagementRequestDto = {
-      name: "my-mocked-name"
+    const body: PostManagementRequestDto = {
+      name: "Management Name"
     }
 
-    it('should create a new management and return it', async () => {
-      repository.create.mockResolvedValue(mockedManagement);
+    it('should create a management', async () => {
+      // Arrange
+      repository.create.mockResolvedValueOnce(mockedManagement);
 
-      const result = await service.create(mockDto);
+      // Act
+      const result = await service.create(body);
 
+      // Assert
       expect(result).toEqual(mockedManagement);
-      expect(repository.create).toHaveBeenCalledWith(mockDto);
+      expect(repository.create).toHaveBeenCalledWith(body);
     });
   });
 
   describe('find', () => {
     const mockedManagements = mockManagements();
 
-    it('should return an array of managements', async () => {
-      repository.find.mockResolvedValue(mockedManagements);
+    it('should return all managements', async () => {
+      // Arrange
+      repository.find.mockResolvedValueOnce(mockedManagements);
 
+      // Act
       const result = await service.find();
 
+      // Assert
       expect(result).toEqual(mockedManagements);
+      expect(repository.find).toHaveBeenCalledWith({
+        where: { status: true },
+        relations: { areas: true }
+      });
     });
   });
 
@@ -52,11 +62,14 @@ describe('ManagementService', () => {
     const id: number = 1;
     const mockedManagement = mockManagement();
 
-    it('should return an existing management', async () => {
-      repository.findOne.mockResolvedValue(mockedManagement);
+    it('should return a management by id', async () => {
+      // Arrange
+      repository.findOne.mockResolvedValueOnce(mockedManagement);
 
-      const result = await service.findOneById(id);
+      // Act
+      const result = await service.findOne(id);
 
+      // Assert
       expect(result).toEqual(mockedManagement);
       expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id } });
     });
@@ -65,29 +78,35 @@ describe('ManagementService', () => {
   describe('updateOne', () => {
     const id: number = 1;
     const mockedManagement = mockManagement();
-    const mockDto: PatchMagementRequestDto = {
-      name: "mocked-name"
+    const body: PatchMagementRequestDto = {
+      name: "Updated Management Name"
     }
 
-    it('should update an existing management', async () => {
-      repository.findOneAndUpdate.mockResolvedValue(mockedManagement);
+    it('should update a management', async () => {
+      // Arrange
+      repository.findOneAndUpdate.mockResolvedValueOnce(mockedManagement);
 
-      const result = await service.updateOne(id, mockDto);
+      // Act
+      const result = await service.updateOne(id, body);
 
+      // Assert
       expect(result).toEqual(mockedManagement);
-      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, mockDto);
+      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, body);
     });
   });
 
   describe('deleteOne', () => {
     const id: number = 1;
 
-    it('should delete an existing management', async () => {
+    it('should delete a management', async () => {
+      // Arrange
+      repository.findOneAndDelete.mockResolvedValueOnce(undefined);
 
-      const result = await service.deleteOne(id);
+      // Act
+      await service.deleteOne(id);
 
+      // Assert
       expect(repository.findOneAndDelete).toHaveBeenCalledWith({ id: id });
     });
   });
-
 });

@@ -8,6 +8,7 @@ export class MedicalClientResponseDto {
     @Expose() public readonly lastname: string;
     @Expose() public readonly managementId: number;
     @Expose() public readonly areaId: number;
+    @Expose() public readonly createAt: Date;
 
     @Type(() => MedicalEmailResponseDto)
     @Expose() public readonly email: MedicalEmailResponseDto[];

@@ -34,7 +34,7 @@ export class ManagementController {
   }
 
   @Patch(':id')
-  async update(
+  async updateOne(
     @Param('id') id: number,
     @Body() updateManagementDto: PatchMagementRequestDto
   ): Promise<PatchManagementResponseDto> {
@@ -43,7 +43,7 @@ export class ManagementController {
   }
 
   @Delete(':id')
-  async findOneAndDelete(
+  async deleteOne(
     @Param('id') id: string
   ): Promise<DeleteManagementResponseDto> {
     await this.service.deleteOne(+id);

@@ -1,12 +1,11 @@
 import { TestBed } from "@automock/jest";
-import { PatchJobPositionRequestDto } from "../../dtos/request/patch.job-position.request.dto";
 import { JobPositionRepository } from "../../repositories/job-position.repository";
 import { JobPositionExternalConnectionService } from "../job-position-external-connection.service";
 import { JobPositionExternalKeyService } from "../job-position-external-key.service";
 import { mockJobPositionExternalKey } from "./stub/job-position-external-key.stub";
 import { mockJobPosition } from "./stub/job-position.stub";
-import { NotFoundException } from "@nestjs/common";
 import { PostJobPositionRequestDto } from "../../dtos/request/post.job-position.request.dto";
+import { PatchJobPositionRequestDto } from "../../dtos/request/patch.job-position.request.dto";
 
 describe('JobPositionExternalConnectionService', () => {
     let service: JobPositionExternalConnectionService;
@@ -26,102 +25,124 @@ describe('JobPositionExternalConnectionService', () => {
     });
 
     describe('create', () => {
+        const key: string = 'test-key';
+        const source: string = 'test-source';
         const mockedKey = mockJobPositionExternalKey();
         const mockedJobPosition = mockJobPosition();
+        const body: PostJobPositionRequestDto = {
+            name: "Job Position Name"
+        }
 
-        const key: string = 'my-test-key';
-        const source: string = 'my-test-source';
-        const mockDto: PostJobPositionRequestDto = {
-            name: "my-test-corporative-group",
-        };
-
-        it('should create an job position with a given key', async () => {
+        it('should create a job position', async () => {
+            // Arrange
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
             repository.create.mockResolvedValueOnce(mockedJobPosition);
 
-            const result = await service.create({ key, source }, mockDto);
+            // Act
+            const result = await service.create({ key, source }, body);
 
-            expect(result).toEqual(result);
+            // Assert
+            expect(result).toEqual(mockedJobPosition);
             expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({ ...mockDto, externalKey: mockedKey });
-            expect(externalKeyService.remove).toHaveBeenCalledTimes(0);
+            expect(repository.create).toHaveBeenCalledWith({
+                ...body,
+                externalKey: mockedKey
+            });
+            expect(externalKeyService.remove).not.toHaveBeenCalled();
         });
 
-        it('should throw an error so not create the job position', async () => {
+        it('should throw an error if job position creation fails', async () => {
+            // Arrange
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
             repository.create.mockRejectedValueOnce(new Error());
 
-            await expect(service.create({ key, source }, mockDto))
+            // Act
+            await expect(service.create({ key, source }, body))
                 .rejects
-                .toThrow(Error);
+                .toThrowError(Error);
+
+            // Assert
             expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({ ...mockDto, externalKey: mockedKey });
-            expect(externalKeyService.remove).toHaveBeenCalledWith({ source, key });
+            expect(repository.create).toHaveBeenCalledWith({
+                ...body,
+                externalKey: mockedKey
+            });
+            expect(externalKeyService.remove).toHaveBeenCalledWith({ key, source });
         });
     });
 
     describe('findOneOrCreate', () => {
+        const key: string = 'test-key';
+        const source: string = 'test-source';
         const mockedKey = mockJobPositionExternalKey();
         const mockedJobPosition = mockJobPosition();
+        const body: PostJobPositionRequestDto = {
+            name: "Job Position Name"
+        }
 
-        const key: string = 'my-test-key';
-        const source: string = 'my-test-source';
-        const mockDto: PostJobPositionRequestDto = {
-            name: "my-test-corporative-group"
-        };
-
-        it('should find an existing job position and return it', async () => {
+        it('should return an existing job position', async () => {
+            // Arrange
             repository.findOne.mockResolvedValueOnce(mockedJobPosition);
 
-            const result = await service.findOneOrCreate({ key, source }, mockDto);
+            // Act
+            const result = await service.findOneOrCreate({ key, source }, body);
 
+            // Assert
             expect(result).toEqual(mockedJobPosition);
             expect(repository.findOne).toHaveBeenCalledWith({
                 where: [
-                    { externalKey: { source, key } },
-                    { name: mockDto.name }
+                    { externalKey: { key, source } },
+                    { name: body.name }
                 ]
             });
+            expect(externalKeyService.create).not.toHaveBeenCalled();
+            expect(repository.create).not.toHaveBeenCalled();
         });
 
-        it('should not find job position so creates it', async () => {
-            repository.findOne.mockRejectedValueOnce(new NotFoundException());
+        it('should create a new job position if not found', async () => {
+            // Arrange
+            repository.findOne.mockRejectedValueOnce(new Error('Job position not found'));
             externalKeyService.create.mockResolvedValueOnce(mockedKey);
             repository.create.mockResolvedValueOnce(mockedJobPosition);
 
-            const result = await service.findOneOrCreate({ key, source }, mockDto);
+            // Act
+            const result = await service.findOneOrCreate({ key, source }, body);
 
-            expect(result).toEqual(result);
+            // Assert
+            expect(result).toEqual(mockedJobPosition);
             expect(repository.findOne).toHaveBeenCalledWith({
                 where: [
-                    { externalKey: { source, key } },
-                    { name: mockDto.name }
+                    { externalKey: { key, source } },
+                    { name: body.name }
                 ]
             });
             expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({ ...mockDto, externalKey: mockedKey });
-            expect(externalKeyService.remove).toHaveBeenCalledTimes(0);
+            expect(repository.create).toHaveBeenCalledWith({
+                ...body,
+                externalKey: mockedKey
+            });
         });
     });
 
     describe('findOneAndUpdate', () => {
+        const key: string = 'test-key';
+        const source: string = 'test-source';
         const mockedJobPosition = mockJobPosition();
-        const key: string = 'key';
-        const source: string = 'source';
-        const mockDto: PatchJobPositionRequestDto = {
-            name: "my-test-corporative-group"
-        };
+        const body: PatchJobPositionRequestDto = {
+            name: "Updated Job Position Name"
+        }
 
         it('should update an existing job position', async () => {
+            // Arrange
             repository.findOneAndUpdate.mockResolvedValueOnce(mockedJobPosition);
 
-            const result = await service.findOneAndUpdate({ key, source }, mockDto);
+            // Act
+            const result = await service.findOneAndUpdate({ key, source }, body);
 
+            // Assert
             expect(result).toEqual(mockedJobPosition);
-            expect(repository.findOneAndUpdate).toHaveBeenCalledWith(
-                { externalKey: { key: key, source: source } },
-                mockDto
-            );
+            expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ externalKey: { key, source } }, body);
         });
     });
+
 });

@@ -4,16 +4,16 @@ import { DniInterceptor } from '@/shared/interceptors/dni/dni.interceptor';
 import { Controller, Get, Inject, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
-import { MedicalClientService } from '../services/medical-client.service';
 import { GetMedicalClientArrayResponseDto } from '../dtos/response/get.medical-client-array.response.dto';
+import { MedicalClientManagementService } from '../services/medical-client-management.service';
 
 @ApiTags('Medical/Client')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('medical/client')
-export class MedicalClientController {
+export class MedicalClientManagementController {
   constructor(
-    @Inject(MedicalClientService) private readonly medicalClientService: MedicalClientService
+    @Inject(MedicalClientManagementService) private readonly service: MedicalClientManagementService
   ) { }
 
   @UseInterceptors(DniInterceptor)
@@ -21,7 +21,7 @@ export class MedicalClientController {
   async findMedicalClientsByDoctorDni(
     @User() doctor: string
   ): Promise<GetMedicalClientArrayResponseDto> {
-    const data = await this.medicalClientService.findClientsByDoctor(doctor);
+    const data = await this.service.findClientsByDoctor(doctor);
     return plainToInstance(GetMedicalClientArrayResponseDto, { data });
   }
 }
