@@ -21,7 +21,7 @@ describe('PatientEeqFlatService', () => {
         const mockedPatient = mockPatient();
         const extraAttributesWithRole: any[] = [{ name: 'role', value: 'admin' }];
         const extraAttributesWithoutRole: any[] = [{ name: 'otherAttribute', value: 'admin' }];
-        const expectedResponse: PatientEeqResponseDto = {
+        const expectResult: PatientEeqResponseDto = {
             dni: mockedPatient.user.dni,
             name: mockedPatient.user.name,
             lastname: mockedPatient.user.lastname,
@@ -31,14 +31,16 @@ describe('PatientEeqFlatService', () => {
         };
 
         it('should return a PatientEeqResponseDto with role if role exists in extraAttributes', () => {
+            // Arrange
             // Act
             const result = service.flat({ ...mockedPatient, user: { ...mockedPatient.user, extraAttributes: extraAttributesWithRole } });
 
             // Assert
-            expect(result).toEqual(expectedResponse);
+            expect(result).toEqual(expectResult);
         });
 
         it('should return null if role does not exist in extraAttributes', () => {
+            // Arrange
             // Act
             const result = service.flat({ ...mockedPatient, user: { ...mockedPatient.user, extraAttributes: extraAttributesWithoutRole } });
 
@@ -47,6 +49,7 @@ describe('PatientEeqFlatService', () => {
         });
 
         it('should return null if extraAttributes is empty', () => {
+            // Arrange
             // Act
             const result = service.flat({ ...mockedPatient, user: { ...mockedPatient.user, extraAttributes: [] } });
 
@@ -55,6 +58,7 @@ describe('PatientEeqFlatService', () => {
         });
 
         it('should return null if user object does not have extraAttributes', () => {
+            // Arrange
             // Act
             const result = service.flat(mockedPatient);
 
