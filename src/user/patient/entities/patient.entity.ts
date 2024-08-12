@@ -1,9 +1,10 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AbstractEntity } from "@/shared/sql-database";
 import { User } from "src/user/user/entities/user.entity";
 import { PatientGenderEnum } from "../enums/patient.enum";
 
 @Entity({ name: "tbl_u_patients" })
+@Index('idx_patient_user', ['id', 'user'], { unique: true })
 export class Patient extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'patient_id' })
     public id: number;
