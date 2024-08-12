@@ -35,24 +35,27 @@ describe('MedicalResultDiseaseManagementService', () => {
     }
     const mockedMedicalResultDisease = mockMedicalResultDisease();
     const mockedMedicalResult = mockMedicalResult();
+    const expectResult = mockedMedicalResultDisease;
 
     it('should create a new medical result disease', async () => {
       // Arrange
       managementService.findOne.mockResolvedValue(mockedMedicalResult);
       repository.create.mockResolvedValue(mockedMedicalResultDisease);
+      const { medicalResultId, ...data } = mockDto;
 
       // Act
       const result = await service.create(mockDto);
 
       // Assert
-      expect(managementService.findOne).toHaveBeenCalledWith(mockDto.medicalResultId);
-      expect(repository.create).toHaveBeenCalledWith({ ...mockDto, result: mockedMedicalResult });
-      expect(result).toEqual(mockedMedicalResultDisease);
+      expect(managementService.findOne).toHaveBeenCalledWith(medicalResultId);
+      expect(repository.create).toHaveBeenCalledWith({ ...data, result: mockedMedicalResult });
+      expect(result).toEqual(expectResult);
     });
   });
 
   describe('findAll', () => {
     const mockedMedicalResultDiseases = mockMedicalResultDiseaseArray();
+    const expectResult = mockedMedicalResultDiseases;
 
     it('should find all medical result diseases', async () => {
       // Arrange
@@ -63,13 +66,14 @@ describe('MedicalResultDiseaseManagementService', () => {
 
       // Assert
       expect(repository.find).toHaveBeenCalled();
-      expect(result).toEqual(mockedMedicalResultDiseases);
+      expect(result).toEqual(expectResult);
     });
   });
 
   describe('findOne', () => {
     const id: number = 1;
     const mockedMedicalResultDisease = mockMedicalResultDisease();
+    const expectResult = mockedMedicalResultDisease;
 
     it('should find one medical result disease', async () => {
       // Arrange
@@ -80,7 +84,7 @@ describe('MedicalResultDiseaseManagementService', () => {
 
       // Assert
       expect(repository.findOne).toHaveBeenCalledWith({ where: { id } });
-      expect(result).toEqual(mockedMedicalResultDisease);
+      expect(result).toEqual(expectResult);
     });
   });
 
@@ -94,6 +98,7 @@ describe('MedicalResultDiseaseManagementService', () => {
       diseaseCommentary: "My commentary"
     }
     const mockedMedicalResultDisease = mockMedicalResultDisease();
+    const expectResult = mockedMedicalResultDisease;
 
     it('should update a medical result disease', async () => {
       // Arrange
@@ -104,7 +109,7 @@ describe('MedicalResultDiseaseManagementService', () => {
 
       // Assert
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, mockDto);
-      expect(result).toEqual(mockedMedicalResultDisease);
+      expect(result).toEqual(expectResult);
     });
   });
 
