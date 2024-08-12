@@ -7,7 +7,6 @@ import { GetNavResourceArrayResponseDto } from '@/omega-web/web-resource/dtos/re
 import { PatchWebClientResourceRequestDto } from '../dtos/request/patch.web-client-resource.request.dto';
 import { PatchWebClientResourceResponseDto } from '../dtos/response/patch.web-client-resource.response.dto';
 
-
 @ApiTags('Omega/Web/Client')
 @ApiBearerAuth()
 @Controller('omega/web/clients/resources')
@@ -32,6 +31,6 @@ export class WebClientResourceController {
     @Body() body: PatchWebClientResourceRequestDto
   ): Promise<PatchWebClientResourceResponseDto> {
     await this.service.updateResources(user, body);
-    return plainToInstance(PatchWebClientResourceResponseDto, {});
+    return {};
   }
 }

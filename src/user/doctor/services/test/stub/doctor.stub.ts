@@ -10,4 +10,4 @@ const stubDoctor = (id: number): Doctor => ({
 });
 
 export const mockDoctor = () => stubDoctor(1);
-export const mockDoctors = () => [1, 2, 3, 4, 5].map(stubDoctor);
+export const mockDoctorArray = () => [1, 2, 3, 4, 5].map(stubDoctor);

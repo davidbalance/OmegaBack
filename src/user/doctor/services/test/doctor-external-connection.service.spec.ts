@@ -1,26 +1,23 @@
 import { DoctorRepository } from '../../repositories/doctor.repository';
 import { TestBed } from '@automock/jest';
-import { mockDoctor } from './stub/doctor.stub';
 import { DoctorExternalConnectionService } from '../doctor-external-connection.service';
-import { UserManagementService } from '@/user/user/services/user-management.service';
-import { mockUser } from '@/user/user/services/test/stub/user-management.stub';
-import { NotFoundException } from '@nestjs/common';
-import { PostDoctorRequestDto } from '../../dtos/request/post.doctor.dto';
 import { DoctorFlatService } from '../doctor-flat.service';
+import { PostDoctorRequestDto } from '../../dtos/request/post.doctor.dto';
+import { mockDoctor } from './stub/doctor.stub';
+import { DoctorResponseDto } from '../../dtos/response/base.doctor.response.dto';
+import { DoctorManagementService } from '../doctor-management.service';
+import { NotFoundException } from '@nestjs/common';
+import { PatchDoctorRequestDto } from '../../dtos/request/patch.doctor.request.dto';
 
 describe('DoctorExternalConnectionService', () => {
   let service: DoctorExternalConnectionService;
-  let repository: jest.Mocked<DoctorRepository>;
-  let userService: jest.Mocked<UserManagementService>;
-  let flatService: jest.Mocked<DoctorFlatService>;
+  let managementService: jest.Mocked<DoctorManagementService>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(DoctorExternalConnectionService).compile();
 
     service = unit;
-    repository = unitRef.get(DoctorRepository);
-    userService = unitRef.get(UserManagementService);
-    flatService = unitRef.get(DoctorFlatService);
+    managementService = unitRef.get(DoctorManagementService);
   });
 
   afterEach(() => {
@@ -28,127 +25,124 @@ describe('DoctorExternalConnectionService', () => {
   });
 
   describe('create', () => {
-
-    const mockedUser = mockUser();
+    const mockedDto: PostDoctorRequestDto = {
+      name: 'Name',
+      lastname: 'Lastname',
+      email: 'test@email.com',
+      dni: '1234567890'
+    };
     const mockedDoctor = mockDoctor();
-    const mockedFlatDoctor = { ...mockedUser, ...mockedDoctor, user: mockedUser.id };
-
-    const mockDto: PostDoctorRequestDto = {
-      dni: '1234567890',
-      name: 'Mocked Name',
-      lastname: 'Mocked Lastname',
-      email: 'my-mocked@email.com'
+    const mockedDoctorFlat: DoctorResponseDto = {
+      ...mockedDoctor.user,
+      ...mockedDoctor,
+      user: mockedDoctor.user.id
     }
+    const expectResult = mockedDoctorFlat;
 
-    it('should create a doctor with existing user', async () => {
+    it('should create a new doctor', async () => {
+      // Arrange
+      managementService.create.mockResolvedValue(mockedDoctorFlat);
 
-      userService.findOneByDni.mockResolvedValueOnce(mockedUser);
-      repository.create.mockResolvedValueOnce(mockedDoctor);
-      flatService.flat.mockReturnValueOnce(mockedFlatDoctor);
+      // Act
+      const result = await service.create(mockedDto);
 
-      const result = await service.create(mockDto);
-
-      expect(result).toEqual(mockedFlatDoctor);
-      expect(userService.findOneByDni).toHaveBeenCalledWith(mockDto.dni);
-      expect(repository.create).toHaveBeenCalledWith({ user: mockedUser });
+      // Assert
+      expect(managementService.create).toHaveBeenCalledWith(mockedDto);
+      expect(result).toEqual(expectResult);
     });
+  });
 
-    it('should create a doctor with new user', async () => {
-      userService.findOneByDni.mockRejectedValueOnce(new NotFoundException());
-      userService.create.mockResolvedValueOnce(mockedUser);
-      repository.create.mockResolvedValueOnce(mockedDoctor);
-      flatService.flat.mockReturnValueOnce(mockedFlatDoctor);
+  describe('findOne', () => {
+    const mockedDni = '1234567890';
+    const mockedDoctor = mockDoctor();
+    const mockedDoctorFlat: DoctorResponseDto = {
+      ...mockedDoctor.user,
+      ...mockedDoctor,
+      user: mockedDoctor.user.id
+    }
+    const expectResult = mockedDoctorFlat;
 
-      const result = await service.create(mockDto);
+    it('should find one doctor by dni', async () => {
+      // Arrange
+      managementService.findOneByDni.mockResolvedValue(mockedDoctorFlat);
 
-      expect(result).toEqual(mockedFlatDoctor);
-      expect(userService.findOneByDni).toHaveBeenCalledWith(mockDto.dni);
-      expect(userService.create).toHaveBeenCalledWith(mockDto);
-      expect(repository.create).toHaveBeenCalledWith({ user: mockedUser });
+      // Act
+      const result = await service.findOne(mockedDni);
+
+      // Assert
+      expect(managementService.findOneByDni).toHaveBeenCalledWith(mockedDni);
+      expect(result).toEqual(expectResult);
     });
   });
 
   describe('findOneOrCreate', () => {
-
-    const mockedUser = mockUser();
+    const mockedDto: PostDoctorRequestDto = {
+      name: 'Name',
+      lastname: 'Lastname',
+      email: 'test@email.com',
+      dni: '1234567890'
+    };
     const mockedDoctor = mockDoctor();
-    const mockedFlatDoctor = { ...mockedUser, ...mockedDoctor, user: mockedUser.id };
-
-    const mockDto: PostDoctorRequestDto = {
-      dni: '1234567890',
-      name: 'Mocked Name',
-      lastname: 'Mocked Lastname',
-      email: 'my-mocked@email.com'
+    const mockedDoctorFlat: DoctorResponseDto = {
+      ...mockedDoctor.user,
+      ...mockedDoctor,
+      user: mockedDoctor.user.id
     }
+    const expectResult = mockedDoctorFlat;
 
-    it('should return an existing doctor', async () => {
-      repository.findOne.mockResolvedValueOnce(mockedDoctor);
-      flatService.flat.mockReturnValueOnce(mockedFlatDoctor);
+    it('should find an existing doctor by dni', async () => {
+      // Arrange
+      managementService.findOneByDni.mockResolvedValue(mockedDoctorFlat);
 
-      const result = await service.findOneOrCreate(mockDto);
+      // Act
+      const result = await service.findOneOrCreate(mockedDto);
 
-      expect(result).toEqual(mockedFlatDoctor);
-      expect(repository.findOne).toHaveBeenCalledWith({
-        where: {
-          user: { dni: mockDto.dni }
-        },
-        relations: { user: true }
-      })
+      // Assert
+      expect(managementService.findOneByDni).toHaveBeenCalledWith(mockedDto.dni);
+      expect(managementService.create).not.toHaveBeenCalled();
+      expect(result).toEqual(expectResult);
     });
 
-    it('should not find a doctor so creates it', async () => {
-      repository.findOne.mockRejectedValueOnce(new NotFoundException());
-      userService.findOneByDni.mockResolvedValueOnce(mockedUser);
-      repository.create.mockResolvedValueOnce(mockedDoctor);
-      flatService.flat.mockReturnValueOnce(mockedFlatDoctor);
+    it('should create a new doctor if not found', async () => {
+      // Arrange
+      managementService.findOneByDni.mockRejectedValue(new NotFoundException());
+      managementService.create.mockResolvedValue(mockedDoctorFlat);
 
-      const result = await service.findOneOrCreate(mockDto);
+      // Act
+      const result = await service.findOneOrCreate(mockedDto);
 
-      expect(result).toEqual(mockedFlatDoctor);
-      expect(repository.findOne).toHaveBeenCalledWith({
-        where: {
-          user: { dni: mockDto.dni }
-        },
-        relations: { user: true }
-      });
-      expect(userService.findOneByDni).toHaveBeenCalledWith(mockDto.dni);
-      expect(repository.create).toHaveBeenCalledWith({ user: mockedUser });
+      // Assert
+      expect(managementService.findOneByDni).toHaveBeenCalledWith(mockedDto.dni);
+      expect(managementService.create).toHaveBeenCalledWith(mockedDto);
+      expect(result).toEqual(expectResult);
     });
 
   });
 
   describe('findOneAndUpdate', () => {
-
-    const mockedUser = mockUser();
+    const mockedDni = '1234567890';
+    const mockedDto: PatchDoctorRequestDto = {
+      lastname: 'New Lastname',
+      name: 'New Name'
+    };
     const mockedDoctor = mockDoctor();
-    const mockedFlatDoctor = { ...mockedUser, ...mockedDoctor, user: mockedUser.id };
-
-    const dni: string = '1234567890';
-    const mockDto: PostDoctorRequestDto = {
-      name: 'Mocked Name',
-      lastname: 'Mocked Lastname',
-      email: 'my-mocked@email.com',
-      dni: '1234567890'
+    const mockedDoctorFlat: DoctorResponseDto = {
+      ...mockedDoctor.user,
+      ...mockedDoctor,
+      user: mockedDoctor.user.id
     }
+    const expectResult = mockedDoctorFlat;
 
-    it('should update existing doctor', async () => {
-      repository.findOne.mockResolvedValueOnce(mockedDoctor);
-      userService.updateOne.mockResolvedValueOnce(mockedUser);
-      flatService.flat.mockReturnValueOnce(mockedFlatDoctor);
-      
-      const result = await service.findOneAndUpdate(dni, mockDto);
+    it('should update a doctor by dni', async () => {
+      // Arrange
+      managementService.updateOneByDni.mockResolvedValue(mockedDoctorFlat);
 
-      expect(result).toEqual(mockedFlatDoctor);
-      expect(repository.findOne).toHaveBeenCalledWith({
-        where: {
-          user: { dni: dni }
-        },
-        select: {
-          user: { id: true }
-        }
-      });
-      expect(userService.updateOne).toHaveBeenCalledWith(mockedUser.id, mockDto);
+      // Act
+      const result = await service.findOneAndUpdate(mockedDni, mockedDto);
 
+      // Assert
+      expect(managementService.updateOneByDni).toHaveBeenCalledWith(mockedDni, mockedDto);
+      expect(result).toEqual(expectResult);
     });
   });
 

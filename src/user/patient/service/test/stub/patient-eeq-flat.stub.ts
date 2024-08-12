@@ -13,4 +13,4 @@ const stubFlatPatientEeq = (id: number): PatientEeqResponseDto => ({
 });
 
 export const mockFlatPatientEeq = () => stubFlatPatientEeq(1);
-export const mockFlatPatientEeqs = () => [1, 2, 3, 4, 5].map(stubFlatPatientEeq);
+export const mockFlatPatientEeqArray = () => [1, 2, 3, 4, 5].map(stubFlatPatientEeq);

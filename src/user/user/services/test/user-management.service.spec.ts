@@ -2,7 +2,7 @@ import { TestBed } from '@automock/jest';
 import { UserManagementService } from '../user-management.service';
 import { UserRepository } from '../../repositories/user.repository';
 import { UserEventService } from '../user-event.service';
-import { mockUser, mockUsers } from './stub/user-management.stub';
+import { mockUser, mockUserArray } from './stub/user-management.stub';
 import { ConflictException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { PostUserRequestDto } from '../../dtos/request/post.user.request.dto';
 import { PatchUserRequestDto } from '../../dtos/request/patch.user.dto';
@@ -61,7 +61,7 @@ describe('User Management Service', () => {
 
     describe('find', () => {
 
-        const mockedUsers = mockUsers();
+        const mockedUsers = mockUserArray();
 
         it('should return an array of users', async () => {
             repository.find.mockResolvedValueOnce(mockedUsers);

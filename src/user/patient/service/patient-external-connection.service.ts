@@ -22,18 +22,18 @@ export class PatientExternalConnectionService implements IExternalConnectionServ
     }
 
     async findOne(dni: string): Promise<PatientResponseDto> {
-        return this.service.findOneByDni(dni);
+        return await this.service.findOneByDni(dni);
     }
 
     async findOneOrCreate(source: string, data: PostPatientExternalRequestDto): Promise<PatientResponseDto> {
         try {
-            return this.service.findOneByDni(data.dni);
+            return await this.service.findOneByDni(data.dni);
         } catch (error) {
-            return this.create(source, data);
+            return await this.create(source, data);
         }
     }
 
     async findOneAndUpdate(dni: string, data: PatchPatientRequestDto): Promise<PatientResponseDto> {
-        return this.service.updateOne(dni, data);
+        return await this.service.updateOne(dni, data);
     }
 }

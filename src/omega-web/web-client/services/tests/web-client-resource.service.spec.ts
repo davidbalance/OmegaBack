@@ -4,7 +4,7 @@ import { WebClientRepository } from "../../repositories/web-client.repository";
 import { WebResourceService } from "@/omega-web/web-resource/services/web-resource.service";
 import { mockWebClient } from "./stub/web-client.stub";
 import { PatchWebClientResourceRequestDto } from "../../dtos/request/patch.web-client-resource.request.dto";
-import { mockWebResources } from "@/omega-web/web-resource/services/test/stub/web-resource.stub";
+import { mockWebResourceArray } from "@/omega-web/web-resource/services/test/stub/web-resource.stub";
 
 describe('WebClientResourceService', () => {
     let service: WebClientResourceService;
@@ -22,7 +22,7 @@ describe('WebClientResourceService', () => {
     describe('findAll', () => {
         const userId = 1;
         const mockedClient = mockWebClient();
-        const mockedWebResources = mockWebResources();
+        const mockedWebResources = mockWebResourceArray();
 
         it('should return the resources for a given user', async () => {
             // Arrange
@@ -43,7 +43,7 @@ describe('WebClientResourceService', () => {
     describe('updateResources', () => {
         const userId = 1;
         const resourceIds = [1, 2];
-        const mockedWebResources = mockWebResources();
+        const mockedWebResources = mockWebResourceArray();
         const updateDto: PatchWebClientResourceRequestDto = { resources: resourceIds };
 
         it('should update the resources for a given user', async () => {
