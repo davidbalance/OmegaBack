@@ -13,4 +13,4 @@ const stubWebResource = (id: number): WebResource => ({
 });
 
 export const mockWebResource = () => stubWebResource(1);
-export const mockWebResources = () => [1, 2, 3, 4, 5].map(stubWebResource);
+export const mockWebResourceArray = () => [1, 2, 3, 4, 5].map(stubWebResource);

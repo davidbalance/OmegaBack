@@ -1,7 +1,7 @@
 import { TestBed } from "@automock/jest";
 import { WebResourceRespository } from "../../repositories/web-resource.repository";
 import { NavResourceService } from "../nav-resource.service";
-import { mockWebResources } from "./stub/web-resource.stub";
+import { mockWebResourceArray } from "./stub/web-resource.stub";
 
 describe('NavResourceService', () => {
     let service: NavResourceService;
@@ -15,7 +15,7 @@ describe('NavResourceService', () => {
     });
 
     describe('findAll', () => {
-        const mockedWebResources = mockWebResources();
+        const mockedWebResources = mockWebResourceArray();
 
         it('should return an array of web resources', async () => {
             // Arrange

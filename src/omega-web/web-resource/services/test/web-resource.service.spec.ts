@@ -1,7 +1,7 @@
 import { TestBed } from "@automock/jest";
 import { WebResourceRespository } from "../../repositories/web-resource.repository";
 import { WebResourceService } from "../web-resource.service";
-import { mockWebResource, mockWebResources } from "./stub/web-resource.stub";
+import { mockWebResource, mockWebResourceArray } from "./stub/web-resource.stub";
 import { In } from "typeorm";
 import { PostWebResourceRequestDto } from "../../dtos/request/post.web-resource.request.dto";
 import { PatchWebResourceRequestDto } from "../../dtos/request/patch.web-resource.request.dto";
@@ -18,7 +18,7 @@ describe('WebResourceService', () => {
     });
 
     describe('findInNames', () => {
-        const mockedWebResources = mockWebResources();
+        const mockedWebResources = mockWebResourceArray();
         const names = ['Resource1', 'Resource2'];
 
 
@@ -36,7 +36,7 @@ describe('WebResourceService', () => {
     });
 
     describe('findInIds', () => {
-        const mockedWebResources = mockWebResources();
+        const mockedWebResources = mockWebResourceArray();
         const ids = [1, 2, 3];
 
         it('should return an array of web resources filtered by ids', async () => {
@@ -53,7 +53,7 @@ describe('WebResourceService', () => {
     });
 
     describe('findAll', () => {
-        const mockedWebResources = mockWebResources();
+        const mockedWebResources = mockWebResourceArray();
 
         it('should return an array of web resources ordered by status', async () => {
             // Arrange
