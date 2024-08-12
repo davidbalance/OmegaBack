@@ -21,7 +21,7 @@ jobs:
 
       - name: Test signature
         run : |
-          mv templates/my-template-signature/0000000000/0000000000.png signatures/0000000000/0000000000.png
+          mv ./templates/my-template-signature/0000000000/0000000000.png ./signatures/0000000000/0000000000.png
 
       - name: Install dependencies
         run: npm install
