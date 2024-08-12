@@ -5,11 +5,8 @@ import dayjs from "dayjs";
 import { MedicalResultDiseaseRepository } from "../repositories/medical-result-disease.repository";
 import { MedicalResultYearResponseDto } from "../dtos/response/base.medical-result-year.response.dto";
 import { PostMedicalResultDiseaseReportRequestDto } from "../dtos/request/post.medical-result-disease-report.request.dto";
-
-type ExcelReportType = (MedicalResultReport & {
-    ageRange: string,
-    diseaseFindings: string
-})
+import { ExcelReportType } from "../types/excel-report.type";
+import { excelColumns } from "../utils/columns";
 
 @Injectable()
 export class MedicalResultDiseaseReportService {
@@ -42,36 +39,9 @@ export class MedicalResultDiseaseReportService {
                 ? 'SALUD GENERAL'
                 : '',
             gender: e.gender.toLocaleUpperCase().slice(0, 1)
-        }))
+        }));
 
-        const columns: { header: string, key: keyof ExcelReportType }[] = [
-            { header: 'Empresa', key: 'company' },
-            { header: 'Sucursal', key: 'branch' },
-            { header: 'Gerencia', key: 'management' },
-            { header: 'Area', key: 'area' },
-            { header: 'Año', key: 'year' },
-            { header: 'Proceso', key: 'process' },
-            { header: 'Fecha', key: 'date' },
-            { header: 'Puesto de Trabajo', key: 'jobPosition' },
-            { header: 'Rol', key: 'role' },
-            { header: 'Cedula', key: 'dni' },
-            { header: 'Nombres', key: 'name' },
-            { header: 'Apellidos', key: 'lastname' },
-            { header: 'Email', key: 'email' },
-            { header: 'Cumpleaños', key: 'birthday' },
-            { header: 'Edad', key: 'age' },
-            { header: 'Rango de edad', key: 'ageRange' },
-            { header: 'Sexo', key: 'gender' },
-            { header: 'T. Prueba', key: 'examType' },
-            { header: 'S.T. Prueba', key: 'examSubtype' },
-            { header: 'Prueba', key: 'exam' },
-            { header: 'Grupo Morbilidad', key: 'diseaseGroup' },
-            { header: 'Morbilidad', key: 'disease' },
-            { header: 'Observacion', key: 'diseaseCommentary' },
-            { header: 'Hallazgos de Morbilidad', key: 'diseaseFindings' },
-        ];
-
-        const stream = await this.excel.craft(processedValues, columns as any, `morbilidades_export_data-${dayjs().format('YYYYMM')}`)
+        const stream = await this.excel.craft(processedValues, excelColumns as any, `morbilidades_export_data-${dayjs().format('YYYYMM')}`)
         return stream;
     }
 

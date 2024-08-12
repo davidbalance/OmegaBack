@@ -1,0 +1,28 @@
+import { ExcelReportType } from "../types/excel-report.type";
+
+export const excelColumns: { header: string, key: keyof ExcelReportType }[] = [
+    { header: 'Empresa', key: 'company' },
+    { header: 'Sucursal', key: 'branch' },
+    { header: 'Gerencia', key: 'management' },
+    { header: 'Area', key: 'area' },
+    { header: 'Año', key: 'year' },
+    { header: 'Proceso', key: 'process' },
+    { header: 'Fecha', key: 'date' },
+    { header: 'Puesto de Trabajo', key: 'jobPosition' },
+    { header: 'Rol', key: 'role' },
+    { header: 'Cedula', key: 'dni' },
+    { header: 'Nombres', key: 'name' },
+    { header: 'Apellidos', key: 'lastname' },
+    { header: 'Email', key: 'email' },
+    { header: 'Cumpleaños', key: 'birthday' },
+    { header: 'Edad', key: 'age' },
+    { header: 'Rango de edad', key: 'ageRange' },
+    { header: 'Sexo', key: 'gender' },
+    { header: 'T. Prueba', key: 'examType' },
+    { header: 'S.T. Prueba', key: 'examSubtype' },
+    { header: 'Prueba', key: 'exam' },
+    { header: 'Grupo Morbilidad', key: 'diseaseGroup' },
+    { header: 'Morbilidad', key: 'disease' },
+    { header: 'Observacion', key: 'diseaseCommentary' },
+    { header: 'Hallazgos de Morbilidad', key: 'diseaseFindings' },
+];
