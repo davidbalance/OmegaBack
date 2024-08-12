@@ -9,8 +9,8 @@ import { extname } from "path";
 export class MedicalResultFileManagementService implements FileManagementService<number> {
 
   constructor(
-    @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
     @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
+    @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
   ) { }
 
   async getFile(key: number): Promise<StreamableFile> {
