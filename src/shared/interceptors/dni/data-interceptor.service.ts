@@ -11,6 +11,4 @@ export class DataInterceptorService {
         const user = await this.userService.findOne(id);
         return user.dni;
     }
-
-
 }
