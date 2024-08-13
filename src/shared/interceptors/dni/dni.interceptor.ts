@@ -1,6 +1,6 @@
 import { CallHandler, ExecutionContext, Inject, Injectable, NestInterceptor } from '@nestjs/common';
 import { Request } from 'express';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DataInterceptorService } from './data-interceptor.service';
 
 @Injectable()

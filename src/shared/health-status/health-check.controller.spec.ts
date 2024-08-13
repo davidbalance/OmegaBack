@@ -10,6 +10,10 @@ describe('HealthCheckController', () => {
     controller = unit;
   });
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should return status okay', () => {
     // Arrange
     // Act
