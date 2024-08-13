@@ -9,7 +9,7 @@ export class ExcelManagerService {
         columns: Column[],
         worksheetName: string = 'book 1'): Promise<StreamableFile> {
 
-        const workbook: Workbook = new Workbook;
+        const workbook: Workbook = new Workbook();
         const worksheet = workbook.addWorksheet(worksheetName);
         worksheet.columns = columns;
         worksheet.addRows(data);
