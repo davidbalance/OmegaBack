@@ -1,22 +1,22 @@
 import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards"
 import { CorporativeGroupExternalConnectionService } from "../services/corporative-group-external-connection.service";
 import { PostCorporativeGroupRequestDto } from "../dtos/request/post.corporative-group.dto";
 import { PostCorporativeGroupResponseDto } from "../dtos/response/post.corporative-group.response.dto";
 import { PatchCorporativeGroupRequestDto } from "../dtos/request/patch.corporative-group.dto";
 import { PatchCorporativeGroupResponseDto } from "../dtos/response/patch.corporative-group.response.dto";
+import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
 
 @ApiTags('Location/Corporative/Group', 'External/Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
+@UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/corporative/groups/:source/:key')
 export class CorporativeGroupExternalConnectionController {
     constructor(
         @Inject(CorporativeGroupExternalConnectionService) private readonly service: CorporativeGroupExternalConnectionService
     ) { }
 
-    @UseGuards(ApiKeyAuthGuard)
     @Post()
     async create(
         @Param('source') source: string,
@@ -27,7 +27,6 @@ export class CorporativeGroupExternalConnectionController {
         return plainToInstance(PostCorporativeGroupResponseDto, group);
     }
 
-    @UseGuards(ApiKeyAuthGuard)
     @Patch()
     async findOneAndUpdate(
         @Param('source') source: string,

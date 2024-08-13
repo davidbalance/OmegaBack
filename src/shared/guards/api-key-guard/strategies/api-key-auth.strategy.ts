@@ -4,7 +4,10 @@ import { PassportStrategy } from "@nestjs/passport";
 import Strategy from "passport-headerapikey";
 
 export class ApiKeyAuthStrategy extends PassportStrategy(Strategy, 'api-key-auth') {
-    constructor(@Inject(ApiKeyValidatorService) private readonly service: ApiKeyValidatorService) {
+    
+    constructor(
+        @Inject(ApiKeyValidatorService) private readonly service: ApiKeyValidatorService
+    ) {
         super(
             { header: 'x-api-key', prefix: '' },
             true,
