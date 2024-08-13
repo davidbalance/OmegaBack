@@ -10,7 +10,7 @@ export class ExtraAttributeInterceptorService {
     async getExtraAttribute(id: number, attributeName: string): Promise<string> {
         const user = await this.userService.findOne(id);
         const index = user.extraAttributes.findIndex(e => e.name === attributeName);
-        if (index > 0) {
+        if (index < 0) {
             throw new NotFoundException('Not found attribute');
         }
         return user.extraAttributes[index].value;

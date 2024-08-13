@@ -8,7 +8,7 @@ import { ExtraAttribute } from "@/shared/decorator";
 @Injectable()
 export class ExtraAttributeInterceptor implements NestInterceptor {
     constructor(
-        private reflector: Reflector,
+        @Inject(Reflector) private reflector: Reflector,
         @Inject(ExtraAttributeInterceptorService) private readonly service: ExtraAttributeInterceptorService
     ) { }
 

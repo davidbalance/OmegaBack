@@ -1,4 +1,4 @@
-import { AuthenticationGuardModule, JwtAuthStrategy } from '@/shared/guards/authentication-guard';
+import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Module } from '@nestjs/common';
 import { WebLogoModule } from '../web-logo/web-logo.module';
@@ -12,6 +12,7 @@ import { WebClientResourceController } from './controllers/web-client-resource.c
 import { WebClientResourceService } from './services/web-client-resource.service';
 import { WebClientLogoService } from './services/web-client-logo.service';
 import { CredentialWebClientListener } from './listeners/credential-web-client.listener';
+import { JwtAuthStrategy } from '@/shared/guards/authentication-guard/strategies/jwt-auth.strategy';
 
 @Module({
   imports: [
