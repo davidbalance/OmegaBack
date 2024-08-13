@@ -1,5 +1,4 @@
 import { User } from "@/shared/decorator";
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { DniInterceptor } from "@/shared/interceptors/dni/dni.interceptor";
 import { Controller, UseGuards, Inject, Get, UseInterceptors, Param, Patch, Body } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
@@ -9,6 +8,7 @@ import { GetMedicalResultArrayResponseDto } from "../dtos/response/get.medical-r
 import { GetMedicalResultResponseDto } from "../dtos/response/get.medical-result.response.dto";
 import { PatchMedicalResultResponseDto } from "../dtos/response/patch.medical-result.response.dto";
 import { PatchMedicalResultRequestDto } from "../dtos/request/patch.medical-result.request.dto";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Medical/Result')
 @ApiBearerAuth()

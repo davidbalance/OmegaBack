@@ -1,10 +1,10 @@
 import { Body, Controller, Inject, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { PostMedicalReportRequestDto } from "../dtos/request/post.medical-report.request.dto";
 import { MedicalReportManagementService } from "../services/medical-report-management.service";
 import { PostMedicalReportResponseDto } from "../dtos/response/post.medical-report.response.dto";
 import { plainToInstance } from "class-transformer";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Medical/Report')
 @ApiBearerAuth()

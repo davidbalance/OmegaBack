@@ -1,9 +1,9 @@
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { Body, Controller, Inject, Param, Patch, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { WebClientLogoService } from '../services/web-client-logo.service';
 import { PatchWebClientLogoRequestDto } from '../dtos/request/patch.web-client-logo.request.dto';
 import { PatchWebClientLogoResponseDto } from '../dtos/response/patch.web-client-logo.response.dto';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
 @ApiTags('Omega/Web/Client')
 @ApiBearerAuth()
@@ -15,7 +15,6 @@ export class WebClientLogoController {
     @Inject(WebClientLogoService) private readonly service: WebClientLogoService
   ) { }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':user')
   async updateLogo(
     @Param('user') user: number,

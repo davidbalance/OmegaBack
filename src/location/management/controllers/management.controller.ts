@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { Controller, Inject, UseGuards, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
@@ -9,6 +8,7 @@ import { GetManagementArrayResponseDto } from "../dtos/response/get.management-a
 import { PostManagementResponseDto } from "../dtos/response/post.management.response.dto";
 import { PatchManagementResponseDto } from "../dtos/response/patch.management.response.dto";
 import { DeleteManagementResponseDto } from "../dtos/response/delete.management.response.dto";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Location/Management')
 @ApiBearerAuth()

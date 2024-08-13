@@ -1,9 +1,9 @@
 import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { GetNavResourceArrayResponseDto } from '../dtos/response/get.nav-resource-array.response.dto';
 import { NavResourceService } from '../services/nav-resource.service';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
 @ApiTags('Omega/Web/Resource')
 @UseGuards(JwtAuthGuard)

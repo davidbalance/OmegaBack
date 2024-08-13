@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { DiseaseManagementService } from '../services/disease-management.service';
 import { GetDiseaseArrayResponseDto } from '../dtos/response/get.disease-array.response.dto';
 import { PostDiseaseRequestDto } from '../dtos/request/post.disease.request.dto';
@@ -9,23 +8,23 @@ import { PostDiseaseResponseDto } from '../dtos/response/post.disease.response.d
 import { PatchDiseaseRequestDto } from '../dtos/request/patch.disease.request.dto';
 import { PatchDiseaseResponseDto } from '../dtos/response/patch.disease.response.dto';
 import { DeleteDiseaseResponseDto } from '../dtos/response/delete.disease.response.dto';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
 @ApiTags('Disease/Disease')
 @ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('diseases')
 export class DiseaseController {
   constructor(
     @Inject(DiseaseManagementService) private readonly service: DiseaseManagementService
   ) { }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async find(): Promise<GetDiseaseArrayResponseDto> {
     const data = await this.service.find();
     return plainToInstance(GetDiseaseArrayResponseDto, { data });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() body: PostDiseaseRequestDto
@@ -34,7 +33,6 @@ export class DiseaseController {
     return plainToInstance(PostDiseaseResponseDto, disease);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(":id")
   async findOneAndUpdate(
     @Param('id') id: number,
@@ -44,7 +42,6 @@ export class DiseaseController {
     return plainToInstance(PatchDiseaseResponseDto, disease);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async findOneAndDelete(
     @Param('id') id: number

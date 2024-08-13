@@ -1,5 +1,4 @@
 import { User } from "@/shared/decorator";
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { Controller, Inject, UseGuards, Get, Post, Body, Patch, Param } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
@@ -9,16 +8,17 @@ import { GetApiKeyArrayResponseDto } from "../dtos/response/get.api-key-array.re
 import { PostApiKeyRequestDto } from "../dtos/request/post.api-key.request.dto";
 import { PostApiKeyResponseDto } from "../dtos/response/post.api-key.response.dto";
 import { PatchApiKeyRequestDto } from "../dtos/request/patch.api-key.request.dto";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Authentication/Api Key')
 @ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('api/key')
 export class ApiKeyManagementController {
   constructor(
     @Inject(ApiKeyManagementService) private readonly service: ApiKeyManagementService
   ) { }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async find(
     @User() user: number
@@ -27,7 +27,6 @@ export class ApiKeyManagementController {
     return plainToInstance(GetApiKeyArrayResponseDto, { data });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() body: PostApiKeyRequestDto,
@@ -37,7 +36,6 @@ export class ApiKeyManagementController {
     return plainToInstance(PostApiKeyResponseDto, { ...apikey, apikey: apikey.value });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async findOneAndUpdate(
     @Param('id') id: number,

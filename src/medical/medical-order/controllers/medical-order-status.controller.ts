@@ -1,10 +1,10 @@
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { Controller, Param, UseGuards, Patch, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { OrderStatus } from "../enums";
 import { MedicalOrderManagementService } from "../services/medical-order-management.service";
 import { GetMedicalOrderResponseDto } from "../dtos/response/get.medical-order.response.dto";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Medical/Order')
 @ApiBearerAuth()

@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { MIME_TYPES } from '@/shared/pipes/file-type/constants';
 import { FileTypePipe } from '@/shared/pipes/file-type/file-type.pipe';
 import { Body, Controller, Get, Inject, Param, ParseFilePipe, Post, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
@@ -8,6 +7,7 @@ import { DoctorFileManagementService } from '../services/doctor-file-management.
 import { PatchDoctorSignatureRequestDto } from '../dtos/request/patch.doctor-signature.dto';
 import { PatchDoctorSignatureResponseDto } from '../dtos/response/patch.doctor-signature.response.dto';
 import { Response } from 'express';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
 @ApiTags('User/Doctor')
 @ApiBearerAuth()

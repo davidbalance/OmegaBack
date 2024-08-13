@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { Controller, Post, Body, Patch, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { UserCredentialService } from '../services/user-credential.service';
@@ -6,6 +5,7 @@ import { PostCredentialRequestDto } from '../dtos/request/post.user-credential.r
 import { PostCredentialResponseDto } from '../dtos/response/post.user-credential.response.dto';
 import { PatchChangePasswordResponseDto } from '../dtos/response/patch.change-password.response.dto';
 import { PatchChangePasswordRequestDto } from '../dtos/request/patch.user-credential.request.dto';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
 @ApiTags('Authentication/Credential')
 @ApiBearerAuth()

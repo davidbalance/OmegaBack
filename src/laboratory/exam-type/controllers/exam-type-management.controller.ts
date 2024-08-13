@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { UseGuards, Controller, Inject, Post, Body, Get, Param, Patch, Delete } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
@@ -10,6 +9,7 @@ import { GetExamTypeResponseDto } from "../dtos/response/get.exam-type.dto";
 import { PatchExamTypeRequestDto } from "../dtos/request/patch.exam-type.dto";
 import { PatchExamTypeResponseDto } from "../dtos/response/patch.exam-type.dto";
 import { DeleteExamTypeResponseDto } from "../dtos/response/delete.exam-type.dto";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Laboratory/Exam/Type')
 @ApiBearerAuth()

@@ -1,9 +1,9 @@
 import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { ExamSelectorService } from '../services/exam-selector.service';
 import { GetExamSelectorOptionArrayResponseDto } from '../dtos/response/get.exam-selector.response.dto';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
 @ApiTags('Selector', 'Laboratory/Exam')
 @ApiBearerAuth()
