@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { IsDate, IsOptional, IsString } from "class-validator";
 
-export class POSTLogRequestDto {
+export class PostLogRequestDto {
     @IsString()
     @IsOptional()
     public level?: string;

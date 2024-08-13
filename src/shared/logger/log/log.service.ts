@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { LogRepository } from "./log.repository";
 import { Log } from "./entities/log.entity";
 import { LoggerWritter } from "../interfaces/logger-writter.interface";
-import { POSTLogRequestDto } from "./dtos/log.request.dto";
+import { PostLogRequestDto } from "./dtos/log.request.dto";
 import { Between } from "typeorm";
 import dayjs from "dayjs";
 
@@ -21,7 +21,7 @@ export class LogService implements LoggerWritter {
         return levels;
     }
 
-    async find(params: POSTLogRequestDto): Promise<Log[]> {
+    async find(params: PostLogRequestDto): Promise<Log[]> {
         const from = params.from || dayjs().subtract(1, 'day').toDate();
         const to = params.to || dayjs().toDate()
         return await this.repository.find({
