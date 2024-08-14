@@ -23,13 +23,10 @@ jest.mock('exceljs', () => ({
 
 describe('ExcelManagerService', () => {
   let service: ExcelManagerService;
-  let workbookMock: jest.Mocked<Workbook>;
 
   beforeEach(async () => {
     const { unit } = TestBed.create(ExcelManagerService).compile();
     service = unit;
-
-    workbookMock = new Workbook() as jest.Mocked<Workbook>;
   });
 
   afterEach(() => {

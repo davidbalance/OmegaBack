@@ -1,10 +1,10 @@
 import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import { MedicalReportRepository } from "../../repositories/medical-report.repository";
 import { MedicalReportPdfService } from "../medical-report-pdf.service";
-import { PdfManagerService } from "@/shared/pdf-manager";
 import { TestBed } from "@automock/jest";
 import { mockMedicalReport } from "./stub/medical-report.stub";
 import { fileReportPath } from "@/shared/utils";
+import { PdfManagerService } from "@/shared/pdf-manager/pdf-manager.service";
 
 describe('MedicalReportPdfService', () => {
   let service: MedicalReportPdfService;

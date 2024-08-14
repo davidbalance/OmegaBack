@@ -20,13 +20,6 @@ export class PdfManagerService {
         });
     }
 
-    /**
-     * Creates a pdf using a handlebars template
-     * @param templatePath 
-     * @param data 
-     * @param options 
-     * @returns {Promise<Buffer>}
-     */
     async craft(content: TDocumentDefinitions): Promise<Buffer> {
 
         return new Promise((resolve, reject) => {
