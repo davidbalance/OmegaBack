@@ -1,4 +1,4 @@
-import { SqlDatabaseModule } from "@/shared/sql-database";
+import { SqlDatabaseModule } from "@/shared/sql-database/sql-database.module";
 import { ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { Token } from "./entities/token.entity";

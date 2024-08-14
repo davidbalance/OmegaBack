@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { WebResourceController } from './controllers/web-resource.controller';
 import { WebResource } from './entities/web-resource.entity';
 import { WebResourceRespository } from './repositories/web-resource.repository';

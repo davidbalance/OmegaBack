@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ApiKeyManagementService } from './services/api-key-management.service';
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { ApiKey } from './entities/api-key.entity';
 import { ApiKeyRepository } from './repositories/api-key.repository';
 import { UserCredentialModule } from '../user-credential/user-credential.module';

@@ -1,5 +1,5 @@
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { Module } from '@nestjs/common';
 import { WebLogoModule } from '../web-logo/web-logo.module';
 import { WebResourceModule } from '../web-resource/web-resource.module';

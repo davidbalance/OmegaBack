@@ -1,7 +1,7 @@
 import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
 import { DniInterceptorModule } from "@/shared/interceptors/dni/dni-interceptor.module";
 import { MailerModule } from "@/shared/mailer/mailer.module";
-import { SqlDatabaseModule } from "@/shared/sql-database";
+import { SqlDatabaseModule } from "@/shared/sql-database/sql-database.module";
 import { UserModule } from "@/user/user.module";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";

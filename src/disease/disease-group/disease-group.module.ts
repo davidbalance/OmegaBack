@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DiseaseGroup } from './entities/disease-group.entity';
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { DiseaseGroupRepository } from './repository/disease-group.repository';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { DiseaseGroupSelectorController } from './controllers/disease-group-selector.controller';

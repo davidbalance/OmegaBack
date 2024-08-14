@@ -1,5 +1,5 @@
 import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
-import { SqlDatabaseModule } from "@/shared/sql-database";
+import { SqlDatabaseModule } from "@/shared/sql-database/sql-database.module";
 import { Module } from "@nestjs/common";
 import { ExamExternalConnectionController } from "./controllers/exam-external-connection.controller";
 import { ExamSelectorController } from "./controllers/exam-selector.controller";

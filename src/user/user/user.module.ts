@@ -10,7 +10,7 @@ import { UserManagementService } from './services/user-management.service';
 import { CredentialUserListener } from './listeners/credential-user.listener';
 import { UserExtraAttributeController } from './controllers/user-extra-attribute.controller';
 import { UserManagementController } from './controllers/user-management.controller';
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 
 @Module({
   imports: [

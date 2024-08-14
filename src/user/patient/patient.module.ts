@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Patient } from './entities/patient.entity';
 import { PatientRepository } from './repositories/patient.repository';
 import { UserModule } from '../user/user.module';
@@ -17,6 +16,7 @@ import { PatientFlatProvider } from './service/patient-flat.service';
 import { PatientEeqFlatProvider } from './service/patient-eeq-flat.service';
 import { PatientPaginationController } from './controllers/patient-pagination.controller';
 import { PatientEventService } from './service/patient-event.service';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 
 @Module({
   imports: [
