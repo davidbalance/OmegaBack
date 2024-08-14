@@ -1,12 +1,18 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
+import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from "typeorm";
 
 const TABLE_NAME: string = 'tbl_u_doctors';
 
 const FK_U_USER_DOCTOR: TableForeignKey = new TableForeignKey({
     name: 'fk_u_user_doctor',
-    columnNames: ['user_id'],
-    referencedColumnNames: ['user_id'],
+    columnNames: ['user_dni'],
+    referencedColumnNames: ['user_dni'],
     referencedTableName: 'tbl_u_users'
+});
+
+const IDX_USER: TableIndex = new TableIndex({
+    name: 'idx_doctor_user',
+    columnNames: ['user_dni'],
+    isUnique: true
 });
 
 export class CreateUserDoctorsTable1720554488246 implements MigrationInterface {
@@ -26,8 +32,10 @@ export class CreateUserDoctorsTable1720554488246 implements MigrationInterface {
                         isNullable: true
                     },
                     {
-                        name: 'user_id',
-                        type: 'int',
+                        name: 'user_dni',
+                        type: 'varchar',
+                        length: '10',
+                        isUnique: true,
                         isNullable: false
                     }
                 ]
@@ -35,11 +43,15 @@ export class CreateUserDoctorsTable1720554488246 implements MigrationInterface {
             true,
         );
 
+        await queryRunner.createIndex(TABLE_NAME, IDX_USER);
+
         await queryRunner.createForeignKey(TABLE_NAME, FK_U_USER_DOCTOR);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.dropForeignKey(TABLE_NAME, FK_U_USER_DOCTOR);
+
+        await queryRunner.dropIndex(TABLE_NAME, IDX_USER);
 
         await queryRunner.dropTable(TABLE_NAME);
     }
