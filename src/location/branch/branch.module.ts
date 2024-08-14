@@ -6,7 +6,7 @@ import { BranchRepository } from "./repositories/branch.repository";
 import { BranchSelectorController } from "./controllers/branch-selector.controller";
 import { BranchExternalConnectionController } from "./controllers/branch-external-connection.controller";
 import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
-import { SqlDatabaseModule } from "@/shared/sql-database";
+import { SqlDatabaseModule } from "@/shared/sql-database/sql-database.module";
 import { CityModule } from "../city/city.module";
 import { CompanyModule } from "../company/company.module";
 import { BranchExternalKey } from "./entities/branch-external-key.entity";

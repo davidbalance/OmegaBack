@@ -5,7 +5,6 @@ import { TypeOrmTransport } from "../transport/typeorm.transport";
 import { TransportStreamOptions } from "winston-transport";
 import { LoggerWritter } from "../interfaces/logger-writter.interface";
 
-
 @Injectable()
 export class WinstonLoggerConfig implements WinstonModuleOptionsFactory {
 

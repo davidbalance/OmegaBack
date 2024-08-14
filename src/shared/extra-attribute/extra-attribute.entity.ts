@@ -1,5 +1,5 @@
 import { Column, Index } from "typeorm";
-import { AbstractEntity } from "../sql-database";
+import { AbstractEntity } from "../sql-database/abstract.entity";
 
 @Index('idx_extra_name_value', ['name', 'value'], { unique: false })
 export abstract class ExtraAttribute extends AbstractEntity<number> {

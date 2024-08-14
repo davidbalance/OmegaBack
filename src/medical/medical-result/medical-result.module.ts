@@ -1,4 +1,4 @@
-import { SqlDatabaseModule } from "@/shared/sql-database";
+import { SqlDatabaseModule } from "@/shared/sql-database/sql-database.module";
 import { MedicalResultDisease } from "./entities/medical-result-disease.entity";
 import { MedicalResultExternalKey } from "./entities/medical-result-external-key.entity";
 import { MedicalResultSendAttribute } from "./entities/medical-result-send-attribute.entity";

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CorporativeGroupManagementService } from './services/corporative-group-management.service';
 import { CorporativeGroup } from './entities/corporative-group.entity';
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { CorporativeGroupRepository } from './repositories/corporative-group.repository';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { CorporativeGroupSelectorService } from './services/corporative-group-selector.service';

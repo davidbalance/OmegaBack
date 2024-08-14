@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UserCredential } from './entities/user-credential.entity';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { UserCredentialController } from './controllers/user-credential.controller';
 import { UserCredentialRepository } from './repositories/user-credential.repository';
 import { UserCredentialService } from './services/user-credential.service';

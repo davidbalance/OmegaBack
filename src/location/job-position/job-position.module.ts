@@ -4,7 +4,7 @@ import { JobPositionManagementService } from './services/job-position-management
 import { JobPositionRepository } from './repositories/job-position.repository';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { JobPosition } from './entities/job-position.entity';
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { JobPositionExternalKey } from './entities/job-position-external-key.entity';
 import { JobPositionExternalKeyRepository } from './repositories/job-position-external-key.repository';
 import { JobPositionExternalConnectionService } from './services/job-position-external-connection.service';

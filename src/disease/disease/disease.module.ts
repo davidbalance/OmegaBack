@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { DiseaseManagementService } from './services/disease-management.service';
 import { DiseaseController } from './controllers/disease-management.controller';
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { Disease } from './entities/disease.entity';
 import { DiseaseGroupModule } from '../disease-group/disease-group.module';
 import { DiseaseSelectorController } from './controllers/disease-selector.controller';

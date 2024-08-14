@@ -1,4 +1,3 @@
-import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { Controller, Inject, UseGuards, Post, Param, Body, Patch } from "@nestjs/common";
 import { ApiTags, ApiHeader } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
@@ -7,16 +6,17 @@ import { PostJobPositionRequestDto } from "../dtos/request/post.job-position.req
 import { PostJobPositionResponseDto } from "../dtos/response/post.job-position.dto";
 import { PatchJobPositionRequestDto } from "../dtos/request/patch.job-position.request.dto";
 import { PatchJobPositionResponseDto } from "../dtos/response/patch.job-position.dto";
+import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
 
 @ApiTags('Location/Job/Position', 'External/Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
+@UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/job/position/:source/:key')
 export class JobPositionExternalConnectionController {
     constructor(
         @Inject(JobPositionExternalConnectionService) private readonly service: JobPositionExternalConnectionService
     ) { }
 
-    @UseGuards(ApiKeyAuthGuard)
     @Post()
     async create(
         @Param('source') source: string,
@@ -27,7 +27,6 @@ export class JobPositionExternalConnectionController {
         return plainToInstance(PostJobPositionResponseDto, position);
     }
 
-    @UseGuards(ApiKeyAuthGuard)
     @Patch()
     async findOneAndUpdate(
         @Param('source') source: string,

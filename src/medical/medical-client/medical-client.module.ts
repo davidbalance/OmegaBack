@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { MedicalClient } from './entities/medical-client.entity';
 import { MedicalEmail } from './entities/medical-email.entity';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';

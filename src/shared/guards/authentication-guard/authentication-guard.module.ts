@@ -1,5 +1,5 @@
-import { JwtAuthStrategy } from '@/shared/guards/authentication-guard/strategies';
 import { Module } from '@nestjs/common';
+import { JwtAuthStrategy } from './strategies/jwt-auth.strategy';
 
 @Module({
     providers: [

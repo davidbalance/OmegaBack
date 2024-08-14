@@ -1,4 +1,3 @@
-import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { UseGuards, Controller, Inject, Get, Param, Post, UseInterceptors, Body, UploadedFile, Patch } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiTags, ApiHeader, ApiConsumes } from "@nestjs/swagger";
@@ -9,6 +8,7 @@ import { PostMedicalResultExternalRequestDto } from "../dtos/request/post.medica
 import { PostMedicalResultResponseDto } from "../dtos/response/post.medical-result.response.dto";
 import { PatchMedicalResultFileRequestDto } from "../dtos/request/patch.medical-result-file.request.dto";
 import { PatchMedicalResultFileResponseDto } from "../dtos/response/patch.medical-result-file.response.dto";
+import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
 
 @ApiTags('External/Connection', 'Medical/Result')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })

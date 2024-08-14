@@ -4,11 +4,11 @@ import dayjs from 'dayjs';
 import es from "dayjs/locale/es";
 import path from 'path';
 import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';
-import { PdfManagerService } from '@/shared/pdf-manager';
 import { fileReportPath } from '@/shared/utils';
 import { MedicalReport } from '../entities/medical-report.entity';
 import { MedicalReportRepository } from '../repositories/medical-report.repository';
 import { medicalReportDocumentLayout } from '../utils/medical-report-document-layout';
+import { PdfManagerService } from '@/shared/pdf-manager/pdf-manager.service';
 
 @Injectable()
 export class MedicalReportPdfService {
@@ -51,13 +51,13 @@ export class MedicalReportPdfService {
     const signatureDirectory = path.resolve(data.doctorSignature);
     const signatureImg = readFileSync(signatureDirectory);
     const signatureBase64 = Buffer.from(signatureImg).toString('base64');
-    
+
     const headerDirectory = path.resolve('templates/medical-result/medical-report/header.png');
     const headerImg = readFileSync(headerDirectory);
     const headerBase64 = Buffer.from(headerImg).toString('base64');
-    
+
     const newContent = this.pdfService.parseHtml(data.content);
-    
+
     const baseContent = this.getContent(data, {
       signature: signatureBase64,
       header: headerBase64

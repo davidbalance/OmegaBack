@@ -1,4 +1,4 @@
-import { AbstractEntity } from "@/shared/sql-database";
+import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { MedicalReportSendAttribute } from "./medical-report-send-attribute.entity";
 

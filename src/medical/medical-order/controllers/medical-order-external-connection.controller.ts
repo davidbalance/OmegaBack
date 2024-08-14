@@ -1,4 +1,3 @@
-import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { UseGuards, Controller, Inject, Get, Param, Post, Body, Patch } from "@nestjs/common";
 import { ApiTags, ApiHeader } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
@@ -10,6 +9,7 @@ import { GetMedicalOrderResponseDto } from "../dtos/response/get.medical-order.r
 import { PatchMedicalOrderRequestDto } from "../dtos/request/patch.medical-order.request.dto";
 import { PatchMedicalOrderResponseDto } from "../dtos/response/patch.medical-order.response.dto";
 import { PostMedicalOrderExternalRequestDto } from "../dtos/request/post.medical-order-external.request.dto";
+import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
 
 @ApiTags('External/Connection', 'Medical/Order')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })

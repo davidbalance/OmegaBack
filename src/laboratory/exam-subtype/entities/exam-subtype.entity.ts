@@ -1,6 +1,6 @@
 import { ExamType } from "@/laboratory/exam-type/entities/exam-type.entity";
 import { Exam } from "@/laboratory/exam/entities/exam.entity";
-import { AbstractEntity } from "@/shared/sql-database";
+import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { PrimaryGeneratedColumn, Column, Entity, Index, ManyToOne, JoinColumn, OneToMany, OneToOne } from "typeorm";
 import { ExamSubtypeExternalKey } from "./exam-subtype-external-key.entity";
 

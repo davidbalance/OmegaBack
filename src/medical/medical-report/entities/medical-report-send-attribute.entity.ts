@@ -1,6 +1,6 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { MedicalReport } from "./medical-report.entity";
-import { AbstractSendAttributeEntity } from "@/shared/send-attribute";
+import { AbstractSendAttributeEntity } from "@/shared/send-attribute/send-attribute.entity";
 
 @Entity({ name: 'tbl_m_reports_send_attributes' })
 export class MedicalReportSendAttribute extends AbstractSendAttributeEntity {

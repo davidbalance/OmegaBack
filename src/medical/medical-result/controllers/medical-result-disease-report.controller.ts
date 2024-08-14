@@ -5,7 +5,7 @@ import { Response } from "express";
 import { plainToInstance } from "class-transformer";
 import { GetMedicalResultYearArrayResponseDto } from "../dtos/response/get.medical-result-year-array.response.dto";
 import { PostMedicalResultDiseaseReportRequestDto } from "../dtos/request/post.medical-result-disease-report.request.dto";
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Medical/Result')
 @ApiBearerAuth()

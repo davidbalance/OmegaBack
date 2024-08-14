@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { Company } from './entities/company.entity';
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { CorporativeGroupModule } from '../corporative-group/corporative-group.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { CompanyManagementService } from './services/company-management.service';

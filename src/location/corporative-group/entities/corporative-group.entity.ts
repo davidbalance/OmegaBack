@@ -1,5 +1,5 @@
 import { Company } from "src/location/company/entities/company.entity";
-import { AbstractEntity } from "@/shared/sql-database";
+import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CorporativeGroupExternalKey } from "./corporative-group-external-key.entity";
 

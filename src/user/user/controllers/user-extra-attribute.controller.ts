@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { Controller, UseGuards, Get, Body, Patch, Param, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
@@ -6,6 +5,7 @@ import { UserExtraAttributeService } from "../services/user-extra-attributes.ser
 import { GetUserAttributeResponseDto } from "../dtos/response/get.user-extra-attribute.response.dto";
 import { PatchUserExtraAttributeRequestDto } from "../dtos/request/patch.user-extra-attribute.request.dto";
 import { PatchUserExtraAttributeResponseDto } from "../dtos/response/patch.user-extra-attribute.response.dto";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('User/User/Attribute')
 @ApiBearerAuth()

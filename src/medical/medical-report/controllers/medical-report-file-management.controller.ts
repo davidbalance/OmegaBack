@@ -1,9 +1,9 @@
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { UseGuards, Controller, Inject, Patch, UseInterceptors, Body, Param, UploadedFile } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth, ApiConsumes } from "@nestjs/swagger";
 import { MedicalReportFileManagementService } from "../services/medical-report-file-management.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { PatchMedicalResultFileRequestDto } from "../dtos/request/patch.medical-report-file.request.dto";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Medical/Report')
 @ApiBearerAuth()

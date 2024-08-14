@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { Controller, Get, Param, Inject, UseGuards, Delete, Body, Post } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
@@ -8,6 +7,7 @@ import { PostMedicalClientManagementAreaResponseDto } from '../dtos/response/pos
 import { DeleteMedicalClientManagementAreaResponseDto } from '../dtos/response/delete.medical-client-management-area.response.dto';
 import { MedicalClientLocationService } from '../services/medical-client-location.service';
 import { MedicalClientManagementService } from '../services/medical-client-management.service';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
 @ApiTags('Medical/Client')
 @ApiBearerAuth()

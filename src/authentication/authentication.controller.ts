@@ -3,11 +3,11 @@ import { TokenService } from './token/services/token.service';
 import { User } from '@/shared/decorator';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards';
 import { RefreshToken } from './token/types/refresh-token.type';
 import { AuthenticationResponseDto } from './dtos/authentication.response.dto';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -31,7 +31,7 @@ export class AuthenticationController {
         const tokens = await this.tokenService.refreshToken(token);
         return plainToInstance(AuthenticationResponseDto, tokens);
     }
-    
+
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Post('logout')

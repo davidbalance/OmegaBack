@@ -1,7 +1,7 @@
 import { Controller, Get, Inject, Param, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { MedicalReportPdfService } from "../services/medical-report-pdf.service";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Medical/Report')
 @ApiBearerAuth()

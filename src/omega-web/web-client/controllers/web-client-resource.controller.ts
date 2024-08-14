@@ -1,4 +1,3 @@
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { Body, Controller, Get, Inject, Param, Patch, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
@@ -6,16 +5,17 @@ import { WebClientResourceService } from '../services/web-client-resource.servic
 import { GetNavResourceArrayResponseDto } from '@/omega-web/web-resource/dtos/response/get.nav-resource-array.response.dto';
 import { PatchWebClientResourceRequestDto } from '../dtos/request/patch.web-client-resource.request.dto';
 import { PatchWebClientResourceResponseDto } from '../dtos/response/patch.web-client-resource.response.dto';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
 @ApiTags('Omega/Web/Client')
 @ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('omega/web/clients/resources')
 export class WebClientResourceController {
   constructor(
     @Inject(WebClientResourceService) private readonly service: WebClientResourceService
   ) { }
 
-  @UseGuards(JwtAuthGuard)
   @Get('resource/:user')
   async findOneWebResources(
     @Param('user') user: number,
@@ -24,7 +24,6 @@ export class WebClientResourceController {
     return plainToInstance(GetNavResourceArrayResponseDto, { data });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch('resource/:user')
   async assignWebResourceToWebClient(
     @Param('user') user: number,

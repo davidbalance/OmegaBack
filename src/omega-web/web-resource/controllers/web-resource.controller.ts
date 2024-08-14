@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { GetWebResourceArrayResponseDto } from '../dtos/response/get.web-resource-array.response.dto';
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { WebResourceService } from '../services/web-resource.service';
@@ -9,6 +8,7 @@ import { PatchWebResourceRequestDto } from '../dtos/request/patch.web-resource.r
 import { PatchWebResourceResponseDto } from '../dtos/response/patch.web-resource.response.dto';
 import { PostWebResourceResponseDto } from '../dtos/response/post.web-resource.response.dto';
 import { DeleteWebResourceResponseDto } from '../dtos/response/delete.web-resource.response.dto';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
 @ApiTags('Omega/Web/Resource')
 @Controller('omega/web/resources')

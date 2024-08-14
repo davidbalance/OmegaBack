@@ -4,7 +4,7 @@ import { ExamTypeManagementController } from './controllers/exam-type-management
 import { ExamTypeRepository } from './repositories/exam-type.repository';
 import { ExamType } from './entities/exam-type.entity';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { ExamTypeExternalConnectionProvider, ExamTypeExternalConnectionService } from './services/exam-type-external-connection.service';
 import { ExamTypeExternalConnectionController } from './controllers/exam-type-external-connection.controller';
 import { ExamTypeExternalKeyService } from './services/exam-type-external-key.service';

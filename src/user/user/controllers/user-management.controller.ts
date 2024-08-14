@@ -1,5 +1,4 @@
 import { User } from "@/shared/decorator";
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
@@ -11,6 +10,7 @@ import { PostUserResponseDto } from "../dtos/response/post.user.response.dto";
 import { PatchUserRequestDto } from "../dtos/request/patch.user.dto";
 import { PatchUserResponseDto } from "../dtos/response/patch.user.response.dto";
 import { DeleteUserResponseDto } from "../dtos/response/delete.user.response.dto";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('User/User')
 @ApiBearerAuth()

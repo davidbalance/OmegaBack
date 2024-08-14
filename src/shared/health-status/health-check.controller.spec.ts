@@ -1,18 +1,25 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { HealthCheckController } from './health-check.controller';
+import { TestBed } from '@automock/jest';
 
 describe('HealthCheckController', () => {
   let controller: HealthCheckController;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [HealthCheckController],
-    }).compile();
+    const { unit } = TestBed.create(HealthCheckController).compile();
 
-    controller = module.get<HealthCheckController>(HealthCheckController);
+    controller = unit;
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should return status okay', () => {
+    // Arrange
+    // Act
+    const result = controller.healthCheck();
+
+    // Assert
+    expect(result).toEqual({ health: 'ok' });
   });
 });

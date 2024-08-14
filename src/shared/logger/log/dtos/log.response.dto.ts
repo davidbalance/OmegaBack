@@ -10,19 +10,19 @@ export class FindLog {
 }
 
 
-export class GETLogsResponseDto {
+export class GetLogsResponseDto {
     @Type(() => FindLog)
     @Expose()
     public logs: FindLog[];
 }
 
-export class GETLogLevelResponseDto {
+export class GetLogLevelResponseDto {
     @Expose()
-    public level: string[];
+    public level: string;
 }
 
-export class GETLogLevelArrayResponseDto {
-    @Type(() => GETLogLevelResponseDto)
+export class GetLogLevelArrayResponseDto {
+    @Type(() => GetLogLevelResponseDto)
     @Expose()
-    public levels: GETLogLevelResponseDto[];
+    public levels: GetLogLevelResponseDto[];
 }

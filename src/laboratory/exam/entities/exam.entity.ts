@@ -1,4 +1,4 @@
-import { AbstractEntity } from "@/shared/sql-database";
+import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ExamExternalKey } from "./exam-external-key.entity";
 import { ExamSubtype } from "@/laboratory/exam-subtype/entities/exam-subtype.entity";

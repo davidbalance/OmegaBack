@@ -1,4 +1,3 @@
-import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards";
 import { Controller, Inject, UseGuards, Post, Param, Body, Patch } from "@nestjs/common";
 import { ApiTags, ApiHeader } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
@@ -7,6 +6,7 @@ import { PostExamExternalRequestDto } from "../dtos/request/post.exam-external.r
 import { PostExamResponseDto } from "../dtos/response/post.exam.response.dto";
 import { PatchExamResponseDto } from "../dtos/response/patch.exam.response.dto";
 import { PatchExamExternalRequestDto } from "../dtos/request/patch.exam-external.request.dto";
+import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
 
 @ApiTags('External/Connection', 'Laboratory/Exam')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })

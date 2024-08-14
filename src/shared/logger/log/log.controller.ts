@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Inject, Logger, Post } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Post } from "@nestjs/common";
 import { LogService } from "./log.service";
 import { ApiTags } from "@nestjs/swagger";
-import { GETLogLevelArrayResponseDto, GETLogsResponseDto } from "./dtos/log.response.dto";
+import { GetLogLevelArrayResponseDto, GetLogsResponseDto } from "./dtos/log.response.dto";
 import { plainToInstance } from "class-transformer";
-import { POSTLogRequestDto } from "./dtos/log.request.dto";
+import { PostLogRequestDto } from "./dtos/log.request.dto";
 
 @ApiTags('Logger')
 @Controller('logs')
@@ -14,16 +14,16 @@ export class LogController {
     ) { }
 
     @Get('level')
-    async finLevels(): Promise<GETLogLevelArrayResponseDto> {
+    async findLevels(): Promise<GetLogLevelArrayResponseDto> {
         const levels = await this.service.findLevels();
-        return plainToInstance(GETLogLevelArrayResponseDto, { levels });
+        return plainToInstance(GetLogLevelArrayResponseDto, { levels });
     }
 
     @Post()
     async findLogs(
-        @Body() body: POSTLogRequestDto
-    ): Promise<GETLogsResponseDto> {
+        @Body() body: PostLogRequestDto
+    ): Promise<GetLogsResponseDto> {
         const logs = await this.service.find(body);
-        return plainToInstance(GETLogsResponseDto, { logs });
+        return plainToInstance(GetLogsResponseDto, { logs });
     }
 }

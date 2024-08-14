@@ -1,4 +1,4 @@
-import { SqlDatabaseModule } from '@/shared/sql-database';
+import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { Module } from '@nestjs/common';
 import { WebLogo } from './entities/web-logo.entity';
 import { WebLogoRepository } from './repositories/web-logo.repository';

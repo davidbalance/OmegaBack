@@ -1,9 +1,9 @@
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { Controller, UseGuards, Get, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { DiseaseGroupSelectorService } from "../services/disease-group-selector.service";
 import { GetDiseaseGroupSelectorOptionArrayResponseDto } from "../dtos/response/get.disease-group-selector.response.dto";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Selector', 'Disease/Group')
 @ApiBearerAuth()

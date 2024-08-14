@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, UseGuards } from '@nestjs/common';
 import { JobPositionManagementService } from '../services/job-position-management.service';
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { PostJobPositionRequestDto } from '../dtos/request/post.job-position.request.dto';
 import { PostJobPositionResponseDto } from '../dtos/response/post.job-position.dto';
@@ -10,6 +9,7 @@ import { GetJobPositionResponseDto } from '../dtos/response/get.job-position.dto
 import { PatchJobPositionRequestDto } from '../dtos/request/patch.job-position.request.dto';
 import { PatchJobPositionResponseDto } from '../dtos/response/patch.job-position.dto';
 import { DeleteJobPositionResponseDto } from '../dtos/response/delete.job-position.dto';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
 @ApiTags('Location/Job/Position')
 @ApiBearerAuth()

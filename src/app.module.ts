@@ -12,7 +12,7 @@ import { LoggerMiddleware } from './shared/middleware';
 import { HealthCheckModule } from './shared/health-status/health-check.module';
 import { MedicalModule } from './medical/medical.module';
 import { LoggerModule } from './shared/logger';
-import { SqlDatabaseModule } from './shared/sql-database';
+import { SqlDatabaseModule } from './shared/sql-database/sql-database.module';
 
 @Module({
   imports: [

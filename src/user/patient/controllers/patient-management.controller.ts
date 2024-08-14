@@ -1,11 +1,11 @@
 import { Controller, Get, Inject, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard';
 import { ExtraAttribute, User } from '@/shared/decorator';
 import { ExtraAttributeInterceptor } from '@/shared/interceptors/extra-attribute/extra-attribute.interceptor';
 import { PatientManagementService } from '../service/patient-management.service';
 import { GetPatientArrayResponseDto } from '../dtos/response/get.patient-array.response.dto';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
 @ApiTags('User/Patient')
 @ApiBearerAuth()

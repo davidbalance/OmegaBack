@@ -1,11 +1,11 @@
 import { User } from "@/shared/decorator";
-import { JwtAuthGuard } from "@/shared/guards/authentication-guard";
 import { DniInterceptor } from "@/shared/interceptors/dni/dni.interceptor";
 import { Controller, Get, Param, UseGuards, UseInterceptors, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { MedicalOrderManagementService } from "../services/medical-order-management.service";
 import { GetMedicalOrderArrayResponseDto } from "../dtos/response/get.medical-order-array.response.dto";
+import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Medical/Order')
 @ApiBearerAuth()
