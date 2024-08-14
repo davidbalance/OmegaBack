@@ -1,6 +1,6 @@
 import { Branch } from "src/location/branch/entities/branch.entity";
 import { CorporativeGroup } from "src/location/corporative-group/entities/corporative-group.entity";
-import { AbstractEntity } from "@/shared/sql-database";
+import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CompanyExternalKey } from "./company-external-key.entity";
 

@@ -1,4 +1,4 @@
-import { AbstractRepository } from "@/shared/sql-database";
+import { AbstractRepository } from "@/shared/sql-database/abstract.repository";
 import { Injectable, Logger } from "@nestjs/common";
 import { MedicalClient } from "../entities/medical-client.entity";
 import { FindOptionsWhere, Repository } from "typeorm";

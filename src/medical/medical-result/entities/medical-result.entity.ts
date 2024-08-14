@@ -1,6 +1,6 @@
 import { MedicalOrder } from "@/medical/medical-order/entities/medical-order.entity";
 import { MedicalReport } from "@/medical/medical-report/entities/medical-report.entity";
-import { AbstractEntity } from "@/shared/sql-database";
+import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Entity, Index, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn, OneToOne } from "typeorm";
 import { MedicalResultDisease } from "./medical-result-disease.entity";
 import { MedicalResultExternalKey } from "./medical-result-external-key.entity";

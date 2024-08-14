@@ -1,8 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { AbstractRepository } from "../sql-database";
 import { AbstractSendAttributeEntity } from "./send-attribute.entity";
 import { AbstractSendAttributeService } from "./send-attribute.service";
 import { TestBed } from "@automock/jest";
+import { AbstractRepository } from "../sql-database/abstract.repository";
 
 class MockEntity extends AbstractSendAttributeEntity {
     public id: number;

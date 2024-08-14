@@ -1,6 +1,6 @@
 import { DeepPartial, FindManyOptions, FindOneOptions, FindOptionsWhere, QueryRunner, Repository } from "typeorm";
 import { AbstractEntity } from "./abstract.entity";
-import { Logger, NotFoundException } from "@nestjs/common";
+import { NotFoundException } from "@nestjs/common";
 
 /**
  * Abstract repository with the basics methods for a repository

@@ -1,5 +1,5 @@
 import { Branch } from "@/location/branch/entities/branch.entity";
-import { AbstractEntity } from "@/shared/sql-database";
+import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_lo_cities' })

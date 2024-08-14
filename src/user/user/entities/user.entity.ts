@@ -1,6 +1,6 @@
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserExtraAttribute } from "./user-extra-attribute.entity";
-import { AbstractEntity } from "@/shared/sql-database";
+import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 
 @Entity({ name: 'tbl_u_users' })
 @Index('idx_user_dni', ['dni'], { unique: true })

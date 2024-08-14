@@ -1,5 +1,5 @@
 import { Column, Index } from "typeorm";
-import { AbstractEntity } from "../sql-database";
+import { AbstractEntity } from "../sql-database/abstract.entity";
 
 @Index('idx_send_attribute_value', ['value'], { unique: false })
 export abstract class AbstractSendAttributeEntity extends AbstractEntity<number> {

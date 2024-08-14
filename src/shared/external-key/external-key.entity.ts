@@ -1,5 +1,5 @@
 import { Column, Index } from "typeorm";
-import { AbstractEntity } from "../sql-database";
+import { AbstractEntity } from "../sql-database/abstract.entity";
 
 @Index('idx_external_key_source_key', ['source', 'key'], { unique: true })
 export abstract class ExternalKeyEntity extends AbstractEntity<number> {

@@ -42,7 +42,6 @@ describe('PdfManagerService', () => {
         it('should create a pdf document', async () => {
             // Arrange
             mockOn.mockImplementation((event, callback) => {
-                console.log(`Event ${event} triggered`);
                 if (event === 'data') {
                     callback(Buffer.from('mocked-chunk'));
                 }
@@ -68,7 +67,6 @@ describe('PdfManagerService', () => {
             const mockChunks = [mockChunk];
 
             mockOn.mockImplementation((event, callback) => {
-                console.log(`Event ${event} triggered`);
                 if (event === 'data') {
                     callback(mockChunk);
                 }

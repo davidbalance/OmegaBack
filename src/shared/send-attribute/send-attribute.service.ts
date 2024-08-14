@@ -1,5 +1,5 @@
+import { AbstractRepository } from "../sql-database/abstract.repository";
 import { AbstractSendAttributeEntity } from "./send-attribute.entity";
-import { AbstractRepository } from "../sql-database";
 
 export class AbstractSendAttributeService<
     E extends AbstractSendAttributeEntity,

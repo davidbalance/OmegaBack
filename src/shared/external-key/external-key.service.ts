@@ -1,4 +1,4 @@
-import { AbstractRepository } from "../sql-database";
+import { AbstractRepository } from "../sql-database/abstract.repository";
 import { ExternalKeyEntity } from "./external-key.entity";
 
 export abstract class AbstractExternalKeyService<

@@ -1,8 +1,8 @@
 import { TestBed } from "@automock/jest";
-import { AbstractRepository } from "../sql-database";
-import { ExternalKeyEntity } from "./external-key.entity";
 import { AbstractExternalKeyService } from "./external-key.service";
-import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { ExternalKeyEntity } from "./external-key.entity";
+import { AbstractRepository } from "../sql-database/abstract.repository";
 
 class TestKey extends ExternalKeyEntity {
     public id: number;

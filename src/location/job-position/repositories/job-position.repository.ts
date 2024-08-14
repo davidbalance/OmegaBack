@@ -1,4 +1,4 @@
-import { AbstractRepository } from "@/shared/sql-database";
+import { AbstractRepository } from "@/shared/sql-database/abstract.repository";
 import { Injectable } from "@nestjs/common";
 import { JobPosition } from "../entities/job-position.entity";
 import { InjectRepository } from "@nestjs/typeorm";
