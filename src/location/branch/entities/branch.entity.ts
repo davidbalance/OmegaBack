@@ -1,8 +1,8 @@
 import { City } from "@/location/city/entities/city.entity";
-import { Company } from "src/location/company/entities/company.entity";
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BranchExternalKey } from "./branch-external-key.entity";
+import { Company } from "@/location/company/entities/company.entity";
 
 @Entity({ name: 'tbl_lo_branches' })
 export class Branch extends AbstractEntity<number> {

@@ -1,8 +1,8 @@
-import { Branch } from "src/location/branch/entities/branch.entity";
-import { CorporativeGroup } from "src/location/corporative-group/entities/corporative-group.entity";
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CompanyExternalKey } from "./company-external-key.entity";
+import { CorporativeGroup } from "@/location/corporative-group/entities/corporative-group.entity";
+import { Branch } from "@/location/branch/entities/branch.entity";
 
 @Entity({ name: 'tbl_lo_companies' })
 @Index('idx_company_ruc', ['ruc'], { unique: true })

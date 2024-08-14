@@ -1,7 +1,7 @@
 import { Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User } from "src/user/user/entities/user.entity";
 import { PatientGenderEnum } from "../enums/patient.enum";
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
+import { User } from "@/user/user/entities/user.entity";
 
 @Entity({ name: "tbl_u_patients" })
 @Index('idx_patient_user', ['user'], { unique: true })

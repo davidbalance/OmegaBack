@@ -1,5 +1,5 @@
+import { Disease } from "@/disease/disease/entities/disease.entity";
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
-import { Disease } from "src/disease/disease/entities/disease.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_d_disease_groups' })
