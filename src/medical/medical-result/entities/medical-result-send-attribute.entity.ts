@@ -1,4 +1,5 @@
-import { AbstractSendAttributeEntity } from "@/shared/send-attribute";
+import { AbstractSendAttributeEntity } from "@/shared/send-attribute/send-attribute.entity";
+
 import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
 import { MedicalResult } from "./medical-result.entity";
 
