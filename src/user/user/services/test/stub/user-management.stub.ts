@@ -5,6 +5,7 @@ const stubUser = (id: number): User => ({
     id: id,
     dni: '1234567890',
     email: 'my-stub-email@email.com',
+    dniType: 'dni',
     name: 'User',
     lastname: 'Stub',
     extraAttributes: mockUserAttributeArray() as any,
