@@ -13,6 +13,8 @@ import { HealthCheckModule } from './shared/health-status/health-check.module';
 import { MedicalModule } from './medical/medical.module';
 import { LoggerModule } from './shared/logger';
 import { SqlDatabaseModule } from './shared/sql-database/sql-database.module';
+import { ClientHandlerModule } from './client-handler/client-handler.module';
+import { SessionModule } from './session/session.module';
 
 @Module({
   imports: [
@@ -36,7 +38,9 @@ import { SqlDatabaseModule } from './shared/sql-database/sql-database.module';
     MedicalModule,
     PdfManagerModule,
     ApiKeyGuardModule,
-    HealthCheckModule
+    HealthCheckModule,
+    ClientHandlerModule,
+    SessionModule
   ]
 })
 export class AppModule implements NestModule {
