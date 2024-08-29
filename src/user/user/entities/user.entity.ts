@@ -13,6 +13,9 @@ export class User extends AbstractEntity<number> {
     @Column({ name: 'user_dni', type: 'varchar', length: 10, nullable: false, unique: true })
     public dni: string;
 
+    @Column({ name: 'user_dni_type', type: 'char', length: 3, nullable: true, default: null })
+    public dniType: string;
+
     @Column({ name: 'user_email', type: 'varchar', length: 128, nullable: true, unique: true })
     public email: string;
 

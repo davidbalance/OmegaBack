@@ -23,8 +23,9 @@ export class UserManagementService {
             throw new ConflictException(conflictMessage);
         } catch (error) {
             if (error instanceof NotFoundException) {
-                const newUser = await this.repository.create({ dni, email, ...data });
-                if (role) { 
+                const dniType: string = dni.length < 10 ? 'pas' : 'dni';
+                const newUser = await this.repository.create({ dni, email, dniType, ...data });
+                if (role) {
                     this.attributeService.assignAttribute(newUser.id, { name: 'role', value: role });
                 }
                 return newUser;
