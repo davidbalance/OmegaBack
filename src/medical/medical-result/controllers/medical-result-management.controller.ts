@@ -25,6 +25,14 @@ export class MedicalResultManagementController {
     return plainToInstance(GetMedicalResultArrayResponseDto, { data });
   }
 
+  @Get('order/:id')
+  async findByOrder(
+    @Param('id') id: string
+  ): Promise<GetMedicalResultArrayResponseDto> {
+    const data = await this.service.findByOrder(+id);
+    return plainToInstance(GetMedicalResultArrayResponseDto, { data });
+  }
+
   @Get(':id')
   async findOne(
     @Param('id') id: string

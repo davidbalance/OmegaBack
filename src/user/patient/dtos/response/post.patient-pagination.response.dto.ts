@@ -1,10 +1,5 @@
-import { PaginationResponse } from "@/shared/utils/bases/base.pagination";
-import { Expose, Type } from "class-transformer";
-import { PatientResponseDto } from "./base.patient.response.dto";
+import { Expose } from "class-transformer";
 
-export class PostPatientPaginationResponseDto implements PaginationResponse<PatientResponseDto> {
+export class PostPatientPagesResponseDto {
     @Expose() public readonly pages: number;
-
-    @Type(() => PatientResponseDto)
-    @Expose() public readonly data: PatientResponseDto[];
 }

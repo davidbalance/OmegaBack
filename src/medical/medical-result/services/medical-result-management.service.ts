@@ -19,6 +19,11 @@ export class MedicalResultManagementService {
     return medicalResults;
   }
 
+  async findByOrder(order: number): Promise<MedicalResult[]> {
+    const medicalResults = await this.repository.find({ where: { order: { id: order } } });
+    return medicalResults;
+  }
+
   async findAllByDoctor(doctor: string): Promise<MedicalResult[]> {
     const medicalResults = await this.repository.find({
       where: { doctorDni: doctor }

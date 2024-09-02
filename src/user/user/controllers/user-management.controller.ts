@@ -30,10 +30,18 @@ export class UserManagementController {
   }
 
   @Get('user')
-  async findOne(
+  async findOneByToken(
     @User() user: number
   ): Promise<GetUserResponseDto> {
     const foundUser = await this.userService.findOne(user);
+    return plainToInstance(GetUserResponseDto, foundUser);
+  }
+  
+  @Get('user/:id')
+  async findOneById(
+    @Param('id') id: number
+  ): Promise<GetUserResponseDto> {
+    const foundUser = await this.userService.findOne(id);
     return plainToInstance(GetUserResponseDto, foundUser);
   }
 
