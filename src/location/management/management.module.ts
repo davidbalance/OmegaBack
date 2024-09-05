@@ -5,6 +5,8 @@ import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { Management } from './entities/management.entity';
 import { ManagementController } from './controllers/management.controller';
 import { ManagementRepository } from './repositories/management.repository';
+import { ManagementPaginationService } from './services/management-pagination.service';
+import { ManagementPaginationController } from './controllers/management-pagination.controller';
 
 @Module({
   imports: [
@@ -12,11 +14,13 @@ import { ManagementRepository } from './repositories/management.repository';
     AuthenticationGuardModule
   ],
   controllers: [
-    ManagementController
+    ManagementController,
+    ManagementPaginationController
   ],
   providers: [
+    ManagementRepository,
     ManagementService,
-    ManagementRepository
+    ManagementPaginationService
   ],
   exports: [
     ManagementService

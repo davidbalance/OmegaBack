@@ -28,13 +28,7 @@ export class ExamManagementController {
         return plainToInstance(PostExamResponseDto, exam);
     }
 
-    @Get()
-    async findAll(): Promise<GetExamArrayResponseDto> {
-        const data = await this.service.findAll();
-        return plainToInstance(GetExamArrayResponseDto, { data });
-    }
-
-    @Get(':id')
+    @Get('exam/:id')
     async findOne(
         @Param('id') id: number
     ): Promise<GetExamResponseDto> {
@@ -42,7 +36,7 @@ export class ExamManagementController {
         return plainToInstance(GetExamResponseDto, exam);
     }
 
-    @Patch(':id')
+    @Patch('exam/:id')
     async updateOne(
         @Param('id') id: number,
         @Body() body: PatchExamRequestDto
@@ -51,7 +45,7 @@ export class ExamManagementController {
         return plainToInstance(PatchExamResponseDto, exam);
     }
 
-    @Delete(':id')
+    @Delete('exam/:id')
     async deleteOne(
         @Param('id') id: number
     ): Promise<DeleteExamResponseDto> {

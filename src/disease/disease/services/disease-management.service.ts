@@ -4,6 +4,7 @@ import { DiseaseGroupManagementService } from '@/disease/disease-group/services/
 import { DiseaseRepository } from '../repositories/disease.repository';
 import { PostDiseaseRequestDto } from '../dtos/request/post.disease.request.dto';
 import { PatchDiseaseRequestDto } from '../dtos/request/patch.disease.request.dto';
+import { DiseaseResponseDto } from '../dtos/response/disease.response.dto';
 
 @Injectable()
 export class DiseaseManagementService {
@@ -18,9 +19,12 @@ export class DiseaseManagementService {
     return await this.repository.create({ ...data, group: diseaseGroup });
   }
 
-  async find(): Promise<Disease[]> {
+  async find(group: number): Promise<Disease[]> {
     const diseases = await this.repository.find({
-      where: { status: true },
+      where: {
+        group: { id: group },
+        status: true
+      },
       select: {
         id: true,
         name: true,
@@ -29,6 +33,19 @@ export class DiseaseManagementService {
       relations: { group: true }
     });
     return diseases;
+  }
+
+  async findOne(id: number): Promise<DiseaseResponseDto> {
+    const diseases = await this.repository.findOne({
+      where: { id, status: true },
+      select: {
+        id: true,
+        name: true,
+        group: { id: true, name: true }
+      },
+      relations: { group: true }
+    });
+    return { ...diseases, group: diseases.group.id };
   }
 
   async updateOne(id: number, { group, ...data }: PatchDiseaseRequestDto): Promise<Disease> {

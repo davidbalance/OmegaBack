@@ -1,34 +1,34 @@
-import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { PatientPaginationService } from '../service/patient-pagination.service';
-import { PostPatientPaginationRequestDto } from '../dtos/request/post.patient-pagination.request.dto';
 import { PostPatientPagesResponseDto } from '../dtos/response/post.patient-pagination.response.dto';
-import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 import { GetPatientArrayResponseDto } from '../dtos/response/get.patient-array.response.dto';
+import { CountMetaDto, FilterMetaDto } from '@/shared/utils/bases/base.pagination.dto';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
-@ApiTags('User/Patient')
+@ApiTags('User/Patient', 'Pagination')
 @ApiBearerAuth()
-@Controller('patients')
+@Controller('user/patients')
 @UseGuards(JwtAuthGuard)
 export class PatientPaginationController {
   constructor(
     @Inject(PatientPaginationService) private readonly service: PatientPaginationService
   ) { }
 
-  @Post('paginate')
-  async findByFilter(
-    @Body() { page, limit, filter, order }: PostPatientPaginationRequestDto
+  @Get('paginate')
+  async find(
+    @Query() query: FilterMetaDto
   ): Promise<GetPatientArrayResponseDto> {
-    const data = await this.service.findPaginatedByFilter(page, limit, filter, order);
+    const data = await this.service.find(query);
     return plainToInstance(GetPatientArrayResponseDto, { data });
   }
 
-  @Post('pages')
-  async findPageCount(
-    @Body() { limit, filter }: PostPatientPaginationRequestDto
+  @Get('pages')
+  async count(
+    @Query() query: CountMetaDto
   ): Promise<PostPatientPagesResponseDto> {
-    const pages = await this.service.findPageCount(limit, filter);
+    const pages = await this.service.count(query);
     return plainToInstance(PostPatientPagesResponseDto, { pages });
   }
 }

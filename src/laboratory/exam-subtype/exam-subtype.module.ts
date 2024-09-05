@@ -11,6 +11,8 @@ import { ExamSubtypeExternalConnectionController } from './controllers/exam-subt
 import { ExamSubtypeExternalKey } from './entities/exam-subtype-external-key.entity';
 import { ExamSubtypeExternalKeyRepository } from './repositories/exam-subtype-external-key.repository';
 import { ExamSubtypeExternalKeyService } from './services/exam-subtype-external-key.service';
+import { ExamSubtypePaginationController } from './controllers/exam-subtype-pagination.controller';
+import { ExamSubtypePaginationService } from './services/exam-subtype-pagination.service';
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { ExamSubtypeExternalKeyService } from './services/exam-subtype-external-
   controllers: [
     ExamSubtypeExternalConnectionController,
     ExamSubtypeManagementController,
+    ExamSubtypePaginationController
   ],
   providers: [
     ExamSubtypeExternalKeyRepository,
@@ -31,7 +34,8 @@ import { ExamSubtypeExternalKeyService } from './services/exam-subtype-external-
     ExamSubtypeExternalConnectionService,
     ExamSubtypeExternalKeyService,
     ExamSubtypeManagementService,
-    ExamSubtypeExternalConnectionProvider
+    ExamSubtypeExternalConnectionProvider,
+    ExamSubtypePaginationService
   ],
   exports: [
     ExamSubtypeManagementService,

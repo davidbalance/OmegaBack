@@ -20,11 +20,6 @@ export class ExamManagementService {
         return exam;
     }
 
-    async findAll(): Promise<Exam[]> {
-        const exams = await this.repository.find();
-        return exams;
-    }
-
     async findOne(id: number): Promise<Exam> {
         const exam = await this.repository.findOne({ where: { id } });
         return exam;

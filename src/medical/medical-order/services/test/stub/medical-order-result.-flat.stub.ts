@@ -2,16 +2,15 @@ import { MedicalOrderFlatResponseDto } from "@/medical/medical-order/dtos/respon
 
 const stubMedicalOrderFlat = (id: number): MedicalOrderFlatResponseDto => ({
     id: id,
-    fullname: "Test name",
+    lastname: 'sample',
+    name: 'sample',
     orderStatus: "validated",
     companyRuc: "1234567890001",
     companyName: "Company",
     process: "Test process",
-    results: [],
     dni: "1234567890",
     createAt: new Date(),
     mailStatus: false,
-    email: []
 })
 
 export const mockMedicalOrderFlat = () => stubMedicalOrderFlat(1);

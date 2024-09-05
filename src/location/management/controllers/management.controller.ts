@@ -9,6 +9,7 @@ import { PostManagementResponseDto } from "../dtos/response/post.management.resp
 import { PatchManagementResponseDto } from "../dtos/response/patch.management.response.dto";
 import { DeleteManagementResponseDto } from "../dtos/response/delete.management.response.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
+import { GetManagementResponseDto } from "../dtos/response/get.management.response.dto";
 
 @ApiTags('Location/Management')
 @ApiBearerAuth()
@@ -32,6 +33,15 @@ export class ManagementController {
     const management = await this.service.create(createManagementDto);
     return plainToInstance(PostManagementResponseDto, management);
   }
+
+  @Get(':id')
+  async findOne(
+    @Param('id') id: number
+  ): Promise<GetManagementResponseDto> {
+    const data = await this.service.findOne(id);
+    return plainToInstance(GetManagementResponseDto, data);
+  }
+
 
   @Patch(':id')
   async updateOne(

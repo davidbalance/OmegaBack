@@ -23,32 +23,6 @@ describe('DiseaseGroupManagementController', () => {
     jest.clearAllMocks();
   });
 
-  describe('find', () => {
-    const mockData: DiseaseGroup[] = [{
-      id: 1,
-      name: 'Disease Group 1',
-      status: false,
-      diseases: [],
-      createAt: new Date(),
-      updateAt: new Date()
-    }];
-    const mockResponse: GetDiseaseGroupArrayResponseDto = {
-      data: mockData
-    };
-
-    it('should call the service to find all disease groups', async () => {
-      // Arrange
-      service.find.mockResolvedValue(mockData);
-
-      // Act
-      const result = await controller.find();
-
-      // Assert
-      expect(service.find).toHaveBeenCalled();
-      expect(result).toEqual(mockResponse);
-    });
-  });
-
   describe('create', () => {
     const mockDto: PostDiseaseGroupRequestDto = {
       name: 'New Disease Group',

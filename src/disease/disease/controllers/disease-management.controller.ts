@@ -2,13 +2,13 @@ import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseGuards } 
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { DiseaseManagementService } from '../services/disease-management.service';
-import { GetDiseaseArrayResponseDto } from '../dtos/response/get.disease-array.response.dto';
 import { PostDiseaseRequestDto } from '../dtos/request/post.disease.request.dto';
 import { PostDiseaseResponseDto } from '../dtos/response/post.disease.response.dto';
 import { PatchDiseaseRequestDto } from '../dtos/request/patch.disease.request.dto';
 import { PatchDiseaseResponseDto } from '../dtos/response/patch.disease.response.dto';
 import { DeleteDiseaseResponseDto } from '../dtos/response/delete.disease.response.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
+import { GetDiseaseResponseDto } from '../dtos/response/get.disease.response.dto';
 
 @ApiTags('Disease/Disease')
 @ApiBearerAuth()
@@ -19,12 +19,6 @@ export class DiseaseController {
     @Inject(DiseaseManagementService) private readonly service: DiseaseManagementService
   ) { }
 
-  @Get()
-  async find(): Promise<GetDiseaseArrayResponseDto> {
-    const data = await this.service.find();
-    return plainToInstance(GetDiseaseArrayResponseDto, { data });
-  }
-
   @Post()
   async create(
     @Body() body: PostDiseaseRequestDto
@@ -33,8 +27,16 @@ export class DiseaseController {
     return plainToInstance(PostDiseaseResponseDto, disease);
   }
 
-  @Patch(":id")
-  async findOneAndUpdate(
+  @Get("disease/:id")
+  async findOne(
+    @Param('id') id: number
+  ): Promise<GetDiseaseResponseDto> {
+    const disease = await this.service.findOne(id);
+    return plainToInstance(GetDiseaseResponseDto, disease);
+  }
+
+  @Patch("disease/:id")
+  async updateOne(
     @Param('id') id: number,
     @Body() body: PatchDiseaseRequestDto
   ): Promise<PatchDiseaseResponseDto> {
@@ -42,8 +44,8 @@ export class DiseaseController {
     return plainToInstance(PatchDiseaseResponseDto, disease);
   }
 
-  @Delete(":id")
-  async findOneAndDelete(
+  @Delete("disease/:id")
+  async deleteOne(
     @Param('id') id: number
   ): Promise<DeleteDiseaseResponseDto> {
     await this.service.deleteOne(id);

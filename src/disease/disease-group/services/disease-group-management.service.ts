@@ -28,6 +28,11 @@ export class DiseaseGroupManagementService {
     return await this.repository.findOne({ where: { id } });
   }
 
+  async hasDiseases(id: number): Promise<boolean> {
+    const value = await this.repository.findOne({ where: { id }, relations: { diseases: true } });
+    return value.diseases.length > 0;
+  }
+
   async updateOne(id: number, update: PatchDiseaseGroupRequestDto): Promise<DiseaseGroup> {
     return await this.repository.findOneAndUpdate({ id }, update);
   }

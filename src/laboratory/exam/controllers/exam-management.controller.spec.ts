@@ -2,10 +2,8 @@ import { TestBed } from "@automock/jest";
 import { ExamManagementService } from "../services/exam-management.service";
 import { ExamManagementController } from "./exam-management.controller";
 import { PostExamRequestDto } from "../dtos/request/post.exam.request.dto";
-import { mockExam, mockExams } from "../services/test/stub/exam.stub";
+import { mockExam } from "../services/test/stub/exam.stub";
 import { PostExamResponseDto } from "../dtos/response/post.exam.response.dto";
-import { GetExamArrayResponseDto } from "../dtos/response/get.exam-array.response.dto";
-import { Exam } from "../entities/exam.entity";
 import { GetExamResponseDto } from "../dtos/response/get.exam.response.dto";
 import { PatchExamRequestDto } from "../dtos/request/patch.exam.request.dto";
 import { PatchExamResponseDto } from "../dtos/response/patch.exam.response.dto";
@@ -42,25 +40,6 @@ describe('ExamManagementController', () => {
 
             // Assert
             expect(service.create).toHaveBeenCalledWith(mockDto);
-            expect(result).toEqual(mockResponse);
-        });
-    });
-
-    describe('findAll', () => {
-        const mockData: Exam[] = mockExams();
-        const mockResponse: GetExamArrayResponseDto = {
-            data: mockData
-        };
-
-        it('should call the service to find all exams', async () => {
-            // Arrange
-            service.findAll.mockResolvedValue(mockData);
-
-            // Act
-            const result = await controller.findAll();
-
-            // Assert
-            expect(service.findAll).toHaveBeenCalled();
             expect(result).toEqual(mockResponse);
         });
     });

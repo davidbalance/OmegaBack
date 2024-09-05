@@ -10,6 +10,8 @@ import { ExamTypeExternalConnectionController } from './controllers/exam-type-ex
 import { ExamTypeExternalKeyService } from './services/exam-type-external-key.service';
 import { ExamTypeExternalKey } from './entities/exam-type-external-key.entity';
 import { ExamTypeExternalKeyRepository } from './repositories/exam-type-external-key.repository';
+import { ExamTypePaginationController } from './controllers/exam-type-pagination.controller';
+import { ExamTypePaginationService } from './services/exam-type-pagination.service';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { ExamTypeExternalKeyRepository } from './repositories/exam-type-external
   controllers: [
     ExamTypeExternalConnectionController,
     ExamTypeManagementController,
+    ExamTypePaginationController,
   ],
   providers: [
     ExamTypeExternalKeyRepository,
@@ -29,7 +32,8 @@ import { ExamTypeExternalKeyRepository } from './repositories/exam-type-external
     ExamTypeExternalConnectionService,
     ExamTypeExternalKeyService,
     ExamTypeManagementService,
-    ExamTypeExternalConnectionProvider
+    ExamTypeExternalConnectionProvider,
+    ExamTypePaginationService
   ],
   exports: [
     ExamTypeManagementService,

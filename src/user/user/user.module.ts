@@ -11,6 +11,8 @@ import { CredentialUserListener } from './listeners/credential-user.listener';
 import { UserExtraAttributeController } from './controllers/user-extra-attribute.controller';
 import { UserManagementController } from './controllers/user-management.controller';
 import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
+import { UserPaginationController } from './controllers/user-pagination.controller';
+import { UserPaginationService } from './services/user-pagination.service';
 
 @Module({
   imports: [
@@ -19,7 +21,8 @@ import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
   ],
   controllers: [
     UserManagementController,
-    UserExtraAttributeController
+    UserExtraAttributeController,
+    UserPaginationController
   ],
   providers: [
     UserManagementService,
@@ -28,6 +31,7 @@ import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
     UserRepository,
     UserExtraAttributeRepository,
     CredentialUserListener,
+    UserPaginationService
   ],
   exports: [
     UserManagementService

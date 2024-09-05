@@ -11,6 +11,8 @@ import { JobPositionExternalConnectionService } from './services/job-position-ex
 import { JobPositionExternalConnectionController } from './controllers/job-position-external-connection.controller';
 import { JobPositionExternalKeyService } from './services/job-position-external-key.service';
 import { JobPositionExternalListener } from './listeners/job-position-external.listener';
+import { JobPositionPaginationController } from './controllers/job-position-pagination.controller';
+import { JobPositionPaginationService } from './services/job-position-pagination.service';
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import { JobPositionExternalListener } from './listeners/job-position-external.l
   ],
   controllers: [
     JobPositionManagementController,
+    JobPositionPaginationController,
     JobPositionExternalConnectionController
   ],
   providers: [
@@ -27,7 +30,8 @@ import { JobPositionExternalListener } from './listeners/job-position-external.l
     JobPositionExternalConnectionService,
     JobPositionExternalKeyService,
     JobPositionManagementService,
-    JobPositionExternalListener
+    JobPositionExternalListener,
+    JobPositionPaginationService
   ],
   exports: [
     JobPositionManagementService

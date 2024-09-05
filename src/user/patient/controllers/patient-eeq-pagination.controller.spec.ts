@@ -3,7 +3,7 @@ import { PatientEeqPaginationService } from "../service/patient-eeq-pagination.s
 import { PatientEeqPaginationController } from "./patient-eeq-pagination.controller";
 import { PostPatientEeqPaginationRequestDto } from "../dtos/request/post.patient-eeq-pagination.request.dto";
 import { mockFlatPatientEeqArray } from "../service/test/stub/patient-eeq-flat.stub";
-import { PostPatientEeqPaginationResponseDto } from "../dtos/response/post.patient-eeq-pagination.response.dto";
+import { PostPatientEeqPaginationResponseDto } from "../dtos/response/get.patient-eeq-array.response.dto";
 
 describe('PatientEeqPaginationController', () => {
   let controller: PatientEeqPaginationController;

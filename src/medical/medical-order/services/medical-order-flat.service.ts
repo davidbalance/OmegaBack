@@ -6,9 +6,8 @@ import { MedicalOrderFlatResponseDto } from "../dtos/response/base.medical-order
 @Injectable()
 export class MedicalOrderFlatService implements FlatService<MedicalOrder, MedicalOrderFlatResponseDto> {
     public flat({ client, results, ...order }: MedicalOrder): MedicalOrderFlatResponseDto {
-        const { dni, name, lastname, email } = client;
+        const { dni, name, lastname } = client;
         const { branchName, corporativeName, externalKey, updateAt, ...values } = order;
-        return { dni, ...values, email: email, fullname: `${name} ${lastname}`, results: results as any }
+        return { dni, name, lastname, ...values }
     }
-
 }

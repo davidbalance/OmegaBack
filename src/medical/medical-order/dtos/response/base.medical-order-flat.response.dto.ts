@@ -1,17 +1,15 @@
-import { MedicalClientResponseDto } from "@/medical/medical-client/dtos/response/base.medical-client.response.dto";
-import { MedicalResultResponseDto } from "@/medical/medical-result/dtos/response/base.medical-result.response.dto";
-import { OmitType } from "@nestjs/mapped-types";
-import { Expose, Type } from "class-transformer";
+import { Expose } from "class-transformer";
 
-export class MedicalOrderFlatResponseDto extends OmitType(MedicalClientResponseDto, ['areaId', 'managementId', 'name', 'lastname']) {
+export class MedicalOrderFlatResponseDto {
     @Expose() public readonly id: number;
-    @Expose() public readonly fullname: string;
+    @Expose() public readonly name: string;
+    @Expose() public readonly lastname: string;
+    @Expose() public readonly dni: string;
     @Expose() public readonly mailStatus?: boolean;
     @Expose() public readonly orderStatus: string;
     @Expose() public readonly companyRuc: string;
     @Expose() public readonly companyName: string;
     @Expose() public readonly process: string;
+    @Expose() public readonly createAt: Date;
 
-    @Type(() => MedicalResultResponseDto)
-    @Expose() public readonly results: MedicalResultResponseDto[]
 }

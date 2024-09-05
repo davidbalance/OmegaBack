@@ -24,9 +24,18 @@ export class AreaManagementService {
     return areas;
   }
 
+  async findOne(id: number): Promise<Area> {
+    const area = await this.repository.findOne({ where: { id } });
+    return area;
+  }
+
   async updateOne(id: number, { management, ...area }: PatchAreaRequestDto): Promise<Area> {
-    const foundManagement = await this.managementService.findOne(management);
-    const updatedArea = await this.repository.findOneAndUpdate({ id: id }, { ...area, management: foundManagement });
+    const data = area;
+    if (management) {
+      const foundManagement = await this.managementService.findOne(management);
+      data['management'] = foundManagement;
+    }
+    const updatedArea = await this.repository.findOneAndUpdate({ id: id }, { ...area });
     return updatedArea;
   }
 

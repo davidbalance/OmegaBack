@@ -9,6 +9,7 @@ import { PatchAreaRequestDto } from '../dtos/request/patch.area.request.dto';
 import { PatchAreaResponseDto } from '../dtos/response/patch.area.response.dto';
 import { DeleteAreaResponseDto } from '../dtos/response/delete.area.response.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
+import { GetAreaResponseDto } from '../dtos/response/get.area.response.dto';
 
 @ApiTags('Location/Area')
 @ApiBearerAuth()
@@ -32,6 +33,15 @@ export class AreaManagementController {
     const area = await this.service.create(createAreaDto);
     return plainToInstance(PostAreaResponseDto, area);
   }
+
+  @Get(':id')
+  async findOne(
+    @Param('id') id: string,
+  ): Promise<GetAreaResponseDto> {
+    const data = await this.service.findOne(+id);
+    return plainToInstance(GetAreaResponseDto, data);
+  }
+
 
   @Patch(':id')
   async findOneAndUpdate(

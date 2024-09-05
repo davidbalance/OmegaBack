@@ -1,48 +1,32 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IPagination } from '@/shared/utils/bases/base.pagination';
+import { BasePaginationService } from '@/shared/utils/bases/base.pagination.service';
 import { MedicalOrderRepository } from '../repositories/medical-order.repository';
 import { Brackets } from 'typeorm';
 import { MedicalOrderFlatResponseDto } from '../dtos/response/base.medical-order-flat.response.dto';
-import { PaginationOrder } from '@/shared/utils/bases/base.pagination.dto';
-import { MedicalOrderFlatService } from './medical-order-flat.service';
+import { MedicalOrder } from '../entities/medical-order.entity';
 
 @Injectable()
-export class MedicalOrderFlatPaginationService implements IPagination<MedicalOrderFlatResponseDto> {
+export class MedicalOrderFlatPaginationService extends BasePaginationService<MedicalOrder, MedicalOrderFlatResponseDto> {
 
   constructor(
     @Inject(MedicalOrderRepository) private readonly repository: MedicalOrderRepository,
-    @Inject(MedicalOrderFlatService) private readonly flatService: MedicalOrderFlatService
-  ) { }
-
-  async findPaginatedDataAndPageCount(page: number, limit: number, filter?: string, order?: PaginationOrder): Promise<[value: number, data: MedicalOrderFlatResponseDto[]]> {
-    const pages = await this.findPageCount(limit, filter);
-    const data = await this.findPaginatedByFilter(page, limit, filter, order);
-    return [pages, data];
+  ) {
+    super();
   }
 
-  async findPaginatedByFilter(page: number, limit: number, filter: string = '', order?: PaginationOrder): Promise<MedicalOrderFlatResponseDto[]> {
-    const query = this.queryBuilder(filter);
-    const orders = await query
-      .orderBy('order.createAt')
-      .take(limit)
-      .skip(page)
-      .getMany();
-
-    const flatten = orders.map(this.flatService.flat);
-    return flatten;
-  }
-
-  async findPageCount(limit: number, filter?: string): Promise<number> {
-    const count = await this.queryBuilder(filter).getCount();
-    return Math.floor(count / limit);
-  }
-
-  private queryBuilder(filter?: string) {
+  protected queryBuilder(filter?: string) {
     return this.repository.query('order')
       .leftJoinAndSelect('order.client', 'client')
-      .leftJoinAndSelect('client.email', 'email')
-      .leftJoinAndSelect('order.results', 'result')
-      .leftJoinAndSelect('result.diseases', 'diseases')
+      .select('order.id', 'id')
+      .addSelect('client.name', 'name')
+      .addSelect('client.lastname', 'lastname')
+      .addSelect('client.dni', 'dni')
+      .addSelect('order.mailStatus', 'mailStatus')
+      .addSelect('order.orderStatus', 'orderStatus')
+      .addSelect('order.companyRuc', 'companyRuc')
+      .addSelect('order.companyName', 'companyName')
+      .addSelect('order.process', 'process')
+      .addSelect('order.createAt', 'createAt')
       .where(new Brackets(qr => {
         qr.where('order.companyRuc LIKE :filter', { filter: `%${filter}%` })
           .orWhere('order.companyName LIKE :filter', { filter: `%${filter}%` })

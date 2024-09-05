@@ -1,7 +1,6 @@
 import { TestBed } from "@automock/jest";
 import { DiseaseManagementService } from "../services/disease-management.service";
 import { DiseaseController } from "./disease-management.controller";
-import { GetDiseaseArrayResponseDto } from "../dtos/response/get.disease-array.response.dto";
 import { Disease } from "../entities/disease.entity";
 import { PostDiseaseRequestDto } from "../dtos/request/post.disease.request.dto";
 import { PostDiseaseResponseDto } from "../dtos/response/post.disease.response.dto";
@@ -21,30 +20,6 @@ describe('DiseaseController', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  describe('find', () => {
-    const mockData: Disease[] = [{
-      id: 1,
-      name: 'Disease 1',
-      status: false,
-      group: undefined,
-      createAt: new Date(),
-      updateAt: new Date()
-    }];
-    const mockResponse: GetDiseaseArrayResponseDto = { data: mockData };
-
-    it('should call the service to find all diseases', async () => {
-      // Arrange
-      service.find.mockResolvedValue(mockData);
-
-      // Act
-      const result = await controller.find();
-
-      // Assert
-      expect(service.find).toHaveBeenCalled();
-      expect(result).toEqual(mockResponse);
-    });
   });
 
   describe('create', () => {
@@ -75,7 +50,7 @@ describe('DiseaseController', () => {
     });
   });
 
-  describe('findOneAndUpdate', () => {
+  describe('.updateOne', () => {
     const id = 1;
     const mockDto: PatchDiseaseRequestDto = {
       name: 'Updated Disease',
@@ -95,7 +70,7 @@ describe('DiseaseController', () => {
       service.updateOne.mockResolvedValue(mockDisease);
 
       // Act
-      const result = await controller.findOneAndUpdate(id, mockDto);
+      const result = await controller.updateOne(id, mockDto);
 
       // Assert
       expect(service.updateOne).toHaveBeenCalledWith(id, mockDto);
@@ -103,7 +78,7 @@ describe('DiseaseController', () => {
     });
   });
 
-  describe('findOneAndDelete', () => {
+  describe('deleteOne', () => {
     const id = 1;
 
     it('should call the service to delete a disease', async () => {
@@ -111,7 +86,7 @@ describe('DiseaseController', () => {
       service.deleteOne.mockResolvedValue(undefined);
 
       // Act
-      const result = await controller.findOneAndDelete(id);
+      const result = await controller.deleteOne(id);
 
       // Assert
       expect(service.deleteOne).toHaveBeenCalledWith(id);

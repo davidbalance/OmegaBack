@@ -28,12 +28,6 @@ export class ExamSubtypeManagementController {
     return plainToInstance(PostExamSubtypeResponseDto, subtype);
   }
 
-  @Get()
-  async findAll(): Promise<GetExamSubtypeArrayResponseDto> {
-    const data = await this.examSubtypeService.findAll();
-    return plainToInstance(GetExamSubtypeArrayResponseDto, { data });
-  }
-
   @Get(':id')
   async findOne(
     @Param('id') id: string

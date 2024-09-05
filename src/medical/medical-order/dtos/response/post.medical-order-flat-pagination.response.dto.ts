@@ -1,10 +1,9 @@
-import { PaginationResponse } from "@/shared/utils/bases/base.pagination";
 import { Expose, Type } from "class-transformer";
 import { MedicalOrderFlatResponseDto } from "./base.medical-order-flat.response.dto";
+import { ObjectArrayResponse } from "@/shared/utils/bases/base.object-array.interface";
 
-export class PostMedicalOrderFlatPaginationResponseDto implements PaginationResponse<MedicalOrderFlatResponseDto> {
-    @Expose() public readonly pages: number;
-
+export class GetMedicalOrderFlatArrayResponseDto implements ObjectArrayResponse<MedicalOrderFlatResponseDto> {
+    @Expose()
     @Type(() => MedicalOrderFlatResponseDto)
-    @Expose() public readonly data: MedicalOrderFlatResponseDto[];
+    public readonly data: MedicalOrderFlatResponseDto[];
 }

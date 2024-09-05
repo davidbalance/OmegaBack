@@ -13,6 +13,8 @@ import { DoctorManagementController } from './controllers/doctor-management.cont
 import { DoctorFileManagerController } from './controllers/doctor-file-manager.controller';
 import { DoctorRepository } from './repositories/doctor.repository';
 import { DoctorFlatService } from './services/doctor-flat.service';
+import { DoctorPaginationService } from './services/doctor-pagination.service';
+import { DoctorPaginationController } from './controllers/doctor-pagination.controller';
 
 @Module({
   imports: [
@@ -24,7 +26,8 @@ import { DoctorFlatService } from './services/doctor-flat.service';
   controllers: [
     DoctorManagementController,
     DoctorFileManagerController,
-    DoctorExternalConnectionController
+    DoctorExternalConnectionController,
+    DoctorPaginationController
   ],
   providers: [
     DoctorRepository,
@@ -33,6 +36,7 @@ import { DoctorFlatService } from './services/doctor-flat.service';
     DoctorFlatService,
     DoctorManagementService,
     DoctorExternalListener,
+    DoctorPaginationService
   ],
   exports: [
     DoctorManagementService,

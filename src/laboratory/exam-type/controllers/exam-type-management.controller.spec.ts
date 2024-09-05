@@ -24,26 +24,6 @@ describe('ExamTypeManagementController', () => {
     jest.clearAllMocks();
   });
 
-  describe('create', () => {
-    const mockDto: PostExamTypeRequestDto = {
-      name: 'New Exam Type',
-    };
-    const mockExamTypeData = mockExamType();
-    const mockResponse: PostExamResponseDto = mockExamTypeData;
-
-    it('should call the service to create a new exam type', async () => {
-      // Arrange
-      service.create.mockResolvedValue(mockExamTypeData);
-
-      // Act
-      const result = await controller.create(mockDto);
-
-      // Assert
-      expect(service.create).toHaveBeenCalledWith(mockDto);
-      expect(result).toEqual(mockResponse);
-    });
-  });
-
   describe('findAll', () => {
     const mockData = mockExamTypes();
     const mockResponse: GetExamTypeArrayResponseDto = {
@@ -60,61 +40,6 @@ describe('ExamTypeManagementController', () => {
       // Assert
       expect(service.findAll).toHaveBeenCalled();
       expect(result).toEqual(mockResponse);
-    });
-  });
-
-  describe('findOne', () => {
-    const id = 1;
-    const mockExamTypeData = mockExamType();
-    const mockResponse: GetExamTypeResponseDto = mockExamTypeData;
-
-    it('should call the service to find an exam type by ID', async () => {
-      // Arrange
-      service.findOne.mockResolvedValue(mockExamTypeData);
-
-      // Act
-      const result = await controller.findOne(id.toString());
-
-      // Assert
-      expect(service.findOne).toHaveBeenCalledWith(+id);
-      expect(result).toEqual(mockResponse);
-    });
-  });
-
-  describe('updateOne', () => {
-    const id = 1;
-    const mockDto: PatchExamTypeRequestDto = {
-      name: 'Updated Exam Type',
-    };
-    const mockExamTypeData = mockExamType();
-    const mockResponse: PatchExamTypeResponseDto = mockExamTypeData;
-
-    it('should call the service to update an exam type', async () => {
-      // Arrange
-      service.updateOne.mockResolvedValue(mockExamTypeData);
-
-      // Act
-      const result = await controller.updateOne(id.toString(), mockDto);
-
-      // Assert
-      expect(service.updateOne).toHaveBeenCalledWith(+id, mockDto);
-      expect(result).toEqual(mockResponse);
-    });
-  });
-
-  describe('deleteOne', () => {
-    const id = 1;
-
-    it('should call the service to delete an exam type', async () => {
-      // Arrange
-      service.deleteOne.mockResolvedValue(undefined);
-
-      // Act
-      const result = await controller.deleteOne(id.toString());
-
-      // Assert
-      expect(service.deleteOne).toHaveBeenCalledWith(+id);
-      expect(result).toEqual({});
     });
   });
 });

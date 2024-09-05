@@ -6,6 +6,8 @@ import { ManagementModule } from '../management/management.module';
 import { AreaRepository } from './repositories/area.repository';
 import { AreaManagementController } from './controllers/area-management.controller';
 import { AreaManagementService } from './services/area-management.service';
+import { AreaPaginationController } from './controllers/area-pagination.controller';
+import { AreaPaginationService } from './services/area-pagination.service';
 
 @Module({
   imports: [
@@ -14,10 +16,12 @@ import { AreaManagementService } from './services/area-management.service';
     ManagementModule
   ],
   controllers: [
-    AreaManagementController
+    AreaManagementController,
+    AreaPaginationController
   ],
   providers: [
     AreaManagementService,
+    AreaPaginationService,
     AreaRepository
   ],
   exports: [

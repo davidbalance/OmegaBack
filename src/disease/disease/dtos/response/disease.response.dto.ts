@@ -6,4 +6,7 @@ export class DiseaseResponseDto {
 
     @Expose()
     public readonly name: string;
+
+    @Expose()
+    public readonly group: number;
 }
