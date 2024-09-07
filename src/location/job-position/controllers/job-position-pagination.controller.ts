@@ -6,7 +6,7 @@ import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-au
 import { JobPositionPaginationService } from '../services/job-position-pagination.service';
 import { FilterMetaDto, CountMetaDto, PageResponseDto } from '@/shared/utils/bases/base.pagination.dto';
 
-@ApiTags('Location/Job/Position', 'Pagination')
+@ApiTags('Location>Job Position', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('location/jobposition')

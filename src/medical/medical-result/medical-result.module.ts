@@ -13,7 +13,6 @@ import { MedicalResultManagementService } from "./services/medical-result-manage
 import { MedicalResultDiseaseManagementController } from "./controllers/medical-result-disease-management.controller";
 import { MedicalResultExternalConnectionController } from "./controllers/medical-result-external-connection.controller";
 import { MedicalResultFileManagementController } from "./controllers/medical-result-file-management.controller";
-import { MedicalResultManagementController } from "./controllers/medical-result-management.controller";
 import { MedicalResultRepository } from "./repositories/medical-result.repository";
 import { MedicalResultDiseaseRepository } from "./repositories/medical-result-disease.repository";
 import { MedicalResultExternalKeyRepository } from "./repositories/medical-result-external-key.respository";
@@ -27,6 +26,7 @@ import { MedicalResultDoctorPaginationController } from "./controllers/medical-r
 import { MedicalResultPaginationController } from "./controllers/medical-result-pagination.controller";
 import { MedicalResultDoctorPaginationService } from "./services/medical-result-doctor-pagination.service";
 import { MedicalResultPaginationService } from "./services/medical-result-pagination.service";
+import { MedicalDiseaseManagementController } from "./controllers/medical-disease-management.controller";
 
 @Module({
   imports: [
@@ -42,12 +42,12 @@ import { MedicalResultPaginationService } from "./services/medical-result-pagina
     ExcelManagerModule
   ],
   controllers: [
+    MedicalDiseaseManagementController,
     MedicalResultDoctorPaginationController,
     MedicalResultDiseaseManagementController,
     MedicalResultDiseaseReportController,
     MedicalResultExternalConnectionController,
     MedicalResultFileManagementController,
-    MedicalResultManagementController,
     MedicalResultPaginationController,
   ],
   providers: [

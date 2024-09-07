@@ -38,7 +38,7 @@ async function bootstrap() {
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('docs', app, swaggerDocument);
+  SwaggerModule.setup('docs', app, swaggerDocument, { swaggerOptions: { tagsSorter: 'alpha' } });
   // }
 
   const port: number = env.get<number>("APP_PORT", 3000);

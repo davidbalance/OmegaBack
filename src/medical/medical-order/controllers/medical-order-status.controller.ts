@@ -4,7 +4,7 @@ import { OrderStatus } from "../enums";
 import { MedicalOrderManagementService } from "../services/medical-order-management.service";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
-@ApiTags('Medical/Order')
+@ApiTags('Medical>Order')
 @ApiBearerAuth()
 @Controller('medical/orders/:id/status')
 @UseGuards(JwtAuthGuard)

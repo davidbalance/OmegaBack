@@ -9,7 +9,7 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-au
 import { GetManagementResponseDto } from "../dtos/response/management.get.dto";
 import { HasValueResponseDto } from "@/shared/utils/bases/base.has-value.dto";
 
-@ApiTags('Location/Management')
+@ApiTags('Location>Management')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('management')

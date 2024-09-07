@@ -7,7 +7,7 @@ import { PostWebResourceRequestDto } from '../dtos/request/web-resource.post.dto
 import { PatchWebResourceRequestDto } from '../dtos/request/web-resource.patch.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
-@ApiTags('Omega/Web/Resource')
+@ApiTags('Omega Web>Resource')
 @Controller('omega/web/resources')
 @UseGuards(JwtAuthGuard)
 export class WebResourceController {

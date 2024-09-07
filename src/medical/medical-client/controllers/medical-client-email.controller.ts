@@ -6,7 +6,7 @@ import { PostMedicalEmailRequestDto } from '../dtos/request/medical-email.post.d
 import { MedicalClientEmailService } from '../services/medical-client-email.service';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
-@ApiTags('Medical/Client')
+@ApiTags('Medical>Client>Email')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('medical/client/email')

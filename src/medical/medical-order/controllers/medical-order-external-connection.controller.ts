@@ -10,7 +10,7 @@ import { GetExternalMedicalOrderResponseDto } from "../dtos/response/external-me
 import { PatchExternalMedicalOrderRequestDto } from "../dtos/request/external-medical-order.patch.dto";
 import { PatchExternalMedicalOrderResponseDto } from "../dtos/response/external-medical-order.patch.dto";
 
-@ApiTags('External/Connection', 'Medical/Order')
+@ApiTags('External Connection', 'Medical>Order')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/medical/orders')

@@ -7,7 +7,7 @@ import { GetMedicalResultYearArrayResponseDto } from "../dtos/response/medical-r
 import { PostMedicalResultDiseaseReportRequestDto } from "../dtos/request/medical-result-disease-report.post.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
-@ApiTags('Medical/Result')
+@ApiTags('Medical>Result>Disease')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('medical/results/report/diseases')

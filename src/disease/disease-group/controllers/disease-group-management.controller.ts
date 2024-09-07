@@ -8,7 +8,7 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-au
 import { GetDiseaseGroupResponseDto } from "../dtos/response/disease-group.get.response.dto";
 import { HasValueResponseDto } from "@/shared/utils/bases/base.has-value.dto";
 
-@ApiTags('Disease/Group')
+@ApiTags('Disease>Disease Group')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('disease/groups')

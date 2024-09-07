@@ -6,7 +6,7 @@ import { GetUserAttributeResponseDto } from "../dtos/response/user-attribute.get
 import { PatchUserExtraAttributeRequestDto } from "../dtos/request/user-attribute.patch.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
-@ApiTags('User/User/Attribute')
+@ApiTags('User>User>Attribute')
 @ApiBearerAuth()
 @Controller('user/attribute')
 @UseGuards(JwtAuthGuard)

@@ -5,7 +5,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { PatchMedicalResultFileRequestDto } from "../dtos/request/medical-report-file.patch.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
-@ApiTags('Medical/Report')
+@ApiTags('Medical>Report')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('medical/report/file')

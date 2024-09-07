@@ -7,7 +7,7 @@ import { PatchAreaRequestDto } from '../dtos/request/area.patch.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 import { GetAreaResponseDto } from '../dtos/response/area.get.dto';
 
-@ApiTags('Location/Area')
+@ApiTags('Location>Area')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('areas')

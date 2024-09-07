@@ -25,6 +25,7 @@ import { MedicalOrderDoctorPaginationController } from "./controllers/medical-or
 import { MedicalOrderDoctorPaginationService } from "./services/medical-order-doctor-pagination.service";
 import { MedicalOrderExpandedPaginationService } from "./services/medical-order-expanded-pagination.service";
 import { MedicalOrderExternalConnectionProvider, MedicalOrderExternalConnectionService } from "./services/medical-order-external-connection.service";
+import { MedicalOrderExpandedPaginationController } from "./controllers/medical-order-expanded-pagination.controller";
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { MedicalOrderExternalConnectionProvider, MedicalOrderExternalConnectionS
   controllers: [
     MedicalOrderCloudController,
     MedicalOrderDoctorPaginationController,
+    MedicalOrderExpandedPaginationController,
     MedicalOrderExternalConnectionController,
     MedicalOrderMailController,
     MedicalOrderPaginationController,

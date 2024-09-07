@@ -8,7 +8,7 @@ import { PostExternalDoctorResponseDto } from "../dtos/response/external-doctor.
 import { PatchExternalDoctorResponseDto } from "../dtos/response/external-doctor.patch.dto";
 import { PatchDoctorRequestDto } from "../dtos/request/doctor.patch.dto";
 
-@ApiTags('External/Connection', 'User/Doctor')
+@ApiTags('External Connection', 'User>Doctor')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/doctor')

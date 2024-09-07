@@ -6,7 +6,7 @@ import { GetPatientArrayResponseDto } from '../dtos/response/patient-array.get.d
 import { CountMetaDto, FilterMetaDto, PageResponseDto } from '@/shared/utils/bases/base.pagination.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
-@ApiTags('User/Patient', 'Pagination')
+@ApiTags('User>Patient', 'Pagination')
 @ApiBearerAuth()
 @Controller('user/patients')
 @UseGuards(JwtAuthGuard)

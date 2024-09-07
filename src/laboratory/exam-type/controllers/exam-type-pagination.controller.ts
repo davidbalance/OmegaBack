@@ -6,7 +6,7 @@ import { ExamTypePaginationService } from "../services/exam-type-pagination.serv
 import { CountMetaDto, FilterMetaDto, PageResponseDto } from "@/shared/utils/bases/base.pagination.dto";
 import { GetExamTypeArrayResponseDto } from "../dtos/response/exam-type-array.get.dto";
 
-@ApiTags('Laboratory/Exam/Type', 'Pagination')
+@ApiTags('Laboratory>Exam Type', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('laboratory/types')

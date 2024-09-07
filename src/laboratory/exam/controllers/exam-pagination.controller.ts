@@ -6,7 +6,7 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-au
 import { ExamPaginationService } from "../services/exam-pagination.service";
 import { CountMetaDto, FilterMetaDto, PageResponseDto } from "@/shared/utils/bases/base.pagination.dto";
 
-@ApiTags('Laboratory/Exam', 'Pagination')
+@ApiTags('Laboratory>Exam', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('laboratory/:subtype/exams')

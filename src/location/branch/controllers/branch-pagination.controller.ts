@@ -6,7 +6,7 @@ import { BranchPaginationService } from "../services/branch-pagination.service";
 import { CountMetaDto, FilterMetaDto, PageResponseDto } from "@/shared/utils/bases/base.pagination.dto";
 import { GetBranchArrayResponseDto } from "../dtos/response/branch-array.get.dto";
 
-@ApiTags('Location/Branch', 'Pagination')
+@ApiTags('Location>Branch', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('location/:company/branches')

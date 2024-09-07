@@ -8,7 +8,7 @@ import { PostExtendedCompanyResponseDto } from "../dtos/response/extended-compan
 import { PatchExtendedCompanyResponseDto } from "../dtos/response/extended-company.patch.dto";
 import { PatchCompanyExternalRequestDto } from "../dtos/request/external-company.patch.dto";
 
-@ApiTags('Location/Company', 'External/Connection')
+@ApiTags('Location>Company', 'External Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/company/:source/:key')

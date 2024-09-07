@@ -6,7 +6,7 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-au
 import { MedicalResultPaginationService } from "../services/medical-result-pagination.service";
 import { FilterMetaDto, CountMetaDto, PageResponseDto } from "@/shared/utils/bases/base.pagination.dto";
 
-@ApiTags('Medical/Result', 'Pagination')
+@ApiTags('Medical>Result', 'Pagination')
 @ApiBearerAuth()
 @Controller('medical/:order/results')
 @UseGuards(JwtAuthGuard)

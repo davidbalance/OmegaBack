@@ -8,7 +8,7 @@ import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-au
 import { PatientLookForCompanyPaginationService } from '../service/patient-look-for-company-pagination.service';
 import { CountMetaDto, FilterMetaDto, PageResponseDto } from '@/shared/utils/bases/base.pagination.dto';
 
-@ApiTags('User/Patient', 'Pagination')
+@ApiTags('User>Patient', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('patients/look/company')
@@ -28,6 +28,8 @@ export class PatientLookForCompanyPaginationController {
     return plainToInstance(GetPatientArrayResponseDto, { data });
   }
 
+  @ExtraAttribute('look_for_company')
+  @UseInterceptors(ExtraAttributeInterceptor)
   @Get('pages')
   async count(
     @User() ruc: string,

@@ -8,7 +8,7 @@ import { PatchDoctorSignatureRequestDto } from '../dtos/request/doctor-signature
 import { Response } from 'express';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
-@ApiTags('User/Doctor')
+@ApiTags('User>Doctor')
 @ApiBearerAuth()
 @ApiConsumes('multipart/form-data')
 @UseGuards(JwtAuthGuard)

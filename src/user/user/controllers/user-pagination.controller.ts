@@ -7,7 +7,7 @@ import { UserPaginationService } from "../services/user-pagination.service";
 import { FilterMetaDto, CountMetaDto, PageResponseDto } from "@/shared/utils/bases/base.pagination.dto";
 import { User } from "@/shared/decorator";
 
-@ApiTags('User/User', 'Pagination')
+@ApiTags('User>User', 'Pagination')
 @ApiBearerAuth()
 @Controller('user/users')
 @UseGuards(JwtAuthGuard)

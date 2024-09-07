@@ -6,7 +6,7 @@ import { DiseaseGroupPaginationService } from "../services/disease-group-paginat
 import { CountMetaDto, FilterMetaDto, PageResponseDto } from "@/shared/utils/bases/base.pagination.dto";
 import { GetDiseaseGroupArrayResponseDto } from "../dtos/response/disease-group-array.get.response.dto";
 
-@ApiTags('Disease/Group', 'Pagination')
+@ApiTags('Disease>Disease Group', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('disease/groups')

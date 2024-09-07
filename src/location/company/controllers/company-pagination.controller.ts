@@ -6,7 +6,7 @@ import { FilterMetaDto, CountMetaDto, PageResponseDto } from "@/shared/utils/bas
 import { CompanyPaginationService } from "../services/company-pagination.service";
 import { GetCompanyArrayResponseDto } from "../dtos/response/company-array.get.dto";
 
-@ApiTags('Location/Company', 'Pagination')
+@ApiTags('Location>Company', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('location/:group/companies')

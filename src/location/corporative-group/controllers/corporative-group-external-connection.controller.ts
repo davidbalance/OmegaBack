@@ -8,7 +8,7 @@ import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-au
 import { PostExternalCorporativeGroupRequestDto } from "../dtos/request/external-corporative-group.post.dto";
 import { PatchExternalCorporativeGroupRequestDto } from "../dtos/request/external-corporative-group.patch.dto";
 
-@ApiTags('Location/Corporative/Group', 'External/Connection')
+@ApiTags('Location>Corporative Group', 'External Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/corporative/groups/:source/:key')

@@ -6,7 +6,7 @@ import { GetExamResponseDto } from "../dtos/response/exam.get.dto";
 import { PatchExamRequestDto } from "../dtos/request/exam.patch.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
-@ApiTags('Laboratory/Exam')
+@ApiTags('Laboratory>Exam')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('exams')

@@ -8,7 +8,7 @@ import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-au
 import { GetExamSubtypeResponseDto } from '../dtos/response/exam-subtype.get.dto';
 import { HasValueResponseDto } from '@/shared/utils/bases/base.has-value.dto';
 
-@ApiTags('Laboratory/Exam/Subtype')
+@ApiTags('Laboratory>Exam Subtype')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('exam/subtypes')

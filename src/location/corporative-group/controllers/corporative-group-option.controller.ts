@@ -5,7 +5,7 @@ import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-au
 import { CorporativeGroupOptionService } from '../services/corporative-group-option.service';
 import { GetExtendedCorporativeGroupArrayResponseDto } from '../dtos/response/extended-corporative-group-array.get.dto';
 
-@ApiTags('Location', 'Options')
+@ApiTags('Location>Corporative Group', 'Options')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('location/groups/options')

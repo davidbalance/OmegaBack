@@ -7,7 +7,7 @@ import { PatchChangePasswordResponseDto } from '../dtos/response/patch.change-pa
 import { PatchChangePasswordRequestDto } from '../dtos/request/patch.user-credential.request.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
-@ApiTags('Authentication/Credential')
+@ApiTags('Authentication>Credential')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('credentials')

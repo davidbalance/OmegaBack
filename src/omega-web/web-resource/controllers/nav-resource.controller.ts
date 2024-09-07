@@ -5,7 +5,7 @@ import { GetNavResourceArrayResponseDto } from '../dtos/response/nav-resource-ar
 import { NavResourceService } from '../services/nav-resource.service';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
-@ApiTags('Omega/Web/Resource')
+@ApiTags('Omega Web>Resource')
 @UseGuards(JwtAuthGuard)
 @Controller('omega/nav/resources')
 export class NavResourceController {

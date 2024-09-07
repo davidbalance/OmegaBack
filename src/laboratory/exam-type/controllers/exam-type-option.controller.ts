@@ -5,7 +5,7 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-au
 import { ExamTypeOptionService } from "../services/exam-type-option.service";
 import { GetExtendedExamTypeArrayResponseDto } from "../dtos/response/extended-exam-type-array.base.dto";
 
-@ApiTags('Laboratory/Exam/Type', 'Options')
+@ApiTags('Laboratory>Exam Type', 'Options')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('exam/types/options')

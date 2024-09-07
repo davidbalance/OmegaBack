@@ -6,6 +6,7 @@ import { GetSessionResponseDto } from '../dto/response/get.session.response.dto'
 import { PatchSessionRequestDto } from '../dto/request/session.patch.dto';
 import { ApiTags, ApiHeader } from '@nestjs/swagger';
 import { SessionGuard } from '../guards/session.guard';
+import { PostSessionResponseDto } from '../dto/response/session.post.dto';
 
 @ApiTags('Session')
 @ApiHeader({ name: 'x-client-key', allowEmptyValue: false, required: true })
@@ -19,9 +20,10 @@ export class SessionController {
   @Post()
   async create(
     @Body() data: PostSessionRequestDto
-  ): Promise<any> {
-    await this.service.create(data);
-    return {}
+  ): Promise<PostSessionResponseDto> {
+    const session = await this.service.create(data);
+    console.log(session);
+    return plainToInstance(PostSessionResponseDto, { session });
   }
 
   @Get(':session')
@@ -49,3 +51,4 @@ export class SessionController {
     return {};
   }
 }
+;

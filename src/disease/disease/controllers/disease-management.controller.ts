@@ -7,7 +7,7 @@ import { PatchDiseaseRequestDto } from '../dtos/request/disease.patch.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 import { GetDiseaseResponseDto } from '../dtos/response/disease.get.dto';
 
-@ApiTags('Disease/Disease')
+@ApiTags('Disease>Disease')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('diseases')

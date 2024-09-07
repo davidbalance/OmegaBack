@@ -6,7 +6,7 @@ import { GetCorporativeGroupArrayResponseDto } from '../dtos/response/corporativ
 import { CorporativeGroupPaginationService } from '../services/corporative-group-pagination.service';
 import { FilterMetaDto, CountMetaDto, PageResponseDto } from '@/shared/utils/bases/base.pagination.dto';
 
-@ApiTags('Location/Corporative/Group', 'Pagination')
+@ApiTags('Location>Corporative Group', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('location/groups')

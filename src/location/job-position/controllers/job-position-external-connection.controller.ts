@@ -8,7 +8,7 @@ import { PatchExternalJobPositionRequestDto } from "../dtos/request/external-job
 import { PatchJobPositionResponseDto } from "../dtos/response/job-position.patch.dto";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
 
-@ApiTags('Location/Job/Position', 'External/Connection')
+@ApiTags('Location>Job Position', 'External Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/job/position/:source/:key')

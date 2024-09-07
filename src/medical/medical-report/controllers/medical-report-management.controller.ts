@@ -6,7 +6,7 @@ import { PostMedicalReportResponseDto } from "../dtos/response/medical-report.po
 import { plainToInstance } from "class-transformer";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
-@ApiTags('Medical/Report')
+@ApiTags('Medical>Report')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('medical/report')

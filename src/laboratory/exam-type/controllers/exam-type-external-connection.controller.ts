@@ -8,7 +8,7 @@ import { PostExtendedExamType } from "../dtos/response/extended-exam-type.post.d
 import { PatchExamExternalRequestDto } from "@/laboratory/exam/dtos/request/external-exam.patch.dto";
 import { PatchExtendedExamResponseDto } from "@/laboratory/exam/dtos/response/extended-exam.patch.dto";
 
-@ApiTags('External/Connection', 'Laboratory/Exam/Type')
+@ApiTags('External Connection', 'Laboratory>Exam Type')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/exam/types/:source/:key')

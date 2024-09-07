@@ -14,14 +14,4 @@ export class MedicalClientLocationService {
     const client = await this.repository.findOneAndUpdate({ dni: dni }, { ...newLocation });
     return client;
   }
-
-  async removeManagementAndArea(dni: string): Promise<MedicalClientManagementArea> {
-    const client = await this.repository.findOneAndUpdate({ dni: dni }, {
-      areaId: null,
-      areaName: null,
-      managementId: null,
-      managementName: null
-    });
-    return client;
-  }
 }

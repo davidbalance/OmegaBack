@@ -1,7 +1,7 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { MedicalResultDiseaseRepository } from "../repositories/medical-result-disease.repository";
-import { PostMedicalResultDiseaseRequestDto } from "../dtos/request/medical-result-disease.post.dto";
 import { MedicalResultDisease } from "../dtos/response/medical-result.-disease.base.dto";
+import { MedicalResultDiseaseRequestDto } from "../dtos/request/medical-result-disease.base.dto";
 
 @Injectable()
 export class MedicalResultDiseaseManagementService {
@@ -10,7 +10,12 @@ export class MedicalResultDiseaseManagementService {
     @Inject(MedicalResultDiseaseRepository) private readonly repository: MedicalResultDiseaseRepository,
   ) { }
 
-  async create({ medicalResultId, ...data }: PostMedicalResultDiseaseRequestDto): Promise<MedicalResultDisease> {
+  async find(result: number): Promise<MedicalResultDisease[]> {
+    const data = await this.repository.find({ where: { result: { id: result } } });
+    return data;
+  }
+
+  async create(medicalResultId: number, { ...data }: MedicalResultDiseaseRequestDto): Promise<MedicalResultDisease> {
     const medicalResultDisease = await this.repository.create({ ...data, result: { id: medicalResultId } });
     return medicalResultDisease;
   }

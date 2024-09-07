@@ -6,7 +6,7 @@ import { CountMetaDto, FilterMetaDto, PageResponseDto } from '@/shared/utils/bas
 import { ExamSubtypePaginationService } from '../services/exam-subtype-pagination.service';
 import { GetExamSubtypeArrayResponseDto } from '../dtos/response/exam-subtype-array.get.dto';
 
-@ApiTags('Laboratory/Exam/Subtype', 'Pagination')
+@ApiTags('Laboratory>Exam Subtype', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('laboratory/:type/subtypes')

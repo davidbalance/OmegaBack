@@ -10,7 +10,7 @@ import { PatchExternalMedicalResultFileRequestDto } from "../dtos/request/extern
 import { PatchExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.patch.dto";
 import { PostExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.post.dto";
 
-@ApiTags('External/Connection', 'Medical/Result')
+@ApiTags('External Connection', 'Medical>Result')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/medical/result/:source/:key')

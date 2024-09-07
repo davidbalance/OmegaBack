@@ -5,7 +5,7 @@ import { FileDownloaderService } from '../services/file-downloader.service';
 import { PostFileSourceRequestDto } from '../dtos/request/file-source.post.dto';
 import { PostDownloadZipRequestDto } from '../dtos/request/download-zip.post.dto';
 
-@ApiTags('Medical/File', 'External/Connection')
+@ApiTags('Medical>File', 'External Connection')
 @Controller('medical/file')
 export class FileDownloaderController {
     constructor(

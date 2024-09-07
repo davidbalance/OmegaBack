@@ -3,7 +3,6 @@ import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { Module } from '@nestjs/common';
 import { WebLogoModule } from '../web-logo/web-logo.module';
 import { WebResourceModule } from '../web-resource/web-resource.module';
-import { WebClientController } from './controllers/web-client.controller';
 import { WebClientRepository } from './repositories/web-client.repository';
 import { WebClientService } from './services/web-client.service';
 import { WebClientLogoController } from './controllers/web-client-logo.controller';
@@ -25,8 +24,7 @@ import { WebClientEntity } from './entities/web-client.entity';
   ],
   controllers: [
     WebClientLogoController,
-    WebClientResourceController,
-    WebClientController
+    WebClientResourceController
   ],
   providers: [
     WebClientRepository,

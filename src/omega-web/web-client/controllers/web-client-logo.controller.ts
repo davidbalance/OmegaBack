@@ -5,18 +5,27 @@ import { PatchWebClientLogoRequestDto } from '../dtos/request/web-client-logo.pa
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 import { GetWebClientLogoResponseDto } from '../dtos/response/web-client-logo.get.dto';
 import { plainToInstance } from 'class-transformer';
+import { User } from '@/shared/decorator';
 
-@ApiTags('Omega/Web/Client')
+@ApiTags('Omega Web>Client')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller('omega/web/clients/logos')
+@Controller('omega/web/client/logo')
 export class WebClientLogoController {
 
   constructor(
     @Inject(WebClientLogoService) private readonly service: WebClientLogoService
   ) { }
 
-  @Get()
+  @Get('user')
+  async userLogo(
+    @User() user: number
+  ): Promise<GetWebClientLogoResponseDto> {
+    const logo = await this.service.findLogo(user);
+    return plainToInstance(GetWebClientLogoResponseDto, { logo });
+  }
+
+  @Get(':user')
   async findLogo(
     @Param('user') user: number
   ): Promise<GetWebClientLogoResponseDto> {

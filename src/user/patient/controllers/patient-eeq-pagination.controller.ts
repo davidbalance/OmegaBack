@@ -6,7 +6,7 @@ import { PatientEeqPaginationService } from '../service/patient-eeq-pagination.s
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 import { CountMetaDto, FilterMetaDto, PageResponseDto } from '@/shared/utils/bases/base.pagination.dto';
 
-@ApiTags('User/Patient/EEQ', 'Pagination')
+@ApiTags('User>Patient>Eeq', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('patients/eeq')

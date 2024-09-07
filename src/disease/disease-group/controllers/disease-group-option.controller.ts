@@ -5,7 +5,7 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-au
 import { GetExtendedDiseaseGroup } from "../dtos/response/extended-disease-group.get.response.dto";
 import { DiseaseGroupOptionService } from "../services/disease-group-option.service";
 
-@ApiTags('Disease/Group', 'Options')
+@ApiTags('Disease>Disease Group', 'Options')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('disease/groups/options')

@@ -6,7 +6,7 @@ import { Controller, UseGuards, Inject, Get, Query, Param } from "@nestjs/common
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 
-@ApiTags('Disease/Disease', 'Pagination')
+@ApiTags('Disease>Disease', 'Pagination')
 @ApiBearerAuth()
 @Controller('disease/:group/diseases')
 @UseGuards(JwtAuthGuard)

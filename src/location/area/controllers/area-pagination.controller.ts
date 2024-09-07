@@ -6,7 +6,7 @@ import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-au
 import { FilterMetaDto, CountMetaDto, PageResponseDto } from '@/shared/utils/bases/base.pagination.dto';
 import { AreaPaginationService } from '../services/area-pagination.service';
 
-@ApiTags('Location/Area', 'Pagination')
+@ApiTags('Location>Area', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('location/:management/areas')

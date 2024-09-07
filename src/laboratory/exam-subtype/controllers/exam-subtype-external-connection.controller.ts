@@ -8,7 +8,7 @@ import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-au
 import { PatchExtendedExamResponseDto } from "@/laboratory/exam/dtos/response/extended-exam.patch.dto";
 import { PostExtendedExamResponseDto } from "@/laboratory/exam/dtos/response/extended-exam.post.dto";
 
-@ApiTags('External/Connection', 'Laboratory/Exam/Subtype')
+@ApiTags('External Connection', 'Laboratory>Exam Subtype')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/exam/subtypes/:source/:key')

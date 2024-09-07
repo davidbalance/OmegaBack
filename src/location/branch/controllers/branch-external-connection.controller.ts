@@ -8,7 +8,7 @@ import { PostExtendedBranchResponseDto } from "../dtos/response/extended-branch.
 import { PatchExtendedBranchResponseDto } from "../dtos/response/extended-branch.patch.dto";
 import { PatchCompanyExternalRequestDto } from "@/location/company/dtos/request/external-company.patch.dto";
 
-@ApiTags('Location/Branch', 'External/Connection')
+@ApiTags('Location>Branch', 'External Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/branch/:source/:key')

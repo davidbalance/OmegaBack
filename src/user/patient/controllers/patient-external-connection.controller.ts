@@ -6,7 +6,7 @@ import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-au
 import { PostExternalPatientRequestDto } from "../dtos/request/external-patient.post.dto";
 import { PatchExternalPatientRequestDto } from "../dtos/request/external-patient.patch.dto";
 
-@ApiTags('External/Connection', 'User/Patient')
+@ApiTags('External Connection', 'User>Patient')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/patients/:source')

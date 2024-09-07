@@ -5,7 +5,7 @@ import { GetManagementArrayResponseDto } from "../dtos/response/management-array
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 import { ManagementOptionService } from "../services/management-option.service";
 
-@ApiTags('Location/Management', 'Options')
+@ApiTags('Location>Management', 'Options')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('management/options')

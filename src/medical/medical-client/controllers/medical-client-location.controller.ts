@@ -7,7 +7,7 @@ import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-au
 import { GetMedicalClientManagementAreaResponseDto } from '../dtos/response/medical-client-management-area.get.dto';
 import { PatchMedicalClientManagementAreaRequestDto } from '../dtos/request/medical-client-management-area.patch.dto';
 
-@ApiTags('Medical/Client')
+@ApiTags('Medical>Client')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('medical/client/management/area')
@@ -31,14 +31,6 @@ export class MedicalClientLocationController {
     @Body() body: PatchMedicalClientManagementAreaRequestDto
   ): Promise<any> {
     await this.service.assignManagementAndArea(dni, body);
-    return {}
-  }
-
-  @Delete(':dni')
-  async removeManagementAndArea(
-    @Param('dni') dni: string
-  ): Promise<any> {
-    await this.service.removeManagementAndArea(dni);
     return {}
   }
 }

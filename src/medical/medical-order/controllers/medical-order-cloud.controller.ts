@@ -4,7 +4,7 @@ import { plainToInstance } from "class-transformer";
 import { MedicalOrderCloudService } from "../services/medical-order-cloud.service";
 import { GetMedicalOrderCloudResponseDto } from "../dtos/response/medical-order-cloud.get.dto";
 
-@ApiTags('Medical/Order')
+@ApiTags('Medical>Order')
 @ApiBearerAuth()
 @Controller('medical/orders/cloud')
 export class MedicalOrderCloudController {

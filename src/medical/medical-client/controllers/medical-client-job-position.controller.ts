@@ -6,7 +6,7 @@ import { GetMedicalClientJobPositionResponseDto } from '../dtos/response/medical
 import { PatchMedicalClientJobPositionRequestDto } from '../dtos/request/medical-client-job-position.patch.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
-@ApiTags('Medical/Client')
+@ApiTags('Medical>Client')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('medical/client/job/position')

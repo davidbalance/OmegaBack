@@ -9,7 +9,7 @@ import { PostUserRequestDto } from "../dtos/request/user.post.dto";
 import { PatchUserRequestDto } from "../dtos/request/user.patch.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
-@ApiTags('User/User')
+@ApiTags('User>User')
 @ApiBearerAuth()
 @Controller('users')
 @UseGuards(JwtAuthGuard)
