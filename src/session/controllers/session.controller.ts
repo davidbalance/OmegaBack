@@ -22,7 +22,6 @@ export class SessionController {
     @Body() data: PostSessionRequestDto
   ): Promise<PostSessionResponseDto> {
     const session = await this.service.create(data);
-    console.log(session);
     return plainToInstance(PostSessionResponseDto, { session });
   }
 

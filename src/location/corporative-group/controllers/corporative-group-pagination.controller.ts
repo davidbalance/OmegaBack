@@ -20,7 +20,6 @@ export class CorporativeGroupPaginationController {
     @Query() query: FilterMetaDto
   ): Promise<GetCorporativeGroupArrayResponseDto> {
     const data = await this.service.find(query);
-    console.log(data);
     return plainToInstance(GetCorporativeGroupArrayResponseDto, { data });
   }
 

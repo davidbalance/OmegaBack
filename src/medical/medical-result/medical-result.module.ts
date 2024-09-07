@@ -27,6 +27,7 @@ import { MedicalResultPaginationController } from "./controllers/medical-result-
 import { MedicalResultDoctorPaginationService } from "./services/medical-result-doctor-pagination.service";
 import { MedicalResultPaginationService } from "./services/medical-result-pagination.service";
 import { MedicalDiseaseManagementController } from "./controllers/medical-disease-management.controller";
+import { MedicalResultManagementController } from "./controllers/medical-result-management.controller";
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { MedicalDiseaseManagementController } from "./controllers/medical-diseas
     MedicalResultDiseaseReportController,
     MedicalResultExternalConnectionController,
     MedicalResultFileManagementController,
+    MedicalResultManagementController,
     MedicalResultPaginationController,
   ],
   providers: [

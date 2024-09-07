@@ -29,7 +29,8 @@ export class AreaManagementService {
       const foundManagement = await this.managementService.findOne(management);
       data['management'] = foundManagement;
     }
-    const area = await this.repository.findOneAndUpdate({ id: id }, { ...data });
+    await this.repository.findOneAndUpdate({ id: id }, { ...data });
+    const area = await this.repository.findOne({ where: { id: id }, relations: { management: true } });
     return { ...area, management: area.management.id };
   }
 

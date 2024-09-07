@@ -20,7 +20,6 @@ export class DiseasePaginationController {
         @Param('group') group: number,
         @Query() query: FilterMetaDto
     ): Promise<GetDiseaseArrayResponseDto> {
-        console.log(group, query);
         const data = await this.service.find(query, group);
         return plainToInstance(GetDiseaseArrayResponseDto, { data });
     }
