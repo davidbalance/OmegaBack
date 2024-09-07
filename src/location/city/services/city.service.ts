@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CityRepository } from '../repositories/city.repository';
-import { City } from '../entities/city.entity';
+import { City } from '../dtos/response/city.base.dto';
 
 @Injectable()
 export class CityService {

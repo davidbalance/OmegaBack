@@ -4,7 +4,6 @@ import { Module } from '@nestjs/common';
 import { WebLogoModule } from '../web-logo/web-logo.module';
 import { WebResourceModule } from '../web-resource/web-resource.module';
 import { WebClientController } from './controllers/web-client.controller';
-import { WebClient } from './entities/web-client.entity';
 import { WebClientRepository } from './repositories/web-client.repository';
 import { WebClientService } from './services/web-client.service';
 import { WebClientLogoController } from './controllers/web-client-logo.controller';
@@ -13,10 +12,13 @@ import { WebClientResourceService } from './services/web-client-resource.service
 import { WebClientLogoService } from './services/web-client-logo.service';
 import { CredentialWebClientListener } from './listeners/credential-web-client.listener';
 import { JwtAuthStrategy } from '@/shared/guards/authentication-guard/strategies/jwt-auth.strategy';
+import { WebClientEntity } from './entities/web-client.entity';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([WebClient]),
+    SqlDatabaseModule.forFeature([
+      WebClientEntity
+    ]),
     AuthenticationGuardModule,
     WebResourceModule,
     WebLogoModule

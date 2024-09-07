@@ -1,17 +1,17 @@
 import { Injectable, Inject, Provider } from "@nestjs/common";
-import { MedicalOrder } from "../entities/medical-order.entity";
 import { MedicalOrderRepository } from "../repositories/medical-order.repository";
 import { MedicalOrderExternalKeyService } from "./medical-order-external-key.service";
 import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { MedicalOrderEventService } from "./medical-order-event.service";
-import { PatchMedicalOrderRequestDto } from "../dtos/request/patch.medical-order.request.dto";
-import { PostMedicalOrderExternalRequestDto } from "../dtos/request/post.medical-order-external.request.dto";
 import { MedicalClientExternalService } from "@/medical/medical-client/services/medical-client-external.service";
+import { PostExternalMedicalOrderRequestDto } from "../dtos/request/external-medical-order.post.dto";
+import { PatchExternalMedicalOrderRequestDto } from "../dtos/request/external-medical-order.patch.dto";
+import { ExternalMedicalOrder } from "../dtos/response/external-medical-order.base.dto";
 
-type ConnectionRequestType = PostMedicalOrderExternalRequestDto | PatchMedicalOrderRequestDto;
+type ConnectionRequestType = PostExternalMedicalOrderRequestDto | PatchExternalMedicalOrderRequestDto;
 
 @Injectable()
-export class MedicalOrderExternalConnectionService implements IExternalConnectionService<ConnectionRequestType, MedicalOrder> {
+export class MedicalOrderExternalConnectionService implements IExternalConnectionService<ConnectionRequestType, ExternalMedicalOrder> {
     constructor(
         @Inject(MedicalOrderExternalKeyService) private readonly externalkey: MedicalOrderExternalKeyService,
         @Inject(MedicalOrderRepository) private readonly repository: MedicalOrderRepository,
@@ -19,8 +19,12 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
         @Inject(MedicalOrderEventService) private readonly eventService: MedicalOrderEventService
     ) { }
 
-    async create(key: ExternalKeyParam, { branch, patient, jobPosition, ...data }: PostMedicalOrderExternalRequestDto): Promise<MedicalOrder> {
-        const newClient = await this.clientService.findOneOrCreate(key.source, { ...patient, jobPosition });
+    async find(dni: string): Promise<ExternalMedicalOrder[]> {
+        return await this.repository.find({ where: { client: { dni } }, relations: { results: { report: true } } })
+    }
+
+    async create(key: ExternalKeyParam, { branch, patient, jobPosition, ...data }: PostExternalMedicalOrderRequestDto): Promise<ExternalMedicalOrder> {
+        const { id: client } = await this.clientService.findOneOrCreate(key.source, { ...patient, jobPosition });
         const newKey = await this.externalkey.create(key);
         try {
             const newOrder = await this.repository.create({
@@ -30,7 +34,7 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
                 corporativeName: branch.company.corporativeGroup.name,
                 branchName: branch.name,
                 externalKey: newKey,
-                client: newClient,
+                client: { id: client },
             });
             this.eventService.emitMedicalOrderCreateEvent(key.source, branch);
             return newOrder;
@@ -40,12 +44,12 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
         }
     }
 
-    async findOne({ key, source }: ExternalKeyParam): Promise<MedicalOrder> {
+    async findOne({ key, source }: ExternalKeyParam): Promise<ExternalMedicalOrder> {
         const order = await this.repository.findOne({ where: { externalKey: { source, key } } });
         return order;
     }
 
-    async findOneOrCreate(key: ExternalKeyParam, data: PostMedicalOrderExternalRequestDto): Promise<MedicalOrder> {
+    async findOneOrCreate(key: ExternalKeyParam, data: PostExternalMedicalOrderRequestDto): Promise<ExternalMedicalOrder> {
         try {
             const foundOrder = await this.repository.findOne({ where: { externalKey: key } });
             return foundOrder;
@@ -54,7 +58,7 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
         }
     }
 
-    async findOneAndUpdate(key: ExternalKeyParam, data: PatchMedicalOrderRequestDto): Promise<MedicalOrder> {
+    async findOneAndUpdate(key: ExternalKeyParam, data: PatchExternalMedicalOrderRequestDto): Promise<ExternalMedicalOrder> {
         const order = await this.repository.findOneAndUpdate({ externalKey: key }, data);
         return order;
     }

@@ -4,7 +4,7 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { FilterMetaDto, CountMetaDto, PageResponseDto } from "@/shared/utils/bases/base.pagination.dto";
 import { CompanyPaginationService } from "../services/company-pagination.service";
-import { GetCompanySingleArrayResponseDto } from "../dtos/response/get.company-single-array.response.dto";
+import { GetCompanyArrayResponseDto } from "../dtos/response/company-array.get.dto";
 
 @ApiTags('Location/Company', 'Pagination')
 @ApiBearerAuth()
@@ -19,9 +19,9 @@ export class CompanyPaginationController {
     async find(
         @Param('group') group: number,
         @Query() query: FilterMetaDto
-    ): Promise<GetCompanySingleArrayResponseDto> {
+    ): Promise<GetCompanyArrayResponseDto> {
         const data = await this.service.find(query, group);
-        return plainToInstance(GetCompanySingleArrayResponseDto, { data });
+        return plainToInstance(GetCompanyArrayResponseDto, { data });
     }
 
     @Get('pages')

@@ -2,9 +2,9 @@ import { Controller, Get, Inject, Param, Query, UseGuards } from '@nestjs/common
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
-import { GetExamSubtypeSngleArrayResponseDto } from '../dtos/response/get.exam-subtype-single-array.response.dto';
 import { CountMetaDto, FilterMetaDto, PageResponseDto } from '@/shared/utils/bases/base.pagination.dto';
 import { ExamSubtypePaginationService } from '../services/exam-subtype-pagination.service';
+import { GetExamSubtypeArrayResponseDto } from '../dtos/response/exam-subtype-array.get.dto';
 
 @ApiTags('Laboratory/Exam/Subtype', 'Pagination')
 @ApiBearerAuth()
@@ -19,9 +19,9 @@ export class ExamSubtypePaginationController {
   async find(
     @Param('type') type: number,
     @Query() query: FilterMetaDto
-  ): Promise<GetExamSubtypeSngleArrayResponseDto> {
+  ): Promise<GetExamSubtypeArrayResponseDto> {
     const data = await this.service.find(query, type);
-    return plainToInstance(GetExamSubtypeSngleArrayResponseDto, { data });
+    return plainToInstance(GetExamSubtypeArrayResponseDto, { data });
   }
 
   @Get('pages')

@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Disease } from '../entities/disease.entity';
 import { DiseaseRepository } from '../repositories/disease.repository';
 import { BasePaginationService } from '@/shared/utils/bases/base.pagination.service';
-import { DiseaseResponseDto } from '../dtos/response/disease.response.dto';
 import { SelectQueryBuilder } from 'typeorm';
+import { DiseaseEntity } from '../entities/disease.entity';
+import { Disease } from '../dtos/response/disease.base.dto';
 
 @Injectable()
-export class DiseasePaginationService extends BasePaginationService<Disease, DiseaseResponseDto> {
+export class DiseasePaginationService extends BasePaginationService<DiseaseEntity, Disease> {
 
   constructor(
     @Inject(DiseaseRepository) private readonly repository: DiseaseRepository,
   ) { super(); }
 
-  protected queryBuilder(filter: string, extras: number): SelectQueryBuilder<Disease> {
+  protected queryBuilder(filter: string, extras: number): SelectQueryBuilder<DiseaseEntity> {
     return this.repository.query('disease')
       .innerJoinAndSelect('disease.group', 'group', 'group.id = :group', { group: extras })
       .select('disease.id', 'id')

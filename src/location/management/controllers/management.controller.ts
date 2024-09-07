@@ -2,14 +2,12 @@ import { Controller, Inject, UseGuards, Get, Post, Body, Patch, Param, Delete } 
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ManagementService } from "../services/management.service";
-import { PatchMagementRequestDto } from "../dtos/request/patch.management.request.dto";
-import { PostManagementRequestDto } from "../dtos/request/post.management.request.dto";
-import { GetManagementArrayResponseDto } from "../dtos/response/get.management-array.response.dto";
-import { PostManagementResponseDto } from "../dtos/response/post.management.response.dto";
-import { PatchManagementResponseDto } from "../dtos/response/patch.management.response.dto";
-import { DeleteManagementResponseDto } from "../dtos/response/delete.management.response.dto";
+import { PatchMagementRequestDto } from "../dtos/request/management.patch.dto";
+import { PostManagementRequestDto } from "../dtos/request/management.post.dto";
+import { GetManagementArrayResponseDto } from "../dtos/response/management-array.get.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
-import { GetManagementResponseDto } from "../dtos/response/get.management.response.dto";
+import { GetManagementResponseDto } from "../dtos/response/management.get.dto";
+import { HasValueResponseDto } from "@/shared/utils/bases/base.has-value.dto";
 
 @ApiTags('Location/Management')
 @ApiBearerAuth()
@@ -20,18 +18,12 @@ export class ManagementController {
     @Inject(ManagementService) private readonly service: ManagementService
   ) { }
 
-  @Get()
-  async findAll(): Promise<GetManagementArrayResponseDto> {
-    const data = await this.service.find();
-    return plainToInstance(GetManagementArrayResponseDto, { data });
-  }
-
   @Post()
   async create(
     @Body() createManagementDto: PostManagementRequestDto
-  ): Promise<PostManagementResponseDto> {
+  ): Promise<any> {
     const management = await this.service.create(createManagementDto);
-    return plainToInstance(PostManagementResponseDto, management);
+    return {}
   }
 
   @Get(':id')
@@ -42,20 +34,27 @@ export class ManagementController {
     return plainToInstance(GetManagementResponseDto, data);
   }
 
+  @Get(':id/has/areas')
+  async hasAreas(
+    @Param('id') id: number
+  ): Promise<HasValueResponseDto> {
+    const hasValue = await this.service.hasAreas(id);
+    return plainToInstance(HasValueResponseDto, { hasValue });
+  }
 
   @Patch(':id')
   async updateOne(
     @Param('id') id: number,
     @Body() updateManagementDto: PatchMagementRequestDto
-  ): Promise<PatchManagementResponseDto> {
-    const management = await this.service.updateOne(id, updateManagementDto);
-    return plainToInstance(PatchManagementResponseDto, management);
+  ): Promise<any> {
+    await this.service.updateOne(id, updateManagementDto);
+    return {}
   }
 
   @Delete(':id')
   async deleteOne(
     @Param('id') id: string
-  ): Promise<DeleteManagementResponseDto> {
+  ): Promise<any> {
     await this.service.deleteOne(+id);
     return {};
   }

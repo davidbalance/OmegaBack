@@ -2,7 +2,7 @@ import { TestBed } from "@automock/jest";
 import { ExamExternalConnectionService } from "../services/exam-external-connection.service";
 import { ExamExternalListener } from "./exam-external.listener";
 import { Exam } from "../entities/exam.entity";
-import { PostExamExternalRequestDto } from "../dtos/request/post.exam-external.request.dto";
+import { PostExamExternalRequestDto } from "../dtos/request/external-exam.post.dto";
 
 describe('ExamExternalListener', () => {
     let service: ExamExternalListener;

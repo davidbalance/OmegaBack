@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { WebResource } from '../entities/web-resource.entity';
 import { WebResourceRespository } from '../repositories/web-resource.repository';
+import { NavResource } from '../dtos/response/nav-resource.base.dto';
 
 @Injectable()
 export class NavResourceService {
@@ -8,7 +8,7 @@ export class NavResourceService {
     @Inject(WebResourceRespository) private readonly repository: WebResourceRespository
   ) { }
 
-  async findAll(): Promise<WebResource[]> {
+  async findAll(): Promise<NavResource[]> {
     const resources = await this.repository.find({
       where: {
         show: true,

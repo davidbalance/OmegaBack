@@ -1,10 +1,10 @@
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { MedicalClient } from "./medical-client.entity";
+import { MedicalClientEntity } from "./medical-client.entity";
 
 @Entity({ name: 'tbl_m_email' })
 @Index('idx_email_client', ['email', 'client'], { unique: true })
-export class MedicalEmail extends AbstractEntity<number> {
+export class MedicalEmailEntity extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'medical_email_id' })
     public id: number;
 
@@ -14,7 +14,7 @@ export class MedicalEmail extends AbstractEntity<number> {
     @Column({ name: 'medical_email_default', type: 'boolean', default: false, nullable: false })
     public default: boolean;
 
-    @ManyToOne(() => MedicalClient, client => client.email, { eager: false, nullable: false })
+    @ManyToOne(() => MedicalClientEntity, client => client.email, { eager: false, nullable: false })
     @JoinColumn({ foreignKeyConstraintName: 'fk_m_client_email', referencedColumnName: 'id', name: 'medical_client_id' })
-    public client: MedicalClient;
+    public client: MedicalClientEntity;
 }

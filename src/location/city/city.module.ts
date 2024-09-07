@@ -1,22 +1,16 @@
 import { Module } from '@nestjs/common';
 import { CityService } from './services/city.service';
-import { City } from './entities/city.entity';
 import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { CityRepository } from './repositories/city.repository';
-import { CitySelectorController } from './controllers/city-selector.controller';
-import { CitySelectorService } from './services/city-selector.service';
+import { CityEntity } from './entities/city.entity';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([City]),
-  ],
-  controllers: [
-    CitySelectorController
+    SqlDatabaseModule.forFeature([CityEntity]),
   ],
   providers: [
-    CityService,
     CityRepository,
-    CitySelectorService,
+    CityService,
   ],
   exports: [
     CityService

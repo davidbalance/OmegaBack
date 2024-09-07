@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PatientRepository } from '../repositories/patient.repository';
 import { Brackets } from 'typeorm';
-import { Patient } from '../entities/patient.entity';
 import { BasePaginationService } from '@/shared/utils/bases/base.pagination.service';
-import { PatientResponseDto } from '../dtos/response/base.patient.response.dto';
+import { PatientEntity } from '../entities/patient.entity';
+import { Patient } from '../dtos/response/patient.base.dto';
 
 @Injectable()
-export class PatientPaginationService extends BasePaginationService<Patient, PatientResponseDto> {
+export class PatientPaginationService extends BasePaginationService<PatientEntity, Patient> {
 
   constructor(
     @Inject(PatientRepository) private readonly repository: PatientRepository,

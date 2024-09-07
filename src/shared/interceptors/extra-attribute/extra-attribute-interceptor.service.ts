@@ -1,18 +1,17 @@
-import { UserManagementService } from "@/user/user/services/user-management.service";
+import { UserExtraAttributeService } from "@/user/user/services/user-extra-attributes.service";
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class ExtraAttributeInterceptorService {
     constructor(
-        @Inject(UserManagementService) private readonly userService: UserManagementService
+        @Inject(UserExtraAttributeService) private readonly userService: UserExtraAttributeService
     ) { }
 
-    async getExtraAttribute(id: number, attributeName: string): Promise<string> {
-        const user = await this.userService.findOne(id);
-        const index = user.extraAttributes.findIndex(e => e.name === attributeName);
-        if (index < 0) {
+    async getExtraAttribute(id: number, name: string): Promise<string> {
+        const attribute = await this.userService.findAttribute(id, name);
+        if (!attribute) {
             throw new NotFoundException('Not found attribute');
         }
-        return user.extraAttributes[index].value;
+        return attribute.value;
     }
 } 

@@ -4,7 +4,7 @@ import { plainToInstance } from "class-transformer";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 import { ExamTypePaginationService } from "../services/exam-type-pagination.service";
 import { CountMetaDto, FilterMetaDto, PageResponseDto } from "@/shared/utils/bases/base.pagination.dto";
-import { GetExamTypeSingleArrayResponseDto } from "../dtos/response/get.exam-type-single-array.dto";
+import { GetExamTypeArrayResponseDto } from "../dtos/response/exam-type-array.get.dto";
 
 @ApiTags('Laboratory/Exam/Type', 'Pagination')
 @ApiBearerAuth()
@@ -18,9 +18,9 @@ export class ExamTypePaginationController {
   @Get('paginate')
   async find(
     @Query() query: FilterMetaDto
-  ): Promise<GetExamTypeSingleArrayResponseDto> {
+  ): Promise<GetExamTypeArrayResponseDto> {
     const data = await this.service.find(query);
-    return plainToInstance(GetExamTypeSingleArrayResponseDto, { data });
+    return plainToInstance(GetExamTypeArrayResponseDto, { data });
   }
 
   @Get('pages')

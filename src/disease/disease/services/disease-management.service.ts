@@ -1,10 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Disease } from '../entities/disease.entity';
 import { DiseaseGroupManagementService } from '@/disease/disease-group/services/disease-group-management.service';
 import { DiseaseRepository } from '../repositories/disease.repository';
-import { PostDiseaseRequestDto } from '../dtos/request/post.disease.request.dto';
-import { PatchDiseaseRequestDto } from '../dtos/request/patch.disease.request.dto';
-import { DiseaseResponseDto } from '../dtos/response/disease.response.dto';
+import { PostDiseaseRequestDto } from '../dtos/request/disease.post.dto';
+import { PatchDiseaseRequestDto } from '../dtos/request/disease.patch.dto';
+import { Disease } from '../dtos/response/disease.base.dto';
 
 @Injectable()
 export class DiseaseManagementService {
@@ -15,27 +14,12 @@ export class DiseaseManagementService {
   ) { }
 
   async create({ group, ...data }: PostDiseaseRequestDto): Promise<Disease> {
-    const diseaseGroup = await this.groupService.findOneById(group);
-    return await this.repository.create({ ...data, group: diseaseGroup });
+    const diseaseGroup = await this.groupService.findOne(group);
+    const value = await this.repository.create({ ...data, group: diseaseGroup });
+    return { ...value, group };
   }
 
-  async find(group: number): Promise<Disease[]> {
-    const diseases = await this.repository.find({
-      where: {
-        group: { id: group },
-        status: true
-      },
-      select: {
-        id: true,
-        name: true,
-        group: { id: true, name: true }
-      },
-      relations: { group: true }
-    });
-    return diseases;
-  }
-
-  async findOne(id: number): Promise<DiseaseResponseDto> {
+  async findOne(id: number): Promise<Disease> {
     const diseases = await this.repository.findOne({
       where: { id, status: true },
       select: {
@@ -49,12 +33,12 @@ export class DiseaseManagementService {
   }
 
   async updateOne(id: number, { group, ...data }: PatchDiseaseRequestDto): Promise<Disease> {
+    let currentGroup = undefined;
     if (group) {
-      const diseaseGroup = await this.groupService.findOneById(group);
-      return await this.repository.findOneAndUpdate({ id }, { ...data, group: diseaseGroup });
-    } else {
-      return await this.repository.findOneAndUpdate({ id }, { ...data });
+      currentGroup = await this.groupService.findOne(group);
     }
+    const disease = await this.repository.findOneAndUpdate({ id }, { ...data, group: currentGroup });
+    return { ...disease, group: disease.group.id };
   }
 
   async deleteOne(id: number): Promise<void> {

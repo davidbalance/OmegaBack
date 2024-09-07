@@ -4,7 +4,7 @@ import { plainToInstance } from "class-transformer";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 import { BranchPaginationService } from "../services/branch-pagination.service";
 import { CountMetaDto, FilterMetaDto, PageResponseDto } from "@/shared/utils/bases/base.pagination.dto";
-import { GetBranchSingleArrayResponseDto } from "../dtos/response/get.branch-single-array.response.dto";
+import { GetBranchArrayResponseDto } from "../dtos/response/branch-array.get.dto";
 
 @ApiTags('Location/Branch', 'Pagination')
 @ApiBearerAuth()
@@ -19,9 +19,9 @@ export class BranchPaginationController {
     async find(
         @Param('company') company: number,
         @Query() query: FilterMetaDto
-    ): Promise<GetBranchSingleArrayResponseDto> {
+    ): Promise<GetBranchArrayResponseDto> {
         const data = await this.service.find(query, company);
-        return plainToInstance(GetBranchSingleArrayResponseDto, { data });
+        return plainToInstance(GetBranchArrayResponseDto, { data });
     }
 
     @Get('pages')

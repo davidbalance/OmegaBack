@@ -1,22 +1,23 @@
 import { Injectable, Inject } from "@nestjs/common";
-import { Area } from "../entities/area.entity";
 import { AreaRepository } from "../repositories/area.repository";
-import { AreaResponseDto } from "../dtos/response/base.area.response.dto";
 import { BasePaginationService } from "@/shared/utils/bases/base.pagination.service";
 import { SelectQueryBuilder } from "typeorm";
+import { AreaEntity } from "../entities/area.entity";
+import { Area } from "../dtos/response/area.base.dto";
 
 @Injectable()
-export class AreaPaginationService extends BasePaginationService<Area, AreaResponseDto> {
+export class AreaPaginationService extends BasePaginationService<AreaEntity, Area> {
 
   constructor(
     @Inject(AreaRepository) private readonly repository: AreaRepository,
   ) { super(); }
 
-  protected queryBuilder(filter: string, extras?: any | undefined): SelectQueryBuilder<Area> {
+  protected queryBuilder(filter: string, extras?: any | undefined): SelectQueryBuilder<AreaEntity> {
     return this.repository.query('area')
-      .innerJoin('area.management', 'management', 'management.id = :management', { management: extras })
+      .innerJoinAndSelect('area.management', 'management', 'management.id = :management', { management: extras })
       .select('area.id', 'id')
       .addSelect('area.name', 'name')
+      .addSelect('management.id', 'management')
       .where('area.name LIKE :name', { name: `%${filter}%` })
   }
 }

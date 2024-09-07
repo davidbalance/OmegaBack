@@ -3,7 +3,7 @@ import { Entity, Index, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity({ name: 'tbl_session' })
 @Index('idx_session', ['session'], { unique: true })
-export class Session extends AbstractEntity<number> {
+export class SessionEntity extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'session_id' })
     public id: number;
 

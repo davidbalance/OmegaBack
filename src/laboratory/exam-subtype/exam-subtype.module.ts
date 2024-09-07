@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ExamSubtypeManagementController } from './controllers/exam-subtype-management.controller';
-import { ExamSubtype } from './entities/exam-subtype.entity';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { ExamTypeModule } from '../exam-type/exam-type.module';
@@ -8,17 +7,18 @@ import { ExamSubtypeManagementService } from './services/exam-subtype-management
 import { ExamSubtypeRepository } from './repositories/exam-subtype.repository';
 import { ExamSubtypeExternalConnectionProvider, ExamSubtypeExternalConnectionService } from './services/exam-subtype-external-connection.service';
 import { ExamSubtypeExternalConnectionController } from './controllers/exam-subtype-external-connection.controller';
-import { ExamSubtypeExternalKey } from './entities/exam-subtype-external-key.entity';
 import { ExamSubtypeExternalKeyRepository } from './repositories/exam-subtype-external-key.repository';
 import { ExamSubtypeExternalKeyService } from './services/exam-subtype-external-key.service';
 import { ExamSubtypePaginationController } from './controllers/exam-subtype-pagination.controller';
 import { ExamSubtypePaginationService } from './services/exam-subtype-pagination.service';
+import { ExamSubtypeEntity } from './entities/exam-subtype.entity';
+import { ExamSubtypeExternalKeyEntity } from './entities/exam-subtype-external-key.entity';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([
-      ExamSubtype,
-      ExamSubtypeExternalKey
+      ExamSubtypeEntity,
+      ExamSubtypeExternalKeyEntity
     ]),
     AuthenticationGuardModule,
     ExamTypeModule
@@ -32,9 +32,9 @@ import { ExamSubtypePaginationService } from './services/exam-subtype-pagination
     ExamSubtypeExternalKeyRepository,
     ExamSubtypeRepository,
     ExamSubtypeExternalConnectionService,
+    ExamSubtypeExternalConnectionProvider,
     ExamSubtypeExternalKeyService,
     ExamSubtypeManagementService,
-    ExamSubtypeExternalConnectionProvider,
     ExamSubtypePaginationService
   ],
   exports: [

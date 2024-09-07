@@ -1,9 +1,9 @@
-import { DiseaseGroup } from "@/disease/disease-group/entities/disease-group.entity";
+import { DiseaseGroupEntity } from "@/disease/disease-group/entities/disease-group.entity";
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_d_diseases' })
-export class Disease extends AbstractEntity<number> {
+export class DiseaseEntity extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'disease_id' })
     public id: number;
 
@@ -13,7 +13,7 @@ export class Disease extends AbstractEntity<number> {
     @Column({ name: 'disease_status', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
-    @ManyToOne(() => DiseaseGroup, group => group.diseases, { eager: false, nullable: false })
+    @ManyToOne(() => DiseaseGroupEntity, group => group.diseases, { eager: false, nullable: false })
     @JoinColumn({ foreignKeyConstraintName: 'fk_disease_group_disease', referencedColumnName: 'id', name: 'disease_group_id' })
-    public group: DiseaseGroup;
+    public group: DiseaseGroupEntity;
 }

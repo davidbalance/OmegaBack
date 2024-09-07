@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { In } from 'typeorm';
-import { WebResource } from '../entities/web-resource.entity';
 import { WebResourceRespository } from '../repositories/web-resource.repository';
-import { PostWebResourceRequestDto } from '../dtos/request/post.web-resource.request.dto';
-import { PatchWebResourceRequestDto } from '../dtos/request/patch.web-resource.request.dto';
+import { PatchWebResourceRequestDto } from '../dtos/request/web-resource.patch.dto';
+import { WebResource } from '../dtos/response/web-resource.base.dto';
+import { WebResourceRequestDto } from '../dtos/request/web-resource.base.dto';
 
 @Injectable()
 export class WebResourceService {
@@ -21,12 +21,12 @@ export class WebResourceService {
     return resources;
   }
 
-  async findAll(): Promise<WebResource[]> {
+  async find(): Promise<WebResource[]> {
     const resources = await this.repository.find({ order: { status: 'DESC' } });
     return resources;
   }
 
-  async create(data: PostWebResourceRequestDto): Promise<WebResource> {
+  async create(data: Partial<WebResourceRequestDto>): Promise<WebResource> {
     const resource = await this.repository.create(data);
     return resource;
   }

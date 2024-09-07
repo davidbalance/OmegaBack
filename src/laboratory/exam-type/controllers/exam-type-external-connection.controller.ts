@@ -2,11 +2,11 @@ import { Controller, Inject, UseGuards, Post, Param, Body, Patch } from "@nestjs
 import { ApiTags, ApiHeader } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ExamTypeExternalConnectionService } from "../services/exam-type-external-connection.service";
-import { PostExamTypeRequestDto } from "../dtos/request/post.exam-type.dto";
-import { PostExamTypeResponseDto } from "../dtos/response/post.exam-type.dto";
-import { PatchExamTypeResponseDto } from "../dtos/response/patch.exam-type.dto";
-import { PatchExamExternalRequestDto } from "@/laboratory/exam/dtos/request/patch.exam-external.request.dto";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
+import { PostExamTypeRequestDto } from "../dtos/request/exam-type.post.dto";
+import { PostExtendedExamType } from "../dtos/response/extended-exam-type.post.dto";
+import { PatchExamExternalRequestDto } from "@/laboratory/exam/dtos/request/external-exam.patch.dto";
+import { PatchExtendedExamResponseDto } from "@/laboratory/exam/dtos/response/extended-exam.patch.dto";
 
 @ApiTags('External/Connection', 'Laboratory/Exam/Type')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -22,9 +22,9 @@ export class ExamTypeExternalConnectionController {
         @Param('source') source: string,
         @Param('key') key: string,
         @Body() body: PostExamTypeRequestDto
-    ): Promise<PostExamTypeResponseDto> {
+    ): Promise<PostExtendedExamType> {
         const exam = await this.service.create({ source, key }, body);
-        return plainToInstance(PostExamTypeResponseDto, exam);
+        return plainToInstance(PostExtendedExamType, exam);
     }
 
     @Patch()
@@ -32,8 +32,8 @@ export class ExamTypeExternalConnectionController {
         @Param('source') source: string,
         @Param('key') key: string,
         @Body() body: PatchExamExternalRequestDto
-    ): Promise<PatchExamTypeResponseDto> {
+    ): Promise<PatchExtendedExamResponseDto> {
         const exam = await this.service.findOneAndUpdate({ source, key }, body);
-        return plainToInstance(PatchExamTypeResponseDto, exam);
+        return plainToInstance(PatchExtendedExamResponseDto, exam);
     }
 }

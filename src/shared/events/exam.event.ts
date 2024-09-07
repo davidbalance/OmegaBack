@@ -1,4 +1,4 @@
-import { PostExamExternalRequestDto } from "@/laboratory/exam/dtos/request/post.exam-external.request.dto";
+import { PostExamExternalRequestDto } from "@/laboratory/exam/dtos/request/external-exam.post.dto";
 
 export const ExamEvent = {
     EXTERNAL_CREATE: 'exam.external.create'

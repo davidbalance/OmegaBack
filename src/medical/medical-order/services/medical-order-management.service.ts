@@ -1,6 +1,7 @@
 import { Injectable, Inject } from "@nestjs/common";
-import { MedicalOrder } from "../entities/medical-order.entity";
 import { MedicalOrderRepository } from "../repositories/medical-order.repository";
+import { MedicalOrder } from "../dtos/response/medical-order.base.dto";
+import { MedicalOrderEntity } from "../entities/medical-order.entity";
 
 @Injectable()
 export class MedicalOrderManagementService {
@@ -19,31 +20,7 @@ export class MedicalOrderManagementService {
     return medicalOrder;
   }
 
-  async findAllByPatient(dni: string): Promise<MedicalOrder[]> {
-    const medicalOrders = await this.repository.find({
-      where: { client: { dni } },
-      relations: {
-        results: {
-          diseases: true
-        }
-      }
-    });
-    return medicalOrders;
-  }
-
-  async findAllByPatientAndDoctor(patient: string, doctor: string): Promise<MedicalOrder[]> {
-    const orders = await this.repository.query('medicalOrder')
-      .leftJoinAndSelect('medicalOrder.results', 'medicalResult', 'medicalResult.doctorDni = :doctor', { doctor })
-      .leftJoinAndSelect('medicalResult.report', 'medicalReport')
-      .leftJoinAndSelect('medicalOrder.client', 'medicalClient')
-      .where('medicalClient.dni = :patient', { patient })
-      .andWhere('medicalResult.doctorDni = :doctor', { doctor })
-      .getMany();
-
-    return orders;
-  }
-
-  async updateOne(id: number, data: Partial<MedicalOrder>): Promise<MedicalOrder> {
+  async updateOne(id: number, data: Partial<MedicalOrderEntity>): Promise<MedicalOrder> {
     const medicalOrder = await this.repository.findOneAndUpdate({ id }, data);
     return medicalOrder;
   }

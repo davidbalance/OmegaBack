@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
-import { MedicalClient } from './entities/medical-client.entity';
-import { MedicalEmail } from './entities/medical-email.entity';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { MedicalClientRepository } from './repositories/medical-client.repository';
 import { MedicalEmailRepository } from './repositories/medical-email.repository';
@@ -13,27 +11,34 @@ import { MedicalClientLocationController } from './controllers/medical-client-lo
 import { MedicalClientEventService } from './services/medical-client-event.service';
 import { MedicalClientJobPositionController } from './controllers/medical-client-job-position.controller';
 import { MedicalClientJobPositionService } from './services/medical-client-job-position.service';
-import { MedicalClientManagementController } from './controllers/medical-client-management.controller';
 import { MedicalClientManagementService } from './services/medical-client-management.service';
 import { MedicalClientExternalService } from './services/medical-client-external.service';
 import { MedicalClientExternalListener } from './listeners/medical-client-external.listener';
+import { MedicalClientEntity } from './entities/medical-client.entity';
+import { MedicalEmailEntity } from './entities/medical-email.entity';
+import { MedicalClientDoctorPaginationController } from './controllers/medical-client-doctor-pagination.controller';
+import { MedicalClientDoctorPaginationService } from './services/medical-client-doctor-pagination.service';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([MedicalClient, MedicalEmail]),
+    SqlDatabaseModule.forFeature([
+      MedicalClientEntity,
+      MedicalEmailEntity
+    ]),
     AuthenticationGuardModule,
     DniInterceptorModule
   ],
   controllers: [
+    MedicalClientDoctorPaginationController,
     MedicalClientEmailController,
     MedicalClientJobPositionController,
     MedicalClientLocationController,
-    MedicalClientManagementController
   ],
   providers: [
-    MedicalClientExternalListener,
     MedicalClientRepository,
     MedicalEmailRepository,
+    MedicalClientExternalListener,
+    MedicalClientDoctorPaginationService,
     MedicalClientEmailService,
     MedicalClientEventService,
     MedicalClientExternalService,

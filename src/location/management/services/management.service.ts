@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Management } from '../entities/management.entity';
 import { ManagementRepository } from '../repositories/management.repository';
-import { PostManagementRequestDto } from '../dtos/request/post.management.request.dto';
-import { PatchMagementRequestDto } from '../dtos/request/patch.management.request.dto';
+import { PostManagementRequestDto } from '../dtos/request/management.post.dto';
+import { PatchMagementRequestDto } from '../dtos/request/management.patch.dto';
+import { Management } from '../dtos/response/management.base.dto';
 
 @Injectable()
 export class ManagementService {
@@ -15,17 +15,14 @@ export class ManagementService {
     return management;
   }
 
-  async find(): Promise<Management[]> {
-    const managements = await this.repository.find({
-      where: { status: true },
-      relations: { areas: true }
-    });
-    return managements;
-  }
-
   async findOne(id: number): Promise<Management> {
     const management = await this.repository.findOne({ where: { id: id } });
     return management;
+  }
+
+  async hasAreas(id: number): Promise<boolean> {
+    const management = await this.repository.findOne({ where: { id: id }, relations: { areas: true } });
+    return management.areas.length > 0;
   }
 
   async updateOne(id: number, updateManagementDto: PatchMagementRequestDto): Promise<Management> {

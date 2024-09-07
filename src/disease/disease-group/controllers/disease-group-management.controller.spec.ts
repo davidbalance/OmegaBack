@@ -1,11 +1,11 @@
 import { TestBed } from "@automock/jest";
 import { DiseaseGroupManagementService } from "../services/disease-group-management.service";
 import { DiseaseGroupManagementController } from "./disease-group-management.controller";
-import { GetDiseaseGroupArrayResponseDto } from "../dtos/response/get.disease-group-array.response.dto";
+import { GetDiseaseGroupArrayResponseDto } from "../dtos/response/disease-group-array.get.response.dto";
 import { DiseaseGroup } from "../entities/disease-group.entity";
-import { PostDiseaseGroupRequestDto } from "../dtos/request/post.disease-group.request.dto";
+import { PostDiseaseGroupRequestDto } from "../dtos/request/disease-group.post.request.dto";
 import { PostDiseaseGroupResponseDto } from "../dtos/response/post.disease-group.response.dto";
-import { PatchDiseaseGroupRequestDto } from "../dtos/request/patch.disease-group.request.dto";
+import { PatchDiseaseGroupRequestDto } from "../dtos/request/disease-group.patch.request.dto";
 import { PatchDiseaseGroupResponseDto } from "../dtos/response/patch.disease-group.response.dto";
 
 describe('DiseaseGroupManagementController', () => {

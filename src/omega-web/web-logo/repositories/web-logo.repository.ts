@@ -2,14 +2,14 @@ import { AbstractRepository } from "@/shared/sql-database/abstract.repository";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { WebLogo } from "../entities/web-logo.entity";
+import { WebLogoEntity } from "../entities/web-logo.entity";
 
 @Injectable()
 export class WebLogoRepository
-    extends AbstractRepository<number, WebLogo> {
+    extends AbstractRepository<number, WebLogoEntity> {
 
     constructor(
-        @InjectRepository(WebLogo) private readonly logoModel: Repository<WebLogo>
+        @InjectRepository(WebLogoEntity) private readonly logoModel: Repository<WebLogoEntity>
     ) {
         super(logoModel);
     }

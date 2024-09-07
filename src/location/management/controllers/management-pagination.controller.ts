@@ -1,7 +1,7 @@
 import { Controller, Inject, UseGuards, Get, Query } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { GetManagementArrayResponseDto } from "../dtos/response/get.management-array.response.dto";
+import { GetManagementArrayResponseDto } from "../dtos/response/management-array.get.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 import { ManagementPaginationService } from "../services/management-pagination.service";
 import { FilterMetaDto, CountMetaDto, PageResponseDto } from "@/shared/utils/bases/base.pagination.dto";

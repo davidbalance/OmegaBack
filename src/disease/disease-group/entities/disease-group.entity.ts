@@ -1,9 +1,9 @@
-import { Disease } from "@/disease/disease/entities/disease.entity";
+import { DiseaseEntity } from "@/disease/disease/entities/disease.entity";
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_d_disease_groups' })
-export class DiseaseGroup extends AbstractEntity<number>{
+export class DiseaseGroupEntity extends AbstractEntity<number> {
     @PrimaryGeneratedColumn({ name: 'disease_group_id' })
     public id: number;
 
@@ -13,6 +13,6 @@ export class DiseaseGroup extends AbstractEntity<number>{
     @Column({ name: 'disease_group_status', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
-    @OneToMany(() => Disease, disease => disease.group, { eager: false })
-    public diseases: Disease[];
+    @OneToMany(() => DiseaseEntity, disease => disease.group, { eager: false })
+    public diseases: DiseaseEntity[];
 }

@@ -1,9 +1,9 @@
 import { ManagementService } from "@/location/management/services/management.service";
 import { Injectable, Inject } from "@nestjs/common";
-import { Area } from "../entities/area.entity";
 import { AreaRepository } from "../repositories/area.repository";
-import { PostAreaRequestDto } from "../dtos/request/post.area.request.dto";
-import { PatchAreaRequestDto } from "../dtos/request/patch.area.request.dto";
+import { PostAreaRequestDto } from "../dtos/request/area.post.request.dto";
+import { PatchAreaRequestDto } from "../dtos/request/area.patch.dto";
+import { Area } from "../dtos/response/area.base.dto";
 
 @Injectable()
 export class AreaManagementService {
@@ -13,30 +13,24 @@ export class AreaManagementService {
     @Inject(ManagementService) private readonly managementService: ManagementService
   ) { }
 
-  async create({ management, ...area }: PostAreaRequestDto): Promise<Area> {
+  async create({ management, ...data }: PostAreaRequestDto): Promise<Area> {
     const foundManagement = await this.managementService.findOne(management);
-    const createdArea = await this.repository.create({ ...area, management: foundManagement });
-    return createdArea;
-  }
-
-  async find(): Promise<Area[]> {
-    const areas = await this.repository.find();
-    return areas;
+    const area = await this.repository.create({ ...data, management: foundManagement });
+    return { ...area, management };
   }
 
   async findOne(id: number): Promise<Area> {
-    const area = await this.repository.findOne({ where: { id } });
-    return area;
+    const area = await this.repository.findOne({ where: { id }, relations: { management: true } });
+    return { ...area, management: area.management.id };
   }
 
-  async updateOne(id: number, { management, ...area }: PatchAreaRequestDto): Promise<Area> {
-    const data = area;
+  async updateOne(id: number, { management, ...data }: PatchAreaRequestDto): Promise<Area> {
     if (management) {
       const foundManagement = await this.managementService.findOne(management);
       data['management'] = foundManagement;
     }
-    const updatedArea = await this.repository.findOneAndUpdate({ id: id }, { ...area });
-    return updatedArea;
+    const area = await this.repository.findOneAndUpdate({ id: id }, { ...data });
+    return { ...area, management: area.management.id };
   }
 
   async deleteOne(id: number): Promise<void> {

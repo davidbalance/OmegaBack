@@ -1,7 +1,7 @@
 import { Controller, Get, Inject, UseGuards, Query } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
-import { GetJobPositionArrayReponseDto } from '../dtos/response/get.job-position-array.dto';
+import { GetJobPositionArrayReponseDto } from '../dtos/response/job-position-array.get.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 import { JobPositionPaginationService } from '../services/job-position-pagination.service';
 import { FilterMetaDto, CountMetaDto, PageResponseDto } from '@/shared/utils/bases/base.pagination.dto';

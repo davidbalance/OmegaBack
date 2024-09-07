@@ -1,8 +1,7 @@
 import { TestBed } from "@automock/jest";
 import { BranchExternalConnectionService } from "../services/branch-external-connection.service";
 import { BranchExternalListener } from "./branch-external.listener";
-import { BranchExternalCreateEvent } from "@/shared/events/branch.event";
-import { PostBranchExternalRequestDto } from "../dtos/request/post.branch-external.request.dto";
+import { PostBranchExternalRequestDto } from "../dtos/request/external-branch.post.dto";
 
 describe('BranchExternalListener', () => {
     let service: BranchExternalListener;

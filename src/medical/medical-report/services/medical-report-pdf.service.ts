@@ -5,10 +5,10 @@ import es from "dayjs/locale/es";
 import path from 'path';
 import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';
 import { fileReportPath } from '@/shared/utils';
-import { MedicalReport } from '../entities/medical-report.entity';
 import { MedicalReportRepository } from '../repositories/medical-report.repository';
 import { medicalReportDocumentLayout } from '../utils/medical-report-document-layout';
 import { PdfManagerService } from '@/shared/pdf-manager/pdf-manager.service';
+import { MedicalReportEntity } from '../entities/medical-report.entity';
 
 @Injectable()
 export class MedicalReportPdfService {
@@ -19,35 +19,35 @@ export class MedicalReportPdfService {
     @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
   ) { }
 
-  public async craft(data: MedicalReport): Promise<MedicalReport> {
+  public async craft(data: MedicalReportEntity): Promise<MedicalReportEntity> {
     try {
       const filepath: string = await this.processPdf(data);
-      const newMedicalReport: MedicalReport = await this.repository.findOneAndUpdate({ id: data.id }, { fileAddress: filepath, hasFile: true });
+      const newMedicalReport: MedicalReportEntity = await this.repository.findOneAndUpdate({ id: data.id }, { fileAddress: filepath, hasFile: true });
       return newMedicalReport;
     } catch (error) {
-      const newMedicalReport: MedicalReport = await this.repository.findOneAndUpdate({ id: data.id }, { fileAddress: null, hasFile: false });
+      const newMedicalReport: MedicalReportEntity = await this.repository.findOneAndUpdate({ id: data.id }, { fileAddress: null, hasFile: false });
       return newMedicalReport;
     }
   }
 
-  public async redoPdf(id: number): Promise<MedicalReport> {
+  public async redoPdf(id: number): Promise<MedicalReportEntity> {
     const medicalReport = await this.repository.findOne({ where: { id } });
     return this.craft(medicalReport);
   }
 
-  public async redoPdfsByDni(dni: string): Promise<MedicalReport[]> {
+  public async redoPdfsByDni(dni: string): Promise<MedicalReportEntity[]> {
     const medicalReports = await this.repository.find({ where: { patientDni: dni } });
     const redo = await Promise.all(medicalReports.map(this.craft));
     return redo;
   }
 
-  public async redoPdfs(): Promise<MedicalReport[]> {
+  public async redoPdfs(): Promise<MedicalReportEntity[]> {
     const medicalReports = await this.repository.find();
     const redo = await Promise.all(medicalReports.map(this.craft));
     return redo;
   }
 
-  private async processPdf(data: MedicalReport): Promise<string> {
+  private async processPdf(data: MedicalReportEntity): Promise<string> {
     const signatureDirectory = path.resolve(data.doctorSignature);
     const signatureImg = readFileSync(signatureDirectory);
     const signatureBase64 = Buffer.from(signatureImg).toString('base64');
@@ -74,7 +74,7 @@ export class MedicalReportPdfService {
     return output;
   }
 
-  private getContent = (data: Omit<MedicalReport, 'content'>, image: { signature: string, header: string }) => ({
+  private getContent = (data: Omit<MedicalReportEntity, 'content'>, image: { signature: string, header: string }) => ({
     header: `data:image/png;base64,${image.header}`,
     title: 'Omega report',
     patientFullname: data.patientFullname,

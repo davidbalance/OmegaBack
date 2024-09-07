@@ -1,10 +1,10 @@
 import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { UserRepository } from "../repositories/user.repository";
 import { UserEventService } from "./user-event.service";
-import { User } from "../entities/user.entity";
 import { Not } from "typeorm";
-import { PostUserRequestDto } from "../dtos/request/post.user.request.dto";
+import { PostUserRequestDto } from "../dtos/request/user.post.dto";
 import { UserExtraAttributeService } from "./user-extra-attributes.service";
+import { User } from "../dtos/response/user.base.dto";
 
 @Injectable()
 export class UserManagementService {

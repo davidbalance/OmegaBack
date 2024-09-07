@@ -1,13 +1,13 @@
 import { AbstractRepository } from "@/shared/sql-database/abstract.repository";
 import { Injectable } from "@nestjs/common";
-import { Session } from "../entities/session.entity";
+import { SessionEntity } from "../entities/session.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 @Injectable()
-export class SessionRepository extends AbstractRepository<number, Session> {
+export class SessionRepository extends AbstractRepository<number, SessionEntity> {
     constructor(
-        @InjectRepository(Session) private readonly repo: Repository<Session>
+        @InjectRepository(SessionEntity) private readonly repo: Repository<SessionEntity>
     ) {
         super(repo);
     }

@@ -1,20 +1,20 @@
 import { Injectable } from "@nestjs/common";
-import { User } from "../entities/user.entity";
+import { UserEntity } from "../entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { AbstractRepository } from "@/shared/sql-database/abstract.repository";
 
 @Injectable()
 export class UserRepository
-    extends AbstractRepository<number, User>{
+    extends AbstractRepository<number, UserEntity> {
 
     constructor(
-        @InjectRepository(User) private readonly _: Repository<User>
+        @InjectRepository(UserEntity) private readonly _: Repository<UserEntity>
     ) {
         super(_);
     }
 
-    async findOneAndDelete(filterOptions: FindOptionsWhere<User>): Promise<void> {
+    async findOneAndDelete(filterOptions: FindOptionsWhere<UserEntity>): Promise<void> {
         await this.findOneAndUpdate(filterOptions, { status: false });
     }
 }

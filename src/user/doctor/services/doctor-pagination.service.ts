@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DoctorRepository } from "../repositories/doctor.repository";
-import { DoctorResponseDto } from '../dtos/response/base.doctor.response.dto';
-import { BasePaginationService } from '@/shared/utils/bases/base.pagination.service';
-import { Doctor } from '../entities/doctor.entity';
 import { Brackets, SelectQueryBuilder } from 'typeorm';
+import { DoctorEntity } from '../entities/doctor.entity';
+import { Doctor } from '../dtos/response/doctor.base.dto';
+import { BasePaginationService } from '@/shared/utils/bases/base.pagination.service';
 
 @Injectable()
-export class DoctorPaginationService extends BasePaginationService<Doctor, DoctorResponseDto> {
+export class DoctorPaginationService extends BasePaginationService<DoctorEntity, Doctor> {
 
   constructor(
     @Inject(DoctorRepository) private readonly repository: DoctorRepository,
   ) { super(); }
 
-  protected queryBuilder(filter: string): SelectQueryBuilder<Doctor> {
+  protected queryBuilder(filter: string, extras?: any | undefined): SelectQueryBuilder<DoctorEntity> {
     return this.repository.query('doctor')
       .leftJoinAndSelect('doctor.user', 'user')
       .select('doctor.id', 'id')

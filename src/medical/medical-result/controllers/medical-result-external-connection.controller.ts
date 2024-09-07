@@ -3,12 +3,12 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiTags, ApiHeader, ApiConsumes } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { MedicalResultExternalConnectionService } from "../services/medical-result-external-connection.service";
-import { GetMedicalResultResponseDto } from "../dtos/response/get.medical-result.response.dto";
-import { PostMedicalResultExternalRequestDto } from "../dtos/request/post.medical-result-external.dto";
-import { PostMedicalResultResponseDto } from "../dtos/response/post.medical-result.response.dto";
-import { PatchMedicalResultFileRequestDto } from "../dtos/request/patch.medical-result-file.request.dto";
-import { PatchMedicalResultFileResponseDto } from "../dtos/response/patch.medical-result-file.response.dto";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
+import { GetExternalMedicalOrderResponseDto } from "@/medical/medical-order/dtos/response/external-medical-order.get.dto";
+import { PostExternalMedicalResultRequestDto } from "../dtos/request/external-medical-result.post.dto";
+import { PatchExternalMedicalResultFileRequestDto } from "../dtos/request/external-medical-result-file.patch.dto";
+import { PatchExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.patch.dto";
+import { PostExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.post.dto";
 
 @ApiTags('External/Connection', 'Medical/Result')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -23,9 +23,9 @@ export class MedicalResultExternalConnectionController {
     async findOne(
         @Param('source') source: string,
         @Param('key') key: string
-    ): Promise<GetMedicalResultResponseDto> {
+    ): Promise<GetExternalMedicalOrderResponseDto> {
         const medicalResult = await this.service.findOne({ key, source });
-        return plainToInstance(GetMedicalResultResponseDto, medicalResult);
+        return plainToInstance(GetExternalMedicalOrderResponseDto, medicalResult);
     }
 
     @ApiConsumes('multipart/form-data')
@@ -34,11 +34,11 @@ export class MedicalResultExternalConnectionController {
     async create(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() body: PostMedicalResultExternalRequestDto,
+        @Body() body: PostExternalMedicalResultRequestDto,
         @UploadedFile() file: Express.Multer.File
-    ): Promise<PostMedicalResultResponseDto> {
+    ): Promise<PostExternalMedicalResultResponseDto> {
         const order = await this.service.create({ source, key }, { ...body, file });
-        return plainToInstance(PostMedicalResultResponseDto, order);
+        return plainToInstance(PostExternalMedicalResultResponseDto, order);
     }
 
     @ApiConsumes('multipart/form-data')
@@ -47,10 +47,10 @@ export class MedicalResultExternalConnectionController {
     async uploadFile(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() _: PatchMedicalResultFileRequestDto,
+        @Body() _: PatchExternalMedicalResultFileRequestDto,
         @UploadedFile() file: Express.Multer.File
-    ): Promise<PatchMedicalResultFileResponseDto> {
+    ): Promise<PatchExternalMedicalResultResponseDto> {
         const order = await this.service.findOneAndUpdate({ source, key }, { file });
-        return plainToInstance(PatchMedicalResultFileResponseDto, order);
+        return plainToInstance(PatchExternalMedicalResultResponseDto, order);
     }
 }

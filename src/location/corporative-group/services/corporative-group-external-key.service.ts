@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AbstractExternalKeyService } from '@/shared/external-key';
-import { CorporativeGroupExternalKey } from '../entities/corporative-group-external-key.entity';
 import { CorporativeGroupExternalKeyRepository } from '../repositories/corporative-group-external-key.repository';
+import { CorporativeGroupExternalKeyEntity } from '../entities/corporative-group-external-key.entity';
 
 @Injectable()
 export class CorporativeGroupExternalKeyService
-  extends AbstractExternalKeyService<CorporativeGroupExternalKey, CorporativeGroupExternalKeyRepository> {
+  extends AbstractExternalKeyService<CorporativeGroupExternalKeyEntity, CorporativeGroupExternalKeyRepository> {
 
   constructor(
     @Inject(CorporativeGroupExternalKeyRepository) private readonly repository: CorporativeGroupExternalKeyRepository

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { SessionRepository } from '../respository/session.repository';
-import { PatchSessionRequestDto } from '../dto/request/patch.session.request.dto';
-import { PostSessionRequestDto } from '../dto/request/post.session.request.dto';
+import { PatchSessionRequestDto } from '../dto/request/session.patch.dto';
+import { PostSessionRequestDto } from '../dto/request/session.post.dto';
 import { v4 } from 'uuid';
 
 @Injectable()

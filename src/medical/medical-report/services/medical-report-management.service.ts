@@ -1,10 +1,10 @@
 import { Injectable, Inject } from "@nestjs/common";
-import { MedicalReport } from "../entities/medical-report.entity";
 import { MedicalReportRepository } from "../repositories/medical-report.repository";
 import { MedicalReportPdfService } from "./medical-report-pdf.service";
 import { MedicalResultManagementService } from "@/medical/medical-result/services/medical-result-management.service";
-import { PostMedicalReportRequestDto } from "../dtos/request/post.medical-report.request.dto";
+import { PostMedicalReportRequestDto } from "../dtos/request/medical-report.post.dto";
 import { MedicalReportFileManagementService } from "./medical-report-file-management.service";
+import { MedicalReport } from "../dtos/response/medical-report.base.dto";
 
 @Injectable()
 export class MedicalReportManagementService {
@@ -18,38 +18,30 @@ export class MedicalReportManagementService {
 
   async create({ medicalResult: medicalResultId, ...data }: PostMedicalReportRequestDto): Promise<MedicalReport> {
     const medicalResult = await this.service.findOne(medicalResultId);
-    const { order } = medicalResult;
-    const { client } = order;
+    const doctor = await this.service.findDoctor(medicalResultId);
+    const order = await this.service.findOrder(medicalResultId);
+    const location = await this.service.findLocation(medicalResultId);
+    const client = await this.service.findClient(medicalResultId);
     const fullname = `${client.name} ${client.lastname}`;
     const report = await this.repository.create({
       content: data.content,
       order: order.id,
-      companyName: order.companyName,
+      companyName: location.companyName,
       patientDni: client.dni,
       patientBirthday: client.birthday,
       patientFullname: fullname,
       examName: medicalResult.examName,
-      doctorDni: medicalResult.doctorDni,
-      doctorFullname: medicalResult.doctorFullname,
-      doctorSignature: medicalResult.doctorSignature,
+      doctorDni: doctor.doctorDni,
+      doctorFullname: doctor.doctorFullname,
+      doctorSignature: doctor.doctorSignature,
     });
     const attachedFile = await this.pdf.craft(report);
-    await this.service.updateOne(medicalResultId, { report: attachedFile });
+    await this.service.attachReport(medicalResultId, attachedFile);
     return attachedFile;
-  }
-
-  async findAll(): Promise<MedicalReport[]> {
-    const reports = await this.repository.find();
-    return reports;
   }
 
   async findOne(id: number): Promise<MedicalReport> {
     const report = await this.repository.findOne({ where: { id } });
-    return report;
-  }
-
-  async findByDni(dni: string): Promise<MedicalReport[]> {
-    const report = await this.repository.find({ where: { patientDni: dni } });
     return report;
   }
 

@@ -1,7 +1,7 @@
 import { Controller, Get, Inject, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
-import { GetNavResourceArrayResponseDto } from '../dtos/response/get.nav-resource-array.response.dto';
+import { GetNavResourceArrayResponseDto } from '../dtos/response/nav-resource-array.get.dto';
 import { NavResourceService } from '../services/nav-resource.service';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 

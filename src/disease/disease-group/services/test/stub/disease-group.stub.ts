@@ -1,6 +1,6 @@
-import { DiseaseGroup } from "@/disease/disease-group/entities/disease-group.entity";
+import { DiseaseGroupEntity } from "@/disease/disease-group/entities/disease-group.entity";
 
-const stubGroup = (id: number): DiseaseGroup => ({
+const stubGroup = (id: number): DiseaseGroupEntity => ({
     id: id,
     name: "My-stub-group",
     diseases: [],

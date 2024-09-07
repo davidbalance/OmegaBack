@@ -1,12 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, UseGuards } from '@nestjs/common';
 import { SessionService } from '../services/session.service';
-import { PostSessionRequestDto } from '../dto/request/post.session.request.dto';
-import { PostSessionResponseDto } from '../dto/response/post.session.response.dto';
+import { PostSessionRequestDto } from '../dto/request/session.post.dto';
 import { plainToInstance } from 'class-transformer';
 import { GetSessionResponseDto } from '../dto/response/get.session.response.dto';
-import { PatchSessionRequestDto } from '../dto/request/patch.session.request.dto';
-import { PatchSessionResponseDto } from '../dto/response/patch.session.response.dto';
-import { DeleteSessionResponseDto } from '../dto/response/delete.session.response.dto';
+import { PatchSessionRequestDto } from '../dto/request/session.patch.dto';
 import { ApiTags, ApiHeader } from '@nestjs/swagger';
 import { SessionGuard } from '../guards/session.guard';
 
@@ -22,9 +19,9 @@ export class SessionController {
   @Post()
   async create(
     @Body() data: PostSessionRequestDto
-  ): Promise<PostSessionResponseDto> {
-    const session = await this.service.create(data);
-    return plainToInstance(PostSessionResponseDto, { session });
+  ): Promise<any> {
+    await this.service.create(data);
+    return {}
   }
 
   @Get(':session')
@@ -39,7 +36,7 @@ export class SessionController {
   async updateOne(
     @Param('session') session: string,
     @Body() data: PatchSessionRequestDto
-  ): Promise<PatchSessionResponseDto> {
+  ): Promise<any> {
     await this.service.updateOne(session, data);
     return {};
   }
@@ -47,7 +44,7 @@ export class SessionController {
   @Delete(':session')
   async deleteOne(
     @Param('session') session: string,
-  ): Promise<DeleteSessionResponseDto> {
+  ): Promise<any> {
     await this.service.deleteOne(session);
     return {};
   }

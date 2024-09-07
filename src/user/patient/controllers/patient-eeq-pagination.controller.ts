@@ -1,13 +1,12 @@
 import { Controller, Get, Inject, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
-import { GetPatientEeqArrayResponseDto } from '../dtos/response/get.patient-eeq-array.response.dto';
+import { GetPatientEeqArrayResponseDto } from '../dtos/response/patient-eeq-array.get.dto';
 import { PatientEeqPaginationService } from '../service/patient-eeq-pagination.service';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
-import { CountMetaDto, FilterMetaDto } from '@/shared/utils/bases/base.pagination.dto';
-import { PostPatientPagesResponseDto } from '../dtos/response/post.patient-pagination.response.dto';
+import { CountMetaDto, FilterMetaDto, PageResponseDto } from '@/shared/utils/bases/base.pagination.dto';
 
-@ApiTags('User/Patient/EEQ')
+@ApiTags('User/Patient/EEQ', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('patients/eeq')
@@ -27,8 +26,8 @@ export class PatientEeqPaginationController {
   @Get('pages')
   async count(
     @Query() query: CountMetaDto
-  ): Promise<PostPatientPagesResponseDto> {
+  ): Promise<PageResponseDto> {
     const pages = await this.service.count(query);
-    return plainToInstance(PostPatientPagesResponseDto, { pages });
+    return plainToInstance(PageResponseDto, { pages });
   }
 }

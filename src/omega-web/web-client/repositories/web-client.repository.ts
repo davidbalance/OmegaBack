@@ -2,14 +2,14 @@ import { AbstractRepository } from "@/shared/sql-database/abstract.repository";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { WebClient } from "../entities/web-client.entity";
+import { WebClientEntity } from "../entities/web-client.entity";
 
 @Injectable()
 export class WebClientRepository
-    extends AbstractRepository<number, WebClient>{
+    extends AbstractRepository<number, WebClientEntity>{
 
     constructor(
-        @InjectRepository(WebClient) private readonly clientModel: Repository<WebClient>
+        @InjectRepository(WebClientEntity) private readonly clientModel: Repository<WebClientEntity>
     ) {
         super(clientModel);
     }

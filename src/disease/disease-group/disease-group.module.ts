@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { DiseaseGroup } from './entities/disease-group.entity';
 import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { DiseaseGroupRepository } from './repository/disease-group.repository';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
@@ -7,22 +6,25 @@ import { DiseaseGroupManagementController } from './controllers/disease-group-ma
 import { DiseaseGroupManagementService } from './services/disease-group-management.service';
 import { DiseaseGroupPaginationController } from './controllers/disease-group-pagination.controller';
 import { DiseaseGroupPaginationService } from './services/disease-group-pagination.service';
-import { DiseaseGroupFullController } from './controllers/disease-group-full.controller';
+import { DiseaseGroupEntity } from './entities/disease-group.entity';
+import { DiseaseGroupOptionController } from './controllers/disease-group-option.controller';
+import { DiseaseGroupOptionService } from './services/disease-group-option.service';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([DiseaseGroup]),
+    SqlDatabaseModule.forFeature([DiseaseGroupEntity]),
     AuthenticationGuardModule
   ],
   controllers: [
-    DiseaseGroupFullController,
     DiseaseGroupManagementController,
+    DiseaseGroupOptionController,
     DiseaseGroupPaginationController,
   ],
   providers: [
+    DiseaseGroupRepository,
     DiseaseGroupManagementService,
+    DiseaseGroupOptionService,
     DiseaseGroupPaginationService,
-    DiseaseGroupRepository
   ],
   exports: [
     DiseaseGroupManagementService

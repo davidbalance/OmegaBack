@@ -3,8 +3,8 @@ import { MedicalResultFileManagementService } from "@/medical/medical-result/ser
 import { FileManagementService } from "@/shared/utils/bases/base.file-service";
 import { ZipperService } from "@/shared/zipper/zipper.service";
 import { Injectable, Inject, StreamableFile, NotFoundException, Logger } from "@nestjs/common";
-import { FileSourceEnum, FileSourceRequestDto } from "../dtos/request/base.file-source.request.dto";
-import { PostDownloadZipRequestDto } from "../dtos/request/post.download-zip.request.dto";
+import { FileSourceEnum, FileSourceRequestDto } from "../dtos/request/file-source.base.dto";
+import { PostDownloadZipRequestDto } from "../dtos/request/download-zip.post.dto";
 
 @Injectable()
 export class FileDownloaderService {

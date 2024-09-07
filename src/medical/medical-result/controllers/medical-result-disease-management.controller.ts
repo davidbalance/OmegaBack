@@ -2,13 +2,9 @@ import { Controller, UseGuards, Get, Post, Param, Body, Patch, Delete, Inject } 
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { MedicalResultDiseaseManagementService } from "../services/medical-result-disease-management.service";
-import { PostMedicalResultDiseaseRequestDto } from "../dtos/request/post.medical-result-disease.dto";
-import { PostMedicalResultDiseaseResponseDto } from "../dtos/response/post.medical-result-disease.response.dto";
-import { GetMedicalResultDiseaseArrayResponseDto } from "../dtos/response/get.medical-result-disease-array.response.dto";
-import { GetMedicalResultDiseaseResponseDto } from "../dtos/response/get.medical-result-disease.response.dto";
-import { PatchMedicalResultDiseaseRequestDto } from "../dtos/request/patch.medical-result-disease.request.dto";
-import { PatchMedicalResultDiseaseResponseDto } from "../dtos/response/patch.medical-result-disease.response.dto";
-import { DeleteMedicalResultDiseaseResponseDto } from "../dtos/response/delete.medical-result-disease.response.dto";
+import { PostMedicalResultDiseaseRequestDto } from "../dtos/request/medical-result-disease.post.dto";
+import { GetMedicalResultDiseaseResponseDto } from "../dtos/response/medical-result-disease.get.dto";
+import { PatchMedicalResultDiseaseRequestDto } from "../dtos/request/medical-result-disease.patch.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Medical/Result')
@@ -23,18 +19,12 @@ export class MedicalResultDiseaseManagementController {
   @Post()
   async create(
     @Body() body: PostMedicalResultDiseaseRequestDto
-  ): Promise<PostMedicalResultDiseaseResponseDto> {
-    const data = await this.service.create(body);
-    return plainToInstance(PostMedicalResultDiseaseResponseDto, data);
+  ): Promise<any> {
+    await this.service.create(body);
+    return {}
   }
 
-  @Get()
-  async find(): Promise<GetMedicalResultDiseaseArrayResponseDto> {
-    const data = await this.service.findAll();
-    return plainToInstance(GetMedicalResultDiseaseArrayResponseDto, { data });
-  }
-
-  @Get(':id')
+  @Get('disease/:id')
   async findOne(
     @Param('id') id: string
   ): Promise<GetMedicalResultDiseaseResponseDto> {
@@ -42,19 +32,19 @@ export class MedicalResultDiseaseManagementController {
     return plainToInstance(GetMedicalResultDiseaseResponseDto, data);
   }
 
-  @Patch(':id')
+  @Patch('disease/:id')
   async updateOne(
     @Param('id') id: number,
     @Body() body: PatchMedicalResultDiseaseRequestDto
-  ): Promise<PatchMedicalResultDiseaseResponseDto> {
+  ): Promise<any> {
     const data = await this.service.updateOne(id, body)
-    return plainToInstance(PatchMedicalResultDiseaseResponseDto, data);
+    return {}
   }
 
-  @Delete(':id')
+  @Delete('disease/:id')
   async deleteOne(
     @Param('id') id: number
-  ): Promise<DeleteMedicalResultDiseaseResponseDto> {
+  ): Promise<any> {
     await this.service.deleteOne(id);
     return {};
   }

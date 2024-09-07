@@ -1,10 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ExamSubtypeRepository } from '../repositories/exam-subtype.repository';
 import { ExamTypeManagementService } from '@/laboratory/exam-type/services/exam-type-management.service';
-import { ExamType } from '@/laboratory/exam-type/entities/exam-type.entity';
-import { ExamSubtype } from '../entities/exam-subtype.entity';
-import { PostExamSubtypeRequestDto } from '../dtos/request/post.exam-subtype.dto';
-import { PatchExamSubtypeRequestDto } from '../dtos/request/patch.exam-subtype.dto';
+import { PostExamSubtypeRequestDto } from '../dtos/request/exam-subtype.post.dto';
+import { PatchExamSubtypeRequestDto } from '../dtos/request/exam-subtype.patch.dto';
+import { ExamSubtype } from '../dtos/response/exam-subtype.base.dto';
 
 @Injectable()
 export class ExamSubtypeManagementService {
@@ -17,27 +16,27 @@ export class ExamSubtypeManagementService {
   async create({ type, ...data }: PostExamSubtypeRequestDto): Promise<ExamSubtype> {
     const foundType = await this.typeService.findOne(type);
     const subtype = await this.repository.create({ ...data, type: foundType });
-    return subtype;
-  }
-
-  async findAll(): Promise<ExamSubtype[]> {
-    const subtypes = await this.repository.find({ where: { status: true } });
-    return subtypes;
+    return { ...subtype, type };
   }
 
   async findOne(id: number): Promise<ExamSubtype> {
-    const subtype = await this.repository.findOne({ where: { id } });
-    return subtype;
+    const subtype = await this.repository.findOne({ where: { id }, relations: { type: true } });
+    return { ...subtype, type: subtype.type.id };
+  }
+
+  async hasExams(id: number): Promise<boolean> {
+    const subtype = await this.repository.findOne({ where: { id }, relations: { exams: true } });
+    return subtype.exams.length > 0;
   }
 
   async updateOne(id: number, { type, ...data }: PatchExamSubtypeRequestDto): Promise<ExamSubtype> {
     const foundSubtype = await this.repository.findOne({ where: { id: id } });
-    let newType: ExamType | undefined = undefined;
+    let newType: any | undefined = undefined;
     if (type !== undefined && type !== foundSubtype.id) {
       newType = await this.typeService.findOne(type);
     }
     const subtype = await this.repository.findOneAndUpdate({ id }, { ...data, type: newType });
-    return subtype;
+    return { ...subtype, type: subtype.type.id };
   }
 
   async deleteOne(id: number): Promise<void> {

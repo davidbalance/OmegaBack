@@ -1,7 +1,7 @@
 import { mockDiseaseGroup } from "@/disease/disease-group/services/test/stub/disease-group.stub";
-import { Disease } from "@/disease/disease/entities/disease.entity";
+import { DiseaseEntity } from "@/disease/disease/entities/disease.entity";
 
-const stubDisease = (id: number): Disease => ({
+const stubDisease = (id: number): DiseaseEntity => ({
     id: id,
     name: "my-stub-name",
     status: true,

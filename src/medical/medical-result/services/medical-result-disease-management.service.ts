@@ -1,26 +1,18 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { MedicalResultDiseaseRepository } from "../repositories/medical-result-disease.repository";
-import { MedicalResultManagementService } from "./medical-result-management.service";
-import { MedicalResultDisease } from "../entities/medical-result-disease.entity";
-import { PostMedicalResultDiseaseRequestDto } from "../dtos/request/post.medical-result-disease.dto";
+import { PostMedicalResultDiseaseRequestDto } from "../dtos/request/medical-result-disease.post.dto";
+import { MedicalResultDisease } from "../dtos/response/medical-result.-disease.base.dto";
 
 @Injectable()
 export class MedicalResultDiseaseManagementService {
 
   constructor(
     @Inject(MedicalResultDiseaseRepository) private readonly repository: MedicalResultDiseaseRepository,
-    @Inject(MedicalResultManagementService) private readonly service: MedicalResultManagementService,
   ) { }
 
   async create({ medicalResultId, ...data }: PostMedicalResultDiseaseRequestDto): Promise<MedicalResultDisease> {
-    const medicalResult = await this.service.findOne(medicalResultId);
-    const medicalResultDisease = await this.repository.create({ ...data, result: medicalResult });
+    const medicalResultDisease = await this.repository.create({ ...data, result: { id: medicalResultId } });
     return medicalResultDisease;
-  }
-
-  async findAll(): Promise<MedicalResultDisease[]> {
-    const medicalResultDiseases = await this.repository.find();
-    return medicalResultDiseases;
   }
 
   async findOne(id: number): Promise<MedicalResultDisease> {

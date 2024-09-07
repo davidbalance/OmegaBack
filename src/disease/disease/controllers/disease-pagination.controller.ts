@@ -1,5 +1,5 @@
 import { CountMetaDto, FilterMetaDto, PageResponseDto } from "@/shared/utils/bases/base.pagination.dto";
-import { GetDiseaseArrayResponseDto } from "../dtos/response/get.disease-array.response.dto";
+import { GetDiseaseArrayResponseDto } from "../dtos/response/disease-array.get.dto";
 import { DiseasePaginationService } from "../services/disease-pagination.service";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 import { Controller, UseGuards, Inject, Get, Query, Param } from "@nestjs/common";

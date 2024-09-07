@@ -2,10 +2,9 @@ import { Body, Controller, Get, Inject, Param, Patch, UseGuards } from '@nestjs/
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { WebClientResourceService } from '../services/web-client-resource.service';
-import { GetNavResourceArrayResponseDto } from '@/omega-web/web-resource/dtos/response/get.nav-resource-array.response.dto';
-import { PatchWebClientResourceRequestDto } from '../dtos/request/patch.web-client-resource.request.dto';
-import { PatchWebClientResourceResponseDto } from '../dtos/response/patch.web-client-resource.response.dto';
+import { PatchWebClientResourceRequestDto } from '../dtos/request/web-client-resource.patch.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
+import { GetNavResourceArrayResponseDto } from '@/omega-web/web-resource/dtos/response/nav-resource-array.get.dto';
 
 @ApiTags('Omega/Web/Client')
 @ApiBearerAuth()
@@ -17,10 +16,10 @@ export class WebClientResourceController {
   ) { }
 
   @Get('resource/:user')
-  async findOneWebResources(
+  async find(
     @Param('user') user: number,
   ): Promise<GetNavResourceArrayResponseDto> {
-    const data = await this.service.findAll(user);
+    const data = await this.service.find(user);
     return plainToInstance(GetNavResourceArrayResponseDto, { data });
   }
 
@@ -28,7 +27,7 @@ export class WebClientResourceController {
   async assignWebResourceToWebClient(
     @Param('user') user: number,
     @Body() body: PatchWebClientResourceRequestDto
-  ): Promise<PatchWebClientResourceResponseDto> {
+  ): Promise<any> {
     await this.service.updateResources(user, body);
     return {};
   }

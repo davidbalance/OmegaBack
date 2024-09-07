@@ -1,11 +1,11 @@
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { MedicalEmail } from "./medical-email.entity";
-import { MedicalOrder } from "@/medical/medical-order/entities/medical-order.entity";
+import { MedicalEmailEntity } from "./medical-email.entity";
+import { MedicalOrderEntity } from "@/medical/medical-order/entities/medical-order.entity";
 
 @Entity({ name: 'tbl_m_client' })
 @Index('idx_medical_dni', ['dni'], { unique: true })
-export class MedicalClient extends AbstractEntity<number> {
+export class MedicalClientEntity extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'medical_client_id' })
     public id: number;
 
@@ -38,13 +38,13 @@ export class MedicalClient extends AbstractEntity<number> {
 
     @Column({ name: 'location_area_name', type: 'varchar', length: 128, nullable: true })
     public areaName: string;
-    
+
     @Column({ name: 'patient_role', type: 'varchar', length: 256, nullable: true })
     public role?: string;
 
-    @OneToMany(() => MedicalOrder, order => order.client, { eager: false })
-    public medicalOrders: MedicalOrder[];
+    @OneToMany(() => MedicalOrderEntity, order => order.client, { eager: false })
+    public medicalOrders: MedicalOrderEntity[];
 
-    @OneToMany(() => MedicalEmail, email => email.client, { eager: true })
-    public email: MedicalEmail[];
+    @OneToMany(() => MedicalEmailEntity, email => email.client, { eager: true })
+    public email: MedicalEmailEntity[];
 }

@@ -1,11 +1,11 @@
 import { Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PatientGenderEnum } from "../enums/patient.enum";
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
-import { User } from "@/user/user/entities/user.entity";
+import { UserEntity } from "@/user/user/entities/user.entity";
 
 @Entity({ name: "tbl_u_patients" })
 @Index('idx_patient_user', ['user'], { unique: true })
-export class Patient extends AbstractEntity<number> {
+export class PatientEntity extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'patient_id' })
     public id: number;
 
@@ -15,7 +15,7 @@ export class Patient extends AbstractEntity<number> {
     @Column({ name: 'patient_birthday', type: 'date', nullable: false })
     public birthday: Date;
 
-    @OneToOne(() => User, { eager: true, nullable: false })
+    @OneToOne(() => UserEntity, { eager: true, nullable: false })
     @JoinColumn({ foreignKeyConstraintName: 'fk_u_user_patient', referencedColumnName: 'dni', name: 'user_dni' })
-    public user: User;
+    public user: UserEntity;
 }

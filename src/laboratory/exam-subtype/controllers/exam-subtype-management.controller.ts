@@ -1,15 +1,12 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, UseGuards } from '@nestjs/common';
 import { ExamSubtypeManagementService } from '../services/exam-subtype-management.service';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { PostExamSubtypeRequestDto } from '../dtos/request/post.exam-subtype.dto';
-import { PostExamSubtypeResponseDto } from '../dtos/response/post.exam-subtype.response.dto';
-import { GetExamSubtypeArrayResponseDto } from '../dtos/response/get.exam-subtype-array.response.dto';
-import { GetExamSubtypeResponseDto } from '../dtos/response/get.exam-subtype.response.dto';
+import { PostExamSubtypeRequestDto } from '../dtos/request/exam-subtype.post.dto';
 import { plainToInstance } from 'class-transformer';
-import { PatchExamSubtypeRequestDto } from '../dtos/request/patch.exam-subtype.dto';
-import { PatchExamSubtypeResponseDto } from '../dtos/response/patch.exam-subtype.response.dto';
-import { DeleteExamSubtypeResponseDto } from '../dtos/response/delete.exam-subtype.response.dto';
+import { PatchExamSubtypeRequestDto } from '../dtos/request/exam-subtype.patch.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
+import { GetExamSubtypeResponseDto } from '../dtos/response/exam-subtype.get.dto';
+import { HasValueResponseDto } from '@/shared/utils/bases/base.has-value.dto';
 
 @ApiTags('Laboratory/Exam/Subtype')
 @ApiBearerAuth()
@@ -23,32 +20,40 @@ export class ExamSubtypeManagementController {
   @Post()
   async create(
     @Body() data: PostExamSubtypeRequestDto
-  ): Promise<PostExamSubtypeResponseDto> {
+  ): Promise<any> {
     const subtype = await this.examSubtypeService.create(data);
-    return plainToInstance(PostExamSubtypeResponseDto, subtype);
+    return {}
   }
 
-  @Get(':id')
+  @Get('subtype/:id')
   async findOne(
     @Param('id') id: string
   ): Promise<GetExamSubtypeResponseDto> {
-    const data = this.examSubtypeService.findOne(+id);
+    const data = await this.examSubtypeService.findOne(+id);
     return plainToInstance(GetExamSubtypeResponseDto, data);
   }
 
-  @Patch(':id')
+  @Get('subtype/:id/has/exams')
+  async hasExams(
+    @Param('id') id: string
+  ): Promise<HasValueResponseDto> {
+    const hasValue = await this.examSubtypeService.hasExams(+id);
+    return plainToInstance(HasValueResponseDto, { hasValue });
+  }
+
+  @Patch('subtype/:id')
   async updateOne(
     @Param('id') id: string,
     @Body() updateExamSubtypeDto: PatchExamSubtypeRequestDto
-  ): Promise<PatchExamSubtypeResponseDto> {
+  ): Promise<any> {
     const data = await this.examSubtypeService.updateOne(+id, updateExamSubtypeDto);
-    return plainToInstance(PatchExamSubtypeResponseDto, data);
+    return {}
   }
 
-  @Delete(':id')
+  @Delete('subtype/:id')
   async remove(
     @Param('id') id: string
-  ): Promise<DeleteExamSubtypeResponseDto> {
+  ): Promise<any> {
     await this.examSubtypeService.deleteOne(+id);
     return {};
   }

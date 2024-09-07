@@ -1,9 +1,7 @@
 import { Controller, Param, UseGuards, Patch, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
-import { plainToInstance } from "class-transformer";
 import { OrderStatus } from "../enums";
 import { MedicalOrderManagementService } from "../services/medical-order-management.service";
-import { GetMedicalOrderResponseDto } from "../dtos/response/get.medical-order.response.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
 @ApiTags('Medical/Order')
@@ -18,16 +16,16 @@ export class MedicalOrderStatusController {
   @Patch('validate')
   async findOneAndValidateStatus(
     @Param('id') id: number
-  ): Promise<GetMedicalOrderResponseDto> {
-    const order = await this.service.updateOne(id, { orderStatus: OrderStatus.VALIDATED });
-    return plainToInstance(GetMedicalOrderResponseDto, order);
+  ): Promise<any> {
+    await this.service.updateOne(id, { orderStatus: OrderStatus.VALIDATED });
+    return {}
   }
 
   @Patch('created')
   async findOneAndCratedStatus(
     @Param('id') id: number
-  ): Promise<GetMedicalOrderResponseDto> {
-    const order = await this.service.updateOne(id, { orderStatus: OrderStatus.CREATED });
-    return plainToInstance(GetMedicalOrderResponseDto, order);
+  ): Promise<any> {
+    await this.service.updateOne(id, { orderStatus: OrderStatus.CREATED });
+    return {}
   }
 }

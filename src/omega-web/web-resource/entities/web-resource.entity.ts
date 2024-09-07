@@ -2,7 +2,7 @@ import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_ow_resources' })
-export class WebResource extends AbstractEntity<number>{
+export class WebResourceEntity extends AbstractEntity<number>{
     @PrimaryGeneratedColumn('increment', { name: 'resource_id' })
     public id: number;
 

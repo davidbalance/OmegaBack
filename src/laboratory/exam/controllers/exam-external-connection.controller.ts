@@ -2,11 +2,11 @@ import { Controller, Inject, UseGuards, Post, Param, Body, Patch } from "@nestjs
 import { ApiTags, ApiHeader } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { ExamExternalConnectionService } from "../services/exam-external-connection.service";
-import { PostExamExternalRequestDto } from "../dtos/request/post.exam-external.request.dto";
-import { PostExamResponseDto } from "../dtos/response/post.exam.response.dto";
-import { PatchExamResponseDto } from "../dtos/response/patch.exam.response.dto";
-import { PatchExamExternalRequestDto } from "../dtos/request/patch.exam-external.request.dto";
+import { PostExamExternalRequestDto } from "../dtos/request/external-exam.post.dto";
+import { PatchExamExternalRequestDto } from "../dtos/request/external-exam.patch.dto";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
+import { PostExtendedExamResponseDto } from "../dtos/response/extended-exam.post.dto";
+import { PatchExtendedExamResponseDto } from "../dtos/response/extended-exam.patch.dto";
 
 @ApiTags('External/Connection', 'Laboratory/Exam')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -22,9 +22,9 @@ export class ExamExternalConnectionController {
         @Param('source') source: string,
         @Param('key') key: string,
         @Body() body: PostExamExternalRequestDto
-    ): Promise<PostExamResponseDto> {
+    ): Promise<PostExtendedExamResponseDto> {
         const exam = await this.service.create({ source, key }, body);
-        return plainToInstance(PostExamResponseDto, exam);
+        return plainToInstance(PostExtendedExamResponseDto, exam);
     }
 
     @Patch()
@@ -32,8 +32,8 @@ export class ExamExternalConnectionController {
         @Param('source') source: string,
         @Param('key') key: string,
         @Body() body: PatchExamExternalRequestDto
-    ): Promise<PatchExamResponseDto> {
+    ): Promise<PatchExtendedExamResponseDto> {
         const exam = await this.service.findOneAndUpdate({ source, key }, body);
-        return plainToInstance(PatchExamResponseDto, exam);
+        return plainToInstance(PatchExtendedExamResponseDto, exam);
     }
 }

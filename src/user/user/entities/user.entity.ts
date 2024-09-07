@@ -1,11 +1,11 @@
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { UserExtraAttribute } from "./user-extra-attribute.entity";
+import { UserExtraAttributeEntity } from "./user-extra-attribute.entity";
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 
 @Entity({ name: 'tbl_u_users' })
 @Index('idx_user_dni', ['dni'], { unique: true })
 @Index('idx_user_dni_email', ['dni', 'email'])
-export class User extends AbstractEntity<number> {
+export class UserEntity extends AbstractEntity<number> {
 
     @PrimaryGeneratedColumn('increment', { name: 'user_id' })
     public id: number;
@@ -31,6 +31,6 @@ export class User extends AbstractEntity<number> {
     @Column({ name: 'user_status', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
-    @OneToMany(() => UserExtraAttribute, attribute => attribute.user, { eager: false })
-    public extraAttributes: UserExtraAttribute[];
+    @OneToMany(() => UserExtraAttributeEntity, attribute => attribute.user, { eager: false })
+    public extraAttributes: UserExtraAttributeEntity[];
 }

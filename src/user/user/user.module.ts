@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UserRepository } from './repositories/user.repository';
-import { User } from './entities/user.entity';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { UserExtraAttribute } from './entities/user-extra-attribute.entity';
 import { UserExtraAttributeRepository } from './repositories/user-extra-attribute.repository';
 import { UserExtraAttributeService } from './services/user-extra-attributes.service';
 import { UserEventService } from './services/user-event.service';
@@ -13,10 +11,15 @@ import { UserManagementController } from './controllers/user-management.controll
 import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { UserPaginationController } from './controllers/user-pagination.controller';
 import { UserPaginationService } from './services/user-pagination.service';
+import { UserEntity } from './entities/user.entity';
+import { UserExtraAttributeEntity } from './entities/user-extra-attribute.entity';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([User, UserExtraAttribute]),
+    SqlDatabaseModule.forFeature([
+      UserEntity,
+      UserExtraAttributeEntity
+    ]),
     AuthenticationGuardModule,
   ],
   controllers: [
@@ -34,7 +37,8 @@ import { UserPaginationService } from './services/user-pagination.service';
     UserPaginationService
   ],
   exports: [
-    UserManagementService
+    UserManagementService,
+    UserExtraAttributeService
   ]
 })
 export class UserModule { }

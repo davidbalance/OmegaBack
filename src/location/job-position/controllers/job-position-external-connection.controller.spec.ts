@@ -1,9 +1,9 @@
 import { TestBed } from "@automock/jest";
 import { JobPositionExternalConnectionService } from "../services/job-position-external-connection.service";
 import { JobPositionExternalConnectionController } from "./job-position-external-connection.controller";
-import { PostJobPositionRequestDto } from "../dtos/request/post.job-position.request.dto";
-import { mockJobPosition } from "../services/test/stub/job-position.stub";
-import { PatchJobPositionRequestDto } from "../dtos/request/patch.job-position.request.dto";
+import { PostJobPositionRequestDto } from "../dtos/request/external-job-position.post.dto";
+import { mockJobPosition } from "../stub/job-position.stub";
+import { PatchJobPositionRequestDto } from "../dtos/request/external-job-position.patch.dto";
 
 describe('JobPositionExternalConnectionController', () => {
     let controller: JobPositionExternalConnectionController;

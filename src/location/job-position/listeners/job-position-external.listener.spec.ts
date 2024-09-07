@@ -1,7 +1,7 @@
 import { TestBed } from "@automock/jest";
 import { JobPositionExternalConnectionService } from "../services/job-position-external-connection.service";
 import { JobPositionExternalListener } from "./job-position-external.listener";
-import { mockJobPosition } from "../services/test/stub/job-position.stub";
+import { mockJobPosition } from "../stub/job-position.stub";
 
 describe('JobPositionExternalListener', () => {
     let listener: JobPositionExternalListener;

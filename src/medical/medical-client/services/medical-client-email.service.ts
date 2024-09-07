@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { MedicalEmail } from '../entities/medical-email.entity';
 import { MedicalEmailRepository } from '../repositories/medical-email.repository';
-import { PostMedicalEmailRequestDto } from '../dtos/request/post.medical-email.request.dto';
+import { PostMedicalEmailRequestDto } from '../dtos/request/medical-email.post.dto';
 import { MedicalClientManagementService } from './medical-client-management.service';
+import { MedicalEmail } from '../dtos/response/medical-email.base.dto';
 
 @Injectable()
 export class MedicalClientEmailService {
@@ -18,20 +18,21 @@ export class MedicalClientEmailService {
   }
 
   async assignEmail(dni: string, { ...data }: PostMedicalEmailRequestDto): Promise<MedicalEmail> {
-    const medicalClient = await this.clientService.findOneByDni(dni);
-    const newEmail = await this.emailRepository.create({ ...data, client: medicalClient });
+    const { id: client } = await this.clientService.findOneByDni(dni);
+    const newEmail = await this.emailRepository.create({ ...data, client: { id: client } });
     return newEmail;
   }
 
   async updateEmailDefault(id: number): Promise<MedicalEmail> {
     const currentEmail = await this.emailRepository.findOne({ where: { id }, relations: { client: true } });
     const currentClient = await this.clientService.findOne(currentEmail.client.id);
-    const ids = currentClient.email.map(e => e.id);
+    const email = await this.emailRepository.find({ where: { client: { dni: currentClient.dni } } });
+    const ids = email.map(e => e.id);
     for (const oldId of ids) {
       await this.emailRepository.findOneAndUpdate({ id: oldId }, { default: false });
     }
-    const email = await this.emailRepository.findOneAndUpdate({ id }, { default: true });
-    return email;
+    const updatedEmail = await this.emailRepository.findOneAndUpdate({ id }, { default: true });
+    return updatedEmail;
   }
 
   async deleteOne(id: number): Promise<void> {

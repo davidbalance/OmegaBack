@@ -2,8 +2,8 @@ import { TestBed } from "@automock/jest";
 import { DiseaseGroupRepository } from "../../repository/disease-group.repository";
 import { DiseaseGroupManagementService } from "../disease-group-management.service";
 import { mockDiseaseGroup, mockDiseaseGroups } from "./stub/disease-group.stub";
-import { PatchDiseaseGroupRequestDto } from "../../dtos/request/patch.disease-group.request.dto";
-import { PostDiseaseGroupRequestDto } from "../../dtos/request/post.disease-group.request.dto";
+import { PatchDiseaseGroupRequestDto } from "../../dtos/request/disease-group.patch.request.dto";
+import { PostDiseaseGroupRequestDto } from "../../dtos/request/disease-group.post.request.dto";
 
 describe('DiseaseGroupManagementService', () => {
   let service: DiseaseGroupManagementService;

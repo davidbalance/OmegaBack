@@ -2,7 +2,7 @@ import { Controller, Get, Inject, Query, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
-import { GetCorporativeGroupSingleArrayResponseDto } from '../dtos/response/get.corporative-group-single-array.response.dto';
+import { GetCorporativeGroupArrayResponseDto } from '../dtos/response/corporative-group-array.get.dto';
 import { CorporativeGroupPaginationService } from '../services/corporative-group-pagination.service';
 import { FilterMetaDto, CountMetaDto, PageResponseDto } from '@/shared/utils/bases/base.pagination.dto';
 
@@ -18,10 +18,10 @@ export class CorporativeGroupPaginationController {
   @Get('paginate')
   async find(
     @Query() query: FilterMetaDto
-  ): Promise<GetCorporativeGroupSingleArrayResponseDto> {
+  ): Promise<GetCorporativeGroupArrayResponseDto> {
     const data = await this.service.find(query);
     console.log(data);
-    return plainToInstance(GetCorporativeGroupSingleArrayResponseDto, { data });
+    return plainToInstance(GetCorporativeGroupArrayResponseDto, { data });
   }
 
   @Get('pages')

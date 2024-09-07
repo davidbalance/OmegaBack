@@ -7,10 +7,6 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MedicalClientModule } from "../medical-client/medical-client.module";
 import { MedicalOrderExternalConnectionController } from "./controllers/medical-order-external-connection.controller";
-import { MedicalOrderManagementController } from "./controllers/medical-order-management.controller";
-import { MedicalOrder } from "./entities/medical-order.entity";
-import { MedicalOrderExternalConnectionProvider, MedicalOrderExternalConnectionService } from "./services/medical-order-external-connection.service";
-import { MedicalOrderExternalKey } from "./entities/medical-order-external-key.entity";
 import { MedicalOrderManagementService } from "./services/medical-order-management.service";
 import { MedicalOrderEventService } from "./services/medical-order-event.service";
 import { MedicalOrderExternalKeyService } from "./services/medical-order-external-key.service";
@@ -21,13 +17,21 @@ import { MedicalOrderCloudController } from "./controllers/medical-order-cloud.c
 import { MedicalOrderMailController } from "./controllers/medical-order-mail.controller";
 import { MedicalOrderPaginationController } from "./controllers/medical-order-pagination.controller";
 import { MedicalOrderCloudService } from "./services/medical-order-cloud.service";
-import { MedicalOrderFlatPaginationService } from "./services/medical-order-flat-pagination.service";
-import { MedicalOrderFlatService } from "./services/medical-order-flat.service";
 import { MedicalOrderStatusController } from "./controllers/medical-order-status.controller";
+import { MedicalOrderPaginationService } from "./services/medical-order-pagination.service";
+import { MedicalOrderEntity } from "./entities/medical-order.entity";
+import { MedicalOrderExternalKeyEntity } from "./entities/medical-order-external-key.entity";
+import { MedicalOrderDoctorPaginationController } from "./controllers/medical-order-doctor-pagination.controller";
+import { MedicalOrderDoctorPaginationService } from "./services/medical-order-doctor-pagination.service";
+import { MedicalOrderExpandedPaginationService } from "./services/medical-order-expanded-pagination.service";
+import { MedicalOrderExternalConnectionProvider, MedicalOrderExternalConnectionService } from "./services/medical-order-external-connection.service";
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([MedicalOrder, MedicalOrderExternalKey]),
+    SqlDatabaseModule.forFeature([
+      MedicalOrderEntity,
+      MedicalOrderExternalKeyEntity
+    ]),
     UserModule,
     AuthenticationGuardModule,
     DniInterceptorModule,
@@ -58,9 +62,9 @@ import { MedicalOrderStatusController } from "./controllers/medical-order-status
   ],
   controllers: [
     MedicalOrderCloudController,
+    MedicalOrderDoctorPaginationController,
     MedicalOrderExternalConnectionController,
     MedicalOrderMailController,
-    MedicalOrderManagementController,
     MedicalOrderPaginationController,
     MedicalOrderStatusController
   ],
@@ -68,19 +72,19 @@ import { MedicalOrderStatusController } from "./controllers/medical-order-status
     MedicalOrderExternalKeyRepository,
     MedicalOrderRepository,
     MedicalOrderCloudService,
+    MedicalOrderDoctorPaginationService,
     MedicalOrderEventService,
+    MedicalOrderExpandedPaginationService,
     MedicalOrderExternalConnectionService,
+    MedicalOrderExternalConnectionProvider,
     MedicalOrderExternalKeyService,
-    MedicalOrderFlatPaginationService,
-    MedicalOrderFlatService,
     MedicalOrderMailService,
     MedicalOrderManagementService,
-    MedicalOrderExternalConnectionProvider
+    MedicalOrderPaginationService
   ],
   exports: [
-    MedicalOrderManagementService,
-    MedicalOrderExternalConnectionService,
-    MedicalOrderExternalConnectionProvider
+    MedicalOrderExternalConnectionProvider,
+    MedicalOrderManagementService
   ]
 })
 export class MedicalOrderModule { }

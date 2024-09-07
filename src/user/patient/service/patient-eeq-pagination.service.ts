@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Patient } from '../entities/patient.entity';
 import { PatientRepository } from '../repositories/patient.repository';
 import { BasePaginationService } from '@/shared/utils/bases/base.pagination.service';
 import { Brackets, SelectQueryBuilder } from 'typeorm';
-import { PatientEeqResponseDto } from '../dtos/response/base.patient-eeq.response.dto';
+import { PatientEeq } from '../dtos/response/patient-eeq.base.dto';
+import { PatientEntity } from '../entities/patient.entity';
 
 @Injectable()
-export class PatientEeqPaginationService extends BasePaginationService<Patient, PatientEeqResponseDto> {
+export class PatientEeqPaginationService extends BasePaginationService<PatientEntity, PatientEeq> {
 
   private readonly companyName: string = 'employee_of';
   private readonly companyValue: string = '1790053881001'
@@ -16,7 +16,7 @@ export class PatientEeqPaginationService extends BasePaginationService<Patient, 
     @Inject(PatientRepository) private readonly repository: PatientRepository,
   ) { super(); }
 
-  protected queryBuilder(filter: string): SelectQueryBuilder<Patient> {
+  protected queryBuilder(filter: string, extras?: any | undefined): SelectQueryBuilder<PatientEntity> {
     return this.repository.query('patient')
       .leftJoinAndSelect('patient.user', 'user', 'user.status = :status ', { status: true })
       .leftJoinAndSelect('user.extraAttributes', 'extraAttribute')

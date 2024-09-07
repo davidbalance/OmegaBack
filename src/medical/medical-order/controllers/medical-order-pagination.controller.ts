@@ -1,33 +1,35 @@
-import { Controller, Body, Inject, Get, UseGuards } from "@nestjs/common";
+import { Controller, Body, Inject, Get, UseGuards, Param } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { MedicalOrderFlatPaginationService } from "../services/medical-order-flat-pagination.service";
-import { GetMedicalOrderFlatArrayResponseDto } from "../dtos/response/post.medical-order-flat-pagination.response.dto";
-import { CountMetaDto, FilterMetaDto } from "@/shared/utils/bases/base.pagination.dto";
+import { CountMetaDto, FilterMetaDto, PageResponseDto } from "@/shared/utils/bases/base.pagination.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
+import { GetMedicalOrderArrayResponseDto } from "../dtos/response/medical-order-array.get.dto";
+import { MedicalOrderPaginationService } from "../services/medical-order-pagination.service";
 
-@ApiTags('Medical/Order')
+@ApiTags('Medical/Order', 'Pagination')
 @ApiBearerAuth()
-@Controller('medical/orders')
+@Controller('patient/:dni/medical/orders')
 @UseGuards(JwtAuthGuard)
 export class MedicalOrderPaginationController {
   constructor(
-    @Inject(MedicalOrderFlatPaginationService) private readonly service: MedicalOrderFlatPaginationService
+    @Inject(MedicalOrderPaginationService) private readonly service: MedicalOrderPaginationService
   ) { }
 
   @Get('paginate')
   async find(
+    @Param('dni') dni: string,
     @Body() query: FilterMetaDto
-  ): Promise<GetMedicalOrderFlatArrayResponseDto> {
-    const data = await this.service.find(query);
-    return plainToInstance(GetMedicalOrderFlatArrayResponseDto, { data });
+  ): Promise<GetMedicalOrderArrayResponseDto> {
+    const data = await this.service.find(query, dni);
+    return plainToInstance(GetMedicalOrderArrayResponseDto, { data });
   }
 
-  @Get('count')
+  @Get('pages')
   async count(
+    @Param('dni') dni: string,
     @Body() query: CountMetaDto
-  ): Promise<GetMedicalOrderFlatArrayResponseDto> {
-    const data = await this.service.count(query);
-    return plainToInstance(GetMedicalOrderFlatArrayResponseDto, { data });
+  ): Promise<PageResponseDto> {
+    const pages = await this.service.count(query, dni);
+    return plainToInstance(PageResponseDto, { pages });
   }
 }

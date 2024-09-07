@@ -2,7 +2,7 @@ import { Controller, Get, Param, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { MedicalOrderCloudService } from "../services/medical-order-cloud.service";
-import { GetMedicalOrderCloudResponseDto } from "../dtos/response/get.medical-order-cloud.response.dto";
+import { GetMedicalOrderCloudResponseDto } from "../dtos/response/medical-order-cloud.get.dto";
 
 @ApiTags('Medical/Order')
 @ApiBearerAuth()

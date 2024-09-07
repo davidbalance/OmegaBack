@@ -1,10 +1,10 @@
 import { TestBed } from "@automock/jest";
 import { FileDownloaderService } from "../services/file-downloader.service";
 import { FileDownloaderController } from "./file-downloader.controller";
-import { PostFileSourceRequestDto } from "../dtos/request/post.file-source.request.dto";
-import { FileSourceEnum } from "../dtos/request/base.file-source.request.dto";
+import { PostFileSourceRequestDto } from "../dtos/request/file-source.post.dto";
+import { FileSourceEnum } from "../dtos/request/file-source.base.dto";
 import { Response } from "express";
-import { PostDownloadZipRequestDto } from "../dtos/request/post.download-zip.request.dto";
+import { PostDownloadZipRequestDto } from "../dtos/request/download-zip.post.dto";
 
 describe('FileDownloaderController', () => {
     let controller: FileDownloaderController;

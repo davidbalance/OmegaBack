@@ -1,16 +1,16 @@
-import { Management } from "@/location/management/entities/management.entity";
+import { ManagementEntity } from "@/location/management/entities/management.entity";
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 
 @Entity('tbl_lo_areas')
-export class Area extends AbstractEntity<number> {
+export class AreaEntity extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'area_id' })
     public id: number;
 
     @Column({ name: 'area_name', type: 'varchar', length: 128, nullable: false })
     public name: string;
 
-    @ManyToOne(() => Management, management => management.areas, { eager: false, nullable: false })
+    @ManyToOne(() => ManagementEntity, management => management.areas, { eager: false, nullable: false })
     @JoinColumn({ foreignKeyConstraintName: 'fk_lo_managements_areas', referencedColumnName: 'id', name: 'management_id' })
-    public management: Management;
+    public management: ManagementEntity;
 }

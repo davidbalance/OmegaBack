@@ -1,7 +1,7 @@
 import { Controller, Get, Inject, Query, UseGuards } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { GetDoctorArrayResponseDto } from '../dtos/response/get.doctor-array.response.dto';
+import { GetDoctorArrayResponseDto } from '../dtos/response/doctor-array.get.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 import { DoctorPaginationService } from '../services/doctor-pagination.service';
 import { FilterMetaDto, CountMetaDto, PageResponseDto } from '@/shared/utils/bases/base.pagination.dto';

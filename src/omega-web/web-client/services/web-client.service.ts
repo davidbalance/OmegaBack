@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { WebClient } from '../entities/web-client.entity';
 import { WebClientRepository } from '../repositories/web-client.repository';
+import { WebClient } from '../dtos/response/web-client.base.dto';
 
 @Injectable()
 export class WebClientService {

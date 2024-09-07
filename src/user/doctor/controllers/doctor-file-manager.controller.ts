@@ -4,8 +4,7 @@ import { Body, Controller, Get, Inject, Param, ParseFilePipe, Post, Res, Uploade
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { DoctorFileManagementService } from '../services/doctor-file-management.service';
-import { PatchDoctorSignatureRequestDto } from '../dtos/request/patch.doctor-signature.dto';
-import { PatchDoctorSignatureResponseDto } from '../dtos/response/patch.doctor-signature.response.dto';
+import { PatchDoctorSignatureRequestDto } from '../dtos/request/doctor-signature.patch.dto';
 import { Response } from 'express';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
@@ -44,7 +43,7 @@ export class DoctorFileManagerController {
             ],
             fileIsRequired: true
         })) file: Express.Multer.File
-    ): Promise<PatchDoctorSignatureResponseDto> {
+    ): Promise<any> {
         await this.service.uploadFile(id, file);
         return {};
     }

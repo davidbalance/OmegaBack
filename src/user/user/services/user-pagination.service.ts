@@ -1,24 +1,20 @@
-import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { UserRepository } from "../repositories/user.repository";
-import { UserEventService } from "./user-event.service";
-import { User } from "../entities/user.entity";
-import { Brackets, Not, SelectQueryBuilder } from "typeorm";
-import { PostUserRequestDto } from "../dtos/request/post.user.request.dto";
-import { UserExtraAttributeService } from "./user-extra-attributes.service";
-import { UserResponseDto } from "../dtos/response/base.user.response.dto";
+import { Brackets, SelectQueryBuilder } from "typeorm";
 import { BasePaginationService } from "@/shared/utils/bases/base.pagination.service";
+import { UserEntity } from "../entities/user.entity";
+import { User } from "../dtos/response/user.base.dto";
 
 @Injectable()
-export class UserPaginationService extends BasePaginationService<User, UserResponseDto> {
+export class UserPaginationService extends BasePaginationService<UserEntity, User> {
 
     constructor(
         @Inject(UserRepository) private readonly repository: UserRepository,
     ) { super(); }
 
-    protected queryBuilder(filter: string, extras: number): SelectQueryBuilder<User> {
-        console.log(filter, extras);
+    protected queryBuilder(filter: string, extras?: any | undefined): SelectQueryBuilder<UserEntity> {
         return this.repository.query('user')
-            .select('user.id', 'user')
+            .select('user.id', 'id')
             .addSelect('user.dni', 'dni')
             .addSelect('user.email', 'email')
             .addSelect('user.name', 'name')
@@ -32,6 +28,6 @@ export class UserPaginationService extends BasePaginationService<User, UserRespo
             ))
             .andWhere('user.status = :status', { status: true })
             .andWhere('user.hasCredential = :hasCredential', { hasCredential: true })
-            .andWhere('user.id != :id', { id: extras })
+            .andWhere('user.id != :id', { id: extras });
     }
 }

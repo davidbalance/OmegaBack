@@ -1,4 +1,4 @@
-import { PostPatientRequestDto } from "@/user/patient/dtos/request/post.patient.request.dto";
+import { PostPatientRequestDto } from "@/user/patient/dtos/request/patient.post.dto";
 
 export const PatientEvent = {
     EXTERNAL_CREATE: 'patient.external.create',

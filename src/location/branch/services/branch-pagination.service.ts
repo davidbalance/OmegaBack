@@ -1,19 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Branch } from '../entities/branch.entity';
 import { BranchRepository } from '../repositories/branch.repository';
 import { BasePaginationService } from '@/shared/utils/bases/base.pagination.service';
 import { SelectQueryBuilder } from 'typeorm';
-import { BranchSingleResponseDto } from '../dtos/response/base.branch-single.response.dto';
+import { BranchEntity } from '../entities/branch.entity';
+import { Branch } from '../dtos/response/branch.base.dto';
 
 @Injectable()
-export class BranchPaginationService extends BasePaginationService<Branch, BranchSingleResponseDto> {
+export class BranchPaginationService extends BasePaginationService<BranchEntity, Branch> {
 
   constructor(
     @Inject(BranchRepository) private readonly repository: BranchRepository
   ) { super(); }
 
-  protected queryBuilder(filter: string, extras: number): SelectQueryBuilder<Branch> {
-    console.log(filter, extras);
+  protected queryBuilder(filter: string, extras: number): SelectQueryBuilder<BranchEntity> {
     return this.repository.query('branch')
       .innerJoin('branch.company', 'company', 'company.id = :company', { company: extras })
       .innerJoinAndSelect('branch.city', 'city')
