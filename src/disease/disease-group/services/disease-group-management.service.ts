@@ -21,7 +21,7 @@ export class DiseaseGroupManagementService {
 
   async hasDiseases(id: number): Promise<boolean> {
     const value = await this.repository.findOne({ where: { id }, relations: { diseases: true } });
-    return value.diseases.length > 0;
+    return value.diseases.filter(e => e.status).length > 0;
   }
 
   async updateOne(id: number, update: PatchDiseaseGroupRequestDto): Promise<DiseaseGroup> {

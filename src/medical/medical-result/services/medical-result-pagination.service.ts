@@ -27,12 +27,17 @@ export class MedicalResultPaginationService extends BasePaginationService<Medica
       .addSelect('report.id', 'reportId')
       .addSelect('report.hasFile', 'reportHasFile')
       .where('result.examName LIKE :examName', { examName: `%${filter}%` })
-    query.printSql();
     return query;
   }
 
   protected transform(data: { id: number, examType: string, examSubtype: string, examName: string, hasFile: boolean, diseaseName: string, diseaseCommentary: string, reportId: number, reportHasFile: boolean }[]): MedicalResult[] {
-    const transformed: Record<number, MedicalResult> = data.reduce((prev, curr) => ({ ...prev, [curr.id]: { ...curr, ...prev[curr.id], diseases: [...(prev[curr.id] ? prev[curr.id].disease : []), curr.diseaseName && curr.diseaseCommentary ? `${curr.diseaseName}, ${curr.diseaseCommentary}` : null].filter(e => !!e) } as MedicalResult }), {});
+    const transformed: Record<number, MedicalResult> = data.reduce((prev, curr) => ({
+      ...prev, [curr.id]: {
+        ...curr,
+        ...prev[curr.id],
+        diseases: [...(prev[curr.id] ? prev[curr.id].diseases : []), curr.diseaseName && curr.diseaseCommentary ? `${curr.diseaseName}, ${curr.diseaseCommentary}` : null].filter(e => !!e)
+      } as MedicalResult
+    }), {});
     return Object.values(transformed);
   }
 }

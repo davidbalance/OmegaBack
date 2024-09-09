@@ -4,6 +4,8 @@ import { plainToInstance } from "class-transformer";
 import { GetManagementArrayResponseDto } from "../dtos/response/management-array.get.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 import { ManagementOptionService } from "../services/management-option.service";
+import { GetOptionManagementResponseDto } from "../dtos/response/option-management.get.dto";
+import { GetExtendedManagementArrayResponseDto } from "../dtos/response/extended-management-array.get.dto";
 
 @ApiTags('Location>Management', 'Options')
 @ApiBearerAuth()
@@ -15,8 +17,8 @@ export class ManagementOptionController {
   ) { }
 
   @Get()
-  async find(): Promise<GetManagementArrayResponseDto> {
+  async find(): Promise<GetExtendedManagementArrayResponseDto> {
     const data = await this.service.find();
-    return plainToInstance(GetManagementArrayResponseDto, { data });
+    return plainToInstance(GetExtendedManagementArrayResponseDto, { data });
   }
 }

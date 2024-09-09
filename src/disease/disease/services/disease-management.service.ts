@@ -37,7 +37,8 @@ export class DiseaseManagementService {
     if (group) {
       currentGroup = await this.groupService.findOne(group);
     }
-    const disease = await this.repository.findOneAndUpdate({ id }, { ...data, group: currentGroup });
+    await this.repository.findOneAndUpdate({ id }, { ...data, group: currentGroup });
+    const disease = await this.repository.findOne({ where: { id }, relations: { group: true } });
     return { ...disease, group: disease.group.id };
   }
 

@@ -11,6 +11,8 @@ import { JobPositionPaginationController } from './controllers/job-position-pagi
 import { JobPositionPaginationService } from './services/job-position-pagination.service';
 import { JobPositionEntity } from './entities/job-position.entity';
 import { JobPositionExternalKeyEntity } from './entities/job-position-external-key.entity';
+import { JobPositionOptionController } from './controllers/job-position-option.controller';
+import { JobPositionManagementService } from './services/job-position-management.service';
 
 @Module({
   imports: [
@@ -21,8 +23,9 @@ import { JobPositionExternalKeyEntity } from './entities/job-position-external-k
     AuthenticationGuardModule
   ],
   controllers: [
+    JobPositionExternalConnectionController,
+    JobPositionOptionController,
     JobPositionPaginationController,
-    JobPositionExternalConnectionController
   ],
   providers: [
     JobPositionExternalKeyRepository,
@@ -30,6 +33,7 @@ import { JobPositionExternalKeyEntity } from './entities/job-position-external-k
     JobPositionExternalListener,
     JobPositionExternalConnectionService,
     JobPositionExternalKeyService,
+    JobPositionManagementService,
     JobPositionPaginationService
   ],
   exports: []

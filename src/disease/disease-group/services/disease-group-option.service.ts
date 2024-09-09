@@ -12,6 +12,7 @@ export class DiseaseGroupOptionService {
   async find(): Promise<ExtendedDiseaseGroup[]> {
     const groups = await this.repository.query('group')
       .leftJoinAndSelect('group.diseases', 'disease', 'disease.status = 1')
+      .where('group.status = 1')
       .getMany();
     return groups;
   }

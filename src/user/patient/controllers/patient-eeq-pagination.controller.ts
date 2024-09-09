@@ -19,8 +19,8 @@ export class PatientEeqPaginationController {
   async find(
     @Query() query: FilterMetaDto
   ): Promise<GetPatientEeqArrayResponseDto> {
-    const [pages, data] = await this.service.find(query);
-    return plainToInstance(GetPatientEeqArrayResponseDto, { pages, data });
+    const data = await this.service.find(query);
+    return plainToInstance(GetPatientEeqArrayResponseDto, { data });
   }
 
   @Get('pages')
