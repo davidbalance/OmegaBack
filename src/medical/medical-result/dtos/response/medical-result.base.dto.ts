@@ -8,4 +8,6 @@ export class MedicalResult {
     @Expose() public readonly hasFile: boolean;
 
     @Expose() public readonly diseases: string[];
+    @Expose() public readonly reportId: number;
+    @Expose() public readonly reportHasFile: boolean;
 }

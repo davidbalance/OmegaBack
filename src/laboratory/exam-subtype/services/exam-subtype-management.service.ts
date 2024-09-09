@@ -35,7 +35,8 @@ export class ExamSubtypeManagementService {
     if (type !== undefined && type !== foundSubtype.id) {
       newType = await this.typeService.findOne(type);
     }
-    const subtype = await this.repository.findOneAndUpdate({ id }, { ...data, type: newType });
+    await this.repository.findOneAndUpdate({ id }, { ...data, type: newType });
+    const subtype = await this.repository.findOne({ where: { id }, relations: { type: true } });
     return { ...subtype, type: subtype.type.id };
   }
 

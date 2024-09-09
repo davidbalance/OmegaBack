@@ -1,4 +1,5 @@
 import { StreamableFile } from "@nestjs/common";
+import { ReadStream } from "fs";
 
 export abstract class StorageManager {
     /**
@@ -14,7 +15,7 @@ export abstract class StorageManager {
      * Returns a file in the desire directory
      * @param dir 
      */
-    abstract readFile(dir: string): StreamableFile | Promise<StreamableFile>;
+    abstract readFile(dir: string): ReadStream | Promise<ReadStream>;
 
     /**
      * Replace file

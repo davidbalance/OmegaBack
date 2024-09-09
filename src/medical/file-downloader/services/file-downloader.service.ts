@@ -5,6 +5,7 @@ import { ZipperService } from "@/shared/zipper/zipper.service";
 import { Injectable, Inject, StreamableFile, NotFoundException, Logger } from "@nestjs/common";
 import { FileSourceEnum, FileSourceRequestDto } from "../dtos/request/file-source.base.dto";
 import { PostDownloadZipRequestDto } from "../dtos/request/download-zip.post.dto";
+import { ReadStream } from "fs";
 
 @Injectable()
 export class FileDownloaderService {
@@ -13,8 +14,8 @@ export class FileDownloaderService {
 
     constructor(
         @Inject(ZipperService) private readonly zipper: ZipperService,
-        @Inject(MedicalResultFileManagementService) private readonly medicalResultService: FileManagementService<number>,
-        @Inject(MedicalReportFileManagementService) private readonly medicalReportService: FileManagementService<number>,
+        @Inject(MedicalResultFileManagementService) medicalResultService: FileManagementService<number>,
+        @Inject(MedicalReportFileManagementService) medicalReportService: FileManagementService<number>,
     ) {
         this.fileServices = {
             report: medicalReportService,
@@ -22,7 +23,7 @@ export class FileDownloaderService {
         };
     }
 
-    async downloadFile({ id, type }: FileSourceRequestDto): Promise<StreamableFile> {
+    async downloadFile({ id, type }: FileSourceRequestDto): Promise<ReadStream> {
         const stream = await this.fileServices[type].getFile(id);
         return stream;
     }

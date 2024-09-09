@@ -25,7 +25,7 @@ export class DiseaseGroupManagementController {
     return {}
   }
 
-  @Get(":id")
+  @Get("group/:id")
   async findOne(
     @Param('id') id: number
   ): Promise<GetDiseaseGroupResponseDto> {
@@ -41,7 +41,7 @@ export class DiseaseGroupManagementController {
     return plainToInstance(HasValueResponseDto, { hasValue });
   }
 
-  @Patch(":id")
+  @Patch("group/:id")
   async updateOne(
     @Param('id') id: number,
     @Body() body: PatchDiseaseGroupRequestDto
@@ -50,7 +50,7 @@ export class DiseaseGroupManagementController {
     return {}
   }
 
-  @Delete(':id')
+  @Delete('group/:id')
   async deleteOne(
     @Param('id') id: number
   ): Promise<any> {

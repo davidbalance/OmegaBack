@@ -8,6 +8,7 @@ import { GetUserResponseDto } from "../dtos/response/user.get.dto";
 import { PostUserRequestDto } from "../dtos/request/user.post.dto";
 import { PatchUserRequestDto } from "../dtos/request/user.patch.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
+import { PostUserResponseDto } from "../dtos/response/user.post.dto";
 
 @ApiTags('User>User')
 @ApiBearerAuth()
@@ -37,9 +38,9 @@ export class UserManagementController {
   @Post()
   async create(
     @Body() body: PostUserRequestDto
-  ): Promise<any> {
-    await this.userService.create(body);
-    return {}
+  ): Promise<PostUserResponseDto> {
+    const data = await this.userService.create(body);
+    return plainToInstance(PostUserResponseDto, data);
   }
 
   @Patch(':id')

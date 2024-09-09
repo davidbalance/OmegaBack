@@ -44,9 +44,9 @@ export class ExamSubtypeManagementController {
   @Patch('subtype/:id')
   async updateOne(
     @Param('id') id: string,
-    @Body() updateExamSubtypeDto: PatchExamSubtypeRequestDto
+    @Body() body: PatchExamSubtypeRequestDto
   ): Promise<any> {
-    const data = await this.examSubtypeService.updateOne(+id, updateExamSubtypeDto);
+    await this.examSubtypeService.updateOne(+id, body);
     return {}
   }
 

@@ -1,6 +1,6 @@
 import { MIME_TYPES } from '@/shared/pipes/file-type/constants';
 import { FileTypePipe } from '@/shared/pipes/file-type/file-type.pipe';
-import { Body, Controller, Get, Inject, Param, ParseFilePipe, Post, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, ParseFilePipe, Post, Res, StreamableFile, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { DoctorFileManagementService } from '../services/doctor-file-management.service';
@@ -22,14 +22,14 @@ export class DoctorFileManagerController {
     @Get('signature/:id')
     async findSignature(
         @Param('id') id: number,
-        @Res() response: Response
-    ) {
+        @Res({ passthrough: true }) response: Response
+    ): Promise<StreamableFile> {
         const image = await this.service.findFile(id);
         response.set({
             'Content-Type': 'image/png',
             'Content-Disposition': 'attachment; filename="firma.png"',
         });
-        image.getStream().pipe(response);
+        return new StreamableFile(image);
     }
 
     @Post('signature/:id')

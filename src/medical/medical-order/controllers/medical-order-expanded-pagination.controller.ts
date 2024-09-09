@@ -8,7 +8,7 @@ import { GetExapandedMedicalOrderResponseDto } from "../dtos/response/expanded-m
 
 @ApiTags('Medical>Order', 'Pagination')
 @ApiBearerAuth()
-@Controller('patient/:dni/medical/orders/expanded')
+@Controller('medical/orders/expanded')
 @UseGuards(JwtAuthGuard)
 export class MedicalOrderExpandedPaginationController {
   constructor(
@@ -17,19 +17,17 @@ export class MedicalOrderExpandedPaginationController {
 
   @Get('paginate')
   async find(
-    @Param('dni') dni: string,
     @Query() query: FilterMetaDto
   ): Promise<GetExapandedMedicalOrderResponseDto> {
-    const data = await this.service.find(query, dni);
+    const data = await this.service.find(query);
     return plainToInstance(GetExapandedMedicalOrderResponseDto, { data });
   }
 
   @Get('pages')
   async count(
-    @Param('dni') dni: string,
     @Query() query: CountMetaDto
   ): Promise<PageResponseDto> {
-    const pages = await this.service.count(query, dni);
+    const pages = await this.service.count(query);
     return plainToInstance(PageResponseDto, { pages });
   }
 }

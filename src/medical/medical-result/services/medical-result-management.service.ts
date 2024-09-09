@@ -16,16 +16,16 @@ export class MedicalResultManagementService {
   async create({ order: orderId, ...data }: MedicalResultRequestDto): Promise<MedicalResult> {
     const order = await this.orderService.findOne(orderId);
     const medicalResults = await this.repository.create({ ...data, order: order as any });
-    return { ...medicalResults, diseases: [] };
+    return { ...medicalResults, diseases: [], reportId: undefined, reportHasFile: undefined };
   }
 
   async findOne(id: number): Promise<MedicalResult> {
     const medicalResult = await this.repository.findOne({
       where: { id: id },
-      relations: { order: { client: true } }
+      relations: { order: { client: true }, report: true }
     });
 
-    return { ...medicalResult, diseases: medicalResult.diseases.map(e => `${e.diseaseName}, ${e.diseaseCommentary}`) };
+    return { ...medicalResult, reportId: medicalResult.report?.id || undefined, reportHasFile: medicalResult.report?.hasFile || undefined, diseases: medicalResult.diseases.map(e => `${e.diseaseName}, ${e.diseaseCommentary}`) };
   }
 
   async findDoctor(id: number): Promise<{ doctorDni: string, doctorFullname: string, doctorSignature: string }> {
@@ -66,7 +66,7 @@ export class MedicalResultManagementService {
 
   async updateOne(id: number, data: Partial<Omit<MedicalResult, 'diseases'>>): Promise<MedicalResult> {
     const medicalResult = await this.repository.findOneAndUpdate({ id }, data);
-    return { ...medicalResult, diseases: medicalResult.diseases.map(e => `${e.diseaseName}, ${e.diseaseCommentary}`) };
+    return { ...medicalResult, reportId: medicalResult.report.id, reportHasFile: medicalResult.report.hasFile, diseases: medicalResult.diseases.map(e => `${e.diseaseName}, ${e.diseaseCommentary}`) };
   }
 
   async attachReport(id: number, report: MedicalReportEntity): Promise<void> {

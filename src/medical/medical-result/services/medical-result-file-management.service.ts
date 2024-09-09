@@ -1,9 +1,10 @@
-import { Inject, Injectable, Logger, NotFoundException, StreamableFile } from "@nestjs/common";
+import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundException, StreamableFile } from "@nestjs/common";
 import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import { FileManagementService } from "@/shared/utils/bases/base.file-service";
 import { fileResultPath } from "@/shared/utils";
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { extname } from "path";
+import { ReadStream } from "fs";
 
 @Injectable()
 export class MedicalResultFileManagementService implements FileManagementService<number> {
@@ -13,7 +14,7 @@ export class MedicalResultFileManagementService implements FileManagementService
     @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
   ) { }
 
-  async getFile(key: number): Promise<StreamableFile> {
+  async getFile(key: number): Promise<ReadStream> {
     const medicalResult = await this.repository
       .query('medical-result')
       .select('medical-result.filePath', 'filepath')
@@ -48,15 +49,20 @@ export class MedicalResultFileManagementService implements FileManagementService
 
     const medicalResultPath = fileResultPath({ dni: clientDni, order: orderId });
     const extension = extname(file.originalname);
-    const filepath = await this.storage.saveFile(
-      file.buffer,
-      extension,
-      medicalResultPath,
-      examName.toLocaleLowerCase().replace(/[^A-Z0-9]+/ig, '_')
-    );
+    try {
+      const filepath = await this.storage.saveFile(
+        file.buffer,
+        extension,
+        medicalResultPath,
+        examName.toLocaleLowerCase().replace(/[^A-Z0-9]+/ig, '_')
+      );
 
-    await this.repository.findOneAndUpdate({ id: key }, { filePath: filepath, hasFile: true });
-    return filepath;
+      await this.repository.findOneAndUpdate({ id: key }, { filePath: `${filepath}`, hasFile: true });
+      return filepath;
+    } catch (error) {
+      Logger.error(error);
+      throw new InternalServerErrorException('Something went wrong when writting the file');
+    }
   }
 
   async getFilePath(key: number): Promise<string> {

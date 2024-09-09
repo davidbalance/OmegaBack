@@ -3,6 +3,7 @@ import { DoctorRepository } from "../repositories/doctor.repository";
 import path, { extname } from 'path';
 import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';
 import { signaturePath } from '@/shared/utils';
+import { ReadStream } from 'fs';
 
 @Injectable()
 export class DoctorFileManagementService {
@@ -12,7 +13,7 @@ export class DoctorFileManagementService {
         @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager
     ) { }
 
-    async findFile(id: number): Promise<StreamableFile> {
+    async findFile(id: number): Promise<ReadStream> {
         const doctor = await this.repository.findOne({ where: { id: id } });
         const filepath: string = signaturePath({ dni: doctor.user.dni });
         const directoryImage: string = path.join(filepath, `${doctor.user.dni}.png`);
