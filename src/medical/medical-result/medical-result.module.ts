@@ -22,12 +22,14 @@ import { MedicalResultDiseaseReportController } from "./controllers/medical-resu
 import { MedicalResultEntity } from "./entities/medical-result.entity";
 import { MedicalResultDiseaseEntity } from "./entities/medical-result-disease.entity";
 import { MedicalResultExternalKeyEntity } from "./entities/medical-result-external-key.entity";
-import { MedicalResultDoctorPaginationController } from "./controllers/medical-result--doctor-pagination.controller";
+import { MedicalResultDoctorPaginationController } from "./controllers/medical-result-doctor-pagination.controller";
 import { MedicalResultPaginationController } from "./controllers/medical-result-pagination.controller";
 import { MedicalResultDoctorPaginationService } from "./services/medical-result-doctor-pagination.service";
 import { MedicalResultPaginationService } from "./services/medical-result-pagination.service";
 import { MedicalDiseaseManagementController } from "./controllers/medical-disease-management.controller";
 import { MedicalResultManagementController } from "./controllers/medical-result-management.controller";
+import { MedicalResultReportService } from "./services/medical-result-report.service";
+import { MedicalResultReportController } from "./controllers/medical-result-report.controller";
 
 @Module({
   imports: [
@@ -51,6 +53,7 @@ import { MedicalResultManagementController } from "./controllers/medical-result-
     MedicalResultFileManagementController,
     MedicalResultManagementController,
     MedicalResultPaginationController,
+    MedicalResultReportController
   ],
   providers: [
     MedicalResultDiseaseRepository,
@@ -65,6 +68,7 @@ import { MedicalResultManagementController } from "./controllers/medical-result-
     MedicalResultFileManagementService,
     MedicalResultManagementService,
     MedicalResultPaginationService,
+    MedicalResultReportService
   ],
   exports: [
     MedicalResultManagementService,

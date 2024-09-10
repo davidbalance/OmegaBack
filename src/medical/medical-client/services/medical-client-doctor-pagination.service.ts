@@ -15,13 +15,19 @@ export class MedicalClientDoctorPaginationService extends BasePaginationService<
   protected queryBuilder(filter: string, extras?: string): SelectQueryBuilder<MedicalClientEntity> {
     return this.clientRepository.query('client')
       .leftJoin('client.medicalOrders', 'order')
-      .innerJoin('order.results', 'result', 'medicalResult.doctorDni = :dni', { dni: extras })
+      .innerJoin('order.results', 'result', 'result.doctorDni = :dni', { dni: extras })
       .select('client.dni', 'dni')
+      .distinct(true)
       .addSelect('client.name', 'name')
       .addSelect('client.lastname', 'lastname')
       .addSelect('client.createAt', 'createAt')
-      .where('client.dni = :filter', { filter: `%${filter}%` })
-      .orWhere('client.name = :filter', { filter: `%${filter}%` })
-      .orWhere('client.lastname = :filter', { filter: `%${filter}%` })
+      .where('client.dni LIKE :filter', { filter: `%${filter}%` })
+      .orWhere('client.name LIKE :filter', { filter: `%${filter}%` })
+      .orWhere('client.lastname LIKE :filter', { filter: `%${filter}%` })
   }
+
+  /* protected transform(data: { dni: string, name: string, lastname: string, createAt: Date }[]): MedicalClient[] {
+    const transform: Record<string, MedicalClient> = data.reduce((prev, curr) => ({ ...prev, [curr.dni]: curr }), {});
+    return Object.values(transform);
+  } */
 }

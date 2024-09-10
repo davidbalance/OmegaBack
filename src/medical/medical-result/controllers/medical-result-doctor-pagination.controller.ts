@@ -10,14 +10,14 @@ import { DniInterceptor } from "@/shared/interceptors/dni/dni.interceptor";
 
 @ApiTags('Medical>Result', 'Pagination')
 @ApiBearerAuth()
-@Controller('medical/:order/results/doctor')
 @UseGuards(JwtAuthGuard)
+@UseInterceptors(DniInterceptor)
+@Controller('medical/:order/results/doctor')
 export class MedicalResultDoctorPaginationController {
   constructor(
     @Inject(MedicalResultDoctorPaginationService) private readonly service: MedicalResultDoctorPaginationService
   ) { }
 
-  @UseInterceptors(DniInterceptor)
   @Get('paginate')
   async find(
     @Param('order') order: number,
@@ -28,7 +28,6 @@ export class MedicalResultDoctorPaginationController {
     return plainToInstance(GetMedicalResultArrayResponseDto, { data });
   }
 
-  @UseInterceptors(DniInterceptor)
   @Get('pages')
   async count(
     @Param('order') order: number,
