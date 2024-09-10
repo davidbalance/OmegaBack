@@ -6,6 +6,7 @@ import { WebResourceService } from '../services/web-resource.service';
 import { PostWebResourceRequestDto } from '../dtos/request/web-resource.post.dto';
 import { PatchWebResourceRequestDto } from '../dtos/request/web-resource.patch.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
+import { GetWebResourceResponseDto } from '../dtos/response/web-resource.get.dto';
 
 @ApiTags('Omega Web>Resource')
 @Controller('omega/web/resources')
@@ -19,6 +20,14 @@ export class WebResourceController {
   async find(): Promise<GetWebResourceArrayResponseDto> {
     const data = await this.webResourceService.find();
     return plainToInstance(GetWebResourceArrayResponseDto, { data });
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param('id') id: number
+  ): Promise<GetWebResourceResponseDto> {
+    const data = await this.webResourceService.findOne(id);
+    return plainToInstance(GetWebResourceResponseDto, data);
   }
 
   @Post()

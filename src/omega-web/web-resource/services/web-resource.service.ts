@@ -26,6 +26,11 @@ export class WebResourceService {
     return resources;
   }
 
+  async findOne(id: number): Promise<WebResource> {
+    const resources = await this.repository.findOne({ where: { id } });
+    return resources;
+  }
+
   async create(data: Partial<WebResourceRequestDto>): Promise<WebResource> {
     const resource = await this.repository.create(data);
     return resource;

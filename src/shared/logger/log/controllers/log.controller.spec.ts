@@ -1,9 +1,9 @@
 import { TestBed } from "@automock/jest";
 import { LogController } from "./log.controller";
-import { LogService } from "./log.service";
-import { GetLogLevelArrayResponseDto, GetLogLevelResponseDto, GetLogsResponseDto } from "./dtos/log.response.dto";
-import { PostLogRequestDto } from "./dtos/log.request.dto";
-import { Log } from "./entities/log.entity";
+import { LogService } from "../log.service";
+import { GetLogLevelArrayResponseDto, GetLogLevelResponseDto, GetLogsResponseDto } from "../dtos/log.response.dto";
+import { PostLogRequestDto } from "../dtos/log.request.dto";
+import { Log } from "../entities/log.entity";
 
 describe('LogController', () => {
     let controller: LogController;

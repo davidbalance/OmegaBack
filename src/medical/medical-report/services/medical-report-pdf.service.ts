@@ -51,26 +51,26 @@ export class MedicalReportPdfService {
     const signatureDirectory = path.resolve(data.doctorSignature);
     const signatureImg = readFileSync(signatureDirectory);
     const signatureBase64 = Buffer.from(signatureImg).toString('base64');
-
+    
     const headerDirectory = path.resolve('templates/medical-result/medical-report/header.png');
     const headerImg = readFileSync(headerDirectory);
     const headerBase64 = Buffer.from(headerImg).toString('base64');
-
+    
     const newContent = this.pdfService.parseHtml(data.content);
-
+    
     const baseContent = this.getContent(data, {
       signature: signatureBase64,
       header: headerBase64
     });
-
+    
     const docLayout = medicalReportDocumentLayout(baseContent, newContent);
-
+    
     const buffer = await this.pdfService.craft(docLayout);
-
+    
     const filePath = fileReportPath({ dni: data.patientDni, order: data.order });
-
+    
     const output = this.storage.saveFile(buffer, '.pdf', filePath, data.examName.toLocaleLowerCase().replace(/\s/g, '_'));
-
+    
     return output;
   }
 

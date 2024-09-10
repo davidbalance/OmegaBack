@@ -1,19 +1,15 @@
+import { ObjectArrayResponse } from "@/shared/utils/bases/base.object-array.interface";
 import { Expose, Type } from "class-transformer";
 
 export class FindLog {
-    @Expose()
-    public level: string;
-    @Expose()
-    public message: string;
-    @Expose()
-    public timestamp: Date;
+    @Expose() public level: string;
+    @Expose() public message: string;
+    @Expose() public timestamp: Date;
 }
 
-
-export class GetLogsResponseDto {
+export class GetLogArrayResponseDto implements ObjectArrayResponse<FindLog> {
     @Type(() => FindLog)
-    @Expose()
-    public logs: FindLog[];
+    @Expose() public data: FindLog[];
 }
 
 export class GetLogLevelResponseDto {
@@ -21,8 +17,7 @@ export class GetLogLevelResponseDto {
     public level: string;
 }
 
-export class GetLogLevelArrayResponseDto {
+export class GetLogLevelArrayResponseDto implements ObjectArrayResponse<GetLogLevelResponseDto> {
     @Type(() => GetLogLevelResponseDto)
-    @Expose()
-    public levels: GetLogLevelResponseDto[];
+    @Expose() public data: GetLogLevelResponseDto[];
 }
