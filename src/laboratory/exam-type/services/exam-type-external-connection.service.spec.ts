@@ -1,151 +1,135 @@
 import { TestBed } from "@automock/jest";
+import { PatchExamTypeRequestDto } from "../dtos/request/exam-type.patch.dto";
+import { PostExamTypeRequestDto } from "../dtos/request/exam-type.post.dto";
 import { ExamTypeRepository } from "../repositories/exam-type.repository";
+import { mockExamTypeExternalKey } from "../stub/exam-type-external-key.stub";
+import { mockExamType } from "../stub/exam-type.stub";
 import { ExamTypeExternalConnectionService } from "./exam-type-external-connection.service";
+import { ExamTypeExternalKeyService } from "./exam-type-external-key.service";
+import { mockExamTypeEntity } from "../stub/exam-type-entity.stub";
 
 describe('ExamTypeExternalConnectionService', () => {
     let service: ExamTypeExternalConnectionService;
     let repository: jest.Mocked<ExamTypeRepository>;
-    // let externalKeyService: jest.Mocked<ExamTypeExternalKeyService>;
+    let externalKeyService: jest.Mocked<ExamTypeExternalKeyService>;
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(ExamTypeExternalConnectionService).compile();
 
         service = unit;
         repository = unitRef.get(ExamTypeRepository);
-        // externalKeyService = unitRef.get(ExamTypeExternalKeyService);
+        externalKeyService = unitRef.get(ExamTypeExternalKeyService);
     });
 
-    it('', async () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should be defined', () => {
         expect(service).toBeDefined();
     });
 
-    /*     afterEach(() => {
-            jest.clearAllMocks();
+    it('findOne', async () => {
+        expect(service.findOne).toBeDefined()
+    });
+
+    describe('create', () => {
+        const source: string = 'test-source'
+        const key = 'test-key';
+        const data: PostExamTypeRequestDto = { name: 'Test Type' };
+        const keyParam = { source, key };
+        const mockedKey = mockExamTypeExternalKey();
+        const mockedExamType = mockExamTypeEntity();
+        const expectedValue = mockedExamType;
+
+        it('should create a new exam type', async () => {
+            // Arrange
+            externalKeyService.create.mockResolvedValue(mockedKey);
+            repository.create.mockResolvedValue(mockedExamType);
+            // Act
+            const result = await service.create(keyParam, data);
+            // Assert
+            expect(externalKeyService.create).toHaveBeenCalledWith(keyParam);
+            expect(repository.create).toHaveBeenCalledWith({
+                ...data,
+                externalKey: mockedKey
+            });
+            expect(result).toEqual(expectedValue);
         });
-    
-        describe('findOne', () => {
-    
-            it('should throw an error when findOne is called', async () => {
-                // Arrange
-                const key = {};
-    
-                // Act & Assert
-                await expect(service.findOne(key)).rejects.toThrow('Method not implemented.');
+
+        it('should remove key and throw error if exam type creation fails', async () => {
+            // Arrange
+            const error = new Error('Creation failed');
+            externalKeyService.create.mockResolvedValue(mockedKey);
+            repository.create.mockRejectedValue(error);
+            // Act and Assert
+            await expect(service.create(keyParam, data)).rejects.toThrowError(error);
+            expect(externalKeyService.create).toHaveBeenCalledWith(keyParam);
+            expect(repository.create).toHaveBeenCalledWith({
+                ...data,
+                externalKey: mockedKey
             });
+            expect(externalKeyService.remove).toHaveBeenCalledWith(keyParam);
         });
-    
-        describe('create', () => {
-            const mockedKey = mockExamTypeExternalKey();
-            const mockedExamType = mockExamType();
-    
-            const key: string = "my-test-key";
-            const source: string = 'my-test-source';
-            const mockDto: PostExamTypeRequestDto = {
-                name: "my-test-exam"
-            };
-    
-            beforeEach(() => {
-                externalKeyService.create.mockResolvedValueOnce(mockedKey);
+    });
+
+    describe('findOneOrCreate', () => {
+        const source: string = 'test-source'
+        const key = 'test-key';
+        const data: PostExamTypeRequestDto = { name: 'Test Type' };
+        const keyParam = { source, key };
+        const mockedExamType = mockExamTypeEntity();
+        const expectedValue = mockedExamType;
+
+        it('should find a exam type by external key or name', async () => {
+            // Arrange
+            repository.findOne.mockResolvedValue(mockedExamType);
+            // Act
+            const result = await service.findOneOrCreate(keyParam, data);
+            // Assert
+            expect(repository.findOne).toHaveBeenCalledWith({
+                where: [
+                    { externalKey: keyParam },
+                    { name: data.name }
+                ]
             });
-    
-            it('should create an exam with a given key', async () => {
-                // Arrange
-                repository.create.mockResolvedValueOnce(mockedExamType);
-    
-                // Act
-                const result = await service.create({ key, source }, mockDto);
-    
-                // Assert
-                expect(result).toEqual(mockedExamType);
-                expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-                expect(repository.create).toHaveBeenCalledWith({ ...mockDto, externalKey: mockedKey });
-                expect(externalKeyService.remove).not.toHaveBeenCalled()
-            });
-    
-            it('should throw an error so not create the exam', async () => {
-                // Arrange
-                repository.create.mockRejectedValueOnce(new Error());
-    
-                // Act & Assert
-                await expect(service.create({ key, source }, mockDto))
-                    .rejects
-                    .toThrow(Error);
-                expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-                expect(repository.create).toHaveBeenCalledWith({ ...mockDto, externalKey: mockedKey });
-                expect(externalKeyService.remove).toHaveBeenCalledWith({ source, key });
-            });
+            expect(result).toEqual(expectedValue);
         });
-    
-        describe('findOneOrCreate', () => {
-            const mockedKey = mockExamTypeExternalKey();
-            const mockedExamType = mockExamType();
-    
-            const key: string = "my-test-key";
-            const source: string = 'my-test-source';
-            const mockDto: PostExamTypeRequestDto = {
-                name: "my-test-exam"
-            };
-    
-            it('should find an existing exam and return it', async () => {
-                // Arrange
-                repository.findOne.mockResolvedValueOnce(mockedExamType);
-    
-                // Act
-                const result = await service.findOneOrCreate({ key, source }, mockDto);
-    
-                // Assert
-                expect(result).toEqual(mockedExamType);
-                expect(repository.findOne).toHaveBeenCalledWith({
-                    where: [
-                        { externalKey: { key: key, source: source } },
-                        { name: mockDto.name }
-                    ]
-                });
-                expect(externalKeyService.remove).not.toHaveBeenCalled()
+
+        it('should create a new exam type if not found', async () => {
+            // Arrange
+            repository.findOne.mockRejectedValue(new Error('Not found'));
+            jest.spyOn(service, 'create').mockResolvedValue(mockedExamType);
+            // Act
+            const result = await service.findOneOrCreate(keyParam, data);
+            // Assert
+            expect(repository.findOne).toHaveBeenCalledWith({
+                where: [
+                    { externalKey: keyParam },
+                    { name: data.name }
+                ]
             });
-    
-            it('should not find exam so creates it', async () => {
-                // Arrange
-                repository.findOne.mockRejectedValueOnce(new NotFoundException());
-                externalKeyService.create.mockResolvedValueOnce(mockedKey);
-                repository.create.mockResolvedValueOnce(mockedExamType);
-    
-                // Act
-                const result = await service.findOneOrCreate({ key, source }, mockDto);
-    
-                // Assert
-                expect(result).toEqual(mockedExamType);
-                expect(repository.findOne).toHaveBeenCalledWith({
-                    where: [
-                        { externalKey: { key: key, source: source } },
-                        { name: mockDto.name }
-                    ]
-                });
-                expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-                expect(repository.create).toHaveBeenCalledWith({ ...mockDto, externalKey: mockedKey });
-                expect(externalKeyService.remove).toHaveBeenCalledTimes(0);
-            });
+            expect(service.create).toHaveBeenCalledWith(keyParam, data);
+            expect(result).toEqual(expectedValue);
         });
-    
-        describe('findOneAndUpdate', () => {
-            const mockedExamType = mockExamType();
-    
-            const key: string = "my-test-key";
-            const source: string = 'my-test-source';
-            const mockDto: PatchExamTypeRequestDto = {
-                name: "my-test-exam"
-            };
-    
-            it('should update an existing exam', async () => {
-                // Arrange
-                repository.findOneAndUpdate.mockResolvedValueOnce(mockedExamType);
-    
-                // Act
-                const result = await service.findOneAndUpdate({ key, source }, mockDto);
-    
-                // Assert
-                expect(result).toEqual(mockedExamType);
-                expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ externalKey: { key, source } }, mockDto);
-            });
-        }); */
+    });
+
+    describe('findOneAndUpdate', () => {
+        const source: string = 'test-source'
+        const key = 'test-key';
+        const data: PatchExamTypeRequestDto = { name: 'Updated Exam Type' };
+        const keyParam = { source, key };
+        const mockedExamType = mockExamTypeEntity();
+        const expectedValue = mockedExamType;
+
+        it('should update a exam type', async () => {
+            // Arrange
+            repository.findOneAndUpdate.mockResolvedValue(mockedExamType);
+            // Act
+            const result = await service.findOneAndUpdate(keyParam, data);
+            // Assert
+            expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ externalKey: keyParam }, data);
+            expect(result).toEqual(expectedValue);
+        });
+    });
 });

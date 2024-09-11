@@ -1,38 +1,23 @@
-/* import { TestBed } from "@automock/jest";
-import { ExamTypeExternalConnectionService } from "../services/exam-type-external-connection.service";
-import { ExamTypeExternalConnectionController } from "./exam-type-external-connection.controller";
-import { PostExamTypeRequestDto } from "../dtos/request/exam-type.post.request.dto";
-import { mockExamType } from "../stub/exam-type.stub";
-import { PostExamTypeResponseDto } from "../dtos/response/exam-type.post.dto";
-import { PatchExamExternalRequestDto } from "@/laboratory/exam/dtos/request/patch.exam-external.request.dto";
-import { PatchExamTypeResponseDto } from "../dtos/response/exam-type.patch.dto"; */
-
 import { TestBed } from "@automock/jest";
 import { ExamTypeExternalConnectionController } from "./exam-type-external-connection.controller";
+import { ExamTypeExternalConnectionService } from "../services/exam-type-external-connection.service";
+import { PostExamTypeRequestDto } from "../dtos/request/exam-type.post.dto";
+import { mockExtendedExamType } from "../stub/extended-exam-type.stub";
+import { PatchExamExternalRequestDto } from "@/laboratory/exam/dtos/request/external-exam.patch.dto";
 
 describe('ExamTypeExternalConnectionController', () => {
     let controller: ExamTypeExternalConnectionController;
+    let service: jest.Mocked<ExamTypeExternalConnectionService>;
 
     beforeEach(async () => {
-        const { unit } = TestBed.create(ExamTypeExternalConnectionController).compile();
+        const { unit, unitRef } = TestBed.create(ExamTypeExternalConnectionController).compile();
         controller = unit;
+        service = unitRef.get(ExamTypeExternalConnectionService);
     });
 
     it('', () => {
         expect(controller).toBeDefined();
     })
-    /* let service: jest.Mocked<ExamTypeExternalConnectionService>;
-
-    beforeEach(async () => {
-        const { unit, unitRef } = TestBed.create(ExamTypeExternalConnectionController).compile();
-
-        controller = unit;
-        service = unitRef.get(ExamTypeExternalConnectionService);
-    });
-
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
 
     describe('create', () => {
         const source = 'source';
@@ -40,8 +25,8 @@ describe('ExamTypeExternalConnectionController', () => {
         const mockDto: PostExamTypeRequestDto = {
             name: 'New Exam Type',
         };
-        const mockExamTypeData = mockExamType();
-        const mockResponse: PostExamTypeResponseDto = mockExamTypeData;
+        const mockExamTypeData = mockExtendedExamType();
+        const mockResponse = mockExamTypeData;
 
         it('should call the service to create a new exam type', async () => {
             // Arrange
@@ -62,8 +47,8 @@ describe('ExamTypeExternalConnectionController', () => {
         const mockDto: PatchExamExternalRequestDto = {
             name: 'Updated Exam Type',
         };
-        const mockExamTypeData = mockExamType();
-        const mockResponse: PatchExamTypeResponseDto = mockExamTypeData;
+        const mockExamTypeData = mockExtendedExamType();
+        const mockResponse = mockExamTypeData;
 
         it('should call the service to update an exam type', async () => {
             // Arrange
@@ -76,5 +61,5 @@ describe('ExamTypeExternalConnectionController', () => {
             expect(service.findOneAndUpdate).toHaveBeenCalledWith({ source, key }, mockDto);
             expect(result).toEqual(mockResponse);
         });
-    }); */
+    });
 });
