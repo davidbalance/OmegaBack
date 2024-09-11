@@ -1,47 +1,33 @@
-/* import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
-import { TestBed } from "@automock/jest";
-import { NotFoundException } from "@nestjs/common";
-import { BranchExternalConnectionService } from "./branch-external-connection.service";
-import { BranchRepository } from "../repositories/branch.repository";
-import { BranchExternalKeyService } from "./branch-external-key.service";
-import { INJECT_COMPANY_EXTERNAL_KEY } from "@/location/company/services/company-external-connection.service";
-import { Company } from "@/location/company/entities/company.entity";
-import { mockBranchExternalKey } from "../stub/branch-external-key.stub";
-import { mockBranch } from "../stub/branch.stub";
-import { mockCompany } from "@/location/company/stub/company.stub";
 import { CityService } from "@/location/city/services/city.service";
 import { mockCity } from "@/location/city/stub/city.stub";
-import { PatchBranchRequestDto } from "../dtos/request/branch.patch.dto";
-import { PostCompanyExternalRequestDto } from "@/location/company/dtos/request/post.company-external.request.dto";
-import { PostBranchExternalRequestDto } from "../dtos/request/external-branch.post.dto"; */
-
+import { PostCompanyExternalRequestDto } from "@/location/company/dtos/request/external-company.post.dto";
+import { Company } from "@/location/company/dtos/response/company.base.dto";
+import { mockCompany } from "@/location/company/stub/company.stub";
+import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { TestBed } from "@automock/jest";
-import { BranchExternalConnectionService } from "./branch-external-connection.service";
+import { PatchBranchExternalRequestDto } from "../dtos/request/external-branch.patch.dto";
+import { PostBranchExternalRequestDto } from "../dtos/request/external-branch.post.dto";
+import { BranchRepository } from "../repositories/branch.repository";
+import { mockBranchExternalKey } from "../stub/branch-external-key.stub";
+import { mockBranch } from "../stub/branch.stub";
+import { BranchExternalConnectionService, INJECT_BRANCH_EXTERNAL_CONNECTION } from "./branch-external-connection.service";
+import { BranchExternalKeyService } from "./branch-external-key.service";
+import { INJECT_COMPANY_EXTERNAL_KEY } from "@/location/company/services/company-external-connection.service";
 
 describe('BranchExternalConnectionService', () => {
     let service: BranchExternalConnectionService;
-
-    beforeEach(async () => {
-        const { unit } = TestBed.create(BranchExternalConnectionService).compile();
-        service = unit;
-    });
-
-    it('to be defined', () => {
-        expect(service).toBeDefined();
-    })
-    /* let service: BranchExternalConnectionService;
     let repository: jest.Mocked<BranchRepository>;
-    let externalKeyService: jest.Mocked<BranchExternalKeyService>;
-    let cityService: jest.Mocked<CityService>;
     let externalService: jest.Mocked<IExternalConnectionService<PostCompanyExternalRequestDto, Company>>;
+    let keyService: jest.Mocked<BranchExternalKeyService>;
+    let cityService: jest.Mocked<CityService>;
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(BranchExternalConnectionService).compile();
 
         service = unit;
         repository = unitRef.get(BranchRepository);
-        externalKeyService = unitRef.get(BranchExternalKeyService);
         externalService = unitRef.get(INJECT_COMPANY_EXTERNAL_KEY);
+        keyService = unitRef.get(BranchExternalKeyService);
         cityService = unitRef.get(CityService);
     });
 
@@ -49,186 +35,157 @@ describe('BranchExternalConnectionService', () => {
         jest.clearAllMocks();
     });
 
-    describe('findOne', () => {
-        it('should throw an error when findOne is called', async () => {
-            // Arrange
-            const key = {}; // You can adjust this to be any value since it's not used in this case
+    it('should be defined', () => {
+        expect(service).toBeDefined();
+    });
 
-            // Act & Assert
-            await expect(service.findOne(key)).rejects.toThrow('Method not implemented.');
-        });
-    })
+    it('findOne', async () => {
+        expect(service.findOne).toBeDefined()
+    });
 
     describe('create', () => {
+        const source: string = 'test-source'
+        const key = 'test-key';
+        const companyKey = 'test-company-key';
+        const companyData = {
+            name: 'Test Company',
+            ruc: '1234567890',
+            key: companyKey,
+            corporativeGroup: {
+                key: "test-group-key",
+                name: "Test group"
+            },
+            address: "Test Address",
+            phone: "0999999999"
+        };
+        const city = 'Test City';
+        const data: PostBranchExternalRequestDto = {
+            company: companyData,
+            city,
+            name: 'Test Branch'
+        };
+        const keyParam = { source, key };
         const mockedCompany = mockCompany();
         const mockedCity = mockCity();
-        const mockedBranch = mockBranch();
         const mockedKey = mockBranchExternalKey();
+        const mockedBranch = mockBranch();
+        const expectedValue = mockedBranch;
 
-        const key: string = "my-test-key";
-        const source: string = 'my-test-source';
-        const mockDto: PostBranchExternalRequestDto = {
-            name: "my-test-corporative-group",
-            city: "my-city",
-            company: {
-                key: 'my-company-test-key',
-                address: mockedCompany.address,
-                corporativeGroup: null,
-                name: mockedCompany.name,
-                phone: mockedCompany.phone,
-                ruc: mockedCompany.ruc
-            }
-        };
-
-        beforeEach(() => {
-            externalService.findOneOrCreate.mockResolvedValueOnce(mockedCompany);
-            cityService.findOneByName.mockResolvedValueOnce(mockedCity);
-            externalKeyService.create.mockResolvedValueOnce(mockedKey);
-        });
-
-        it('should create an company with a given key', async () => {
+        it('should create a new branch', async () => {
             // Arrange
-            repository.create.mockResolvedValueOnce(mockedBranch);
-
-            const { city, company, ...branch } = mockDto;
-            const { key: companyKey, ...testCompany } = company;
-
+            externalService.findOneOrCreate.mockResolvedValue(mockedCompany);
+            cityService.findOneByName.mockResolvedValue(mockedCity);
+            keyService.create.mockResolvedValue(mockedKey);
+            repository.create.mockResolvedValue(mockedBranch);
             // Act
-            const result = await service.create({ key, source }, mockDto);
-
+            const result = await service.create(keyParam, data);
             // Assert
-            expect(result).toEqual(result);
-            expect(externalService.findOneOrCreate).toHaveBeenCalledWith({ key: companyKey, source }, testCompany);
-            expect(cityService.findOneByName).toHaveBeenCalledWith(mockDto.city);
-            expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
+            const { key, ...companyExpected } = companyData;
+            expect(externalService.findOneOrCreate).toHaveBeenCalledWith({ ...keyParam, key: companyKey }, companyExpected);
+            expect(cityService.findOneByName).toHaveBeenCalledWith(city);
+            expect(keyService.create).toHaveBeenCalledWith(keyParam);
             expect(repository.create).toHaveBeenCalledWith({
-                ...branch,
+                ...data,
                 city: mockedCity,
                 company: mockedCompany,
                 externalKey: mockedKey
             });
-            expect(externalKeyService.remove).not.toHaveBeenCalled();
+            expect(result).toEqual(expectedValue);
         });
 
-        it('should throw an error so not create the company', async () => {
+        it('should remove key and throw error if branch creation fails', async () => {
             // Arrange
-            repository.create.mockRejectedValueOnce(new Error());
-
-            // Act
-            const { city, company, ...branch } = mockDto;
-            const { key: companyKey, ...testCompany } = company;
-
-            // Assert
-            await expect(service.create({ key, source }, mockDto)).rejects.toThrow(Error);
-            expect(externalService.findOneOrCreate).toHaveBeenCalledWith({ key: companyKey, source }, testCompany);
-            expect(cityService.findOneByName).toHaveBeenCalledWith(mockDto.city);
-            expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
+            const error = new Error('Creation failed');
+            externalService.findOneOrCreate.mockResolvedValue(mockedCompany);
+            cityService.findOneByName.mockResolvedValue(mockedCity);
+            keyService.create.mockResolvedValue(mockedKey);
+            repository.create.mockRejectedValue(error);
+            // Act and Assert
+            await expect(service.create(keyParam, data)).rejects.toThrowError(error);
+            const { key, ...companyExpected } = companyData;
+            expect(externalService.findOneOrCreate).toHaveBeenCalledWith({ ...keyParam, key: companyKey }, companyExpected);
+            expect(cityService.findOneByName).toHaveBeenCalledWith(city);
+            expect(keyService.create).toHaveBeenCalledWith(keyParam);
             expect(repository.create).toHaveBeenCalledWith({
-                ...branch,
+                ...data,
                 city: mockedCity,
                 company: mockedCompany,
                 externalKey: mockedKey
             });
-            expect(externalKeyService.remove).toHaveBeenCalledWith({ source, key });
+            expect(keyService.remove).toHaveBeenCalledWith(keyParam);
         });
     });
 
     describe('findOneOrCreate', () => {
-        const mockedCompany = mockCompany();
-        const mockedCity = mockCity();
-        const mockedBranch = mockBranch();
-        const mockedKey = mockBranchExternalKey();
-
-        const key: string = "my-test-key";
-        const source: string = 'my-test-source';
-        const mockDto: PostBranchExternalRequestDto = {
-            name: "my-test-corporative-group",
-            city: "my-city",
-            company: {
-                key: 'my-company-test-key',
-                address: mockedCompany.address,
-                corporativeGroup: null,
-                name: mockedCompany.name,
-                phone: mockedCompany.phone,
-                ruc: mockedCompany.ruc
-            }
+        const source: string = 'test-source'
+        const key = 'test-key';
+        const companyKey = 'test-company-key';
+        const companyData = {
+            name: 'Test Company',
+            ruc: '1234567890',
+            key: companyKey,
+            corporativeGroup: {
+                key: "test-group-key",
+                name: "Test group"
+            },
+            address: "Test Address",
+            phone: "0999999999"
         };
+        const city = 'Test City';
+        const data: PostBranchExternalRequestDto = {
+            company: companyData,
+            city,
+            name: 'Test Branch'
+        };
+        const keyParam = { source, key };
+        const mockedBranch = mockBranch();
+        const expectedValue = mockedBranch;
 
-
-        it('should find an existing company and return it', async () => {
+        it('should find a branch by external key', async () => {
             // Arrange
-            repository.findOne.mockResolvedValueOnce(mockedBranch);
-
+            repository.findOne.mockResolvedValue(mockedBranch);
             // Act
-            const result = await service.findOneOrCreate({ key, source }, mockDto);
-
+            const result = await service.findOneOrCreate(keyParam, data);
             // Assert
-            expect(result).toEqual(mockedBranch);
             expect(repository.findOne).toHaveBeenCalledWith({
-                where: { externalKey: { source, key } },
+                where: { externalKey: keyParam },
                 relations: { company: { corporativeGroup: true } }
             });
-            expect(externalService.findOneOrCreate).not.toHaveBeenCalled();
-            expect(cityService.findOneByName).not.toHaveBeenCalled();
-            expect(externalKeyService.create).not.toHaveBeenCalled();
-            expect(repository.create).not.toHaveBeenCalled();
-            expect(externalKeyService.remove).not.toHaveBeenCalled();
+            expect(result).toEqual(expectedValue);
         });
 
-        it('should not find company so creates it', async () => {
+        it('should create a new branch if not found', async () => {
             // Arrange
-            repository.findOne.mockRejectedValueOnce(new NotFoundException());
-            externalService.findOneOrCreate.mockResolvedValueOnce(mockedCompany);
-            cityService.findOneByName.mockResolvedValueOnce(mockedCity);
-            externalKeyService.create.mockResolvedValueOnce(mockedKey);
-            repository.create.mockResolvedValueOnce({ ...mockedBranch, company: mockedCompany });
-
-            const { city, company, ...branch } = mockDto;
-            const { key: companyKey, ...testCompany } = company;
-
+            repository.findOne.mockRejectedValue(new Error('Not found'));
+            jest.spyOn(service, 'create').mockResolvedValue(mockedBranch);
             // Act
-            const result = await service.findOneOrCreate({ key, source }, mockDto);
-
+            const result = await service.findOneOrCreate(keyParam, data);
             // Assert
-            expect(result).toEqual({ ...mockedBranch, company: mockedCompany });
             expect(repository.findOne).toHaveBeenCalledWith({
-                where: { externalKey: { source, key } },
+                where: { externalKey: keyParam },
                 relations: { company: { corporativeGroup: true } }
             });
-            expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(externalService.findOneOrCreate).toHaveBeenCalledWith({ source, key: companyKey }, testCompany);
-            expect(cityService.findOneByName).toHaveBeenCalledWith(mockDto.city);
-            expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({
-                ...branch,
-                city: mockedCity,
-                company: mockedCompany,
-                externalKey: mockedKey
-            });
+            expect(service.create).toHaveBeenCalledWith(keyParam, data);
+            expect(result).toEqual(expectedValue);
         });
     });
 
     describe('findOneAndUpdate', () => {
+        const source: string = 'test-source'
+        const key = 'test-key';
+        const data: PatchBranchExternalRequestDto = { name: 'Updated Branch' };
+        const keyParam = { source, key };
         const mockedBranch = mockBranch();
-        const source: string = 'source';
-        const key: string = 'key';
-        const mockDto: PatchBranchRequestDto = {
-            name: "my-test-corporative-group",
-        };
+        const expectedValue = mockedBranch;
 
-        it('should update an existing exam', async () => {
+        it('should update a branch', async () => {
             // Arrange
-            repository.findOneAndUpdate.mockResolvedValueOnce(mockedBranch);
-
+            repository.findOneAndUpdate.mockResolvedValue(mockedBranch);
             // Act
-            const result = await service.findOneAndUpdate({ key, source }, mockDto);
-
+            const result = await service.findOneAndUpdate(keyParam, data);
             // Assert
-            expect(result).toEqual(mockedBranch);
-            expect(repository.findOneAndUpdate).toHaveBeenCalledWith(
-                { externalKey: { key: key, source: source } },
-                mockDto
-            );
+            expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ externalKey: keyParam }, data);
+            expect(result).toEqual(expectedValue);
         });
-    }); */
+    });
 });

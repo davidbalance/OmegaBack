@@ -7,6 +7,7 @@ import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-au
 import { PostExtendedBranchResponseDto } from "../dtos/response/extended-branch.post.dto";
 import { PatchExtendedBranchResponseDto } from "../dtos/response/extended-branch.patch.dto";
 import { PatchCompanyExternalRequestDto } from "@/location/company/dtos/request/external-company.patch.dto";
+import { PatchBranchExternalRequestDto } from "../dtos/request/external-branch.patch.dto";
 
 @ApiTags('Location>Branch', 'External Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -31,7 +32,7 @@ export class BranchExternalConnectionController {
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() body: PatchCompanyExternalRequestDto,
+        @Body() body: PatchBranchExternalRequestDto,
     ): Promise<PatchExtendedBranchResponseDto> {
         const branch = await this.service.findOneAndUpdate({ key, source }, body);
         return plainToInstance(PatchExtendedBranchResponseDto, branch);
