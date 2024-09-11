@@ -1,44 +1,28 @@
-/* import { TestBed } from "@automock/jest";
-import { JobPositionExternalConnectionService } from "../services/job-position-external-connection.service";
-import { JobPositionExternalConnectionController } from "./job-position-external-connection.controller";
-import { PostJobPositionRequestDto } from "../dtos/request/external-job-position.post.dto";
-import { mockJobPosition } from "../stub/job-position.stub";
-import { PatchJobPositionRequestDto } from "../dtos/request/external-job-position.patch.dto"; */
-
 import { TestBed } from "@automock/jest";
 import { JobPositionExternalConnectionController } from "./job-position-external-connection.controller";
+import { JobPositionExternalConnectionService } from "../services/job-position-external-connection.service";
+import { PostExternalJobPositionRequestDto } from "../dtos/request/external-job-position.post.dto";
+import { PatchExternalJobPositionRequestDto } from "../dtos/request/external-job-position.patch.dto";
+import { mockExternalJobPosition } from "../stub/external-job-position.stub";
 
 describe('JobPositionExternalConnectionController', () => {
     let controller: JobPositionExternalConnectionController;
-
-    beforeEach(async () => {
-        const { unit } = TestBed.create(JobPositionExternalConnectionController).compile();
-        controller = unit;
-    });
-
-    it('', () => {
-        expect(controller).toBeDefined();
-    })
-    /* let service: jest.Mocked<JobPositionExternalConnectionService>;
+    let service: jest.Mocked<JobPositionExternalConnectionService>;
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(JobPositionExternalConnectionController).compile();
-
         controller = unit;
         service = unitRef.get(JobPositionExternalConnectionService);
-    });
-
-    afterEach(() => {
-        jest.clearAllMocks();
     });
 
     describe('create', () => {
         const source = 'test-source';
         const key = 'test-key';
-        const body: PostJobPositionRequestDto = {
+        const body: PostExternalJobPositionRequestDto = {
             name: 'Job Position Name'
         };
-        const mockedJobPosition = mockJobPosition();
+        const mockedJobPosition = mockExternalJobPosition();
+        const expectedValue = mockedJobPosition;
 
         it('should create a job position', async () => {
             // Arrange
@@ -48,18 +32,19 @@ describe('JobPositionExternalConnectionController', () => {
             const result = await controller.create(source, key, body);
 
             // Assert
-            expect(result).toEqual(mockedJobPosition);
             expect(service.create).toHaveBeenCalledWith({ source, key }, body);
+            expect(result).toEqual(expectedValue);
         });
     });
 
     describe('findOneAndUpdate', () => {
         const source = 'source';
         const key = 'key';
-        const body: PatchJobPositionRequestDto = {
+        const body: PatchExternalJobPositionRequestDto = {
             name: 'Updated Job Position Name'
         };
-        const mockedJobPosition = mockJobPosition();
+        const mockedJobPosition = mockExternalJobPosition();
+        const expectedValue = mockedJobPosition;
 
         it('should update a job position', async () => {
             // Arrange
@@ -69,8 +54,8 @@ describe('JobPositionExternalConnectionController', () => {
             const result = await controller.findOneAndUpdate(source, key, body);
 
             // Assert
-            expect(result).toEqual(mockedJobPosition);
             expect(service.findOneAndUpdate).toHaveBeenCalledWith({ source, key }, body);
+            expect(result).toEqual(expectedValue);
         });
-    }); */
+    });
 });
