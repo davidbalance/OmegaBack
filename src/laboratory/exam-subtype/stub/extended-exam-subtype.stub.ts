@@ -12,5 +12,5 @@ export const stubExamSubtype = (id: number): ExtendedExamSubtype => ({
     exams: Array(10).map(stubExam)
 });
 
-export const mockExtededExamSubtype = () => stubExamSubtype(1);
-export const mockExtededExamSubtypes = () => Array(10).map(stubExamSubtype);
+export const mockExtendedExamSubtype = () => stubExamSubtype(1);
+export const mockExtendedExamSubtypes = () => Array(10).map(stubExamSubtype);

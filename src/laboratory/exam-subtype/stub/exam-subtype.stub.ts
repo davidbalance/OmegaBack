@@ -7,4 +7,4 @@ export const stubExamSubtype = (id: number): ExamSubtype => ({
 });
 
 export const mockExamSubtype = () => stubExamSubtype(1);
-export const mockExamSubtypes = () => [1, 2, 3, 4, 5].map(stubExamSubtype);
+export const mockExamSubtypes = () => Array(20).map(stubExamSubtype);

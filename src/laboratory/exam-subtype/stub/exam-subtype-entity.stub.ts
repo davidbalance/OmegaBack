@@ -2,7 +2,7 @@ import { ExamTypeEntity } from "@/laboratory/exam-type/entities/exam-type.entity
 import { ExamSubtypeEntity } from "../entities/exam-subtype.entity";
 import { ExamSubtypeExternalKeyEntity } from "../entities/exam-subtype-external-key.entity";
 
-export const stubExamSubtype = (id: number): ExamSubtypeEntity => ({
+export const stubExamSubtypeEntity = (id: number): ExamSubtypeEntity => ({
     id: id,
     name: "my-stub-name",
     status: false,
@@ -13,5 +13,5 @@ export const stubExamSubtype = (id: number): ExamSubtypeEntity => ({
     updateAt: undefined
 });
 
-export const mockExamSubtype = () => stubExamSubtype(1);
-export const mockExamSubtypes = () => [1, 2, 3, 4, 5].map(stubExamSubtype);
+export const mockExamSubtypeEntity = () => stubExamSubtypeEntity(1);
+export const mockExamSubtypeEntities = () => [1, 2, 3, 4, 5].map(stubExamSubtypeEntity);

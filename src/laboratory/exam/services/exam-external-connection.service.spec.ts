@@ -13,8 +13,8 @@ import { ExamExternalConnectionService } from "./exam-external-connection.servic
 import { ExamExternalKeyService } from "./exam-external-key.service";
 import { INJECT_EXAM_SUBTYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-subtype/services/exam-subtype-external-connection.service";
 import { INJECT_EXAM_TYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-type/services/exam-type-external-connection.service";
-import { mockExtededExamSubtype } from "@/laboratory/exam-subtype/stub/extended-exam-subtype.stub";
 import { mockExtendedExamType } from "@/laboratory/exam-type/stub/extended-exam-type.stub";
+import { mockExtendedExamSubtype } from "@/laboratory/exam-subtype/stub/extended-exam-subtype.stub";
 
 describe('ExamExternalConnectionService', () => {
     let service: ExamExternalConnectionService;
@@ -53,7 +53,7 @@ describe('ExamExternalConnectionService', () => {
         };
         const keyParam = { source, key };
         const mockedType = mockExtendedExamType();
-        const mockedSubtype = mockExtededExamSubtype();
+        const mockedSubtype = mockExtendedExamSubtype();
         const mockedKey = mockExamExternalKey();
         const mockedExam = mockExam();
         const expectedValue = mockedExam;
