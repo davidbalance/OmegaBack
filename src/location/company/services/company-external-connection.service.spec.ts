@@ -1,204 +1,162 @@
-/* import { CorporativeGroup } from "@/location/corporative-group/entities/corporative-group.entity";
+import { ExternalCorporativeGroupRequestDto } from "@/location/corporative-group/dtos/request/external-corporative-group.base.dto";
+import { CorporativeGroup } from "@/location/corporative-group/dtos/response/corporative-group.base.dto";
 import { mockCorporativeGroup } from "@/location/corporative-group/stub/corporative-group.stub";
 import { IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { TestBed } from "@automock/jest";
-import { NotFoundException } from "@nestjs/common";
+import { PatchCompanyExternalRequestDto } from "../dtos/request/external-company.patch.dto";
+import { PostCompanyExternalRequestDto } from "../dtos/request/external-company.post.dto";
 import { CompanyRepository } from "../repositories/company.repository";
+import { mockCompanyExternalKey } from "../stub/company-external-key.stub";
+import { mockCompany } from "../stub/company.stub";
 import { CompanyExternalConnectionService } from "./company-external-connection.service";
 import { CompanyExternalKeyService } from "./company-external-key.service";
 import { INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION } from "@/location/corporative-group/services/corporative-group-external-connection.service";
-import { PostCorporativeGroupRequestDto } from "@/location/corporative-group/dtos/request/post.corporative-group.dto";
-import { PostCompanyExternalRequestDto } from "../dtos/request/external-company.post.dto";
-import { PatchCompanyRequestDto } from "../dtos/request/company.patch.dto";
-import { mockCompanyExternalKey } from "../stub/company-external-key.stub";
-import { mockCompany } from "../stub/company.stub"; */
-
-import { TestBed } from "@automock/jest";
-import { CompanyExternalConnectionService } from "./company-external-connection.service";
 
 describe('CompanyExternalConnectionService', () => {
     let service: CompanyExternalConnectionService;
-
-    beforeEach(async () => {
-        const { unit, unitRef } = TestBed.create(CompanyExternalConnectionService).compile();
-        service = unit;
-    });
-
-    it('to be defined', () => {
-        expect(service).toBeDefined();
-    })
-    /* let repository: jest.Mocked<CompanyRepository>;
-    let externalKeyService: jest.Mocked<CompanyExternalKeyService>;
-    let externalService: jest.Mocked<IExternalConnectionService<PostCorporativeGroupRequestDto, CorporativeGroup>>;
+    let repository: jest.Mocked<CompanyRepository>;
+    let externalService: jest.Mocked<IExternalConnectionService<ExternalCorporativeGroupRequestDto, CorporativeGroup>>;
+    let keyService: jest.Mocked<CompanyExternalKeyService>;
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(CompanyExternalConnectionService).compile();
 
         service = unit;
         repository = unitRef.get(CompanyRepository);
-        externalKeyService = unitRef.get(CompanyExternalKeyService);
         externalService = unitRef.get(INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION);
+        keyService = unitRef.get(CompanyExternalKeyService);
     });
 
     afterEach(() => {
         jest.clearAllMocks();
     });
 
+    it('findOne', async () => {
+        expect(service.findOne).toBeDefined()
+    });
+
     describe('create', () => {
-        const mockedCorporativeGroup = mockCorporativeGroup();
-        const mockedCompany = mockCompany();
-        const mockedKey = mockCompanyExternalKey();
-
-        const key: string = 'my-test-key';
-        const source: string = 'my-test-source';
-        const mockDto: PostCompanyExternalRequestDto = {
-            name: "my-test-corporative-group",
-            ruc: "1234567890",
-            address: "my-mocked-addres",
-            phone: "my-mocked-phone",
-            corporativeGroup: {
-                name: mockedCompany.name,
-                key: 'my-test-key',
-            }
+        const source: string = 'test-source'
+        const key = 'test-key';
+        const corporativeGroupData: ExternalCorporativeGroupRequestDto = { name: 'Test Group' };
+        const corporativeGroupKey = 'test-corporative-group-key';
+        const companyData = {
+            name: 'Test Company',
+            ruc: '1234567890',
+            address: "Test address",
+            phone: "0999999999"
         };
+        const data: PostCompanyExternalRequestDto = {
+            corporativeGroup: { key: corporativeGroupKey, ...corporativeGroupData },
+            ...companyData,
+        };
+        const keyParam = { source, key };
+        const mockedGroup = mockCorporativeGroup();
+        const mockedKey = mockCompanyExternalKey();
+        const mockedCompany = mockCompany();
+        const expectedValue = mockedCompany;
 
-        beforeEach(() => {
-            externalService.findOneOrCreate.mockResolvedValueOnce(mockedCorporativeGroup);
-            externalKeyService.create.mockResolvedValueOnce(mockedKey);
-        });
-
-        it('should create an company with a given key', async () => {
+        it('should create a new company', async () => {
             // Arrange
-            repository.create.mockResolvedValueOnce(mockedCompany);
-
-            const { corporativeGroup, ...company } = mockDto;
-            const { key: corporativeKey, ...corporativeTest } = corporativeGroup
-
+            externalService.findOneOrCreate.mockResolvedValue(mockedGroup);
+            keyService.create.mockResolvedValue(mockedKey);
+            repository.create.mockResolvedValue(mockedCompany);
             // Act
-            const result = await service.create({ key, source }, mockDto);
-
+            const result = await service.create(keyParam, data);
             // Assert
-            expect(result).toEqual(result);
-            expect(externalService.findOneOrCreate).toHaveBeenCalledWith({ key: corporativeKey, source }, corporativeTest);
-            expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
+            expect(externalService.findOneOrCreate).toHaveBeenCalledWith({ ...keyParam, key: corporativeGroupKey }, corporativeGroupData);
+            expect(keyService.create).toHaveBeenCalledWith(keyParam);
             expect(repository.create).toHaveBeenCalledWith({
-                ...company,
-                corporativeGroup: mockedCorporativeGroup,
+                ...companyData,
+                corporativeGroup: mockedGroup,
                 externalKey: mockedKey
             });
-            expect(externalKeyService.remove).not.toHaveBeenCalled();
+            expect(result).toEqual(expectedValue);
         });
 
-        it('should throw an error so not create the company', async () => {
+        it('should remove key and throw error if company creation fails', async () => {
             // Arrange
-            repository.create.mockRejectedValueOnce(new Error());
-            const { corporativeGroup, ...company } = mockDto;
-
-            // Act & Assert
-            await expect(service.create({ key, source }, mockDto))
-                .rejects
-                .toThrow(Error);
-            expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
+            const error = new Error('Creation failed');
+            externalService.findOneOrCreate.mockResolvedValue(mockedGroup);
+            keyService.create.mockResolvedValue(mockedKey);
+            repository.create.mockRejectedValue(error);
+            // Act and Assert
+            await expect(service.create(keyParam, data)).rejects.toThrowError(error);
+            expect(externalService.findOneOrCreate).toHaveBeenCalledWith({ ...keyParam, key: corporativeGroupKey }, corporativeGroupData);
+            expect(keyService.create).toHaveBeenCalledWith(keyParam);
             expect(repository.create).toHaveBeenCalledWith({
-                ...company,
-                corporativeGroup: mockedCorporativeGroup,
+                ...companyData,
+                corporativeGroup: mockedGroup,
                 externalKey: mockedKey
             });
-            expect(externalKeyService.remove).toHaveBeenCalledWith({ source, key });
+            expect(keyService.remove).toHaveBeenCalledWith(keyParam);
         });
     });
 
     describe('findOneOrCreate', () => {
-        const mockedCorporativeGroup = mockCorporativeGroup();
-        const mockedKey = mockCompanyExternalKey();
-        const mockedCompany = mockCompany();
-
-        const key: string = 'my-test-key';
-        const source: string = 'my-test-source';
-        const mockDto: PostCompanyExternalRequestDto = {
-            name: "my-test-corporative-group",
-            ruc: "1234567890",
-            address: "my-mocked-addres",
-            phone: "my-mocked-phone",
-            corporativeGroup: {
-                key: 'my-test-key',
-                name: 'test-corporative-name'
-            }
+        const source: string = 'test-source'
+        const key = 'test-key';
+        const corporativeGroupData: ExternalCorporativeGroupRequestDto = { name: 'Test Group' };
+        const corporativeGroupKey = 'test-corporative-group-key';
+        const companyData = {
+            name: 'Test Company',
+            ruc: '1234567890',
+            address: "Test address",
+            phone: "0999999999"
         };
+        const data: PostCompanyExternalRequestDto = { corporativeGroup: { key: corporativeGroupKey, ...corporativeGroupData }, ...companyData };
+        const keyParam = { source, key };
+        const mockedCompany = mockCompany();
+        const expectedValue = mockedCompany;
 
-        it('should find an existing company and return it', async () => {
+        it('should find a company by external key or ruc', async () => {
             // Arrange
-            repository.findOne.mockResolvedValueOnce(mockedCompany);
-
+            repository.findOne.mockResolvedValue(mockedCompany);
             // Act
-            const result = await service.findOneOrCreate({ key, source }, mockDto);
-
+            const result = await service.findOneOrCreate(keyParam, data);
             // Assert
-            expect(result).toEqual(mockedCompany);
             expect(repository.findOne).toHaveBeenCalledWith({
-                where: [
-                    { externalKey: { source: source, key: key } },
-                    { ruc: mockDto.ruc }
-                ]
+                where: [{ externalKey: keyParam }, { ruc: data.ruc }]
             });
-            expect(externalService.findOneOrCreate).not.toHaveBeenCalled();
-            expect(externalKeyService.create).not.toHaveBeenCalled();
-            expect(repository.create).not.toHaveBeenCalled();
-            expect(externalKeyService.remove).not.toHaveBeenCalled();
+            expect(result).toEqual(expectedValue);
         });
 
-        it('should not find company so creates it', async () => {
+        it('should create a new company if not found', async () => {
             // Arrange
-            repository.findOne.mockRejectedValueOnce(new NotFoundException());
-            externalService.findOneOrCreate.mockReturnValueOnce(mockedCorporativeGroup);
-            externalKeyService.create.mockResolvedValueOnce(mockedKey);
-            repository.create.mockResolvedValueOnce({ ...mockedCompany, corporativeGroup: mockedCorporativeGroup });
-            const { corporativeGroup, ...company } = mockDto;
-
+            repository.findOne.mockRejectedValue(new Error('Not found'));
+            jest.spyOn(service, 'create').mockResolvedValue(mockedCompany);
             // Act
-            const result = await service.findOneOrCreate({ key, source }, mockDto);
-
+            const result = await service.findOneOrCreate(keyParam, data);
             // Assert
-            expect(result).toEqual(result);
             expect(repository.findOne).toHaveBeenCalledWith({
-                where: [
-                    { externalKey: { source, key } },
-                    { ruc: company.ruc }
-                ]
+                where: [{ externalKey: keyParam }, { ruc: data.ruc }]
             });
-            expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({
-                ...company,
-                corporativeGroup: mockedCorporativeGroup,
-                externalKey: mockedKey
-            });
-            expect(externalKeyService.remove).toHaveBeenCalledTimes(0);
+            expect(service.create).toHaveBeenCalledWith(keyParam, data);
+            expect(result).toEqual(expectedValue);
         });
     });
 
     describe('findOneAndUpdate', () => {
-        const mockedCompany = mockCompany();
-        const source: string = 'source';
-        const key: string = 'key';
-        const mockDto: PatchCompanyRequestDto = {
-            name: "my-test-corporative-group",
-            address: "my-stub-address",
-            phone: "0987654321"
+        const source: string = 'test-source'
+        const key = 'test-key';
+        const data: PatchCompanyExternalRequestDto = {
+            name: 'Updated Company',
+            ruc: '1234567890',
+            address: "Test address",
+            phone: "0999999999"
         };
+        const keyParam = { source, key };
+        const mockedCompany = mockCompany();
+        const expectedValue = mockedCompany;
 
-        it('should update an existing exam', async () => {
+        it('should update a company', async () => {
             // Arrange
-            repository.findOneAndUpdate.mockResolvedValueOnce(mockedCompany);
-
+            repository.findOneAndUpdate.mockResolvedValue(mockedCompany);
             // Act
-            const result = await service.findOneAndUpdate({ key, source }, mockDto);
-
+            const result = await service.findOneAndUpdate(keyParam, data);
             // Assert
-            expect(result).toEqual(mockedCompany);
-            expect(repository.findOneAndUpdate).toHaveBeenCalledWith(
-                { externalKey: { key: key, source: source } },
-                mockDto
-            );
+            expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ externalKey: keyParam }, data);
+            expect(result).toEqual(expectedValue);
         });
-    }); */
+    });
 });
