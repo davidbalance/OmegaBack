@@ -26,7 +26,7 @@ export class DoctorExternalConnectionController {
     }
 
     @Patch(':dni')
-    async findOneAndUpddate(
+    async findOneAndUpdate(
         @Param('dni') dni: string,
         @Body() body: PatchDoctorRequestDto
     ): Promise<PatchExternalDoctorResponseDto> {

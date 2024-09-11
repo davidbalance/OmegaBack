@@ -1,14 +1,9 @@
-import { ExamTypeEntity } from "@/laboratory/exam-type/entities/exam-type.entity";
+import { ExamType } from "../dtos/response/exam-type.base.dto";
 
-export const stubExamType = (id: number): ExamTypeEntity => ({
+export const stubExamType = (id: number): ExamType => ({
     id: id,
-    name: "my-stub-name",
-    status: true,
-    subtypes: [],
-    createAt: new Date(),
-    updateAt: new Date(),
-    externalKey: undefined
+    name: "my-stub-name"
 });
 
 export const mockExamType = () => stubExamType(1);
-export const mockExamTypes = () => [1, 2, 3, 4, 5].map(stubExamType);
+export const mockExamTypes = () => Array(20).map(stubExamType);

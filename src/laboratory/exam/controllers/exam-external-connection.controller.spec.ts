@@ -6,6 +6,7 @@ import { mockExam } from "../stub/exam.stub";
 import { PatchExamExternalRequestDto } from "../dtos/request/external-exam.patch.dto";
 import { PostExtendedExamResponseDto } from "../dtos/response/extended-exam.post.dto";
 import { PatchExtendedExamResponseDto } from "../dtos/response/extended-exam.patch.dto";
+import { mockExtendedExam } from "../stub/extended-exam.stub";
 
 describe('ExamExternalConnectionController', () => {
     let controller: ExamExternalConnectionController;
@@ -29,7 +30,7 @@ describe('ExamExternalConnectionController', () => {
             name: 'New Exam',
             type: undefined
         };
-        const mockExamData = mockExam();
+        const mockExamData = mockExtendedExam();
         const mockResponse: PostExtendedExamResponseDto = mockExamData;
 
         it('should call the service to create a new exam', async () => {
@@ -51,7 +52,7 @@ describe('ExamExternalConnectionController', () => {
         const mockDto: PatchExamExternalRequestDto = {
             name: 'Updated Exam',
         };
-        const mockExamData = mockExam();
+        const mockExamData = mockExtendedExam();
         const mockResponse: PatchExtendedExamResponseDto = mockExamData;
 
         it('should call the service to update an exam', async () => {

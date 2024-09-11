@@ -1,15 +1,10 @@
-import { ExamSubtypeEntity } from "@/laboratory/exam-subtype/entities/exam-subtype.entity";
+import { ExamSubtype } from "../dtos/response/exam-subtype.base.dto";
 
-export const stubExamsSubtype = (id: number): ExamSubtypeEntity => ({
+export const stubExamSubtype = (id: number): ExamSubtype => ({
     id: id,
     name: "my-stub-name",
-    exams: undefined,
-    status: true,
-    type: undefined,
-    createAt: new Date(),
-    updateAt: new Date(),
-    externalKey: undefined
+    type: 0
 });
 
-export const mockExamsSubtype = () => stubExamsSubtype(1);
-export const mockExamsSubtypes = () => [1, 2, 3, 4, 5].map(stubExamsSubtype);
+export const mockExamSubtype = () => stubExamSubtype(1);
+export const mockExamSubtypes = () => [1, 2, 3, 4, 5].map(stubExamSubtype);
