@@ -5,6 +5,8 @@ import { PatientExternalConnectionService } from "../service/patient-external-co
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
 import { PostExternalPatientRequestDto } from "../dtos/request/external-patient.post.dto";
 import { PatchExternalPatientRequestDto } from "../dtos/request/external-patient.patch.dto";
+import { PostExternalPatientResponseDto } from "../dtos/response/external-patient.post.dto";
+import { PatchExternalPatientResponseDto } from "../dtos/response/external-patient.patch.dto";
 
 @ApiTags('External Connection', 'User>Patient')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -19,9 +21,9 @@ export class PatientExternalConnectionController {
     async create(
         @Param('source') source: string,
         @Body() body: PostExternalPatientRequestDto
-    ): Promise<PostExternalPatientRequestDto> {
+    ): Promise<PostExternalPatientResponseDto> {
         const user = await this.service.create(source, body);
-        return plainToInstance(PostExternalPatientRequestDto, user);
+        return plainToInstance(PostExternalPatientResponseDto, user);
     }
 
     @Patch(':dni')
@@ -29,8 +31,8 @@ export class PatientExternalConnectionController {
         @Param('source') _: string,
         @Param('dni') dni: string,
         @Body() body: PatchExternalPatientRequestDto
-    ): Promise<PatchExternalPatientRequestDto> {
+    ): Promise<PatchExternalPatientResponseDto> {
         const user = await this.service.findOneAndUpdate(dni, body);
-        return plainToInstance(PatchExternalPatientRequestDto, user);
+        return plainToInstance(PatchExternalPatientResponseDto, user);
     }
 }
