@@ -1,12 +1,3 @@
-/* import { TestBed } from "@automock/jest";
-import { CompanyExternalConnectionService } from "../services/company-external-connection.service";
-import { CompanyExternalConnectionController } from "./company-external-connection.controller";
-import { PostCompanyExternalRequestDto } from "../dtos/request/external-company.post.dto";
-import { mockCompany } from "../stub/company.stub";
-import { PostCompanyResponseDto } from "../dtos/response/post.company.response.dto";
-import { PatchCompanyRequestDto } from "../dtos/request/company.patch.dto";
-import { PatchCompanyResponseDto } from "../dtos/response/patch.company.response.dto"; */
-
 import { TestBed } from "@automock/jest";
 import { CompanyExternalConnectionController } from "./company-external-connection.controller";
 import { CompanyExternalConnectionService } from "../services/company-external-connection.service";
