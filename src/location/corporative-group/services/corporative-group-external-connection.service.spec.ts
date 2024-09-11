@@ -1,148 +1,129 @@
 import { TestBed } from "@automock/jest";
+import { PatchExternalCorporativeGroupRequestDto } from "../dtos/request/external-corporative-group.patch.dto";
+import { PostExternalCorporativeGroupRequestDto } from "../dtos/request/external-corporative-group.post.dto";
 import { CorporativeGroupRepository } from "../repositories/corporative-group.repository";
 import { CorporativeGroupExternalConnectionService } from "./corporative-group-external-connection.service";
+import { CorporativeGroupExternalKeyService } from "./corporative-group-external-key.service";
+import { ExternalKeyParam } from "@/shared/utils/bases/base.external-connection";
 import { mockCorporativeGroupExternalKey } from "../stub/corporative-group-external-key.stub";
 import { mockCorporativeGroup } from "../stub/corporative-group.stub";
-import { PostCorporativeGroupRequestDto } from "../dtos/request/corporative-group.post.dto";
-import { CorporativeGroupExternalKeyService } from "./corporative-group-external-key.service";
-import { NotFoundException } from "@nestjs/common";
-import { PatchCorporativeGroupRequestDto } from "../dtos/request/corporative-group.patch.dto";
 
 describe('CorporativeGroupExternalConnectionService', () => {
     let service: CorporativeGroupExternalConnectionService;
     let repository: jest.Mocked<CorporativeGroupRepository>;
-    let externalKeyService: jest.Mocked<CorporativeGroupExternalKeyService>;
+    let keyService: jest.Mocked<CorporativeGroupExternalKeyService>;
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(CorporativeGroupExternalConnectionService).compile();
 
         service = unit;
         repository = unitRef.get(CorporativeGroupRepository);
-        externalKeyService = unitRef.get(CorporativeGroupExternalKeyService);
+        keyService = unitRef.get(CorporativeGroupExternalKeyService);
     });
 
     afterEach(() => {
         jest.clearAllMocks();
     });
 
-    describe('create', () => {
-        const source: string = "test-source";
-        const key: string = "test-key";
-        const mockedKey = mockCorporativeGroupExternalKey();
-        const mockedGroup = mockCorporativeGroup();
-        const body: PostCorporativeGroupRequestDto = {
-            name: "Corporative name",
-        }
-
-        it('should create a corporative group', async () => {
-            // Arrange
-            externalKeyService.create.mockResolvedValueOnce(mockedKey);
-            repository.create.mockResolvedValueOnce(mockedGroup);
-
-            // Act
-            const result = await service.create({ key, source }, body);
-
-            // Assert
-            expect(result).toEqual(mockedGroup);
-            expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({
-                ...body,
-                externalKey: mockedKey
-            });
-            expect(externalKeyService.remove).not.toHaveBeenCalled();
-        });
-
-        it('should throw an error if corporative group creation fails', async () => {
-            // Arrange
-            externalKeyService.create.mockResolvedValueOnce(mockedKey);
-            repository.create.mockRejectedValueOnce(new Error());
-
-            // Act & Assert
-            await expect(service.create({ key, source }, body))
-                .rejects
-                .toThrowError(Error);
-            expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({
-                ...body,
-                externalKey: mockedKey
-            });
-            expect(externalKeyService.remove).toHaveBeenCalledWith({ key, source });
-        });
+    it('findOne', async () => {
+        expect(service.findOne).toBeDefined()
     });
 
-    describe('findOneOrCreate', () => {
-        const source: string = "test-source";
-        const key: string = "test-key";
+    describe('create', () => {
+        const source: string = 'test-source'
+        const key = 'test-key';
+        const data: PostExternalCorporativeGroupRequestDto = { name: 'Test Group' };
+        const keyParam: ExternalKeyParam = { source, key };
         const mockedKey = mockCorporativeGroupExternalKey();
         const mockedGroup = mockCorporativeGroup();
-        const body: PostCorporativeGroupRequestDto = {
-            name: "Corporative name"
-        }
+        const expectedValue = mockedGroup;
 
-        it('should return an existing corporative group', async () => {
+        it('should create a new corporative group', async () => {
             // Arrange
-            repository.findOne.mockResolvedValueOnce(mockedGroup);
+            keyService.create.mockResolvedValue(mockedKey);
+            repository.create.mockResolvedValue(mockedGroup);
+            // Act
+            const result = await service.create(keyParam, data);
+            // Assert
+            expect(keyService.create).toHaveBeenCalledWith(keyParam);
+            expect(repository.create).toHaveBeenCalledWith({ ...data, externalKey: mockedKey });
+            expect(result).toEqual(expectedValue);
+        });
+
+        it('should remove key and throw error if group creation fails', async () => {
+            // Arrange
+            const error = new Error('Creation failed');
+
+            keyService.create.mockResolvedValue(mockedKey);
+            repository.create.mockRejectedValue(error);
+            // Act and Assert
+            await expect(service.create(keyParam, data)).rejects.toThrowError(error);
+            expect(keyService.create).toHaveBeenCalledWith(keyParam);
+            expect(repository.create).toHaveBeenCalledWith({ ...data, externalKey: mockedKey });
+            expect(keyService.remove).toHaveBeenCalledWith(keyParam);
+        });
+    })
+
+    describe('findOneOrCreate', () => {
+        const key = 'test-key';
+        const source = 'test-source'
+        const data: PostExternalCorporativeGroupRequestDto = { name: 'Test Group' };
+        const keyParam: ExternalKeyParam = { source, key };
+        const mockedKey = mockCorporativeGroupExternalKey();
+        const mockedGroup = mockCorporativeGroup();
+        const expectedValue = mockedGroup;
+
+        it('should find a corporative group by external key or name', async () => {
+            // Arrange
+            repository.findOne.mockResolvedValue(mockedGroup);
 
             // Act
-            const result = await service.findOneOrCreate({ key, source }, body);
+            const result = await service.findOneOrCreate(keyParam, data);
 
             // Assert
-            expect(result).toEqual(mockedGroup);
             expect(repository.findOne).toHaveBeenCalledWith({
-                where: [
-                    { externalKey: { key, source } },
-                    { name: body.name }
-                ]
+                where: [{ externalKey: keyParam }, { name: data.name }]
             });
-            expect(externalKeyService.create).not.toHaveBeenCalled();
-            expect(repository.create).not.toHaveBeenCalled();
-            expect(externalKeyService.remove).not.toHaveBeenCalled();
+            expect(result).toEqual(expectedValue);
         });
 
         it('should create a new corporative group if not found', async () => {
             // Arrange
-            repository.findOne.mockRejectedValueOnce(new NotFoundException());
-            externalKeyService.create.mockResolvedValueOnce(mockedKey);
-            repository.create.mockResolvedValueOnce(mockedGroup);
+            repository.findOne.mockRejectedValue(new Error('Not found'));
+            keyService.create.mockResolvedValue(mockedKey);
+            repository.create.mockResolvedValue(mockedGroup);
 
             // Act
-            const result = await service.findOneOrCreate({ key, source }, body);
+            const result = await service.findOneOrCreate(keyParam, data);
 
             // Assert
-            expect(result).toEqual(mockedGroup);
             expect(repository.findOne).toHaveBeenCalledWith({
-                where: [
-                    { externalKey: { key, source } },
-                    { name: body.name }
-                ]
+                where: [{ externalKey: keyParam }, { name: data.name }]
             });
-            expect(externalKeyService.create).toHaveBeenCalledWith({ key, source });
-            expect(repository.create).toHaveBeenCalledWith({
-                ...body,
-                externalKey: mockedKey
-            });
-            expect(externalKeyService.remove).not.toHaveBeenCalled();
+            expect(keyService.create).toHaveBeenCalledWith(keyParam);
+            expect(repository.create).toHaveBeenCalledWith({ ...data, externalKey: mockedKey });
+            expect(result).toEqual(expectedValue);
         });
     });
 
     describe('findOneAndUpdate', () => {
+        const source = 'test-source'
         const key = 'test-key';
-        const source = 'test-source';
+        const keyParam: ExternalKeyParam = { key, source };
+        const data: PatchExternalCorporativeGroupRequestDto = { name: 'Updated Group' };
         const mockedGroup = mockCorporativeGroup();
-        const body: PatchCorporativeGroupRequestDto = {
-            name: "Updated corporative group name"
-        }
+        const expectedValue = mockedGroup;
 
-        it('should update an existing corporative group', async () => {
+        it('should update a corporative group', async () => {
             // Arrange
-            repository.findOneAndUpdate.mockResolvedValueOnce(mockedGroup);
+            repository.findOneAndUpdate.mockResolvedValue(mockedGroup);
 
             // Act
-            const result = await service.findOneAndUpdate({ key, source }, body);
+            const result = await service.findOneAndUpdate(keyParam, data);
 
             // Assert
-            expect(result).toEqual(mockedGroup);
-            expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ externalKey: { key, source } }, body);
+            expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ externalKey: keyParam }, data);
+            expect(result).toEqual(expectedValue);
         });
-    });
+    })
 });

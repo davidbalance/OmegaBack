@@ -1,12 +1,13 @@
 import { TestBed } from "@automock/jest";
-import { ExamManagementService } from "../services/exam-management.service";
 import { ExamManagementController } from "./exam-management.controller";
-import { mockExam } from "../stub/exam.stub";
-import { GetExamResponseDto } from "../dtos/response/exam.get.dto";
-import { PatchExamRequestDto } from "../dtos/request/exam.patch.dto";
 
 describe('ExamManagementController', () => {
     let controller: ExamManagementController;
+
+    beforeEach(async () => {
+        const { unit } = TestBed.create(ExamManagementController).compile();
+        controller = unit;
+    });
 
     it('', () => {
         expect(controller).toBeDefined();

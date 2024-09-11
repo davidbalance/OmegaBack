@@ -9,10 +9,16 @@ import { GetExamSubtypeResponseDto } from "../dtos/response/exam-subtype.get.res
 import { PatchExamSubtypeRequestDto } from "../dtos/request/exam-subtype.patch.request.dto";
 import { PatchExamSubtypeResponseDto } from "../dtos/response/patch.exam-subtype.response.dto"; */
 
+import { TestBed } from "@automock/jest";
 import { ExamSubtypeManagementController } from "./exam-subtype-management.controller";
 
 describe('ExamSubtypeManagementController', () => {
   let controller: ExamSubtypeManagementController;
+
+  beforeEach(async () => {
+    const { unit } = TestBed.create(ExamSubtypeManagementController).compile();
+    controller = unit;
+  });
 
   it('', () => {
     expect(controller).toBeDefined();

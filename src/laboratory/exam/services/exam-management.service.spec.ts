@@ -1,7 +1,13 @@
+import { TestBed } from "@automock/jest";
 import { ExamManagementService } from "./exam-management.service";
 
 describe('ExamManagementService', () => {
     let service: ExamManagementService;
+
+    beforeEach(async () => {
+        const { unit } = TestBed.create(ExamManagementService).compile();
+        service = unit;
+    });
 
     it('', () => {
         expect(service).toBeDefined();

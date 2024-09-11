@@ -10,6 +10,11 @@ import { PatchDiseaseRequestDto } from "../../dtos/request/disease.patch.dto";
 describe('DiseaseManagementService', () => {
   let service: DiseaseManagementService;
 
+  beforeEach(async () => {
+    const { unit } = TestBed.create(DiseaseManagementService).compile();
+    service = unit;
+  });
+
   it('', () => {
     expect(service).toBeDefined();
   });

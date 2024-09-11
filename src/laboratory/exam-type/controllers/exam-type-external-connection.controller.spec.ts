@@ -7,10 +7,17 @@ import { PostExamTypeResponseDto } from "../dtos/response/exam-type.post.dto";
 import { PatchExamExternalRequestDto } from "@/laboratory/exam/dtos/request/patch.exam-external.request.dto";
 import { PatchExamTypeResponseDto } from "../dtos/response/exam-type.patch.dto"; */
 
+import { TestBed } from "@automock/jest";
 import { ExamTypeExternalConnectionController } from "./exam-type-external-connection.controller";
 
 describe('ExamTypeExternalConnectionController', () => {
     let controller: ExamTypeExternalConnectionController;
+
+    beforeEach(async () => {
+        const { unit } = TestBed.create(ExamTypeExternalConnectionController).compile();
+        controller = unit;
+    });
+
     it('', () => {
         expect(controller).toBeDefined();
     })

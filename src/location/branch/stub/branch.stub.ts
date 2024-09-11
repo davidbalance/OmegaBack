@@ -4,7 +4,7 @@ import { CompanyEntity } from "@/location/company/entities/company.entity";
 
 const stubBranch = (id: number): BranchEntity => ({
     id: id,
-    name: "my-stub-name",
+    name: "Stub branch",
     status: true,
     company: {} as CompanyEntity,
     city: {} as CityEntity,

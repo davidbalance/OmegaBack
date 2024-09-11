@@ -6,10 +6,16 @@ import { mockBranch } from "../stub/branch.stub";
 import { PatchBranchRequestDto } from "../dtos/request/branch.patch.dto";
 import { PostExtendedBranchResponseDto } from "../dtos/response/extended-branch.post.dto"; */
 
+import { TestBed } from "@automock/jest";
 import { BranchExternalConnectionController } from "./branch-external-connection.controller";
 
 describe('BranchExternalConnectionController', () => {
     let controller: BranchExternalConnectionController;
+
+    beforeEach(async () => {
+        const { unit } = TestBed.create(BranchExternalConnectionController).compile();
+        controller = unit;
+    });
 
     it('', () => {
         expect(controller).toBeDefined();

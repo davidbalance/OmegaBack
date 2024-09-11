@@ -17,11 +17,16 @@ import { ExamType } from "@/laboratory/exam-type/entities/exam-type.entity";
 import { mockExamsSubtype } from "@/laboratory/exam-subtype/stub/exam-subtype.stub";
 import { PatchExamExternalRequestDto } from "../dtos/request/external-exam.patch.dto"; */
 
+import { TestBed } from "@automock/jest";
 import { ExamExternalConnectionService } from "./exam-external-connection.service";
 
 describe('ExamExternalConnectionService', () => {
     let service: ExamExternalConnectionService;
 
+    beforeEach(async () => {
+        const { unit } = TestBed.create(ExamExternalConnectionService).compile();
+        service = unit;
+    });
 
     it('', () => {
         expect(service).toBeDefined();

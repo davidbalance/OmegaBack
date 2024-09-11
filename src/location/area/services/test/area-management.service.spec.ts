@@ -1,7 +1,13 @@
+import { TestBed } from "@automock/jest";
 import { AreaManagementService } from "../area-management.service";
 
 describe('AreaManagementService', () => {
   let service: AreaManagementService;
+
+  beforeEach(async () => {
+    const { unit } = TestBed.create(AreaManagementService).compile();
+    service = unit;
+  });
 
   it('', () => {
     expect(service).toBeDefined();

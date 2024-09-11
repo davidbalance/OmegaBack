@@ -7,10 +7,16 @@ import { PostCompanyResponseDto } from "../dtos/response/post.company.response.d
 import { PatchCompanyRequestDto } from "../dtos/request/company.patch.dto";
 import { PatchCompanyResponseDto } from "../dtos/response/patch.company.response.dto"; */
 
+import { TestBed } from "@automock/jest";
 import { CompanyExternalConnectionController } from "./company-external-connection.controller";
 
 describe('CompanyExternalConnectionController', () => {
     let controller: CompanyExternalConnectionController;
+
+    beforeEach(async () => {
+        const { unit } = TestBed.create(CompanyExternalConnectionController).compile();
+        controller = unit;
+    });
 
     it('', () => {
         expect(controller).toBeDefined();

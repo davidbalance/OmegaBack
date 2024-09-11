@@ -1,3 +1,4 @@
+import { TestBed } from "@automock/jest";
 import { ExamSubtypeExternalConnectionController } from "./exam-subtype-external-connection.controller";
 
 /* import { TestBed } from "@automock/jest";
@@ -11,6 +12,11 @@ import { PatchExamSubtypeResponseDto } from "../dtos/response/patch.exam-subtype
  */
 describe('ExamSubtypeExternalConnectionController', () => {
     let controller: ExamSubtypeExternalConnectionController;
+    beforeEach(async () => {
+        const { unit, unitRef } = TestBed.create(ExamSubtypeExternalConnectionController).compile();
+
+        controller = unit;
+    });
 
     it('', () => {
         expect(controller).toBeDefined();

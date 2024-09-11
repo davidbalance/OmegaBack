@@ -8,10 +8,19 @@ import { PostAreaResponseDto } from "../dtos/response/post.area.response.dto";
 import { PatchAreaRequestDto } from "../dtos/request/area.patch.dto";
 import { PatchAreaResponseDto } from "../dtos/response/patch.area.response.dto"; */
 
+import { TestBed } from "@automock/jest";
 import { AreaManagementController } from "./area-management.controller";
 
 describe('AreaManagementController', () => {
   let controller: AreaManagementController;
+
+  beforeEach(async () => {
+    const { unit, unitRef } = TestBed.create(AreaManagementController).compile();
+
+    controller = unit;
+  });
+
+
   it('', () => {
     expect(controller).toBeDefined();
   });

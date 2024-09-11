@@ -1,15 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { SessionService } from '../session.service';
+import { SessionService } from './session.service';
+import { TestBed } from '@automock/jest';
 
 describe('SessionService', () => {
   let service: SessionService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [SessionService],
-    }).compile();
-
-    service = module.get<SessionService>(SessionService);
+    const { unit, unitRef } = TestBed.create(SessionService).compile();
+    service = unit;
   });
 
   it('should be defined', () => {

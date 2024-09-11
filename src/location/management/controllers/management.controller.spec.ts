@@ -1,7 +1,14 @@
+import { TestBed } from "@automock/jest";
 import { ManagementController } from "./management.controller";
 
 describe('ManagementController', () => {
   let controller: ManagementController;
+
+  beforeEach(async () => {
+    const { unit } = TestBed.create(ManagementController).compile();
+    controller = unit;
+  });
+
   it('', () => {
     expect(controller).toBeDefined();
   })

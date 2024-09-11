@@ -6,10 +6,18 @@ import { PostDiseaseResponseDto } from "../dtos/response/post.disease.response.d
 import { PatchDiseaseRequestDto } from "../dtos/request/disease.patch.dto";
 import { PatchDiseaseResponseDto } from "../dtos/response/patch.disease.response.dto"; */
 
+import { TestBed } from "@automock/jest";
 import { DiseaseManagementController } from "./disease-management.controller";
 
 describe('DiseaseController', () => {
   let controller: DiseaseManagementController;
+
+  beforeEach(async () => {
+    const { unit } = TestBed.create(DiseaseManagementController).compile();
+
+    controller = unit;
+  });
+
   it('', () => {
     expect(controller).toBeDefined();
   });
