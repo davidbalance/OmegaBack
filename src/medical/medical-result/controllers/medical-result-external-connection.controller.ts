@@ -4,11 +4,11 @@ import { ApiTags, ApiHeader, ApiConsumes } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { MedicalResultExternalConnectionService } from "../services/medical-result-external-connection.service";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
-import { GetExternalMedicalOrderResponseDto } from "@/medical/medical-order/dtos/response/external-medical-order.get.dto";
 import { PostExternalMedicalResultRequestDto } from "../dtos/request/external-medical-result.post.dto";
 import { PatchExternalMedicalResultFileRequestDto } from "../dtos/request/external-medical-result-file.patch.dto";
 import { PatchExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.patch.dto";
 import { PostExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.post.dto";
+import { GetExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.get.dto";
 
 @ApiTags('External Connection', 'Medical>Result')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -23,9 +23,9 @@ export class MedicalResultExternalConnectionController {
     async findOne(
         @Param('source') source: string,
         @Param('key') key: string
-    ): Promise<GetExternalMedicalOrderResponseDto> {
+    ): Promise<GetExternalMedicalResultResponseDto> {
         const medicalResult = await this.service.findOne({ key, source });
-        return plainToInstance(GetExternalMedicalOrderResponseDto, medicalResult);
+        return plainToInstance(GetExternalMedicalResultResponseDto, medicalResult);
     }
 
     @ApiConsumes('multipart/form-data')
