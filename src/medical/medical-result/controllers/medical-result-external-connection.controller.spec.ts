@@ -107,7 +107,7 @@ describe('MedicalResultExternalConnectionController', () => {
         });
     });
 
-    describe('findOneAndUpdate', () => {
+    describe('uploadFileByExternalKey', () => {
         const source = 'source';
         const key = 'key';
         const data: PatchExternalMedicalResultFileRequestDto = {
@@ -121,10 +121,31 @@ describe('MedicalResultExternalConnectionController', () => {
             service.findOneAndUpdate.mockResolvedValue(mockedResult);
 
             // Act
-            const result = await controller.uploadFile(source, key, data, undefined);
+            const result = await controller.uploadFileByExternalKey(source, key, data, undefined);
 
             // Assert
             expect(service.findOneAndUpdate).toHaveBeenCalledWith({ source, key }, { file: undefined });
+            expect(result).toEqual(expectedValue);
+        });
+    });
+
+    describe('uploadFileByExternalKey', () => {
+        const id = 1;
+        const data: PatchExternalMedicalResultFileRequestDto = {
+            file: undefined
+        };
+        const mockedResult = mockExternalMedicalResult();
+        const expectedValue = mockedResult
+
+        it('should call the service to update a medical result', async () => {
+            // Arrange
+            service.findOneAndUpdate.mockResolvedValue(mockedResult);
+
+            // Act
+            const result = await controller.uploadFileById(id, data, undefined);
+
+            // Assert
+            expect(service.findOneAndUpdate).toHaveBeenCalledWith(id, { file: undefined });
             expect(result).toEqual(expectedValue);
         });
     });

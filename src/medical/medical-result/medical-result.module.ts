@@ -6,7 +6,7 @@ import { LocalStorageModule } from "@/shared/storage-manager";
 import { DniInterceptorModule } from "@/shared/interceptors/dni/dni-interceptor.module";
 import { MedicalResultDiseaseManagementService } from "./services/medical-result-disease-management.service";
 import { MedicalResultEventService } from "./services/medical-result-event.service";
-import { MedicalResultExternalConnectionService } from "./services/medical-result-external-connection.service";
+import { MedicalResultExternalConnectionProvider, MedicalResultExternalConnectionService } from "./services/medical-result-external-connection.service";
 import { MedicalResultExternalKeyService } from "./services/medical-result-external-key.service";
 import { MedicalResultFileManagementService } from "./services/medical-result-file-management.service";
 import { MedicalResultManagementService } from "./services/medical-result-management.service";
@@ -64,6 +64,7 @@ import { MedicalResultReportController } from "./controllers/medical-result-repo
     MedicalResultDoctorPaginationService,
     MedicalResultEventService,
     MedicalResultExternalConnectionService,
+    MedicalResultExternalConnectionProvider,
     MedicalResultExternalKeyService,
     MedicalResultFileManagementService,
     MedicalResultManagementService,
@@ -73,7 +74,8 @@ import { MedicalResultReportController } from "./controllers/medical-result-repo
   exports: [
     MedicalResultManagementService,
     MedicalResultFileManagementService,
-    MedicalResultDiseaseReportService
+    MedicalResultDiseaseReportService,
+    MedicalResultExternalConnectionProvider
   ]
 })
 export class MedicalResultModule { }

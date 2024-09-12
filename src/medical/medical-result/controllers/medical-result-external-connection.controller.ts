@@ -13,13 +13,13 @@ import { GetExternalMedicalResultResponseDto } from "../dtos/response/external-m
 @ApiTags('External Connection', 'Medical>Result')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
-@Controller('external/connection/medical/result/:source/:key')
+@Controller('external/connection/medical/result')
 export class MedicalResultExternalConnectionController {
     constructor(
         @Inject(MedicalResultExternalConnectionService) private readonly service: MedicalResultExternalConnectionService
     ) { }
 
-    @Get()
+    @Get(':source/:key')
     async findOne(
         @Param('source') source: string,
         @Param('key') key: string
@@ -29,7 +29,7 @@ export class MedicalResultExternalConnectionController {
     }
 
     @ApiConsumes('multipart/form-data')
-    @Post()
+    @Post(':source/:key')
     @UseInterceptors(FileInterceptor('file'))
     async create(
         @Param('source') source: string,
@@ -42,15 +42,27 @@ export class MedicalResultExternalConnectionController {
     }
 
     @ApiConsumes('multipart/form-data')
-    @Patch('file')
+    @Patch(':source/:key/file')
     @UseInterceptors(FileInterceptor('file'))
-    async uploadFile(
+    async uploadFileByExternalKey(
         @Param('source') source: string,
         @Param('key') key: string,
         @Body() _: PatchExternalMedicalResultFileRequestDto,
         @UploadedFile() file: Express.Multer.File
     ): Promise<PatchExternalMedicalResultResponseDto> {
         const order = await this.service.findOneAndUpdate({ source, key }, { file });
+        return plainToInstance(PatchExternalMedicalResultResponseDto, order);
+    }
+
+    @ApiConsumes('multipart/form-data')
+    @Patch(':id/file')
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadFileById(
+        @Param('id') id: number,
+        @Body() _: PatchExternalMedicalResultFileRequestDto,
+        @UploadedFile() file: Express.Multer.File
+    ): Promise<PatchExternalMedicalResultResponseDto> {
+        const order = await this.service.findOneAndUpdate(id, { file });
         return plainToInstance(PatchExternalMedicalResultResponseDto, order);
     }
 }

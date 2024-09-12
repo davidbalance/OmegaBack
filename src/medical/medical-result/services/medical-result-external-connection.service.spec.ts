@@ -178,17 +178,34 @@ describe('MedicalResultExternalConnectionService', () => {
     });
 
     describe('findOneAndUpdate', () => {
-        const source: string = 'test-source'
-        const key = 'test-key';
         const data: PatchExternalMedicalResultRequestDto = {
             file: undefined
         };
-        const keyParam = { source, key };
         const mockedResult = mockMedicalResultEntity();
         const expectedValue = { ...mockedResult, hasFile: true };
 
-        it('should update a medical result', async () => {
+        it('should update a medical result with external key', async () => {
             // Arrange
+            const source: string = 'test-source'
+            const key = 'test-key';
+            const keyParam = { source, key };
+
+            repository.findOne.mockResolvedValue(mockedResult);
+            storage.uploadFile.mockResolvedValue(undefined);
+            // Act
+            const result = await service.findOneAndUpdate(keyParam, data);
+            // Assert
+            expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam } });
+            expect(storage.uploadFile).toHaveBeenCalledWith(mockedResult.id, data.file);
+            expect(result).toEqual(expectedValue);
+        });
+
+        it('should update a medical result with id', async () => {
+            // Arrange
+            const source: string = 'test-source'
+            const key = 'test-key';
+            const keyParam = { source, key };
+
             repository.findOne.mockResolvedValue(mockedResult);
             storage.uploadFile.mockResolvedValue(undefined);
             // Act

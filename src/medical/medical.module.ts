@@ -4,6 +4,7 @@ import { MedicalClientModule } from './medical-client/medical-client.module';
 import { MedicalReportModule } from './medical-report/medical-report.module';
 import { MedicalResultModule } from './medical-result/medical-result.module';
 import { MedicalOrderModule } from './medical-order/medical-order.module';
+import { MedicalOrderResultModule } from './medical-order-result/medical-order-result.module';
 
 @Module({
     imports: [
@@ -11,7 +12,8 @@ import { MedicalOrderModule } from './medical-order/medical-order.module';
         MedicalOrderModule,
         MedicalResultModule,
         FileDownloaderModule,
-        MedicalClientModule
+        MedicalClientModule,
+        MedicalOrderResultModule
     ]
 })
 export class MedicalModule { }

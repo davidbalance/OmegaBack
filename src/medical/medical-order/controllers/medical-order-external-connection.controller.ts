@@ -38,11 +38,19 @@ export class MedicalOrderExternalConnectionController {
     }
 
     @Get(':source/:key')
-    async findOne(
+    async findOneByExternalKey(
         @Param('source') source: string,
         @Param('key') key: string,
     ): Promise<GetExternalMedicalOrderResponseDto> {
         const order = await this.service.findOne({ key, source });
+        return plainToInstance(GetExternalMedicalOrderResponseDto, order);
+    }
+    
+    @Get(':id')
+    async findOneById(
+        @Param('id') id: number,
+    ): Promise<GetExternalMedicalOrderResponseDto> {
+        const order = await this.service.findOne(id);
         return plainToInstance(GetExternalMedicalOrderResponseDto, order);
     }
 

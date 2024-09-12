@@ -84,7 +84,7 @@ describe('MedicalOrderExternalConnectionController', () => {
         });
     });
 
-    describe('findOne', () => {
+    describe('findOneByExternalKey', () => {
         const source = 'source';
         const key = 'key';
         const mockedOrders = mockExternalMedicalOrder();
@@ -95,10 +95,28 @@ describe('MedicalOrderExternalConnectionController', () => {
             service.findOne.mockResolvedValue(mockedOrders);
 
             // Act
-            const result = await controller.findOne(source, key);
+            const result = await controller.findOneByExternalKey(source, key);
 
             // Assert
             expect(service.findOne).toHaveBeenCalledWith({ source, key });
+            expect(result).toEqual(expectedValue);
+        });
+    });
+
+    describe('findOneById', () => {
+        const id = 1;
+        const mockedOrders = mockExternalMedicalOrder();
+        const expectedValue = mockedOrders
+
+        it('should call the service to update a medicalOrder', async () => {
+            // Arrange
+            service.findOne.mockResolvedValue(mockedOrders);
+
+            // Act
+            const result = await controller.findOneById(id);
+
+            // Assert
+            expect(service.findOne).toHaveBeenCalledWith(id);
             expect(result).toEqual(expectedValue);
         });
     });

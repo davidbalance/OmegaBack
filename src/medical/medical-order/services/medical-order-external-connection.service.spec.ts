@@ -143,19 +143,32 @@ describe('MedicalOrderExternalConnectionService', () => {
     });
 
     describe('findOne', () => {
-        const source: string = 'test-source'
-        const key = 'test-key';
-        const keyParam = { source, key };
+
         const mockedOrder = mockMedicalOrderEntity();
         const expectedValue = mockedOrder;
 
         it('should find a medical order by external key', async () => {
             // Arrange
+            const source: string = 'test-source'
+            const key = 'test-key';
+            const keyParam = { source, key };
+
             repository.findOne.mockResolvedValue(mockedOrder);
             // Act
             const result = await service.findOne(keyParam);
             // Assert
             expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam } });
+            expect(result).toEqual(expectedValue);
+        });
+
+        it('should find a medical order by id', async () => {
+            // Arrange
+            const id = 1;
+            repository.findOne.mockResolvedValue(mockedOrder);
+            // Act
+            const result = await service.findOne(id);
+            // Assert
+            expect(repository.findOne).toHaveBeenCalledWith({ where: { id } });
             expect(result).toEqual(expectedValue);
         });
     });

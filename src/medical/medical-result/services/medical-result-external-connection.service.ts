@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, Provider } from "@nestjs/common";
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { ExternalKeyParam, IExternalConnectionService } from "@/shared/utils/bases/base.external-connection";
 import { signaturePath } from "@/shared/utils";
@@ -12,6 +12,7 @@ import { ExternalMedicalResult } from "../dtos/response/external-medical-result.
 import { PatchExternalMedicalResultRequestDto } from "../dtos/request/external-medical-result.patch.dto";
 import { ExternalMedicalOrder } from "@/medical/medical-order/dtos/response/external-medical-order.base.dto";
 import { ExternalMedicalOrderRequestDto } from "@/medical/medical-order/dtos/request/external-medical-order.base.dto";
+import { MedicalResultEntity } from "../entities/medical-result.entity";
 
 type RequestType = PostExternalMedicalResultRequestDto | PatchExternalMedicalResultRequestDto
 
@@ -67,10 +68,18 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
         throw new Error("Method not implemented.");
     }
 
-    async findOneAndUpdate(key: ExternalKeyParam, { file }: PatchExternalMedicalResultRequestDto): Promise<ExternalMedicalResult> {
-        const medicalResult = await this.repository.findOne({ where: { externalKey: key } });
+    async findOneAndUpdate(key: ExternalKeyParam | number, { file }: PatchExternalMedicalResultRequestDto): Promise<ExternalMedicalResult> {
+        let medicalResult: MedicalResultEntity;
+        if (typeof key === 'number') {
+            medicalResult = await this.repository.findOne({ where: { id: key } });
+        } else {
+            medicalResult = await this.repository.findOne({ where: { externalKey: key } });
+        }
         await this.storage.uploadFile(medicalResult.id, file);
         medicalResult.hasFile = true;
         return medicalResult;
     }
 }
+
+export const INJECT_MEDICAL_RESULT_EXTERNAL_CONNECTION = 'INJECT_MEDICAL_RESULT_EXTERNAL_CONNECTION';
+export const MedicalResultExternalConnectionProvider: Provider = { provide: INJECT_MEDICAL_RESULT_EXTERNAL_CONNECTION, useClass: MedicalResultExternalConnectionService }
