@@ -1,18 +1,17 @@
 import { TestBed } from "@automock/jest";
 import { FileDownloaderService } from "./file-downloader.service";
+import { MedicalReportFileManagementService } from "@/medical/medical-report/services/medical-report-file-management.service";
+import { MedicalResultFileManagementService } from "@/medical/medical-result/services/medical-result-file-management.service";
+import { FileManagementService } from "@/shared/utils/bases/base.file-service";
+import { ZipperService } from "@/shared/zipper/zipper.service";
+import { StreamableFile, NotFoundException } from "@nestjs/common";
+import { PostDownloadZipRequestDto } from "../dtos/request/download-zip.post.dto";
+import { FileSourceEnum } from "../dtos/request/file-source.base.dto";
+import { ReadStream } from "typeorm/platform/PlatformTools";
 
 describe('FileDownloaderService', () => {
     let service: FileDownloaderService;
-
-    beforeEach(async () => {
-        const { unit, unitRef } = TestBed.create(FileDownloaderService).compile();
-        service = unit;
-    });
-
-    it('', () => {
-        expect(service).toBeDefined();
-    });
-    /* let zipper: jest.Mocked<ZipperService>;
+    let zipper: jest.Mocked<ZipperService>;
     let medicalResultService: jest.Mocked<FileManagementService<number>>;
     let medicalReportService: jest.Mocked<FileManagementService<number>>;
 
@@ -31,7 +30,7 @@ describe('FileDownloaderService', () => {
 
     describe('downloadFile', () => {
         const id = 1;
-        const mockedStream: StreamableFile = {} as StreamableFile;
+        const mockedStream: ReadStream = {} as ReadStream;
 
         it('should download a report file', async () => {
             // Arrange
@@ -130,5 +129,5 @@ describe('FileDownloaderService', () => {
             // Assert
             expect(medicalReportService.removeFile).toHaveBeenCalledWith(id);
         });
-    }); */
+    });
 });
