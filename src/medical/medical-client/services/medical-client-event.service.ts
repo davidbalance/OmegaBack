@@ -16,10 +16,12 @@ export class MedicalClientEventService {
   emitExternalCreateEvent(
     source: string,
     patient: PatientRequestDto,
-    jobPosition: ExternalJobPositionWithKeyRequestDto,
+    jobPosition?: ExternalJobPositionWithKeyRequestDto,
   ): void {
     this.eventEmitter.emit(PatientEvent.EXTERNAL_CREATE, new PatientExternalCreateEvent(patient));
-    this.emitJobPositionExternalCreateEvent(source, jobPosition);
+    if (jobPosition) {
+      this.emitJobPositionExternalCreateEvent(source, jobPosition);
+    }
   }
 
   emitJobPositionExternalCreateEvent(

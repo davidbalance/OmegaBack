@@ -1,6 +1,6 @@
 import { OmitType } from "@nestjs/mapped-types";
 import { Type } from "class-transformer";
-import { IsDefined, IsObject, IsNotEmptyObject, ValidateNested, IsEmail } from "class-validator";
+import { IsDefined, IsObject, IsNotEmptyObject, ValidateNested, IsEmail, IsOptional } from "class-validator";
 import { MedicalOrderRequestDto } from "./medical-order.base.dto";
 import { ExternalBranchWithKeyRequestDto } from "@/location/branch/dtos/request/external-branch-with-key.post.dto";
 import { ExternalJobPositionWithKeyRequestDto } from "@/location/job-position/dtos/request/external-job-position-with-key.base.dto";
@@ -27,10 +27,9 @@ export class ExternalMedicalOrderRequestDto extends OmitType(MedicalOrderRequest
     @Type(() => PatientWithEmailRequestDto)
     public readonly patient: PatientWithEmailRequestDto;
 
-    @IsDefined()
+    @IsOptional()
     @IsObject()
-    @IsNotEmptyObject()
     @ValidateNested()
     @Type(() => ExternalJobPositionWithKeyRequestDto)
-    public readonly jobPosition: ExternalJobPositionWithKeyRequestDto;
+    public readonly jobPosition?: ExternalJobPositionWithKeyRequestDto;
 }

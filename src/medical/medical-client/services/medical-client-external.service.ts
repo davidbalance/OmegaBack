@@ -23,9 +23,12 @@ export class MedicalClientExternalService implements IExternalConnectionService<
   async create(source: string, { jobPosition, ...data }: PostExternalMedicalClientRequestDto): Promise<MedicalClient> {
     const newClient = await this.managementService.create(data);
     await this.emailService.assignEmail(data.dni, { email: data.email });
-    const newPosition = await this.jobPositionService.assignJobPosition(data.dni, { jobPositionName: jobPosition.name });
+    let newPosition = undefined;
+    if (jobPosition) {
+      newPosition = await this.jobPositionService.assignJobPosition(data.dni, { jobPositionName: jobPosition.name });
+    }
     this.eventService.emitExternalCreateEvent(source, data, jobPosition);
-    return {...newClient, ...newPosition};
+    return { ...newClient, ...newPosition };
   }
 
   async findOne(dni: string): Promise<MedicalClient> {
