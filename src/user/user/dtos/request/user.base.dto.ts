@@ -6,7 +6,6 @@ export class UserRequestDto {
     public readonly name: string;
 
     @IsString()
-    @IsNotEmpty()
     public readonly lastname: string;
 
     @IsEmail()
