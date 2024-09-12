@@ -9,6 +9,6 @@ export class MedicalClientExternalCreateEvent {
     constructor(
         public readonly source: string,
         public readonly data: MedicalClientRequestDto,
-        public readonly jobPosition: ExternalJobPositionWithKeyRequestDto
+        public readonly jobPosition?: ExternalJobPositionWithKeyRequestDto
     ) { }
 }

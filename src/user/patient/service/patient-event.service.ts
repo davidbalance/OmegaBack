@@ -13,7 +13,7 @@ export class PatientEventService {
     emitMedicalClientExternalCreateEvent(
         source: string,
         medicalClient: MedicalClientRequestDto,
-        jobPosition: ExternalJobPositionWithKeyRequestDto,
+        jobPosition?: ExternalJobPositionWithKeyRequestDto,
     ) {
         this.eventEmitter.emit(MedicalClientEvent.EXTERNAL_CREATE, new MedicalClientExternalCreateEvent(source, medicalClient, jobPosition));
     }
