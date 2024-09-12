@@ -3,8 +3,8 @@ import { MedicalResultReport } from "../types/medical-result-report.type";
 import { ExcelManagerService } from "@/shared/excel-manager/excel-manager.service";
 import dayjs from "dayjs";
 import { MedicalResultDiseaseRepository } from "../repositories/medical-result-disease.repository";
-import { MedicalResultYearResponseDto } from "../dtos/response/base.medical-result-year.response.dto";
-import { PostMedicalResultDiseaseReportRequestDto } from "../dtos/request/post.medical-result-disease-report.request.dto";
+import { MedicalResultYear } from "../dtos/response/medical-result-year.base.dto";
+import { PostMedicalResultDiseaseReportRequestDto } from "../dtos/request/medical-result-disease-report.post.dto";
 import { ExcelReportType } from "../types/excel-report.type";
 import { excelColumns } from "../utils/columns";
 
@@ -15,13 +15,13 @@ export class MedicalResultDiseaseReportService {
         @Inject(ExcelManagerService) private excel: ExcelManagerService
     ) { }
 
-    async getCurrentYears(): Promise<MedicalResultYearResponseDto[]> {
+    async getCurrentYears(): Promise<MedicalResultYear[]> {
         const data = await this.repository.query('medical_disease')
             .leftJoinAndSelect('medical_disease.result', 'medical_result')
             .select('YEAR(medical_result.createAt)', 'year')
             .distinct(true)
             .orderBy('year', 'ASC')
-            .getRawMany<MedicalResultYearResponseDto>();
+            .getRawMany<MedicalResultYear>();
         return data;
     }
 
@@ -46,7 +46,6 @@ export class MedicalResultDiseaseReportService {
     }
 
     private async find({ year, corporativeName, companyRuc }: PostMedicalResultDiseaseReportRequestDto): Promise<MedicalResultReport[]> {
-
         const query = this.repository.query('medical_disease')
             .leftJoinAndSelect('medical_disease.result', 'medical_result')
             .leftJoinAndSelect('medical_result.order', 'medical_order')

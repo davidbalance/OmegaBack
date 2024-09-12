@@ -2,13 +2,14 @@ import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { BranchExternalConnectionService } from "../services/branch-external-connection.service";
-import { PostBranchResponseDto } from "../dtos/response/post.branch.response.dto";
-import { PatchBranchRequestDto } from "../dtos/request/patch.branch.request.dto";
-import { PatchBranchResponseDto } from "../dtos/response/patch.branch.response.dto";
-import { PostBranchExternalRequestDto } from "../dtos/request/post.branch-external.request.dto";
+import { PostBranchExternalRequestDto } from "../dtos/request/external-branch.post.dto";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
+import { PostExtendedBranchResponseDto } from "../dtos/response/extended-branch.post.dto";
+import { PatchExtendedBranchResponseDto } from "../dtos/response/extended-branch.patch.dto";
+import { PatchCompanyExternalRequestDto } from "@/location/company/dtos/request/external-company.patch.dto";
+import { PatchBranchExternalRequestDto } from "../dtos/request/external-branch.patch.dto";
 
-@ApiTags('Location/Branch', 'External/Connection')
+@ApiTags('Location>Branch', 'External Connection')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/branch/:source/:key')
@@ -22,18 +23,18 @@ export class BranchExternalConnectionController {
         @Param('source') source: string,
         @Param('key') key: string,
         @Body() body: PostBranchExternalRequestDto,
-    ): Promise<PostBranchResponseDto> {
+    ): Promise<PostExtendedBranchResponseDto> {
         const branch = await this.service.create({ source, key }, body);
-        return plainToInstance(PostBranchResponseDto, branch);
+        return plainToInstance(PostExtendedBranchResponseDto, branch);
     }
 
     @Patch()
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() body: PatchBranchRequestDto,
-    ): Promise<PatchBranchResponseDto> {
+        @Body() body: PatchBranchExternalRequestDto,
+    ): Promise<PatchExtendedBranchResponseDto> {
         const branch = await this.service.findOneAndUpdate({ key, source }, body);
-        return plainToInstance(PatchBranchResponseDto, branch);
+        return plainToInstance(PatchExtendedBranchResponseDto, branch);
     }
 }

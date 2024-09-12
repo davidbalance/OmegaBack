@@ -1,12 +1,12 @@
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { CompanyExternalKey } from "./company-external-key.entity";
-import { CorporativeGroup } from "@/location/corporative-group/entities/corporative-group.entity";
-import { Branch } from "@/location/branch/entities/branch.entity";
+import { CompanyExternalKeyEntity } from "./company-external-key.entity";
+import { CorporativeGroupEntity } from "@/location/corporative-group/entities/corporative-group.entity";
+import { BranchEntity } from "@/location/branch/entities/branch.entity";
 
 @Entity({ name: 'tbl_lo_companies' })
 @Index('idx_company_ruc', ['ruc'], { unique: true })
-export class Company extends AbstractEntity<number> {
+export class CompanyEntity extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'company_id' })
     public id: number;
 
@@ -25,14 +25,14 @@ export class Company extends AbstractEntity<number> {
     @Column({ name: 'company_status', type: 'boolean', default: true, nullable: false })
     public status: boolean;
 
-    @OneToMany(() => Branch, branch => branch.company, { eager: false })
-    public branches: Branch[];
+    @OneToMany(() => BranchEntity, branch => branch.company, { eager: false })
+    public branches: BranchEntity[];
 
-    @ManyToOne(() => CorporativeGroup, group => group.companies, { eager: false, nullable: false })
+    @ManyToOne(() => CorporativeGroupEntity, group => group.companies, { eager: false, nullable: false })
     @JoinColumn({ referencedColumnName: 'id', name: 'corporative_id' })
-    public corporativeGroup: CorporativeGroup;
+    public corporativeGroup: CorporativeGroupEntity;
 
-    @OneToOne(() => CompanyExternalKey, { eager: false, nullable: true })
+    @OneToOne(() => CompanyExternalKeyEntity, { eager: false, nullable: true })
     @JoinColumn({ foreignKeyConstraintName: 'fk_lo_external_company', referencedColumnName: 'id', name: 'external_key' })
-    public externalKey: CompanyExternalKey;
+    public externalKey: CompanyExternalKeyEntity;
 }

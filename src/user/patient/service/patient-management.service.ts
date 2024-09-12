@@ -1,13 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Patient } from '../entities/patient.entity';
-import { PatientRepository } from '../repositories/patient.repository';
-import { PatientResponseDto } from '../dtos/response/base.patient.response.dto';
-import { FlatService } from '@/shared/utils/bases/base.flat-service';
-import { INJECT_PATIENT_FLAT_SERVICE } from './patient-flat.service';
-import { PatientRequestDto } from '../dtos/request/base.patient.request.dto';
+import { PatientRequestDto } from '../dtos/request/patient.base.dto';
 import { UserManagementService } from '@/user/user/services/user-management.service';
-import { User } from '@/user/user/entities/user.entity';
-import { PatchPatientRequestDto } from '../dtos/request/patch.patient.request.dto';
+import { PatchPatientRequestDto } from '../dtos/request/patient.patch.dto';
+import { PatientRepository } from '../repositories/patient.repository';
+import { Patient } from '../dtos/response/patient.base.dto';
+import { User } from '@/user/user/dtos/response/user.base.dto';
 
 @Injectable()
 export class PatientManagementService {
@@ -15,39 +12,20 @@ export class PatientManagementService {
   constructor(
     @Inject(PatientRepository) private readonly repository: PatientRepository,
     @Inject(UserManagementService) private readonly userService: UserManagementService,
-    @Inject(INJECT_PATIENT_FLAT_SERVICE) private readonly flatService: FlatService<Patient, PatientResponseDto>
   ) { }
 
-  async create({ birthday, gender, role, ...data }: PatientRequestDto): Promise<PatientResponseDto> {
-    let user: User | undefined = undefined;
+  async create({ birthday, gender, role, ...data }: PatientRequestDto): Promise<Patient> {
+    let currentUser: User | undefined = undefined;
     try {
-      user = await this.userService.findOneByDni(data.dni);
+      currentUser = await this.userService.findOneByDni(data.dni);
     } catch (error) {
-      user = await this.userService.create({ ...data, role, email: null });
+      currentUser = await this.userService.create({ ...data, role, email: null });
     }
-    const patient = await this.repository.create({ birthday, gender, user: user });
-    const flatPatient = this.flatService.flat(patient);
-    return flatPatient;
+    const { user, ...patient } = await this.repository.create({ birthday, gender, user: currentUser });
+    return { ...user, ...patient, user: user.id };
   }
 
-  async find(): Promise<PatientResponseDto[]> {
-    const patients = await this.repository.find({
-      where: {
-        user: { status: true }
-      },
-      select: {
-        id: true,
-        birthday: true,
-        gender: true,
-        user: { id: true, dni: true, email: true, lastname: true, name: true }
-      },
-      cache: 1000 * 900
-    });
-    const flatPatients = patients.map(this.flatService.flat);
-    return flatPatients;
-  }
-
-  async findByExtraAttribute(name: string, value: string): Promise<PatientResponseDto[]> {
+  async findByExtraAttribute(name: string, value: string): Promise<Patient[]> {
     const patients = await this.repository.find({
       where: {
         user: {
@@ -62,12 +40,12 @@ export class PatientManagementService {
         user: { id: true, dni: true, email: true, lastname: true, name: true }
       },
     });
-    const flatPatients = patients.map(this.flatService.flat);
+    const flatPatients = patients.map(({ user, ...data }) => ({ ...user, ...data, user: user.id }));
     return flatPatients;
   }
 
-  async findOneByDni(dni: string): Promise<PatientResponseDto> {
-    const patient = await this.repository.findOne({
+  async findOneByDni(dni: string): Promise<Patient> {
+    const { user, ...patient } = await this.repository.findOne({
       where: {
         user: { dni: dni }
       },
@@ -79,17 +57,14 @@ export class PatientManagementService {
       },
       cache: 1000 * 900
     });
-    const flatPatient = this.flatService.flat(patient);
-    return flatPatient;
+    return { ...user, ...patient, user: user.id };
   }
 
-  async updateOne(dni: string, { birthday, gender, ...data }: PatchPatientRequestDto): Promise<PatientResponseDto> {
+  async updateOne(dni: string, { birthday, gender, ...data }: PatchPatientRequestDto): Promise<Patient> {
     const patient = await this.repository.findOne({ where: { user: { dni: dni } }, relations: { user: true } });
     const { user } = patient;
-    const updatedUser = await this.userService.updateOne(user.id, { ...user, email: null });
+    const updatedUser = await this.userService.updateOne(user.id, { ...data, email: null });
     const updatedPatient = await this.repository.findOneAndUpdate({ user: { dni: dni } }, { birthday, gender });
-    updatedPatient.user = updatedUser;
-    const flatPatient = this.flatService.flat(updatedPatient);
-    return flatPatient;
+    return { ...updatedUser, ...updatedPatient, user: updatedUser.id };
   }
 }

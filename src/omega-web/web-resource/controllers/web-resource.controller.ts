@@ -1,16 +1,14 @@
 import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
-import { GetWebResourceArrayResponseDto } from '../dtos/response/get.web-resource-array.response.dto';
+import { GetWebResourceArrayResponseDto } from '../dtos/response/web-resource-array.get.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { WebResourceService } from '../services/web-resource.service';
-import { PostWebResourceRequestDto } from '../dtos/request/post.web-resource.request.dto';
-import { PatchWebResourceRequestDto } from '../dtos/request/patch.web-resource.request.dto';
-import { PatchWebResourceResponseDto } from '../dtos/response/patch.web-resource.response.dto';
-import { PostWebResourceResponseDto } from '../dtos/response/post.web-resource.response.dto';
-import { DeleteWebResourceResponseDto } from '../dtos/response/delete.web-resource.response.dto';
+import { PostWebResourceRequestDto } from '../dtos/request/web-resource.post.dto';
+import { PatchWebResourceRequestDto } from '../dtos/request/web-resource.patch.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
+import { GetWebResourceResponseDto } from '../dtos/response/web-resource.get.dto';
 
-@ApiTags('Omega/Web/Resource')
+@ApiTags('Omega Web>Resource')
 @Controller('omega/web/resources')
 @UseGuards(JwtAuthGuard)
 export class WebResourceController {
@@ -19,32 +17,40 @@ export class WebResourceController {
   ) { }
 
   @Get()
-  async findAll(): Promise<GetWebResourceArrayResponseDto> {
-    const data = await this.webResourceService.findAll();
+  async find(): Promise<GetWebResourceArrayResponseDto> {
+    const data = await this.webResourceService.find();
     return plainToInstance(GetWebResourceArrayResponseDto, { data });
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param('id') id: number
+  ): Promise<GetWebResourceResponseDto> {
+    const data = await this.webResourceService.findOne(id);
+    return plainToInstance(GetWebResourceResponseDto, data);
   }
 
   @Post()
   async createResource(
     @Body() body: PostWebResourceRequestDto
-  ): Promise<PostWebResourceResponseDto> {
-    const resource = await this.webResourceService.create(body);
-    return plainToInstance(PostWebResourceResponseDto, resource);
+  ): Promise<any> {
+    await this.webResourceService.create(body);
+    return {}
   }
 
   @Patch(':id')
   async updateResource(
     @Param('id') id: number,
     @Body() body: PatchWebResourceRequestDto
-  ): Promise<PatchWebResourceResponseDto> {
-    const resource = await this.webResourceService.updateOne(id, body);
-    return plainToInstance(PatchWebResourceResponseDto, resource);
+  ): Promise<any> {
+    await this.webResourceService.updateOne(id, body);
+    return {}
   }
 
   @Delete(':id')
   async deleteResource(
     @Param('id') id: number
-  ): Promise<DeleteWebResourceResponseDto> {
+  ): Promise<any> {
     await this.webResourceService.deleteOne(id);
     return {}
   }

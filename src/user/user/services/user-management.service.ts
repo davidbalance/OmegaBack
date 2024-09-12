@@ -1,10 +1,10 @@
 import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { UserRepository } from "../repositories/user.repository";
 import { UserEventService } from "./user-event.service";
-import { User } from "../entities/user.entity";
 import { Not } from "typeorm";
-import { PostUserRequestDto } from "../dtos/request/post.user.request.dto";
+import { PostUserRequestDto } from "../dtos/request/user.post.dto";
 import { UserExtraAttributeService } from "./user-extra-attributes.service";
+import { User } from "../dtos/response/user.base.dto";
 
 @Injectable()
 export class UserManagementService {
@@ -23,8 +23,9 @@ export class UserManagementService {
             throw new ConflictException(conflictMessage);
         } catch (error) {
             if (error instanceof NotFoundException) {
-                const newUser = await this.repository.create({ dni, email, ...data });
-                if (role) { 
+                const dniType: string = dni.length < 10 ? 'pas' : 'dni';
+                const newUser = await this.repository.create({ dni, email, dniType, ...data });
+                if (role) {
                     this.attributeService.assignAttribute(newUser.id, { name: 'role', value: role });
                 }
                 return newUser;

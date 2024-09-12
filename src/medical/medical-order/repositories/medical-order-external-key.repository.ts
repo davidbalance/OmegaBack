@@ -2,14 +2,14 @@ import { AbstractRepository } from "@/shared/sql-database/abstract.repository";
 import { Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { MedicalOrderExternalKey } from "../entities/medical-order-external-key.entity";
+import { MedicalOrderExternalKeyEntity } from "../entities/medical-order-external-key.entity";
 
 @Injectable()
 export class MedicalOrderExternalKeyRepository
-    extends AbstractRepository<number, MedicalOrderExternalKey> {
+    extends AbstractRepository<number, MedicalOrderExternalKeyEntity> {
 
     constructor(
-        @InjectRepository(MedicalOrderExternalKey) private readonly keyModel: Repository<MedicalOrderExternalKey>
+        @InjectRepository(MedicalOrderExternalKeyEntity) private readonly keyModel: Repository<MedicalOrderExternalKeyEntity>
     ) {
         super(keyModel);
     }

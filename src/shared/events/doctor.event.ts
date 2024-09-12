@@ -1,4 +1,4 @@
-import { DoctorRequestDto } from "@/user/doctor/dtos/request/base.doctor.request.dto";
+import { DoctorRequestDto } from "@/user/doctor/dtos/request/doctor.base.dto";
 
 export const DoctorEvent = {
     EXTERNAL_CREATE: 'doctor.external.create'

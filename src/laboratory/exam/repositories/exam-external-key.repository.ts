@@ -2,13 +2,13 @@ import { AbstractRepository } from "@/shared/sql-database/abstract.repository";
 import { Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ExamExternalKey } from "../entities/exam-external-key.entity";
+import { ExamExternalKeyEntity } from "../entities/exam-external-key.entity";
 
 @Injectable()
-export class ExamExternalKeyRepository extends AbstractRepository<number, ExamExternalKey> {
+export class ExamExternalKeyRepository extends AbstractRepository<number, ExamExternalKeyEntity> {
 
     constructor(
-        @InjectRepository(ExamExternalKey) private readonly keyModel: Repository<ExamExternalKey>
+        @InjectRepository(ExamExternalKeyEntity) private readonly keyModel: Repository<ExamExternalKeyEntity>
     ) {
         super(keyModel);
     }

@@ -3,11 +3,11 @@ import { MedicalResultDiseaseReportService } from "../services/medical-result-di
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";
 import { plainToInstance } from "class-transformer";
-import { GetMedicalResultYearArrayResponseDto } from "../dtos/response/get.medical-result-year-array.response.dto";
-import { PostMedicalResultDiseaseReportRequestDto } from "../dtos/request/post.medical-result-disease-report.request.dto";
+import { GetMedicalResultYearArrayResponseDto } from "../dtos/response/medical-result-year-array.get.dto";
+import { PostMedicalResultDiseaseReportRequestDto } from "../dtos/request/medical-result-disease-report.post.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
-@ApiTags('Medical/Result')
+@ApiTags('Medical>Result>Disease')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('medical/results/report/diseases')

@@ -1,74 +1,70 @@
 import { TestBed } from "@automock/jest";
-import { PatientExternalConnectionService } from "../service/patient-external-connection.service";
 import { PatientExternalConnectionController } from "./patient-external-connection.controller";
-import { PostPatientExternalRequestDto } from "../dtos/request/post.patient-external.request.dto";
+import { PostExternalPatientRequestDto } from "../dtos/request/external-patient.post.dto";
 import { PatientGenderEnum } from "../enums/patient.enum";
-import { mockFlatPatient } from "../service/test/stub/patient-flat.stub";
-import { PatchPatientRequestDto } from "../dtos/request/patch.patient.request.dto";
+import { mockPatient } from "../stub/patient.stub";
+import { mockExternalPatient } from "../stub/external-patient.stub";
+import { PatientExternalConnectionService } from "../service/patient-external-connection.service";
+import { PatchExternalPatientRequestDto } from "../dtos/request/external-patient.patch.dto";
 
 describe('PatientExternalConnectionController', () => {
     let controller: PatientExternalConnectionController;
     let service: jest.Mocked<PatientExternalConnectionService>;
+
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(PatientExternalConnectionController).compile();
-
         controller = unit;
         service = unitRef.get(PatientExternalConnectionService);
     });
 
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
-
     describe('create', () => {
-        const source: string = 'external-source';
-        const mockDto: PostPatientExternalRequestDto = {
-            email: "test@email.com",
-            jobPosition: undefined,
+        const source = 'test-source';
+        const data: PostExternalPatientRequestDto = {
+            dni: '1234567890',
+            name: 'Test User',
+            lastname: 'Test Lastname',
+            birthday: new Date(),
             gender: PatientGenderEnum.MALE,
-            birthday: new Date('2000-01-01'),
-            name: "Name",
-            lastname: "Lastname",
-            dni: "1234567890"
+            jobPosition: {
+                key: 'test-job-position-key',
+                name: 'Test Job Position'
+            },
+            email: "test@email.com"
         };
-        const mockedPatient = mockFlatPatient();
-        const expectResult = mockedPatient;
+        const mockedPatient = mockExternalPatient();
+        const expectedValue = mockedPatient;
 
         it('should create a new patient', async () => {
             // Arrange
             service.create.mockResolvedValue(mockedPatient);
 
             // Act
-            const result = await controller.create(source, mockDto);
+            const result = await service.create(source, data);
 
             // Assert
-            expect(service.create).toHaveBeenCalledWith(source, mockDto);
-            expect(result).toEqual(expectResult);
+            expect(service.create).toHaveBeenCalledWith(source, data);
+            expect(result).toEqual(expectedValue);
         });
     });
 
     describe('findOneAndUpdate', () => {
-        const source: string = 'external-source';
-        const dni: string = '1234567890';
-        const mockDto: PatchPatientRequestDto = {
-            birthday: new Date('2000-01-01'),
-            gender: PatientGenderEnum.MALE,
-            lastname: 'Lastname',
-            name: 'Name'
+        const dni = '1234567890';
+        const data: PatchExternalPatientRequestDto = {
+            name: 'Updated User'
         };
-        const mockedPatient = mockFlatPatient();
-        const expectResult = mockedPatient;
+        const mockedPatient = mockExternalPatient();
+        const expectedValue = mockedPatient;
 
-        it('should update a patient', async () => {
+        it('should create a new patient', async () => {
             // Arrange
             service.findOneAndUpdate.mockResolvedValue(mockedPatient);
 
             // Act
-            const result = await controller.findOneAndUpdate(source, dni, mockDto);
+            const result = await service.findOneAndUpdate(dni, data);
 
             // Assert
-            expect(service.findOneAndUpdate).toHaveBeenCalledWith(dni, mockDto);
-            expect(result).toEqual(expectResult);
+            expect(service.findOneAndUpdate).toHaveBeenCalledWith(dni, data);
+            expect(result).toEqual(expectedValue);
         });
     });
-});
+})

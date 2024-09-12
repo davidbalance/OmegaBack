@@ -3,6 +3,7 @@ import { FileManagementService } from "@/shared/utils/bases/base.file-service";
 import { Injectable, Inject, Logger, NotFoundException, StreamableFile } from "@nestjs/common";
 import { MedicalReportRepository } from "../repositories/medical-report.repository";
 import { fileReportPath } from "@/shared/utils";
+import { ReadStream } from "fs";
 
 @Injectable()
 export class MedicalReportFileManagementService implements FileManagementService<number> {
@@ -12,7 +13,7 @@ export class MedicalReportFileManagementService implements FileManagementService
     @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
   ) { }
 
-  async getFile(key: number): Promise<StreamableFile> {
+  async getFile(key: number): Promise<ReadStream> {
     const medicalReport = await this.repository
       .query('medical-report')
       .select('medical-report.fileAddress', 'filepath')

@@ -3,54 +3,66 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiTags, ApiHeader, ApiConsumes } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { MedicalResultExternalConnectionService } from "../services/medical-result-external-connection.service";
-import { GetMedicalResultResponseDto } from "../dtos/response/get.medical-result.response.dto";
-import { PostMedicalResultExternalRequestDto } from "../dtos/request/post.medical-result-external.dto";
-import { PostMedicalResultResponseDto } from "../dtos/response/post.medical-result.response.dto";
-import { PatchMedicalResultFileRequestDto } from "../dtos/request/patch.medical-result-file.request.dto";
-import { PatchMedicalResultFileResponseDto } from "../dtos/response/patch.medical-result-file.response.dto";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
+import { PostExternalMedicalResultRequestDto } from "../dtos/request/external-medical-result.post.dto";
+import { PatchExternalMedicalResultFileRequestDto } from "../dtos/request/external-medical-result-file.patch.dto";
+import { PatchExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.patch.dto";
+import { PostExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.post.dto";
+import { GetExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.get.dto";
 
-@ApiTags('External/Connection', 'Medical/Result')
+@ApiTags('External Connection', 'Medical>Result')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
-@Controller('external/connection/medical/result/:source/:key')
+@Controller('external/connection/medical/result')
 export class MedicalResultExternalConnectionController {
     constructor(
         @Inject(MedicalResultExternalConnectionService) private readonly service: MedicalResultExternalConnectionService
     ) { }
 
-    @Get()
+    @Get(':source/:key')
     async findOne(
         @Param('source') source: string,
         @Param('key') key: string
-    ): Promise<GetMedicalResultResponseDto> {
+    ): Promise<GetExternalMedicalResultResponseDto> {
         const medicalResult = await this.service.findOne({ key, source });
-        return plainToInstance(GetMedicalResultResponseDto, medicalResult);
+        return plainToInstance(GetExternalMedicalResultResponseDto, medicalResult);
     }
 
     @ApiConsumes('multipart/form-data')
-    @Post()
+    @Post(':source/:key')
     @UseInterceptors(FileInterceptor('file'))
     async create(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() body: PostMedicalResultExternalRequestDto,
+        @Body() body: PostExternalMedicalResultRequestDto,
         @UploadedFile() file: Express.Multer.File
-    ): Promise<PostMedicalResultResponseDto> {
+    ): Promise<PostExternalMedicalResultResponseDto> {
         const order = await this.service.create({ source, key }, { ...body, file });
-        return plainToInstance(PostMedicalResultResponseDto, order);
+        return plainToInstance(PostExternalMedicalResultResponseDto, order);
     }
 
     @ApiConsumes('multipart/form-data')
-    @Patch('file')
+    @Patch(':source/:key/file')
     @UseInterceptors(FileInterceptor('file'))
-    async uploadFile(
+    async uploadFileByExternalKey(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() _: PatchMedicalResultFileRequestDto,
+        @Body() _: PatchExternalMedicalResultFileRequestDto,
         @UploadedFile() file: Express.Multer.File
-    ): Promise<PatchMedicalResultFileResponseDto> {
+    ): Promise<PatchExternalMedicalResultResponseDto> {
         const order = await this.service.findOneAndUpdate({ source, key }, { file });
-        return plainToInstance(PatchMedicalResultFileResponseDto, order);
+        return plainToInstance(PatchExternalMedicalResultResponseDto, order);
+    }
+
+    @ApiConsumes('multipart/form-data')
+    @Patch(':id/file')
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadFileById(
+        @Param('id') id: number,
+        @Body() _: PatchExternalMedicalResultFileRequestDto,
+        @UploadedFile() file: Express.Multer.File
+    ): Promise<PatchExternalMedicalResultResponseDto> {
+        const order = await this.service.findOneAndUpdate(id, { file });
+        return plainToInstance(PatchExternalMedicalResultResponseDto, order);
     }
 }

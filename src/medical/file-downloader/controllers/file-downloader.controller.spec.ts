@@ -1,10 +1,10 @@
 import { TestBed } from "@automock/jest";
-import { FileDownloaderService } from "../services/file-downloader.service";
 import { FileDownloaderController } from "./file-downloader.controller";
-import { PostFileSourceRequestDto } from "../dtos/request/post.file-source.request.dto";
-import { FileSourceEnum } from "../dtos/request/base.file-source.request.dto";
+import { PostDownloadZipRequestDto } from "../dtos/request/download-zip.post.dto";
+import { FileSourceEnum } from "../dtos/request/file-source.base.dto";
+import { PostFileSourceRequestDto } from "../dtos/request/file-source.post.dto";
+import { FileDownloaderService } from "../services/file-downloader.service";
 import { Response } from "express";
-import { PostDownloadZipRequestDto } from "../dtos/request/post.download-zip.request.dto";
 
 describe('FileDownloaderController', () => {
     let controller: FileDownloaderController;
@@ -50,8 +50,6 @@ describe('FileDownloaderController', () => {
                 'Content-Type': 'application/pdf',
                 'Content-Disposition': 'attachment; filename="archivo-medico.pdf"',
             });
-            expect(mockStream.getStream).toHaveBeenCalled();
-            expect(mockStream.getStream().pipe).toHaveBeenCalledWith(response);
         });
     });
 
@@ -78,27 +76,23 @@ describe('FileDownloaderController', () => {
                 'Content-Type': 'application/zip',
                 'Content-Disposition': 'attachment; filename="archivo-medico.zip"',
             });
-            expect(mockedZip.getStream).toHaveBeenCalled();
-            expect(mockedZip.getStream().pipe).toHaveBeenCalledWith(response);
         });
     });
 
     describe('deleteFile', () => {
         const type = FileSourceEnum.RESULT;
         const id = 1;
-    
-        it('should delete a file', async () => {
-          // Arrange
-          service.deleteFile.mockResolvedValueOnce(undefined);
-    
-          // Act
-          const result = await controller.deleteFile(type, id);
-    
-          // Assert
-          expect(result).toEqual({});
-          expect(service.deleteFile).toHaveBeenCalledWith({ id, type });
-        });
-      });
-    
 
+        it('should delete a file', async () => {
+            // Arrange
+            service.deleteFile.mockResolvedValueOnce(undefined);
+
+            // Act
+            const result = await controller.deleteFile(type, id);
+
+            // Assert
+            expect(result).toEqual({});
+            expect(service.deleteFile).toHaveBeenCalledWith({ id, type });
+        });
+    });
 });

@@ -2,59 +2,65 @@ import { UseGuards, Controller, Inject, Get, Param, Post, Body, Patch } from "@n
 import { ApiTags, ApiHeader } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { MedicalOrderExternalConnectionService } from "../services/medical-order-external-connection.service";
-import { MedicalOrderManagementService } from "../services/medical-order-management.service";
-import { PostMedicalOrderResponseDto } from "../dtos/response/post.medical-order.response.dto";
-import { GetMedicalOrderArrayResponseDto } from "../dtos/response/get.medical-order-array.response.dto";
-import { GetMedicalOrderResponseDto } from "../dtos/response/get.medical-order.response.dto";
-import { PatchMedicalOrderRequestDto } from "../dtos/request/patch.medical-order.request.dto";
-import { PatchMedicalOrderResponseDto } from "../dtos/response/patch.medical-order.response.dto";
-import { PostMedicalOrderExternalRequestDto } from "../dtos/request/post.medical-order-external.request.dto";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
+import { PostExternalMedicalOrderRequestDto } from "../dtos/request/external-medical-order.post.dto";
+import { PostExternalMedicalOrderResponseDto } from "../dtos/response/external-medical-order.post.dto";
+import { GetExternalMedicalOrderArrayResponseDto } from "../dtos/response/external-medical-order-array.get.dto";
+import { GetExternalMedicalOrderResponseDto } from "../dtos/response/external-medical-order.get.dto";
+import { PatchExternalMedicalOrderRequestDto } from "../dtos/request/external-medical-order.patch.dto";
+import { PatchExternalMedicalOrderResponseDto } from "../dtos/response/external-medical-order.patch.dto";
 
-@ApiTags('External/Connection', 'Medical/Order')
+@ApiTags('External Connection', 'Medical>Order')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/medical/orders')
 export class MedicalOrderExternalConnectionController {
     constructor(
         @Inject(MedicalOrderExternalConnectionService) private readonly service: MedicalOrderExternalConnectionService,
-        @Inject(MedicalOrderManagementService) private readonly mangamentService: MedicalOrderManagementService,
     ) { }
 
     @Post(':source/:key')
     async create(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() body: PostMedicalOrderExternalRequestDto
-    ): Promise<PostMedicalOrderResponseDto> {
+        @Body() body: PostExternalMedicalOrderRequestDto
+    ): Promise<PostExternalMedicalOrderResponseDto> {
         const order = await this.service.create({ source, key }, body);
-        return plainToInstance(PostMedicalOrderResponseDto, order);
+        return plainToInstance(PostExternalMedicalOrderResponseDto, order);
     }
 
     @Get('dni/:dni')
     async findAllByPatient(
         @Param('dni') dni: string,
-    ): Promise<GetMedicalOrderArrayResponseDto> {
-        const data = await this.mangamentService.findAllByPatient(dni);
-        return plainToInstance(GetMedicalOrderArrayResponseDto, { data });
+    ): Promise<GetExternalMedicalOrderArrayResponseDto> {
+        const data = await this.service.find(dni);
+        return plainToInstance(GetExternalMedicalOrderArrayResponseDto, { data });
     }
 
     @Get(':source/:key')
-    async findOne(
+    async findOneByExternalKey(
         @Param('source') source: string,
         @Param('key') key: string,
-    ): Promise<GetMedicalOrderResponseDto> {
+    ): Promise<GetExternalMedicalOrderResponseDto> {
         const order = await this.service.findOne({ key, source });
-        return plainToInstance(GetMedicalOrderResponseDto, order);
+        return plainToInstance(GetExternalMedicalOrderResponseDto, order);
+    }
+    
+    @Get(':id')
+    async findOneById(
+        @Param('id') id: number,
+    ): Promise<GetExternalMedicalOrderResponseDto> {
+        const order = await this.service.findOne(id);
+        return plainToInstance(GetExternalMedicalOrderResponseDto, order);
     }
 
     @Patch(':source/:key')
     async findOneAndUpdate(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() body: PatchMedicalOrderRequestDto
-    ): Promise<PatchMedicalOrderResponseDto> {
+        @Body() body: PatchExternalMedicalOrderRequestDto
+    ): Promise<PatchExternalMedicalOrderResponseDto> {
         const order = await this.service.findOneAndUpdate({ key: key, source: source }, body);
-        return plainToInstance(PatchMedicalOrderResponseDto, order);
+        return plainToInstance(PatchExternalMedicalOrderResponseDto, order);
     }
 }

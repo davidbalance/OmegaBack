@@ -5,7 +5,7 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 @Index('idx_log_level', ['level'])
 @Index('idx_log_timestamp', ['timestamp'])
 @Index('idx_log_level_timestamp', ['level', 'timestamp'])
-export class Log extends AbstractEntity<number> {
+export class LogEntity extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'log_id' })
     public id: number;
 

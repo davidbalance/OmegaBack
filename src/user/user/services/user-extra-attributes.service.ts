@@ -1,8 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { UserExtraAttributeRepository } from "../repositories/user-extra-attribute.repository";
-import { UserExtraAttribute } from "../entities/user-extra-attribute.entity";
-import { PostUserExtraAttributeRequestDto } from "../dtos/request/post.user-extra-attribute.request.dto";
+import { PostUserExtraAttributeRequestDto } from "../dtos/request/user-attribute.post.dto";
 import { UserRepository } from "../repositories/user.repository";
+import { UserAttribute } from "../dtos/response/user-attribute.base.dto";
 
 @Injectable()
 export class UserExtraAttributeService {
@@ -24,7 +24,7 @@ export class UserExtraAttributeService {
         }
     }
 
-    async findUserAttribute(id: number, name: string): Promise<UserExtraAttribute> {
+    async findAttribute(id: number, name: string): Promise<UserAttribute> {
         const foundAttribute = await this.attributeRepository
             .query('attribute')
             .leftJoin('attribute.user', 'user')

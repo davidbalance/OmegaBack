@@ -1,6 +1,6 @@
-import { Area } from "@/location/area/entities/area.entity";
+import { AreaEntity } from "@/location/area/entities/area.entity";
 
-const stubArea = (id: number): Area => ({
+const stubArea = (id: number): AreaEntity => ({
     id: id,
     name: "my-stub-name",
     management: null,

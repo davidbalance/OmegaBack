@@ -1,18 +1,15 @@
-import { User } from "@/shared/decorator";
-import { DniInterceptor } from "@/shared/interceptors/dni/dni.interceptor";
-import { Controller, UseGuards, Inject, Get, UseInterceptors, Param, Patch, Body } from "@nestjs/common";
+import { Controller, UseGuards, Inject, Get, Param, Patch, Body } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
-import { MedicalResultManagementService } from "../services/medical-result-management.service";
-import { GetMedicalResultArrayResponseDto } from "../dtos/response/get.medical-result-array.response.dto";
-import { GetMedicalResultResponseDto } from "../dtos/response/get.medical-result.response.dto";
-import { PatchMedicalResultResponseDto } from "../dtos/response/patch.medical-result.response.dto";
-import { PatchMedicalResultRequestDto } from "../dtos/request/patch.medical-result.request.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
+import { MedicalResultManagementService } from "../services/medical-result-management.service";
+import { GetMedicalResultResponseDto } from "../dtos/response/medical-result.get.dto";
+import { PatchMedicalResultFileRequestDto } from "@/medical/medical-report/dtos/request/medical-report-file.patch.dto";
+import { PatchMedicalResultRequestDto } from "../dtos/request/medical-result.patch.dto";
 
-@ApiTags('Medical/Result')
+@ApiTags('Medical>Result')
 @ApiBearerAuth()
-@Controller('medical/results')
+@Controller('medical/:id/result')
 @UseGuards(JwtAuthGuard)
 export class MedicalResultManagementController {
   constructor(
@@ -20,34 +17,19 @@ export class MedicalResultManagementController {
   ) { }
 
   @Get()
-  async find(): Promise<GetMedicalResultArrayResponseDto> {
-    const data = await this.service.findAll();
-    return plainToInstance(GetMedicalResultArrayResponseDto, { data });
-  }
-
-  @Get(':id')
-  async findOne(
-    @Param('id') id: string
+  async find(
+    @Param('id') id: number,
   ): Promise<GetMedicalResultResponseDto> {
-    const data = await this.service.findOne(+id);
+    const data = await this.service.findOne(id);
     return plainToInstance(GetMedicalResultResponseDto, data);
   }
 
-  @UseInterceptors(DniInterceptor)
-  @Get('doctor')
-  async findByDoctor(
-    @User() user: string
-  ): Promise<GetMedicalResultArrayResponseDto> {
-    const results = await this.service.findAllByDoctor(user);
-    return plainToInstance(GetMedicalResultArrayResponseDto, { data: results });
-  }
-
-  @Patch(':id')
+  @Patch()
   async updateOne(
     @Param('id') id: number,
     @Body() body: PatchMedicalResultRequestDto
-  ): Promise<PatchMedicalResultResponseDto> {
-    const data = await this.service.updateOne(id, body);
-    return plainToInstance(PatchMedicalResultResponseDto, data);
+  ): Promise<any> {
+    await this.service.updateOne(id, body);
+    return {}
   }
 }

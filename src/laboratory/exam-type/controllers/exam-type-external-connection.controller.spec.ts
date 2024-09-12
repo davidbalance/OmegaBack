@@ -1,11 +1,9 @@
 import { TestBed } from "@automock/jest";
-import { ExamTypeExternalConnectionService } from "../services/exam-type-external-connection.service";
 import { ExamTypeExternalConnectionController } from "./exam-type-external-connection.controller";
-import { PostExamTypeRequestDto } from "../dtos/request/post.exam-type.dto";
-import { mockExamType } from "../services/test/stub/exam-type.stub";
-import { PostExamTypeResponseDto } from "../dtos/response/post.exam-type.dto";
-import { PatchExamExternalRequestDto } from "@/laboratory/exam/dtos/request/patch.exam-external.request.dto";
-import { PatchExamTypeResponseDto } from "../dtos/response/patch.exam-type.dto";
+import { ExamTypeExternalConnectionService } from "../services/exam-type-external-connection.service";
+import { PostExamTypeRequestDto } from "../dtos/request/exam-type.post.dto";
+import { mockExtendedExamType } from "../stub/extended-exam-type.stub";
+import { PatchExamExternalRequestDto } from "@/laboratory/exam/dtos/request/external-exam.patch.dto";
 
 describe('ExamTypeExternalConnectionController', () => {
     let controller: ExamTypeExternalConnectionController;
@@ -13,14 +11,13 @@ describe('ExamTypeExternalConnectionController', () => {
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(ExamTypeExternalConnectionController).compile();
-
         controller = unit;
         service = unitRef.get(ExamTypeExternalConnectionService);
     });
 
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
+    it('', () => {
+        expect(controller).toBeDefined();
+    })
 
     describe('create', () => {
         const source = 'source';
@@ -28,8 +25,8 @@ describe('ExamTypeExternalConnectionController', () => {
         const mockDto: PostExamTypeRequestDto = {
             name: 'New Exam Type',
         };
-        const mockExamTypeData = mockExamType();
-        const mockResponse: PostExamTypeResponseDto = mockExamTypeData;
+        const mockExamTypeData = mockExtendedExamType();
+        const mockResponse = mockExamTypeData;
 
         it('should call the service to create a new exam type', async () => {
             // Arrange
@@ -50,8 +47,8 @@ describe('ExamTypeExternalConnectionController', () => {
         const mockDto: PatchExamExternalRequestDto = {
             name: 'Updated Exam Type',
         };
-        const mockExamTypeData = mockExamType();
-        const mockResponse: PatchExamTypeResponseDto = mockExamTypeData;
+        const mockExamTypeData = mockExtendedExamType();
+        const mockResponse = mockExamTypeData;
 
         it('should call the service to update an exam type', async () => {
             // Arrange

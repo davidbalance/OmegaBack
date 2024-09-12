@@ -1,26 +1,27 @@
 import { Module } from '@nestjs/common';
-import { Patient } from './entities/patient.entity';
 import { PatientRepository } from './repositories/patient.repository';
 import { UserModule } from '../user/user.module';
 import { PatientExternalConnectionController } from './controllers/patient-external-connection.controller';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { ExtraAttributeInterceptorModule } from '@/shared/interceptors/extra-attribute/extra-attribute-interceptor.module';
 import { PatientEeqPaginationController } from './controllers/patient-eeq-pagination.controller';
-import { PatientManagementController } from './controllers/patient-management.controller';
 import { PatientExternalListener } from './listeners/patient-external.listener';
 import { PatientExternalConnectionService } from './service/patient-external-connection.service';
 import { PatientManagementService } from './service/patient-management.service';
 import { PatientPaginationService } from './service/patient-pagination.service';
 import { PatientEeqPaginationService } from './service/patient-eeq-pagination.service';
-import { PatientFlatProvider } from './service/patient-flat.service';
-import { PatientEeqFlatProvider } from './service/patient-eeq-flat.service';
 import { PatientPaginationController } from './controllers/patient-pagination.controller';
 import { PatientEventService } from './service/patient-event.service';
 import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
+import { PatientEntity } from './entities/patient.entity';
+import { PatientLookForCompanyPaginationController } from './controllers/patient-look-for-company-pagination.controller';
+import { PatientLookForCompanyPaginationService } from './service/patient-look-for-company-pagination.service';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([Patient]),
+    SqlDatabaseModule.forFeature([
+      PatientEntity
+    ]),
     UserModule,
     AuthenticationGuardModule,
     ExtraAttributeInterceptorModule
@@ -28,20 +29,18 @@ import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
   controllers: [
     PatientEeqPaginationController,
     PatientExternalConnectionController,
-    PatientManagementController,
+    PatientLookForCompanyPaginationController,
     PatientPaginationController,
   ],
   providers: [
-    PatientExternalListener,
     PatientRepository,
+    PatientExternalListener,
     PatientEeqPaginationService,
     PatientEventService,
     PatientExternalConnectionService,
+    PatientLookForCompanyPaginationService,
     PatientManagementService,
-    PatientPaginationService,
-    PatientExternalListener,
-    PatientFlatProvider,
-    PatientEeqFlatProvider
+    PatientPaginationService
   ],
   exports: [
     PatientManagementService

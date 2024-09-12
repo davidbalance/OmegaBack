@@ -19,7 +19,9 @@ export class MedicalClientExternalListener {
     async externalCreate({ source, data, jobPosition }: MedicalClientExternalCreateEvent): Promise<void> {
         await this.clientService.create(data);
         await this.emailService.assignEmail(data.dni, { email: data.email });
-        await this.jobPositionService.assignJobPosition(data.dni, { jobPositionName: jobPosition.name });
+        if (jobPosition) {
+            await this.jobPositionService.assignJobPosition(data.dni, { jobPositionName: jobPosition.name });
+        }
         this.eventService.emitJobPositionExternalCreateEvent(source, jobPosition);
     }
 }

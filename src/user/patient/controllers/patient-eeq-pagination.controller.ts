@@ -1,12 +1,12 @@
-import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
-import { PostPatientEeqPaginationRequestDto } from '../dtos/request/post.patient-eeq-pagination.request.dto';
-import { PostPatientEeqPaginationResponseDto } from '../dtos/response/post.patient-eeq-pagination.response.dto';
+import { GetPatientEeqArrayResponseDto } from '../dtos/response/patient-eeq-array.get.dto';
 import { PatientEeqPaginationService } from '../service/patient-eeq-pagination.service';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
+import { CountMetaDto, FilterMetaDto, PageResponseDto } from '@/shared/utils/bases/base.pagination.dto';
 
-@ApiTags('User/Patient/EEQ')
+@ApiTags('User>Patient>Eeq', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('patients/eeq')
@@ -15,11 +15,19 @@ export class PatientEeqPaginationController {
     @Inject(PatientEeqPaginationService) private readonly service: PatientEeqPaginationService
   ) { }
 
-  @Post('paginate')
-  async findByFilterAndPagination(
-    @Body() { page, limit, filter, order }: PostPatientEeqPaginationRequestDto
-  ): Promise<PostPatientEeqPaginationResponseDto> {
-    const [pages, data] = await this.service.findPaginatedDataAndPageCount(page, limit, filter, order);
-    return plainToInstance(PostPatientEeqPaginationResponseDto, { pages, data });
+  @Get('paginate')
+  async find(
+    @Query() query: FilterMetaDto
+  ): Promise<GetPatientEeqArrayResponseDto> {
+    const data = await this.service.find(query);
+    return plainToInstance(GetPatientEeqArrayResponseDto, { data });
+  }
+
+  @Get('pages')
+  async count(
+    @Query() query: CountMetaDto
+  ): Promise<PageResponseDto> {
+    const pages = await this.service.count(query);
+    return plainToInstance(PageResponseDto, { pages });
   }
 }

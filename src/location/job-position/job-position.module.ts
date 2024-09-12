@@ -1,36 +1,41 @@
 import { Module } from '@nestjs/common';
-import { JobPositionManagementController } from './controllers/job-position-management.controller';
-import { JobPositionManagementService } from './services/job-position-management.service';
 import { JobPositionRepository } from './repositories/job-position.repository';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { JobPosition } from './entities/job-position.entity';
 import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
-import { JobPositionExternalKey } from './entities/job-position-external-key.entity';
 import { JobPositionExternalKeyRepository } from './repositories/job-position-external-key.repository';
 import { JobPositionExternalConnectionService } from './services/job-position-external-connection.service';
 import { JobPositionExternalConnectionController } from './controllers/job-position-external-connection.controller';
 import { JobPositionExternalKeyService } from './services/job-position-external-key.service';
 import { JobPositionExternalListener } from './listeners/job-position-external.listener';
+import { JobPositionPaginationController } from './controllers/job-position-pagination.controller';
+import { JobPositionPaginationService } from './services/job-position-pagination.service';
+import { JobPositionEntity } from './entities/job-position.entity';
+import { JobPositionExternalKeyEntity } from './entities/job-position-external-key.entity';
+import { JobPositionOptionController } from './controllers/job-position-option.controller';
+import { JobPositionManagementService } from './services/job-position-management.service';
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([JobPosition, JobPositionExternalKey]),
+    SqlDatabaseModule.forFeature([
+      JobPositionEntity,
+      JobPositionExternalKeyEntity
+    ]),
     AuthenticationGuardModule
   ],
   controllers: [
-    JobPositionManagementController,
-    JobPositionExternalConnectionController
+    JobPositionExternalConnectionController,
+    JobPositionOptionController,
+    JobPositionPaginationController,
   ],
   providers: [
-    JobPositionRepository,
     JobPositionExternalKeyRepository,
+    JobPositionRepository,
+    JobPositionExternalListener,
     JobPositionExternalConnectionService,
     JobPositionExternalKeyService,
     JobPositionManagementService,
-    JobPositionExternalListener
+    JobPositionPaginationService
   ],
-  exports: [
-    JobPositionManagementService
-  ]
+  exports: []
 })
 export class JobPositionModule { }

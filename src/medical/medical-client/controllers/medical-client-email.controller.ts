@@ -1,15 +1,12 @@
 import { Controller, Get, Param, Inject, UseGuards, Delete, Patch, Body, Post } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
-import { GetMedicalEmailArrayResponseDto } from '../dtos/response/get.medical-email-array.response.dto';
-import { PostMedicalEmailRequestDto } from '../dtos/request/post.medical-email.request.dto';
-import { PostMedicalEmailResponseDto } from '../dtos/response/post.medical-email.response.dto';
-import { DeleteMedicalEmailResponseDto } from '../dtos/response/delete.medical-email.response.dto';
+import { GetMedicalEmailArrayResponseDto } from '../dtos/response/medical-email-array.get.dto';
+import { PostMedicalEmailRequestDto } from '../dtos/request/medical-email.post.dto';
 import { MedicalClientEmailService } from '../services/medical-client-email.service';
-import { GetMedicalEmailResponseDto } from '../dtos/response/get.medical-email.response.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 
-@ApiTags('Medical/Client')
+@ApiTags('Medical>Client>Email')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('medical/client/email')
@@ -30,23 +27,23 @@ export class MedicalClientEmailController {
   async createEmail(
     @Param('dni') dni: string,
     @Body() body: PostMedicalEmailRequestDto
-  ): Promise<PostMedicalEmailResponseDto> {
+  ): Promise<any> {
     const data = await this.service.assignEmail(dni, body);
-    return plainToInstance(PostMedicalEmailResponseDto, data);
+    return {}
   }
 
   @Patch(':id')
   async updateEmailDefault(
     @Param('id') id: number
-  ): Promise<GetMedicalEmailResponseDto> {
+  ): Promise<any> {
     const email = await this.service.updateEmailDefault(id);
-    return plainToInstance(GetMedicalEmailResponseDto, email);
+    return {}
   }
 
   @Delete(':id')
   async deleteOne(
     @Param('id') id: number
-  ): Promise<DeleteMedicalEmailResponseDto> {
+  ): Promise<any> {
     await this.service.deleteOne(id);
     return {}
   }

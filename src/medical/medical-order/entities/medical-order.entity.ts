@@ -1,13 +1,13 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { MedicalClient } from "@/medical/medical-client/entities/medical-client.entity";
+import { MedicalClientEntity } from "@/medical/medical-client/entities/medical-client.entity";
 import { OrderStatus } from "../enums";
-import { MedicalResult } from "@/medical/medical-result/entities/medical-result.entity";
-import { MedicalOrderExternalKey } from "./medical-order-external-key.entity";
+import { MedicalResultEntity } from "@/medical/medical-result/entities/medical-result.entity";
+import { MedicalOrderExternalKeyEntity } from "./medical-order-external-key.entity";
 import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 
 @Entity({ name: 'tbl_m_orders' })
 @Index('idx_company_ruc', ['companyRuc'])
-export class MedicalOrder extends AbstractEntity<number> {
+export class MedicalOrderEntity extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'order_id' })
     public id: number;
 
@@ -32,14 +32,14 @@ export class MedicalOrder extends AbstractEntity<number> {
     @Column({ name: 'order_status', type: 'enum', enum: OrderStatus, default: OrderStatus.CREATED, nullable: false })
     public orderStatus: OrderStatus;
 
-    @OneToMany(() => MedicalResult, result => result.order, { eager: false })
-    public results: MedicalResult[];
+    @OneToMany(() => MedicalResultEntity, result => result.order, { eager: false })
+    public results: MedicalResultEntity[];
 
-    @OneToOne(() => MedicalOrderExternalKey, { eager: false, nullable: true })
+    @OneToOne(() => MedicalOrderExternalKeyEntity, { eager: false, nullable: true })
     @JoinColumn({ foreignKeyConstraintName: 'fk_m_external_order', referencedColumnName: 'id', name: 'external_key' })
-    public externalKey: MedicalOrderExternalKey;
+    public externalKey: MedicalOrderExternalKeyEntity;
 
-    @ManyToOne(() => MedicalClient, client => client.medicalOrders, { eager: true, nullable: false })
+    @ManyToOne(() => MedicalClientEntity, client => client.medicalOrders, { eager: true, nullable: false })
     @JoinColumn({ foreignKeyConstraintName: 'fk_m_client_order', referencedColumnName: 'id', name: 'medical_client_id' })
-    public client: MedicalClient;
+    public client: MedicalClientEntity;
 }

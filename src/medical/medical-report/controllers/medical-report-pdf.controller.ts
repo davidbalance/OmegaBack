@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { MedicalReportPdfService } from "../services/medical-report-pdf.service";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
-@ApiTags('Medical/Report')
+@ApiTags('Medical>Report')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('medical/report/recreate/pdf')

@@ -1,11 +1,9 @@
 import { TestBed } from "@automock/jest";
-import { BranchExternalConnectionService } from "../services/branch-external-connection.service";
 import { BranchExternalConnectionController } from "./branch-external-connection.controller";
-import { PostBranchExternalRequestDto } from "../dtos/request/post.branch-external.request.dto";
-import { mockBranch } from "../services/test/stub/branch.stub";
-import { PostBranchResponseDto } from "../dtos/response/post.branch.response.dto";
-import { PatchBranchRequestDto } from "../dtos/request/patch.branch.request.dto";
-import { PatchBranchResponseDto } from "../dtos/response/patch.branch.response.dto";
+import { PostBranchExternalRequestDto } from "../dtos/request/external-branch.post.dto";
+import { BranchExternalConnectionService } from "../services/branch-external-connection.service";
+import { mockExternalBranch } from "../stub/extended-branch.stub";
+import { PatchBranchExternalRequestDto } from "../dtos/request/external-branch.patch.dto";
 
 describe('BranchExternalConnectionController', () => {
     let controller: BranchExternalConnectionController;
@@ -13,13 +11,8 @@ describe('BranchExternalConnectionController', () => {
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(BranchExternalConnectionController).compile();
-
         controller = unit;
         service = unitRef.get(BranchExternalConnectionService);
-    });
-
-    afterEach(() => {
-        jest.clearAllMocks();
     });
 
     describe('create', () => {
@@ -27,45 +20,55 @@ describe('BranchExternalConnectionController', () => {
         const key = 'key';
         const mockDto: PostBranchExternalRequestDto = {
             name: 'New Branch',
-            company: undefined,
-            city: ""
+            company: {
+                key: "company-key",
+                corporativeGroup: {
+                    key: "group-key",
+                    name: "Test group"
+                },
+                name: "Test company",
+                ruc: "1234567890",
+                address: "Test address",
+                phone: "0999999999"
+            },
+            city: "Quito"
         };
-        const mockBranchData = mockBranch();
-        const mockResponse: PostBranchResponseDto = mockBranchData;
+        const mockedBranch = mockExternalBranch();
+        const expectedValue = mockedBranch;
 
         it('should call the service to create a new branch', async () => {
             // Arrange
-            service.create.mockResolvedValue(mockBranchData);
+            service.create.mockResolvedValue(mockedBranch);
 
             // Act
             const result = await controller.create(source, key, mockDto);
 
             // Assert
             expect(service.create).toHaveBeenCalledWith({ source, key }, mockDto);
-            expect(result).toEqual(mockResponse);
+            expect(result).toEqual(expectedValue);
         });
     });
 
     describe('findOneAndUpdate', () => {
         const source = 'source';
         const key = 'key';
-        const mockDto: PatchBranchRequestDto = {
+        const mockDto: PatchBranchExternalRequestDto = {
             name: "test branch"
         };
-        const mockBranchData = mockBranch();
-        const mockResponse: PatchBranchResponseDto = mockBranchData;
-    
+        const mockedBranch = mockExternalBranch();
+        const expectedValue = mockedBranch
+
         it('should call the service to update a branch', async () => {
-          // Arrange
-          service.findOneAndUpdate.mockResolvedValue(mockBranchData);
-    
-          // Act
-          const result = await controller.findOneAndUpdate(source, key, mockDto);
-    
-          // Assert
-          expect(service.findOneAndUpdate).toHaveBeenCalledWith({ source, key }, mockDto);
-          expect(result).toEqual(mockResponse);
+            // Arrange
+            service.findOneAndUpdate.mockResolvedValue(mockedBranch);
+
+            // Act
+            const result = await controller.findOneAndUpdate(source, key, mockDto);
+
+            // Assert
+            expect(service.findOneAndUpdate).toHaveBeenCalledWith({ source, key }, mockDto);
+            expect(result).toEqual(expectedValue);
         });
-      });
-    
+    });
+
 });

@@ -2,13 +2,13 @@ import { Body, Controller, Inject, Param, Patch, Post, UseGuards } from "@nestjs
 import { ApiHeader, ApiTags } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { PatientExternalConnectionService } from "../service/patient-external-connection.service";
-import { PostPatientResponseDto } from "../dtos/response/post.patient.response.dto";
-import { PatchPatientRequestDto } from "../dtos/request/patch.patient.request.dto";
-import { PatchPatientResponseDto } from "../dtos/response/patch.patient.response.dto";
-import { PostPatientExternalRequestDto } from "../dtos/request/post.patient-external.request.dto";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
+import { PostExternalPatientRequestDto } from "../dtos/request/external-patient.post.dto";
+import { PatchExternalPatientRequestDto } from "../dtos/request/external-patient.patch.dto";
+import { PostExternalPatientResponseDto } from "../dtos/response/external-patient.post.dto";
+import { PatchExternalPatientResponseDto } from "../dtos/response/external-patient.patch.dto";
 
-@ApiTags('External/Connection', 'User/Patient')
+@ApiTags('External Connection', 'User>Patient')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
 @UseGuards(ApiKeyAuthGuard)
 @Controller('external/connection/patients/:source')
@@ -20,19 +20,19 @@ export class PatientExternalConnectionController {
     @Post()
     async create(
         @Param('source') source: string,
-        @Body() body: PostPatientExternalRequestDto
-    ): Promise<PostPatientResponseDto> {
+        @Body() body: PostExternalPatientRequestDto
+    ): Promise<PostExternalPatientResponseDto> {
         const user = await this.service.create(source, body);
-        return plainToInstance(PostPatientResponseDto, user);
+        return plainToInstance(PostExternalPatientResponseDto, user);
     }
 
     @Patch(':dni')
     async findOneAndUpdate(
         @Param('source') _: string,
         @Param('dni') dni: string,
-        @Body() body: PatchPatientRequestDto
-    ): Promise<PatchPatientResponseDto> {
+        @Body() body: PatchExternalPatientRequestDto
+    ): Promise<PatchExternalPatientResponseDto> {
         const user = await this.service.findOneAndUpdate(dni, body);
-        return plainToInstance(PatchPatientResponseDto, user);
+        return plainToInstance(PatchExternalPatientResponseDto, user);
     }
 }

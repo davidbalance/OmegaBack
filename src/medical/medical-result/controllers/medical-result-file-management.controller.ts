@@ -2,12 +2,12 @@ import { Controller, UseGuards, Inject, UseInterceptors, Patch, Param, Body, Upl
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiTags, ApiBearerAuth, ApiConsumes } from "@nestjs/swagger";
 import { MedicalResultFileManagementService } from "../services/medical-result-file-management.service";
-import { PatchMedicalResultFileRequestDto } from "../dtos/request/patch.medical-result-file.request.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
+import { PatchMedicalResultFileRequestDto } from "@/medical/medical-report/dtos/request/medical-report-file.patch.dto";
 
-@ApiTags('Medical/Result')
+@ApiTags('Medical>Result')
 @ApiBearerAuth()
-@Controller('medical/results/file')
+@Controller('medical/:id/result/file')
 @UseGuards(JwtAuthGuard)
 export class MedicalResultFileManagementController {
   constructor(
@@ -15,7 +15,7 @@ export class MedicalResultFileManagementController {
   ) { }
 
   @ApiConsumes('multipart/form-data')
-  @Patch(':id')
+  @Patch()
   @UseInterceptors(FileInterceptor('file'))
   async findOneResultAndUploadFile(
     @Param('id') id: number,

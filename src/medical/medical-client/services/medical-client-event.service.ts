@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PostJobPositionWithKeyRequestDto } from '@/location/job-position/dtos/request/post.job-position-with-key.request.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JobPositionEvent, JobPositionExternalCreateEvent } from '@/shared/events/job-position.event';
 import { PatientEvent, PatientExternalCreateEvent } from '@/shared/events/patient.event';
-import { PostPatientRequestDto } from '@/user/patient/dtos/request/post.patient.request.dto';
+import { ExternalJobPositionWithKeyRequestDto } from '@/location/job-position/dtos/request/external-job-position-with-key.base.dto';
+import { ExternalPatientRequestDto } from '@/user/patient/dtos/request/external-patient.base.dto';
+import { PatientRequestDto } from '@/user/patient/dtos/request/patient.base.dto';
 
 @Injectable()
 export class MedicalClientEventService {
@@ -14,16 +15,18 @@ export class MedicalClientEventService {
 
   emitExternalCreateEvent(
     source: string,
-    patient: PostPatientRequestDto,
-    jobPosition: PostJobPositionWithKeyRequestDto,
+    patient: PatientRequestDto,
+    jobPosition?: ExternalJobPositionWithKeyRequestDto,
   ): void {
     this.eventEmitter.emit(PatientEvent.EXTERNAL_CREATE, new PatientExternalCreateEvent(patient));
-    this.emitJobPositionExternalCreateEvent(source, jobPosition);
+    if (jobPosition) {
+      this.emitJobPositionExternalCreateEvent(source, jobPosition);
+    }
   }
 
   emitJobPositionExternalCreateEvent(
     source: string,
-    { key, ...jobPosition }: PostJobPositionWithKeyRequestDto,
+    { key, ...jobPosition }: ExternalJobPositionWithKeyRequestDto,
   ): void {
     this.eventEmitter.emit(JobPositionEvent.EXTERNAL_CREATE, new JobPositionExternalCreateEvent(source, key, jobPosition));
   }

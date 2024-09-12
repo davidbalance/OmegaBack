@@ -1,12 +1,12 @@
 import { IExternalConnectionService, ExternalKeyParam } from "@/shared/utils/bases/base.external-connection";
 import { Injectable, Inject } from "@nestjs/common";
-import { PostJobPositionRequestDto } from "../dtos/request/post.job-position.request.dto";
-import { PatchJobPositionRequestDto } from "../dtos/request/patch.job-position.request.dto";
-import { JobPosition } from "../entities/job-position.entity";
+import { PostExternalJobPositionRequestDto } from "../dtos/request/external-job-position.post.dto";
+import { PatchExternalJobPositionRequestDto } from "../dtos/request/external-job-position.patch.dto";
 import { JobPositionRepository } from "../repositories/job-position.repository";
 import { JobPositionExternalKeyService } from "./job-position-external-key.service";
+import { JobPosition } from "../dtos/response/job-position.base.dto";
 
-type ConnectionRequestType = PostJobPositionRequestDto | PatchJobPositionRequestDto;
+type ConnectionRequestType = PostExternalJobPositionRequestDto | PatchExternalJobPositionRequestDto;
 
 @Injectable()
 export class JobPositionExternalConnectionService implements IExternalConnectionService<ConnectionRequestType, JobPosition> {
@@ -19,7 +19,7 @@ export class JobPositionExternalConnectionService implements IExternalConnection
         throw new Error("Method not implemented.");
     }
 
-    async create(key: ExternalKeyParam, body: PostJobPositionRequestDto): Promise<JobPosition> {
+    async create(key: ExternalKeyParam, body: PostExternalJobPositionRequestDto): Promise<JobPosition> {
         const newKey = await this.keyService.create(key);
         try {
             const position = await this.repository.create({ ...body, externalKey: newKey });
@@ -30,7 +30,7 @@ export class JobPositionExternalConnectionService implements IExternalConnection
         }
     }
 
-    async findOneOrCreate(key: ExternalKeyParam, { name, ...data }: PostJobPositionRequestDto): Promise<JobPosition> {
+    async findOneOrCreate(key: ExternalKeyParam, { name, ...data }: PostExternalJobPositionRequestDto): Promise<JobPosition> {
         try {
             const foundGroup = await this.repository.findOne({
                 where: [
@@ -44,7 +44,7 @@ export class JobPositionExternalConnectionService implements IExternalConnection
         }
     }
 
-    async findOneAndUpdate(key: ExternalKeyParam, { ...data }: PatchJobPositionRequestDto): Promise<JobPosition> {
+    async findOneAndUpdate(key: ExternalKeyParam, { ...data }: PatchExternalJobPositionRequestDto): Promise<JobPosition> {
         const position = await this.repository.findOneAndUpdate({ externalKey: key }, data);
         return position;
     }

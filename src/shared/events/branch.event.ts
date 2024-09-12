@@ -1,4 +1,4 @@
-import { PostBranchExternalRequestDto } from "@/location/branch/dtos/request/post.branch-external.request.dto";
+import { PostBranchExternalRequestDto } from "@/location/branch/dtos/request/external-branch.post.dto";
 
 export const BranchEvent = {
     EXTERNAL_CREATE: 'branch.external.create',

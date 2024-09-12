@@ -2,20 +2,16 @@ import { AbstractRepository } from "@/shared/sql-database/abstract.repository";
 import { Injectable, Logger } from "@nestjs/common";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { MedicalEmail } from "../entities/medical-email.entity";
+import { MedicalEmailEntity } from "../entities/medical-email.entity";
 
 @Injectable()
-export class MedicalEmailRepository extends AbstractRepository<number, MedicalEmail> {
+export class MedicalEmailRepository extends AbstractRepository<number, MedicalEmailEntity> {
 
     protected logger: Logger;
 
     constructor(
-        @InjectRepository(MedicalEmail) private readonly repo: Repository<MedicalEmail>
+        @InjectRepository(MedicalEmailEntity) private readonly repo: Repository<MedicalEmailEntity>
     ) {
         super(repo);
-    }
-
-    async findOneAndDelete(filterOptions: FindOptionsWhere<MedicalEmail>): Promise<void> {
-        await this.repo.delete(filterOptions);
     }
 }

@@ -1,11 +1,10 @@
-import { TestBed } from "@automock/jest";
-import { MedicalResultExternalConnectionService } from "../services/medical-result-external-connection.service";
+import { PatientGenderEnum } from "@/user/patient/enums/patient.enum";
+import { mockExternalMedicalResult } from "../stub/external-medical-result.stub";
+import { PostExternalMedicalResultRequestDto } from "../dtos/request/external-medical-result.post.dto";
 import { MedicalResultExternalConnectionController } from "./medical-result-external-connection.controller";
-import { mockMedicalResult } from "../services/test/stub/medical-result.stub";
-import { GetMedicalResultResponseDto } from "../dtos/response/get.medical-result.response.dto";
-import { PostMedicalResultExternalRequestDto } from "../dtos/request/post.medical-result-external.dto";
-import { PostMedicalResultResponseDto } from "../dtos/response/post.medical-result.response.dto";
-import { PatchMedicalResultFileResponseDto } from "../dtos/response/patch.medical-result-file.response.dto";
+import { MedicalResultExternalConnectionService } from "../services/medical-result-external-connection.service";
+import { TestBed } from "@automock/jest";
+import { PatchExternalMedicalResultFileRequestDto } from "../dtos/request/external-medical-result-file.patch.dto";
 
 describe('MedicalResultExternalConnectionController', () => {
     let controller: MedicalResultExternalConnectionController;
@@ -13,90 +12,142 @@ describe('MedicalResultExternalConnectionController', () => {
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(MedicalResultExternalConnectionController).compile();
-
         controller = unit;
         service = unitRef.get(MedicalResultExternalConnectionService);
     });
 
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
-
     describe('findOne', () => {
-        const source = 'testSource';
-        const key = 'testKey';
-        const mockedMedicalResult = mockMedicalResult();
-        const expectResult: GetMedicalResultResponseDto = mockedMedicalResult as any;
+        const source = 'source';
+        const key = 'key';
+        const mockedResult = mockExternalMedicalResult();
+        const expectedValue = mockedResult
 
-        it('should call findOne service method with correct parameters', async () => {
+        it('should call the service to retrive a medical result', async () => {
             // Arrange
-            service.findOne.mockResolvedValue(mockedMedicalResult);
+            service.findOne.mockResolvedValue(mockedResult);
 
             // Act
             const result = await controller.findOne(source, key);
 
             // Assert
-            expect(service.findOne).toHaveBeenCalledWith({ key, source });
-            expect(result).toEqual(expectResult);
+            expect(service.findOne).toHaveBeenCalledWith({ source, key });
+            expect(result).toEqual(expectedValue);
         });
     });
 
     describe('create', () => {
-        const source = 'testSource';
-        const key = 'testKey';
-        const mockDto: PostMedicalResultExternalRequestDto = {
-            exam: undefined,
-            doctor: undefined,
-            order: undefined
-        }
-        const mockFile = {
-            buffer: Buffer.from('test'),
-            fieldname: 'file',
-            originalname: 'test.pdf',
-            encoding: '7bit',
-            mimetype: 'application/pdf',
-            size: 4
-        } as any;
-        const mockedMedicalResult = mockMedicalResult();
-        const expectResult: PostMedicalResultResponseDto = mockedMedicalResult as any;
+        const source = 'source';
+        const key = 'key';
+        const dto: PostExternalMedicalResultRequestDto = {
+            doctor: {
+                dni: '1234567890',
+                name: 'Test Doctor',
+                lastname: 'Test Lastname',
+                email: "test@email.com"
+            },
+            exam: {
+                key: 'test-exam-key',
+                name: 'Test Exam',
+                type: {
+                    key: 'test-type-key',
+                    name: 'Test Type'
+                },
+                subtype: {
+                    key: 'test-subtype-key',
+                    name: 'Test Subtype',
+                }
+            },
+            order: {
+                key: 'test-order-key',
+                branch: {
+                    key: 'test-branch-key',
+                    name: 'Test Branch',
+                    company: {
+                        ruc: '1234567890',
+                        name: 'Test Company',
+                        corporativeGroup: {
+                            key: 'test-corporative-group-key',
+                            name: 'Test Corporative Group'
+                        },
+                        key: "test-branch",
+                        address: "Test address",
+                        phone: "0999999999"
+                    },
+                    city: "Quito"
+                },
+                patient: {
+                    dni: '1234567890',
+                    name: 'Test User',
+                    lastname: 'Test Lastname',
+                    birthday: new Date(),
+                    gender: PatientGenderEnum.MALE,
+                    email: "test@email.com"
+                },
+                jobPosition: {
+                    key: 'test-job-position-key',
+                    name: 'Test Job Position'
+                },
+                process: "Test process"
+            },
+            file: undefined
+        };
+        const mockedResult = mockExternalMedicalResult();
+        const expectedValue = mockedResult;
 
-        it('should call create service method with correct parameters', async () => {
+        it('should call the service to create a new medical result', async () => {
             // Arrange
-            service.create.mockResolvedValue(mockedMedicalResult);
+            service.create.mockResolvedValue(mockedResult);
 
             // Act
-            const result = await controller.create(source, key, mockDto, mockFile);
+            const result = await controller.create(source, key, dto, undefined);
 
             // Assert
-            expect(service.create).toHaveBeenCalledWith({ source, key }, { ...mockDto, file: mockFile });
-            expect(result).toEqual(expectResult);
+            expect(service.create).toHaveBeenCalledWith({ source, key }, dto);
+            expect(result).toEqual(expectedValue);
         });
     });
 
-    describe('uploadFile', () => {
-        const source = 'testSource';
-        const key = 'testKey';
-        const mockFile = {
-            buffer: Buffer.from('test'),
-            fieldname: 'file',
-            originalname: 'test.pdf',
-            encoding: '7bit',
-            mimetype: 'application/pdf',
-            size: 4
-        } as any;
-        const mockedMedicalResult = mockMedicalResult();
-        const expectResult: PatchMedicalResultFileResponseDto = mockedMedicalResult as any;
+    describe('uploadFileByExternalKey', () => {
+        const source = 'source';
+        const key = 'key';
+        const data: PatchExternalMedicalResultFileRequestDto = {
+            file: undefined
+        };
+        const mockedResult = mockExternalMedicalResult();
+        const expectedValue = mockedResult
 
-        it('should call findOneAndUpdate service method with correct parameters', async () => {
+        it('should call the service to update a medical result', async () => {
             // Arrange
-            service.findOneAndUpdate.mockResolvedValue(mockedMedicalResult);
+            service.findOneAndUpdate.mockResolvedValue(mockedResult);
 
             // Act
-            const result = await controller.uploadFile(source, key, {} as any, mockFile);
+            const result = await controller.uploadFileByExternalKey(source, key, data, undefined);
 
             // Assert
-            expect(service.findOneAndUpdate).toHaveBeenCalledWith({ source, key }, { file: mockFile });
-            expect(result).toEqual(expectResult);
+            expect(service.findOneAndUpdate).toHaveBeenCalledWith({ source, key }, { file: undefined });
+            expect(result).toEqual(expectedValue);
         });
     });
+
+    describe('uploadFileByExternalKey', () => {
+        const id = 1;
+        const data: PatchExternalMedicalResultFileRequestDto = {
+            file: undefined
+        };
+        const mockedResult = mockExternalMedicalResult();
+        const expectedValue = mockedResult
+
+        it('should call the service to update a medical result', async () => {
+            // Arrange
+            service.findOneAndUpdate.mockResolvedValue(mockedResult);
+
+            // Act
+            const result = await controller.uploadFileById(id, data, undefined);
+
+            // Assert
+            expect(service.findOneAndUpdate).toHaveBeenCalledWith(id, { file: undefined });
+            expect(result).toEqual(expectedValue);
+        });
+    });
+
 });

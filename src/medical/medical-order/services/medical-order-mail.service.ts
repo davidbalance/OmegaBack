@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import path from 'path';
 import { MailerService } from '@/shared/mailer/mailer.service';
 import { ConfigService } from '@nestjs/config';
-import { MedicalEmail } from '@/medical/medical-client/entities/medical-email.entity';
 import { MedicalOrderRepository } from '../repositories/medical-order.repository';
+import { MedicalEmailEntity } from '@/medical/medical-client/entities/medical-email.entity';
 
 @Injectable()
 export class MedicalOrderMailService {
@@ -23,7 +23,7 @@ export class MedicalOrderMailService {
     });
 
     const { client } = foundOrder;
-    const clientEmail: MedicalEmail = client.email.find(e => e.id === mail);
+    const clientEmail: MedicalEmailEntity = client.email.find(e => e.id === mail);
 
     const url: string = `${this.config.get<string>('APP_TARGET_HOST')}/order/${order}`
 

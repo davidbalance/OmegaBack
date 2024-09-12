@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { HealthCheckResponseDto } from './health-check.response.dto';
 import { plainToInstance } from 'class-transformer';
 
-@ApiTags("Health/Check")
+@ApiTags("Health Check")
 @Controller('health/check')
 export class HealthCheckController {
     @Get()

@@ -1,10 +1,10 @@
 import { Controller, UseGuards, Post, Body, Inject } from "@nestjs/common";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { MedicalOrderMailService } from "../services/medical-order-mail.service";
-import { PostMedicalOrderMailRequestDto } from "../dtos/request/post.medical-order-mail.request.dto";
+import { PostMedicalOrderMailRequestDto } from "../dtos/request/medical-order-mail.post.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 
-@ApiTags('Medical/Order')
+@ApiTags('Medical>Order')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('medical/orders/mail')

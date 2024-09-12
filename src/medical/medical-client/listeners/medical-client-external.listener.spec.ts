@@ -5,9 +5,9 @@ import { MedicalClientJobPositionService } from "../services/medical-client-job-
 import { MedicalClientManagementService } from "../services/medical-client-management.service";
 import { MedicalClientExternalListener } from "./medical-client-external.listener";
 import { MedicalClientExternalCreateEvent } from "@/shared/events/medical-client.event";
-import { PostMedicalClientRequestDto } from "../dtos/request/post.medical-client.request.dto";
-import { PostJobPositionWithKeyRequestDto } from "@/location/job-position/dtos/request/post.job-position-with-key.request.dto";
+import { PostMedicalClientRequestDto } from "../dtos/request/medical-client.post.dto";
 import { PatientGenderEnum } from "@/user/patient/enums/patient.enum";
+import { ExternalJobPositionWithKeyRequestDto } from "@/location/job-position/dtos/request/external-job-position-with-key.base.dto";
 
 describe('MedicalClientExternalListener', () => {
     let listener: MedicalClientExternalListener;
@@ -40,7 +40,7 @@ describe('MedicalClientExternalListener', () => {
             lastname: "Test lastname",
             dni: "1234567890"
         };
-        const jobPosition: PostJobPositionWithKeyRequestDto = {
+        const jobPosition: ExternalJobPositionWithKeyRequestDto = {
             key: "test-key",
             name: "Test position"
         };

@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { MedicalClient } from '../entities/medical-client.entity';
 import { IExternalConnectionService } from '@/shared/utils/bases/base.external-connection';
 import { MedicalClientManagementService } from './medical-client-management.service';
-import { PatchMedicalClientRequestDto } from '../dtos/request/patch.medical-client.request.dto';
 import { MedicalClientEventService } from './medical-client-event.service';
-import { PostMedicalClientExternalRequestDto } from '../dtos/request/post.medical-client-external.request.dto';
 import { MedicalClientJobPositionService } from './medical-client-job-position.service';
 import { MedicalClientEmailService } from './medical-client-email.service';
+import { MedicalClient } from '../dtos/response/medical-client.base.dto';
+import { PostExternalMedicalClientRequestDto } from '../dtos/request/external-medical-client.post.dto';
+import { PatchExternalMedicalClientRequestDto } from '../dtos/request/external-medical-client.patch.dto';
 
-type ConnectionRequestType = PostMedicalClientExternalRequestDto | PatchMedicalClientRequestDto;
+type ConnectionRequestType = PostExternalMedicalClientRequestDto | PatchExternalMedicalClientRequestDto;
 
 @Injectable()
 export class MedicalClientExternalService implements IExternalConnectionService<ConnectionRequestType, MedicalClient> {
@@ -20,19 +20,22 @@ export class MedicalClientExternalService implements IExternalConnectionService<
     @Inject(MedicalClientEventService) private readonly eventService: MedicalClientEventService,
   ) { }
 
-  async create(source: string, { jobPosition, ...data }: PostMedicalClientExternalRequestDto): Promise<MedicalClient> {
-    await this.managementService.create(data);
+  async create(source: string, { jobPosition, ...data }: PostExternalMedicalClientRequestDto): Promise<MedicalClient> {
+    const newClient = await this.managementService.create(data);
     await this.emailService.assignEmail(data.dni, { email: data.email });
-    const client = await this.jobPositionService.assignJobPosition(data.dni, { jobPositionName: jobPosition.name });
+    let newPosition = undefined;
+    if (jobPosition) {
+      newPosition = await this.jobPositionService.assignJobPosition(data.dni, { jobPositionName: jobPosition.name });
+    }
     this.eventService.emitExternalCreateEvent(source, data, jobPosition);
-    return client;
+    return { ...newClient, ...newPosition };
   }
 
   async findOne(dni: string): Promise<MedicalClient> {
     return this.managementService.findOneByDni(dni);
   }
 
-  async findOneOrCreate(source: string, body: PostMedicalClientExternalRequestDto): Promise<MedicalClient> {
+  async findOneOrCreate(source: string, body: PostExternalMedicalClientRequestDto): Promise<MedicalClient> {
     try {
       return await this.managementService.findOneByDni(body.dni);
     } catch (error) {
@@ -40,7 +43,7 @@ export class MedicalClientExternalService implements IExternalConnectionService<
     }
   }
 
-  async findOneAndUpdate(dni: string, body: PatchMedicalClientRequestDto): Promise<MedicalClient> {
+  async findOneAndUpdate(dni: string, body: PatchExternalMedicalClientRequestDto): Promise<MedicalClient> {
     return this.managementService.updateOne(dni, body);
   }
 }

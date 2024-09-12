@@ -1,11 +1,12 @@
 import { TestBed } from "@automock/jest";
 import { ExamExternalConnectionService } from "../services/exam-external-connection.service";
 import { ExamExternalConnectionController } from "./exam-external-connection.controller";
-import { PostExamExternalRequestDto } from "../dtos/request/post.exam-external.request.dto";
-import { mockExam } from "../services/test/stub/exam.stub";
-import { PostExamResponseDto } from "../dtos/response/post.exam.response.dto";
-import { PatchExamExternalRequestDto } from "../dtos/request/patch.exam-external.request.dto";
-import { PatchExamResponseDto } from "../dtos/response/patch.exam.response.dto";
+import { PostExamExternalRequestDto } from "../dtos/request/external-exam.post.dto";
+import { mockExam } from "../stub/exam.stub";
+import { PatchExamExternalRequestDto } from "../dtos/request/external-exam.patch.dto";
+import { PostExtendedExamResponseDto } from "../dtos/response/extended-exam.post.dto";
+import { PatchExtendedExamResponseDto } from "../dtos/response/extended-exam.patch.dto";
+import { mockExtendedExam } from "../stub/extended-exam.stub";
 
 describe('ExamExternalConnectionController', () => {
     let controller: ExamExternalConnectionController;
@@ -29,8 +30,8 @@ describe('ExamExternalConnectionController', () => {
             name: 'New Exam',
             type: undefined
         };
-        const mockExamData = mockExam();
-        const mockResponse: PostExamResponseDto = mockExamData;
+        const mockExamData = mockExtendedExam();
+        const mockResponse: PostExtendedExamResponseDto = mockExamData;
 
         it('should call the service to create a new exam', async () => {
             // Arrange
@@ -49,21 +50,21 @@ describe('ExamExternalConnectionController', () => {
         const source = 'source';
         const key = 'key';
         const mockDto: PatchExamExternalRequestDto = {
-          name: 'Updated Exam',
+            name: 'Updated Exam',
         };
-        const mockExamData = mockExam();
-        const mockResponse: PatchExamResponseDto = mockExamData;
-    
+        const mockExamData = mockExtendedExam();
+        const mockResponse: PatchExtendedExamResponseDto = mockExamData;
+
         it('should call the service to update an exam', async () => {
-          // Arrange
-          service.findOneAndUpdate.mockResolvedValue(mockExamData);
-    
-          // Act
-          const result = await controller.findOneAndUpdate(source, key, mockDto);
-    
-          // Assert
-          expect(service.findOneAndUpdate).toHaveBeenCalledWith({ source, key }, mockDto);
-          expect(result).toEqual(mockResponse);
+            // Arrange
+            service.findOneAndUpdate.mockResolvedValue(mockExamData);
+
+            // Act
+            const result = await controller.findOneAndUpdate(source, key, mockDto);
+
+            // Assert
+            expect(service.findOneAndUpdate).toHaveBeenCalledWith({ source, key }, mockDto);
+            expect(result).toEqual(mockResponse);
         });
-      });
+    });
 });
