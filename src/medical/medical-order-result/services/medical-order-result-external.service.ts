@@ -21,16 +21,13 @@ export class MedicalOrderResultExternalService implements IExternalConnectionSer
     async create(key: ExternalKeyParam, { results, ...order }: ExternalMedicalResultOrderRequestDto): Promise<ExternalMedicalOrder> {
         const foundOrder = await this.orderService.findOneOrCreate(key, order);
         const createdResults: ExternalMedicalResult[] = [];
-        let index = 0;
         for (const { key: resultKey, ...resultData } of results) {
             const result = await this.resultService.create({ ...key, key: resultKey }, {
                 ...resultData,
                 order: { ...order, key: key.key }
             });
             createdResults.push(result);
-            index++;
         }
-        console.log(index)
         const currentResults = foundOrder.results || [];
         const data = { ...foundOrder, results: [...currentResults, ...createdResults] };
         return data;
