@@ -15,7 +15,7 @@ export class ExamManagementService {
 
     async create({ subtype, ...data }: PostExamRequestDto): Promise<Exam> {
         const { type, ...currentSubtype } = await this.subtypeService.findOne(subtype);
-        const exam = await this.repository.create({ ...data, subtype: currentSubtype });
+        const exam = await this.repository.create({ ...data, subtype: { id: currentSubtype.id } });
         return { ...exam, subtype };
     }
 
