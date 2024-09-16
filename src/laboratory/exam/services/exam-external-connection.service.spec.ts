@@ -8,13 +8,13 @@ import { PatchExamExternalRequestDto } from "../dtos/request/external-exam.patch
 import { PostExamExternalRequestDto } from "../dtos/request/external-exam.post.dto";
 import { ExamRepository } from "../repositories/exam.repository";
 import { mockExamExternalKey } from "../stub/exam-external-key.stub";
-import { mockExam } from "../stub/exam.stub";
 import { ExamExternalConnectionService } from "./exam-external-connection.service";
 import { ExamExternalKeyService } from "./exam-external-key.service";
 import { INJECT_EXAM_SUBTYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-subtype/services/exam-subtype-external-connection.service";
 import { INJECT_EXAM_TYPE_EXTERNAL_CONNECTION } from "@/laboratory/exam-type/services/exam-type-external-connection.service";
 import { mockExtendedExamType } from "@/laboratory/exam-type/stub/extended-exam-type.stub";
 import { mockExtendedExamSubtype } from "@/laboratory/exam-subtype/stub/extended-exam-subtype.stub";
+import { mockExamEntity } from "../stub/exam-entity.stub";
 
 describe('ExamExternalConnectionService', () => {
     let service: ExamExternalConnectionService;
@@ -55,7 +55,7 @@ describe('ExamExternalConnectionService', () => {
         const mockedType = mockExtendedExamType();
         const mockedSubtype = mockExtendedExamSubtype();
         const mockedKey = mockExamExternalKey();
-        const mockedExam = mockExam();
+        const mockedExam = mockExamEntity();
         const expectedValue = mockedExam;
 
         it('should create a new exam with subtype', async () => {
@@ -155,7 +155,7 @@ describe('ExamExternalConnectionService', () => {
             },
         };
         const keyParam = { source, key };
-        const mockedExam = mockExam();
+        const mockedExam = mockExamEntity();
         const expectedValue = mockedExam;
 
         it('should find a exam by external key', async () => {
@@ -190,7 +190,7 @@ describe('ExamExternalConnectionService', () => {
         const key = 'test-key';
         const data: PatchExamExternalRequestDto = { name: 'Updated Exam' };
         const keyParam = { source, key };
-        const mockedExam = mockExam();
+        const mockedExam = mockExamEntity();
         const expectedValue = mockedExam;
 
         it('should update a exam', async () => {

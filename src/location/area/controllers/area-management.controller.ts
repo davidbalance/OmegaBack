@@ -26,16 +26,15 @@ export class AreaManagementController {
 
   @Get('area/:id')
   async findOne(
-    @Param('id') id: string,
+    @Param('id') id: number,
   ): Promise<GetAreaResponseDto> {
     const data = await this.service.findOne(+id);
     return plainToInstance(GetAreaResponseDto, data);
   }
 
-
   @Patch('area/:id')
-  async findOneAndUpdate(
-    @Param('id') id: string,
+  async updateOne(
+    @Param('id') id: number,
     @Body() updateAreaDto: PatchAreaRequestDto
   ): Promise<any> {
     const area = await this.service.updateOne(+id, updateAreaDto);
@@ -43,8 +42,8 @@ export class AreaManagementController {
   }
 
   @Delete('area/:id')
-  async findOneAndDelete(
-    @Param('id') id: string
+  async deleteOne(
+    @Param('id') id: number
   ): Promise<any> {
     await this.service.deleteOne(+id);
     return {};

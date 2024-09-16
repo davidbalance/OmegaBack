@@ -1,13 +1,9 @@
-import { ExamExternalKeyEntity } from "@/laboratory/exam/entities/exam-external-key.entity";
-import { ExamEntity } from "@/laboratory/exam/entities/exam.entity";
+import { Exam } from "../dtos/response/exam.base.dto";
 
-const stubExam = (id: number): ExamEntity => ({
+const stubExam = (id: number): Exam => ({
     id: id,
-    name: "my-stub-name",
-    externalKey: {} as ExamExternalKeyEntity,
-    subtype: undefined,
-    createAt: new Date(),
-    updateAt: new Date()
+    name: "Stub name",
+    subtype: 1
 });
 
 export const mockExam = () => stubExam(1);

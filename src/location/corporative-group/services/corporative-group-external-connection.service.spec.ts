@@ -6,7 +6,7 @@ import { CorporativeGroupExternalConnectionService } from "./corporative-group-e
 import { CorporativeGroupExternalKeyService } from "./corporative-group-external-key.service";
 import { ExternalKeyParam } from "@/shared/utils/bases/base.external-connection";
 import { mockCorporativeGroupExternalKey } from "../stub/corporative-group-external-key.stub";
-import { mockCorporativeGroup } from "../stub/corporative-group.stub";
+import { mockCorporativeGroupEntity } from "../stub/corporative-group-entity.stub";
 
 describe('CorporativeGroupExternalConnectionService', () => {
     let service: CorporativeGroupExternalConnectionService;
@@ -35,7 +35,7 @@ describe('CorporativeGroupExternalConnectionService', () => {
         const data: PostExternalCorporativeGroupRequestDto = { name: 'Test Group' };
         const keyParam: ExternalKeyParam = { source, key };
         const mockedKey = mockCorporativeGroupExternalKey();
-        const mockedGroup = mockCorporativeGroup();
+        const mockedGroup = mockCorporativeGroupEntity();
         const expectedValue = mockedGroup;
 
         it('should create a new corporative group', async () => {
@@ -70,7 +70,7 @@ describe('CorporativeGroupExternalConnectionService', () => {
         const data: PostExternalCorporativeGroupRequestDto = { name: 'Test Group' };
         const keyParam: ExternalKeyParam = { source, key };
         const mockedKey = mockCorporativeGroupExternalKey();
-        const mockedGroup = mockCorporativeGroup();
+        const mockedGroup = mockCorporativeGroupEntity();
         const expectedValue = mockedGroup;
 
         it('should find a corporative group by external key or name', async () => {
@@ -111,7 +111,7 @@ describe('CorporativeGroupExternalConnectionService', () => {
         const key = 'test-key';
         const keyParam: ExternalKeyParam = { key, source };
         const data: PatchExternalCorporativeGroupRequestDto = { name: 'Updated Group' };
-        const mockedGroup = mockCorporativeGroup();
+        const mockedGroup = mockCorporativeGroupEntity();
         const expectedValue = mockedGroup;
 
         it('should update a corporative group', async () => {

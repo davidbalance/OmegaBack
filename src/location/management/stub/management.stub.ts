@@ -1,12 +1,8 @@
-import { ManagementEntity } from "@/location/management/entities/management.entity";
+import { Management } from "../dtos/response/management.base.dto";
 
-const stubManagement = (id: number): ManagementEntity => ({
+const stubManagement = (id: number): Management => ({
     id: id,
-    name: "my-stub-name",
-    status: true,
-    areas: [],
-    createAt: new Date(),
-    updateAt: new Date()
+    name: "Stub name"
 });
 
 export const mockManagement = () => stubManagement(1);

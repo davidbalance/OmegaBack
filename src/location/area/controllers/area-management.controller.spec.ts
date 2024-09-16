@@ -1,117 +1,92 @@
-/* import { TestBed } from "@automock/jest";
+import { TestBed } from "@automock/jest";
 import { AreaManagementService } from "../services/area-management.service";
 import { AreaManagementController } from "./area-management.controller";
-import { mockArea, mockAreas } from "../services/test/stub/area.stub";
-import { GetAreaArrayResponseDto } from "../dtos/response/area-array.get.dto";
 import { PostAreaRequestDto } from "../dtos/request/area.post.request.dto";
-import { PostAreaResponseDto } from "../dtos/response/post.area.response.dto";
+import { mockArea } from "../stub/area.stub";
 import { PatchAreaRequestDto } from "../dtos/request/area.patch.dto";
-import { PatchAreaResponseDto } from "../dtos/response/patch.area.response.dto"; */
-
-import { TestBed } from "@automock/jest";
-import { AreaManagementController } from "./area-management.controller";
 
 describe('AreaManagementController', () => {
   let controller: AreaManagementController;
+  let service: jest.Mocked<AreaManagementService>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(AreaManagementController).compile();
-
-    controller = unit;
-  });
-
-
-  it('', () => {
-    expect(controller).toBeDefined();
-  });
-  /* let service: jest.Mocked<AreaManagementService>;
-
-  beforeEach(async () => {
-    const { unit, unitRef } = TestBed.create(AreaManagementController).compile();
-
     controller = unit;
     service = unitRef.get(AreaManagementService);
   });
 
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  describe('findAll', () => {
-    const mockData = mockAreas();
-    const mockResponse: GetAreaArrayResponseDto = {
-      data: mockData
-    };
-
-    it('should call the service to find all areas', async () => {
-      // Arrange
-      service.find.mockResolvedValue(mockData);
-
-      // Act
-      const result = await controller.findAll();
-
-      // Assert
-      expect(service.find).toHaveBeenCalled();
-      expect(result).toEqual(mockResponse);
-    });
   });
 
   describe('create', () => {
     const mockDto: PostAreaRequestDto = {
-      name: 'New Area',
+      name: 'New Disease',
       management: 1
     };
-    const mockAreaData = mockArea();
-    const mockResponse: PostAreaResponseDto = mockAreaData;
+    const mockedArea = mockArea();
 
     it('should call the service to create a new area', async () => {
       // Arrange
-      service.create.mockResolvedValue(mockAreaData);
+      service.create.mockResolvedValue(mockedArea);
 
       // Act
-      const result = await controller.create(mockDto);
+      await controller.create(mockDto);
 
       // Assert
       expect(service.create).toHaveBeenCalledWith(mockDto);
-      expect(result).toEqual(mockResponse);
     });
   });
 
-  describe('findOneAndUpdate', () => {
+  describe('findOne', () => {
     const id = 1;
-    const mockDto: PatchAreaRequestDto = {
-      name: 'Updated Area',
-      management: 1
-    };
-    const mockAreaData = mockArea();
-    const mockResponse: PatchAreaResponseDto = mockAreaData;
+    const mockedArea = mockArea();
+    const expectedData = mockedArea;
 
-    it('should call the service to update an area', async () => {
+    it('should call the service to find one area', async () => {
       // Arrange
-      service.updateOne.mockResolvedValue(mockAreaData);
+      service.findOne.mockResolvedValue(mockedArea);
 
       // Act
-      const result = await controller.findOneAndUpdate(id.toString(), mockDto);
+      const result = await controller.findOne(id);
 
       // Assert
-      expect(service.updateOne).toHaveBeenCalledWith(+id, mockDto);
-      expect(result).toEqual(mockResponse);
+      expect(service.findOne).toHaveBeenCalledWith(id);
+      expect(result).toEqual(expectedData);
     });
   });
 
-  describe('findOneAndDelete', () => {
+  describe('updateOne', () => {
     const id = 1;
-    it('should call the service to delete an area', async () => {
+    const mockDto: PatchAreaRequestDto = {
+      name: 'Updated Disease',
+    };
+    const mockedArea = mockArea();
+
+    it('should call the service to update a area', async () => {
+      // Arrange
+      service.updateOne.mockResolvedValue(mockedArea);
+
+      // Act
+      await controller.updateOne(id, mockDto);
+
+      // Assert
+      expect(service.updateOne).toHaveBeenCalledWith(id, mockDto);
+    });
+  });
+
+  describe('deleteOne', () => {
+    const id = 1;
+
+    it('should call the service to delete a disease', async () => {
       // Arrange
       service.deleteOne.mockResolvedValue(undefined);
 
       // Act
-      const result = await controller.findOneAndDelete(id.toString());
+      await controller.deleteOne(id);
 
       // Assert
-      expect(service.deleteOne).toHaveBeenCalledWith(+id);
-      expect(result).toEqual({});
+      expect(service.deleteOne).toHaveBeenCalledWith(id);
     });
   });
- */
 });

@@ -1,109 +1,92 @@
-/* import { TestBed } from "@automock/jest";
-import { DiseaseManagementService } from "../services/disease-management.service";
-import { Disease } from "../entities/disease.entity";
-import { PostDiseaseRequestDto } from "../dtos/request/disease.post.dto";
-import { PostDiseaseResponseDto } from "../dtos/response/post.disease.response.dto";
-import { PatchDiseaseRequestDto } from "../dtos/request/disease.patch.dto";
-import { PatchDiseaseResponseDto } from "../dtos/response/patch.disease.response.dto"; */
-
 import { TestBed } from "@automock/jest";
 import { DiseaseManagementController } from "./disease-management.controller";
+import { DiseaseManagementService } from "../services/disease-management.service";
+import { PostDiseaseRequestDto } from "../dtos/request/disease.post.dto";
+import { mockDisease } from "../stub/disease.stub";
+import { PatchDiseaseRequestDto } from "../dtos/request/disease.patch.dto";
 
-describe('DiseaseController', () => {
+describe('DiseaseManagementController', () => {
   let controller: DiseaseManagementController;
+  let service: jest.Mocked<DiseaseManagementService>;
 
   beforeEach(async () => {
-    const { unit } = TestBed.create(DiseaseManagementController).compile();
-
+    const { unit, unitRef } = TestBed.create(DiseaseManagementController).compile();
     controller = unit;
+    service = unitRef.get(DiseaseManagementService);
   });
 
-  it('', () => {
-    expect(controller).toBeDefined();
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
-  /*   let controller: DiseaseController;
-    let service: jest.Mocked<DiseaseManagementService>;
-  
-    beforeEach(async () => {
-      const { unit, unitRef } = TestBed.create(DiseaseController).compile();
-  
-      controller = unit;
-      service = unitRef.get(DiseaseManagementService);
+
+  describe('create', () => {
+    const mockDto: PostDiseaseRequestDto = {
+      name: 'New Disease',
+      group: 1
+    };
+    const mockedDisease = mockDisease();
+
+    it('should call the service to create a new disease', async () => {
+      // Arrange
+      service.create.mockResolvedValue(mockedDisease);
+
+      // Act
+      await controller.create(mockDto);
+
+      // Assert
+      expect(service.create).toHaveBeenCalledWith(mockDto);
     });
-  
-    beforeEach(() => {
-      jest.clearAllMocks();
+  });
+
+  describe('findOne', () => {
+    const id = 1;
+    const mockedDisease = mockDisease();
+    const expectedData = mockedDisease;
+
+    it('should call the service to update a disease', async () => {
+      // Arrange
+      service.findOne.mockResolvedValue(mockedDisease);
+
+      // Act
+      const result = await controller.findOne(id);
+
+      // Assert
+      expect(service.findOne).toHaveBeenCalledWith(id);
+      expect(result).toEqual(expectedData);
     });
-  
-    describe('create', () => {
-      const mockDto: PostDiseaseRequestDto = {
-        name: 'New Disease',
-        group: 1
-      };
-      const mockDisease: Disease = {
-        id: 1,
-        ...mockDto,
-        group: undefined,
-        status: false,
-        createAt: undefined,
-        updateAt: undefined
-      };
-      const mockResponse: PostDiseaseResponseDto = mockDisease;
-  
-      it('should call the service to create a new disease', async () => {
-        // Arrange
-        service.create.mockResolvedValue(mockDisease);
-  
-        // Act
-        const result = await controller.create(mockDto);
-  
-        // Assert
-        expect(service.create).toHaveBeenCalledWith(mockDto);
-        expect(result).toEqual(mockResponse);
-      });
+  });
+
+  describe('updateOne', () => {
+    const id = 1;
+    const mockDto: PatchDiseaseRequestDto = {
+      name: 'Updated Disease',
+    };
+    const mockedDisease = mockDisease();
+
+    it('should call the service to update a disease', async () => {
+      // Arrange
+      service.updateOne.mockResolvedValue(mockedDisease);
+
+      // Act
+      await controller.updateOne(id, mockDto);
+
+      // Assert
+      expect(service.updateOne).toHaveBeenCalledWith(id, mockDto);
     });
-  
-    describe('.updateOne', () => {
-      const id = 1;
-      const mockDto: PatchDiseaseRequestDto = {
-        name: 'Updated Disease',
-      };
-      const mockDisease: Disease = {
-        id,
-        name: mockDto.name,
-        group: undefined,
-        status: false,
-        createAt: new Date(),
-        updateAt: new Date()
-      };
-      const mockResponse: PatchDiseaseResponseDto = mockDisease;
-  
-      it('should call the service to update a disease', async () => {
-        // Arrange
-        service.updateOne.mockResolvedValue(mockDisease);
-  
-        // Act
-        const result = await controller.updateOne(id, mockDto);
-  
-        // Assert
-        expect(service.updateOne).toHaveBeenCalledWith(id, mockDto);
-        expect(result).toEqual(mockResponse);
-      });
+  });
+
+  describe('deleteOne', () => {
+    const id = 1;
+
+    it('should call the service to delete a disease', async () => {
+      // Arrange
+      service.deleteOne.mockResolvedValue(undefined);
+
+      // Act
+      await controller.deleteOne(id);
+
+      // Assert
+      expect(service.deleteOne).toHaveBeenCalledWith(id);
     });
-  
-    describe('deleteOne', () => {
-      const id = 1;
-  
-      it('should call the service to delete a disease', async () => {
-        // Arrange
-        service.deleteOne.mockResolvedValue(undefined);
-  
-        // Act
-        const result = await controller.deleteOne(id);
-  
-        // Assert
-        expect(service.deleteOne).toHaveBeenCalledWith(id);
-        expect(result).toEqual({});
-      });
-    }); */
+  });
 });

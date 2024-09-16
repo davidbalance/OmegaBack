@@ -1,7 +1,7 @@
 import { TestBed } from "@automock/jest";
 import { JobPositionExternalConnectionService } from "../services/job-position-external-connection.service";
 import { JobPositionExternalListener } from "./job-position-external.listener";
-import { mockJobPosition } from "../stub/job-position.stub";
+import { mockJobPositionEntity } from "../stub/job-position-entity.stub";
 
 describe('JobPositionExternalListener', () => {
     let listener: JobPositionExternalListener;
@@ -25,7 +25,7 @@ describe('JobPositionExternalListener', () => {
             name: 'Job Position Name',
             description: 'Job Position Description'
         };
-        const mockedJobPosition = mockJobPosition();
+        const mockedJobPosition = mockJobPositionEntity();
 
         it('should call findOneOrCreate on service', async () => {
             // Arrange
