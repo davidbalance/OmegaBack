@@ -1,17 +1,17 @@
 import { TestBed } from "@automock/jest";
-import { DiseaseRepository } from "../repositories/disease.repository";
-import { DiseasePaginationService } from "./disease-pagination.service";
-import { mockDiseaseEntities } from "../stub/disease-entity.stub";
+import { ExamSubtypeRepository } from "../repositories/exam-subtype.repository";
+import { ExamSubtypePaginationService } from "./exam-subtype-pagination.service";
+import { mockExamSubtypeEntities } from "../stub/exam-subtype-entity.stub";
 
-describe('DiseasePaginationService', () => {
-  let service: DiseasePaginationService;
-  let repository: jest.Mocked<DiseaseRepository>;
+describe('ExamSubtypePaginationService', () => {
+  let service: ExamSubtypePaginationService;
+  let repository: jest.Mocked<ExamSubtypeRepository>;
 
   beforeEach(async () => {
-    const { unit, unitRef } = TestBed.create(DiseasePaginationService).compile();
+    const { unit, unitRef } = TestBed.create(ExamSubtypePaginationService).compile();
 
     service = unit;
-    repository = unitRef.get(DiseaseRepository);
+    repository = unitRef.get(ExamSubtypeRepository);
   });
 
   afterEach(() => {
@@ -24,7 +24,7 @@ describe('DiseasePaginationService', () => {
     const take = 10;
     const extras = 1;
 
-    const mockedDiseaseData = mockDiseaseEntities();
+    const mockedDiseaseData = mockExamSubtypeEntities();
     const expectedData = mockedDiseaseData;
 
     beforeEach(() => {
@@ -33,7 +33,6 @@ describe('DiseasePaginationService', () => {
         select: jest.fn().mockReturnThis(),
         addSelect: jest.fn().mockReturnThis(),
         where: jest.fn().mockReturnThis(),
-        andWhere: jest.fn().mockReturnThis(),
         orderBy: jest.fn().mockReturnThis(),
         limit: jest.fn().mockReturnThis(),
         offset: jest.fn().mockReturnThis(),
@@ -47,13 +46,12 @@ describe('DiseasePaginationService', () => {
       const result = await service.find({ search, page, take }, extras);
 
       // Assert
-      expect(repository.query).toHaveBeenCalledWith('disease');
-      expect(repository.query().innerJoinAndSelect).toHaveBeenCalledWith('disease.group', 'group', 'group.id = :group', { group: extras });
-      expect(repository.query().select).toHaveBeenCalledWith('disease.id', 'id');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(1, 'disease.name', 'name');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(2, 'group.id', 'group');
-      expect(repository.query().where).toHaveBeenCalledWith('disease.name LIKE :name', { name: `%${search}%` });
-      expect(repository.query().andWhere).toHaveBeenCalledWith('disease.status = 1');
+      expect(repository.query).toHaveBeenCalledWith('subtype');
+      expect(repository.query().innerJoinAndSelect).toHaveBeenCalledWith('subtype.type', 'type', 'type.id = :type', { type: extras });
+      expect(repository.query().select).toHaveBeenCalledWith('subtype.id', 'id');
+      expect(repository.query().addSelect).toHaveBeenNthCalledWith(1, 'subtype.name', 'name');
+      expect(repository.query().addSelect).toHaveBeenNthCalledWith(2, 'type.id', 'type');
+      expect(repository.query().where).toHaveBeenCalledWith('subtype.name LIKE :name', { name: `%${search}%` });
       expect(repository.query().limit).toHaveBeenCalledWith(take);
       expect(repository.query().offset).toHaveBeenCalledWith(page);
       expect(repository.query().getRawMany).toHaveBeenCalled();
