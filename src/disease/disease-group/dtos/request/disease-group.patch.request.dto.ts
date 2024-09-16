@@ -1,4 +1,4 @@
 import { PartialType } from "@nestjs/mapped-types";
-import { BaseDiseaseGroupRequestDto } from "./disease-group.base.request.dto";
+import { DiseaseGroupRequestDto } from "./disease-group.base.request.dto";
 
-export class PatchDiseaseGroupRequestDto extends PartialType(BaseDiseaseGroupRequestDto) { }
+export class PatchDiseaseGroupRequestDto extends PartialType(DiseaseGroupRequestDto) { }

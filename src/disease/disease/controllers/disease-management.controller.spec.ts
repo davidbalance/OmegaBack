@@ -1,11 +1,3 @@
-/* import { TestBed } from "@automock/jest";
-import { DiseaseManagementService } from "../services/disease-management.service";
-import { Disease } from "../entities/disease.entity";
-import { PostDiseaseRequestDto } from "../dtos/request/disease.post.dto";
-import { PostDiseaseResponseDto } from "../dtos/response/post.disease.response.dto";
-import { PatchDiseaseRequestDto } from "../dtos/request/disease.patch.dto";
-import { PatchDiseaseResponseDto } from "../dtos/response/patch.disease.response.dto"; */
-
 import { TestBed } from "@automock/jest";
 import { DiseaseManagementController } from "./disease-management.controller";
 import { DiseaseManagementService } from "../services/disease-management.service";
@@ -13,7 +5,7 @@ import { PostDiseaseRequestDto } from "../dtos/request/disease.post.dto";
 import { mockDisease } from "../stub/disease.stub";
 import { PatchDiseaseRequestDto } from "../dtos/request/disease.patch.dto";
 
-describe('DiseaseController', () => {
+describe('DiseaseManagementController', () => {
   let controller: DiseaseManagementController;
   let service: jest.Mocked<DiseaseManagementService>;
 

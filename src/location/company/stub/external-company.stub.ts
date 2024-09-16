@@ -8,11 +8,11 @@ const stubBranch = (id: number): ExtendedBranch => ({
 });
 
 const stubExtendedCompany = (id: number): ExtendedCompany => ({
-    id: 1,
+    id: id,
     ruc: "1234567890",
-    name: "my-stub-name",
-    address: "my-stub-address",
-    phone: "my-stub-phone",
+    name: "Stub name",
+    address: "Stub address",
+    phone: "0999999999",
     branches: Array(10).map(stubBranch)
 });
 

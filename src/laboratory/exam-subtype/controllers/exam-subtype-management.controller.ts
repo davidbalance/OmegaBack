@@ -21,13 +21,13 @@ export class ExamSubtypeManagementController {
   async create(
     @Body() data: PostExamSubtypeRequestDto
   ): Promise<any> {
-    const subtype = await this.examSubtypeService.create(data);
+    await this.examSubtypeService.create(data);
     return {}
   }
 
   @Get('subtype/:id')
   async findOne(
-    @Param('id') id: string
+    @Param('id') id: number
   ): Promise<GetExamSubtypeResponseDto> {
     const data = await this.examSubtypeService.findOne(+id);
     return plainToInstance(GetExamSubtypeResponseDto, data);
@@ -35,7 +35,7 @@ export class ExamSubtypeManagementController {
 
   @Get('subtype/:id/has/exams')
   async hasExams(
-    @Param('id') id: string
+    @Param('id') id: number
   ): Promise<HasValueResponseDto> {
     const hasValue = await this.examSubtypeService.hasExams(+id);
     return plainToInstance(HasValueResponseDto, { hasValue });
@@ -43,7 +43,7 @@ export class ExamSubtypeManagementController {
 
   @Patch('subtype/:id')
   async updateOne(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() body: PatchExamSubtypeRequestDto
   ): Promise<any> {
     await this.examSubtypeService.updateOne(+id, body);
@@ -51,8 +51,8 @@ export class ExamSubtypeManagementController {
   }
 
   @Delete('subtype/:id')
-  async remove(
-    @Param('id') id: string
+  async deleteOne(
+    @Param('id') id: number
   ): Promise<any> {
     await this.examSubtypeService.deleteOne(+id);
     return {};

@@ -4,7 +4,6 @@ import { plainToInstance } from "class-transformer";
 import { ManagementService } from "../services/management.service";
 import { PatchMagementRequestDto } from "../dtos/request/management.patch.dto";
 import { PostManagementRequestDto } from "../dtos/request/management.post.dto";
-import { GetManagementArrayResponseDto } from "../dtos/response/management-array.get.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 import { GetManagementResponseDto } from "../dtos/response/management.get.dto";
 import { HasValueResponseDto } from "@/shared/utils/bases/base.has-value.dto";
@@ -22,7 +21,7 @@ export class ManagementController {
   async create(
     @Body() createManagementDto: PostManagementRequestDto
   ): Promise<any> {
-    const management = await this.service.create(createManagementDto);
+    await this.service.create(createManagementDto);
     return {}
   }
 
@@ -53,7 +52,7 @@ export class ManagementController {
 
   @Delete(':id')
   async deleteOne(
-    @Param('id') id: string
+    @Param('id') id: number
   ): Promise<any> {
     await this.service.deleteOne(+id);
     return {};

@@ -1,12 +1,8 @@
-import { JobPositionEntity } from "@/location/job-position/entities/job-position.entity";
+import { JobPosition } from "../dtos/response/job-position.base.dto";
 
-const stubJobPosition = (id: number): JobPositionEntity => ({
+const stubJobPosition = (id: number): JobPosition => ({
     id: id,
-    name: "my-stub-name",
-    status: true,
-    createAt: new Date(),
-    updateAt: new Date(),
-    externalKey: undefined
+    name: "my-stub-name"
 });
 
 export const mockJobPosition = () => stubJobPosition(1);

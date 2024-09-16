@@ -4,6 +4,7 @@ import { UserManagementService } from '@/user/user/services/user-management.serv
 import { PostDoctorRequestDto } from '../dtos/request/doctor.post.dto';
 import { PatchDoctorRequestDto } from '../dtos/request/doctor.patch.dto';
 import { Doctor } from '../dtos/response/doctor.base.dto';
+import { User } from '@/user/user/dtos/response/user.base.dto';
 
 @Injectable()
 export class DoctorManagementService {
@@ -14,13 +15,13 @@ export class DoctorManagementService {
   ) { }
 
   async create(data: PostDoctorRequestDto): Promise<Doctor> {
-    let foundUser;
+    let foundUser: User;
     try {
       foundUser = await this.userService.findOneByDni(data.dni);
     } catch (error) {
       foundUser = await this.userService.create(data);
     }
-    const { user, ...doctor } = await this.repository.create({ user: foundUser });
+    const { user, ...doctor } = await this.repository.create({ user: { id: foundUser.id } });
     return { ...user, ...doctor, user: user.id };
   }
 

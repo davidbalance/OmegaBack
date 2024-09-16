@@ -6,11 +6,11 @@ export const stubExamSubtypeEntity = (id: number): ExamSubtypeEntity => ({
     id: id,
     name: "my-stub-name",
     status: false,
-    type: {} as ExamTypeEntity,
+    type: { id: 1 } as ExamTypeEntity,
     externalKey: {} as ExamSubtypeExternalKeyEntity,
     exams: [],
-    createAt: undefined,
-    updateAt: undefined
+    createAt: new Date(),
+    updateAt: new Date()
 });
 
 export const mockExamSubtypeEntity = () => stubExamSubtypeEntity(1);

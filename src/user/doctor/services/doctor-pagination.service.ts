@@ -23,11 +23,9 @@ export class DoctorPaginationService extends BasePaginationService<DoctorEntity,
       .addSelect('user.name', 'name')
       .addSelect('user.lastname', 'lastname')
       .addSelect('user.hasCredential', 'hasCredential')
-      .where(new Brackets(qr => {
-        qr.where('user.dni LIKE :filter', { filter: `%${filter}%` })
-          .orWhere('user.email LIKE :filter', { filter: `%${filter}%` })
-          .orWhere('user.name LIKE :filter', { filter: `%${filter}%` })
-          .orWhere('user.lastname LIKE :filter', { filter: `%${filter}%` })
-      }))
+      .where(new Brackets(qr => qr.where('user.dni LIKE :filter', { filter: `%${filter}%` })
+        .orWhere('user.email LIKE :filter', { filter: `%${filter}%` })
+        .orWhere('user.name LIKE :filter', { filter: `%${filter}%` })
+        .orWhere('user.lastname LIKE :filter', { filter: `%${filter}%` })))
   }
 }

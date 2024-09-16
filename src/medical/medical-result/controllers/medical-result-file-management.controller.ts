@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Inject, UseInterceptors, Patch, Param, Body, UploadedFile } from "@nestjs/common";
+import { Controller, UseGuards, Inject, UseInterceptors, Patch, Param, Body, UploadedFile, Post } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiTags, ApiBearerAuth, ApiConsumes } from "@nestjs/swagger";
 import { MedicalResultFileManagementService } from "../services/medical-result-file-management.service";
@@ -17,7 +17,7 @@ export class MedicalResultFileManagementController {
   @ApiConsumes('multipart/form-data')
   @Patch()
   @UseInterceptors(FileInterceptor('file'))
-  async findOneResultAndUploadFile(
+  async uploadFile(
     @Param('id') id: number,
     @Body() _: PatchMedicalResultFileRequestDto,
     @UploadedFile() file: Express.Multer.File

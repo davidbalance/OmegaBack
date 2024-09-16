@@ -1,16 +1,9 @@
-import { BranchEntity } from "@/location/branch/entities/branch.entity";
-import { CityEntity } from "@/location/city/entities/city.entity";
-import { CompanyEntity } from "@/location/company/entities/company.entity";
+import { Branch } from "../dtos/response/branch.base.dto";
 
-const stubBranch = (id: number): BranchEntity => ({
+const stubBranch = (id: number): Branch => ({
     id: id,
     name: "Stub branch",
-    status: true,
-    company: {} as CompanyEntity,
-    city: {} as CityEntity,
-    externalKey: undefined,
-    createAt: new Date(),
-    updateAt: new Date(),
+    city: "Qutio"
 });
 
 

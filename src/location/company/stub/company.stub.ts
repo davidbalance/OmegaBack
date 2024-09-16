@@ -1,20 +1,12 @@
-import { CompanyEntity } from "@/location/company/entities/company.entity";
-import { CorporativeGroupEntity } from "@/location/corporative-group/entities/corporative-group.entity";
+import { Company } from "../dtos/response/company.base.dto";
 
-const stubCompany = (id: number): CompanyEntity => ({
-    id: 1,
+const stubCompany = (id: number): Company => ({
+    id: id,
     ruc: "1234567890",
-    name: "my-stub-name",
-    address: "my-stub-address",
-    phone: "my-stub-phone",
-    status: true,
-    branches: [],
-    corporativeGroup: {} as CorporativeGroupEntity,
-    externalKey: undefined,
-    createAt: new Date(),
-    updateAt: new Date()
+    name: "Stub name",
+    address: "Stub address",
+    phone: "0999999999",
 });
-
 
 export const mockCompany = () => stubCompany(1);
 export const mockCompanies = () => [1, 2, 3, 4, 5].map(stubCompany);

@@ -1,4 +1,4 @@
-import { Inject, Injectable, StreamableFile } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { DoctorRepository } from "../repositories/doctor.repository";
 import path, { extname } from 'path';
 import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';

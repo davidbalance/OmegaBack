@@ -1,7 +1,7 @@
 import { TestBed } from "@automock/jest";
 import { DiseaseRepository } from "../repositories/disease.repository";
 import { DiseasePaginationService } from "./disease-pagination.service";
-import { mockDiseaseEntities, mockDiseaseEntity } from "../stub/disease-entity.stub";
+import { mockDiseaseEntities } from "../stub/disease-entity.stub";
 
 describe('DiseasePaginationService', () => {
   let service: DiseasePaginationService;
