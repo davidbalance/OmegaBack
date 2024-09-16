@@ -1,17 +1,17 @@
 import { TestBed } from "@automock/jest";
-import { BranchPaginationService } from "../services/branch-pagination.service";
-import { BranchPaginationController } from "./branch-pagination.controller";
+import { CompanyPaginationService } from "../services/company-pagination.service";
+import { CompanyPaginationController } from "./company-pagination.controller";
 import { FilterMetaDto } from "@/shared/utils/bases/base.pagination.dto";
-import { mockBranches } from "../stub/branch.stub";
+import { mockCompanies } from "../stub/company.stub";
 
-describe('BranchPaginationController', () => {
-    let controller: BranchPaginationController;
-    let service: jest.Mocked<BranchPaginationService>;
+describe('CompanyPaginationController', () => {
+    let controller: CompanyPaginationController;
+    let service: jest.Mocked<CompanyPaginationService>;
 
     beforeEach(async () => {
-        const { unit, unitRef } = TestBed.create(BranchPaginationController).compile();
+        const { unit, unitRef } = TestBed.create(CompanyPaginationController).compile();
         controller = unit;
-        service = unitRef.get(BranchPaginationService);
+        service = unitRef.get(CompanyPaginationService);
     });
 
     beforeEach(() => {
@@ -21,7 +21,7 @@ describe('BranchPaginationController', () => {
     describe('find', () => {
         const subtype: number = 1;
         const query: FilterMetaDto = { page: 0, take: 100 }
-        const mockedBranches = mockBranches();
+        const mockedBranches = mockCompanies();
         const expectedData = { data: mockedBranches };
 
         it('should call the service to find an exam subtype', async () => {

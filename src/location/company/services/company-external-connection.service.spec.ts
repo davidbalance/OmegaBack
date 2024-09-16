@@ -7,7 +7,7 @@ import { PatchCompanyExternalRequestDto } from "../dtos/request/external-company
 import { PostCompanyExternalRequestDto } from "../dtos/request/external-company.post.dto";
 import { CompanyRepository } from "../repositories/company.repository";
 import { mockCompanyExternalKey } from "../stub/company-external-key.stub";
-import { mockCompany } from "../stub/company.stub";
+import { mockCompanyEntity } from "../stub/company-entity.stub";
 import { CompanyExternalConnectionService } from "./company-external-connection.service";
 import { CompanyExternalKeyService } from "./company-external-key.service";
 import { INJECT_CORPORATIVE_GROUP_EXTERNAL_CONNECTION } from "@/location/corporative-group/services/corporative-group-external-connection.service";
@@ -53,7 +53,7 @@ describe('CompanyExternalConnectionService', () => {
         const keyParam = { source, key };
         const mockedGroup = mockCorporativeGroup();
         const mockedKey = mockCompanyExternalKey();
-        const mockedCompany = mockCompany();
+        const mockedCompany = mockCompanyEntity();
         const expectedValue = mockedCompany;
 
         it('should create a new company', async () => {
@@ -106,7 +106,7 @@ describe('CompanyExternalConnectionService', () => {
         };
         const data: PostCompanyExternalRequestDto = { corporativeGroup: { key: corporativeGroupKey, ...corporativeGroupData }, ...companyData };
         const keyParam = { source, key };
-        const mockedCompany = mockCompany();
+        const mockedCompany = mockCompanyEntity();
         const expectedValue = mockedCompany;
 
         it('should find a company by external key or ruc', async () => {
@@ -146,7 +146,7 @@ describe('CompanyExternalConnectionService', () => {
             phone: "0999999999"
         };
         const keyParam = { source, key };
-        const mockedCompany = mockCompany();
+        const mockedCompany = mockCompanyEntity();
         const expectedValue = mockedCompany;
 
         it('should update a company', async () => {
