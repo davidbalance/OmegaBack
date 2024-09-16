@@ -42,9 +42,22 @@ export class MedicalResultExternalConnectionController {
     }
 
     @ApiConsumes('multipart/form-data')
+    @Post(':source/:key/file')
+    @UseInterceptors(FileInterceptor('file'))
+    async postUploadFileByExternalKey(
+        @Param('source') source: string,
+        @Param('key') key: string,
+        @Body() _: PatchExternalMedicalResultFileRequestDto,
+        @UploadedFile() file: Express.Multer.File
+    ): Promise<PatchExternalMedicalResultResponseDto> {
+        const order = await this.service.findOneAndUpdate({ source, key }, { file });
+        return plainToInstance(PatchExternalMedicalResultResponseDto, order);
+    }
+
+    @ApiConsumes('multipart/form-data')
     @Patch(':source/:key/file')
     @UseInterceptors(FileInterceptor('file'))
-    async uploadFileByExternalKey(
+    async patchUploadFileByExternalKey(
         @Param('source') source: string,
         @Param('key') key: string,
         @Body() _: PatchExternalMedicalResultFileRequestDto,
