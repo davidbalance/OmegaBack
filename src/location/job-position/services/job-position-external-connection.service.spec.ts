@@ -4,7 +4,7 @@ import { JobPositionExternalConnectionService } from "./job-position-external-co
 import { JobPositionExternalKeyService } from "./job-position-external-key.service";
 import { PostExternalJobPositionRequestDto } from "../dtos/request/external-job-position.post.dto";
 import { ExternalKeyParam } from "@/shared/utils/bases/base.external-connection";
-import { mockJobPosition } from "../stub/job-position.stub";
+import { mockJobPositionEntity } from "../stub/job-position-entity.stub";
 import { mockJobPositionExternalKey } from "../stub/job-position-external-key.stub";
 import { PatchExternalJobPositionRequestDto } from "../dtos/request/external-job-position.patch.dto";
 
@@ -39,7 +39,7 @@ describe('JobPositionExternalConnectionService', () => {
         const data: PostExternalJobPositionRequestDto = { name: 'Test Job Position' };
         const keyParam: ExternalKeyParam = { key, source }
         const mockedKey = mockJobPositionExternalKey();
-        const mockedJobPosition = mockJobPosition();
+        const mockedJobPosition = mockJobPositionEntity();
         const expectedValue = mockedJobPosition;
 
         it('should create a new job position', async () => {
@@ -77,7 +77,7 @@ describe('JobPositionExternalConnectionService', () => {
         const source = 'test-source';
         const keyParam: ExternalKeyParam = { key, source };
         const data: PostExternalJobPositionRequestDto = { name: 'Test Job Position' };
-        const mockedJobPosition = mockJobPosition();
+        const mockedJobPosition = mockJobPositionEntity();
         const expectedJobPosition = mockedJobPosition;
 
         it('should find a job position by external key or name', async () => {
@@ -123,7 +123,7 @@ describe('JobPositionExternalConnectionService', () => {
         const source = 'test-source';
         const keyParam: ExternalKeyParam = { key, source };
         const data: PatchExternalJobPositionRequestDto = { name: 'Updated Job Position' };
-        const mockedJobPosition = mockJobPosition();
+        const mockedJobPosition = mockJobPositionEntity();
         const expectedValue = mockedJobPosition;
 
         it('should update a job position', async () => {
