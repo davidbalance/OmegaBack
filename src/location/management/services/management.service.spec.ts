@@ -1,26 +1,11 @@
-/* import { TestBed } from "@automock/jest";
-import { ManagementRepository } from "../../repositories/management.repository";
-import { ManagementService } from "../management.service";
-import { PostManagementRequestDto } from "../../dtos/request/management.post.dto";
-import { mockManagement, mockManagements } from "../../stub/management.stub";
-import { PatchMagementRequestDto } from "../../dtos/request/management.patch.dto"; */
-
 import { TestBed } from "@automock/jest";
+import { ManagementRepository } from "../repositories/management.repository";
 import { ManagementService } from "./management.service";
+import { ManagementRequestDto } from "../dtos/request/management.base.dto";
+import { mockManagementEntity } from "../stub/management-entity.stub";
 
 describe('ManagementService', () => {
   let service: ManagementService;
-
-  beforeEach(async () => {
-    const { unit } = TestBed.create(ManagementService).compile();
-    service = unit;
-  });
-
-  it('to be defined', () => {
-    expect(service).toBeDefined();
-  })
-
-  /* let service: ManagementService;
   let repository: jest.Mocked<ManagementRepository>;
 
   beforeEach(async () => {
@@ -35,86 +20,88 @@ describe('ManagementService', () => {
   });
 
   describe('create', () => {
-    const mockedManagement = mockManagement();
-    const body: PostManagementRequestDto = {
-      name: "Management Name"
-    }
-
     it('should create a management', async () => {
       // Arrange
-      repository.create.mockResolvedValueOnce(mockedManagement);
+      const mockDto: ManagementRequestDto = { name: 'Test Management' };
+      const mockedData = mockManagementEntity();
+      repository.create.mockResolvedValue(mockedData);
 
       // Act
-      const result = await service.create(body);
+      const result = await service.create(mockDto);
 
       // Assert
-      expect(result).toEqual(mockedManagement);
-      expect(repository.create).toHaveBeenCalledWith(body);
+      expect(repository.create).toHaveBeenCalledWith(mockDto);
+      expect(result).toEqual(mockedData);
     });
   });
 
-  describe('find', () => {
-    const mockedManagements = mockManagements();
-
-    it('should return all managements', async () => {
+  describe('findOne', () => {
+    it('should find a management by ID', async () => {
       // Arrange
-      repository.find.mockResolvedValueOnce(mockedManagements);
-
-      // Act
-      const result = await service.find();
-
-      // Assert
-      expect(result).toEqual(mockedManagements);
-      expect(repository.find).toHaveBeenCalledWith({
-        where: { status: true },
-        relations: { areas: true }
-      });
-    });
-  });
-
-  describe('findOneById', () => {
-    const id: number = 1;
-    const mockedManagement = mockManagement();
-
-    it('should return a management by id', async () => {
-      // Arrange
-      repository.findOne.mockResolvedValueOnce(mockedManagement);
+      const id = 1;
+      const mockedData = mockManagementEntity();
+      repository.findOne.mockResolvedValue(mockedData);
 
       // Act
       const result = await service.findOne(id);
 
       // Assert
-      expect(result).toEqual(mockedManagement);
       expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id } });
+      expect(result).toEqual(mockedData);
+    });
+  });
+
+  describe('hasAreas', () => {
+    const id = 1;
+    const mockedData = mockManagementEntity();
+
+    it('should return true if the management has areas', async () => {
+      // Arrange
+      repository.findOne.mockResolvedValue({ ...mockedData, areas: [{ id: 1 } as any] });
+
+      // Act
+      const result = await service.hasAreas(id);
+
+      // Assert
+      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id }, relations: { areas: true } });
+      expect(result).toBe(true);
+    });
+
+    it('should return false if the management has no areas', async () => {
+      // Arrange
+      repository.findOne.mockResolvedValue(mockedData);
+
+      // Act
+      const result = await service.hasAreas(id);
+
+      // Assert
+      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id }, relations: { areas: true } });
+      expect(result).toBe(false);
     });
   });
 
   describe('updateOne', () => {
-    const id: number = 1;
-    const mockedManagement = mockManagement();
-    const body: PatchMagementRequestDto = {
-      name: "Updated Management Name"
-    }
-
     it('should update a management', async () => {
       // Arrange
-      repository.findOneAndUpdate.mockResolvedValueOnce(mockedManagement);
+      const id = 1;
+      const mockDto: ManagementRequestDto = { name: 'Updated Management' };
+      const mockedData = mockManagementEntity();
+      repository.findOneAndUpdate.mockResolvedValue(mockedData);
 
       // Act
-      const result = await service.updateOne(id, body);
+      const result = await service.updateOne(id, mockDto);
 
       // Assert
-      expect(result).toEqual(mockedManagement);
-      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, body);
+      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: id }, mockDto);
+      expect(result).toEqual(mockedData);
     });
   });
 
   describe('deleteOne', () => {
-    const id: number = 1;
-
     it('should delete a management', async () => {
       // Arrange
-      repository.findOneAndDelete.mockResolvedValueOnce(undefined);
+      const id = 1;
+      repository.findOneAndDelete.mockResolvedValue(undefined);
 
       // Act
       await service.deleteOne(id);
@@ -122,5 +109,5 @@ describe('ManagementService', () => {
       // Assert
       expect(repository.findOneAndDelete).toHaveBeenCalledWith({ id: id });
     });
-  }); */
+  });
 });

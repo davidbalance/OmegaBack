@@ -2,7 +2,7 @@ import { TestBed } from "@automock/jest";
 import { AreaManagementService } from "../services/area-management.service";
 import { AreaManagementController } from "./area-management.controller";
 import { PostAreaRequestDto } from "../dtos/request/area.post.request.dto";
-import { mockArea, mockAreas } from "../stub/area.stub";
+import { mockArea } from "../stub/area.stub";
 import { PatchAreaRequestDto } from "../dtos/request/area.patch.dto";
 
 describe('AreaManagementController', () => {
