@@ -6,7 +6,7 @@ import { PatchDiseaseGroupRequestDto } from "../../dtos/request/disease-group.pa
 import { PostDiseaseGroupRequestDto } from "../../dtos/request/disease-group.post.request.dto"; */
 
 import { TestBed } from "@automock/jest";
-import { DiseaseGroupManagementService } from "../disease-group-management.service";
+import { DiseaseGroupManagementService } from "./disease-group-management.service";
 
 describe('DiseaseGroupManagementService', () => {
   let service: DiseaseGroupManagementService;

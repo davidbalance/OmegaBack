@@ -15,7 +15,7 @@ export class DiseaseManagementService {
 
   async create({ group, ...data }: PostDiseaseRequestDto): Promise<Disease> {
     const diseaseGroup = await this.groupService.findOne(group);
-    const value = await this.repository.create({ ...data, group: diseaseGroup });
+    const value = await this.repository.create({ ...data, group: { id: diseaseGroup.id } });
     return { ...value, group };
   }
 
