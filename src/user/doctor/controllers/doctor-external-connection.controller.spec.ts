@@ -1,6 +1,3 @@
-import { PatchCompanyExternalRequestDto } from "@/location/company/dtos/request/external-company.patch.dto";
-import { PostCompanyExternalRequestDto } from "@/location/company/dtos/request/external-company.post.dto";
-import { mockExternalCompany } from "@/location/company/stub/external-company.stub";
 import { TestBed } from "@automock/jest";
 import { DoctorExternalConnectionService } from "../services/doctor-external-connection.service";
 import { DoctorExternalConnectionController } from "./doctor-external-connection.controller";
