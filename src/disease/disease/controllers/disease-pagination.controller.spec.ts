@@ -18,7 +18,7 @@ describe('DiseasePaginationController', () => {
         jest.clearAllMocks();
     });
 
-    describe('create', () => {
+    describe('find', () => {
         const group: number = 1;
         const query: FilterMetaDto = { page: 0, take: 100 }
         const mockedDisease = mockDiseases();

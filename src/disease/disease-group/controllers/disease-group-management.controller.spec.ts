@@ -1,33 +1,16 @@
-/* import { TestBed } from "@automock/jest";
-import { DiseaseGroupManagementService } from "../services/disease-group-management.service";
-import { DiseaseGroupManagementController } from "./disease-group-management.controller";
-import { GetDiseaseGroupArrayResponseDto } from "../dtos/response/disease-group-array.get.response.dto";
-import { DiseaseGroup } from "../entities/disease-group.entity";
-import { PostDiseaseGroupRequestDto } from "../dtos/request/disease-group.post.request.dto";
-import { PostDiseaseGroupResponseDto } from "../dtos/response/post.disease-group.response.dto";
-import { PatchDiseaseGroupRequestDto } from "../dtos/request/disease-group.patch.request.dto";
-import { PatchDiseaseGroupResponseDto } from "../dtos/response/patch.disease-group.response.dto"; */
-
 import { TestBed } from "@automock/jest";
 import { DiseaseGroupManagementController } from "./disease-group-management.controller";
+import { DiseaseGroupManagementService } from "../services/disease-group-management.service";
+import { PatchDiseaseGroupRequestDto } from "../dtos/request/disease-group.patch.request.dto";
+import { PostDiseaseGroupRequestDto } from "../dtos/request/disease-group.post.request.dto";
+import { mockDiseaseGroup } from "../stub/disease-group.stub";
 
 describe('DiseaseGroupManagementController', () => {
   let controller: DiseaseGroupManagementController;
-  
-  beforeEach(async () => {
-    const { unit, unitRef } = TestBed.create(DiseaseGroupManagementController).compile();
-
-    controller = unit;
-  });
-
-  it('to be defined', () => {
-    expect(controller).toBeDefined();
-  });
-  /* let service: jest.Mocked<DiseaseGroupManagementService>;
+  let service: jest.Mocked<DiseaseGroupManagementService>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(DiseaseGroupManagementController).compile();
-
     controller = unit;
     service = unitRef.get(DiseaseGroupManagementService);
   });
@@ -40,26 +23,35 @@ describe('DiseaseGroupManagementController', () => {
     const mockDto: PostDiseaseGroupRequestDto = {
       name: 'New Disease Group',
     };
-    const mockDiseaseGroup: DiseaseGroup = {
-      id: 1,
-      ...mockDto,
-      status: false,
-      diseases: [],
-      createAt: new Date(),
-      updateAt: new Date()
-    };
-    const mockResponse: PostDiseaseGroupResponseDto = mockDiseaseGroup;
+    const mockedDiseaseGroup = mockDiseaseGroup();
 
     it('should call the service to create a new disease group', async () => {
       // Arrange
-      service.create.mockResolvedValue(mockDiseaseGroup);
+      service.create.mockResolvedValue(mockedDiseaseGroup);
 
       // Act
-      const result = await controller.create(mockDto);
+      await controller.create(mockDto);
 
       // Assert
       expect(service.create).toHaveBeenCalledWith(mockDto);
-      expect(result).toEqual(mockResponse);
+    });
+  });
+
+  describe('findOne', () => {
+    const id = 1;
+    const mockedDiseaseGroup = mockDiseaseGroup();
+    const expectedData = mockedDiseaseGroup;
+
+    it('should call the service to update a disease group', async () => {
+      // Arrange
+      service.findOne.mockResolvedValue(mockedDiseaseGroup);
+
+      // Act
+      const result = await controller.findOne(id);
+
+      // Assert
+      expect(service.findOne).toHaveBeenCalledWith(id);
+      expect(result).toEqual(expectedData);
     });
   });
 
@@ -68,26 +60,17 @@ describe('DiseaseGroupManagementController', () => {
     const mockDto: PatchDiseaseGroupRequestDto = {
       name: 'Updated Disease Group',
     };
-    const mockDiseaseGroup: DiseaseGroup = {
-      id,
-      name: mockDto.name,
-      status: false,
-      diseases: [],
-      createAt: new Date(),
-      updateAt: new Date()
-    };
-    const mockResponse: PatchDiseaseGroupResponseDto = mockDiseaseGroup;
+    const mockedDiseaseGroup = mockDiseaseGroup();
 
     it('should call the service to update a disease group', async () => {
       // Arrange
-      service.updateOne.mockResolvedValue(mockDiseaseGroup);
+      service.updateOne.mockResolvedValue(mockedDiseaseGroup);
 
       // Act
-      const result = await controller.updateOne(id, mockDto);
+      await controller.updateOne(id, mockDto);
 
       // Assert
       expect(service.updateOne).toHaveBeenCalledWith(id, mockDto);
-      expect(result).toEqual(mockResponse);
     });
   });
 
@@ -106,5 +89,4 @@ describe('DiseaseGroupManagementController', () => {
       expect(result).toEqual({});
     });
   });
- */
 });
