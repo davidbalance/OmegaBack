@@ -1,20 +1,13 @@
 import { TestBed } from "@automock/jest";
+import { CityRepository } from "../repositories/city.repository";
 import { CityService } from "./city.service";
+import { mockCities, mockCity } from "../stub/city.stub";
 
 describe('CityService', () => {
     let service: CityService;
+    let repository: jest.Mocked<CityRepository>;
 
-    beforeEach(() => {
-        const { unit, unitRef } = TestBed.create(CityService).compile();
-        service = unit;
-    });
-
-    it('', () => {
-        expect(service).toBeDefined();
-    })
-    /* let repository: jest.Mocked<CityRepository>
-
-    beforeEach(() => {
+    beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(CityService).compile();
 
         service = unit;
@@ -25,54 +18,54 @@ describe('CityService', () => {
         jest.clearAllMocks();
     });
 
-    describe('find', () => {
-        const mockedCities = mockCities();
+    it('should be defined', () => {
+        expect(service).toBeDefined();
+    });
 
-        it('should return a single city by id', async () => {
+    describe('find', () => {
+        it('should return an array of cities', async () => {
             // Arrange
-            repository.find.mockResolvedValueOnce(mockedCities);
+            const mockedData = mockCities();
+            repository.find.mockResolvedValue(mockedData);
 
             // Act
-            const city = await service.find();
+            const result = await service.find();
 
             // Assert
-            expect(city).toEqual(mockedCities);
             expect(repository.find).toHaveBeenCalledWith({ select: { id: true, name: true } });
+            expect(result).toEqual(mockedData);
         });
     });
 
     describe('findOne', () => {
-        const id: number = 1;
-        const mockedCity = mockCity();
-
-        it('should return a single city by id', async () => {
+        it('should return a city by id', async () => {
             // Arrange
-            repository.findOne.mockResolvedValueOnce(mockedCity);
+            const id = 1;
+            const mockedData = mockCity();
+            repository.findOne.mockResolvedValue(mockedData);
 
             // Act
-            const city = await service.findOne(id);
+            const result = await service.findOne(id);
 
             // Assert
-            expect(city).toEqual(mockedCity);
             expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id } });
+            expect(result).toEqual(mockedData);
         });
     });
 
     describe('findOneByName', () => {
-        const name: string = 'sample-city';
-        const mockedCity = mockCity();
-
-        it('should return a single city by id', async () => {
+        it('should return a city by name', async () => {
             // Arrange
-            repository.findOne.mockResolvedValueOnce(mockedCity);
+            const name = 'City Name';
+            const mockedData = mockCity();
+            repository.findOne.mockResolvedValue(mockedData);
 
             // Act
-            const city = await service.findOneByName(name);
+            const result = await service.findOneByName(name);
 
             // Assert
-            expect(city).toEqual(mockedCity);
             expect(repository.findOne).toHaveBeenCalledWith({ where: { name: name } });
+            expect(result).toEqual(mockedData);
         });
-    }); */
-
+    });
 });

@@ -9,10 +9,10 @@ import { PatchBranchExternalRequestDto } from "../dtos/request/external-branch.p
 import { PostBranchExternalRequestDto } from "../dtos/request/external-branch.post.dto";
 import { BranchRepository } from "../repositories/branch.repository";
 import { mockBranchExternalKey } from "../stub/branch-external-key.stub";
-import { mockBranch } from "../stub/branch.stub";
-import { BranchExternalConnectionService, INJECT_BRANCH_EXTERNAL_CONNECTION } from "./branch-external-connection.service";
+import { BranchExternalConnectionService } from "./branch-external-connection.service";
 import { BranchExternalKeyService } from "./branch-external-key.service";
 import { INJECT_COMPANY_EXTERNAL_KEY } from "@/location/company/services/company-external-connection.service";
+import { mockBranchEntity } from "../stub/branch-entity.stub";
 
 describe('BranchExternalConnectionService', () => {
     let service: BranchExternalConnectionService;
@@ -68,7 +68,7 @@ describe('BranchExternalConnectionService', () => {
         const mockedCompany = mockCompany();
         const mockedCity = mockCity();
         const mockedKey = mockBranchExternalKey();
-        const mockedBranch = mockBranch();
+        const mockedBranch = mockBranchEntity();
         const expectedValue = mockedBranch;
 
         it('should create a new branch', async () => {
@@ -138,7 +138,7 @@ describe('BranchExternalConnectionService', () => {
             name: 'Test Branch'
         };
         const keyParam = { source, key };
-        const mockedBranch = mockBranch();
+        const mockedBranch = mockBranchEntity();
         const expectedValue = mockedBranch;
 
         it('should find a branch by external key', async () => {
@@ -175,7 +175,7 @@ describe('BranchExternalConnectionService', () => {
         const key = 'test-key';
         const data: PatchBranchExternalRequestDto = { name: 'Updated Branch' };
         const keyParam = { source, key };
-        const mockedBranch = mockBranch();
+        const mockedBranch = mockBranchEntity();
         const expectedValue = mockedBranch;
 
         it('should update a branch', async () => {
