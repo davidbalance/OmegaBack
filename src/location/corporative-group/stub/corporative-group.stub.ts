@@ -1,15 +1,8 @@
-import { CorporativeGroupExternalKeyEntity } from "@/location/corporative-group/entities/corporative-group-external-key.entity";
-import { CorporativeGroupEntity } from "@/location/corporative-group/entities/corporative-group.entity";
+import { CorporativeGroup } from "../dtos/response/corporative-group.base.dto";
 
-
-const stubCorporativeGroup = (id: number): CorporativeGroupEntity => ({
+const stubCorporativeGroup = (id: number): CorporativeGroup => ({
     id: id,
-    name: "my-corporative-group",
-    companies: [],
-    status: true,
-    externalKey: {} as CorporativeGroupExternalKeyEntity,
-    createAt: new Date(),
-    updateAt: new Date()
+    name: "my-corporative-group"
 });
 
 export const mockCorporativeGroup = () => stubCorporativeGroup(1);
