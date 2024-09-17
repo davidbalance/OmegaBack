@@ -1,12 +1,17 @@
-import { User } from "../dtos/response/user.base.dto";
+import { UserEntity } from "../entities/user.entity";
 
-const stubUserEntity = (id: number): User => ({
+const stubUserEntity = (id: number): UserEntity => ({
     id: id,
     dni: "1234567890",
     email: "test@omega.com",
     name: "Stub name",
     lastname: "Stub lastname",
-    hasCredential: true
+    hasCredential: true,
+    dniType: "dni",
+    status: true,
+    extraAttributes: [],
+    createAt: new Date(),
+    updateAt: new Date()
 });
 
 export const mockUserEntity = () => stubUserEntity(1);

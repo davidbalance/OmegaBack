@@ -16,6 +16,7 @@ export class UserExtraAttributeService {
             where: { id },
             relations: { extraAttributes: true }
         });
+
         const selectedAttribute = user.extraAttributes.find((e) => e.name === attribute.name);
         if (selectedAttribute) {
             await this.attributeRepository.findOneAndUpdate({ id: selectedAttribute.id }, { value: attribute.value });
