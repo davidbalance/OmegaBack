@@ -9,6 +9,7 @@ import { PatchExternalMedicalResultFileRequestDto } from "../dtos/request/extern
 import { PatchExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.patch.dto";
 import { PostExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.post.dto";
 import { GetExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.get.dto";
+import { PostMedicalResultUrlFileRequestDto } from "../dtos/request/external-medical-result-url-file.post.dto";
 
 @ApiTags('External Connection', 'Medical>Result')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -39,6 +40,16 @@ export class MedicalResultExternalConnectionController {
     ): Promise<PostExternalMedicalResultResponseDto> {
         const order = await this.service.create({ source, key }, { ...body, file });
         return plainToInstance(PostExternalMedicalResultResponseDto, order);
+    }
+
+    @Post(':source/:key/url/file')
+    async uploadFileFromUrl(
+        @Param('source') source: string,
+        @Param('key') key: string,
+        @Body() body: PostMedicalResultUrlFileRequestDto,
+    ): Promise<PatchExternalMedicalResultResponseDto> {
+        const order = await this.service.findOneAndUploadUrl({ source, key }, body);
+        return plainToInstance(PatchExternalMedicalResultResponseDto, order);
     }
 
     @ApiConsumes('multipart/form-data')

@@ -1,16 +1,18 @@
-import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundException, StreamableFile } from "@nestjs/common";
+import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
 import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
-import { FileManagementService } from "@/shared/utils/bases/base.file-service";
+import { FileManagementService, GenericFile } from "@/shared/utils/bases/base.file-service";
 import { fileResultPath } from "@/shared/utils";
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { extname } from "path";
 import { ReadStream } from "fs";
+import { UrlFileFetcherService } from "@/shared/url-file-fetcher/url-file-fetcher.service";
 
 @Injectable()
 export class MedicalResultFileManagementService implements FileManagementService<number> {
 
   constructor(
     @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
+    @Inject(UrlFileFetcherService) private readonly urlFile: UrlFileFetcherService,
     @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
   ) { }
 
@@ -29,7 +31,7 @@ export class MedicalResultFileManagementService implements FileManagementService
     }
   }
 
-  async uploadFile(key: number, file: Express.Multer.File): Promise<string> {
+  async uploadFile(key: number, file: GenericFile): Promise<string> {
 
     const medicalResult = await this.repository
       .query('medical_result')
@@ -63,6 +65,11 @@ export class MedicalResultFileManagementService implements FileManagementService
       Logger.error(error);
       throw new InternalServerErrorException('Something went wrong when writting the file');
     }
+  }
+
+  async uploadFromUrl(key: number, url: string): Promise<string> {
+    const file = await this.urlFile.fetch(url);
+    return await this.uploadFile(key, { originalname: file.filename, ...file });
   }
 
   async getFilePath(key: number): Promise<string> {
