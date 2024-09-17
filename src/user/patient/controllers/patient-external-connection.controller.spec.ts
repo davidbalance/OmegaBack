@@ -2,7 +2,6 @@ import { TestBed } from "@automock/jest";
 import { PatientExternalConnectionController } from "./patient-external-connection.controller";
 import { PostExternalPatientRequestDto } from "../dtos/request/external-patient.post.dto";
 import { PatientGenderEnum } from "../enums/patient.enum";
-import { mockPatient } from "../stub/patient.stub";
 import { mockExternalPatient } from "../stub/external-patient.stub";
 import { PatientExternalConnectionService } from "../service/patient-external-connection.service";
 import { PatchExternalPatientRequestDto } from "../dtos/request/external-patient.patch.dto";
