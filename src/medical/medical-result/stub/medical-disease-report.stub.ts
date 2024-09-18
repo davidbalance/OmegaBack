@@ -25,5 +25,5 @@ const stubMedicalDiseaseReport = (): MedicalResultReport => ({
     diseaseCommentary: "Stub disease commentary"
 });
 
-const mockMedicalDiseaseReport = () => stubMedicalDiseaseReport();
-const mockMedicalDiseaseReports = () => Array(10).map(stubMedicalDiseaseReport);
+export const mockMedicalDiseaseReport = () => stubMedicalDiseaseReport();
+export const mockMedicalDiseaseReports = () => Array(10).map(stubMedicalDiseaseReport);
