@@ -3,7 +3,6 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JobPositionEvent, JobPositionExternalCreateEvent } from '@/shared/events/job-position.event';
 import { PatientEvent, PatientExternalCreateEvent } from '@/shared/events/patient.event';
 import { ExternalJobPositionWithKeyRequestDto } from '@/location/job-position/dtos/request/external-job-position-with-key.base.dto';
-import { ExternalPatientRequestDto } from '@/user/patient/dtos/request/external-patient.base.dto';
 import { PatientRequestDto } from '@/user/patient/dtos/request/patient.base.dto';
 
 @Injectable()
