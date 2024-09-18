@@ -6,11 +6,13 @@ import { ReadStream } from "typeorm/platform/PlatformTools";
 import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import { GenericFile } from "@/shared/utils/bases/base.file-service";
 import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { Base64Service } from "@/shared/base64/base64.service";
 
 describe('MedicalResultFileManagementService', () => {
   let service: MedicalResultFileManagementService;
   let repository: jest.Mocked<MedicalResultRepository>;
   let urlFileFetcherService: jest.Mocked<UrlFileFetcherService>;
+  let base64Service: jest.Mocked<Base64Service>;
   let storageManager: jest.Mocked<StorageManager>;
 
   beforeEach(async () => {
@@ -19,6 +21,7 @@ describe('MedicalResultFileManagementService', () => {
     service = unit;
     repository = unitRef.get(MedicalResultRepository);
     urlFileFetcherService = unitRef.get(UrlFileFetcherService);
+    base64Service = unitRef.get(Base64Service);
     storageManager = unitRef.get(INJECT_STORAGE_MANAGER);
   });
 
@@ -186,6 +189,31 @@ describe('MedicalResultFileManagementService', () => {
       // Assert
       expect(urlFileFetcherService.fetch).toHaveBeenCalledWith(url);
       expect(service.uploadFile).toHaveBeenCalledWith(key, { originalname: mockedFile.filename, ...mockedFile });
+      expect(result).toEqual(mockedFilepath);
+    });
+  });
+
+  describe('uploadFromBase64', () => {
+    it('should upload the file from base64 and update the medical result', async () => {
+      // Arrange
+      const key = 1;
+      const mimetype: string = 'application/pdf';
+      const base64 = 'JVBERi0xLjMKJcfsf/A==';
+      const mockedBuffer = Buffer.from('JVBERi0xLjMKJcfsf/A==', 'base64');
+      const mockedFilepath = 'test/filepath';
+      base64Service.toBuffer.mockReturnValue(mockedBuffer);
+      jest.spyOn(service, 'uploadFile').mockResolvedValue(mockedFilepath);
+
+      // Act
+      const result = await service.uploadFromBase64(key, mimetype, base64);
+
+      // Assert
+      expect(base64Service.toBuffer).toHaveBeenCalledWith(base64);
+      expect(service.uploadFile).toHaveBeenCalledWith(key, {
+        originalname: expect.any(String),
+        mimetype: 'application/pdf',
+        buffer: mockedBuffer,
+      });
       expect(result).toEqual(mockedFilepath);
     });
   });

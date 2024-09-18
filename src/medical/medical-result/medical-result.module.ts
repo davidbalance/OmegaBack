@@ -31,6 +31,7 @@ import { MedicalResultManagementController } from "./controllers/medical-result-
 import { MedicalResultReportService } from "./services/medical-result-report.service";
 import { MedicalResultReportController } from "./controllers/medical-result-report.controller";
 import { UrlFileFetcherModule } from "@/shared/url-file-fetcher/url-file-fetcher.module";
+import { Base64Module } from "@/shared/base64/base64.module";
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { UrlFileFetcherModule } from "@/shared/url-file-fetcher/url-file-fetcher
     LocalStorageModule,
     DniInterceptorModule,
     ExcelManagerModule,
-    UrlFileFetcherModule
+    UrlFileFetcherModule,
+    Base64Module
   ],
   controllers: [
     MedicalDiseaseManagementController,

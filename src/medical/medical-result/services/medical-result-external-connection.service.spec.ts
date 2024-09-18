@@ -12,7 +12,7 @@ import { INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION } from "@/medical/medical-orde
 import { PatientGenderEnum } from "@/user/patient/enums/patient.enum";
 import { mockMedicalResultExternalKey } from "../stub/medical-result-external-key.stub";
 import { mockMedicalResultEntity } from "../stub/medical-result-entity.stub";
-import { PostMedicalResultUrlFileRequestDto } from "../dtos/request/external-medical-result-url-file.post.dto";
+import { PostMedicalResultBase64FileRequestDto } from "../dtos/request/external-medical-result-base64-file.post.dto";
 
 describe('MedicalResultExternalConnectionService', () => {
     let service: MedicalResultExternalConnectionService;
@@ -218,9 +218,10 @@ describe('MedicalResultExternalConnectionService', () => {
         });
     });
 
-    describe('findOneAndUploadUrl', () => {
-        const data: PostMedicalResultUrlFileRequestDto = {
-            url: 'https://sample.com/file'
+    describe('findOneAndUploadBas64', () => {
+        const data: PostMedicalResultBase64FileRequestDto = {
+            base64: 'JVBERi0xLjMKJcfsf/A==',
+            mimetype: 'application/pdf'
         };
         const mockedResult = mockMedicalResultEntity();
         const expectedValue = { ...mockedResult, hasFile: true };
@@ -232,12 +233,12 @@ describe('MedicalResultExternalConnectionService', () => {
             const keyParam = { source, key };
 
             repository.findOne.mockResolvedValue(mockedResult);
-            storage.uploadFromUrl.mockResolvedValue(undefined);
+            storage.uploadFromBase64.mockResolvedValue(undefined);
             // Act
-            const result = await service.findOneAndUploadUrl(keyParam, data);
+            const result = await service.findOneAndUploadBas64(keyParam, data);
             // Assert
             expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam } });
-            expect(storage.uploadFromUrl).toHaveBeenCalledWith(mockedResult.id, data.url);
+            expect(storage.uploadFromBase64).toHaveBeenCalledWith(mockedResult.id, data.mimetype, data.base64);
             expect(result).toEqual(expectedValue);
         });
 
@@ -248,12 +249,12 @@ describe('MedicalResultExternalConnectionService', () => {
             const keyParam = { source, key };
 
             repository.findOne.mockResolvedValue(mockedResult);
-            storage.uploadFromUrl.mockResolvedValue(undefined);
+            storage.uploadFromBase64.mockResolvedValue(undefined);
             // Act
-            const result = await service.findOneAndUploadUrl(keyParam, data);
+            const result = await service.findOneAndUploadBas64(keyParam, data);
             // Assert
             expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam } });
-            expect(storage.uploadFromUrl).toHaveBeenCalledWith(mockedResult.id, data.url);
+            expect(storage.uploadFromBase64).toHaveBeenCalledWith(mockedResult.id, data.mimetype, data.base64);
             expect(result).toEqual(expectedValue);
         });
     });
