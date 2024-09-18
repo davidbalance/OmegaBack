@@ -25,9 +25,4 @@ export class MedicalClientDoctorPaginationService extends BasePaginationService<
       .orWhere('client.name LIKE :filter', { filter: `%${filter}%` })
       .orWhere('client.lastname LIKE :filter', { filter: `%${filter}%` })
   }
-
-  /* protected transform(data: { dni: string, name: string, lastname: string, createAt: Date }[]): MedicalClient[] {
-    const transform: Record<string, MedicalClient> = data.reduce((prev, curr) => ({ ...prev, [curr.dni]: curr }), {});
-    return Object.values(transform);
-  } */
 }

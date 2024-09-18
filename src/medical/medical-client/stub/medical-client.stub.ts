@@ -1,22 +1,11 @@
-import { MedicalClientEntity } from "../entities/medical-client.entity";
-import { mockMedicalEmails } from "./medical-email.stub";
+import { MedicalClient } from "../dtos/response/medical-client.base.dto";
 
-const stubMedicalClient = (id: number): MedicalClientEntity => ({
+const stubMedicalClient = (id: number): MedicalClient => ({
     id: id,
     dni: "1234567890",
     name: "Mocked name",
     lastname: "Mocked lastname",
-    birthday: new Date('2000/01/01'),
-    gender: "male",
-    jobPositionName: "Test position",
-    managementId: 1,
-    managementName: "Test management",
-    areaId: 1,
-    areaName: "Test area",
-    medicalOrders: [],
-    email: mockMedicalEmails(),
-    createAt: new Date(),
-    updateAt: new Date()
+    createAt: new Date()
 });
 
 export const mockMedicalClient = () => stubMedicalClient(1);

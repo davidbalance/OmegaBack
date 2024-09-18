@@ -26,7 +26,8 @@ export class MedicalResultDiseaseReportController {
             'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'Content-Disposition': 'attachment; filename="medical-result-disease-report.xlsx"',
         });
-        file.getStream().pipe(response);
+        return file;
+        // file.getStream().pipe(response);
     }
 
     @Get('year')

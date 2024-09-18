@@ -14,7 +14,7 @@ const stubMedicalOrderEntity = (id: number): MedicalOrderEntity => ({
     orderStatus: OrderStatus.CREATED,
     results: [],
     externalKey: {} as MedicalOrderExternalKeyEntity,
-    client: {} as MedicalClientEntity,
+    client: { id: 1, email: [{ id: 1 }] } as MedicalClientEntity,
     createAt: new Date(),
     updateAt: new Date()
 });

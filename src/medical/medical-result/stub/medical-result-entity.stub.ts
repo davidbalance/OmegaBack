@@ -6,6 +6,7 @@ import { MedicalResultEntity } from "../entities/medical-result.entity";
 const stubMedicalResultEntity = (id: number): MedicalResultEntity => ({
     id: id,
     hasFile: false,
+    diseases: [{ id: 1 } as any],
     examType: "Test type",
     examSubtype: "Test subtype",
     examName: "Test exam",

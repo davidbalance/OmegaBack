@@ -1,13 +1,10 @@
-import { MedicalEmailEntity } from "@/medical/medical-client/entities/medical-email.entity";
+import { MedicalEmail } from "../dtos/response/medical-email.base.dto";
 
-const stubMail = (id: number): MedicalEmailEntity => ({
+const stubMail = (id: number): MedicalEmail => ({
     id: id,
     email: "test@email.com",
     default: true,
-    client: undefined,
-    createAt: new Date(),
-    updateAt: new Date()
 });
 
 export const mockMedicalEmail = () => stubMail(1);
-export const mockMedicalEmails = () => [1, 2, 3, 4, 5].map(stubMail);
+export const mockMedicalEmails = () => Array(10).map(stubMail);

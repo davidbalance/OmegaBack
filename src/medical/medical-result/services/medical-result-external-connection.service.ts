@@ -13,6 +13,7 @@ import { PatchExternalMedicalResultRequestDto } from "../dtos/request/external-m
 import { ExternalMedicalOrder } from "@/medical/medical-order/dtos/response/external-medical-order.base.dto";
 import { ExternalMedicalOrderRequestDto } from "@/medical/medical-order/dtos/request/external-medical-order.base.dto";
 import { MedicalResultEntity } from "../entities/medical-result.entity";
+import { PostMedicalResultBase64FileRequestDto } from "../dtos/request/external-medical-result-base64-file.post.dto";
 
 type RequestType = PostExternalMedicalResultRequestDto | PatchExternalMedicalResultRequestDto
 
@@ -76,6 +77,18 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
             medicalResult = await this.repository.findOne({ where: { externalKey: key } });
         }
         await this.storage.uploadFile(medicalResult.id, file);
+        medicalResult.hasFile = true;
+        return medicalResult;
+    }
+
+    async findOneAndUploadBas64(key: ExternalKeyParam | number, { base64, mimetype }: PostMedicalResultBase64FileRequestDto): Promise<ExternalMedicalResult> {
+        let medicalResult: MedicalResultEntity;
+        if (typeof key === 'number') {
+            medicalResult = await this.repository.findOne({ where: { id: key } });
+        } else {
+            medicalResult = await this.repository.findOne({ where: { externalKey: key } });
+        }
+        await this.storage.uploadFromBase64(medicalResult.id, mimetype, base64);
         medicalResult.hasFile = true;
         return medicalResult;
     }

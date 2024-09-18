@@ -12,6 +12,7 @@ import { INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION } from "@/medical/medical-orde
 import { PatientGenderEnum } from "@/user/patient/enums/patient.enum";
 import { mockMedicalResultExternalKey } from "../stub/medical-result-external-key.stub";
 import { mockMedicalResultEntity } from "../stub/medical-result-entity.stub";
+import { PostMedicalResultBase64FileRequestDto } from "../dtos/request/external-medical-result-base64-file.post.dto";
 
 describe('MedicalResultExternalConnectionService', () => {
     let service: MedicalResultExternalConnectionService;
@@ -213,6 +214,47 @@ describe('MedicalResultExternalConnectionService', () => {
             // Assert
             expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam } });
             expect(storage.uploadFile).toHaveBeenCalledWith(mockedResult.id, data.file);
+            expect(result).toEqual(expectedValue);
+        });
+    });
+
+    describe('findOneAndUploadBas64', () => {
+        const data: PostMedicalResultBase64FileRequestDto = {
+            base64: 'JVBERi0xLjMKJcfsf/A==',
+            mimetype: 'application/pdf'
+        };
+        const mockedResult = mockMedicalResultEntity();
+        const expectedValue = { ...mockedResult, hasFile: true };
+
+        it('should update a medical result with external key', async () => {
+            // Arrange
+            const source: string = 'test-source'
+            const key = 'test-key';
+            const keyParam = { source, key };
+
+            repository.findOne.mockResolvedValue(mockedResult);
+            storage.uploadFromBase64.mockResolvedValue(undefined);
+            // Act
+            const result = await service.findOneAndUploadBas64(keyParam, data);
+            // Assert
+            expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam } });
+            expect(storage.uploadFromBase64).toHaveBeenCalledWith(mockedResult.id, data.mimetype, data.base64);
+            expect(result).toEqual(expectedValue);
+        });
+
+        it('should update a medical result with id', async () => {
+            // Arrange
+            const source: string = 'test-source'
+            const key = 'test-key';
+            const keyParam = { source, key };
+
+            repository.findOne.mockResolvedValue(mockedResult);
+            storage.uploadFromBase64.mockResolvedValue(undefined);
+            // Act
+            const result = await service.findOneAndUploadBas64(keyParam, data);
+            // Assert
+            expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam } });
+            expect(storage.uploadFromBase64).toHaveBeenCalledWith(mockedResult.id, data.mimetype, data.base64);
             expect(result).toEqual(expectedValue);
         });
     });
