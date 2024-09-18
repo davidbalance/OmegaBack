@@ -3,7 +3,6 @@ import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete, Inject } 
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { UserManagementService } from "../services/user-management.service";
-import { GetUserArrayResponseDto } from "../dtos/response/user-array.get.dto";
 import { GetUserResponseDto } from "../dtos/response/user.get.dto";
 import { PostUserRequestDto } from "../dtos/request/user.post.dto";
 import { PatchUserRequestDto } from "../dtos/request/user.patch.dto";

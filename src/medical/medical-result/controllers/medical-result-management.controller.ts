@@ -4,7 +4,6 @@ import { plainToInstance } from "class-transformer";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 import { MedicalResultManagementService } from "../services/medical-result-management.service";
 import { GetMedicalResultResponseDto } from "../dtos/response/medical-result.get.dto";
-import { PatchMedicalResultFileRequestDto } from "@/medical/medical-report/dtos/request/medical-report-file.patch.dto";
 import { PatchMedicalResultRequestDto } from "../dtos/request/medical-result.patch.dto";
 
 @ApiTags('Medical>Result')

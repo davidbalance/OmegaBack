@@ -9,7 +9,7 @@ import { PatchExternalMedicalResultFileRequestDto } from "../dtos/request/extern
 import { PatchExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.patch.dto";
 import { PostExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.post.dto";
 import { GetExternalMedicalResultResponseDto } from "../dtos/response/external-medical-result.get.dto";
-import { PostMedicalResultUrlFileRequestDto } from "../dtos/request/external-medical-result-url-file.post.dto";
+import { PostMedicalResultBase64FileRequestDto } from "../dtos/request/external-medical-result-base64-file.post.dto";
 
 @ApiTags('External Connection', 'Medical>Result')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -42,13 +42,13 @@ export class MedicalResultExternalConnectionController {
         return plainToInstance(PostExternalMedicalResultResponseDto, order);
     }
 
-    @Post(':source/:key/url/file')
-    async uploadFileFromUrl(
+    @Post(':source/:key/base64/file')
+    async uploadFromBase64(
         @Param('source') source: string,
         @Param('key') key: string,
-        @Body() body: PostMedicalResultUrlFileRequestDto,
+        @Body() body: PostMedicalResultBase64FileRequestDto,
     ): Promise<PatchExternalMedicalResultResponseDto> {
-        const order = await this.service.findOneAndUploadUrl({ source, key }, body);
+        const order = await this.service.findOneAndUploadBas64({ source, key }, body);
         return plainToInstance(PatchExternalMedicalResultResponseDto, order);
     }
 

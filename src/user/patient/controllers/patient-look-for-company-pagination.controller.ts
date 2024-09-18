@@ -20,7 +20,7 @@ export class PatientLookForCompanyPaginationController {
   @ExtraAttribute('look_for_company')
   @UseInterceptors(ExtraAttributeInterceptor)
   @Get('paginate')
-  async fing(
+  async find(
     @User() ruc: string,
     @Query() query: FilterMetaDto
   ): Promise<GetPatientArrayResponseDto> {

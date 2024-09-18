@@ -6,6 +6,9 @@ import { MedicalResultRepository } from "../repositories/medical-result.reposito
 import { extname } from "path";
 import { ReadStream } from "fs";
 import { UrlFileFetcherService } from "@/shared/url-file-fetcher/url-file-fetcher.service";
+import { Base64Service } from "@/shared/base64/base64.service";
+import { fileExtension } from "@/shared/utils/file-extension";
+import { v4 } from "uuid";
 
 @Injectable()
 export class MedicalResultFileManagementService implements FileManagementService<number> {
@@ -13,6 +16,7 @@ export class MedicalResultFileManagementService implements FileManagementService
   constructor(
     @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
     @Inject(UrlFileFetcherService) private readonly urlFile: UrlFileFetcherService,
+    @Inject(Base64Service) private readonly base64: Base64Service,
     @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
   ) { }
 
@@ -70,6 +74,13 @@ export class MedicalResultFileManagementService implements FileManagementService
   async uploadFromUrl(key: number, url: string): Promise<string> {
     const file = await this.urlFile.fetch(url);
     return await this.uploadFile(key, { originalname: file.filename, ...file });
+  }
+
+  async uploadFromBase64(key: number, mimetype: string, base64: string): Promise<string> {
+    const buffer = this.base64.toBuffer(base64);
+    const extension = fileExtension(mimetype);
+    const filename = `${v4()}${extension}`;
+    return await this.uploadFile(key, { originalname: filename, mimetype: mimetype, buffer });
   }
 
   async getFilePath(key: number): Promise<string> {

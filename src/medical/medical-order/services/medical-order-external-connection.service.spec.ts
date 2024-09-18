@@ -1,5 +1,4 @@
 import { MedicalClientExternalService } from "@/medical/medical-client/services/medical-client-external.service";
-import { mockMedicalClient } from "@/medical/medical-client/stub/medical-client.stub";
 import { TestBed } from "@automock/jest";
 import { PatchExternalMedicalOrderRequestDto } from "../dtos/request/external-medical-order.patch.dto";
 import { PostExternalMedicalOrderRequestDto } from "../dtos/request/external-medical-order.post.dto";
@@ -10,6 +9,7 @@ import { MedicalOrderExternalKeyService } from "./medical-order-external-key.ser
 import { mockMedicalOrderEntities, mockMedicalOrderEntity } from "../stubs/medical-order-entity.stub";
 import { PatientGenderEnum } from "@/user/patient/enums/patient.enum";
 import { mockMedicalOrderExternalKey } from "../stubs/medical-order-external-key.stub";
+import { mockMedicalClientEntity } from "@/medical/medical-client/stub/medical-client-entity.stub";
 
 describe('MedicalOrderExternalConnectionService', () => {
     let service: MedicalOrderExternalConnectionService;
@@ -89,7 +89,7 @@ describe('MedicalOrderExternalConnectionService', () => {
             process: "Test process"
         };
         const keyParam = { source, key };
-        const mockedClient = mockMedicalClient();
+        const mockedClient = mockMedicalClientEntity();
         const mockedKey = mockMedicalOrderExternalKey();
         const mockedOrder = mockMedicalOrderEntity();
         const expectedValue = mockedOrder;
