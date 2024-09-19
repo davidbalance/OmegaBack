@@ -11,7 +11,7 @@ export class MedicalResultOrionListener {
     ) { }
 
     @OnEvent(MedicalResultEvent.ON_UPLOAD_FILE)
-    async findOneCredentialAndUpdateUsername({ id }: OnMedicalResultUploadFileEvent): Promise<void> {
+    async handleMedicalResultUpload({ id }: OnMedicalResultUploadFileEvent): Promise<void> {
         Logger.log(`Result to be done read ${id}`);
     }
 
