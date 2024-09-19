@@ -1,6 +1,6 @@
 import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
-import { FileManagementService } from "@/shared/utils/bases/base.file-service";
-import { Injectable, Inject, Logger, NotFoundException, StreamableFile } from "@nestjs/common";
+import { FileManagementService, GenericFile } from "@/shared/utils/bases/base.file-service";
+import { Injectable, Inject, Logger, NotFoundException } from "@nestjs/common";
 import { MedicalReportRepository } from "../repositories/medical-report.repository";
 import { fileReportPath } from "@/shared/utils";
 import { ReadStream } from "fs";
@@ -28,7 +28,7 @@ export class MedicalReportFileManagementService implements FileManagementService
     }
   }
 
-  async uploadFile(key: number, file: Express.Multer.File): Promise<string> {
+  async uploadFile(key: number, file: GenericFile): Promise<string> {
     const medicalReport = await this.repository.findOne({
       where: { id: key },
       select: {
