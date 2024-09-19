@@ -26,7 +26,11 @@ export class CompanyExternalConnectionService implements IExternalConnectionServ
     async create(key: ExternalKeyParam, { corporativeGroup, ...company }: PostCompanyExternalRequestDto): Promise<ExtendedCompany> {
         const { key: corporativeGroupKey, ...corporativeGroupData } = corporativeGroup;
         const group = await this.externalService.findOneOrCreate({ ...key, key: corporativeGroupKey }, corporativeGroupData);
-        const newKey = await this.keyService.create(key);
+
+        let newKey = undefined;
+        if (key.key) {
+            newKey = await this.keyService.create(key);
+        }
         try {
             const newCompany = await this.repository.create({
                 ...company,
