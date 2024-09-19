@@ -103,6 +103,34 @@ describe('MedicalResultExternalConnectionService', () => {
         const mockedResult = mockMedicalResultEntity();
         const expectedValue = mockedResult;
 
+        it('should create a new medical result if the key is undefined', async () => {
+            // Arrange
+            orderService.findOneOrCreate.mockResolvedValue(mockedOrder);
+            externalKeyService.create.mockResolvedValue(undefined);
+            repository.create.mockResolvedValue(mockedResult);
+            storage.uploadFile.mockResolvedValue(undefined);
+            // Act
+            const result = await service.create({...keyParam, key: undefined}, data);
+            // Assert
+            const { order } = data;
+            const { key: orderKey, ...expectedOrderData } = order;
+            expect(orderService.findOneOrCreate).toHaveBeenCalledWith({ ...keyParam, key: orderKey }, expectedOrderData);
+            expect(externalKeyService.create).not.toHaveBeenCalled();
+            expect(repository.create).toHaveBeenCalledWith({
+                order: { id: mockedOrder.id },
+                externalKey: undefined,
+                doctorDni: data.doctor.dni,
+                doctorFullname: `${data.doctor.name} ${data.doctor.lastname}`,
+                doctorSignature: expect.any(String),
+                examName: data.exam.name,
+                examType: data.exam.type.name,
+                examSubtype: data.exam.subtype.name
+            });
+            expect(eventService.emitMedicalResultCreateEvent).toHaveBeenCalledWith(source, data.doctor, data.exam);
+            expect(result).toEqual({ ...expectedValue, hasFile: false });
+        });
+
+
         it('should create a new medical result', async () => {
             // Arrange
             orderService.findOneOrCreate.mockResolvedValue(mockedOrder);

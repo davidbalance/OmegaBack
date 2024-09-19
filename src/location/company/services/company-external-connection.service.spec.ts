@@ -56,6 +56,24 @@ describe('CompanyExternalConnectionService', () => {
         const mockedCompany = mockCompanyEntity();
         const expectedValue = mockedCompany;
 
+        it('should create a new company without external key', async () => {
+            // Arrange
+            externalService.findOneOrCreate.mockResolvedValue(mockedGroup);
+            keyService.create.mockResolvedValue(mockedKey);
+            repository.create.mockResolvedValue(mockedCompany);
+            // Act
+            const result = await service.create({...keyParam, key: undefined}, data);
+            // Assert
+            expect(externalService.findOneOrCreate).toHaveBeenCalledWith({ ...keyParam, key: corporativeGroupKey }, corporativeGroupData);
+            expect(keyService.create).not.toHaveBeenCalled();
+            expect(repository.create).toHaveBeenCalledWith({
+                ...companyData,
+                corporativeGroup: mockedGroup,
+                externalKey: undefined
+            });
+            expect(result).toEqual(expectedValue);
+        });
+        
         it('should create a new company', async () => {
             // Arrange
             externalService.findOneOrCreate.mockResolvedValue(mockedGroup);

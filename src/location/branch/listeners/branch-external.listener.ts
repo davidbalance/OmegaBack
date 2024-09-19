@@ -11,6 +11,6 @@ export class BranchExternalListener {
 
     @OnEvent(BranchEvent.EXTERNAL_CREATE)
     async onExternalCreate({ key, source, data }: BranchExternalCreateEvent): Promise<void> {
-        await this.service.create({ key, source }, data);
+        await this.service.findOneOrCreate({ key, source }, data);
     }
 }

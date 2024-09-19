@@ -1,4 +1,4 @@
-import { IsArray, IsDefined, IsNotEmpty, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsDefined, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
 import { Transform, Type } from "class-transformer";
 import { OmitType } from "@nestjs/mapped-types";
 import { ExternalMedicalResultRequestDto } from "../../../medical-result/dtos/request/external-medical-result.base.dto";
@@ -10,7 +10,8 @@ class SubMedicalResultRequestDto
     implements ExternalConnectionKeyRequest {
     @IsString()
     @IsNotEmpty()
-    public readonly key: string;
+    @IsOptional()
+    public readonly key: string | undefined | null;
 }
 
 export class ExternalMedicalResultOrderRequestDto extends ExternalMedicalOrderRequestDto {

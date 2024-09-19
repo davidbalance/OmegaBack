@@ -5,6 +5,7 @@ import { DoctorRequestDto } from "@/user/doctor/dtos/request/doctor.base.dto";
 import { ExternalExamWithKeyRequestDto } from "@/laboratory/exam/dtos/request/external-exam-with-key.base.dto";
 import { DoctorEvent, DoctorExternalCreateEvent } from "@/shared/events/doctor.event";
 import { ExamEvent, ExamExternalCreateEvent } from "@/shared/events/exam.event";
+import { MedicalResultEvent, OnMedicalResultUploadFileEvent } from "@/shared/events/medical-result.event";
 
 describe('MedicalResultEventService', () => {
     let service: MedicalResultEventService;
@@ -47,6 +48,19 @@ describe('MedicalResultEventService', () => {
             const { key: keyExam, ...expectedExam } = exam;
             expect(eventEmitter.emit).toHaveBeenCalledWith(DoctorEvent.EXTERNAL_CREATE, new DoctorExternalCreateEvent(doctor));
             expect(eventEmitter.emit).toHaveBeenCalledWith(ExamEvent.EXTERNAL_CREATE, new ExamExternalCreateEvent(keyExam, source, expectedExam));
+        });
+    });
+
+    describe('emitOnMedicalResultUploadFileEvent', () => {
+        it('should emit OnMedicalResultUploadFileEvent', () => {
+            // Arrange
+            const id: number = 1;
+
+            // Act
+            service.emitOnMedicalResultUploadFileEvent(id);
+
+            // Assert
+            expect(eventEmitter.emit).toHaveBeenCalledWith(MedicalResultEvent.ON_UPLOAD_FILE, new OnMedicalResultUploadFileEvent(id));
         });
     });
 });
