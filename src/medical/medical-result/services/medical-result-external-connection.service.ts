@@ -30,11 +30,14 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
     async create(key: ExternalKeyParam, { doctor, exam, order, file }: PostExternalMedicalResultRequestDto): Promise<ExternalMedicalResult> {
         const { key: medicalOrderKey, ...orderData } = order;
         const { id: orderId } = await this.orderService.findOneOrCreate({ ...key, key: medicalOrderKey }, orderData);
-
+        
         const directory = signaturePath({ dni: doctor.dni });
         const signature = path.join(path.resolve(directory), `${doctor.dni}.png`);
-
-        const newKey = await this.externalkey.create(key);
+        
+        let newKey = undefined;
+        if (key.key) {
+            newKey = await this.externalkey.create(key);
+        }
         try {
             const newResult = await this.repository.create({
                 order: { id: orderId },
@@ -43,10 +46,10 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
                 doctorFullname: `${doctor.name} ${doctor.lastname}`,
                 doctorSignature: signature,
                 examName: exam.name,
-                examType: exam.type.name,
+                examType: exam.type ? exam.type.name : null,
                 examSubtype: exam.subtype ? exam.subtype.name : null
             });
-
+            
             const { source } = key;
             this.eventService.emitMedicalResultCreateEvent(source, doctor, exam);
             if (file) {

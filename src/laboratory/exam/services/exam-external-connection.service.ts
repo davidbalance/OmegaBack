@@ -29,8 +29,13 @@ export class ExamExternalConnectionService implements IExternalConnectionService
     }
 
     async create(key: ExternalKeyParam, { type, subtype, ...data }: PostExamExternalRequestDto): Promise<ExtendedExam> {
-        const { key: typeKey, ...typeData } = type;
-        let foundType = await this.typeService.findOneOrCreate({ key: typeKey, source: key.source }, typeData);
+        let foundType: ExtendedExamType;
+        if (type) {
+            const { key: typeKey, ...typeData } = type;
+            foundType = await this.typeService.findOneOrCreate({ key: typeKey, source: key.source }, { ...typeData });
+        } else {
+            foundType = await this.typeService.findOneOrCreate({ key: key.source, source: key.source }, { name: 'default' });
+        }
         let foundSubtype: ExtendedExamSubtype;
         if (subtype) {
             const { key: subtypeKey, ...subtypeData } = subtype;

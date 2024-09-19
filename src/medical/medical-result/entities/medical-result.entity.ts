@@ -17,11 +17,11 @@ export class MedicalResultEntity extends AbstractEntity<number> {
     @Column({ name: 'result_has_file', type: 'boolean', default: false, nullable: false })
     public hasFile: boolean;
 
-    @Column({ name: 'exam_type', type: 'varchar', length: 64, nullable: false })
-    public examType: string;
+    @Column({ name: 'exam_type', type: 'varchar', length: 64, nullable: true })
+    public examType?: string;
 
-    @Column({ name: 'exam_subtype', type: 'varchar', length: 64, nullable: false })
-    public examSubtype: string;
+    @Column({ name: 'exam_subtype', type: 'varchar', length: 64, nullable: true })
+    public examSubtype?: string;
 
     @Column({ name: 'exam_name', type: 'varchar', length: 128, nullable: false })
     public examName: string;
