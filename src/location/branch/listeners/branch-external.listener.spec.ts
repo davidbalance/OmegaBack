@@ -29,13 +29,13 @@ describe('BranchExternalListener', () => {
 
         it('should call the external service to create a new branch', async () => {
             // Arrange
-            externalConnectionService.create.mockResolvedValue(undefined);
+            externalConnectionService.findOneOrCreate.mockResolvedValue(undefined);
 
             // Act
             await service.onExternalCreate({ key, source, data: mockData });
 
             // Assert
-            expect(externalConnectionService.create).toHaveBeenCalledWith({ key, source }, mockData);
+            expect(externalConnectionService.findOneOrCreate).toHaveBeenCalledWith({ key, source }, mockData);
         });
     });
 });
