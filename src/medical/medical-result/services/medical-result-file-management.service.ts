@@ -9,6 +9,7 @@ import { UrlFileFetcherService } from "@/shared/url-file-fetcher/url-file-fetche
 import { Base64Service } from "@/shared/base64/base64.service";
 import { fileExtension } from "@/shared/utils/file-extension";
 import { v4 } from "uuid";
+import { MedicalResultEventService } from "./medical-result-event.service";
 
 @Injectable()
 export class MedicalResultFileManagementService implements FileManagementService<number> {
@@ -17,6 +18,7 @@ export class MedicalResultFileManagementService implements FileManagementService
     @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
     @Inject(UrlFileFetcherService) private readonly urlFile: UrlFileFetcherService,
     @Inject(Base64Service) private readonly base64: Base64Service,
+    @Inject(MedicalResultEventService) private readonly eventService: MedicalResultEventService,
     @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
   ) { }
 
@@ -64,6 +66,7 @@ export class MedicalResultFileManagementService implements FileManagementService
       );
 
       await this.repository.findOneAndUpdate({ id: key }, { filePath: `${filepath}`, hasFile: true });
+      this.eventService.emitOnMedicalResultUploadFileEvent(key);
       return filepath;
     } catch (error) {
       Logger.error(error);
