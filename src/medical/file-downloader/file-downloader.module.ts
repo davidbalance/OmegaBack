@@ -5,9 +5,11 @@ import { FileDownloaderController } from './controllers/file-downloader.controll
 import { LocalStorageModule } from '@/shared/storage-manager';
 import { MedicalResultModule } from '../medical-result/medical-result.module';
 import { FileDownloaderService } from './services/file-downloader.service';
+import { MedicalOrderModule } from '../medical-order/medical-order.module';
 
 @Module({
     imports: [
+        MedicalOrderModule,
         MedicalResultModule,
         MedicalReportModule,
         LocalStorageModule,
