@@ -5,6 +5,8 @@ import { PatchExternalMedicalOrderRequestDto } from "../dtos/request/external-me
 import { TestBed } from "@automock/jest";
 import { MedicalOrderExternalConnectionService } from "../services/medical-order-external-connection.service";
 import { MedicalOrderExternalConnectionController } from "./medical-order-external-connection.controller";
+import { PatchExternalMedicalOrderBase64RequestDto } from "../dtos/request/external-medical-order-file-base64.patch.dto";
+import { PatchExternalMedicalOrderFileRequestDto } from "../dtos/request/external-medical-order-file-upload.patch.dto";
 
 describe('MedicalOrderExternalConnectionController', () => {
     let controller: MedicalOrderExternalConnectionController;
@@ -142,5 +144,47 @@ describe('MedicalOrderExternalConnectionController', () => {
             expect(result).toEqual(expectedValue);
         });
     });
+
+    describe('findOneAndUpload', () => {
+        it('should call service and return order', async () => {
+            // Arrange
+            const source = 'source';
+            const key = 'key';
+            const file = {} as Express.Multer.File;
+            const body = {} as PatchExternalMedicalOrderFileRequestDto;
+            const mockedOrder = mockExternalMedicalOrder();
+            const expectedValue = mockedOrder;
+
+            service.findOneAndUpload.mockResolvedValue(mockedOrder);
+
+            // Act
+            const result = await controller.findOneAndUpload(source, key, body, file);
+
+            // Assert
+            expect(service.findOneAndUpload).toHaveBeenCalledWith({ source, key }, { file });
+            expect(result).toEqual(expectedValue);
+        });
+    });
+
+    describe('findOneAndUploadBase64', () => {
+        it('should call service and return order', async () => {
+            // Arrange
+            const source = 'source';
+            const key = 'key';
+            const body = {} as PatchExternalMedicalOrderBase64RequestDto;
+            const mockedOrder = mockExternalMedicalOrder();
+            const expectedValue = mockedOrder;
+
+            service.findOneAndUploadBase64.mockResolvedValue(mockedOrder);
+
+            // Act
+            const result = await controller.findOneAndUploadBase64(source, key, body);
+
+            // Assert
+            expect(service.findOneAndUploadBase64).toHaveBeenCalledWith({ source, key }, body);
+            expect(result).toEqual(expectedValue);
+        });
+    });
+
 
 });

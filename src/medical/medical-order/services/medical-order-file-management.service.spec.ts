@@ -5,11 +5,13 @@ import { TestBed } from "@automock/jest";
 import { ReadStream } from "typeorm/platform/PlatformTools";
 import { GenericFile } from "@/shared/utils/bases/base.file-service";
 import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { Base64Service } from "@/shared/base64/base64.service";
 
 describe('MedicalOrderFileManagementService', () => {
     let service: MedicalOrderFileManagementService;
     let repository: jest.Mocked<MedicalOrderRepository>;
     let storageManager: jest.Mocked<StorageManager>;
+    let base64Service: jest.Mocked<Base64Service>;
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(MedicalOrderFileManagementService).compile();
@@ -17,6 +19,7 @@ describe('MedicalOrderFileManagementService', () => {
         service = unit;
         repository = unitRef.get(MedicalOrderRepository);
         storageManager = unitRef.get(INJECT_STORAGE_MANAGER);
+        base64Service = unitRef.get(Base64Service);
     });
 
     afterEach(() => {
@@ -168,6 +171,32 @@ describe('MedicalOrderFileManagementService', () => {
             );
         });
     });
+
+    describe('uploadFromBase64', () => {
+        it('should upload the file from base64 and update the medical result', async () => {
+            // Arrange
+            const key = 1;
+            const mimetype: string = 'application/pdf';
+            const base64 = 'JVBERi0xLjMKJcfsf/A==';
+            const mockedBuffer = Buffer.from('JVBERi0xLjMKJcfsf/A==', 'base64');
+            const mockedFilepath = 'test/filepath';
+            base64Service.toBuffer.mockReturnValue(mockedBuffer);
+            jest.spyOn(service, 'uploadFile').mockResolvedValue(mockedFilepath);
+
+            // Act
+            const result = await service.uploadFromBase64(key, mimetype, base64);
+
+            // Assert
+            expect(base64Service.toBuffer).toHaveBeenCalledWith(base64);
+            expect(service.uploadFile).toHaveBeenCalledWith(key, {
+                originalname: expect.any(String),
+                mimetype: 'application/pdf',
+                buffer: mockedBuffer,
+            });
+            expect(result).toEqual(mockedFilepath);
+        });
+    });
+
 
     describe('removeFile', () => {
         it('should remove the file and update the medical order', async () => {

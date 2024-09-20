@@ -7,6 +7,10 @@ import { MedicalClientExternalService } from "@/medical/medical-client/services/
 import { PostExternalMedicalOrderRequestDto } from "../dtos/request/external-medical-order.post.dto";
 import { PatchExternalMedicalOrderRequestDto } from "../dtos/request/external-medical-order.patch.dto";
 import { ExternalMedicalOrder } from "../dtos/response/external-medical-order.base.dto";
+import { MedicalOrderFileManagementService } from "./medical-order-file-management.service";
+import { MedicalOrderEntity } from "../entities/medical-order.entity";
+import { PatchExternalMedicalOrderFileRequestDto } from "../dtos/request/external-medical-order-file-upload.patch.dto";
+import { PatchExternalMedicalOrderBase64RequestDto } from "../dtos/request/external-medical-order-file-base64.patch.dto";
 
 type ConnectionRequestType = PostExternalMedicalOrderRequestDto | PatchExternalMedicalOrderRequestDto;
 
@@ -16,7 +20,8 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
         @Inject(MedicalOrderExternalKeyService) private readonly externalkey: MedicalOrderExternalKeyService,
         @Inject(MedicalOrderRepository) private readonly repository: MedicalOrderRepository,
         @Inject(MedicalClientExternalService) private readonly clientService: MedicalClientExternalService,
-        @Inject(MedicalOrderEventService) private readonly eventService: MedicalOrderEventService
+        @Inject(MedicalOrderEventService) private readonly eventService: MedicalOrderEventService,
+        @Inject(MedicalOrderFileManagementService) private readonly storage: MedicalOrderFileManagementService
     ) { }
 
     async find(dni: string): Promise<ExternalMedicalOrder[]> {
@@ -68,6 +73,30 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
     async findOneAndUpdate(key: ExternalKeyParam, data: PatchExternalMedicalOrderRequestDto): Promise<ExternalMedicalOrder> {
         const order = await this.repository.findOneAndUpdate({ externalKey: key }, data);
         return order;
+    }
+
+    async findOneAndUpload(key: ExternalKeyParam | number, { file }: PatchExternalMedicalOrderFileRequestDto): Promise<ExternalMedicalOrder> {
+        let medicalOrder: MedicalOrderEntity;
+        if (typeof key === 'number') {
+            medicalOrder = await this.repository.findOne({ where: { id: key } });
+        } else {
+            medicalOrder = await this.repository.findOne({ where: { externalKey: key } });
+        }
+        await this.storage.uploadFile(medicalOrder.id, file);
+        medicalOrder.hasFile = true;
+        return medicalOrder;
+    }
+
+    async findOneAndUploadBase64(key: ExternalKeyParam | number, { mimetype, base64 }: PatchExternalMedicalOrderBase64RequestDto): Promise<ExternalMedicalOrder> {
+        let medicalOrder: MedicalOrderEntity;
+        if (typeof key === 'number') {
+            medicalOrder = await this.repository.findOne({ where: { id: key } });
+        } else {
+            medicalOrder = await this.repository.findOne({ where: { externalKey: key } });
+        }
+        await this.storage.uploadFromBase64(medicalOrder.id, mimetype, base64);
+        medicalOrder.hasFile = true;
+        return medicalOrder;
     }
 }
 

@@ -4,6 +4,9 @@ import { ReadStream } from "fs";
 import { MedicalOrderRepository } from "../repositories/medical-order.repository";
 import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import { fileResultPath } from "@/shared/utils";
+import { Base64Service } from "@/shared/base64/base64.service";
+import { fileExtension } from "@/shared/utils/file-extension";
+import { v4 } from "uuid";
 
 @Injectable()
 export class MedicalOrderFileManagementService implements FileManagementService<number> {
@@ -11,6 +14,7 @@ export class MedicalOrderFileManagementService implements FileManagementService<
     constructor(
         @Inject(MedicalOrderRepository) private readonly repository: MedicalOrderRepository,
         @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
+        @Inject(Base64Service) private readonly base64: Base64Service,
     ) { }
 
     async getFile(key: number): Promise<ReadStream> {
@@ -38,6 +42,14 @@ export class MedicalOrderFileManagementService implements FileManagementService<
             .getRawOne<{ filepath: string }>();
         return order.filepath;
     }
+
+    async uploadFromBase64(key: number, mimetype: string, base64: string): Promise<string> {
+        const buffer = this.base64.toBuffer(base64);
+        const extension = fileExtension(mimetype);
+        const filename = `${v4()}${extension}`;
+        return await this.uploadFile(key, { originalname: filename, mimetype: mimetype, buffer });
+    }
+
 
     async uploadFile(key: number, file: GenericFile): Promise<string> {
         const order = await this.repository.findOne({

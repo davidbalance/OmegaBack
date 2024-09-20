@@ -1,5 +1,5 @@
-import { UseGuards, Controller, Inject, Get, Param, Post, Body, Patch } from "@nestjs/common";
-import { ApiTags, ApiHeader } from "@nestjs/swagger";
+import { UseGuards, Controller, Inject, Get, Param, Post, Body, Patch, UseInterceptors, UploadedFile } from "@nestjs/common";
+import { ApiTags, ApiHeader, ApiConsumes } from "@nestjs/swagger";
 import { plainToInstance } from "class-transformer";
 import { MedicalOrderExternalConnectionService } from "../services/medical-order-external-connection.service";
 import { ApiKeyAuthGuard } from "@/shared/guards/api-key-guard/guards/api-key-auth.guard";
@@ -9,6 +9,9 @@ import { GetExternalMedicalOrderArrayResponseDto } from "../dtos/response/extern
 import { GetExternalMedicalOrderResponseDto } from "../dtos/response/external-medical-order.get.dto";
 import { PatchExternalMedicalOrderRequestDto } from "../dtos/request/external-medical-order.patch.dto";
 import { PatchExternalMedicalOrderResponseDto } from "../dtos/response/external-medical-order.patch.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { PatchExternalMedicalOrderFileRequestDto } from "../dtos/request/external-medical-order-file-upload.patch.dto";
+import { PatchExternalMedicalOrderBase64RequestDto } from "../dtos/request/external-medical-order-file-base64.patch.dto";
 
 @ApiTags('External Connection', 'Medical>Order')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -61,6 +64,29 @@ export class MedicalOrderExternalConnectionController {
         @Body() body: PatchExternalMedicalOrderRequestDto
     ): Promise<PatchExternalMedicalOrderResponseDto> {
         const order = await this.service.findOneAndUpdate({ key: key, source: source }, body);
+        return plainToInstance(PatchExternalMedicalOrderResponseDto, order);
+    }
+
+    @ApiConsumes('multipart/form-data')
+    @UseInterceptors(FileInterceptor('file'))
+    @Patch(':source/:key/file')
+    async findOneAndUpload(
+        @Param('source') source: string,
+        @Param('key') key: string,
+        @Body() _: PatchExternalMedicalOrderFileRequestDto,
+        @UploadedFile() file: Express.Multer.File
+    ): Promise<PatchExternalMedicalOrderResponseDto> {
+        const order = await this.service.findOneAndUpload({ key: key, source: source }, { file });
+        return plainToInstance(PatchExternalMedicalOrderResponseDto, order);
+    }
+
+    @Patch(':source/:key/base64/file')
+    async findOneAndUploadBase64(
+        @Param('source') source: string,
+        @Param('key') key: string,
+        @Body() body: PatchExternalMedicalOrderBase64RequestDto
+    ): Promise<PatchExternalMedicalOrderResponseDto> {
+        const order = await this.service.findOneAndUploadBase64({ key: key, source: source }, body);
         return plainToInstance(PatchExternalMedicalOrderResponseDto, order);
     }
 }
