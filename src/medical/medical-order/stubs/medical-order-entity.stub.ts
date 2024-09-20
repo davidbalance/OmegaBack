@@ -16,7 +16,8 @@ const stubMedicalOrderEntity = (id: number): MedicalOrderEntity => ({
     externalKey: {} as MedicalOrderExternalKeyEntity,
     client: { id: 1, email: [{ id: 1 }] } as MedicalClientEntity,
     createAt: new Date(),
-    updateAt: new Date()
+    updateAt: new Date(),
+    hasFile: false
 });
 
 export const mockMedicalOrderEntity = () => stubMedicalOrderEntity(1);
