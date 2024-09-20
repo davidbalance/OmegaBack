@@ -69,7 +69,7 @@ export class MedicalOrderExternalConnectionController {
 
     @ApiConsumes('multipart/form-data')
     @UseInterceptors(FileInterceptor('file'))
-    @Patch(':source/:key/file')
+    @Post(':source/:key/file')
     async findOneAndUpload(
         @Param('source') source: string,
         @Param('key') key: string,
@@ -80,7 +80,7 @@ export class MedicalOrderExternalConnectionController {
         return plainToInstance(PatchExternalMedicalOrderResponseDto, order);
     }
 
-    @Patch(':source/:key/base64/file')
+    @Post(':source/:key/base64/file')
     async findOneAndUploadBase64(
         @Param('source') source: string,
         @Param('key') key: string,

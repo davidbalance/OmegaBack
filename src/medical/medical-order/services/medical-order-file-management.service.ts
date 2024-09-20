@@ -52,26 +52,19 @@ export class MedicalOrderFileManagementService implements FileManagementService<
 
 
     async uploadFile(key: number, file: GenericFile): Promise<string> {
-        const order = await this.repository.findOne({
-            where: { id: key },
-            select: {
-                id: true,
-                client: {
-                    name: true,
-                    lastname: true,
-                    dni: true
-                }
-            },
-            relations: {
-                client: true
-            }
-        });
+        const order = await this.repository
+            .query('order')
+            .leftJoin('order.client', 'client')
+            .select('order.id', 'id')
+            .addSelect('client.dni', 'dni')
+            .getRawOne<{ id: number, dni: string }>();
+
         if (!order) {
             throw new NotFoundException('Medical report not found to associate file');
         }
-        const { client, ...currentOrder } = order;
-        const filepath = fileResultPath({ dni: client.dni, order: currentOrder.id });
-        const filename = `medical_order_${currentOrder.id.toString().padStart(9, '0')}`;
+        const { id, dni } = order;
+        const filepath = fileResultPath({ dni: dni, order: id });
+        const filename = `medical_order_${id.toString().padStart(9, '0')}`;
 
         try {
             const output = await this.storage.saveFile(file.buffer, '.pdf', filepath, filename);

@@ -22,6 +22,7 @@ export class MedicalOrderPaginationService extends BasePaginationService<Medical
       .addSelect('order.createAt', 'createAt')
       .addSelect('order.mailStatus', 'mailStatus')
       .addSelect('order.orderStatus', 'orderStatus')
+      .addSelect('order.hasFile', 'hasFile')
       .where('order.process LIKE :filter', { filter: `%${filter}%` })
   }
 }

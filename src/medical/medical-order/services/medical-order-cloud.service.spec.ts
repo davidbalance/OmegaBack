@@ -32,6 +32,7 @@ describe('MedicalOrderCloudService', () => {
       expect(repository.findOne).toHaveBeenCalledWith({ where: { id }, relations: { client: true, results: true } });
       expect(result).toEqual({
         dni: mockedOrder.client.dni,
+        hasFile: mockedOrder.hasFile,
         fullname: `${mockedOrder.client.name} ${mockedOrder.client.lastname}`,
         fileResults: mockedOrder.results.map(e => ({
           id: e.id,

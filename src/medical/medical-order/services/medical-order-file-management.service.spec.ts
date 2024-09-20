@@ -101,41 +101,32 @@ describe('MedicalOrderFileManagementService', () => {
         };
         const mockedOrder = {
             id: 1,
-            client: {
-                name: 'test',
-                lastname: 'test',
-                dni: '1234567890'
-            }
+            dni: '1234567890'
         };
         const mockedFilepath = 'test/filepath';
 
         it('should upload the file and update the medical order', async () => {
             // Arrange
-            repository.findOne.mockResolvedValue(mockedOrder as any);
+            repository.query.mockReturnValue({
+                leftJoin: jest.fn().mockReturnThis(),
+                select: jest.fn().mockReturnThis(),
+                addSelect: jest.fn().mockReturnThis(),
+                getRawOne: jest.fn().mockReturnValue(mockedOrder)
+            } as any);
             storageManager.saveFile.mockResolvedValue(mockedFilepath);
 
             // Act
             const result = await service.uploadFile(key, file);
 
             // Assert
-            expect(repository.findOne).toHaveBeenCalledWith({
-                where: { id: key },
-                select: {
-                    id: true,
-                    client: {
-                        name: true,
-                        lastname: true,
-                        dni: true
-                    }
-                },
-                relations: {
-                    client: true
-                }
-            });
+            expect(repository.query).toHaveBeenCalledWith('order');
+            expect(repository.query().leftJoin).toHaveBeenCalledWith('order.client', 'client');
+            expect(repository.query().select).toHaveBeenCalledWith('order.id', 'id');
+            expect(repository.query().addSelect).toHaveBeenCalledWith('client.dni', 'dni');
             expect(storageManager.saveFile).toHaveBeenCalledWith(
                 file.buffer,
                 '.pdf',
-                `medical-report-pdf/${mockedOrder.client.dni}/${mockedOrder.id}/result`,
+                `medical-report-pdf/${mockedOrder.dni}/${mockedOrder.id}/result`,
                 `medical_order_${mockedOrder.id.toString().padStart(9, '0')}`,
             );
             expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: key }, { fileAddress: `${mockedFilepath}`, hasFile: true });
@@ -144,8 +135,12 @@ describe('MedicalOrderFileManagementService', () => {
 
         it('should throw NotFoundException if medical order is not found', async () => {
             // Arrange
-            repository.findOne.mockReturnValue(undefined);
-
+            repository.query.mockReturnValue({
+                leftJoin: jest.fn().mockReturnThis(),
+                select: jest.fn().mockReturnThis(),
+                addSelect: jest.fn().mockReturnThis(),
+                getRawOne: jest.fn().mockReturnValue(undefined)
+            } as any);
             // Act and Assert
             await expect(service.uploadFile(key, file)).rejects.toThrow(NotFoundException);
             expect(storageManager.saveFile).not.toHaveBeenCalled();
@@ -154,7 +149,12 @@ describe('MedicalOrderFileManagementService', () => {
 
         it('should throw InternalServerErrorException if file save fails', async () => {
             // Arrange
-            repository.findOne.mockResolvedValue(mockedOrder as any);
+            repository.query.mockReturnValue({
+                leftJoin: jest.fn().mockReturnThis(),
+                select: jest.fn().mockReturnThis(),
+                addSelect: jest.fn().mockReturnThis(),
+                getRawOne: jest.fn().mockReturnValue(mockedOrder)
+            } as any);
             storageManager.saveFile.mockRejectedValue(new InternalServerErrorException(''));
 
             // Act and Assert
@@ -162,7 +162,7 @@ describe('MedicalOrderFileManagementService', () => {
             expect(storageManager.saveFile).toHaveBeenCalledWith(
                 file.buffer,
                 '.pdf',
-                `medical-report-pdf/${mockedOrder.client.dni}/${mockedOrder.id}/result`,
+                `medical-report-pdf/${mockedOrder.dni}/${mockedOrder.id}/result`,
                 `medical_order_${mockedOrder.id.toString().padStart(9, '0')}`,
             );
             expect(repository.findOneAndUpdate).toHaveBeenCalledWith(

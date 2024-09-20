@@ -14,7 +14,8 @@ const stubExternalMedicalOrder = (id: number): ExternalMedicalOrder => ({
     results: Array(20).map(stubMedicalResult),
     process: "Stub process",
     createAt: new Date(),
-    orderStatus: "created"
+    orderStatus: "created",
+    hasFile: false
 });
 
 export const mockExternalMedicalOrder = () => stubExternalMedicalOrder(1);

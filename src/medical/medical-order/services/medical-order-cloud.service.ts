@@ -11,7 +11,7 @@ export class MedicalOrderCloudService {
   ) { }
 
   async findOne(id: number): Promise<MedicalOrderCloud> {
-    const { client, results } = await this.repository.findOne({ where: { id }, relations: { client: true, results: true } });
+    const { client, results, hasFile, } = await this.repository.findOne({ where: { id }, relations: { client: true, results: true } });
     const fileReports: MedicalOrderCloudFile[] = results
       .filter(e => !!e.report)
       .map<MedicalOrderCloudFile>(e => ({
@@ -30,6 +30,7 @@ export class MedicalOrderCloudService {
     const cloudItem: MedicalOrderCloud = {
       dni: client.dni,
       fullname: `${client.name} ${client.lastname}`,
+      hasFile: hasFile,
       fileResults: fileResults,
       fileReports: fileReports
     };

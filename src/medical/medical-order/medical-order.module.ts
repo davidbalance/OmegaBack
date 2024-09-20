@@ -26,6 +26,9 @@ import { MedicalOrderDoctorPaginationService } from "./services/medical-order-do
 import { MedicalOrderExpandedPaginationService } from "./services/medical-order-expanded-pagination.service";
 import { MedicalOrderExternalConnectionProvider, MedicalOrderExternalConnectionService } from "./services/medical-order-external-connection.service";
 import { MedicalOrderExpandedPaginationController } from "./controllers/medical-order-expanded-pagination.controller";
+import { MedicalOrderFileManagementService } from "./services/medical-order-file-management.service";
+import { LocalStorageModule } from "@/shared/storage-manager";
+import { Base64Module } from "@/shared/base64/base64.module";
 
 @Module({
   imports: [
@@ -37,6 +40,8 @@ import { MedicalOrderExpandedPaginationController } from "./controllers/medical-
     AuthenticationGuardModule,
     DniInterceptorModule,
     MedicalClientModule,
+    LocalStorageModule,
+    Base64Module,
     MailerModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -80,12 +85,14 @@ import { MedicalOrderExpandedPaginationController } from "./controllers/medical-
     MedicalOrderExternalConnectionService,
     MedicalOrderExternalConnectionProvider,
     MedicalOrderExternalKeyService,
+    MedicalOrderFileManagementService,
     MedicalOrderMailService,
     MedicalOrderManagementService,
     MedicalOrderPaginationService
   ],
   exports: [
     MedicalOrderExternalConnectionProvider,
+    MedicalOrderFileManagementService,
     MedicalOrderManagementService
   ]
 })
