@@ -11,8 +11,9 @@ export class ExamExternalRequestDto extends OmitType(ExamRequestDto, ['subtype']
     @IsObject()
     @IsNotEmptyObject()
     @ValidateNested()
+    @IsOptional()
     @Type(() => ExternalExamTypeWithKeyRequestDto)
-    public readonly type: ExternalExamTypeWithKeyRequestDto;
+    public readonly type?: ExternalExamTypeWithKeyRequestDto;
 
     @IsDefined()
     @IsObject()

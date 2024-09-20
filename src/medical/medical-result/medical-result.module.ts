@@ -32,6 +32,7 @@ import { MedicalResultReportService } from "./services/medical-result-report.ser
 import { MedicalResultReportController } from "./controllers/medical-result-report.controller";
 import { UrlFileFetcherModule } from "@/shared/url-file-fetcher/url-file-fetcher.module";
 import { Base64Module } from "@/shared/base64/base64.module";
+import { MedicalResultOrionListener } from "./listeners/medical-result-orion.listener";
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { Base64Module } from "@/shared/base64/base64.module";
     MedicalResultDiseaseRepository,
     MedicalResultExternalKeyRepository,
     MedicalResultRepository,
+    MedicalResultOrionListener,
     MedicalResultDiseaseManagementService,
     MedicalResultDiseaseReportService,
     MedicalResultDoctorPaginationService,

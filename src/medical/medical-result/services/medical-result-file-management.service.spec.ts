@@ -7,12 +7,14 @@ import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager
 import { GenericFile } from "@/shared/utils/bases/base.file-service";
 import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { Base64Service } from "@/shared/base64/base64.service";
+import { MedicalResultEventService } from "./medical-result-event.service";
 
 describe('MedicalResultFileManagementService', () => {
   let service: MedicalResultFileManagementService;
   let repository: jest.Mocked<MedicalResultRepository>;
   let urlFileFetcherService: jest.Mocked<UrlFileFetcherService>;
   let base64Service: jest.Mocked<Base64Service>;
+  let eventService: jest.Mocked<MedicalResultEventService>;
   let storageManager: jest.Mocked<StorageManager>;
 
   beforeEach(async () => {
@@ -22,6 +24,7 @@ describe('MedicalResultFileManagementService', () => {
     repository = unitRef.get(MedicalResultRepository);
     urlFileFetcherService = unitRef.get(UrlFileFetcherService);
     base64Service = unitRef.get(Base64Service);
+    eventService = unitRef.get(MedicalResultEventService);
     storageManager = unitRef.get(INJECT_STORAGE_MANAGER);
   });
 
@@ -72,18 +75,19 @@ describe('MedicalResultFileManagementService', () => {
   });
 
   describe('uploadFile', () => {
+    const key = 1;
+    const file: GenericFile = {
+      originalname: 'test.pdf',
+      buffer: Buffer.from('test'),
+      mimetype: "application/json"
+    };
+    const mockedExamName = 'Test Exam';
+    const mockedOrderId = 1;
+    const mockedClientDni = '1234567890';
+    const mockedFilepath = 'test/filepath';
+
     it('should upload the file and update the medical result', async () => {
       // Arrange
-      const key = 1;
-      const file: GenericFile = {
-        originalname: 'test.pdf',
-        buffer: Buffer.from('test'),
-        mimetype: "application/json"
-      };
-      const mockedExamName = 'Test Exam';
-      const mockedOrderId = 1;
-      const mockedClientDni = '1234567890';
-      const mockedFilepath = 'test/filepath';
       repository.query.mockReturnValue({
         leftJoinAndSelect: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
@@ -96,6 +100,7 @@ describe('MedicalResultFileManagementService', () => {
         }),
         findOneAndUpdate: jest.fn(),
       } as any);
+
       storageManager.saveFile.mockResolvedValue(mockedFilepath);
 
       // Act
@@ -116,17 +121,12 @@ describe('MedicalResultFileManagementService', () => {
         'test_exam',
       );
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: key }, { filePath: `${mockedFilepath}`, hasFile: true });
+      expect(eventService.emitOnMedicalResultUploadFileEvent).toHaveBeenCalledWith(key);
       expect(result).toEqual(mockedFilepath);
     });
 
     it('should throw NotFoundException if medical result is not found', async () => {
       // Arrange
-      const key = 1;
-      const file: GenericFile = {
-        originalname: 'test.pdf',
-        buffer: Buffer.from('test'),
-        mimetype: "application/json"
-      };
       repository.query.mockReturnValue({
         leftJoinAndSelect: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),

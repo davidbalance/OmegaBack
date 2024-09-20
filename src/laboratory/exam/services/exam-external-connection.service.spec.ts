@@ -58,6 +58,49 @@ describe('ExamExternalConnectionService', () => {
         const mockedExam = mockExamEntity();
         const expectedValue = mockedExam;
 
+        it('should create a new exam with type', async () => {
+            // Arrange
+            typeService.findOneOrCreate.mockResolvedValue(mockedType);
+            subtypeService.findOneOrCreate.mockResolvedValue(mockedSubtype);
+            externalKeyService.create.mockResolvedValue(mockedKey);
+            repository.create.mockResolvedValue(mockedExam);
+            // Act
+            const result = await service.create(keyParam, data);
+            // Assert
+            expect(typeService.findOneOrCreate).toHaveBeenCalledWith({ ...keyParam, key: data.type.key }, typeData);
+            expect(subtypeService.findOneOrCreate).toHaveBeenCalledWith({ ...keyParam, key: data.subtype.key }, { ...subtypeData, type: mockedType.id });
+            expect(externalKeyService.create).toHaveBeenCalledWith(keyParam);
+            const { subtype, type, ...expectedData } = data;
+            expect(repository.create).toHaveBeenCalledWith({
+                ...expectedData,
+                externalKey: mockedKey,
+                subtype: { id: mockedSubtype.id }
+            });
+            expect(result).toEqual(expectedValue);
+        });
+
+        it('should create a new exam without type', async () => {
+            // Arrange
+            typeService.findOneOrCreate.mockResolvedValue(mockedType);
+            subtypeService.findOneOrCreate.mockResolvedValue(mockedSubtype);
+            externalKeyService.create.mockResolvedValue(mockedKey);
+            repository.create.mockResolvedValue(mockedExam);
+            // Act
+            const result = await service.create(keyParam, { ...data, type: undefined });
+            // Assert
+            expect(typeService.findOneOrCreate).toHaveBeenCalledWith({ ...keyParam, key: keyParam.source }, {...typeData, name: 'default' });
+            expect(subtypeService.findOneOrCreate).toHaveBeenCalledWith({ ...keyParam, key: data.subtype.key }, { ...subtypeData, type: mockedType.id });
+            expect(externalKeyService.create).toHaveBeenCalledWith(keyParam);
+            const { subtype, type, ...expectedData } = data;
+            expect(repository.create).toHaveBeenCalledWith({
+                ...expectedData,
+                externalKey: mockedKey,
+                subtype: { id: mockedSubtype.id }
+            });
+            expect(result).toEqual(expectedValue);
+        });
+
+
         it('should create a new exam with subtype', async () => {
             // Arrange
             typeService.findOneOrCreate.mockResolvedValue(mockedType);
