@@ -8,7 +8,8 @@ const stubMedicalResult = (id: number): MedicalResult => ({
     examName: "Stub exam",
     diseases: [],
     reportId: 0,
-    reportHasFile: false
+    reportHasFile: false,
+    orderHasFile: false
 });
 
 export const mockMedicalResult = () => stubMedicalResult(1);

@@ -26,11 +26,12 @@ export class MedicalResultDoctorPaginationService extends BasePaginationService<
       .addSelect('disease.diseaseCommentary', 'diseaseCommentary')
       .addSelect('report.id', 'reportId')
       .addSelect('report.hasFile', 'reportHasFile')
+      .addSelect('order.hasFile', 'orderHasFile')
       .where('result.doctorDni LIKE :doctor', { doctor: extras.doctor })
       .andWhere('result.examName LIKE :examName', { examName: `%${filter}%` })
   }
 
-  protected transform(data: { id: number, examType: string, examSubtype: string, examName: string, hasFile: boolean, diseaseName: string, diseaseCommentary: string, reportId: number, reportHasFile: boolean }[]): MedicalResult[] {
+  protected transform(data: { id: number, examType: string, examSubtype: string, examName: string, hasFile: boolean, diseaseName: string, diseaseCommentary: string, reportId: number, reportHasFile: boolean, orderHasFile: boolean }[]): MedicalResult[] {
     const transformed: Record<number, MedicalResult> = data.reduce((prev, curr) => ({
       ...prev, [curr.id]: {
         ...curr,

@@ -10,4 +10,5 @@ export class MedicalResult {
     @Expose() public readonly diseases: string[];
     @Expose() public readonly reportId: number;
     @Expose() public readonly reportHasFile: boolean;
+    @Expose() public readonly orderHasFile?: boolean;
 }
