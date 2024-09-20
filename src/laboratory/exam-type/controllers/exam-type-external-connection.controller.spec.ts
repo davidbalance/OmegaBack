@@ -30,13 +30,13 @@ describe('ExamTypeExternalConnectionController', () => {
 
         it('should call the service to create a new exam type', async () => {
             // Arrange
-            service.create.mockResolvedValue(mockExamTypeData);
+            service.findOneOrCreate.mockResolvedValue(mockExamTypeData);
 
             // Act
             const result = await controller.create(source, key, mockDto);
 
             // Assert
-            expect(service.create).toHaveBeenCalledWith({ source, key }, mockDto);
+            expect(service.findOneOrCreate).toHaveBeenCalledWith({ source, key }, mockDto);
             expect(result).toEqual(mockResponse);
         });
     });

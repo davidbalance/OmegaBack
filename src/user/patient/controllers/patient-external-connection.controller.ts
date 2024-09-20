@@ -22,7 +22,7 @@ export class PatientExternalConnectionController {
         @Param('source') source: string,
         @Body() body: PostExternalPatientRequestDto
     ): Promise<PostExternalPatientResponseDto> {
-        const user = await this.service.create(source, body);
+        const user = await this.service.findOneOrCreate(source, body);
         return plainToInstance(PostExternalPatientResponseDto, user);
     }
 

@@ -24,7 +24,7 @@ export class BranchExternalConnectionController {
         @Param('key') key: string,
         @Body() body: PostBranchExternalRequestDto,
     ): Promise<PostExtendedBranchResponseDto> {
-        const branch = await this.service.create({ source, key }, body);
+        const branch = await this.service.findOneOrCreate({ source, key }, body);
         return plainToInstance(PostExtendedBranchResponseDto, branch);
     }
 

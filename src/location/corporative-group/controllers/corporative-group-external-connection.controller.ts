@@ -23,7 +23,7 @@ export class CorporativeGroupExternalConnectionController {
         @Param('key') key: string,
         @Body() body: PostExternalCorporativeGroupRequestDto
     ): Promise<PostExtendedCorporativeGroupResponseDto> {
-        const group = await this.service.create({ source, key }, body);
+        const group = await this.service.findOneOrCreate({ source, key }, body);
         return plainToInstance(PostExtendedCorporativeGroupResponseDto, group);
     }
 

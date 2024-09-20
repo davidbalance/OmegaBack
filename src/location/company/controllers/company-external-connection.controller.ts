@@ -23,7 +23,7 @@ export class CompanyExternalConnectionController {
         @Param('key') key: string,
         @Body() body: PostCompanyExternalRequestDto
     ): Promise<PostExtendedCompanyResponseDto> {
-        const company = await this.service.create({ source, key }, body);
+        const company = await this.service.findOneOrCreate({ source, key }, body);
         return plainToInstance(PostExtendedCompanyResponseDto, company);
     }
 

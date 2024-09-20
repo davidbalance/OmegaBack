@@ -23,7 +23,7 @@ export class JobPositionExternalConnectionController {
         @Param('key') key: string,
         @Body() body: PostExternalJobPositionRequestDto
     ): Promise<PostJobPositionResponseDto> {
-        const position = await this.service.create({ source, key }, body);
+        const position = await this.service.findOneOrCreate({ source, key }, body);
         return plainToInstance(PostJobPositionResponseDto, position);
     }
 

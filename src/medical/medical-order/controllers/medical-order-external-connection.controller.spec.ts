@@ -55,13 +55,13 @@ describe('MedicalOrderExternalConnectionController', () => {
 
         it('should call the service to create a new medicalOrder', async () => {
             // Arrange
-            service.create.mockResolvedValue(mockedOrder);
+            service.findOneOrCreate.mockResolvedValue(mockedOrder);
 
             // Act
             const result = await controller.create(source, key, data);
 
             // Assert
-            expect(service.create).toHaveBeenCalledWith({ source, key }, data);
+            expect(service.findOneOrCreate).toHaveBeenCalledWith({ source, key }, data);
             expect(result).toEqual(expectedValue);
         });
     });

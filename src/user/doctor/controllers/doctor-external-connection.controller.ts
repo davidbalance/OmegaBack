@@ -21,7 +21,7 @@ export class DoctorExternalConnectionController {
     async create(
         @Body() body: PostDoctorRequestDto
     ): Promise<PostExternalDoctorResponseDto> {
-        const doctor = await this.service.create(body);
+        const doctor = await this.service.findOneOrCreate(body);
         return plainToInstance(PostExternalDoctorResponseDto, doctor);
     }
 

@@ -29,13 +29,13 @@ describe('DoctorExternalConnectionController', () => {
 
         it('should call the service to create a new company', async () => {
             // Arrange
-            service.create.mockResolvedValue(mockedDoctor);
+            service.findOneOrCreate.mockResolvedValue(mockedDoctor);
 
             // Act
             const result = await controller.create(data);
 
             // Assert
-            expect(service.create).toHaveBeenCalledWith(data);
+            expect(service.findOneOrCreate).toHaveBeenCalledWith(data);
             expect(result).toEqual(expectedValue);
         });
     });

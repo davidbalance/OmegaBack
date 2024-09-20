@@ -23,7 +23,7 @@ export class ExamSubtypeExternalConnectionController {
         @Param('key') key: string,
         @Body() body: PostExamSubtypeRequestDto
     ): Promise<PostExtendedExamResponseDto> {
-        const exam = await this.service.create({ source, key }, body);
+        const exam = await this.service.findOneOrCreate({ source, key }, body);
         return plainToInstance(PostExtendedExamResponseDto, exam);
     }
 

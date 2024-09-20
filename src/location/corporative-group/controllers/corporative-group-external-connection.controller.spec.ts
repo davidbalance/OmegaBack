@@ -27,13 +27,13 @@ describe('CorporativeGroupExternalConnectionController', () => {
 
         it('should call the service to create a new corporative group', async () => {
             // Arrange
-            service.create.mockResolvedValue(mockedGroup);
+            service.findOneOrCreate.mockResolvedValue(mockedGroup);
 
             // Act
             const result = await controller.create(source, key, mockDto);
 
             // Assert
-            expect(service.create).toHaveBeenCalledWith({ source, key }, mockDto);
+            expect(service.findOneOrCreate).toHaveBeenCalledWith({ source, key }, mockDto);
             expect(result).toEqual(expectedValue);
         });
     });

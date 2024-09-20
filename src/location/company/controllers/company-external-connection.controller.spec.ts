@@ -34,13 +34,13 @@ describe('CompanyExternalConnectionController', () => {
 
         it('should call the service to create a new company', async () => {
             // Arrange
-            service.create.mockResolvedValue(mockedCompany);
+            service.findOneOrCreate.mockResolvedValue(mockedCompany);
 
             // Act
             const result = await controller.create(source, key, mockDto);
 
             // Assert
-            expect(service.create).toHaveBeenCalledWith({ source, key }, mockDto);
+            expect(service.findOneOrCreate).toHaveBeenCalledWith({ source, key }, mockDto);
             expect(result).toEqual(expectedValue);
         });
     });

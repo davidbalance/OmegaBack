@@ -35,18 +35,19 @@ describe('PatientExternalConnectionController', () => {
 
         it('should create a new patient', async () => {
             // Arrange
-            service.create.mockResolvedValue(mockedPatient);
+            service.findOneOrCreate.mockResolvedValue(mockedPatient);
 
             // Act
-            const result = await service.create(source, data);
+            const result = await controller.create(source, data);
 
             // Assert
-            expect(service.create).toHaveBeenCalledWith(source, data);
+            expect(service.findOneOrCreate).toHaveBeenCalledWith(source, data);
             expect(result).toEqual(expectedValue);
         });
     });
 
     describe('findOneAndUpdate', () => {
+        const source = 'test-source';
         const dni = '1234567890';
         const data: PatchExternalPatientRequestDto = {
             name: 'Updated User'
@@ -59,7 +60,7 @@ describe('PatientExternalConnectionController', () => {
             service.findOneAndUpdate.mockResolvedValue(mockedPatient);
 
             // Act
-            const result = await service.findOneAndUpdate(dni, data);
+            const result = await controller.findOneAndUpdate(source, dni, data);
 
             // Assert
             expect(service.findOneAndUpdate).toHaveBeenCalledWith(dni, data);

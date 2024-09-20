@@ -23,7 +23,7 @@ export class ExamTypeExternalConnectionController {
         @Param('key') key: string,
         @Body() body: PostExamTypeRequestDto
     ): Promise<PostExtendedExamType> {
-        const exam = await this.service.create({ source, key }, body);
+        const exam = await this.service.findOneOrCreate({ source, key }, body);
         return plainToInstance(PostExtendedExamType, exam);
     }
 

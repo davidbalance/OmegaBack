@@ -26,13 +26,13 @@ describe('JobPositionExternalConnectionController', () => {
 
         it('should create a job position', async () => {
             // Arrange
-            service.create.mockResolvedValueOnce(mockedJobPosition);
+            service.findOneOrCreate.mockResolvedValueOnce(mockedJobPosition);
 
             // Act
             const result = await controller.create(source, key, body);
 
             // Assert
-            expect(service.create).toHaveBeenCalledWith({ source, key }, body);
+            expect(service.findOneOrCreate).toHaveBeenCalledWith({ source, key }, body);
             expect(result).toEqual(expectedValue);
         });
     });
