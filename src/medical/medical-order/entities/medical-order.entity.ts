@@ -25,6 +25,9 @@ export class MedicalOrderEntity extends AbstractEntity<number> {
 
     @Column({ name: 'process_name', type: 'varchar', length: 64, nullable: false })
     public process: string;
+    
+    @Column({ name: 'order_has_file', type: 'boolean', default: false, nullable: false })
+    public hasFile: boolean;
 
     @Column({ name: 'mail_status', type: 'boolean', default: false, nullable: false })
     public mailStatus: boolean;
