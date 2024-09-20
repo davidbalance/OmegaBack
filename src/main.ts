@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { ClassSerializerInterceptor, INestApplication, Logger, LoggerService, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { WinstonLoggerConfig } from './shared/logger/config/winston-logger.config';
+import * as express from 'express';
 import { WINSTON_MODULE_NEST_PROVIDER, WinstonModule } from 'nest-winston';
 
 const whitelistEnviroment = ["production"]
@@ -42,6 +42,8 @@ async function bootstrap() {
   // }
 
   const port: number = env.get<number>("APP_PORT", 3000);
+
+  app.use(express.json({ limit: '1mb' }));
 
   // app.enableCors();
   await app.listen(port);

@@ -1,4 +1,4 @@
-import { IsBase64, IsMimeType, IsNotEmpty } from "class-validator";
+import { IsBase64, IsMimeType, IsNotEmpty, MaxLength } from "class-validator";
 
 export class PostMedicalResultBase64FileRequestDto {
     @IsBase64()
