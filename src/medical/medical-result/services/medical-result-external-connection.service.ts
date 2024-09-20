@@ -68,7 +68,7 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
         return medicalResult;
     }
 
-    findOneOrCreate(body: PostExternalMedicalResultRequestDto): Promise<ExternalMedicalResult> {
+    findOneOrCreate(key: ExternalKeyParam | any, body: RequestType): ExternalMedicalResult | Promise<ExternalMedicalResult> {
         throw new Error("Method not implemented.");
     }
 

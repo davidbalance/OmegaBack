@@ -25,7 +25,7 @@ export class MedicalOrderExternalConnectionController {
         @Param('key') key: string,
         @Body() body: PostExternalMedicalOrderRequestDto
     ): Promise<PostExternalMedicalOrderResponseDto> {
-        const order = await this.service.create({ source, key }, body);
+        const order = await this.service.findOneOrCreate({ source, key }, body);
         return plainToInstance(PostExternalMedicalOrderResponseDto, order);
     }
 
@@ -45,7 +45,7 @@ export class MedicalOrderExternalConnectionController {
         const order = await this.service.findOne({ key, source });
         return plainToInstance(GetExternalMedicalOrderResponseDto, order);
     }
-    
+
     @Get(':id')
     async findOneById(
         @Param('id') id: number,
