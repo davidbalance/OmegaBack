@@ -50,7 +50,7 @@ describe('PatientManagementService', () => {
 
       // Assert
       expect(userService.findOneByDni).toHaveBeenCalledWith(mockDto.dni);
-      expect(repository.create).toHaveBeenCalledWith({ birthday, gender, user: { id: mockedUser.id } });
+      expect(repository.create).toHaveBeenCalledWith({ birthday, gender, user: { dni: mockedUser.dni } });
       expect(result).toEqual(expectedData);
     });
 
@@ -67,7 +67,7 @@ describe('PatientManagementService', () => {
       // Assert
       expect(userService.findOneByDni).toHaveBeenCalledWith(mockDto.dni);
       expect(userService.create).toHaveBeenCalledWith({ ...mockUser, role: mockUser.role, email: null });
-      expect(repository.create).toHaveBeenCalledWith({ birthday, gender, user: { id: mockedUser.id } });
+      expect(repository.create).toHaveBeenCalledWith({ birthday, gender, user: { dni: mockedUser.dni } });
       expect(result).toEqual(expectedData);
     });
   });
@@ -126,8 +126,7 @@ describe('PatientManagementService', () => {
           birthday: true,
           gender: true,
           user: { id: true, dni: true, email: true, lastname: true, name: true }
-        },
-        cache: 1000 * 900
+        }
       });
       expect(result).toEqual(expectedData);
     });

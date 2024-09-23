@@ -44,7 +44,7 @@ describe('DoctorManagementService', () => {
 
       // Assert
       expect(userService.findOneByDni).toHaveBeenCalledWith(mockDto.dni);
-      expect(repository.create).toHaveBeenCalledWith({ user: { id: mockedUser.id } });
+      expect(repository.create).toHaveBeenCalledWith({ user: { dni: mockedUser.dni } });
       expect(result).toEqual(expectedData);
     });
 
@@ -60,7 +60,7 @@ describe('DoctorManagementService', () => {
       // Assert
       expect(userService.findOneByDni).toHaveBeenCalledWith(mockDto.dni);
       expect(userService.create).toHaveBeenCalledWith(mockDto);
-      expect(repository.create).toHaveBeenCalledWith({ user: { id: mockedUser.id } });
+      expect(repository.create).toHaveBeenCalledWith({ user: { dni: mockedUser.dni } });
       expect(result).toEqual(expectedData);
     });
   });

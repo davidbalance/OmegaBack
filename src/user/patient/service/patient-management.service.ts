@@ -45,21 +45,18 @@ export class PatientManagementService {
   }
 
   async findOneByDni(dni: string): Promise<Patient> {
-    const data = await this.repository.query('patient')
-      .leftJoinAndSelect('patient.user', 'user')
-      .select('patient.id', 'id')
-      .addSelect('patient.birthday', 'birthday')
-      .addSelect('patient.gender', 'gender')
-      .addSelect('user.id', 'user')
-      .addSelect('user.dni', 'dni')
-      .addSelect('user.email', 'email')
-      .addSelect('user.lastname', 'lastname')
-      .where('user.dni = :dni', { dni })
-      .getRawOne();
-    if (!data) {
-      throw new NotFoundException();
-    }
-    return data;
+    const { user, ...patient } = await this.repository.findOne({
+      where: {
+        user: { dni: dni }
+      },
+      select: {
+        id: true,
+        birthday: true,
+        gender: true,
+        user: { id: true, dni: true, email: true, lastname: true, name: true }
+      }
+    });
+    return { ...user, ...patient, user: user.id };
   }
 
   async updateOne(dni: string, { birthday, gender, ...data }: PatchPatientRequestDto): Promise<Patient> {
