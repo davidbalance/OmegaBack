@@ -8,6 +8,7 @@ import { GenericFile } from "@/shared/utils/bases/base.file-service";
 import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { Base64Service } from "@/shared/base64/base64.service";
 import { MedicalResultEventService } from "./medical-result-event.service";
+import { fileResultPath } from "@/shared/utils";
 
 describe('MedicalResultFileManagementService', () => {
   let service: MedicalResultFileManagementService;
@@ -100,6 +101,7 @@ describe('MedicalResultFileManagementService', () => {
         }),
         findOneAndUpdate: jest.fn(),
       } as any);
+      const expectedPath = fileResultPath({ dni: mockedClientDni, order: mockedOrderId });
 
       storageManager.saveFile.mockResolvedValue(mockedFilepath);
 
@@ -114,12 +116,7 @@ describe('MedicalResultFileManagementService', () => {
       expect(repository.query().addSelect).toHaveBeenCalledWith('medical_order.id', 'orderId');
       expect(repository.query().addSelect).toHaveBeenCalledWith('medical_client.dni', 'clientDni');
       expect(repository.query().where).toHaveBeenCalledWith('medical_result.id = :id', { id: key });
-      expect(storageManager.saveFile).toHaveBeenCalledWith(
-        file.buffer,
-        '.pdf',
-        `medical-report-pdf/${mockedClientDni}/${mockedOrderId}/result`,
-        'test_exam',
-      );
+      expect(storageManager.saveFile).toHaveBeenCalledWith(file.buffer, '.pdf', expectedPath, 'test_exam');
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: key }, { filePath: `${mockedFilepath}`, hasFile: true });
       expect(eventService.emitOnMedicalResultUploadFileEvent).toHaveBeenCalledWith(key);
       expect(result).toEqual(mockedFilepath);

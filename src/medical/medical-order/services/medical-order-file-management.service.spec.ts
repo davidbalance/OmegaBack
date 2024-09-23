@@ -6,6 +6,7 @@ import { ReadStream } from "typeorm/platform/PlatformTools";
 import { GenericFile } from "@/shared/utils/bases/base.file-service";
 import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { Base64Service } from "@/shared/base64/base64.service";
+import { fileOrderPath } from "@/shared/utils";
 
 describe('MedicalOrderFileManagementService', () => {
     let service: MedicalOrderFileManagementService;
@@ -111,9 +112,11 @@ describe('MedicalOrderFileManagementService', () => {
                 leftJoin: jest.fn().mockReturnThis(),
                 select: jest.fn().mockReturnThis(),
                 addSelect: jest.fn().mockReturnThis(),
+                where: jest.fn().mockReturnThis(),
                 getRawOne: jest.fn().mockReturnValue(mockedOrder)
             } as any);
             storageManager.saveFile.mockResolvedValue(mockedFilepath);
+            const expectedPath = fileOrderPath({ dni: mockedOrder.dni, order: mockedOrder.id });
 
             // Act
             const result = await service.uploadFile(key, file);
@@ -123,12 +126,7 @@ describe('MedicalOrderFileManagementService', () => {
             expect(repository.query().leftJoin).toHaveBeenCalledWith('order.client', 'client');
             expect(repository.query().select).toHaveBeenCalledWith('order.id', 'id');
             expect(repository.query().addSelect).toHaveBeenCalledWith('client.dni', 'dni');
-            expect(storageManager.saveFile).toHaveBeenCalledWith(
-                file.buffer,
-                '.pdf',
-                `medical-report-pdf/${mockedOrder.dni}/${mockedOrder.id}/result`,
-                `medical_order_${mockedOrder.id.toString().padStart(9, '0')}`,
-            );
+            expect(storageManager.saveFile).toHaveBeenCalledWith(file.buffer, '.pdf', expectedPath, `medical_order_${mockedOrder.id.toString().padStart(9, '0')}`);
             expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: key }, { fileAddress: `${mockedFilepath}`, hasFile: true });
             expect(result).toEqual(mockedFilepath);
         });
@@ -139,6 +137,7 @@ describe('MedicalOrderFileManagementService', () => {
                 leftJoin: jest.fn().mockReturnThis(),
                 select: jest.fn().mockReturnThis(),
                 addSelect: jest.fn().mockReturnThis(),
+                where: jest.fn().mockReturnThis(),
                 getRawOne: jest.fn().mockReturnValue(undefined)
             } as any);
             // Act and Assert
@@ -153,18 +152,15 @@ describe('MedicalOrderFileManagementService', () => {
                 leftJoin: jest.fn().mockReturnThis(),
                 select: jest.fn().mockReturnThis(),
                 addSelect: jest.fn().mockReturnThis(),
+                where: jest.fn().mockReturnThis(),
                 getRawOne: jest.fn().mockReturnValue(mockedOrder)
             } as any);
             storageManager.saveFile.mockRejectedValue(new InternalServerErrorException(''));
+            const expectedPath = fileOrderPath({ dni: mockedOrder.dni, order: mockedOrder.id });
 
             // Act and Assert
             await expect(service.uploadFile(key, file)).rejects.toThrow(InternalServerErrorException);
-            expect(storageManager.saveFile).toHaveBeenCalledWith(
-                file.buffer,
-                '.pdf',
-                `medical-report-pdf/${mockedOrder.dni}/${mockedOrder.id}/result`,
-                `medical_order_${mockedOrder.id.toString().padStart(9, '0')}`,
-            );
+            expect(storageManager.saveFile).toHaveBeenCalledWith(file.buffer, '.pdf', expectedPath, `medical_order_${mockedOrder.id.toString().padStart(9, '0')}`);
             expect(repository.findOneAndUpdate).toHaveBeenCalledWith(
                 { id: key },
                 { fileAddress: null, hasFile: false }

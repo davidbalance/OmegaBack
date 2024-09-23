@@ -16,6 +16,7 @@ import { mockMedicalReportEntity } from "../stub/medical-report-entity.stub";
 import path from "path";
 import fs from "fs";
 import { medicalReportDocumentLayout } from "../utils/medical-report-document-layout";
+import { fileReportPath } from "@/shared/utils";
 
 jest.mock('dayjs/locale/es', () => { });
 jest.mock('dayjs', () => ({
@@ -86,7 +87,7 @@ describe('MedicalReportPdfService', () => {
       const buffer = Buffer.from('test-pdf-buffer');
       pdfManagerService.craft.mockResolvedValue(buffer);
 
-      const filePath = `medical-report-pdf/${data.patientDni}/${data.order}/report`;
+      const filePath = fileReportPath({ dni: data.patientDni, order: data.order });
       const output = `${filePath}/${data.examName.toLocaleLowerCase().replace(/\s/g, '_')}.pdf`;
       storageManager.saveFile.mockResolvedValue(output);
 

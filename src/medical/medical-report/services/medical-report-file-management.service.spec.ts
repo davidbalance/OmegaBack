@@ -5,6 +5,7 @@ import { TestBed } from "@automock/jest";
 import { ReadStream } from "fs";
 import { GenericFile } from "@/shared/utils/bases/base.file-service";
 import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { fileReportPath } from "@/shared/utils";
 
 describe('MedicalReportFileManagementService', () => {
   let service: MedicalReportFileManagementService;
@@ -83,6 +84,7 @@ describe('MedicalReportFileManagementService', () => {
         patientDni: mockedPatientDni,
       } as any);
       storageManager.saveFile.mockResolvedValue(mockedFilepath);
+      const expectedPath = fileReportPath({ dni: mockedPatientDni, order: mockedOrderId });
 
       // Act
       const result = await service.uploadFile(key, file);
@@ -96,12 +98,7 @@ describe('MedicalReportFileManagementService', () => {
           order: true
         }
       });
-      expect(storageManager.saveFile).toHaveBeenCalledWith(
-        file.buffer,
-        '.pdf',
-        `medical-report-pdf/${mockedPatientDni}/${mockedOrderId}/report`,
-        'test_exam',
-      );
+      expect(storageManager.saveFile).toHaveBeenCalledWith(file.buffer, '.pdf', expectedPath, 'test_exam');
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: key }, { fileAddress: `${mockedFilepath}`, hasFile: true });
       expect(result).toEqual(mockedFilepath);
     });
@@ -124,15 +121,11 @@ describe('MedicalReportFileManagementService', () => {
         patientDni: mockedPatientDni,
       } as any);
       storageManager.saveFile.mockRejectedValue(new InternalServerErrorException(''));
+      const expectedPath = fileReportPath({ dni: mockedPatientDni, order: mockedOrderId });
 
       // Act and Assert
       await expect(service.uploadFile(key, file)).rejects.toThrow(InternalServerErrorException);
-      expect(storageManager.saveFile).toHaveBeenCalledWith(
-        file.buffer,
-        '.pdf',
-        `medical-report-pdf/${mockedPatientDni}/${mockedOrderId}/report`,
-        'test_exam',
-      );
+      expect(storageManager.saveFile).toHaveBeenCalledWith(file.buffer, '.pdf', expectedPath, 'test_exam');
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith(
         { id: key },
         { fileAddress: null, hasFile: false }
