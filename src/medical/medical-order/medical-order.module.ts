@@ -29,6 +29,7 @@ import { MedicalOrderExpandedPaginationController } from "./controllers/medical-
 import { MedicalOrderFileManagementService } from "./services/medical-order-file-management.service";
 import { LocalStorageModule } from "@/shared/storage-manager";
 import { Base64Module } from "@/shared/base64/base64.module";
+import { MedicalOrderFileManagementController } from "./controllers/medical-order-file-management.controller";
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { Base64Module } from "@/shared/base64/base64.module";
     MedicalOrderDoctorPaginationController,
     MedicalOrderExpandedPaginationController,
     MedicalOrderExternalConnectionController,
+    MedicalOrderFileManagementController,
     MedicalOrderMailController,
     MedicalOrderPaginationController,
     MedicalOrderStatusController

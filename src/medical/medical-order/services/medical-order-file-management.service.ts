@@ -3,7 +3,7 @@ import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { ReadStream } from "fs";
 import { MedicalOrderRepository } from "../repositories/medical-order.repository";
 import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
-import { fileResultPath } from "@/shared/utils";
+import { fileOrderPath } from "@/shared/utils";
 import { Base64Service } from "@/shared/base64/base64.service";
 import { fileExtension } from "@/shared/utils/file-extension";
 import { v4 } from "uuid";
@@ -57,13 +57,15 @@ export class MedicalOrderFileManagementService implements FileManagementService<
             .leftJoin('order.client', 'client')
             .select('order.id', 'id')
             .addSelect('client.dni', 'dni')
+            .where('order.id = :id', { id: key })
             .getRawOne<{ id: number, dni: string }>();
 
+
         if (!order) {
-            throw new NotFoundException('Medical report not found to associate file');
+            throw new NotFoundException('Medical order not found to associate file');
         }
         const { id, dni } = order;
-        const filepath = fileResultPath({ dni: dni, order: id });
+        const filepath = fileOrderPath({ dni: dni, order: id });
         const filename = `medical_order_${id.toString().padStart(9, '0')}`;
 
         try {
