@@ -21,7 +21,7 @@ export class DoctorManagementService {
     } catch (error) {
       foundUser = await this.userService.create(data);
     }
-    const { user, ...doctor } = await this.repository.create({ user: { id: foundUser.id } });
+    const { user, ...doctor } = await this.repository.create({ user: { dni: foundUser.dni } });
     return { ...user, ...doctor, user: user.id };
   }
 
