@@ -48,7 +48,7 @@ export class MedicalResultExternalConnectionController {
         @Param('key') key: string,
         @Body() body: PostMedicalResultBase64FileRequestDto,
     ): Promise<PatchExternalMedicalResultResponseDto> {
-        const order = await this.service.findOneAndUploadBas64({ source, key }, body);
+        const order = await this.service.findOneAndUploadBase64({ source, key }, body);
         return plainToInstance(PatchExternalMedicalResultResponseDto, order);
     }
 

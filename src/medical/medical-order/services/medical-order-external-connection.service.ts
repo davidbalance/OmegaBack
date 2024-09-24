@@ -47,11 +47,17 @@ export class MedicalOrderExternalConnectionService implements IExternalConnectio
 
     async findOne(value: ExternalKeyParam | number): Promise<ExternalMedicalOrder> {
         if (typeof value === 'number') {
-            const order = await this.repository.findOne({ where: { id: value } });
+            const order = await this.repository.findOne({
+                where: { id: value },
+                relations: { results: true }
+            });
             return order;
         } else {
             const { key, source } = value;
-            const order = await this.repository.findOne({ where: { externalKey: { source, key } } });
+            const order = await this.repository.findOne({
+                where: { externalKey: { source, key } },
+                relations: { results: true }
+            });
             return order;
         }
 

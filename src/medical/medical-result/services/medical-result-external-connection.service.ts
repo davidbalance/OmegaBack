@@ -84,7 +84,7 @@ export class MedicalResultExternalConnectionService implements IExternalConnecti
         return medicalResult;
     }
 
-    async findOneAndUploadBas64(key: ExternalKeyParam | number, { base64, mimetype }: PostMedicalResultBase64FileRequestDto): Promise<ExternalMedicalResult> {
+    async findOneAndUploadBase64(key: ExternalKeyParam | number, { base64, mimetype }: PostMedicalResultBase64FileRequestDto): Promise<ExternalMedicalResult> {
         let medicalResult: MedicalResultEntity;
         if (typeof key === 'number') {
             medicalResult = await this.repository.findOne({ where: { id: key } });

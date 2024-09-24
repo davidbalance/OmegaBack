@@ -4,6 +4,7 @@ import { MedicalResultRequestDto } from "../dtos/request/medical-result.base.dto
 import { MedicalOrderManagementService } from "@/medical/medical-order/services/medical-order-management.service";
 import { MedicalResult } from "../dtos/response/medical-result.base.dto";
 import { MedicalReportEntity } from "@/medical/medical-report/entities/medical-report.entity";
+import { signaturePath } from "@/shared/utils";
 
 @Injectable()
 export class MedicalResultManagementService {
@@ -15,7 +16,12 @@ export class MedicalResultManagementService {
 
   async create({ order: orderId, ...data }: MedicalResultRequestDto): Promise<MedicalResult> {
     const order = await this.orderService.findOne(orderId);
-    const medicalResults = await this.repository.create({ ...data, order: order as any });
+    const doctorSignature = signaturePath({ dni: data.doctorDni });
+    const medicalResults = await this.repository.create({
+      ...data,
+      doctorSignature,
+      order: order as any
+    });
     return { ...medicalResults, diseases: [], reportId: undefined, reportHasFile: undefined };
   }
 

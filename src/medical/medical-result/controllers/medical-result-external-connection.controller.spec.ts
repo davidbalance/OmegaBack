@@ -67,13 +67,13 @@ describe('MedicalResultExternalConnectionController', () => {
             const key = 'test-key';
             const data: PostMedicalResultBase64FileRequestDto = {} as PostMedicalResultBase64FileRequestDto;
             const mockedResult = mockMedicalResultEntity();
-            service.findOneAndUploadBas64.mockResolvedValue(mockedResult);
+            service.findOneAndUploadBase64.mockResolvedValue(mockedResult);
 
             // Act
             const result = await controller.uploadFromBase64(source, key, data);
 
             // Assert
-            expect(service.findOneAndUploadBas64).toHaveBeenCalledWith({ source, key }, data);
+            expect(service.findOneAndUploadBase64).toHaveBeenCalledWith({ source, key }, data);
             expect(result).toEqual(mockedResult);
         });
     });
