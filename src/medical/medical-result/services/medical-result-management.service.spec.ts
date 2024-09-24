@@ -6,6 +6,7 @@ import { MedicalResultRequestDto } from "../dtos/request/medical-result.base.dto
 import { mockMedicalOrderEntity } from "@/medical/medical-order/stubs/medical-order-entity.stub";
 import { mockMedicalResultEntity } from "../stub/medical-result-entity.stub";
 import { MedicalReportEntity } from "@/medical/medical-report/entities/medical-report.entity";
+import { signaturePath } from "@/shared/utils";
 
 describe('MedicalResultManagementService', () => {
   let service: MedicalResultManagementService;
@@ -35,6 +36,7 @@ describe('MedicalResultManagementService', () => {
         doctorDni: '1234567890',
         doctorFullname: 'Test Doctor'
       };
+      const doctorSignature = signaturePath({ dni: mockDto.doctorDni });
       const mockedOrder = mockMedicalOrderEntity();
       const mockedResult = mockMedicalResultEntity();
       orderService.findOne.mockResolvedValue(mockedOrder);
@@ -45,7 +47,7 @@ describe('MedicalResultManagementService', () => {
 
       // Assert
       expect(orderService.findOne).toHaveBeenCalledWith(mockDto.order);
-      expect(repository.create).toHaveBeenCalledWith({ ...mockDto, order: mockedOrder as any });
+      expect(repository.create).toHaveBeenCalledWith({ ...mockDto, doctorSignature, order: mockedOrder as any });
       expect(result).toEqual({ ...mockedResult, diseases: [], reportId: undefined, reportHasFile: undefined });
     });
   });
