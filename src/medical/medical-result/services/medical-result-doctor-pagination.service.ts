@@ -26,7 +26,6 @@ export class MedicalResultDoctorPaginationService extends BasePaginationService<
       .addSelect('disease.diseaseCommentary', 'diseaseCommentary')
       .addSelect('report.id', 'reportId')
       .addSelect('report.hasFile', 'reportHasFile')
-      .addSelect('order.hasFile', 'orderHasFile')
       .where('result.doctorDni LIKE :doctor', { doctor: extras.doctor })
       .andWhere('result.examName LIKE :examName', { examName: `%${filter}%` })
   }

@@ -26,7 +26,6 @@ export class MedicalResultPaginationService extends BasePaginationService<Medica
       .addSelect('disease.diseaseCommentary', 'diseaseCommentary')
       .addSelect('report.id', 'reportId')
       .addSelect('report.hasFile', 'reportHasFile')
-      .addSelect('order.hasFile', 'orderHasFile')
       .where('result.examName LIKE :examName', { examName: `%${filter}%` })
     return query;
   }
