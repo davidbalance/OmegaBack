@@ -1,7 +1,6 @@
 import { IsEnum, IsNumber } from "class-validator";
 
 export enum FileSourceEnum {
-    ORDER = 'order',
     REPORT = 'report',
     RESULT = 'result'
 }

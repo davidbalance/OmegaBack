@@ -3,7 +3,6 @@ import { MedicalOrderCloud } from "../dtos/response/medical-order-cloud.base.dto
 const stubMedicalOrderCloud = (): MedicalOrderCloud => ({
     dni: "1234567890",
     fullname: "Stub fullname",
-    hasFile: false,
     fileResults: [{
         id: 1,
         examName: "Test exam",

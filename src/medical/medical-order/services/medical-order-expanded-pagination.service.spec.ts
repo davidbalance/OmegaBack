@@ -59,7 +59,6 @@ describe('MedicalOrderExpandedPaginationService', () => {
       expect(repository.query().addSelect).toHaveBeenNthCalledWith(7, 'order.companyName', 'companyName');
       expect(repository.query().addSelect).toHaveBeenNthCalledWith(8, 'order.process', 'process');
       expect(repository.query().addSelect).toHaveBeenNthCalledWith(9, 'order.createAt', 'createAt');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(10, 'order.hasFile', 'hasFile');
       expect(repository.query().where).toHaveBeenCalled();
       expect(repository.query().orWhere).toHaveBeenCalled();
       expect(repository.query().limit).toHaveBeenCalledWith(take);

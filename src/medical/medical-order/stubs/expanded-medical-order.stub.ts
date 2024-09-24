@@ -9,8 +9,7 @@ const stubExpandedMedicalOrder = (id: number): ExapandedMedicalOrder => ({
     companyRuc: "1234567890001",
     companyName: "Stub company",
     process: "Stub process",
-    createAt: new Date(),
-    hasFile: false
+    createAt: new Date()
 });
 
 export const mockExpandedMedicalOrder = () => stubExpandedMedicalOrder(1);

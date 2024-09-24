@@ -5,8 +5,7 @@ const stubMedicalOrderDoctor = (id: number): MedicalOrderDoctor => ({
     leftReports: 10,
     process: "Stub process",
     createAt: new Date(),
-    orderStatus: "created",
-    hasFile: false
+    orderStatus: "created"
 });
 
 export const mockMedicalOrderDoctor = () => stubMedicalOrderDoctor(1);
