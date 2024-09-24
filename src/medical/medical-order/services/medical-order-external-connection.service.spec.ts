@@ -157,7 +157,7 @@ describe('MedicalOrderExternalConnectionService', () => {
             // Act
             const result = await service.findOne(keyParam);
             // Assert
-            expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam } });
+            expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam }, relations: { results: true } });
             expect(result).toEqual(expectedValue);
         });
 
@@ -168,7 +168,7 @@ describe('MedicalOrderExternalConnectionService', () => {
             // Act
             const result = await service.findOne(id);
             // Assert
-            expect(repository.findOne).toHaveBeenCalledWith({ where: { id } });
+            expect(repository.findOne).toHaveBeenCalledWith({ where: { id }, relations: { results: true } });
             expect(result).toEqual(expectedValue);
         });
     });
