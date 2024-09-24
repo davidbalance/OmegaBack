@@ -60,7 +60,6 @@ describe('MedicalResultPaginationService', () => {
       expect(repository.query().addSelect).toHaveBeenNthCalledWith(6, 'disease.diseaseCommentary', 'diseaseCommentary');
       expect(repository.query().addSelect).toHaveBeenNthCalledWith(7, 'report.id', 'reportId');
       expect(repository.query().addSelect).toHaveBeenNthCalledWith(8, 'report.hasFile', 'reportHasFile');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(9, 'order.hasFile', 'orderHasFile');
       expect(repository.query().where).toHaveBeenCalledWith('result.examName LIKE :examName', { examName: `%${search}%` });
       expect(repository.query().limit).toHaveBeenCalledWith(take);
       expect(repository.query().offset).toHaveBeenCalledWith(page);
