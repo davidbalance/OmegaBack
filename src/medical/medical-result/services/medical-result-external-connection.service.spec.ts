@@ -246,7 +246,7 @@ describe('MedicalResultExternalConnectionService', () => {
         });
     });
 
-    describe('findOneAndUploadBas64', () => {
+    describe('findOneAndUploadBase64', () => {
         const data: PostMedicalResultBase64FileRequestDto = {
             base64: 'JVBERi0xLjMKJcfsf/A==',
             mimetype: 'application/pdf'
@@ -263,7 +263,7 @@ describe('MedicalResultExternalConnectionService', () => {
             repository.findOne.mockResolvedValue(mockedResult);
             storage.uploadFromBase64.mockResolvedValue(undefined);
             // Act
-            const result = await service.findOneAndUploadBas64(keyParam, data);
+            const result = await service.findOneAndUploadBase64(keyParam, data);
             // Assert
             expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam } });
             expect(storage.uploadFromBase64).toHaveBeenCalledWith(mockedResult.id, data.mimetype, data.base64);
@@ -279,7 +279,7 @@ describe('MedicalResultExternalConnectionService', () => {
             repository.findOne.mockResolvedValue(mockedResult);
             storage.uploadFromBase64.mockResolvedValue(undefined);
             // Act
-            const result = await service.findOneAndUploadBas64(keyParam, data);
+            const result = await service.findOneAndUploadBase64(keyParam, data);
             // Assert
             expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam } });
             expect(storage.uploadFromBase64).toHaveBeenCalledWith(mockedResult.id, data.mimetype, data.base64);

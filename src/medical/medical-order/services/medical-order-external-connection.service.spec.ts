@@ -10,9 +10,6 @@ import { mockMedicalOrderEntities, mockMedicalOrderEntity } from "../stubs/medic
 import { PatientGenderEnum } from "@/user/patient/enums/patient.enum";
 import { mockMedicalOrderExternalKey } from "../stubs/medical-order-external-key.stub";
 import { mockMedicalClientEntity } from "@/medical/medical-client/stub/medical-client-entity.stub";
-import { PatchExternalMedicalOrderFileRequestDto } from "../dtos/request/external-medical-order-file-upload.patch.dto";
-import { MedicalOrderFileManagementService } from "./medical-order-file-management.service";
-import { PatchExternalMedicalOrderBase64RequestDto } from "../dtos/request/external-medical-order-file-base64.patch.dto";
 
 describe('MedicalOrderExternalConnectionService', () => {
     let service: MedicalOrderExternalConnectionService;
@@ -20,7 +17,6 @@ describe('MedicalOrderExternalConnectionService', () => {
     let externalKeyService: jest.Mocked<MedicalOrderExternalKeyService>;
     let clientService: jest.Mocked<MedicalClientExternalService>;
     let eventService: jest.Mocked<MedicalOrderEventService>;
-    let storage: jest.Mocked<MedicalOrderFileManagementService>;
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(MedicalOrderExternalConnectionService).compile();
@@ -30,7 +26,6 @@ describe('MedicalOrderExternalConnectionService', () => {
         externalKeyService = unitRef.get(MedicalOrderExternalKeyService);
         clientService = unitRef.get(MedicalClientExternalService);
         eventService = unitRef.get(MedicalOrderEventService);
-        storage = unitRef.get(MedicalOrderFileManagementService);
     });
 
     afterEach(() => {
@@ -256,85 +251,6 @@ describe('MedicalOrderExternalConnectionService', () => {
             const result = await service.findOneAndUpdate(keyParam, data);
             // Assert
             expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ externalKey: keyParam }, data);
-            expect(result).toEqual(expectedValue);
-        });
-    });
-
-    describe('findOneAndUpload', () => {
-        const file = {} as PatchExternalMedicalOrderFileRequestDto;
-        const mockedOrder = mockMedicalOrderEntity();
-        const expectedValue = mockedOrder;
-
-        it('should upload file by id', async () => {
-            // Arrange
-            const key = 1;
-
-            repository.findOne.mockResolvedValue(mockedOrder);
-            storage.uploadFile.mockResolvedValue("test");
-
-            // Act
-            const result = await service.findOneAndUpload(key, file);
-
-            // Assert
-            expect(repository.findOne).toHaveBeenCalledWith({ where: { id: key } });
-            expect(storage.uploadFile).toHaveBeenCalledWith(mockedOrder.id, file.file);
-            expect(result).toEqual(expectedValue);
-        });
-
-        it('should upload file by keyParam', async () => {
-            // Arrange
-            const keyParam = { source: "test", key: "test" };
-
-            repository.findOne.mockResolvedValue(mockedOrder);
-            storage.uploadFile.mockResolvedValue("test");
-
-            // Act
-            const result = await service.findOneAndUpload(keyParam, file);
-
-            // Assert
-            expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam } });
-            expect(storage.uploadFile).toHaveBeenCalledWith(mockedOrder.id, file.file);
-            expect(result).toEqual(expectedValue);
-        });
-    });
-
-    describe('findOneAndUploadBase64', () => {
-        const file: PatchExternalMedicalOrderBase64RequestDto = {
-            base64: 'JVBERi0xLjMKJcfsf/A==',
-            mimetype: 'application/json'
-        };
-        const mockedOrder = mockMedicalOrderEntity();
-        const expectedValue = mockedOrder;
-
-        it('should upload file by id', async () => {
-            // Arrange
-            const key = 1;
-
-            repository.findOne.mockResolvedValue(mockedOrder);
-            storage.uploadFromBase64.mockResolvedValue("test");
-
-            // Act
-            const result = await service.findOneAndUploadBase64(key, file);
-
-            // Assert
-            expect(repository.findOne).toHaveBeenCalledWith({ where: { id: key } });
-            expect(storage.uploadFromBase64).toHaveBeenCalledWith(mockedOrder.id, file.mimetype, file.base64);
-            expect(result).toEqual(expectedValue);
-        });
-
-        it('should upload file by keyParam', async () => {
-            // Arrange
-            const keyParam = { source: "test", key: "test" };
-
-            repository.findOne.mockResolvedValue(mockedOrder);
-            storage.uploadFromBase64.mockResolvedValue("test");
-
-            // Act
-            const result = await service.findOneAndUploadBase64(keyParam, file);
-
-            // Assert
-            expect(repository.findOne).toHaveBeenCalledWith({ where: { externalKey: keyParam } });
-            expect(storage.uploadFromBase64).toHaveBeenCalledWith(mockedOrder.id, file.mimetype, file.base64);
             expect(result).toEqual(expectedValue);
         });
     });

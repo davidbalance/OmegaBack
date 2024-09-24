@@ -53,7 +53,6 @@ describe('MedicalOrderPaginationService', () => {
       expect(repository.query().addSelect).toHaveBeenNthCalledWith(2, 'order.createAt', 'createAt');
       expect(repository.query().addSelect).toHaveBeenNthCalledWith(3, 'order.mailStatus', 'mailStatus');
       expect(repository.query().addSelect).toHaveBeenNthCalledWith(4, 'order.orderStatus', 'orderStatus');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(5, 'order.hasFile', 'hasFile');
       expect(repository.query().where).toHaveBeenCalledWith('order.process LIKE :filter', { filter: `%${search}%` });
       expect(repository.query().limit).toHaveBeenCalledWith(take);
       expect(repository.query().offset).toHaveBeenCalledWith(page);

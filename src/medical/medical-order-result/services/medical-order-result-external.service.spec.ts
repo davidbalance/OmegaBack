@@ -11,11 +11,17 @@ import { ExternalMedicalOrder } from '@/medical/medical-order/dtos/response/exte
 import { INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION } from '@/medical/medical-order/services/medical-order-external-connection.service';
 import { ExternalMedicalResult } from '@/medical/medical-result/dtos/response/external-medical-result.base.dto';
 import { INJECT_MEDICAL_RESULT_EXTERNAL_CONNECTION } from '@/medical/medical-result/services/medical-result-external-connection.service';
+import { PostExternalMedicalOrderResultBase64RequestDto } from '../dtos/request/external-medical-result-order-upload-base64.post.dto';
+import { mockMedicalResult } from '@/medical/medical-result/stub/medical-result.stub';
+import { MedicalResultManagementService } from '@/medical/medical-result/services/medical-result-management.service';
+import { MedicalResultFileManagementService } from '@/medical/medical-result/services/medical-result-file-management.service';
 
 describe('MedicalOrderResultExternalService', () => {
   let service: MedicalOrderResultExternalService;
   let orderService: jest.Mocked<IExternalConnectionService<ExternalMedicalOrderRequestDto, ExternalMedicalOrder>>;
   let resultService: jest.Mocked<IExternalConnectionService<ExternalMedicalResultRequestDto, ExternalMedicalResult>>;
+  let resultManagementService: jest.Mocked<MedicalResultManagementService>;
+  let resultFileService: jest.Mocked<MedicalResultFileManagementService>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(MedicalOrderResultExternalService).compile();
@@ -23,6 +29,8 @@ describe('MedicalOrderResultExternalService', () => {
     service = unit;
     orderService = unitRef.get(INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION);
     resultService = unitRef.get(INJECT_MEDICAL_RESULT_EXTERNAL_CONNECTION);
+    resultManagementService = unitRef.get(MedicalResultManagementService);
+    resultFileService = unitRef.get(MedicalResultFileManagementService);
   });
 
   afterEach(() => {
@@ -43,6 +51,57 @@ describe('MedicalOrderResultExternalService', () => {
 
   it('findOneAndUpdate', async () => {
     expect(service.findOneAndUpdate).toBeDefined()
+  });
+
+  describe('uploadBase64LaboratorioClinico', () => {
+    const source: string = 'test-source'
+    const key = 'test-key';
+    const keyParam: ExternalKeyParam = { source, key };
+    const data: PostExternalMedicalOrderResultBase64RequestDto = {
+      doctor: { dni: '1234567890', name: 'Test doctor', lastname: 'Test lastname', email: 'test@email.com' },
+      base64: 'SampleBase64File',
+      mimetype: 'application/json'
+    }
+    const mockedBaseOrder = mockExternalMedicalOrder();
+
+    const mockedOrder = { ...mockedBaseOrder, results: [{ examName: 'LABORATORIO CLINICO', id: 1 } as any] };
+    const expectedValue = mockedOrder;
+
+    it('should find an existing result and upload a file', async () => {
+      // Arrange
+      orderService.findOne.mockResolvedValue(mockedOrder);
+      resultFileService.uploadFromBase64.mockResolvedValue(undefined);
+      // Act
+      const result = await service.uploadBase64LaboratorioClinico(keyParam, data);
+      // Assert
+      expect(orderService.findOne).toHaveBeenCalledWith(keyParam);
+      expect(resultManagementService.create).not.toHaveBeenCalled();
+      expect(resultFileService.uploadFromBase64).toHaveBeenCalledWith(1, data.mimetype, data.base64);
+      expect(result).toEqual(expectedValue);
+    });
+
+    it('should not find an existing result so create one and upload a file', async () => {
+      // Arrange
+      const mockedResult = mockMedicalResult();
+      orderService.findOne.mockResolvedValueOnce({ ...mockedOrder, results: [] });
+      orderService.findOne.mockResolvedValueOnce(mockedOrder);
+      resultManagementService.create.mockResolvedValue(mockedResult);
+      resultFileService.uploadFromBase64.mockResolvedValue(undefined);
+      // Act
+      const result = await service.uploadBase64LaboratorioClinico(keyParam, data);
+      // Assert
+      expect(orderService.findOne).toHaveBeenCalledWith(keyParam);
+      expect(resultManagementService.create).toHaveBeenCalledWith({
+        order: mockedOrder.id,
+        doctorDni: data.doctor.dni,
+        doctorFullname: `${data.doctor.name} ${data.doctor.lastname}`,
+        examName: 'LABORATORIO CLINICO',
+        examSubtype: 'LABORATORIO CLINICO',
+        examType: 'LABORATORIO CLINICO',
+      });
+      expect(resultFileService.uploadFromBase64).toHaveBeenCalledWith(1, data.mimetype, data.base64);
+      expect(result).toEqual(expectedValue);
+    });
   });
 
   describe('create', () => {

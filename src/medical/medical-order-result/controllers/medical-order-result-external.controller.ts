@@ -5,6 +5,7 @@ import { PostExternalMedicalResultOrderRequestDto } from '../dtos/request/extern
 import { PostExternalMedicalOrderResponseDto } from '../../medical-order/dtos/response/external-medical-order.post.dto';
 import { MedicalOrderResultExternalService } from '../services/medical-order-result-external.service';
 import { plainToInstance } from 'class-transformer';
+import { PostExternalMedicalOrderResultBase64RequestDto } from '../dtos/request/external-medical-result-order-upload-base64.post.dto';
 
 @ApiTags('External Connection', 'Medical>Order')
 @ApiHeader({ name: 'x-api-key', allowEmptyValue: false, required: true })
@@ -14,7 +15,7 @@ export class MedicalOrderResultExternalConnectionController {
 
     constructor(
         @Inject(MedicalOrderResultExternalService) private readonly service: MedicalOrderResultExternalService
-    ) {}
+    ) { }
 
     @Post()
     async create(
@@ -23,6 +24,16 @@ export class MedicalOrderResultExternalConnectionController {
         @Body() body: PostExternalMedicalResultOrderRequestDto
     ): Promise<PostExternalMedicalOrderResponseDto> {
         const order = await this.service.create({ source, key }, body);
+        return plainToInstance(PostExternalMedicalOrderResponseDto, order);
+    }
+
+    @Post('laboratorio/clinico/base64')
+    async uploadBase64LaboratorioClinico(
+        @Param('source') source: string,
+        @Param('key') key: string,
+        @Body() body: PostExternalMedicalOrderResultBase64RequestDto
+    ): Promise<PostExternalMedicalOrderResponseDto> {
+        const order = await this.service.uploadBase64LaboratorioClinico({ source, key }, body);
         return plainToInstance(PostExternalMedicalOrderResponseDto, order);
     }
 }

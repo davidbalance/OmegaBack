@@ -5,7 +5,6 @@ export class ExapandedMedicalOrder {
     @Expose() public readonly name: string;
     @Expose() public readonly lastname: string;
     @Expose() public readonly dni: string;
-    @Expose() public readonly hasFile: boolean;
     @Expose() public readonly mailStatus?: boolean;
     @Expose() public readonly orderStatus: string;
     @Expose() public readonly companyRuc: string;

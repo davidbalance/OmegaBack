@@ -27,7 +27,6 @@ export class MedicalOrderExpandedPaginationService extends BasePaginationService
       .addSelect('order.companyName', 'companyName')
       .addSelect('order.process', 'process')
       .addSelect('order.createAt', 'createAt')
-      .addSelect('order.hasFile', 'hasFile')
       .where(new Brackets(qr => {
         qr.where('order.companyRuc LIKE :filter', { filter: `%${filter}%` })
           .orWhere('order.companyName LIKE :filter', { filter: `%${filter}%` })

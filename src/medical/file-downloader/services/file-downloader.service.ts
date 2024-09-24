@@ -6,7 +6,6 @@ import { Injectable, Inject, StreamableFile, NotFoundException, Logger } from "@
 import { FileSourceEnum, FileSourceRequestDto } from "../dtos/request/file-source.base.dto";
 import { PostDownloadZipRequestDto } from "../dtos/request/download-zip.post.dto";
 import { ReadStream } from "fs";
-import { MedicalOrderFileManagementService } from "@/medical/medical-order/services/medical-order-file-management.service";
 
 @Injectable()
 export class FileDownloaderService {
@@ -17,12 +16,10 @@ export class FileDownloaderService {
         @Inject(ZipperService) private readonly zipper: ZipperService,
         @Inject(MedicalResultFileManagementService) medicalResultService: FileManagementService<number>,
         @Inject(MedicalReportFileManagementService) medicalReportService: FileManagementService<number>,
-        @Inject(MedicalOrderFileManagementService) medicalOrderService: FileManagementService<number>,
     ) {
         this.fileServices = {
             report: medicalReportService,
-            result: medicalResultService,
-            order: medicalOrderService
+            result: medicalResultService
         };
     }
 
