@@ -210,7 +210,7 @@ Cada modulo expone una serie de endpoints, pero la documentacion de estos puede 
 
 Los modulos se pueden distiguir en los siguientes grandes grupos:
 
-|                |         |
+|                |         |            |
 | -------------- | ------- | ---------- |
 | Authentication | Disease | Laboratory |
 | Location       | Medical | Omega Web  |

@@ -64,6 +64,8 @@ export class MedicalResultFileManagementService implements FileManagementService
         medicalResultPath,
         examName.toLocaleLowerCase().replace(/[^A-Z0-9]+/ig, '_')
       );
+      console.log(filepath);
+
 
       await this.repository.findOneAndUpdate({ id: key }, { filePath: `${filepath}`, hasFile: true });
       this.eventService.emitOnMedicalResultUploadFileEvent(key);

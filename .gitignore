@@ -2,9 +2,7 @@
 /dist
 /node_modules
 
-**/signatures/*
-**/reports/*
-**/medical-report-pdf/*
+**/disk/*
 
 **/default.values*.sql
 
