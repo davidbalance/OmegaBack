@@ -47,10 +47,10 @@ ENV APP_ENVIRONMENT production
 # RUN addgroup --system --gid 1001 node
 # RUN adduser --system --uid 1001 node
 
-RUN mkdir disk/medical-pdf
-RUN mkdir disk/signatures
-RUN mkdir disk/old-eeq
-RUN mkdir disk/old-ipeges
+RUN mkdir -p disk/medical-pdf \
+    disk/signatures \
+    disk/old-eeq \
+    disk/old-ipeges
 
 COPY --chown=node:node --from=build /usr/src/app/dist dist
 COPY --chown=node:node --from=build /usr/src/app/node_modules node_modules
