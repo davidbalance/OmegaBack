@@ -79,3 +79,4 @@ jobs:
             docker-compose stop ${{ secrets.DOCKER_SERVICE }} ${{ secrets.DOCKER_SERVICE_MIGRATION }} || true
             docker-compose rm -f ${{ secrets.DOCKER_SERVICE }} ${{ secrets.DOCKER_SERVICE_MIGRATION }}
             docker-compose up -d --build ${{ secrets.DOCKER_SERVICE }} ${{ secrets.DOCKER_SERVICE_MIGRATION }}
+            docker rmi $(docker images -f "dangling=true" -q) || true
