@@ -9,7 +9,7 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-au
 
 @ApiTags('Medical>Result>Disease')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 @Controller('medical/results/report/diseases')
 export class MedicalResultDiseaseReportController {
     constructor(
@@ -29,7 +29,6 @@ export class MedicalResultDiseaseReportController {
         });
         Logger.log('Generate report: ready to send')
         return file;
-        // file.getStream().pipe(response);
     }
 
     @Get('year')
