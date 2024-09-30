@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Post, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Post, Res, StreamableFile, UseGuards } from "@nestjs/common";
 import { MedicalResultDiseaseReportService } from "../services/medical-result-disease-report.service";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";
@@ -19,8 +19,8 @@ export class MedicalResultDiseaseReportController {
     @Post()
     async generateReport(
         @Body() body: PostMedicalResultDiseaseReportRequestDto,
-        @Res() response: Response
-    ) {
+        @Res({ passthrough: true }) response: Response
+    ): Promise<StreamableFile> {
         const file = await this.service.generateReport(body);
         response.set({
             'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

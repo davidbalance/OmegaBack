@@ -26,6 +26,9 @@ export class MedicalResultDiseaseReportService {
     }
 
     async generateReport(searchParam: PostMedicalResultDiseaseReportRequestDto): Promise<StreamableFile> {
+
+
+
         const values = await this.find(searchParam);
 
         const processedValues: ExcelReportType[] = values.map((e) => ({
@@ -51,28 +54,28 @@ export class MedicalResultDiseaseReportService {
             .leftJoinAndSelect('medical_result.order', 'medical_order')
             .leftJoinAndSelect('medical_order.client', 'medical_client')
             .leftJoinAndSelect('medical_client.email', 'medical_email', 'medical_email.default = :emailFlag', { emailFlag: true })
-            .select(['medical_order.companyName AS company',
-                'medical_order.branchName AS branch',
-                'medical_client.patient_role AS role',
-                'medical_client.managementName AS management',
-                'medical_client.areaName AS area',
-                'YEAR(medical_result.createAt) AS year',
-                'medical_order.process AS process',
-                'medical_result.createAt AS date',
-                'medical_client.jobPositionName AS jobPosition',
-                'medical_client.dni AS dni',
-                'medical_client.name AS name',
-                'medical_client.lastname AS lastname',
-                'medical_email.email AS email',
-                'YEAR(NOW()) - CAST(YEAR(medical_client.birthday) AS SIGNED) AS age',
-                'medical_client.birthday AS birthday',
-                'medical_client.gender AS gender',
-                'medical_result.examName AS exam',
-                'medical_result.examSubtype AS examSubtype',
-                'medical_result.examType AS examType',
-                'medical_disease.diseaseName AS disease',
-                'medical_disease.diseaseGroupName AS diseaseGroup',
-                'medical_disease.diseaseCommentary AS diseaseCommentary'])
+            .select('medical_order.companyName', 'company')
+            .addSelect('medical_order.branchName', 'branch')
+            .addSelect('medical_client.patient_role', 'role')
+            .addSelect('medical_client.managementName', 'management')
+            .addSelect('medical_client.areaName', 'area')
+            .addSelect('YEAR(medical_result.createAt)', 'year')
+            .addSelect('medical_order.process', 'process')
+            .addSelect('medical_result.createAt', 'date')
+            .addSelect('medical_client.jobPositionName', 'jobPosition')
+            .addSelect('medical_client.dni', 'dni')
+            .addSelect('medical_client.name', 'name')
+            .addSelect('medical_client.lastname', 'lastname')
+            .addSelect('medical_email.email', 'email')
+            .addSelect('YEAR(NOW()) - CAST(YEAR(medical_client.birthday) AS SIGNED)', 'age')
+            .addSelect('medical_client.birthday', 'birthday')
+            .addSelect('medical_client.gender', 'gender')
+            .addSelect('medical_result.examName', 'exam')
+            .addSelect('medical_result.examSubtype', 'examSubtype')
+            .addSelect('medical_result.examType', 'examType')
+            .addSelect('medical_disease.diseaseName', 'disease')
+            .addSelect('medical_disease.diseaseGroupName', 'diseaseGroup')
+            .addSelect('medical_disease.diseaseCommentary', 'diseaseCommentary')
             .where('1');
 
 
@@ -85,7 +88,6 @@ export class MedicalResultDiseaseReportService {
         if (companyRuc) {
             query.andWhere('medical_order.companyRuc LIKE :companyRuc', { companyRuc: companyRuc });
         }
-
 
         const data = await query.setParameter('year', year)
             .orderBy('medical_order.create_at', 'ASC').getRawMany<MedicalResultReport>();
