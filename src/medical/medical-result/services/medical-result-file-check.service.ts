@@ -34,8 +34,6 @@ export class MedicalResultFileCheckService {
         }
 
         const values = await this.retriveMedicalResults();
-        console.log(values);
-
         if (!values.length) {
             throw new NotFoundException();
         }
