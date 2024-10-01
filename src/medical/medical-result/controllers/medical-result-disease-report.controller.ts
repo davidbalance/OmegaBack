@@ -21,13 +21,11 @@ export class MedicalResultDiseaseReportController {
         @Body() body: PostMedicalResultDiseaseReportRequestDto,
         @Res({ passthrough: true }) response: Response
     ): Promise<StreamableFile> {
-        Logger.log('Generate report: start')
         const file = await this.service.generateReport(body);
         response.set({
             'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'Content-Disposition': 'attachment; filename="medical-result-disease-report.xlsx"',
         });
-        Logger.log('Generate report: ready to send')
         return file;
     }
 
