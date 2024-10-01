@@ -8,14 +8,14 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-au
 
 @ApiTags('Medical>Result>Disease')
 @ApiBearerAuth()
-@Controller('medical/:id')
+@Controller('medical/:id/disease')
 @UseGuards(JwtAuthGuard)
 export class MedicalDiseaseManagementController {
   constructor(
     @Inject(MedicalResultDiseaseManagementService) private readonly service: MedicalResultDiseaseManagementService
   ) { }
 
-  @Get('disease')
+  @Get()
   async findOne(
     @Param('id') id: string
   ): Promise<GetMedicalResultDiseaseResponseDto> {
@@ -23,7 +23,7 @@ export class MedicalDiseaseManagementController {
     return plainToInstance(GetMedicalResultDiseaseResponseDto, data);
   }
 
-  @Patch('disease')
+  @Patch()
   async updateOne(
     @Param('id') id: number,
     @Body() body: PatchMedicalResultDiseaseRequestDto
@@ -32,7 +32,7 @@ export class MedicalDiseaseManagementController {
     return {}
   }
 
-  @Delete('disease')
+  @Delete()
   async deleteOne(
     @Param('id') id: number
   ): Promise<any> {

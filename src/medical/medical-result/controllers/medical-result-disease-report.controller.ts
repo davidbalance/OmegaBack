@@ -9,8 +9,8 @@ import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-au
 
 @ApiTags('Medical>Result>Disease')
 @ApiBearerAuth()
-// @UseGuards(JwtAuthGuard)
-@Controller('medical/results/report/diseases')
+@UseGuards(JwtAuthGuard)
+@Controller('medical/result/disease/report')
 export class MedicalResultDiseaseReportController {
     constructor(
         @Inject(MedicalResultDiseaseReportService) private readonly service: MedicalResultDiseaseReportService

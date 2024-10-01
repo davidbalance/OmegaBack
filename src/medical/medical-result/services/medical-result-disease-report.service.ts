@@ -26,9 +26,6 @@ export class MedicalResultDiseaseReportService {
     }
 
     async generateReport(searchParam: PostMedicalResultDiseaseReportRequestDto): Promise<StreamableFile> {
-
-
-
         const values = await this.find(searchParam);
 
         const processedValues: ExcelReportType[] = values.map((e) => ({
