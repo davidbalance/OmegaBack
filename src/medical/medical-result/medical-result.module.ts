@@ -33,6 +33,8 @@ import { MedicalResultReportController } from "./controllers/medical-result-repo
 import { UrlFileFetcherModule } from "@/shared/url-file-fetcher/url-file-fetcher.module";
 import { Base64Module } from "@/shared/base64/base64.module";
 import { MedicalResultOrionListener } from "./listeners/medical-result-orion.listener";
+import { MedicalResultFileCheckService } from "./services/medical-result-file-check.service";
+import { MedicalResultFileCheckController } from "./controllers/medical-result-file-check.controller";
 
 @Module({
   imports: [
@@ -55,6 +57,7 @@ import { MedicalResultOrionListener } from "./listeners/medical-result-orion.lis
     MedicalResultDiseaseManagementController,
     MedicalResultDiseaseReportController,
     MedicalResultExternalConnectionController,
+    MedicalResultFileCheckController,
     MedicalResultFileManagementController,
     MedicalResultManagementController,
     MedicalResultPaginationController,
@@ -72,6 +75,7 @@ import { MedicalResultOrionListener } from "./listeners/medical-result-orion.lis
     MedicalResultExternalConnectionService,
     MedicalResultExternalConnectionProvider,
     MedicalResultExternalKeyService,
+    MedicalResultFileCheckService,
     MedicalResultFileManagementService,
     MedicalResultManagementService,
     MedicalResultPaginationService,
