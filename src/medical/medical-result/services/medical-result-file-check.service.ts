@@ -3,6 +3,7 @@ import { MedicalResultRepository } from "../repositories/medical-result.reposito
 import { ExcelManagerService } from "@/shared/excel-manager/excel-manager.service";
 import dayjs from "dayjs";
 import { existsSync } from "fs";
+import { In } from "typeorm";
 
 @Injectable()
 export class MedicalResultFileCheckService {
@@ -21,19 +22,14 @@ export class MedicalResultFileCheckService {
     ) { }
 
     public async generateReport(): Promise<StreamableFile> {
-        const files = await this.retriveResultFiles();
-        const batchSize = 1000;  // Define a reasonable batch size
-
-        for (let i = 0; i < files.length; i += batchSize) {
-            const batch = files.slice(i, i + batchSize);
-            await Promise.all(batch.map(async (value) => {
-                if (!existsSync(value.filePath)) {
-                    await this.repository.findOneAndUpdate({ id: value.id }, { hasFile: false });
-                }
-            }));
-        }
-
-        const values = await this.retriveMedicalResults();
+        const values = await this.repository.query('result')
+            .select('result.id', 'id')
+            .addSelect('result.filePath', 'filePath')
+            .addSelect('result.examName', 'examName')
+            .where('result.filePath IS NOT NULL')
+            .andWhere('result.hasFile = 0')
+            .getRawMany<{ id: number, filePath: string, examName: string }>();
+            
         if (!values.length) {
             throw new NotFoundException();
         }
@@ -42,22 +38,28 @@ export class MedicalResultFileCheckService {
         return stream;
     }
 
-    private retriveResultFiles() {
-        return this.repository.query('result')
+    public async fileCheckCount(): Promise<{ total: number, match: number, error: number, }> {
+        const files = await this.repository.query('result')
             .select('result.id', 'id')
             .addSelect('result.filePath', 'filePath')
             .where('result.filePath IS NOT NULL')
             .andWhere('result.hasFile = 1')
             .getRawMany<{ id: number, filePath: string }>();
-    }
 
-    private retriveMedicalResults() {
-        return this.repository.query('result')
-            .select('result.id', 'id')
-            .addSelect('result.filePath', 'filePath')
-            .addSelect('result.examName', 'examName')
-            .where('result.filePath IS NOT NULL')
-            .andWhere('result.hasFile = 0')
-            .getRawMany<{ id: number, filePath: string, examName: string }>();
+        const batchSize = 1000;
+        const ids: number[] = [];
+
+        for (let i = 0; i < files.length; i += batchSize) {
+            const batch = files.slice(i, i + batchSize);
+            const batchedIds = await Promise.all(batch.filter((value) => !existsSync(value.filePath)).map(e => e.id));
+            ids.push(...batchedIds);
+        }
+
+        await this.repository.findOneAndUpdate({ id: In(ids) }, { hasFile: false });
+        return {
+            total: files.length,
+            match: files.length - ids.length,
+            error: ids.length
+        }
     }
 }

@@ -39,4 +39,19 @@ describe('MedicalResultFileCheckController', () => {
             });
         });
     });
+
+    describe('generateReport', () => {
+        it('should retive a count of existing files', async () => {
+            // Arrange
+            const mockedValue = { total: 100, match: 99, error: 1 };
+            service.fileCheckCount.mockResolvedValue(mockedValue);
+
+            // Act
+            const result = await controller.count();
+
+            // Assert
+            expect(service.fileCheckCount).toHaveBeenCalled();
+            expect(result).toEqual(mockedValue);
+        });
+    });
 });

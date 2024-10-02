@@ -3,6 +3,8 @@ import { Controller, Get, Inject, Res, StreamableFile, UseGuards } from "@nestjs
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { MedicalResultFileCheckService } from "../services/medical-result-file-check.service";
 import { Response } from "express";
+import { MedicalResultFileCheckCount } from "../dtos/response/medical-result-file-check-count";
+import { plainToInstance } from "class-transformer";
 
 @ApiTags('Medical>Result')
 @ApiBearerAuth()
@@ -13,7 +15,7 @@ export class MedicalResultFileCheckController {
         @Inject(MedicalResultFileCheckService) private readonly service: MedicalResultFileCheckService
     ) { }
 
-    @Get()
+    @Get('report')
     async generateReport(
         @Res({ passthrough: true }) response: Response
     ): Promise<StreamableFile> {
@@ -23,5 +25,11 @@ export class MedicalResultFileCheckController {
             'Content-Disposition': 'attachment; filename="resultados_medicos_no_encontrados.xlsx"',
         });
         return file;
+    }
+
+    @Get('count')
+    async count(): Promise<MedicalResultFileCheckCount> {
+        const data = await this.service.fileCheckCount();
+        return plainToInstance(MedicalResultFileCheckCount, data);
     }
 }
