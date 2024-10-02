@@ -9,11 +9,14 @@ import { In } from "typeorm";
 export class MedicalResultFileCheckService {
 
     private readonly columns: {
-        header: string, key: 'id' | 'filePath' | 'examName'
+        header: string, key: 'id' | 'filePath' | 'examName' | "name" | "lastname" | "dni"
     }[] = [
             { header: "ID", key: "id" },
+            { header: "NOMBRE", key: "name" },
+            { header: "APELLIDO", key: "lastname" },
+            { header: "CEDULA", key: "dni" },
             { header: "EXAMEN", key: "examName" },
-            { header: "UBICACION DEL ARCHIVO", key: "filePath" }
+            { header: "UBICACION DEL ARCHIVO", key: "filePath" },
         ];
 
     constructor(
@@ -23,9 +26,14 @@ export class MedicalResultFileCheckService {
 
     public async generateReport(): Promise<StreamableFile> {
         const values = await this.repository.query('result')
+            .leftJoin('result.order', 'order')
+            .leftJoin('order.client', 'client')
             .select('result.id', 'id')
             .addSelect('result.filePath', 'filePath')
             .addSelect('result.examName', 'examName')
+            .addSelect('client.name', 'name')
+            .addSelect('client.lastname', 'lastname')
+            .addSelect('client.dni', 'dni')
             .where('result.filePath IS NOT NULL')
             .andWhere('result.hasFile = 0')
             .getRawMany<{ id: number, filePath: string, examName: string }>();

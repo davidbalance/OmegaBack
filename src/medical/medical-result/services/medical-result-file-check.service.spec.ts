@@ -31,6 +31,7 @@ describe('MedicalResultFileCheckService', () => {
         it('should generate a report', async () => {
             // Arrange
             repository.query.mockReturnValue({
+                leftJoin: jest.fn().mockReturnThis(),
                 select: jest.fn().mockReturnThis(),
                 addSelect: jest.fn().mockReturnThis(),
                 where: jest.fn().mockReturnThis(),
@@ -44,9 +45,14 @@ describe('MedicalResultFileCheckService', () => {
 
             // Assert
             expect(repository.query).toHaveBeenCalledWith('result');
+            expect(repository.query().leftJoin).toHaveBeenCalledWith('result.order', 'order');
+            expect(repository.query().leftJoin).toHaveBeenCalledWith('order.client', 'client');
             expect(repository.query().select).toHaveBeenCalledWith('result.id', 'id');
             expect(repository.query().addSelect).toHaveBeenCalledWith('result.filePath', 'filePath');
             expect(repository.query().addSelect).toHaveBeenCalledWith('result.examName', 'examName');
+            expect(repository.query().addSelect).toHaveBeenCalledWith('client.name', 'name');
+            expect(repository.query().addSelect).toHaveBeenCalledWith('client.lastname', 'lastname');
+            expect(repository.query().addSelect).toHaveBeenCalledWith('client.dni', 'dni');
             expect(repository.query().where).toHaveBeenCalledWith('result.filePath IS NOT NULL');
             expect(repository.query().andWhere).toHaveBeenCalledWith('result.hasFile = 0');
             expect(repository.query().getRawMany).toHaveBeenCalled();
@@ -57,6 +63,7 @@ describe('MedicalResultFileCheckService', () => {
         it('should throw not found exception', async () => {
             // Arrange
             repository.query.mockReturnValue({
+                leftJoin: jest.fn().mockReturnThis(),
                 select: jest.fn().mockReturnThis(),
                 addSelect: jest.fn().mockReturnThis(),
                 where: jest.fn().mockReturnThis(),
