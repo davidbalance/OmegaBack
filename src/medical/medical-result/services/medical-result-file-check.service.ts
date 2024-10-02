@@ -29,7 +29,7 @@ export class MedicalResultFileCheckService {
             .where('result.filePath IS NOT NULL')
             .andWhere('result.hasFile = 0')
             .getRawMany<{ id: number, filePath: string, examName: string }>();
-            
+
         if (!values.length) {
             throw new NotFoundException();
         }
@@ -55,7 +55,7 @@ export class MedicalResultFileCheckService {
             ids.push(...batchedIds);
         }
 
-        await this.repository.findOneAndUpdate({ id: In(ids) }, { hasFile: false });
+        await this.repository.updateInIds(ids, { hasFile: false });
         return {
             total: files.length,
             match: files.length - ids.length,

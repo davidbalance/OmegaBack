@@ -84,26 +84,6 @@ describe('MedicalResultFileCheckService', () => {
 
         });
 
-        /*         it('should generate a report', async () => {
-            // Arrange
-            const spyRetriveResultFiles = jest.spyOn(service as any, 'retriveResultFiles').mockResolvedValue(mockedValues);
-            const spyExistsSync = jest.spyOn(fs, 'existsSync').mockReturnValue(false);
-            repository.findOneAndUpdate.mockResolvedValue(undefined);
-            const spyRetriveMedicalResults = jest.spyOn(service as any, 'retriveMedicalResults').mockResolvedValue(mockedValues);
-            excelService.craft.mockResolvedValue(mockedStream);
- 
-            // Act
-            const result = await service.generateReport();
- 
-            // Assert
-            expect(spyRetriveResultFiles).toHaveBeenCalled();
-            expect(spyExistsSync).toHaveBeenCalledWith(mockedValues[0].filePath);
-            expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: mockedValues[0].id }, { hasFile: false });
-            expect(spyRetriveMedicalResults).toHaveBeenCalled()
-            expect(excelService.craft).toHaveBeenCalledWith([{ ...mockedValues[0] }], expect.any(Array), expect.any(String));
-            expect(result).toEqual(mockedStream);
-        }); */
-
         it('should retrive total, match and error counts', async () => {
             // Arrange
             const spyExistsSync = jest.spyOn(fs, 'existsSync').mockReturnValue(false);
@@ -114,6 +94,7 @@ describe('MedicalResultFileCheckService', () => {
 
             // Assert
             expect(spyExistsSync).toHaveBeenCalledWith(mockedValues[0].filePath);
+            expect(repository.updateInIds).toHaveBeenCalledWith(mockedValues.map(e => e.id), { hasFile: false });
             expect(repository.query).toHaveBeenCalledWith('result');
             expect(repository.query().select).toHaveBeenCalledWith('result.id', 'id');
             expect(repository.query().addSelect).toHaveBeenCalledWith('result.filePath', 'filePath');
