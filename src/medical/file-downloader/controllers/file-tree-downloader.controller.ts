@@ -19,14 +19,11 @@ export class FileTreeDownloaderController {
         @Query() query: DownloadTreeRequest,
         @Res({ passthrough: true }) response: Response
     ): Promise<StreamableFile> {
-        console.log(1)
         const zip = await this.service.downloadTree(query);
-        console.log(2)
         response.set({
             'Content-Type': 'application/zip',
             'Content-Disposition': 'attachment; filename="archivo-medico.zip"',
         })
-        console.log(3)
         return zip;
     }
 }
