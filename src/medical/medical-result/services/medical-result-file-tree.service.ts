@@ -1,4 +1,4 @@
-import { Inject, Injectable, StreamableFile } from "@nestjs/common";
+import { Inject, Injectable, Logger, StreamableFile } from "@nestjs/common";
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { MedicalResultFileManagementService } from "./medical-result-file-management.service";
 import { ZipperService } from "@/shared/zipper/zipper.service";
@@ -70,16 +70,21 @@ export class MedicalResultFileTreeService {
   }
 
   async getTree(data: RetriveTreeType): Promise<StreamableFile> {
+    Logger.log(`File tree: ${1}`);
     const values = await this.retriveResults(data);
+    Logger.log(`File tree: ${2}`);
     const sources: { source: string, name: string }[] = [];
+    Logger.log(`File tree: ${3}`);
     for (const value of values) {
       sources.push({
         source: value.filePath,
         name: path.join(`${value.year}`, value.corporativeName, `${value.companyName}_${value.companyRuc}`, value.branchName, value.process, `${value.dni}_${value.name}_${value.lastname}`, `${value.order}_${value.examName}.pdf`.toLocaleLowerCase())
       });
     }
-
+    
+    Logger.log(`File tree: ${4}`);
     const zip = this.zipper.zip(sources);
+    Logger.log(`File tree: ${5}`);
     return zip;
   }
 
