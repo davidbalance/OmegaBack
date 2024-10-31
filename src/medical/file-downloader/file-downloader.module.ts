@@ -6,6 +6,8 @@ import { LocalStorageModule } from '@/shared/storage-manager';
 import { MedicalResultModule } from '../medical-result/medical-result.module';
 import { FileDownloaderService } from './services/file-downloader.service';
 import { MedicalOrderModule } from '../medical-order/medical-order.module';
+import { FileTreeDownloaderController } from './controllers/file-tree-downloader.controller';
+import { FileTreeDownloaderService } from './services/file-tree-downloader.service';
 
 @Module({
     imports: [
@@ -16,10 +18,12 @@ import { MedicalOrderModule } from '../medical-order/medical-order.module';
         ZipperModule.register({})
     ],
     controllers: [
-        FileDownloaderController
+        FileDownloaderController,
+        FileTreeDownloaderController
     ],
     providers: [
-        FileDownloaderService
+        FileDownloaderService,
+        FileTreeDownloaderService
     ],
 })
 export class FileDownloaderModule { }

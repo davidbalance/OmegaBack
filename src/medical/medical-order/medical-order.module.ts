@@ -28,6 +28,8 @@ import { MedicalOrderExternalConnectionProvider, MedicalOrderExternalConnectionS
 import { MedicalOrderExpandedPaginationController } from "./controllers/medical-order-expanded-pagination.controller";
 import { LocalStorageModule } from "@/shared/storage-manager";
 import { Base64Module } from "@/shared/base64/base64.module";
+import { MedicalOrderProcessController } from "./controllers/medical-order-process.controller";
+import { MedicalOrderProcessService } from "./services/medical-order-process.service";
 
 @Module({
   imports: [
@@ -72,7 +74,8 @@ import { Base64Module } from "@/shared/base64/base64.module";
     MedicalOrderExternalConnectionController,
     MedicalOrderMailController,
     MedicalOrderPaginationController,
-    MedicalOrderStatusController
+    MedicalOrderStatusController,
+    MedicalOrderProcessController
   ],
   providers: [
     MedicalOrderExternalKeyRepository,
@@ -86,7 +89,8 @@ import { Base64Module } from "@/shared/base64/base64.module";
     MedicalOrderExternalKeyService,
     MedicalOrderMailService,
     MedicalOrderManagementService,
-    MedicalOrderPaginationService
+    MedicalOrderPaginationService,
+    MedicalOrderProcessService
   ],
   exports: [
     MedicalOrderExternalConnectionProvider,

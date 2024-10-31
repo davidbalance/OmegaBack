@@ -1,17 +1,17 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
 import { createReadStream } from 'fs';
 import archiver from 'archiver';
-import path from 'path';
+import * as path from 'path';
 import { PassThrough } from 'stream';
 
 @Injectable()
 export class ZipperService {
-    public async zip(sources: string[]): Promise<StreamableFile> {
-
-        const inputSources = sources.map((source: string) => ({
-            stream: createReadStream(source),
-            name: path.basename(source)
+    public async zip(sources: (string | { source: string, name: string })[]): Promise<StreamableFile> {
+        const inputSources = sources.map((source: string | { source: string, name: string }) => ({
+            stream: createReadStream(typeof source === 'string' ? source : source.source),
+            name: typeof source === 'string' ? path.basename(source) : source.name,
         }));
+
 
         const outputStream = new PassThrough();
         const archive = archiver('zip', {

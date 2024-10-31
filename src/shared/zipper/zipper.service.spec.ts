@@ -23,11 +23,15 @@ describe('ZipperService', () => {
   });
 
   describe('zip', () => {
-    it('should return a StreamableFile', async () => {
+
+    beforeEach(() => {
+      (fs.createReadStream as jest.Mock).mockImplementation(() => new PassThrough());
+    });
+
+    it('should return a StreamableFile using sources as string', async () => {
       const sources = ['file1.txt', 'file2.txt'];
 
-      (path.basename as jest.Mock).mockImplementation((source) => source.split('/').pop());
-      (fs.createReadStream as jest.Mock).mockImplementation(() => new PassThrough());
+      (path.basename as jest.Mock).mockImplementation((source) => source.split('/').pop())
 
       const mockArchive = {
         append: jest.fn(),
@@ -42,6 +46,28 @@ describe('ZipperService', () => {
 
       expect(result).toBeInstanceOf(StreamableFile);
       expect(path.basename).toHaveBeenCalledTimes(sources.length);
+      expect(fs.createReadStream).toHaveBeenCalledTimes(sources.length);
+      expect(archiver).toHaveBeenCalledWith('zip', { zlib: { level: 9 } });
+      expect(mockArchive.pipe).toHaveBeenCalled();
+      expect(mockArchive.append).toHaveBeenCalledTimes(sources.length);
+      expect(mockArchive.finalize).toHaveBeenCalled();
+    });
+
+    it('should return a StreamableFile using sources as object', async () => {
+      const sources = [{ source: 'file1.txt', name: 'custom_file1.txt' }, { source: 'file2.txt', name: 'custom_file2.txt' }];
+
+      const mockArchive = {
+        append: jest.fn(),
+        pipe: jest.fn(),
+        finalize: jest.fn(),
+        on: jest.fn(),
+      };
+
+      (archiver as unknown as jest.Mock).mockReturnValue(mockArchive);
+
+      const result = await service.zip(sources);
+
+      expect(result).toBeInstanceOf(StreamableFile);
       expect(fs.createReadStream).toHaveBeenCalledTimes(sources.length);
       expect(archiver).toHaveBeenCalledWith('zip', { zlib: { level: 9 } });
       expect(mockArchive.pipe).toHaveBeenCalled();

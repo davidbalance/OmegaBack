@@ -1,15 +1,19 @@
-import { Body, Controller, Delete, Inject, Param, Post, Res, StreamableFile } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Logger, Param, Post, Query, Res, StreamableFile, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { FileDownloaderService } from '../services/file-downloader.service';
 import { PostFileSourceRequestDto } from '../dtos/request/file-source.post.dto';
 import { PostDownloadZipRequestDto } from '../dtos/request/download-zip.post.dto';
+import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
+import { User } from '@/shared/decorator';
+import { DownloadTreeRequest } from '../dtos/request/download-tree.dto';
+import { MedicalResultFileTreeService } from '@/medical/medical-result/services/medical-result-file-tree.service';
 
 @ApiTags('Medical>File', 'External Connection')
 @Controller('medical/file')
 export class FileDownloaderController {
     constructor(
-        @Inject(FileDownloaderService) private readonly service: FileDownloaderService
+        @Inject(FileDownloaderService) private readonly service: FileDownloaderService,
     ) { }
 
     @Post()
@@ -38,12 +42,15 @@ export class FileDownloaderController {
         return zip;
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete(':type/:id')
     async deleteFile(
+        @User() user: number,
         @Param('type') type: string,
         @Param('id') id: number,
     ): Promise<any> {
         await this.service.deleteFile({ id, type: type as any });
+        Logger.warn(`File (${id} - ${type}) deleted by: ${user}`);
         return {};
     }
 }

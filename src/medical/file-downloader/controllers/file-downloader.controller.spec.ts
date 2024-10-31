@@ -82,13 +82,14 @@ describe('FileDownloaderController', () => {
     describe('deleteFile', () => {
         const type = FileSourceEnum.RESULT;
         const id = 1;
+        const user = 1;
 
         it('should delete a file', async () => {
             // Arrange
             service.deleteFile.mockResolvedValueOnce(undefined);
 
             // Act
-            const result = await controller.deleteFile(type, id);
+            const result = await controller.deleteFile(user, type, id);
 
             // Assert
             expect(result).toEqual({});

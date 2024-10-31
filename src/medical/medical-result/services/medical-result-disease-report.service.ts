@@ -18,7 +18,8 @@ export class MedicalResultDiseaseReportService {
     async getCurrentYears(): Promise<MedicalResultYear[]> {
         const data = await this.repository.query('medical_disease')
             .leftJoinAndSelect('medical_disease.result', 'medical_result')
-            .select('YEAR(medical_result.createAt)', 'year')
+            .leftJoinAndSelect('medical_result.order', 'medical_order')
+            .select('YEAR(medical_order.createAt)', 'year')
             .distinct(true)
             .orderBy('year', 'ASC')
             .getRawMany<MedicalResultYear>();
@@ -56,7 +57,7 @@ export class MedicalResultDiseaseReportService {
             .addSelect('medical_client.patient_role', 'role')
             .addSelect('medical_client.managementName', 'management')
             .addSelect('medical_client.areaName', 'area')
-            .addSelect('YEAR(medical_result.createAt)', 'year')
+            .addSelect('YEAR(medical_order.createAt)', 'year')
             .addSelect('medical_order.process', 'process')
             .addSelect('medical_result.createAt', 'date')
             .addSelect('medical_client.jobPositionName', 'jobPosition')
@@ -77,7 +78,7 @@ export class MedicalResultDiseaseReportService {
 
 
         if (year) {
-            query.andWhere('YEAR(medical_result.createAt) = :year', { year: year });
+            query.andWhere('YEAR(medical_order.createAt) = :year', { year: year });
         }
         if (corporativeName) {
             query.andWhere('medical_order.corporativeName LIKE :corporativeName', { corporativeName: corporativeName });

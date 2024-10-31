@@ -35,6 +35,8 @@ import { Base64Module } from "@/shared/base64/base64.module";
 import { MedicalResultOrionListener } from "./listeners/medical-result-orion.listener";
 import { MedicalResultFileCheckService } from "./services/medical-result-file-check.service";
 import { MedicalResultFileCheckController } from "./controllers/medical-result-file-check.controller";
+import { MedicalResultFileTreeService } from "./services/medical-result-file-tree.service";
+import { ZipperModule } from "@/shared/zipper/zipper.module";
 
 @Module({
   imports: [
@@ -49,7 +51,8 @@ import { MedicalResultFileCheckController } from "./controllers/medical-result-f
     DniInterceptorModule,
     ExcelManagerModule,
     UrlFileFetcherModule,
-    Base64Module
+    Base64Module,
+    ZipperModule
   ],
   controllers: [
     MedicalDiseaseManagementController,
@@ -77,6 +80,7 @@ import { MedicalResultFileCheckController } from "./controllers/medical-result-f
     MedicalResultExternalKeyService,
     MedicalResultFileCheckService,
     MedicalResultFileManagementService,
+    MedicalResultFileTreeService,
     MedicalResultManagementService,
     MedicalResultPaginationService,
     MedicalResultReportService,
@@ -84,6 +88,7 @@ import { MedicalResultFileCheckController } from "./controllers/medical-result-f
   exports: [
     MedicalResultManagementService,
     MedicalResultFileManagementService,
+    MedicalResultFileTreeService,
     MedicalResultDiseaseReportService,
     MedicalResultExternalConnectionProvider
   ]
