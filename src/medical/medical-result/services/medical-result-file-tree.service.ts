@@ -70,11 +70,8 @@ export class MedicalResultFileTreeService {
   }
 
   async getTree(data: RetriveTreeType): Promise<StreamableFile> {
-    Logger.log(`File tree: ${1}`);
     const values = await this.retriveResults(data);
-    Logger.log(`File tree: ${2}`);
     const sources: { source: string, name: string }[] = [];
-    Logger.log(`File tree: ${3}`);
     for (const value of values) {
       sources.push({
         source: value.filePath,
@@ -82,9 +79,7 @@ export class MedicalResultFileTreeService {
       });
     }
     
-    Logger.log(`File tree: ${4}`);
     const zip = this.zipper.zip(sources);
-    Logger.log(`File tree: ${5}`);
     return zip;
   }
 
