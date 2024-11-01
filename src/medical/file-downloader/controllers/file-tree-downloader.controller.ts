@@ -4,7 +4,6 @@ import { Response } from 'express';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 import { DownloadTreeRequest } from '../dtos/request/download-tree.dto';
 import { FileTreeDownloaderService } from '../services/file-tree-downloader.service';
-import { TimeoutInterceptor } from '@/shared/interceptors/timeout/timeout.interceptor';
 
 @ApiTags('Medical>File>Tree')
 @ApiBearerAuth()
@@ -15,7 +14,6 @@ export class FileTreeDownloaderController {
         @Inject(FileTreeDownloaderService) private readonly service: FileTreeDownloaderService,
     ) { }
 
-    @UseInterceptors(new TimeoutInterceptor(300000)) // Timeout set to 5 minutes
     @Get()
     async downloadTree(
         @Query() query: DownloadTreeRequest,
