@@ -5,7 +5,7 @@ import { catchError, Observable, throwError, timeout, TimeoutError } from 'rxjs'
 export class TimeoutInterceptor implements NestInterceptor {
 
   constructor(
-    private readonly miliseconds: number
+    private readonly miliseconds: number = 100
   ) { }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
