@@ -19,11 +19,10 @@ export class FileTreeDownloaderController {
         @Query() query: DownloadTreeRequest,
         @Res({ passthrough: true }) response: Response
     ): Promise<StreamableFile> {
-        response.setTimeout(1000 * 60 * 5);
         const zip = await this.service.downloadTree(query);
         response.set({
             'Content-Type': 'application/zip',
-            'Content-Disposition': 'attachment; filename="archivo-medico.zip"',
+            'Content-Disposition': 'attachment; filename="file-tree.zip"',
         })
         return zip;
     }
