@@ -15,6 +15,7 @@ describe('FileTreeDownloaderController', () => {
         controller = unit;
         service = unitRef.get(FileTreeDownloaderService);
         response = {
+            setTimeout: jest.fn(),
             set: jest.fn(),
             pipe: jest.fn(),
         };
@@ -41,6 +42,7 @@ describe('FileTreeDownloaderController', () => {
 
             // Assert
             expect(service.downloadTree).toHaveBeenCalledWith(query);
+            expect(response.setTimeout).toHaveBeenCalled();
             expect(response.set).toHaveBeenCalledWith({
                 'Content-Type': 'application/zip',
                 'Content-Disposition': 'attachment; filename="archivo-medico.zip"',
