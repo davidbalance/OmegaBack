@@ -46,9 +46,6 @@ async function bootstrap() {
   app.use(express.json({ limit: '1mb' }));
 
   // app.enableCors();
-
-  app.getHttpAdapter().getInstance().setTimeout(300000);
-
   await app.listen(port);
   if (!whitelistEnviroment.includes(currentEnvironment)) {
     logger.log(`App running in port: ${port}`);
