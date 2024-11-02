@@ -8,6 +8,7 @@ import { ApiKey } from '../entities/api-key.entity';
 import { PatchApiKeyRequestDto } from '../dtos/request/patch.api-key.request.dto';
 import { NEST_UUID } from '@/shared/nest-ext/nest-uuid/inject-token';
 import { NestUuid } from '@/shared/nest-ext/nest-uuid/nest-uuid.type';
+import { AuthConfig, AuthConfigName } from '@/shared/config/auth.config';
 
 @Injectable()
 export class ApiKeyManagementService {
@@ -19,9 +20,11 @@ export class ApiKeyManagementService {
   ) { }
 
   async create(id: number, { name }: PostApiKeyRequestDto): Promise<ApiKey> {
+    const auth = this.configService.get<AuthConfig>(AuthConfigName);
+
     const foundCredential = await this.credentialService.findOneByUser(id);
     const apiKey: string = this.uuid.v4();
-    const expiresIn: number = this.configService.get<number>('APIKEY_EXPIRES_IN');
+    const expiresIn: number = auth.apikey_expires;
     const expiresAt = dayjs().add(expiresIn, 's').toDate();
     const newApiKey = await this.repository.create({
       name: name,

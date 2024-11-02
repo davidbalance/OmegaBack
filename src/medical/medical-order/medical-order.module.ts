@@ -31,6 +31,9 @@ import { Base64Module } from "@/shared/base64/base64.module";
 import { MedicalOrderProcessController } from "./controllers/medical-order-process.controller";
 import { MedicalOrderProcessService } from "./services/medical-order-process.service";
 import { NestHandlebarsModule } from "@/shared/nest-ext/nest-handlebars/nest-handlebars.module";
+import { HandlebarsModule } from "@/shared/handlebars/handlebars.module";
+import { SmtpConfig, SmtpConfigName } from "@/shared/config/smtp.config";
+import { MailOrderConfig, MailOrderConfigName } from "@/shared/config/mail-order.config";
 
 @Module({
   imports: [
@@ -48,26 +51,13 @@ import { NestHandlebarsModule } from "@/shared/nest-ext/nest-handlebars/nest-han
     MailerModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
-        auth: {
-          user: config.get<string>('SMTP_MAIL_AUTH_USER'),
-          password: config.get<string>('SMTP_MAIL_AUTH_PASSWORD'),
-        },
-        default: {
-          name: config.get<string>('SMTP_DEFAULT_APP_NAME'),
-          address: config.get<string>('SMTP_DEFAULT_MAIL_FROM'),
-        },
-        server: {
-          host: config.get<string>('SMTP_MAIL_HOST'),
-          port: config.get<number>('SMTP_MAIL_PORT'),
-          secure: config.get<boolean>('SMTP_MAIL_SECURE'),
-        },
-        template: {
-          name: 'mail.hbs',
-          path: 'templates/mail'
-        }
-      })
+      useFactory: async (config: ConfigService) => config.get<SmtpConfig>(SmtpConfigName)
     }),
+    HandlebarsModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => config.get<MailOrderConfig>(MailOrderConfigName)
+    })
   ],
   controllers: [
     MedicalOrderCloudController,

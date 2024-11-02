@@ -1,28 +1,7 @@
-import { Type } from "@nestjs/common";
 import { Address, Attachment } from "nodemailer/lib/mailer";
+import { SmtpConfig } from "../config/smtp.config";
 
-export type MailerTemplateOptions = {
-    name: string;
-    path: string;
-}
-
-export type MailerSMTPServerOptions = {
-    host: string;
-    port: number;
-    secure: boolean;
-}
-
-export type MailerAuthOptions = {
-    user: string;
-    password: string;
-}
-
-export interface MailerModuleOptions {
-    template: MailerTemplateOptions,
-    server: MailerSMTPServerOptions,
-    auth: MailerAuthOptions
-    default: Address;
-}
+export interface MailerModuleOptions extends SmtpConfig { }
 
 export type MailerSender = {
     from?: Address;
