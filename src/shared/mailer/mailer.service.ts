@@ -27,7 +27,6 @@ export class MailerService {
     }
 
     public async send(options: MailerSender): Promise<any> {
-        console.log(options);
         const { from, recipients, subject, content, attachments } = options;
 
         const mailOptions: Mail.Options = {
@@ -38,7 +37,6 @@ export class MailerService {
             attachments: attachments
         }
 
-        console.log(mailOptions);
         try {
             const result = await this.transporter.sendMail(mailOptions);
             return result;

@@ -34,15 +34,10 @@ export class FileZipTreeConsumer extends WorkerHost {
         const sources: { source: string, name: string }[] = job.data.sources;
 
         try {
-            console.log(1)
             const code = this.uuid.v4();
-            console.log(2)
             const filename = await this.zipFiles(sources);
-            console.log(3)
             await this.repository.create({ email, zipCode: code, filepath: filename });
-            console.log(4)
 
-            console.log('Sending email');
             await this.mailer.send({
                 subject: 'Arbol de archivos',
                 content: `Hola!\nPara descargar el archivo debe entrar al siguiente link:\n${server.app_client}/omega/tree/${code}`,
@@ -51,7 +46,6 @@ export class FileZipTreeConsumer extends WorkerHost {
                     name: email
                 }]
             });
-            console.log(5)
         } catch (error) {
             Logger.error(error);
         }

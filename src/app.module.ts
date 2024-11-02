@@ -69,6 +69,7 @@ import redisConfig, { RedisConfig, RedisConfigName } from './shared/config/redis
         MAIL_ORDER_NAME: Joi.string().required(),
         REDIS_HOST: Joi.string().required(),
         REDIS_POST: Joi.number().required(),
+        REDIS_USERNAME: Joi.string().required(),
         REDIS_PASSWORD: Joi.string().required(),
       }),
       load: [
@@ -90,11 +91,11 @@ import redisConfig, { RedisConfig, RedisConfigName } from './shared/config/redis
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         const redis = config.get<RedisConfig>(RedisConfigName);
-        console.log(redis);
         return {
           connection: {
             host: redis.host,
             port: redis.port,
+            username: redis.username,
             password: redis.password
           }
         };
