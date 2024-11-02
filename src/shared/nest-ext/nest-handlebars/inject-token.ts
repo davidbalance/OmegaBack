@@ -1,0 +1,1 @@
+export const NEST_HANDLEBARS = 'nest-handlebars'

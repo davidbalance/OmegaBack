@@ -27,7 +27,7 @@ export interface MailerModuleOptions {
 export type MailerSender = {
     from?: Address;
     recipients: Address[];
+    content: string,
     subject: string;
-    placeholderReplacements?: Record<string, string>;
     attachments?: Attachment[]
 }
