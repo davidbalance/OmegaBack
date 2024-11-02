@@ -25,6 +25,8 @@ import databaseConfig from './shared/config/database.config';
 import mailOrderConfig from './shared/config/mail-order.config';
 import smtpConfig, { SmtpConfig, SmtpConfigName } from './shared/config/smtp.config';
 import { MailerModule } from './shared/mailer/mailer.module';
+import { BullModule } from '@nestjs/bullmq';
+import redisConfig, { RedisConfig, RedisConfigName } from './shared/config/redis.config';
 
 @Module({
   imports: [
@@ -65,6 +67,9 @@ import { MailerModule } from './shared/mailer/mailer.module';
         CLIENT_KEY: Joi.string().required(),
         MAIL_ORDER_TEMPLATE: Joi.string().required(),
         MAIL_ORDER_NAME: Joi.string().required(),
+        REDIS_HOST: Joi.string().required(),
+        REDIS_POST: Joi.number().required(),
+        REDIS_PASSWORD: Joi.string().required(),
       }),
       load: [
         authConfig,
@@ -72,13 +77,28 @@ import { MailerModule } from './shared/mailer/mailer.module';
         databaseConfig,
         mailOrderConfig,
         serverConfig,
-        smtpConfig
+        smtpConfig,
+        redisConfig
       ]
     }),
     MailerModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => config.get<SmtpConfig>(SmtpConfigName)
+    }),
+    BullModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        const redis = config.get<RedisConfig>(RedisConfigName);
+        console.log(redis);
+        return {
+          connection: {
+            host: redis.host,
+            port: redis.port,
+            password: redis.password
+          }
+        };
+      }
     }),
     LoggerModule,
     SqlDatabaseModule,

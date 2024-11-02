@@ -9,9 +9,11 @@ import { EmailInterceptor } from './email.interceptor';
     providers: [
         DniInterceptor,
         EmailInterceptor,
-        DataInterceptorService],
+        DataInterceptorService
+    ],
     exports: [
         DniInterceptor,
+        EmailInterceptor,
         DataInterceptorService
     ]
 })

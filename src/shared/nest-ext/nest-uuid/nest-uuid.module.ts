@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { NEST_UUID } from "./inject-token";
-import uuid from 'uuid';
+import * as uuid from 'uuid';
 
 @Module({
     providers: [{

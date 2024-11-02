@@ -29,7 +29,7 @@ export class FileTreeDownloaderController {
     @Get(':code')
     async downloadTree(
         @User() user: string,
-        @Param() code: string,
+        @Param('code') code: string,
         @Res({ passthrough: true }) response: Response
     ): Promise<any> {
         const zip = await this.service.downloadTree(user, code);

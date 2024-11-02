@@ -12,8 +12,9 @@ import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { ZipTree } from './entities/zip-tree.entity';
 import { NestUuidModule } from '@/shared/nest-ext/nest-uuid/nest-uuid.module';
 import { ZipTreeRepository } from './repositories/zip-tree.repository';
-import { FileZipTreeProcessor } from './processor/file-zip-tree.processor';
-import { BullModule } from '@nestjs/bull';
+import { FileZipTreeConsumer } from './consumer/file-zip-tree.consumer';
+import { BullModule } from '@nestjs/bullmq';
+import { UserInterceptorModule } from '@/shared/interceptors/dni/user-interceptor.module';
 
 @Module({
     imports: [
@@ -24,6 +25,7 @@ import { BullModule } from '@nestjs/bull';
         LocalStorageModule,
         ZipperModule,
         NestUuidModule,
+        UserInterceptorModule,
         BullModule.registerQueue({
             name: 'zip-tree',
         }),
@@ -34,7 +36,7 @@ import { BullModule } from '@nestjs/bull';
     ],
     providers: [
         ZipTreeRepository,
-        FileZipTreeProcessor,
+        FileZipTreeConsumer,
         FileDownloaderService,
         FileTreeDownloaderService
     ],

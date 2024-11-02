@@ -1,5 +1,5 @@
 import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
-import { UserInterceptorModule } from "@/shared/interceptors/dni/dni-interceptor.module";
+import { UserInterceptorModule } from "@/shared/interceptors/dni/user-interceptor.module";
 import { MailerModule } from "@/shared/mailer/mailer.module";
 import { SqlDatabaseModule } from "@/shared/sql-database/sql-database.module";
 import { UserModule } from "@/user/user.module";

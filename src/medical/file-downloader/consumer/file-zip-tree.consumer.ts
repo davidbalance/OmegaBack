@@ -6,15 +6,16 @@ import { NEST_UUID } from "@/shared/nest-ext/nest-uuid/inject-token";
 import { NestUuid } from "@/shared/nest-ext/nest-uuid/nest-uuid.type";
 import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import { ZipperService } from "@/shared/zipper/zipper.service";
-import { Process, Processor } from "@nestjs/bull";
+import { Processor, WorkerHost } from "@nestjs/bullmq";
 import { Inject, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { Job } from "bull";
 import { PassThrough } from "stream";
 import { ZipTreeRepository } from "../repositories/zip-tree.repository";
+import { Job } from "bullmq";
 
 @Processor('zip-tree')
-export class FileZipTreeProcessor {
+export class FileZipTreeConsumer extends WorkerHost {
+
     constructor(
         @Inject(ZipperService) private readonly zipper: ZipperService,
         @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
@@ -23,32 +24,50 @@ export class FileZipTreeProcessor {
         @Inject(ConfigService) private readonly config: ConfigService,
         @Inject(MailerService) private readonly mailer: MailerService,
         @Inject(ZipTreeRepository) private readonly repository: ZipTreeRepository
-    ) { }
+    ) {
+        super();
+    }
 
-    @Process()
-    async zipFiles(job: Job) {
+    async process(job: Job): Promise<any> {
         const server = this.config.get<ServerConfig>(ServerConfigName);
         const email: string = job.data.email;
         const sources: { source: string, name: string }[] = job.data.sources;
 
         try {
-            const zip = this.zipper.zip(sources);
-            const buffer = await this.streamToBuffer(zip);
+            console.log(1)
             const code = this.uuid.v4();
-            const disk = this.path.resolve('disk');
-            const fullpath = this.path.join(disk, 'zip/tree')
-            const filename = await this.storage.saveFile(buffer, '.zip', fullpath);
-
+            console.log(2)
+            const filename = await this.zipFiles(sources);
+            console.log(3)
             await this.repository.create({ email, zipCode: code, filepath: filename });
+            console.log(4)
 
-            const mailer = await this.mailer.send({
+            console.log('Sending email');
+            await this.mailer.send({
                 subject: 'Arbol de archivos',
                 content: `Hola!\nPara descargar el archivo debe entrar al siguiente link:\n${server.app_client}/omega/tree/${code}`,
                 recipients: [{
                     address: email,
                     name: email
                 }]
-            })
+            });
+            console.log(5)
+        } catch (error) {
+            Logger.error(error);
+        }
+    }
+
+    async zipFiles(sources: { source: string, name: string }[]): Promise<string> {
+
+
+        try {
+            const zip = this.zipper.zip(sources);
+            const buffer = await this.streamToBuffer(zip);
+            const disk = this.path.resolve('disk');
+            const fullpath = this.path.join(disk, 'zip/tree')
+            const filename = await this.storage.saveFile(buffer, '.zip', fullpath);
+
+            return filename
         } catch (error) {
             Logger.error(error);
             throw error;

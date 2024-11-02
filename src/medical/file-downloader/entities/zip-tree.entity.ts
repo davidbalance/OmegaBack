@@ -2,7 +2,7 @@ import { AbstractEntity } from "@/shared/sql-database/abstract.entity";
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'tbl_m_zip_tree' })
-@Index('idx_zip_tree_code', ['zipTreeCode'])
+@Index('idx_zip_tree_code', ['zipCode'], { unique: true })
 export class ZipTree extends AbstractEntity<number> {
     @PrimaryGeneratedColumn('increment', { name: 'zip_id' })
     public id: number;

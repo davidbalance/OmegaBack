@@ -1,7 +1,7 @@
 import { MedicalResultFileTreeService } from "@/medical/medical-result/services/medical-result-file-tree.service";
-import { ForbiddenException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
+import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { DownloadTreeRequest } from "../dtos/request/download-tree.dto";
-import { InjectQueue } from "@nestjs/bull";
+import { InjectQueue } from "@nestjs/bullmq";
 import { Queue } from "bull";
 import { ReadStream } from "typeorm/platform/PlatformTools";
 import { ZipTreeRepository } from "../repositories/zip-tree.repository";
@@ -20,17 +20,17 @@ export class FileTreeDownloaderService {
 
     async startTreeJob(email: string, data: DownloadTreeRequest): Promise<string> {
         const sources = await this.service.getTreeSources(data);
-        const job = await this.zipQueue.add({ sources, email });
+        const job = await this.zipQueue.add('zip-tree', { sources, email });
         return job.id.toString();
     }
 
     async downloadTree(email: string, code: string): Promise<ReadStream> {
         const value = await this.repository.findOne({ where: { zipCode: code } });
-
+        
         if (value.email !== email) {
             throw new UnauthorizedException();
         }
-
+        
         const zip = await this.storage.readFile(value.filepath);
         return zip;
     }
