@@ -1,5 +1,5 @@
 import { Inject, Injectable, StreamableFile } from '@nestjs/common';
-import { PassThrough, Stream } from 'stream';
+import { PassThrough } from 'stream';
 import { NEST_ARCHIVER } from '../nest-ext/nest-archiver/inject-token';
 import { NestArchiver } from '../nest-ext/nest-archiver/nest-archiver.type';
 import { NEST_PATH } from '../nest-ext/nest-path/inject-token';
@@ -16,7 +16,7 @@ export class ZipperService {
         @Inject(NEST_FS) private readonly fs: NestFS,
     ) { }
 
-    public async zip(sources: (string | { source: string, name: string })[]): Promise<Stream> {
+    public async zip(sources: (string | { source: string, name: string })[]): Promise<PassThrough> {
         const outputStream = new PassThrough();
 
         const inputSources = sources.map((source: string | { source: string, name: string }) => ({

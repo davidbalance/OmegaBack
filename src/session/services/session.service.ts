@@ -2,17 +2,19 @@ import { Inject, Injectable } from '@nestjs/common';
 import { SessionRepository } from '../respository/session.repository';
 import { PatchSessionRequestDto } from '../dto/request/session.patch.dto';
 import { PostSessionRequestDto } from '../dto/request/session.post.dto';
-import { v4 } from 'uuid';
+import { NEST_UUID } from '@/shared/nest-ext/nest-uuid/inject-token';
+import { NestUuid } from '@/shared/nest-ext/nest-uuid/nest-uuid.type';
 
 @Injectable()
 export class SessionService {
 
   constructor(
-    @Inject(SessionRepository) private readonly repository: SessionRepository
+    @Inject(SessionRepository) private readonly repository: SessionRepository,
+    @Inject(NEST_UUID) private readonly uuid: NestUuid
   ) { }
 
   async create(data: PostSessionRequestDto): Promise<string> {
-    const uid = v4();
+    const uid = this.uuid.v4();
     await this.repository.create({ ...data, session: uid });
     return uid;
   }

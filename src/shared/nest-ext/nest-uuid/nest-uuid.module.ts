@@ -6,6 +6,7 @@ import uuid from 'uuid';
     providers: [{
         provide: NEST_UUID,
         useValue: uuid
-    }]
+    }],
+    exports: [NEST_UUID]
 })
-export class NestUuid { }
+export class NestUuidModule { }

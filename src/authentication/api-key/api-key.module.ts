@@ -7,12 +7,14 @@ import { UserCredentialModule } from '../user-credential/user-credential.module'
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { ApiKeyValidatorService } from './services/api-key-validator.service';
 import { ApiKeyManagementController } from './controllers/api-key-management.controller';
+import { NestUuidModule } from '@/shared/nest-ext/nest-uuid/nest-uuid.module';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([ApiKey]),
     UserCredentialModule,
     AuthenticationGuardModule,
+    NestUuidModule
   ],
   controllers: [
     ApiKeyManagementController

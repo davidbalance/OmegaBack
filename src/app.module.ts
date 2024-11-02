@@ -14,6 +14,8 @@ import { MedicalModule } from './medical/medical.module';
 import { LoggerModule } from './shared/logger';
 import { SqlDatabaseModule } from './shared/sql-database/sql-database.module';
 import { SessionModule } from './session/session.module';
+import { NestPathModule } from './shared/nest-ext/nest-path/nest-path.module';
+import { NestFSModule } from './shared/nest-ext/nest-fs/nest-fs.module';
 
 @Module({
   imports: [
@@ -38,7 +40,9 @@ import { SessionModule } from './session/session.module';
     PdfManagerModule,
     ApiKeyGuardModule,
     HealthCheckModule,
-    SessionModule
+    SessionModule,
+    NestPathModule,
+    NestFSModule
   ]
 })
 export class AppModule implements NestModule {

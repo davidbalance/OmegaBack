@@ -30,6 +30,7 @@ import { LocalStorageModule } from "@/shared/storage-manager";
 import { Base64Module } from "@/shared/base64/base64.module";
 import { MedicalOrderProcessController } from "./controllers/medical-order-process.controller";
 import { MedicalOrderProcessService } from "./services/medical-order-process.service";
+import { NestHandlebarsModule } from "@/shared/nest-ext/nest-handlebars/nest-handlebars.module";
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { MedicalOrderProcessService } from "./services/medical-order-process.ser
     MedicalClientModule,
     LocalStorageModule,
     Base64Module,
+    NestHandlebarsModule,
     MailerModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

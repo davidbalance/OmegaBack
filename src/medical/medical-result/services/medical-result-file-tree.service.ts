@@ -78,9 +78,9 @@ export class MedicalResultFileTreeService {
         name: path.join(`${value.year}`, value.corporativeName, `${value.companyName}_${value.companyRuc}`, value.branchName, value.process, `${value.dni}_${value.name}_${value.lastname}`, `${value.order}_${value.examName}.pdf`.toLocaleLowerCase())
       });
     }
-    
-    const zip = this.zipper.zip(sources);
-    return zip;
+
+    const zip = await this.zipper.zip(sources);
+    return new StreamableFile(zip);
   }
 
 }
