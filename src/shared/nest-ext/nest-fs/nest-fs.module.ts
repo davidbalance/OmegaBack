@@ -10,4 +10,4 @@ import fs from 'fs'
     }],
     exports: [NEST_FS]
 })
-export class NestFS { }
+export class NestFSModule { }

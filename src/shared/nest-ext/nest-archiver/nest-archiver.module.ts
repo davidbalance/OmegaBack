@@ -9,4 +9,4 @@ import archiver from "archiver";
     }],
     exports: [NEST_ARCHIVER]
 })
-export class NestArchiver { }
+export class NestArchiverModule { }
