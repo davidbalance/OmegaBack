@@ -16,14 +16,15 @@ import { SqlDatabaseModule } from './shared/sql-database/sql-database.module';
 import { SessionModule } from './session/session.module';
 import { NestPathModule } from './shared/nest-ext/nest-path/nest-path.module';
 import { NestFSModule } from './shared/nest-ext/nest-fs/nest-fs.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import serverConfig from './shared/config/server.config';
 import authConfig from './shared/config/auth.config';
 import clientConfig from './shared/config/client.config';
 import databaseConfig from './shared/config/database.config';
 import mailOrderConfig from './shared/config/mail-order.config';
-import smtpConfig from './shared/config/smtp.config';
+import smtpConfig, { SmtpConfig, SmtpConfigName } from './shared/config/smtp.config';
+import { MailerModule } from './shared/mailer/mailer.module';
 
 @Module({
   imports: [
@@ -73,6 +74,11 @@ import smtpConfig from './shared/config/smtp.config';
         serverConfig,
         smtpConfig
       ]
+    }),
+    MailerModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => config.get<SmtpConfig>(SmtpConfigName)
     }),
     LoggerModule,
     SqlDatabaseModule,

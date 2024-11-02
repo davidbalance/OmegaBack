@@ -1,5 +1,5 @@
 import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
-import { DniInterceptorModule } from "@/shared/interceptors/dni/dni-interceptor.module";
+import { UserInterceptorModule } from "@/shared/interceptors/dni/dni-interceptor.module";
 import { MailerModule } from "@/shared/mailer/mailer.module";
 import { SqlDatabaseModule } from "@/shared/sql-database/sql-database.module";
 import { UserModule } from "@/user/user.module";
@@ -32,7 +32,6 @@ import { MedicalOrderProcessController } from "./controllers/medical-order-proce
 import { MedicalOrderProcessService } from "./services/medical-order-process.service";
 import { NestHandlebarsModule } from "@/shared/nest-ext/nest-handlebars/nest-handlebars.module";
 import { HandlebarsModule } from "@/shared/handlebars/handlebars.module";
-import { SmtpConfig, SmtpConfigName } from "@/shared/config/smtp.config";
 import { MailOrderConfig, MailOrderConfigName } from "@/shared/config/mail-order.config";
 
 @Module({
@@ -43,16 +42,11 @@ import { MailOrderConfig, MailOrderConfigName } from "@/shared/config/mail-order
     ]),
     UserModule,
     AuthenticationGuardModule,
-    DniInterceptorModule,
+    UserInterceptorModule,
     MedicalClientModule,
     LocalStorageModule,
     Base64Module,
     NestHandlebarsModule,
-    MailerModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => config.get<SmtpConfig>(SmtpConfigName)
-    }),
     HandlebarsModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

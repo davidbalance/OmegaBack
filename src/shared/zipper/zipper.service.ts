@@ -16,7 +16,7 @@ export class ZipperService {
         @Inject(NEST_FS) private readonly fs: NestFS,
     ) { }
 
-    public async zip(sources: (string | { source: string, name: string })[]): Promise<PassThrough> {
+    public zip(sources: (string | { source: string, name: string })[]): PassThrough {
         const outputStream = new PassThrough();
 
         const inputSources = sources.map((source: string | { source: string, name: string }) => ({
