@@ -42,7 +42,7 @@ export class FileDownloaderService {
             throw new NotFoundException('Files not found');
         }
         const zip = await this.zipper.zip(sources);
-        return zip;
+        return new StreamableFile(zip);
     }
 
     async deleteFile({ id, type }: FileSourceRequestDto): Promise<void> {

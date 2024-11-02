@@ -1,54 +1,44 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { MODULE_OPTIONS_TOKEN } from './mailer.module-definition';
 import { MailerModuleOptions, MailerSender } from './mailer.interface';
-import nodemailer from 'nodemailer';
-import handlebars from 'handlebars';
-import path from 'path';
-import { readFileSync } from 'fs';
+import { Transporter } from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
+import { NEST_NODEMAILER } from '../nest-ext/nest-nodemailer/inject-token';
+import { NestNodemailer } from '../nest-ext/nest-nodemailer/nest-nodemailer.ype';
 
 @Injectable()
 export class MailerService {
-    constructor(
-        @Inject(MODULE_OPTIONS_TOKEN) private readonly options: MailerModuleOptions
-    ) { }
 
-    private mailTransporter(): nodemailer.Transporter {
-        const transporter = nodemailer.createTransport({
-            host: this.options.server.host,
-            port: this.options.server.port,
-            secure: this.options.server.secure,
+    private readonly transporter: Transporter
+
+    constructor(
+        @Inject(MODULE_OPTIONS_TOKEN) private readonly options: MailerModuleOptions,
+        @Inject(NEST_NODEMAILER) nodemailer: NestNodemailer
+    ) {
+        this.transporter = nodemailer.createTransport({
+            host: options.server_host,
+            port: options.server_port,
+            secure: options.server_secure,
             auth: {
-                user: this.options.auth.user,
-                pass: this.options.auth.password
+                user: options.auth_user,
+                pass: options.auth_password
             }
         });
-        return transporter;
-    }
-
-    private loadTemplate(): handlebars.TemplateDelegate {
-        const templateFolder: string = path.resolve(this.options.template.path);
-        const template: string = path.join(templateFolder, this.options.template.name);
-        const source: string = readFileSync(template, 'utf-8');
-        const compile = handlebars.compile(source);
-        return compile;
     }
 
     public async send(options: MailerSender): Promise<any> {
-        const { from, recipients, subject, placeholderReplacements, attachments } = options;
-        const template: string = this.loadTemplate()(placeholderReplacements);
-        const transporter = this.mailTransporter();
+        const { from, recipients, subject, content, attachments } = options;
 
         const mailOptions: Mail.Options = {
-            from: from ?? this.options.default,
+            from: from ?? this.options.auth_user,
             to: recipients,
             subject: subject,
-            html: template,
+            html: content,
             attachments: attachments
         }
 
         try {
-            const result = await transporter.sendMail(mailOptions);
+            const result = await this.transporter.sendMail(mailOptions);
             return result;
         } catch (error) {
             Logger.error(error);

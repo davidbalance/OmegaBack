@@ -1,5 +1,5 @@
 import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
-import { DniInterceptorModule } from "@/shared/interceptors/dni/dni-interceptor.module";
+import { UserInterceptorModule } from "@/shared/interceptors/dni/user-interceptor.module";
 import { MailerModule } from "@/shared/mailer/mailer.module";
 import { SqlDatabaseModule } from "@/shared/sql-database/sql-database.module";
 import { UserModule } from "@/user/user.module";
@@ -30,6 +30,9 @@ import { LocalStorageModule } from "@/shared/storage-manager";
 import { Base64Module } from "@/shared/base64/base64.module";
 import { MedicalOrderProcessController } from "./controllers/medical-order-process.controller";
 import { MedicalOrderProcessService } from "./services/medical-order-process.service";
+import { NestHandlebarsModule } from "@/shared/nest-ext/nest-handlebars/nest-handlebars.module";
+import { HandlebarsModule } from "@/shared/handlebars/handlebars.module";
+import { MailOrderConfig, MailOrderConfigName } from "@/shared/config/mail-order.config";
 
 @Module({
   imports: [
@@ -39,33 +42,16 @@ import { MedicalOrderProcessService } from "./services/medical-order-process.ser
     ]),
     UserModule,
     AuthenticationGuardModule,
-    DniInterceptorModule,
+    UserInterceptorModule,
     MedicalClientModule,
     LocalStorageModule,
     Base64Module,
-    MailerModule.registerAsync({
+    NestHandlebarsModule,
+    HandlebarsModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
-        auth: {
-          user: config.get<string>('SMTP_MAIL_AUTH_USER'),
-          password: config.get<string>('SMTP_MAIL_AUTH_PASSWORD'),
-        },
-        default: {
-          name: config.get<string>('SMTP_DEFAULT_APP_NAME'),
-          address: config.get<string>('SMTP_DEFAULT_MAIL_FROM'),
-        },
-        server: {
-          host: config.get<string>('SMTP_MAIL_HOST'),
-          port: config.get<number>('SMTP_MAIL_PORT'),
-          secure: config.get<boolean>('SMTP_MAIL_SECURE'),
-        },
-        template: {
-          name: 'mail.hbs',
-          path: 'templates/mail'
-        }
-      })
-    }),
+      useFactory: async (config: ConfigService) => config.get<MailOrderConfig>(MailOrderConfigName)
+    })
   ],
   controllers: [
     MedicalOrderCloudController,

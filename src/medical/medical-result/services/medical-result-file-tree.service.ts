@@ -19,8 +19,6 @@ export class MedicalResultFileTreeService {
 
   constructor(
     @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
-    @Inject(MedicalResultFileManagementService) private readonly storage: MedicalResultFileManagementService,
-    @Inject(ZipperService) private readonly zipper: ZipperService,
   ) { }
 
   private async retriveResults(data: RetriveTreeType): Promise<ResultTree[]> {
@@ -69,7 +67,7 @@ export class MedicalResultFileTreeService {
     return query.getRawMany<ResultTree>();
   }
 
-  async getTree(data: RetriveTreeType): Promise<StreamableFile> {
+  async getTreeSources(data: RetriveTreeType): Promise<{ source: string, name: string }[]> {
     const values = await this.retriveResults(data);
     const sources: { source: string, name: string }[] = [];
     for (const value of values) {
@@ -78,9 +76,7 @@ export class MedicalResultFileTreeService {
         name: path.join(`${value.year}`, value.corporativeName, `${value.companyName}_${value.companyRuc}`, value.branchName, value.process, `${value.dni}_${value.name}_${value.lastname}`, `${value.order}_${value.examName}.pdf`.toLocaleLowerCase())
       });
     }
-    
-    const zip = this.zipper.zip(sources);
-    return zip;
+    return sources;
   }
 
 }

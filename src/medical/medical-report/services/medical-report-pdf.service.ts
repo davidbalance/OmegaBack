@@ -1,14 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { readFileSync } from 'fs';
 import dayjs from 'dayjs';
 import es from "dayjs/locale/es";
-import path from 'path';
 import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';
 import { fileReportPath } from '@/shared/utils';
 import { MedicalReportRepository } from '../repositories/medical-report.repository';
 import { medicalReportDocumentLayout } from '../utils/medical-report-document-layout';
 import { PdfManagerService } from '@/shared/pdf-manager/pdf-manager.service';
 import { MedicalReportEntity } from '../entities/medical-report.entity';
+import { NEST_PATH } from '@/shared/nest-ext/nest-path/inject-token';
+import { NestPath } from '@/shared/nest-ext/nest-path/nest-path.type';
+import { NEST_FS } from '@/shared/nest-ext/nest-fs/inject-token';
+import { NestFS } from '@/shared/nest-ext/nest-fs/nest-fs.type';
 
 @Injectable()
 export class MedicalReportPdfService {
@@ -17,6 +19,8 @@ export class MedicalReportPdfService {
     @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository,
     @Inject(PdfManagerService) private readonly pdfService: PdfManagerService,
     @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
+    @Inject(NEST_PATH) private readonly path: NestPath,
+    @Inject(NEST_FS) private readonly fs: NestFS,
   ) { }
 
   public async craft(data: MedicalReportEntity): Promise<MedicalReportEntity> {
@@ -48,29 +52,29 @@ export class MedicalReportPdfService {
   }
 
   private async processPdf(data: MedicalReportEntity): Promise<string> {
-    const signatureDirectory = path.resolve(data.doctorSignature);
-    const signatureImg = readFileSync(signatureDirectory);
+    const signatureDirectory = this.path.resolve(data.doctorSignature);
+    const signatureImg = this.fs.readFileSync(signatureDirectory);
     const signatureBase64 = Buffer.from(signatureImg).toString('base64');
-    
-    const headerDirectory = path.resolve('templates/medical-result/medical-report/header.png');
-    const headerImg = readFileSync(headerDirectory);
+
+    const headerDirectory = this.path.resolve('templates/medical-result/medical-report/header.png');
+    const headerImg = this.fs.readFileSync(headerDirectory);
     const headerBase64 = Buffer.from(headerImg).toString('base64');
-    
+
     const newContent = this.pdfService.parseHtml(data.content);
-    
+
     const baseContent = this.getContent(data, {
       signature: signatureBase64,
       header: headerBase64
     });
-    
+
     const docLayout = medicalReportDocumentLayout(baseContent, newContent);
-    
+
     const buffer = await this.pdfService.craft(docLayout);
-    
+
     const filePath = fileReportPath({ dni: data.patientDni, order: data.order });
-    
+
     const output = this.storage.saveFile(buffer, '.pdf', filePath, data.examName.toLocaleLowerCase().replace(/\s/g, '_'));
-    
+
     return output;
   }
 

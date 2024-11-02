@@ -35,7 +35,7 @@ describe('FileTreeDownloaderController', () => {
 
         it('should download a file', async () => {
             // Arrange
-            service.downloadTree.mockResolvedValueOnce(mockStream);
+            service.startTreeJob.mockResolvedValueOnce('mockStream');
 
             // Act
             await controller.downloadTree(query, response as Response);
