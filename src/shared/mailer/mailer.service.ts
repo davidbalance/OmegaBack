@@ -16,12 +16,12 @@ export class MailerService {
         @Inject(NEST_NODEMAILER) nodemailer: NestNodemailer
     ) {
         this.transporter = nodemailer.createTransport({
-            host: options.server.host,
-            port: options.server.port,
-            secure: options.server.secure,
+            host: options.server_host,
+            port: options.server_port,
+            secure: options.server_secure,
             auth: {
-                user: options.auth.user,
-                pass: options.auth.password
+                user: options.auth_user,
+                pass: options.auth_password
             }
         });
     }
@@ -30,7 +30,7 @@ export class MailerService {
         const { from, recipients, subject, content, attachments } = options;
 
         const mailOptions: Mail.Options = {
-            from: from ?? this.options.default,
+            from: from ?? this.options.auth_user,
             to: recipients,
             subject: subject,
             html: content,

@@ -1,15 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import htmlToPdfmake from 'html-to-pdfmake';
 import { JSDOM } from 'jsdom'
 import PdfPrinter from 'pdfmake';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
-import path from 'path';
+import { NestPath } from '../nest-ext/nest-path/nest-path.type';
+import { NEST_PATH } from '../nest-ext/nest-path/inject-token';
 
 @Injectable()
 export class PdfManagerService {
     private printer: PdfPrinter;
 
-    constructor() {
+    constructor(
+        @Inject(NEST_PATH) path: NestPath
+    ) {
         this.printer = new PdfPrinter({
             Roboto: {
                 normal: path.join(path.resolve('static'), 'fonts/roboto', 'Roboto-Regular.ttf'),

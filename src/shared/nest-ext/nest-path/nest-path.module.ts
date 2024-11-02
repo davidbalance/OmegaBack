@@ -12,4 +12,4 @@ import path from "path";
     ],
     exports: [NEST_PATH]
 })
-export class NestPath { }
+export class NestPathModule { }

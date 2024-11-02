@@ -5,18 +5,22 @@ import { Token } from "./entities/token.entity";
 import { TokenRepository } from "./repositories/token.repository";
 import { TokenService } from "./services/token.service";
 import { Module } from "@nestjs/common";
+import { AuthConfig, AuthConfigName } from "@/shared/config/auth.config";
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Token]),
     JwtModule.registerAsync({
       inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
-        secret: config.get<string>("JWT_DEFAULT_SECRET"),
-        signOptions: {
-          expiresIn: `${config.get<number>("JWT_DEFAULT_EXPIRES_IN")}s`
+      useFactory: async (config: ConfigService) => {
+        const auth = config.get<AuthConfig>(AuthConfigName);
+        return {
+          secret: auth.jwt_secret,
+          signOptions: {
+            expiresIn: `${auth.jwt_expires}s`
+          }
         }
-      })
+      }
     })
   ],
   providers: [

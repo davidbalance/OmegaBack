@@ -1,39 +1,45 @@
-import { Injectable, StreamableFile } from '@nestjs/common';
-import { createReadStream } from 'fs';
-import archiver from 'archiver';
-import * as path from 'path';
+import { Inject, Injectable, StreamableFile } from '@nestjs/common';
 import { PassThrough } from 'stream';
+import { NEST_ARCHIVER } from '../nest-ext/nest-archiver/inject-token';
+import { NestArchiver } from '../nest-ext/nest-archiver/nest-archiver.type';
+import { NEST_PATH } from '../nest-ext/nest-path/inject-token';
+import { NestPath } from '../nest-ext/nest-path/nest-path.type';
+import { NEST_FS } from '../nest-ext/nest-fs/inject-token';
+import { NestFS } from '../nest-ext/nest-fs/nest-fs.type';
 
 @Injectable()
 export class ZipperService {
-    public async zip(sources: (string | { source: string, name: string })[]): Promise<StreamableFile> {
+
+    constructor(
+        @Inject(NEST_ARCHIVER) private readonly archiver: NestArchiver,
+        @Inject(NEST_PATH) private readonly path: NestPath,
+        @Inject(NEST_FS) private readonly fs: NestFS,
+    ) { }
+
+    public zip(sources: (string | { source: string, name: string })[]): PassThrough {
+        const outputStream = new PassThrough();
+
         const inputSources = sources.map((source: string | { source: string, name: string }) => ({
-            stream: createReadStream(typeof source === 'string' ? source : source.source),
-            name: typeof source === 'string' ? path.basename(source) : source.name,
+            stream: this.fs.createReadStream(typeof source === 'string' ? source : source.source),
+            name: typeof source === 'string' ? this.path.basename(source) : source.name,
         }));
 
-
-        const outputStream = new PassThrough();
-        const archive = archiver('zip', {
-            zlib: { level: 9 }
-        });
-
-        archive.on('warning', (err) => {
+        this.archiver.on('warning', (err) => {
             if (err.code !== 'ENOENT') {
                 throw err;
             }
         });
 
-        archive.on('error', (err) => {
+        this.archiver.on('error', (err) => {
             throw err;
         });
 
-        archive.pipe(outputStream);
+        this.archiver.pipe(outputStream);
         for (const source of inputSources) {
-            archive.append(source.stream, { name: source.name });
+            this.archiver.append(source.stream, { name: source.name });
         }
 
-        archive.finalize();
-        return new StreamableFile(outputStream);
+        this.archiver.finalize();
+        return outputStream;
     }
 }

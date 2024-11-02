@@ -3,7 +3,7 @@ import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { MedicalClientRepository } from './repositories/medical-client.repository';
 import { MedicalEmailRepository } from './repositories/medical-email.repository';
-import { DniInterceptorModule } from '@/shared/interceptors/dni/dni-interceptor.module';
+import { UserInterceptorModule } from '@/shared/interceptors/dni/user-interceptor.module';
 import { MedicalClientLocationService } from './services/medical-client-location.service';
 import { MedicalClientEmailService } from './services/medical-client-email.service';
 import { MedicalClientEmailController } from './controllers/medical-client-email.controller';
@@ -26,7 +26,7 @@ import { MedicalClientDoctorPaginationService } from './services/medical-client-
       MedicalEmailEntity
     ]),
     AuthenticationGuardModule,
-    DniInterceptorModule
+    UserInterceptorModule
   ],
   controllers: [
     MedicalClientDoctorPaginationController,

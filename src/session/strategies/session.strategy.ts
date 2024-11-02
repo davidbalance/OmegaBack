@@ -1,3 +1,4 @@
+import { ClientConfig, ClientConfigName } from "@/shared/config/client.config";
 import { Inject, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
@@ -6,7 +7,7 @@ import Strategy from "passport-headerapikey";
 export class SessionStrategy extends PassportStrategy(Strategy, 'session-auth') {
 
     constructor(
-        @Inject(ConfigService) private readonly service: ConfigService
+        @Inject(ConfigService) private readonly config: ConfigService
     ) {
         super(
             { header: 'x-client-key', prefix: '' },
@@ -17,8 +18,9 @@ export class SessionStrategy extends PassportStrategy(Strategy, 'session-auth') 
     }
 
     async validate(apiKey: string, done: (error: Error, data) => void) {
+        const client = this.config.get<ClientConfig>(ClientConfigName);
         try {
-            if (apiKey === this.service.get('CLIENT_KEY')) {
+            if (apiKey === client.key) {
                 done(null, {});
             }
         } catch (error) {

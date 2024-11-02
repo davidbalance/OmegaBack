@@ -3,7 +3,7 @@ import { Module } from "@nestjs/common";
 import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
 import { MedicalOrderModule } from "../medical-order/medical-order.module";
 import { LocalStorageModule } from "@/shared/storage-manager";
-import { DniInterceptorModule } from "@/shared/interceptors/dni/dni-interceptor.module";
+import { UserInterceptorModule } from "@/shared/interceptors/dni/user-interceptor.module";
 import { MedicalResultDiseaseManagementService } from "./services/medical-result-disease-management.service";
 import { MedicalResultEventService } from "./services/medical-result-event.service";
 import { MedicalResultExternalConnectionProvider, MedicalResultExternalConnectionService } from "./services/medical-result-external-connection.service";
@@ -48,7 +48,7 @@ import { ZipperModule } from "@/shared/zipper/zipper.module";
     AuthenticationGuardModule,
     MedicalOrderModule,
     LocalStorageModule,
-    DniInterceptorModule,
+    UserInterceptorModule,
     ExcelManagerModule,
     UrlFileFetcherModule,
     Base64Module,

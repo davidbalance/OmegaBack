@@ -1,10 +1,11 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ClassSerializerInterceptor, INestApplication, Logger, LoggerService, ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, INestApplication, LoggerService, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import * as express from 'express';
-import { WINSTON_MODULE_NEST_PROVIDER, WinstonModule } from 'nest-winston';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { ServerConfig, ServerConfigName } from './shared/config/server.config';
 
 const whitelistEnviroment = ["production"]
 
@@ -27,34 +28,31 @@ async function bootstrap() {
   );
 
   const env = app.get(ConfigService);
-  const currentEnvironment = env.get<string>("APP_ENVIRONMENT");
+  const server = env.get<ServerConfig>(ServerConfigName);
 
-  // if (!whitelistEnviroment.includes(currentEnvironment)) {
-  const swaggerConfig = new DocumentBuilder()
-    .addBearerAuth()
-    .setTitle('Omega API')
-    .setDescription('')
-    .setVersion('1.0')
-    .build();
+  if (!whitelistEnviroment.includes(server.environment)) {
+    const swaggerConfig = new DocumentBuilder()
+      .addBearerAuth()
+      .setTitle('Omega API')
+      .setDescription('')
+      .setVersion('1.0')
+      .build();
 
-  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('docs', app, swaggerDocument, { swaggerOptions: { tagsSorter: 'alpha' } });
-  // }
-
-  const port: number = env.get<number>("APP_PORT", 3000);
+    const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+    SwaggerModule.setup('docs', app, swaggerDocument, { swaggerOptions: { tagsSorter: 'alpha' } });
+  }
 
   app.use(express.json({ limit: '1mb' }));
 
   // app.enableCors();
-  await app.listen(port);
-  if (!whitelistEnviroment.includes(currentEnvironment)) {
-    logger.log(`App running in port: ${port}`);
+  await app.listen(server.port);
+  if (!whitelistEnviroment.includes(server.environment)) {
+    logger.log(`App running in port: ${server.port}`);
   }
 }
 
 const initializeLoggerService = async (app: INestApplication): Promise<LoggerService> => {
   const winstonLoggerInstance = app.get(WINSTON_MODULE_NEST_PROVIDER)
-
   return winstonLoggerInstance;
 }
 

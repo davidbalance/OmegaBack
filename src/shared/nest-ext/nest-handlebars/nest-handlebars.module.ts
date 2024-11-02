@@ -6,6 +6,7 @@ import handlebars from 'handlebars';
     providers: [{
         provide: NEST_HANDLEBARS,
         useValue: handlebars
-    }]
+    }],
+    exports: [NEST_HANDLEBARS]
 })
 export class NestHandlebarsModule { }

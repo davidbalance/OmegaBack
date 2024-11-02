@@ -6,6 +6,7 @@ import { Between } from "typeorm";
 import { TokenRepository } from "../repositories/token.repository";
 import { AccessToken } from "../types/access-token.type";
 import { RefreshToken } from "../types/refresh-token.type";
+import { AuthConfig, AuthConfigName } from "@/shared/config/auth.config";
 
 export type TokenPayload = { access: string, refresh: string, expiresAt: Date }
 
@@ -43,27 +44,30 @@ export class TokenService {
   }
 
   private getExpiresTime = (): { expiresAccess: Date, expiresRefresh: Date } => {
-    const defaultTime: number = this.configService.get<number>("JWT_DEFAULT_EXPIRES_IN");
-    const refreshTime: number = this.configService.get<number>("JWT_REFRESH_EXPIRES_IN");
-    const expiresAccess = dayjs().add(defaultTime, 'seconds').toDate();
-    const expiresRefresh = dayjs().add(refreshTime, 'seconds').toDate();
+    const auth = this.configService.get<AuthConfig>(AuthConfigName);
+    const expiresAccess = dayjs().add(auth.jwt_expires, 'seconds').toDate();
+    const expiresRefresh = dayjs().add(auth.jwt_refresh_expires, 'seconds').toDate();
     return { expiresAccess, expiresRefresh }
   }
 
   private async generateToken(sub: number): Promise<{ access: string, refresh: string }> {
+    const auth = this.configService.get<AuthConfig>(AuthConfigName);
+
     const accessPayload: AccessToken = { sub: sub };
     const access = this.jwtService.sign(accessPayload);
 
-    const secret: string = this.configService.get<string>('JWT_REFRESH_SECRET');
-    const expiresIn: number = this.configService.get<number>('JWT_REFRESH_EXPIRES_IN');
     const refreshPayload: RefreshToken = { sub: sub, token: access };
-    const refresh = this.jwtService.sign(refreshPayload, { secret: secret, expiresIn: `${expiresIn}s` });
+    const refresh = this.jwtService.sign(refreshPayload, {
+      secret: auth.jwt_referesh_secret,
+      expiresIn: `${auth.jwt_refresh_expires}s`
+    });
     return { access, refresh };
   }
 
   private async storeToken(key: number, token: string): Promise<void> {
-    const expiresIn: number = this.configService.get<number>('JWT_REFRESH_EXPIRES_IN');
-    const expiresAt = dayjs().add(expiresIn, 'seconds').toDate();
+    const auth = this.configService.get<AuthConfig>(AuthConfigName);
+
+    const expiresAt = dayjs().add(auth.jwt_refresh_expires, 'seconds').toDate();
     try {
       await this.repository.findOneAndUpdate({ key: key }, { token: token, expiresAt: expiresAt });
     } catch (error) {
