@@ -39,7 +39,7 @@ export class FileZipTreeConsumer extends WorkerHost {
             const code = this.uuid.v4();
             Logger.log("Unique key generated");
             Logger.log("Preparing for zipping");
-            const filename = await this.zipFiles(sources);
+            const filename = await this.zipFiles(sources, code);
             Logger.log("Zipped files");
             Logger.log("Creating record");
             await this.repository.create({ email, zipCode: code, filepath: filename });
@@ -58,18 +58,15 @@ export class FileZipTreeConsumer extends WorkerHost {
         }
     }
 
-    async zipFiles(sources: { source: string, name: string }[]): Promise<string> {
+    async zipFiles(sources: { source: string, name: string }[], unique: string): Promise<string> {
         try {
             Logger.log("--Enabling zipper");
-            const zip = this.zipper.zip(sources);
-            Logger.log("--Buffering zipper");
-            const buffer = await this.streamToBuffer(zip);
             Logger.log("--Finding disk location");
             const disk = this.path.resolve('disk');
-            const fullpath = this.path.join(disk, 'zip/tree')
-            Logger.log("--Saving in memory");
-            const filename = await this.storage.saveFile(buffer, '.zip', fullpath);
-
+            const fullpath = this.path.join(disk, 'zip/tree');
+            const filename = `${fullpath}/${unique}.zip`;
+            Logger.log("--Zipping file");
+            await this.zipper.zipToFile(sources, filename);
             Logger.log("--Zip completed");
             return filename
         } catch (error) {
@@ -77,15 +74,4 @@ export class FileZipTreeConsumer extends WorkerHost {
             throw error;
         }
     }
-
-    async streamToBuffer(stream: PassThrough): Promise<Buffer> {
-        const chunks: Buffer[] = [];
-
-        return new Promise<Buffer>((resolve, reject) => {
-            stream.on('data', (chunk) => chunks.push(chunk));
-            stream.on('end', () => resolve(Buffer.concat(chunks)));
-            stream.on('error', (err) => reject(err));
-        });
-    }
-
 }

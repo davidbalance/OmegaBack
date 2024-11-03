@@ -33,7 +33,7 @@ describe('ZipperService', () => {
 
     const mockedStream = {} as PassThrough;
 
-    it('should return a ReadStream using sources as string', () => {
+    it('should return a ReadStream using sources as string', async () => {
       // Arrange
       const sources = ['file1.txt', 'file2.txt'];
 
@@ -41,7 +41,7 @@ describe('ZipperService', () => {
       path.basename.mockReturnValue('/path/to/file.txt');
 
       // Act
-      const result = service.zip(sources);
+      const result = await service.zip(sources);
 
       // Assert
       expect(path.basename).toHaveBeenCalledTimes(sources.length);
@@ -52,12 +52,12 @@ describe('ZipperService', () => {
       expect(result).toBeInstanceOf(PassThrough);
     });
 
-    it('should return a ReadStream using sources as object', () => {
+    it('should return a ReadStream using sources as object', async () => {
       // Arrange
       const sources = [{ source: 'file1.txt', name: 'custom_file1.txt' }, { source: 'file2.txt', name: 'custom_file2.txt' }];
 
       // Act
-      const result = service.zip(sources);
+      const result = await service.zip(sources);
 
       // Assert
       expect(fs.createReadStream).toHaveBeenCalledTimes(sources.length);

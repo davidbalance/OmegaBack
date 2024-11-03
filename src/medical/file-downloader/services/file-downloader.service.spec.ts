@@ -74,7 +74,7 @@ describe('FileDownloaderService', () => {
             // Arrange
             medicalReportService.getFilePath.mockResolvedValueOnce(mockedSources[0]);
             medicalResultService.getFilePath.mockResolvedValueOnce(mockedSources[1]);
-            zipper.zip.mockReturnValue(mockedZip);
+            zipper.zip.mockResolvedValue(mockedZip);
 
             // Act
             const result = await service.downloadMultipleFiles(files);
