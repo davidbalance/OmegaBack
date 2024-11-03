@@ -29,18 +29,25 @@ export class FileZipTreeConsumer extends WorkerHost {
     }
 
     async process(job: Job): Promise<any> {
+        Logger.log("Consumer started");
         const server = this.config.get<ServerConfig>(ServerConfigName);
         const email: string = job.data.email;
         const sources: { source: string, name: string }[] = job.data.sources;
 
+        Logger.log(`Source length: ${sources.length}`);
         try {
             const code = this.uuid.v4();
+            Logger.log("Unique key generated");
+            Logger.log("Preparing for zipping");
             const filename = await this.zipFiles(sources);
+            Logger.log("Zipped files");
+            Logger.log("Creating record");
             await this.repository.create({ email, zipCode: code, filepath: filename });
 
+            Logger.log("Sending mail");
             await this.mailer.send({
                 subject: 'Arbol de archivos',
-                content: `Hola!\nPara descargar el archivo debe entrar al siguiente link:\n${server.app_client}/omega/tree/${code}`,
+                content: `Hola!\n\nPara descargar el archivo debe entrar al siguiente link:\n\n${server.app_client}/omega/tree/${code}`,
                 recipients: [{
                     address: email,
                     name: email
@@ -52,15 +59,18 @@ export class FileZipTreeConsumer extends WorkerHost {
     }
 
     async zipFiles(sources: { source: string, name: string }[]): Promise<string> {
-
-
         try {
+            Logger.log("--Enabling zipper");
             const zip = this.zipper.zip(sources);
+            Logger.log("--Buffering zipper");
             const buffer = await this.streamToBuffer(zip);
+            Logger.log("--Finding disk location");
             const disk = this.path.resolve('disk');
             const fullpath = this.path.join(disk, 'zip/tree')
+            Logger.log("--Saving in memory");
             const filename = await this.storage.saveFile(buffer, '.zip', fullpath);
 
+            Logger.log("--Zip completed");
             return filename
         } catch (error) {
             Logger.error(error);
