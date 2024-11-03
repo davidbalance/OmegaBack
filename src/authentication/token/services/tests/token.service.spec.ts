@@ -37,7 +37,7 @@ describe('TokenService', () => {
         beforeEach(() => {
             jwtService.sign.mockReturnValueOnce(access);
             jwtService.sign.mockReturnValueOnce(refresh);
-            configService.get.mockReturnValueOnce({
+            configService.get.mockReturnValue({
                 jwt_expires: expiresIn,
                 jwt_refresh_expires: expiresIn
             } as AuthConfig);
@@ -126,7 +126,7 @@ describe('TokenService', () => {
         beforeEach(() => {
             jwtService.sign.mockReturnValueOnce(access);
             jwtService.sign.mockReturnValueOnce(refresh);
-            configService.get.mockReturnValueOnce({
+            configService.get.mockReturnValue({
                 jwt_expires: expiresIn,
                 jwt_refresh_expires: expiresIn
             } as AuthConfig);

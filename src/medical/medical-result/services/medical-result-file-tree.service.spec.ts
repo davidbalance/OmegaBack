@@ -37,7 +37,7 @@ describe('MedicalResultFileTreeService', () => {
     ];
     const expectedValue = mockedTree.map(e => ({
       source: e.filePath,
-      name: `${e.year}/${e.corporativeName}/${e.companyName}_${e.companyRuc}/${e.branchName}/${e.process}/${e.dni}_${e.name}_${e.lastname}/${e.order.toLocaleLowerCase()}_${e.examName.toLocaleLowerCase()}.pdf`
+      name: `${e.year}\\${e.corporativeName}\\${e.companyName}_${e.companyRuc}\\${e.branchName}\\${e.process}\\${e.dni}_${e.name}_${e.lastname}\\${e.order.toLocaleLowerCase()}_${e.examName.toLocaleLowerCase()}.pdf`
     }));
 
     const data = {

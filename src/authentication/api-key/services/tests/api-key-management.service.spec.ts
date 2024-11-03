@@ -8,12 +8,15 @@ import { PatchApiKeyRequestDto } from "../../dtos/request/patch.api-key.request.
 import { mockCredential } from "@/authentication/user-credential/services/tests/stub/credential.stub";
 import { PostApiKeyRequestDto } from "../../dtos/request/post.api-key.request.dto";
 import { AuthConfigName } from "@/shared/config/auth.config";
+import { NestUuid } from "@/shared/nest-ext/nest-uuid/nest-uuid.type";
+import { NEST_UUID } from "@/shared/nest-ext/nest-uuid/inject-token";
 
 describe('ApiKeyManagementService', () => {
     let service: ApiKeyManagementService;
     let repository: jest.Mocked<ApiKeyRepository>;
     let credentialService: jest.Mocked<UserCredentialService>;
-    let configService: jest.Mocked<ConfigService>
+    let configService: jest.Mocked<ConfigService>;
+    let uuid: jest.Mocked<NestUuid>;
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(ApiKeyManagementService).compile();
@@ -22,6 +25,7 @@ describe('ApiKeyManagementService', () => {
         repository = unitRef.get(ApiKeyRepository);
         credentialService = unitRef.get(UserCredentialService);
         configService = unitRef.get(ConfigService);
+        uuid = unitRef.get(NEST_UUID);
     });
 
     afterEach(() => {
@@ -40,8 +44,9 @@ describe('ApiKeyManagementService', () => {
 
         it('should create and return a new API key', async () => {
             // Arrange
-            credentialService.findOneByUser.mockResolvedValue(mockedCredential);
             configService.get.mockReturnValue({ apikey_expires: expiresIn });
+            credentialService.findOneByUser.mockResolvedValue(mockedCredential);
+            uuid.v4.mockReturnValue('test-uuid-v4');
             repository.create.mockResolvedValue(mockedApiKey);
 
             // Act

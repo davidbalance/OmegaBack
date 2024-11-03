@@ -72,10 +72,10 @@ describe('MailerService', () => {
 
         it('should log and rethrow errors during email sending', async () => {
             // Arrange
-            mockSendMail.mockResolvedValue(new Error('Send mail failed'));
+            mockSendMail.mockRejectedValue(new Error('Send mail failed'));
 
             // Act & Assert
-            await expect(service.send(sender)).rejects.toThrowError(Error);
+            await expect(service.send(sender)).rejects.toThrow(Error);
             expect(mockSendMail).toHaveBeenCalledWith(expectedOptions);
         });
     })

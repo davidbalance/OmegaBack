@@ -21,11 +21,11 @@ describe('MedicalOrderMailService', () => {
     const { unit, unitRef } = TestBed.create(MedicalOrderMailService).compile();
 
     service = unit;
-    repository: unitRef.get(MedicalOrderRepository);
-    mailer: unitRef.get(MailerService);
-    config: unitRef.get(ConfigService);
-    path: unitRef.get(NEST_PATH);
-    handlebars: unitRef.get(HandlebarsService);
+    repository = unitRef.get(MedicalOrderRepository);
+    mailer = unitRef.get(MailerService);
+    config = unitRef.get(ConfigService);
+    path = unitRef.get(NEST_PATH);
+    handlebars = unitRef.get(HandlebarsService);
   });
 
   afterEach(() => {
@@ -36,16 +36,19 @@ describe('MedicalOrderMailService', () => {
     const order = 1;
     const mail = 1;
     const mockedOrder = mockMedicalOrderEntity();
+    const mockedContent = 'Test content';
+    const mockedPath = '/path/to/file.png';
     const targetHost = 'https://example.com';
-    const templateDelegate = jest.fn().mockReturnValue('Test content');
+    const templateDelegate = jest.fn();
 
     beforeEach(() => {
       config.get.mockReturnValue({ app_client: targetHost } as ServerConfig);
+      templateDelegate.mockReturnValue(mockedContent);
     });
 
     it('should send an email', async () => {
       // Arrange
-      path.resolve.mockReturnValue('/path/to/file.png');
+      path.resolve.mockReturnValue(mockedPath);
       repository.findOne.mockResolvedValue(mockedOrder);
       handlebars.loadTemplate.mockReturnValue(templateDelegate);
       mailer.send.mockResolvedValue(undefined);
@@ -62,20 +65,17 @@ describe('MedicalOrderMailService', () => {
         relations: { client: { email: true } },
       });
       expect(templateDelegate).toHaveBeenCalledWith({
-        patientFullName: `${mockedOrder.client.name} ${mockedOrder.client.lastname}`,
+        patientFullname: `${mockedOrder.client.name} ${mockedOrder.client.lastname}`,
         url: `${targetHost}/order/${order}`
       });
       expect(mailer.send).toHaveBeenCalledWith({
         recipients: [{ name: `${mockedOrder.client.name} ${mockedOrder.client.lastname}`, address: mockedOrder.client.email[0].email }],
         subject: 'Resultados exámenes ocupacionales',
-        placeholderReplacements: {
-          patientFullname: `${mockedOrder.client.name} ${mockedOrder.client.lastname}`,
-          url: `${targetHost}/order/${order}`,
-        },
+        content: mockedContent,
         attachments: [
           {
             filename: 'omega.png',
-            path: path.join(path.resolve('static', 'images/omega.png')),
+            path: mockedPath,
             cid: 'logo',
           },
         ],
