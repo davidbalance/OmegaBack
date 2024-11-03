@@ -22,7 +22,9 @@ export class FileTreeDownloaderController {
         @User() user: string,
         @Query() query: DownloadTreeRequest,
     ): Promise<any> {
+        console.log("Starting job")
         await this.service.startTreeJob(user, query);
+        console.log("Started job")
         return "";
     }
 
