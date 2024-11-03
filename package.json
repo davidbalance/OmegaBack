@@ -41,10 +41,7 @@
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "bull": "^4.16.4",
-<<<<<<< HEAD
-=======
     "bullmq": "^5.22.0",
->>>>>>> ca553e79ffd9e2ef5c05912587e84f44efbe60b0
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dayjs": "^1.11.10",

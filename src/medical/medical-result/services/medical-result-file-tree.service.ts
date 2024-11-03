@@ -1,7 +1,5 @@
-import { Inject, Injectable, Logger, StreamableFile } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
-import { MedicalResultFileManagementService } from "./medical-result-file-management.service";
-import { ZipperService } from "@/shared/zipper/zipper.service";
 import path from "path";
 
 type ResultTree = { filePath: string, examName: string, order: string, corporativeName: string, companyName: string, companyRuc: string, branchName: string, process: string, year: string, dni: string, name: string, lastname: string };

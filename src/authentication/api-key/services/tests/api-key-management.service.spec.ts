@@ -7,6 +7,7 @@ import { mockApiKey, mockApiKeys } from "./stub/api-key.stub";
 import { PatchApiKeyRequestDto } from "../../dtos/request/patch.api-key.request.dto";
 import { mockCredential } from "@/authentication/user-credential/services/tests/stub/credential.stub";
 import { PostApiKeyRequestDto } from "../../dtos/request/post.api-key.request.dto";
+import { AuthConfigName } from "@/shared/config/auth.config";
 
 describe('ApiKeyManagementService', () => {
     let service: ApiKeyManagementService;
@@ -30,7 +31,6 @@ describe('ApiKeyManagementService', () => {
 
     describe('create', () => {
         const user = 1;
-        const apiKey = 'new-api-key';
         const mockedCredential = mockCredential();
         const mockedApiKey = mockApiKey();
         const mockDto: PostApiKeyRequestDto = {
@@ -41,22 +41,22 @@ describe('ApiKeyManagementService', () => {
         it('should create and return a new API key', async () => {
             // Arrange
             credentialService.findOneByUser.mockResolvedValue(mockedCredential);
-            configService.get.mockReturnValue(expiresIn);
+            configService.get.mockReturnValue({ apikey_expires: expiresIn });
             repository.create.mockResolvedValue(mockedApiKey);
 
             // Act
             const result = await service.create(user, mockDto);
 
             // Assert
-            expect(result).toEqual(mockedApiKey);
+            expect(configService.get).toHaveBeenCalledWith(AuthConfigName);
             expect(credentialService.findOneByUser).toHaveBeenCalledWith(user);
-            expect(configService.get).toHaveBeenCalledWith('APIKEY_EXPIRES_IN');
             expect(repository.create).toHaveBeenCalledWith({
                 name: mockDto.name,
                 value: expect.any(String),
                 credential: mockedCredential,
                 expiresAt: expect.any(Date)
             });
+            expect(result).toEqual(mockedApiKey);
         });
     });
 

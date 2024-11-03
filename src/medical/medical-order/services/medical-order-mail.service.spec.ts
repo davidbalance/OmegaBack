@@ -4,21 +4,28 @@ import { MedicalOrderMailService } from "./medical-order-mail.service";
 import { ConfigService } from "@nestjs/config";
 import { TestBed } from "@automock/jest";
 import { mockMedicalOrderEntity } from "../stubs/medical-order-entity.stub";
-import path from "path";
+import { NestPath } from "@/shared/nest-ext/nest-path/nest-path.type";
+import { HandlebarsService } from "@/shared/handlebars/handlebars.service";
+import { NEST_PATH } from "@/shared/nest-ext/nest-path/inject-token";
+import { ServerConfig, ServerConfigName } from "@/shared/config/server.config";
 
 describe('MedicalOrderMailService', () => {
   let service: MedicalOrderMailService;
   let repository: jest.Mocked<MedicalOrderRepository>;
   let mailer: jest.Mocked<MailerService>;
   let config: jest.Mocked<ConfigService>;
+  let path: jest.Mocked<NestPath>;
+  let handlebars: jest.Mocked<HandlebarsService>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(MedicalOrderMailService).compile();
 
     service = unit;
-    repository = unitRef.get(MedicalOrderRepository);
-    mailer = unitRef.get(MailerService);
-    config = unitRef.get(ConfigService);
+    repository: unitRef.get(MedicalOrderRepository);
+    mailer: unitRef.get(MailerService);
+    config: unitRef.get(ConfigService);
+    path: unitRef.get(NEST_PATH);
+    handlebars: unitRef.get(HandlebarsService);
   });
 
   afterEach(() => {
@@ -26,26 +33,38 @@ describe('MedicalOrderMailService', () => {
   });
 
   describe('send', () => {
+    const order = 1;
+    const mail = 1;
+    const mockedOrder = mockMedicalOrderEntity();
+    const targetHost = 'https://example.com';
+    const templateDelegate = jest.fn().mockReturnValue('Test content');
+
+    beforeEach(() => {
+      config.get.mockReturnValue({ app_client: targetHost } as ServerConfig);
+    });
+
     it('should send an email', async () => {
       // Arrange
-      const order = 1;
-      const mail = 1;
-      const mockedOrder = mockMedicalOrderEntity();
-      const targetHost = 'https://example.com';
+      path.resolve.mockReturnValue('/path/to/file.png');
       repository.findOne.mockResolvedValue(mockedOrder);
-      config.get.mockReturnValue(targetHost);
+      handlebars.loadTemplate.mockReturnValue(templateDelegate);
       mailer.send.mockResolvedValue(undefined);
 
       // Act
       await service.send(order, mail);
 
       // Assert
+      expect(config.get).toHaveBeenCalledWith(ServerConfigName);
+      expect(path.resolve).toHaveBeenCalledWith('static/images/omega.png');
       expect(repository.findOne).toHaveBeenCalledWith({
         where: { id: order },
         select: { id: true },
         relations: { client: { email: true } },
       });
-      expect(config.get).toHaveBeenCalledWith('APP_TARGET_HOST');
+      expect(templateDelegate).toHaveBeenCalledWith({
+        patientFullName: `${mockedOrder.client.name} ${mockedOrder.client.lastname}`,
+        url: `${targetHost}/order/${order}`
+      });
       expect(mailer.send).toHaveBeenCalledWith({
         recipients: [{ name: `${mockedOrder.client.name} ${mockedOrder.client.lastname}`, address: mockedOrder.client.email[0].email }],
         subject: 'Resultados exámenes ocupacionales',
@@ -66,10 +85,8 @@ describe('MedicalOrderMailService', () => {
 
     it('should handle errors and update mail status', async () => {
       // Arrange
-      const order = 1;
-      const mail = 1;
-      const mockedOrder = mockMedicalOrderEntity();
       repository.findOne.mockResolvedValue(mockedOrder);
+      handlebars.loadTemplate.mockReturnValue(templateDelegate);
       mailer.send.mockRejectedValue(new Error());
 
       // Act

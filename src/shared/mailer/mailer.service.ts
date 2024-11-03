@@ -26,8 +26,8 @@ export class MailerService {
         });
     }
 
-    public async send(options: MailerSender): Promise<any> {
-        const { from, recipients, subject, content, attachments } = options;
+    public async send(sender: MailerSender): Promise<any> {
+        const { from, recipients, subject, content, attachments } = sender;
 
         const mailOptions: Mail.Options = {
             from: from ?? this.options.auth_user,

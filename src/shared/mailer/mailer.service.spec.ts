@@ -1,11 +1,10 @@
-import nodemailer from 'nodemailer';
-import handlebars from 'handlebars';
-import fs from 'fs';
 import { MailerService } from './mailer.service';
 import { MailerModuleOptions, MailerSender } from './mailer.interface';
-import { Test, TestingModule } from '@nestjs/testing';
 import { MODULE_OPTIONS_TOKEN } from './mailer.module-definition';
-import path from 'path';
+import { TestBed } from '@automock/jest';
+import { NestNodemailerModule } from '../nest-ext/nest-nodemailer/nest-nodemailer.module';
+import Mail from 'nodemailer/lib/mailer';
+import { NEST_NODEMAILER } from '../nest-ext/nest-nodemailer/inject-token';
 
 jest.mock('nodemailer');
 jest.mock('handlebars');
@@ -13,118 +12,72 @@ jest.mock('fs');
 
 describe('MailerService', () => {
     let service: MailerService;
+    const mockSendMail = jest.fn();
+
     const mockOptions: MailerModuleOptions = {
-        template: {
-            name: 'template.hbs',
-            path: path.resolve('templates/mail/mail.hbs')
-        },
-        server: {
-            host: 'test-host.com',
-            port: 1234,
-            secure: false
-        },
-        auth: {
-            user: 'test-user',
-            password: 'test-password'
-        },
-        default: undefined
+        auth_user: 'test@email.com',
+        auth_password: 'test-password',
+        default_name: 'dafault@email.com',
+        default_address: 'default@email.com',
+        server_host: 'smpt://sample-host.com',
+        server_port: 465,
+        server_secure: true
     };
 
     beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            providers: [
-                MailerService,
-                { provide: MODULE_OPTIONS_TOKEN, useValue: mockOptions },
-            ],
-        }).compile();
+        const { unit, unitRef } = TestBed.create(MailerService)
+            .mock(MODULE_OPTIONS_TOKEN)
+            .using(mockOptions)
+            .mock(NEST_NODEMAILER)
+            .using({
+                createTransport: jest.fn().mockReturnValue({
+                    sendMail: mockSendMail
+                })
+            })
+            .compile();
 
-        service = module.get<MailerService>(MailerService);
+
+        service = unit;
     });
 
     afterEach(() => {
         jest.clearAllMocks();
     });
 
-    it('should create a mail transporter', () => {
-        // Arrange
-        const createTransportMock = jest.spyOn(nodemailer, 'createTransport').mockReturnValue({
-            sendMail: jest.fn(),
-        } as any);
-
-        // Act
-        const transporter = service['mailTransporter']();
-
-        // Assert
-        expect(createTransportMock).toHaveBeenCalledWith({
-            host: mockOptions.server.host,
-            port: mockOptions.server.port,
-            secure: mockOptions.server.secure,
-            auth: {
-                user: mockOptions.auth.user,
-                pass: mockOptions.auth.password,
-            },
-        });
-        expect(transporter).toBeDefined();
-    });
-
-    it('should load and compile the email template', () => {
-        // Arrange
-        const templateSource = '<html><body>{{name}}</body></html>';
-        jest.spyOn(fs, 'readFileSync').mockReturnValue(templateSource);
-        const compileMock = jest.spyOn(handlebars, 'compile').mockReturnValue(() => 'Compiled template');
-
-        // Act
-        const compiledTemplate = service['loadTemplate']()
-
-        // Assert
-        expect(fs.readFileSync).toHaveBeenCalledWith(expect.stringContaining('.hbs'), 'utf-8');
-        expect(compileMock).toHaveBeenCalledWith(templateSource);
-        expect(compiledTemplate).toBeDefined();
-    });
-
-    it('should send an email with the correct options', async () => {
-        // Arrange
-        const sendMailMock = jest.fn().mockResolvedValue('Email sent');
-        jest.spyOn(nodemailer, 'createTransport').mockReturnValue({ sendMail: sendMailMock } as any);
-        jest.spyOn(service as any, 'loadTemplate').mockReturnValue(() => 'Compiled template');
-
-        const options: MailerSender = {
+    describe('send', () => {
+        const sender: MailerSender = {
             recipients: [{ address: 'test@recipient.com', name: 'Testing user' }],
             subject: 'Test Email',
-            placeholderReplacements: { name: 'Test User' },
-            attachments: [],
+            content: "Test content"
         };
+        const expectedOptions: Mail.Options = {
+            from: mockOptions.auth_user,
+            to: sender.recipients,
+            subject: sender.subject,
+            html: sender.content,
+            attachments: undefined
+        }
 
-        // Act
-        const result = await service.send(options);
+        it('should send an email with the correct options', async () => {
+            // Arrange
+            mockSendMail.mockResolvedValue('Email sent');
 
-        // Assert
-        expect(sendMailMock).toHaveBeenCalledWith({
-            from: options.from,
-            to: options.recipients,
-            subject: options.subject,
-            html: 'Compiled template',
-            attachments: options.attachments,
+            // Act
+            const result = await service.send(sender);
+
+            // Assert
+            expect(mockSendMail).toHaveBeenCalledWith(expectedOptions);
+            expect(result).toBe('Email sent');
         });
-        expect(result).toBe('Email sent');
-    });
 
-    it('should log and rethrow errors during email sending', async () => {
-        // Arrange
-        const sendMailMock = jest.fn().mockRejectedValue(new Error('Send mail failed'));
-        jest.spyOn(nodemailer, 'createTransport').mockReturnValue({ sendMail: sendMailMock } as any);
+        it('should log and rethrow errors during email sending', async () => {
+            // Arrange
+            mockSendMail.mockResolvedValue(new Error('Send mail failed'));
 
-        const options: MailerSender = {
-            recipients: [{ address: 'test@recipient.com', name: 'Testing user' }],
-            subject: 'Test Email',
-            placeholderReplacements: { name: 'Test User' },
-            attachments: [],
-        };
-
-        // Act & Assert
-        await expect(service.send(options)).rejects.toThrowError(Error);
-
-        expect(sendMailMock).toHaveBeenCalled();
-    });
+            // Act & Assert
+            await expect(service.send(sender)).rejects.toThrowError(Error);
+            expect(mockSendMail).toHaveBeenCalledWith(expectedOptions);
+        });
+    })
 
 });

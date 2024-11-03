@@ -1,15 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UrlFileFetcherService } from './url-file-fetcher.service';
+import { NestUuid } from '../nest-ext/nest-uuid/nest-uuid.type';
+import { TestBed } from '@automock/jest';
+import { NEST_UUID } from '../nest-ext/nest-uuid/inject-token';
 
 describe('UrlFileFetcherService', () => {
   let service: UrlFileFetcherService;
+  let uuid: jest.Mocked<NestUuid>
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [UrlFileFetcherService],
-    }).compile();
+    const { unit, unitRef } = TestBed.create(UrlFileFetcherService).compile();
 
-    service = module.get<UrlFileFetcherService>(UrlFileFetcherService);
+    service = unit;
+    uuid = unitRef.get(NEST_UUID);
   });
 
   it('should be defined', () => {

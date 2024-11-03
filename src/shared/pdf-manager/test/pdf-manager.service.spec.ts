@@ -1,15 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PdfManagerService } from '../pdf-manager.service';
+import { TestBed } from '@automock/jest';
 
 describe('PdfManagerService', () => {
   let service: PdfManagerService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [PdfManagerService],
-    }).compile();
+    const { unit, unitRef } = TestBed.create(PdfManagerService).compile();
 
-    service = module.get<PdfManagerService>(PdfManagerService);
+    service = unit
   });
 
   it('should be defined', () => {

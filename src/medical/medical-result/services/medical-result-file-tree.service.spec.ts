@@ -1,20 +1,16 @@
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { TestBed } from "@automock/jest";
-import { ZipperService } from "@/shared/zipper/zipper.service";
-import { StreamableFile } from "@nestjs/common";
 import { MedicalResultFileTreeService } from "./medical-result-file-tree.service";
 
 describe('MedicalResultFileTreeService', () => {
   let service: MedicalResultFileTreeService;
   let repository: jest.Mocked<MedicalResultRepository>;
-  let zipper: jest.Mocked<ZipperService>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(MedicalResultFileTreeService).compile();
 
     service = unit;
     repository = unitRef.get(MedicalResultRepository);
-    zipper = unitRef.get(ZipperService);
   });
 
   afterEach(() => {
@@ -39,8 +35,10 @@ describe('MedicalResultFileTreeService', () => {
         lastname: "Test"
       }
     ];
-    const mockedZip = {} as StreamableFile;
-    const expectedValue = mockedZip;
+    const expectedValue = mockedTree.map(e => ({
+      source: e.filePath,
+      name: `${e.year}/${e.corporativeName}/${e.companyName}_${e.companyRuc}/${e.branchName}/${e.process}/${e.dni}_${e.name}_${e.lastname}/${e.order.toLocaleLowerCase()}_${e.examName.toLocaleLowerCase()}.pdf`
+    }));
 
     const data = {
       year: '20XX',
@@ -60,13 +58,12 @@ describe('MedicalResultFileTreeService', () => {
         andWhere: jest.fn().mockReturnThis(),
         getRawMany: jest.fn().mockResolvedValue(mockedTree)
       } as any);
-      zipper.zip.mockResolvedValue(mockedZip);
     });
 
     it('should retrive streamable file without checking skiping param values', async () => {
       // Arrange
       // Act
-      const result = await service.getTree({});
+      const result = await service.getTreeSources({});
 
       // Assert
       expect(repository.query).toHaveBeenCalledWith('result');
@@ -98,7 +95,7 @@ describe('MedicalResultFileTreeService', () => {
     it('should retrive streamable file checking year', async () => {
       // Arrange
       // Act
-      const result = await service.getTree({ year: data.year });
+      const result = await service.getTreeSources({ year: data.year });
 
       // Assert
       expect(repository.query().andWhere).toHaveBeenNthCalledWith(2, 'YEAR(order.createAt) = :year', { year: data.year });
@@ -108,7 +105,7 @@ describe('MedicalResultFileTreeService', () => {
     it('should retrive streamable file checking corporativeName', async () => {
       // Arrange
       // Act
-      const result = await service.getTree({ corporativeName: data.corporativeName });
+      const result = await service.getTreeSources({ corporativeName: data.corporativeName });
 
       // Assert
       expect(repository.query().andWhere).toHaveBeenNthCalledWith(2, 'order.corporativeName LIKE :corporativeName', { corporativeName: data.corporativeName });
@@ -118,7 +115,7 @@ describe('MedicalResultFileTreeService', () => {
     it('should retrive streamable file checking company', async () => {
       // Arrange
       // Act
-      const result = await service.getTree({ company: data.company });
+      const result = await service.getTreeSources({ company: data.company });
 
       // Assert
       expect(repository.query().andWhere).toHaveBeenNthCalledWith(2, 'order.companyRuc = :company', { company: data.company });
@@ -128,7 +125,7 @@ describe('MedicalResultFileTreeService', () => {
     it('should retrive streamable file checking branch', async () => {
       // Arrange
       // Act
-      const result = await service.getTree({ branch: data.branch });
+      const result = await service.getTreeSources({ branch: data.branch });
 
       // Assert
       expect(repository.query().andWhere).toHaveBeenNthCalledWith(2, 'order.branchName LIKE :branch', { branch: data.branch });
@@ -138,17 +135,17 @@ describe('MedicalResultFileTreeService', () => {
     it('should retrive streamable file checking process', async () => {
       // Arrange
       // Act
-      const result = await service.getTree({ process: data.process });
+      const result = await service.getTreeSources({ process: data.process });
 
       // Assert
       expect(repository.query().andWhere).toHaveBeenNthCalledWith(2, 'order.process LIKE :process', { process: data.process });
       expect(result).toEqual(expectedValue);
     });
-    
+
     it('should retrive streamable file checking patient', async () => {
       // Arrange
       // Act
-      const result = await service.getTree({ patient: data.patient });
+      const result = await service.getTreeSources({ patient: data.patient });
 
       // Assert
       expect(repository.query().andWhere).toHaveBeenNthCalledWith(2, 'client.dni LIKE :dni', { dni: data.patient });

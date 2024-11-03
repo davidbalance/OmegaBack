@@ -41,7 +41,7 @@ export class FileDownloaderService {
         if (!sources.length) {
             throw new NotFoundException('Files not found');
         }
-        const zip = await this.zipper.zip(sources);
+        const zip = this.zipper.zip(sources);
         return new StreamableFile(zip);
     }
 

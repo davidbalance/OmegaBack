@@ -15,7 +15,9 @@ describe('AreaManagementService', () => {
                 {
                     provide: ConfigService,
                     useValue: {
-                        get: jest.fn().mockReturnValue(mockedJwt),
+                        get: jest.fn().mockReturnValue({
+                            jwt_secret: mockedJwt
+                        }),
                     },
                 },
             ],

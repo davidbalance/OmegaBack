@@ -1,22 +1,14 @@
-/* jest.mock('fs', () => ({
-  readFileSync: jest.fn()
-}));
-
-jest.mock('path', () => ({
-  resolve: jest.fn()
-}));
- */
-
 import { PdfManagerService } from "@/shared/pdf-manager/pdf-manager.service";
 import { MedicalReportRepository } from "../repositories/medical-report.repository";
 import { MedicalReportPdfService } from "./medical-report-pdf.service";
 import { TestBed } from "@automock/jest";
 import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import { mockMedicalReportEntity } from "../stub/medical-report-entity.stub";
-import path from "path";
-import fs from "fs";
-import { medicalReportDocumentLayout } from "../utils/medical-report-document-layout";
 import { fileReportPath } from "@/shared/utils";
+import { NestPath } from "@/shared/nest-ext/nest-path/nest-path.type";
+import { NestFS } from "@/shared/nest-ext/nest-fs/nest-fs.type";
+import { NEST_PATH } from "@/shared/nest-ext/nest-path/inject-token";
+import { NEST_FS } from "@/shared/nest-ext/nest-fs/inject-token";
 
 jest.mock('dayjs/locale/es', () => { });
 jest.mock('dayjs', () => ({
@@ -32,16 +24,20 @@ jest.mock('dayjs', () => ({
 describe('MedicalReportPdfService', () => {
   let service: MedicalReportPdfService;
   let repository: jest.Mocked<MedicalReportRepository>;
-  let pdfManagerService: jest.Mocked<PdfManagerService>;
-  let storageManager: jest.Mocked<StorageManager>;
+  let pdfService: jest.Mocked<PdfManagerService>;
+  let storage: jest.Mocked<StorageManager>;
+  let path: jest.Mocked<NestPath>;
+  let fs: jest.Mocked<NestFS>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(MedicalReportPdfService).compile();
 
     service = unit;
     repository = unitRef.get(MedicalReportRepository);
-    pdfManagerService = unitRef.get(PdfManagerService);
-    storageManager = unitRef.get(INJECT_STORAGE_MANAGER);
+    pdfService = unitRef.get(PdfManagerService);
+    storage = unitRef.get(INJECT_STORAGE_MANAGER);
+    path = unitRef.get(NEST_PATH);
+    fs = unitRef.get(NEST_FS);
   });
 
   afterEach(() => {
@@ -63,12 +59,11 @@ describe('MedicalReportPdfService', () => {
 
     it('should craft a PDF report successfully', async () => {
       // Arrange
-      const spySignatureResolve = jest.spyOn(path, 'resolve').mockReturnValueOnce(signatureDirectory);
-      const spySignatureReadSync = jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(signatureImg);
-      const spyHeaderResolve = jest.spyOn(path, 'resolve').mockReturnValueOnce(headerDirectory);
-      const spyHeaderReadSync = jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(headerImg);
-
-      pdfManagerService.parseHtml.mockReturnValue(newContent);
+      path.resolve.mockReturnValueOnce(signatureDirectory);
+      fs.readFileSync.mockReturnValueOnce(signatureImg);
+      path.resolve.mockReturnValueOnce(headerDirectory);
+      fs.readFileSync.mockReturnValueOnce(headerImg);
+      pdfService.parseHtml.mockReturnValue(newContent);
 
       const baseContent = {
         header: `data:image/png;base64,${headerBase64}`,
@@ -85,11 +80,11 @@ describe('MedicalReportPdfService', () => {
       };
 
       const buffer = Buffer.from('test-pdf-buffer');
-      pdfManagerService.craft.mockResolvedValue(buffer);
+      pdfService.craft.mockResolvedValue(buffer);
 
       const filePath = fileReportPath({ dni: data.patientDni, order: data.order });
       const output = `${filePath}/${data.examName.toLocaleLowerCase().replace(/\s/g, '_')}.pdf`;
-      storageManager.saveFile.mockResolvedValue(output);
+      storage.saveFile.mockResolvedValue(output);
 
       repository.findOneAndUpdate.mockResolvedValue({ ...data, fileAddress: output, hasFile: true });
 
@@ -97,11 +92,11 @@ describe('MedicalReportPdfService', () => {
       const result = await service.craft(data);
 
       // Assert
-      expect(spySignatureReadSync).toHaveBeenNthCalledWith(1, signatureDirectory);
-      expect(spyHeaderReadSync).toHaveBeenNthCalledWith(2, headerDirectory);
-      expect(pdfManagerService.parseHtml).toHaveBeenCalledWith(data.content);
-      expect(pdfManagerService.craft).toHaveBeenCalled();
-      expect(storageManager.saveFile).toHaveBeenCalledWith(buffer, '.pdf', filePath, data.examName.toLocaleLowerCase().replace(/\s/g, '_'));
+      expect(fs.readFileSync).toHaveBeenNthCalledWith(1, signatureDirectory);
+      expect(fs.readFileSync).toHaveBeenNthCalledWith(2, headerDirectory);
+      expect(pdfService.parseHtml).toHaveBeenCalledWith(data.content);
+      expect(pdfService.craft).toHaveBeenCalled();
+      expect(storage.saveFile).toHaveBeenCalledWith(buffer, '.pdf', filePath, data.examName.toLocaleLowerCase().replace(/\s/g, '_'));
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: data.id }, { fileAddress: output, hasFile: true });
       expect(result).toEqual({ ...data, fileAddress: output, hasFile: true });
     });
@@ -121,9 +116,9 @@ describe('MedicalReportPdfService', () => {
 
       // Assert
       expect(spyReadSync).toHaveBeenCalledWith(signatureDirectory);
-      expect(pdfManagerService.parseHtml).not.toHaveBeenCalled();
-      expect(pdfManagerService.craft).not.toHaveBeenCalled();
-      expect(storageManager.saveFile).not.toHaveBeenCalled();
+      expect(pdfService.parseHtml).not.toHaveBeenCalled();
+      expect(pdfService.craft).not.toHaveBeenCalled();
+      expect(storage.saveFile).not.toHaveBeenCalled();
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: data.id }, { fileAddress: null, hasFile: false });
       expect(result).toEqual({ ...data, fileAddress: null, hasFile: false });
     });

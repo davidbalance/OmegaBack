@@ -12,14 +12,13 @@ export class FileTreeDownloaderService {
 
     constructor(
         @InjectQueue('zip-tree') private readonly zipQueue: Queue,
-        @Inject(MedicalResultFileTreeService) private readonly service: MedicalResultFileTreeService,
+        @Inject(MedicalResultFileTreeService) private readonly treeService: MedicalResultFileTreeService,
         @Inject(ZipTreeRepository) private readonly repository: ZipTreeRepository,
         @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
-
     ) { }
 
     async startTreeJob(email: string, data: DownloadTreeRequest): Promise<string> {
-        const sources = await this.service.getTreeSources(data);
+        const sources = await this.treeService.getTreeSources(data);
         const job = await this.zipQueue.add('zip-tree', { sources, email });
         return job.id.toString();
     }

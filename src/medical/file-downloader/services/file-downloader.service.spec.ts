@@ -8,6 +8,7 @@ import { StreamableFile, NotFoundException } from "@nestjs/common";
 import { PostDownloadZipRequestDto } from "../dtos/request/download-zip.post.dto";
 import { FileSourceEnum } from "../dtos/request/file-source.base.dto";
 import { ReadStream } from "typeorm/platform/PlatformTools";
+import { PassThrough } from "stream";
 
 describe('FileDownloaderService', () => {
     let service: FileDownloaderService;
@@ -67,22 +68,22 @@ describe('FileDownloaderService', () => {
             ]
         };
         const mockedSources: string[] = ['path/to/report.pdf', 'path/to/result.pdf'];
-        const mockedZip: StreamableFile = {} as StreamableFile;
+        const mockedZip = {} as PassThrough;
 
         it('should download multiple files as zip', async () => {
             // Arrange
             medicalReportService.getFilePath.mockResolvedValueOnce(mockedSources[0]);
             medicalResultService.getFilePath.mockResolvedValueOnce(mockedSources[1]);
-            zipper.zip.mockResolvedValueOnce(mockedZip);
+            zipper.zip.mockReturnValue(mockedZip);
 
             // Act
             const result = await service.downloadMultipleFiles(files);
 
             // Assert
-            expect(result).toEqual(mockedZip);
             expect(medicalReportService.getFilePath).toHaveBeenCalledWith(files.files[0].id);
             expect(medicalResultService.getFilePath).toHaveBeenCalledWith(files.files[1].id);
             expect(zipper.zip).toHaveBeenCalledWith(mockedSources);
+            expect(result).toBeInstanceOf(StreamableFile);
         });
 
         it('should throw NotFoundException if no files found', async () => {

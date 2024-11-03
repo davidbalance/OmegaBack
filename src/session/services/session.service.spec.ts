@@ -5,18 +5,22 @@ import { PostSessionRequestDto } from "../dto/request/session.post.dto";
 import { v4 } from "uuid";
 import { mockSession, mockSessions } from "../stub/session.stub";
 import { PatchSessionRequestDto } from "../dto/request/session.patch.dto";
+import { NestUuid } from "@/shared/nest-ext/nest-uuid/nest-uuid.type";
+import { NEST_UUID } from "@/shared/nest-ext/nest-uuid/inject-token";
 
 jest.mock('uuid');
 
 describe('SessionService', () => {
   let service: SessionService;
   let repository: jest.Mocked<SessionRepository>;
+  let uuid: jest.Mocked<NestUuid>
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(SessionService).compile();
 
     service = unit;
     repository = unitRef.get(SessionRepository);
+    uuid = unitRef.get(NEST_UUID)
   });
 
   afterEach(() => {
@@ -31,7 +35,7 @@ describe('SessionService', () => {
         refresh: "test-refresh"
       };
       const mockedSessionId = 'mocked-session-id';
-      (v4 as jest.Mock).mockReturnValue(mockedSessionId);
+      uuid.v4.mockReturnValue(mockedSessionId);
 
       // Act
       const result = await service.create(mockDto);

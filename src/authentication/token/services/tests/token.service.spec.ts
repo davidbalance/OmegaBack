@@ -7,6 +7,7 @@ import { mockToken } from "./stub/token.stub";
 import { RefreshToken } from "../../types/refresh-token.type";
 import { ForbiddenException } from "@nestjs/common";
 import { Between } from "typeorm";
+import { AuthConfig, AuthConfigName } from "@/shared/config/auth.config";
 
 describe('TokenService', () => {
     let service: TokenService;
@@ -36,7 +37,10 @@ describe('TokenService', () => {
         beforeEach(() => {
             jwtService.sign.mockReturnValueOnce(access);
             jwtService.sign.mockReturnValueOnce(refresh);
-            configService.get.mockReturnValueOnce(expiresIn);
+            configService.get.mockReturnValueOnce({
+                jwt_expires: expiresIn,
+                jwt_refresh_expires: expiresIn
+            } as AuthConfig);
         });
 
         it('should generate and store access and refresh tokens', async () => {
@@ -47,17 +51,13 @@ describe('TokenService', () => {
             const result = await service.initToken(sub);
 
             // Assert
-            expect(result).toEqual({
-                access: access,
-                refresh: refresh,
-                expiresAt: expect.any(Date),
-            });
             expect(jwtService.sign).toHaveBeenCalledTimes(2);
-            expect(configService.get).toHaveBeenCalledWith('JWT_REFRESH_EXPIRES_IN');
+            expect(configService.get).toHaveBeenCalledWith(AuthConfigName);
             expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ key: sub }, {
                 token: access,
                 expiresAt: expect.any(Date),
             });
+            expect(result).toEqual({ access: access, refresh: refresh, expiresAt: expect.any(Date) });
         });
 
         it('should create a new token if it does not exist', async () => {
@@ -75,7 +75,7 @@ describe('TokenService', () => {
                 expiresAt: expect.any(Date),
             });
             expect(jwtService.sign).toHaveBeenCalledTimes(2);
-            expect(configService.get).toHaveBeenCalledWith('JWT_REFRESH_EXPIRES_IN');
+            expect(configService.get).toHaveBeenCalledWith(AuthConfigName);
             expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ key: sub }, {
                 token: access,
                 expiresAt: expect.any(Date),
@@ -102,7 +102,7 @@ describe('TokenService', () => {
                 expiresAt: expect.any(Date),
             });
             expect(jwtService.sign).toHaveBeenCalledTimes(2);
-            expect(configService.get).toHaveBeenCalledWith('JWT_REFRESH_EXPIRES_IN');
+            expect(configService.get).toHaveBeenCalledWith(AuthConfigName);
             expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ key: sub }, {
                 token: access,
                 expiresAt: expect.any(Date),
@@ -126,7 +126,10 @@ describe('TokenService', () => {
         beforeEach(() => {
             jwtService.sign.mockReturnValueOnce(access);
             jwtService.sign.mockReturnValueOnce(refresh);
-            configService.get.mockReturnValueOnce(expiresIn);
+            configService.get.mockReturnValueOnce({
+                jwt_expires: expiresIn,
+                jwt_refresh_expires: expiresIn
+            } as AuthConfig);
         });
 
         it('should refresh tokens if the refresh token is valid', async () => {
@@ -144,7 +147,7 @@ describe('TokenService', () => {
                 expiresAt: expect.any(Date),
             });
             expect(jwtService.sign).toHaveBeenCalledTimes(2);
-            expect(configService.get).toHaveBeenCalledWith('JWT_REFRESH_EXPIRES_IN');
+            expect(configService.get).toHaveBeenCalledWith(AuthConfigName);
             expect(repository.findOne).toHaveBeenCalledWith({ where: { key: sub } });
             expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ key: sub }, {
                 token: access,

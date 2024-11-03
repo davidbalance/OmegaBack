@@ -1,21 +1,28 @@
 import { ZipperService } from './zipper.service';
-import fs from 'fs';
-import path from 'path';
-import archiver from 'archiver';
 import { PassThrough } from 'stream';
-import { StreamableFile } from '@nestjs/common';
 import { TestBed } from '@automock/jest';
-
-jest.mock('fs');
-jest.mock('path');
-jest.mock('archiver');
+import { NestArchiver } from '../nest-ext/nest-archiver/nest-archiver.type';
+import { NestFS } from '../nest-ext/nest-fs/nest-fs.type';
+import { NestPath } from '../nest-ext/nest-path/nest-path.type';
+import { NEST_ARCHIVER } from '../nest-ext/nest-archiver/inject-token';
+import { NEST_FS } from '../nest-ext/nest-fs/inject-token';
+import { NEST_PATH } from '../nest-ext/nest-path/inject-token';
+import { ReadStream } from 'typeorm/platform/PlatformTools';
 
 describe('ZipperService', () => {
   let service: ZipperService;
+  let archiver: jest.Mocked<NestArchiver>;
+  let path: jest.Mocked<NestPath>;
+  let fs: jest.Mocked<NestFS>;
 
   beforeEach(() => {
-    const { unit } = TestBed.create(ZipperService).compile();
+    const { unit, unitRef } = TestBed.create(ZipperService).compile();
+
     service = unit;
+    archiver = unitRef.get(NEST_ARCHIVER);
+    path = unitRef.get(NEST_PATH);
+    fs = unitRef.get(NEST_FS);
+
   });
 
   afterEach(() => {
@@ -24,55 +31,41 @@ describe('ZipperService', () => {
 
   describe('zip', () => {
 
-    beforeEach(() => {
-      (fs.createReadStream as jest.Mock).mockImplementation(() => new PassThrough());
-    });
+    const mockedStream = {} as PassThrough;
 
-    it('should return a StreamableFile using sources as string', async () => {
+    it('should return a ReadStream using sources as string', () => {
+      // Arrange
       const sources = ['file1.txt', 'file2.txt'];
 
-      (path.basename as jest.Mock).mockImplementation((source) => source.split('/').pop())
+      fs.createReadStream.mockReturnValue({} as ReadStream);
+      path.basename.mockReturnValue('/path/to/file.txt');
 
-      const mockArchive = {
-        append: jest.fn(),
-        pipe: jest.fn(),
-        finalize: jest.fn(),
-        on: jest.fn(),
-      };
+      // Act
+      const result = service.zip(sources);
 
-      (archiver as unknown as jest.Mock).mockReturnValue(mockArchive);
-
-      const result = await service.zip(sources);
-
-      expect(result).toBeInstanceOf(StreamableFile);
+      // Assert
       expect(path.basename).toHaveBeenCalledTimes(sources.length);
       expect(fs.createReadStream).toHaveBeenCalledTimes(sources.length);
-      expect(archiver).toHaveBeenCalledWith('zip', { zlib: { level: 9 } });
-      expect(mockArchive.pipe).toHaveBeenCalled();
-      expect(mockArchive.append).toHaveBeenCalledTimes(sources.length);
-      expect(mockArchive.finalize).toHaveBeenCalled();
+      expect(archiver.pipe).toHaveBeenCalled();
+      expect(archiver.append).toHaveBeenCalledTimes(sources.length);
+      expect(archiver.finalize).toHaveBeenCalled();
+      expect(result).toBeInstanceOf(PassThrough);
     });
 
-    it('should return a StreamableFile using sources as object', async () => {
+    it('should return a ReadStream using sources as object', () => {
+      // Arrange
       const sources = [{ source: 'file1.txt', name: 'custom_file1.txt' }, { source: 'file2.txt', name: 'custom_file2.txt' }];
 
-      const mockArchive = {
-        append: jest.fn(),
-        pipe: jest.fn(),
-        finalize: jest.fn(),
-        on: jest.fn(),
-      };
+      // Act
+      const result = service.zip(sources);
 
-      (archiver as unknown as jest.Mock).mockReturnValue(mockArchive);
-
-      const result = await service.zip(sources);
-
-      expect(result).toBeInstanceOf(StreamableFile);
+      // Assert
       expect(fs.createReadStream).toHaveBeenCalledTimes(sources.length);
-      expect(archiver).toHaveBeenCalledWith('zip', { zlib: { level: 9 } });
-      expect(mockArchive.pipe).toHaveBeenCalled();
-      expect(mockArchive.append).toHaveBeenCalledTimes(sources.length);
-      expect(mockArchive.finalize).toHaveBeenCalled();
+      expect(path.basename).not.toHaveBeenCalled();
+      expect(archiver.pipe).toHaveBeenCalled();
+      expect(archiver.append).toHaveBeenCalledTimes(sources.length);
+      expect(archiver.finalize).toHaveBeenCalled();
+      expect(result).toBeInstanceOf(PassThrough);
     });
   });
 });

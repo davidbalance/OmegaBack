@@ -3,6 +3,8 @@ import { FileTreeDownloaderController } from "./file-tree-downloader.controller"
 import { FileTreeDownloaderService } from "../services/file-tree-downloader.service";
 import { Response } from "express";
 import { DownloadTreeRequest } from "../dtos/request/download-tree.dto";
+import { StreamableFile } from "@nestjs/common";
+import { ReadStream } from "typeorm/platform/PlatformTools";
 
 describe('FileTreeDownloaderController', () => {
     let controller: FileTreeDownloaderController;
@@ -25,28 +27,44 @@ describe('FileTreeDownloaderController', () => {
         jest.clearAllMocks();
     });
 
-    describe('downloadTree', () => {
+    describe('startJob', () => {
+        const user = 'test@email.com';
         const query: DownloadTreeRequest = {};
-        const mockStream: any = {
-            getStream: jest.fn().mockReturnValue({
-                pipe: jest.fn()
-            })
-        }
+
+        it('should start job', async () => {
+            // Arrange
+            service.startTreeJob.mockResolvedValueOnce(undefined);
+
+            // Act
+            const result = await controller.startJob(user, query);
+
+            // Assert
+            expect(service.startTreeJob).toHaveBeenCalledWith(user, query);
+            expect(result).toBe("");
+        });
+    });
+
+
+
+    describe('downloadTree', () => {
+        const user = 'test@email.com';
+        const code = 'test-code';
+        const mockStream = {} as ReadStream;
 
         it('should download a file', async () => {
             // Arrange
-            service.startTreeJob.mockResolvedValueOnce('mockStream');
+            service.downloadTree.mockResolvedValueOnce(mockStream);
 
             // Act
-            await controller.downloadTree(query, response as Response);
+            const result = await controller.downloadTree(user, code, response as Response);
 
             // Assert
-            expect(service.downloadTree).toHaveBeenCalledWith(query);
-            expect(response.setTimeout).toHaveBeenCalled();
+            expect(service.downloadTree).toHaveBeenCalledWith(user, code);
             expect(response.set).toHaveBeenCalledWith({
                 'Content-Type': 'application/zip',
-                'Content-Disposition': 'attachment; filename="archivo-medico.zip"',
+                'Content-Disposition': 'attachment; filename="file-tree.zip"',
             });
+            expect(result).toBeInstanceOf(StreamableFile);
         });
     });
 });

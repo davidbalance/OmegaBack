@@ -6,7 +6,6 @@ import { MedicalEmailEntity } from '@/medical/medical-client/entities/medical-em
 import { NEST_PATH } from '@/shared/nest-ext/nest-path/inject-token';
 import { NestPath } from '@/shared/nest-ext/nest-path/nest-path.type';
 import { HandlebarsService } from '@/shared/handlebars/handlebars.service';
-import { MailOrderConfig, MailOrderConfigName } from '@/shared/config/mail-order.config';
 import { ServerConfig, ServerConfigName } from '@/shared/config/server.config';
 
 @Injectable()
@@ -22,7 +21,7 @@ export class MedicalOrderMailService {
 
   async send(order: number, mail: number): Promise<void> {
     const server = this.config.get<ServerConfig>(ServerConfigName);
-    
+
     const directory = this.path.resolve('static/images/omega.png');
     const foundOrder = await this.repository.findOne({
       where: { id: order },
