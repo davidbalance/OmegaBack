@@ -43,8 +43,14 @@ export class ZipperService {
         });
     }
 
-    public zipToFile(sources: (string | { source: string, name: string })[], output: string): Promise<void> {
+    public zipToFile(sources: (string | { source: string, name: string })[], destinationPath: string, name: string): Promise<void> {
         return new Promise((resolve, reject) => {
+
+            if (!this.fs.existsSync(destinationPath)) {
+                this.fs.mkdirSync(destinationPath, { recursive: true });
+            }
+
+            const output = `${destinationPath}/${name}.zip`;
             const outputStream = this.fs.createWriteStream(output);
             this.archiver.pipe(outputStream);
 
@@ -54,6 +60,11 @@ export class ZipperService {
                 this.archiver.append(stream, { name });
             });
 
+            this.archiver.on('warning', (err) => {
+                if (err.code !== 'ENOENT') {
+                    reject(err);
+                }
+            });
             this.archiver.on('error', (err) => reject(err));
             outputStream.on('close', () => resolve());
             this.archiver.finalize();

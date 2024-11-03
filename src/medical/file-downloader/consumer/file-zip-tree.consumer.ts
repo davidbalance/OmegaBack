@@ -64,11 +64,11 @@ export class FileZipTreeConsumer extends WorkerHost {
             Logger.log("--Finding disk location");
             const disk = this.path.resolve('disk');
             const fullpath = this.path.join(disk, 'zip/tree');
-            const filename = `${fullpath}/${unique}.zip`;
+            const filename = `${unique}.zip`;
             Logger.log("--Zipping file");
-            await this.zipper.zipToFile(sources, filename);
+            await this.zipper.zipToFile(sources, fullpath, filename);
             Logger.log("--Zip completed");
-            return filename
+            return `${fullpath}/${filename}`
         } catch (error) {
             Logger.error(error);
             throw error;

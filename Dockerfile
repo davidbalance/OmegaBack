@@ -49,6 +49,7 @@ ENV APP_ENVIRONMENT production
 
 RUN mkdir -p disk/medical-pdf \
     disk/signatures \
+    disk/zip \
     disk/old-eeq \
     disk/old-ipeges
 
