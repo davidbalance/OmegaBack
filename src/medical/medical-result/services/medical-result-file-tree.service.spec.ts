@@ -1,16 +1,20 @@
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { TestBed } from "@automock/jest";
 import { MedicalResultFileTreeService } from "./medical-result-file-tree.service";
+import { NestPath } from "@/shared/nest-ext/nest-path/nest-path.type";
+import { NEST_PATH } from "@/shared/nest-ext/nest-path/inject-token";
 
 describe('MedicalResultFileTreeService', () => {
   let service: MedicalResultFileTreeService;
   let repository: jest.Mocked<MedicalResultRepository>;
+  let path: jest.Mocked<NestPath>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(MedicalResultFileTreeService).compile();
 
     service = unit;
     repository = unitRef.get(MedicalResultRepository);
+    path = unitRef.get(NEST_PATH);
   });
 
   afterEach(() => {
@@ -35,9 +39,10 @@ describe('MedicalResultFileTreeService', () => {
         lastname: "Test"
       }
     ];
+    const mockedPath = '20XX/TEST_CORPORATIVE/TEST_COMPANY_17XXXXXXXX001/TEST_BRANCH/Pre-Ocupacional/17XXXXXXXX_TEST_TEST/00XXXXXXX_EXAM.pdf';
     const expectedValue = mockedTree.map(e => ({
       source: e.filePath,
-      name: `${e.year}\\${e.corporativeName}\\${e.companyName}_${e.companyRuc}\\${e.branchName}\\${e.process}\\${e.dni}_${e.name}_${e.lastname}\\${e.order.toLocaleLowerCase()}_${e.examName.toLocaleLowerCase()}.pdf`
+      name: mockedPath
     }));
 
     const data = {
@@ -58,6 +63,7 @@ describe('MedicalResultFileTreeService', () => {
         andWhere: jest.fn().mockReturnThis(),
         getRawMany: jest.fn().mockResolvedValue(mockedTree)
       } as any);
+      path.join.mockReturnValue(mockedPath);
     });
 
     it('should retrive streamable file without checking skiping param values', async () => {
@@ -89,6 +95,7 @@ describe('MedicalResultFileTreeService', () => {
       expect(repository.query().andWhere).not.toHaveBeenNthCalledWith(5, 'order.branchName LIKE :branch', { branch: data.branch });
       expect(repository.query().andWhere).not.toHaveBeenNthCalledWith(6, 'order.process LIKE :process', { process: data.process });
       expect(repository.query().andWhere).not.toHaveBeenNthCalledWith(7, 'client.dni LIKE :dni', { dni: data.patient });
+      expect(path.join).toHaveBeenCalledTimes(mockedTree.length);
       expect(result).toEqual(expectedValue);
     });
 

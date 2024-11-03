@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
-import path from "path";
+import { NEST_PATH } from "@/shared/nest-ext/nest-path/inject-token";
+import { NestPath } from "@/shared/nest-ext/nest-path/nest-path.type";
 
 type ResultTree = { filePath: string, examName: string, order: string, corporativeName: string, companyName: string, companyRuc: string, branchName: string, process: string, year: string, dni: string, name: string, lastname: string };
 type RetriveTreeType = {
@@ -17,6 +18,7 @@ export class MedicalResultFileTreeService {
 
   constructor(
     @Inject(MedicalResultRepository) private readonly repository: MedicalResultRepository,
+    @Inject(NEST_PATH) private readonly path: NestPath,
   ) { }
 
   private async retriveResults(data: RetriveTreeType): Promise<ResultTree[]> {
@@ -71,7 +73,7 @@ export class MedicalResultFileTreeService {
     for (const value of values) {
       sources.push({
         source: value.filePath,
-        name: path.join(`${value.year}`, value.corporativeName, `${value.companyName}_${value.companyRuc}`, value.branchName, value.process, `${value.dni}_${value.name}_${value.lastname}`, `${value.order}_${value.examName}.pdf`.toLocaleLowerCase())
+        name: this.path.join(`${value.year}`, value.corporativeName, `${value.companyName}_${value.companyRuc}`, value.branchName, value.process, `${value.dni}_${value.name}_${value.lastname}`, `${value.order}_${value.examName}.pdf`.toLocaleLowerCase())
       });
     }
     return sources;
