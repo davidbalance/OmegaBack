@@ -13,8 +13,10 @@ import { NestUuid } from '../nest-ext/nest-uuid/nest-uuid.type';
 type ZipperFileOptions = {
     filename: string;
 }
-type ZipperBatchOptions = {
-    batchSize: number;
+type ZipperPayload = {
+    filename: string,
+    errors: number,
+    files: number
 }
 @Injectable()
 export class ZipperService {
@@ -55,10 +57,9 @@ export class ZipperService {
         });
     }
 
-    public zipToFile(sources: (string | { source: string, name: string })[], destinationPath: string, options: Partial<ZipperFileOptions & ZipperBatchOptions> | undefined): Promise<string> {
+    public zipToFile(sources: (string | { source: string, name: string })[], destinationPath: string, options: Partial<ZipperFileOptions> | undefined = undefined): Promise<ZipperPayload> {
 
-        Logger.log(`Batch size: ${sources.length}`);
-        const batchSize = options && options.batchSize ? options.batchSize : 100;
+        Logger.log(`File amount: ${sources.length}`);
         const zipName = options && options.filename ? options.filename : this.uuid.v4();
 
         return new Promise((resolve, reject) => {
@@ -67,11 +68,20 @@ export class ZipperService {
                 this.fs.mkdirSync(destinationPath, { recursive: true });
             }
 
+            let errors: number = 0;
+            let success: number = 0;
             const outputName = `${destinationPath}/${zipName}.zip`;
             const outputStream = this.fs.createWriteStream(outputName);
             const archive = this.archiver('zip', { zlib: { level: 9 } });
 
-            outputStream.on('close', () => resolve(outputName));
+            outputStream.on('close', () => {
+                Logger.log(`Zip ${outputName} completed`);
+                resolve({
+                    filename: outputName,
+                    errors: errors,
+                    files: success
+                })
+            });
             archive.on('error', (err) => reject(err));
             archive.on('warning', (err) => {
                 if (err.code !== 'ENOENT') {
@@ -81,37 +91,33 @@ export class ZipperService {
 
             archive.pipe(outputStream);
 
-            const processBatch = (startIndex: number) => {
-                const endIndex = Math.min(startIndex + batchSize, sources.length);
-                const currentBatch = sources.slice(startIndex, endIndex);
-                Logger.log(`Batch process ${startIndex} - ${endIndex}`);
-
-                const promises: Promise<void>[] = [];
-
-                for (const source of currentBatch) {
-                    promises.push(new Promise<void>((resolveFile, rejectFile) => {
-                        const stream = this.fs.createReadStream(typeof source === 'string' ? source : source.source);
-                        const filename = typeof source === 'string' ? this.path.basename(source) : source.name;
-                        archive.append(stream, { name: filename });
-
-                        stream.on('end', resolveFile);
-                        stream.on('error', rejectFile);
-                    }));
+            const processFile = (index: number) => {
+                if (index >= sources.length) {
+                    archive.finalize();
+                    return;
                 }
-
-                Promise
-                    .all(promises)
-                    .then(() => {
-                        if (endIndex < sources.length) {
-                            processBatch(endIndex);
-                        } else {
-                            archive.finalize();
-                        }
-                    })
-                    .catch(reject);
+                Logger.log(`File stream ${index}: initialize`);
+                Logger.log(`File stream ${index}: set up`);
+                const source = sources[index];
+                const stream = this.fs.createReadStream(typeof source === 'string' ? source : source.source);
+                const filename = typeof source === 'string' ? this.path.basename(source) : source.name;
+                
+                Logger.log(`File stream ${index}: appending`);
+                archive.append(stream, { name: filename });
+                
+                stream.on('end', () => {
+                    success++;
+                    Logger.log(`File stream ${index}: completes`);
+                    processFile(index + 1);
+                });
+                stream.on('error', (err) => {
+                    Logger.error(`Error processing file ${filename}: ${err.message}`);
+                    errors++;
+                    processFile(index + 1);
+                });
             }
 
-            processBatch(0);
+            processFile(0);
         });
     }
 }
