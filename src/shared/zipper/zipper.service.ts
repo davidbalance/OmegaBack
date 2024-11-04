@@ -68,7 +68,7 @@ export class ZipperService {
         for (let i = 0; i < sources.length; i += maxFilesPerZip) {
             Logger.log(`Chunk process: ${Math.floor(i / maxFilesPerZip)}`);
             const chunk = sources.slice(i, i + maxFilesPerZip);
-            Logger.log(`Chunk length: ${i} - ${chunk.length}`);
+            Logger.log(`Chunk length: ${i} - ${i + maxFilesPerZip}`);
             const actualZipName = sources.length > maxFilesPerZip ? `${zipName}-${Math.floor(i / maxFilesPerZip)}` : zipName; 
             promises.push(this.chunkToFile(chunk, destinationPath, actualZipName));
         }
@@ -87,7 +87,7 @@ export class ZipperService {
             let success: number = 0;
             const outputName = `${destinationPath}/${zipName}.zip`;
             const outputStream = this.fs.createWriteStream(outputName);
-            const archive = this.archiver('zip', { zlib: { level: 9 } });
+            const archive = this.archiver('zip', { zlib: { level: 5 } });
 
             outputStream.on('close', () => {
                 Logger.log(`-- Zip ${outputName} completed`);
