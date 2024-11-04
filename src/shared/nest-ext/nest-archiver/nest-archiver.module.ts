@@ -5,7 +5,7 @@ import archiver from "archiver";
 @Module({
     providers: [{
         provide: NEST_ARCHIVER,
-        useFactory: () => archiver('zip', { zlib: { level: 9 } })
+        useValue: archiver
     }],
     exports: [NEST_ARCHIVER]
 })
