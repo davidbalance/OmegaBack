@@ -4,12 +4,14 @@ import { ZipperService } from './zipper.service';
 import { NestArchiverModule } from '../nest-ext/nest-archiver/nest-archiver.module';
 import { NestFSModule } from '../nest-ext/nest-fs/nest-fs.module';
 import { NestPathModule } from '../nest-ext/nest-path/nest-path.module';
+import { NestUuidModule } from '../nest-ext/nest-uuid/nest-uuid.module';
 
 @Module({
     imports: [
         NestArchiverModule,
         NestFSModule,
-        NestPathModule
+        NestPathModule,
+        NestUuidModule
     ],
     providers: [ZipperService],
     exports: [ZipperService]
