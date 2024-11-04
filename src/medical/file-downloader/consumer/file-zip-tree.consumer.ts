@@ -39,10 +39,12 @@ export class FileZipTreeConsumer extends WorkerHost {
             const code = this.uuid.v4();
             Logger.log("Unique key generated");
             Logger.log("Preparing for zipping");
-            const filename = await this.zipFiles(sources);
+            const filenames = await this.zipFiles(sources);
             Logger.log("Zipped files");
             Logger.log("Creating record");
-            await this.repository.create({ email, zipCode: code, filepath: filename });
+            for (const filename of filenames) {
+                await this.repository.create({ email, zipCode: code, filepath: filename });
+            }
 
             Logger.log("Sending mail");
             await this.mailer.send({
@@ -58,7 +60,7 @@ export class FileZipTreeConsumer extends WorkerHost {
         }
     }
 
-    async zipFiles(sources: { source: string, name: string }[]): Promise<string> {
+    async zipFiles(sources: { source: string, name: string }[]): Promise<string[]> {
         try {
             Logger.log("--Enabling zipper");
             Logger.log("--Finding disk location");
@@ -67,7 +69,7 @@ export class FileZipTreeConsumer extends WorkerHost {
             Logger.log("--Zipping file");
             const zip = await this.zipper.zipToFile(sources, fullpath);
             Logger.log("--Zip completed");
-            return zip.filename;
+            return zip.map(e => e.filename);
         } catch (error) {
             Logger.error(error);
             throw error;

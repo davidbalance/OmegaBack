@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, Table, TableIndex } from "typeorm";
 
 const TABLE_NAME: string = 'tbl_m_zip_tree';
-const IDX_ZIP_TREE_CODE: TableIndex = new TableIndex({ name: 'idx_zip_tree_code', columnNames: ['zip_tree_code'], isUnique: true });
+const IDX_ZIP_TREE_CODE: TableIndex = new TableIndex({ name: 'idx_zip_tree_code', columnNames: ['zip_tree_code'] });
 
 export class CreateZipTree1730566888609 implements MigrationInterface {
 
@@ -17,7 +17,6 @@ export class CreateZipTree1730566888609 implements MigrationInterface {
                         name: 'zip_tree_code',
                         type: 'varchar',
                         length: '64',
-                        isUnique: true,
                         isNullable: false
                     },
                     {
@@ -43,7 +42,7 @@ export class CreateZipTree1730566888609 implements MigrationInterface {
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.dropIndex(TABLE_NAME, IDX_ZIP_TREE_CODE);
-        
+
         await queryRunner.dropTable(TABLE_NAME);
     }
 

@@ -9,9 +9,9 @@ import { NestFS } from '../nest-ext/nest-fs/nest-fs.type';
 import { NEST_UUID } from '../nest-ext/nest-uuid/inject-token';
 import { NestUuid } from '../nest-ext/nest-uuid/nest-uuid.type';
 
-
 type ZipperFileOptions = {
     filename: string;
+    maxFilesPerZip: number;
 }
 type ZipperPayload = {
     filename: string,
@@ -57,11 +57,26 @@ export class ZipperService {
         });
     }
 
-    public zipToFile(sources: (string | { source: string, name: string })[], destinationPath: string, options: Partial<ZipperFileOptions> | undefined = undefined): Promise<ZipperPayload> {
+    public zipToFile(sources: (string | { source: string, name: string })[], destinationPath: string, options: Partial<ZipperFileOptions> | undefined = undefined): Promise<ZipperPayload[]> {
 
         Logger.log(`File amount: ${sources.length}`);
         const zipName = options && options.filename ? options.filename : this.uuid.v4();
+        const maxFilesPerZip = options && options.maxFilesPerZip ? options.maxFilesPerZip : 2000;
 
+        const promises: Promise<ZipperPayload>[] = []
+
+        for (let i = 0; i < sources.length; i += maxFilesPerZip) {
+            Logger.log(`Chunk process: ${Math.floor(i / maxFilesPerZip)}`);
+            const chunk = sources.slice(i, i + maxFilesPerZip);
+            Logger.log(`Chunk length: ${i} - ${chunk.length}`);
+            const actualZipName = sources.length > maxFilesPerZip ? `${zipName}-${Math.floor(i / maxFilesPerZip)}` : zipName; 
+            promises.push(this.chunkToFile(chunk, destinationPath, actualZipName));
+        }
+
+        return Promise.all(promises);
+    }
+
+    private chunkToFile(sources: (string | { source: string, name: string })[], destinationPath: string, zipName: string): Promise<ZipperPayload> {
         return new Promise((resolve, reject) => {
 
             if (!this.fs.existsSync(destinationPath)) {
@@ -75,7 +90,7 @@ export class ZipperService {
             const archive = this.archiver('zip', { zlib: { level: 9 } });
 
             outputStream.on('close', () => {
-                Logger.log(`Zip ${outputName} completed`);
+                Logger.log(`-- Zip ${outputName} completed`);
                 resolve({
                     filename: outputName,
                     errors: errors,
@@ -96,18 +111,18 @@ export class ZipperService {
                     archive.finalize();
                     return;
                 }
-                Logger.log(`File stream ${index}: initialize`);
-                Logger.log(`File stream ${index}: set up`);
+                Logger.log(`-- File stream ${index}: initialize`);
+                Logger.log(`-- File stream ${index}: set up`);
                 const source = sources[index];
                 const stream = this.fs.createReadStream(typeof source === 'string' ? source : source.source);
                 const filename = typeof source === 'string' ? this.path.basename(source) : source.name;
-                
-                Logger.log(`File stream ${index}: appending`);
+
+                Logger.log(`-- File stream ${index}: appending`);
                 archive.append(stream, { name: filename });
-                
+
                 stream.on('end', () => {
                     success++;
-                    Logger.log(`File stream ${index}: completes`);
+                    Logger.log(`-- File stream ${index}: completes`);
                     processFile(index + 1);
                 });
                 stream.on('error', (err) => {
