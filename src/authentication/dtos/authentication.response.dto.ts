@@ -6,7 +6,4 @@ export class AuthenticationResponseDto {
 
     @Expose()
     public readonly refresh: string;
-
-    @Expose()
-    public readonly expiresAt: Date;
 }

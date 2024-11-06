@@ -13,7 +13,6 @@ import { HealthCheckModule } from './shared/health-status/health-check.module';
 import { MedicalModule } from './medical/medical.module';
 import { LoggerModule } from './shared/logger';
 import { SqlDatabaseModule } from './shared/sql-database/sql-database.module';
-import { SessionModule } from './session/session.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import serverConfig from './shared/config/server.config';
@@ -23,7 +22,6 @@ import databaseConfig from './shared/config/database.config';
 import mailOrderConfig from './shared/config/mail-order.config';
 import smtpConfig, { SmtpConfig, SmtpConfigName } from './shared/config/smtp.config';
 import { MailerModule } from './shared/mailer/mailer.module';
-import { BullModule } from '@nestjs/bullmq';
 import { LocalFileSystemModule } from './shared/file-system/local/local.module';
 
 @Module({
@@ -92,7 +90,6 @@ import { LocalFileSystemModule } from './shared/file-system/local/local.module';
     PdfManagerModule,
     ApiKeyGuardModule,
     HealthCheckModule,
-    SessionModule,
     LocalFileSystemModule
   ]
 })

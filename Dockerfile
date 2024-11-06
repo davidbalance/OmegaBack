@@ -60,4 +60,5 @@ COPY --chown=node:node --from=build /usr/src/app/templates templates
 
 USER node
 
-CMD ["node", "dist/src/main.js"]
+# CMD ["node", "dist/src/main.js"]
+CMD ["npx", "typeorm", "migration:run", "-d", "dist/typeorm.config.js", "&", "node", "dist/src/main.js"]

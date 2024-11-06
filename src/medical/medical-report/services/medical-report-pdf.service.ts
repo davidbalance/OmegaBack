@@ -58,7 +58,6 @@ export class MedicalReportPdfService {
   }
 
   private headerBase64(path: string): string {
-    console.log(path);
     const headerDirectory = this.path.resolve(path);
     const buffer = this.fs.readFileSync(headerDirectory);
     return buffer.toString('base64');
