@@ -28,11 +28,11 @@ describe('DoctorFileManagerController', () => {
         it('should find a signature', async () => {
             // Arrange
             const id = 1;
-            const mockedReadStream = {} as ReadStream;
+            const mockedBuffer = {} as Buffer;
             const response = {
                 set: jest.fn(),
             } as unknown as Response;
-            service.findFile.mockResolvedValue(mockedReadStream);
+            service.findFile.mockResolvedValue(mockedBuffer);
 
             // Act
             const result = await controller.findSignature(id, response);

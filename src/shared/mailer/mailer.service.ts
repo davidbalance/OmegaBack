@@ -3,8 +3,8 @@ import { MODULE_OPTIONS_TOKEN } from './mailer.module-definition';
 import { MailerModuleOptions, MailerSender } from './mailer.interface';
 import { Transporter } from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-import { NEST_NODEMAILER } from '../nest-ext/nest-nodemailer/inject-token';
-import { NestNodemailer } from '../nest-ext/nest-nodemailer/nest-nodemailer.ype';
+import { NEST_NODEMAILER } from '../nest-ext/nodemailer/inject-token';
+import { Nodemailer } from '../nest-ext/nodemailer/nodemailer.type';
 
 @Injectable()
 export class MailerService {
@@ -13,7 +13,7 @@ export class MailerService {
 
     constructor(
         @Inject(MODULE_OPTIONS_TOKEN) private readonly options: MailerModuleOptions,
-        @Inject(NEST_NODEMAILER) nodemailer: NestNodemailer
+        @Inject(NEST_NODEMAILER) nodemailer: Nodemailer
     ) {
         this.transporter = nodemailer.createTransport({
             host: options.server_host,

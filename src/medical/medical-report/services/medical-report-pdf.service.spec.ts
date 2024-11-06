@@ -2,13 +2,14 @@ import { PdfManagerService } from "@/shared/pdf-manager/pdf-manager.service";
 import { MedicalReportRepository } from "../repositories/medical-report.repository";
 import { MedicalReportPdfService } from "./medical-report-pdf.service";
 import { TestBed } from "@automock/jest";
-import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import { mockMedicalReportEntity } from "../stub/medical-report-entity.stub";
 import { fileReportPath } from "@/shared/utils";
-import { NestPath } from "@/shared/nest-ext/nest-path/nest-path.type";
-import { NestFS } from "@/shared/nest-ext/nest-fs/nest-fs.type";
-import { NEST_PATH } from "@/shared/nest-ext/nest-path/inject-token";
-import { NEST_FS } from "@/shared/nest-ext/nest-fs/inject-token";
+import { Path } from "@/shared/nest-ext/path/path.type";
+import { FS } from "@/shared/nest-ext/fs/fs.type";
+import { NEST_PATH } from "@/shared/nest-ext/path/inject-token";
+import { NEST_FS } from "@/shared/nest-ext/fs/inject-token";
+import { IFileSystem } from "@/shared/file-system/file-system.interface";
+import { FILE_SYSTEM } from "@/shared/file-system/inject-token";
 
 jest.mock('dayjs/locale/es', () => { });
 jest.mock('dayjs', () => ({
@@ -25,9 +26,9 @@ describe('MedicalReportPdfService', () => {
   let service: MedicalReportPdfService;
   let repository: jest.Mocked<MedicalReportRepository>;
   let pdfService: jest.Mocked<PdfManagerService>;
-  let storage: jest.Mocked<StorageManager>;
-  let path: jest.Mocked<NestPath>;
-  let fs: jest.Mocked<NestFS>;
+  let fileSystem: jest.Mocked<IFileSystem>;
+  let path: jest.Mocked<Path>;
+  let fs: jest.Mocked<FS>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(MedicalReportPdfService).compile();
@@ -35,7 +36,7 @@ describe('MedicalReportPdfService', () => {
     service = unit;
     repository = unitRef.get(MedicalReportRepository);
     pdfService = unitRef.get(PdfManagerService);
-    storage = unitRef.get(INJECT_STORAGE_MANAGER);
+    fileSystem = unitRef.get(FILE_SYSTEM);
     path = unitRef.get(NEST_PATH);
     fs = unitRef.get(NEST_FS);
   });
@@ -45,80 +46,51 @@ describe('MedicalReportPdfService', () => {
   });
 
   describe('craft', () => {
-    const data = mockMedicalReportEntity();
+    const mockedData = mockMedicalReportEntity();
+    const mockedPath = '/path/to/file.txt';
+    const mockedBuffer = Buffer.from('Test buffer');
+    const mockedContent: any = 'My html-content';
 
-    const signatureDirectory = '/test/signature/directory';
-    const signatureImg = Buffer.from('test-signature-image');
-    const signatureBase64 = signatureImg.toString('base64');
-
-    const headerDirectory = 'templates/medical-result/medical-report/header.png';
-    const headerImg = Buffer.from('test-header-image');
-    const headerBase64 = headerImg.toString('base64');
-
-    const newContent = '<h1>Test Content</h1>';
-
-    it('should craft a PDF report successfully', async () => {
+    it('should craft a PDF and update the MedicalReportEntity with file address', async () => {
       // Arrange
-      path.resolve.mockReturnValueOnce(signatureDirectory);
-      fs.readFileSync.mockReturnValueOnce(signatureImg);
-      path.resolve.mockReturnValueOnce(headerDirectory);
-      fs.readFileSync.mockReturnValueOnce(headerImg);
-      pdfService.parseHtml.mockReturnValue(newContent);
-
-      const baseContent = {
-        header: `data:image/png;base64,${headerBase64}`,
-        title: 'Omega report',
-        patientFullname: data.patientFullname,
-        patientAge: 25,
-        patientDni: data.patientDni,
-        date: 'Martes, Enero 1, 2024',
-        company: data.companyName,
-        examName: data.examName,
-        doctorFullname: data.doctorFullname,
-        doctorDni: data.doctorDni,
-        doctorSignature: `data:image/png;base64,${signatureBase64}`,
-      };
-
-      const buffer = Buffer.from('test-pdf-buffer');
-      pdfService.craft.mockResolvedValue(buffer);
-
-      const filePath = fileReportPath({ dni: data.patientDni, order: data.order });
-      const output = `${filePath}/${data.examName.toLocaleLowerCase().replace(/\s/g, '_')}.pdf`;
-      storage.saveFile.mockResolvedValue(output);
-
-      repository.findOneAndUpdate.mockResolvedValue({ ...data, fileAddress: output, hasFile: true });
+      repository.findOneAndUpdate.mockResolvedValue({ ...mockedData, fileAddress: mockedPath, hasFile: true });
+      fileSystem.read.mockResolvedValue(mockedBuffer);
+      path.resolve.mockReturnValue(mockedPath);
+      fs.readFileSync.mockReturnValue(mockedBuffer);
+      pdfService.parseHtml.mockReturnValue(mockedContent);
+      pdfService.craft.mockResolvedValue(mockedBuffer);
+      fileSystem.write.mockResolvedValue(mockedPath);
 
       // Act
-      const result = await service.craft(data);
+      const result = await service.craft(mockedData);
 
       // Assert
-      expect(fs.readFileSync).toHaveBeenNthCalledWith(1, signatureDirectory);
-      expect(fs.readFileSync).toHaveBeenNthCalledWith(2, headerDirectory);
-      expect(pdfService.parseHtml).toHaveBeenCalledWith(data.content);
+      expect(fileSystem.read).toHaveBeenCalledWith(mockedData.doctorSignature);
+      expect(path.resolve).toHaveBeenCalledWith('templates/medical-result/medical-report/header.png');
+      expect(fs.readFileSync).toHaveBeenCalledWith(mockedPath);
+      expect(pdfService.parseHtml).toHaveBeenCalledWith(mockedData.content);
       expect(pdfService.craft).toHaveBeenCalled();
-      expect(storage.saveFile).toHaveBeenCalledWith(buffer, '.pdf', filePath, data.examName.toLocaleLowerCase().replace(/\s/g, '_'));
-      expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: data.id }, { fileAddress: output, hasFile: true });
-      expect(result).toEqual({ ...data, fileAddress: output, hasFile: true });
+      expect(fileSystem.write).toHaveBeenCalledWith(expect.any(String), mockedBuffer, { extension: '.pdf', filename: mockedData.examName.toLocaleLowerCase().replace(/\s/g, '_') });
+      expect(result.fileAddress).toEqual(mockedPath);
+      expect(result.hasFile).toBe(true);
     });
 
     it('should handle errors during PDF generation', async () => {
       // Arrange
       const data = mockMedicalReportEntity();
-      const signatureDirectory = path.resolve(data.doctorSignature);
-      const spyReadSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => {
-        throw new Error('Failed to read file');
-      });
-
+      path.resolve.mockReturnValue(mockedPath);
+      fileSystem.read.mockResolvedValue(mockedBuffer);
+      fs.readFileSync.mockImplementation(() => { throw new Error('Failed to read file') });
       repository.findOneAndUpdate.mockResolvedValue({ ...data, fileAddress: null, hasFile: false });
 
       // Act
       const result = await service.craft(data);
 
       // Assert
-      expect(spyReadSync).toHaveBeenCalledWith(signatureDirectory);
+      expect(fs.readFileSync).toHaveBeenCalledWith(mockedPath);
       expect(pdfService.parseHtml).not.toHaveBeenCalled();
       expect(pdfService.craft).not.toHaveBeenCalled();
-      expect(storage.saveFile).not.toHaveBeenCalled();
+      expect(fileSystem.write).not.toHaveBeenCalled();
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: data.id }, { fileAddress: null, hasFile: false });
       expect(result).toEqual({ ...data, fileAddress: null, hasFile: false });
     });

@@ -14,8 +14,6 @@ import { MedicalModule } from './medical/medical.module';
 import { LoggerModule } from './shared/logger';
 import { SqlDatabaseModule } from './shared/sql-database/sql-database.module';
 import { SessionModule } from './session/session.module';
-import { NestPathModule } from './shared/nest-ext/nest-path/nest-path.module';
-import { NestFSModule } from './shared/nest-ext/nest-fs/nest-fs.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import serverConfig from './shared/config/server.config';
@@ -26,7 +24,7 @@ import mailOrderConfig from './shared/config/mail-order.config';
 import smtpConfig, { SmtpConfig, SmtpConfigName } from './shared/config/smtp.config';
 import { MailerModule } from './shared/mailer/mailer.module';
 import { BullModule } from '@nestjs/bullmq';
-import redisConfig, { RedisConfig, RedisConfigName } from './shared/config/redis.config';
+import { LocalFileSystemModule } from './shared/file-system/local/local.module';
 
 @Module({
   imports: [
@@ -66,11 +64,7 @@ import redisConfig, { RedisConfig, RedisConfigName } from './shared/config/redis
         SMTP_DEFAULT_MAIL_FROM: Joi.string().email().required(),
         CLIENT_KEY: Joi.string().required(),
         MAIL_ORDER_TEMPLATE: Joi.string().required(),
-        MAIL_ORDER_NAME: Joi.string().required(),
-        REDIS_HOST: Joi.string().required(),
-        REDIS_POST: Joi.number().required(),
-        REDIS_USERNAME: Joi.string().required(),
-        REDIS_PASSWORD: Joi.string().required(),
+        MAIL_ORDER_NAME: Joi.string().required()
       }),
       load: [
         authConfig,
@@ -78,28 +72,13 @@ import redisConfig, { RedisConfig, RedisConfigName } from './shared/config/redis
         databaseConfig,
         mailOrderConfig,
         serverConfig,
-        smtpConfig,
-        redisConfig
+        smtpConfig
       ]
     }),
     MailerModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => config.get<SmtpConfig>(SmtpConfigName)
-    }),
-    BullModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        const redis = config.get<RedisConfig>(RedisConfigName);
-        return {
-          connection: {
-            host: redis.host,
-            port: redis.port,
-            username: redis.username,
-            password: redis.password
-          }
-        };
-      }
     }),
     LoggerModule,
     SqlDatabaseModule,
@@ -114,8 +93,7 @@ import redisConfig, { RedisConfig, RedisConfigName } from './shared/config/redis
     ApiKeyGuardModule,
     HealthCheckModule,
     SessionModule,
-    NestPathModule,
-    NestFSModule
+    LocalFileSystemModule
   ]
 })
 export class AppModule implements NestModule {

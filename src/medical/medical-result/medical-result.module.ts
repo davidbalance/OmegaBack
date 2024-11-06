@@ -2,7 +2,6 @@ import { SqlDatabaseModule } from "@/shared/sql-database/sql-database.module";
 import { Module } from "@nestjs/common";
 import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
 import { MedicalOrderModule } from "../medical-order/medical-order.module";
-import { LocalStorageModule } from "@/shared/storage-manager";
 import { UserInterceptorModule } from "@/shared/interceptors/dni/user-interceptor.module";
 import { MedicalResultDiseaseManagementService } from "./services/medical-result-disease-management.service";
 import { MedicalResultEventService } from "./services/medical-result-event.service";
@@ -35,8 +34,8 @@ import { Base64Module } from "@/shared/base64/base64.module";
 import { MedicalResultOrionListener } from "./listeners/medical-result-orion.listener";
 import { MedicalResultFileCheckService } from "./services/medical-result-file-check.service";
 import { MedicalResultFileCheckController } from "./controllers/medical-result-file-check.controller";
-import { MedicalResultFileTreeService } from "./services/medical-result-file-tree.service";
 import { ZipperModule } from "@/shared/zipper/zipper.module";
+import { PathModule } from "@/shared/nest-ext/path/path.module";
 
 @Module({
   imports: [
@@ -47,12 +46,12 @@ import { ZipperModule } from "@/shared/zipper/zipper.module";
     ]),
     AuthenticationGuardModule,
     MedicalOrderModule,
-    LocalStorageModule,
     UserInterceptorModule,
     ExcelManagerModule,
     UrlFileFetcherModule,
     Base64Module,
-    ZipperModule
+    ZipperModule,
+    PathModule
   ],
   controllers: [
     MedicalDiseaseManagementController,
@@ -80,7 +79,6 @@ import { ZipperModule } from "@/shared/zipper/zipper.module";
     MedicalResultExternalKeyService,
     MedicalResultFileCheckService,
     MedicalResultFileManagementService,
-    MedicalResultFileTreeService,
     MedicalResultManagementService,
     MedicalResultPaginationService,
     MedicalResultReportService,
@@ -88,7 +86,6 @@ import { ZipperModule } from "@/shared/zipper/zipper.module";
   exports: [
     MedicalResultManagementService,
     MedicalResultFileManagementService,
-    MedicalResultFileTreeService,
     MedicalResultDiseaseReportService,
     MedicalResultExternalConnectionProvider
   ]

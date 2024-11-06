@@ -1,4 +1,3 @@
-import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import { MedicalReportRepository } from "../repositories/medical-report.repository";
 import { MedicalReportFileManagementService } from "./medical-report-file-management.service";
 import { TestBed } from "@automock/jest";
@@ -6,18 +5,20 @@ import { ReadStream } from "fs";
 import { GenericFile } from "@/shared/utils/bases/base.file-service";
 import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { fileReportPath } from "@/shared/utils";
+import { IFileSystem } from "@/shared/file-system/file-system.interface";
+import { FILE_SYSTEM } from "@/shared/file-system/inject-token";
 
 describe('MedicalReportFileManagementService', () => {
   let service: MedicalReportFileManagementService;
   let repository: jest.Mocked<MedicalReportRepository>;
-  let storageManager: jest.Mocked<StorageManager>;
+  let fileSystem: jest.Mocked<IFileSystem>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(MedicalReportFileManagementService).compile();
 
     service = unit;
     repository = unitRef.get(MedicalReportRepository);
-    storageManager = unitRef.get(INJECT_STORAGE_MANAGER);
+    fileSystem = unitRef.get(FILE_SYSTEM);
   });
 
   afterEach(() => {
@@ -28,7 +29,7 @@ describe('MedicalReportFileManagementService', () => {
 
     const key = 1;
     const mockedFilepath = 'test/filepath';
-    const mockedReadStream = {} as ReadStream;
+    const mockedBuffer = {} as Buffer;
 
     beforeEach(() => {
       repository.query.mockReturnValue({
@@ -40,7 +41,7 @@ describe('MedicalReportFileManagementService', () => {
 
     it('should return a read stream for the file', async () => {
       // Arrange
-      storageManager.readFile.mockResolvedValue(mockedReadStream);
+      fileSystem.read.mockResolvedValue(mockedBuffer);
 
       // Act
       const result = await service.getFile(key);
@@ -49,14 +50,14 @@ describe('MedicalReportFileManagementService', () => {
       expect(repository.query).toHaveBeenCalledWith('medical-report');
       expect(repository.query().select).toHaveBeenCalledWith('medical-report.fileAddress', 'filepath');
       expect(repository.query().where).toHaveBeenCalledWith('medical-report.id = :id', { id: key });
-      expect(storageManager.readFile).toHaveBeenCalledWith(mockedFilepath);
-      expect(result).toEqual(mockedReadStream);
+      expect(fileSystem.read).toHaveBeenCalledWith(mockedFilepath);
+      expect(result).toEqual(mockedBuffer);
     });
 
     it('should update hasFile to false and throw error if file read fails', async () => {
       // Arrange
       const error = new Error('File read failed');
-      storageManager.readFile.mockRejectedValue(error);
+      fileSystem.read.mockRejectedValue(error);
 
       // Act and Assert
       await expect(service.getFile(key)).rejects.toThrowError(error);
@@ -83,7 +84,7 @@ describe('MedicalReportFileManagementService', () => {
         order: mockedOrderId,
         patientDni: mockedPatientDni,
       } as any);
-      storageManager.saveFile.mockResolvedValue(mockedFilepath);
+      fileSystem.write.mockResolvedValue(mockedFilepath);
       const expectedPath = fileReportPath({ dni: mockedPatientDni, order: mockedOrderId });
 
       // Act
@@ -98,7 +99,7 @@ describe('MedicalReportFileManagementService', () => {
           order: true
         }
       });
-      expect(storageManager.saveFile).toHaveBeenCalledWith(file.buffer, '.pdf', expectedPath, 'test_exam');
+      expect(fileSystem.write).toHaveBeenCalledWith(expectedPath, file.buffer, { extension: '.pdf', filename: 'test_exam' });
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: key }, { fileAddress: `${mockedFilepath}`, hasFile: true });
       expect(result).toEqual(mockedFilepath);
     });
@@ -109,7 +110,7 @@ describe('MedicalReportFileManagementService', () => {
 
       // Act and Assert
       await expect(service.uploadFile(key, file)).rejects.toThrow(NotFoundException);
-      expect(storageManager.saveFile).not.toHaveBeenCalled();
+      expect(fileSystem.write).not.toHaveBeenCalled();
       expect(repository.findOneAndUpdate).not.toHaveBeenCalled();
     });
 
@@ -120,12 +121,12 @@ describe('MedicalReportFileManagementService', () => {
         order: mockedOrderId,
         patientDni: mockedPatientDni,
       } as any);
-      storageManager.saveFile.mockRejectedValue(new InternalServerErrorException(''));
+      fileSystem.write.mockRejectedValue(new InternalServerErrorException(''));
       const expectedPath = fileReportPath({ dni: mockedPatientDni, order: mockedOrderId });
 
       // Act and Assert
       await expect(service.uploadFile(key, file)).rejects.toThrow(InternalServerErrorException);
-      expect(storageManager.saveFile).toHaveBeenCalledWith(file.buffer, '.pdf', expectedPath, 'test_exam');
+      expect(fileSystem.write).toHaveBeenCalledWith(expectedPath, file.buffer, { extension: '.pdf', filename: 'test_exam' });
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith(
         { id: key },
         { fileAddress: null, hasFile: false }
@@ -164,7 +165,7 @@ describe('MedicalReportFileManagementService', () => {
     it('should remove the file and update the medical result', async () => {
       // Arrange
       jest.spyOn(service, 'getFilePath').mockResolvedValue(mockedFilepath);
-      storageManager.deleteFile.mockResolvedValue(undefined);
+      fileSystem.delete.mockResolvedValue(undefined);
       repository.findOneAndUpdate.mockResolvedValue(undefined);
 
       // Act
@@ -172,7 +173,7 @@ describe('MedicalReportFileManagementService', () => {
 
       // Assert
       expect(service.getFilePath).toHaveBeenCalledWith(key);
-      expect(storageManager.deleteFile).toHaveBeenCalledWith(mockedFilepath);
+      expect(fileSystem.delete).toHaveBeenCalledWith(mockedFilepath);
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: key }, { hasFile: false });
       expect(result).toEqual(true);
     });
@@ -181,14 +182,14 @@ describe('MedicalReportFileManagementService', () => {
       // Arrange
       const error = new Error('File deletion failed');
       jest.spyOn(service, 'getFilePath').mockResolvedValue(mockedFilepath);
-      storageManager.deleteFile.mockRejectedValue(error);
+      fileSystem.delete.mockRejectedValue(error);
 
       // Act
       const result = await service.removeFile(key);
 
       // Assert
       expect(service.getFilePath).toHaveBeenCalledWith(key);
-      expect(storageManager.deleteFile).toHaveBeenCalledWith(mockedFilepath);
+      expect(fileSystem.delete).toHaveBeenCalledWith(mockedFilepath);
       expect(result).toEqual(false);
     });
   });

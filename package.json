@@ -26,7 +26,6 @@
     "migration:show": "npm run typeorm migration:show -- -d ./typeorm.config.ts"
   },
   "dependencies": {
-    "@nestjs/bullmq": "^10.2.2",
     "@nestjs/common": "^10.3.7",
     "@nestjs/config": "^3.2.0",
     "@nestjs/core": "^10.3.7",
@@ -40,8 +39,6 @@
     "archiver": "^7.0.1",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
-    "bull": "^4.16.4",
-    "bullmq": "^5.22.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dayjs": "^1.11.10",

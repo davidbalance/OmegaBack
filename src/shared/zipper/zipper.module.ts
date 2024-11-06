@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigurableModuleClass } from './zipper.module-definition';
 import { ZipperService } from './zipper.service';
-import { NestArchiverModule } from '../nest-ext/nest-archiver/nest-archiver.module';
-import { NestFSModule } from '../nest-ext/nest-fs/nest-fs.module';
-import { NestPathModule } from '../nest-ext/nest-path/nest-path.module';
-import { NestUuidModule } from '../nest-ext/nest-uuid/nest-uuid.module';
+import { ArchiverModule } from '../nest-ext/archiver/archiver.module';
+import { PathModule } from '../nest-ext/path/path.module';
+import { UuidModule } from '../nest-ext/uuid/uuid.module';
 
 @Module({
     imports: [
-        NestArchiverModule,
-        NestFSModule,
-        NestPathModule,
-        NestUuidModule
+        ArchiverModule,
+        PathModule,
+        UuidModule
     ],
     providers: [ZipperService],
     exports: [ZipperService]

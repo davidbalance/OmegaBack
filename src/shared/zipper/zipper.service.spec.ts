@@ -1,25 +1,25 @@
 import { ZipperService } from './zipper.service';
 import { PassThrough } from 'stream';
 import { TestBed } from '@automock/jest';
-import { NestArchiver, NestArchiverDelegate } from '../nest-ext/nest-archiver/nest-archiver.type';
-import { NestFS } from '../nest-ext/nest-fs/nest-fs.type';
-import { NestPath } from '../nest-ext/nest-path/nest-path.type';
-import { NEST_ARCHIVER } from '../nest-ext/nest-archiver/inject-token';
-import { NEST_FS } from '../nest-ext/nest-fs/inject-token';
-import { NEST_PATH } from '../nest-ext/nest-path/inject-token';
+import { Archiver, ArchiverDelegate } from '../nest-ext/archiver/archiver.type';
+import { Path } from '../nest-ext/path/path.type';
+import { NEST_ARCHIVER } from '../nest-ext/archiver/inject-token';
+import { NEST_PATH } from '../nest-ext/path/inject-token';
 import { ReadStream } from 'typeorm/platform/PlatformTools';
+import { FILE_SYSTEM } from '../file-system/inject-token';
+import { IFileSystem } from '../file-system/file-system.interface';
 
 describe('ZipperService', () => {
   let service: ZipperService;
-  let archiver: jest.Mocked<NestArchiverDelegate>;
-  let archive: Partial<NestArchiver> = {
+  let archiver: jest.Mocked<ArchiverDelegate>;
+  let archive: Partial<Archiver> = {
     pipe: jest.fn(),
     append: jest.fn(),
     finalize: jest.fn(),
     on: jest.fn(),
   };
-  let path: jest.Mocked<NestPath>;
-  let fs: jest.Mocked<NestFS>;
+  let path: jest.Mocked<Path>;
+  let fileSystem: jest.Mocked<IFileSystem>;
 
   beforeEach(() => {
     const { unit, unitRef } = TestBed.create(ZipperService)
@@ -30,7 +30,7 @@ describe('ZipperService', () => {
     service = unit;
     archiver = unitRef.get(NEST_ARCHIVER);
     path = unitRef.get(NEST_PATH);
-    fs = unitRef.get(NEST_FS);
+    fileSystem = unitRef.get(FILE_SYSTEM);
 
   });
 
@@ -44,7 +44,7 @@ describe('ZipperService', () => {
       // Arrange
       const sources = ['file1.txt', 'file2.txt'];
 
-      fs.createReadStream.mockReturnValue({} as ReadStream);
+      fileSystem.read.mockResolvedValue(Buffer.from('Test file'));
       path.basename.mockReturnValue('/path/to/file.txt');
 
       // Act
@@ -52,7 +52,7 @@ describe('ZipperService', () => {
 
       // Assert
       expect(path.basename).toHaveBeenCalledTimes(sources.length);
-      expect(fs.createReadStream).toHaveBeenCalledTimes(sources.length);
+      expect(fileSystem.read).toHaveBeenCalledTimes(sources.length);
       expect(archiver).toHaveBeenCalledWith('zip', { zlib: { level: 9 } });
       expect(archive.pipe).toHaveBeenCalled();
       expect(archive.append).toHaveBeenCalledTimes(sources.length);
@@ -68,7 +68,7 @@ describe('ZipperService', () => {
       const result = await service.zip(sources);
 
       // Assert
-      expect(fs.createReadStream).toHaveBeenCalledTimes(sources.length);
+      expect(fileSystem.read).toHaveBeenCalledTimes(sources.length);
       expect(path.basename).not.toHaveBeenCalled();
       expect(archive.pipe).toHaveBeenCalled();
       expect(archive.append).toHaveBeenCalledTimes(sources.length);

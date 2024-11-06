@@ -3,10 +3,11 @@ import { MailerService } from '@/shared/mailer/mailer.service';
 import { ConfigService } from '@nestjs/config';
 import { MedicalOrderRepository } from '../repositories/medical-order.repository';
 import { MedicalEmailEntity } from '@/medical/medical-client/entities/medical-email.entity';
-import { NEST_PATH } from '@/shared/nest-ext/nest-path/inject-token';
-import { NestPath } from '@/shared/nest-ext/nest-path/nest-path.type';
-import { HandlebarsService } from '@/shared/handlebars/handlebars.service';
+import { NEST_PATH } from '@/shared/nest-ext/path/inject-token';
+import { Path } from '@/shared/nest-ext/path/path.type';
+import { HandlebarsService } from '@/shared/nest-ext/handlebars/handlebars.service';
 import { ServerConfig, ServerConfigName } from '@/shared/config/server.config';
+import { NEST_HANDLEBARS } from '@/shared/nest-ext/handlebars/inject-token';
 
 @Injectable()
 export class MedicalOrderMailService {
@@ -15,8 +16,8 @@ export class MedicalOrderMailService {
     @Inject(MedicalOrderRepository) private readonly repository: MedicalOrderRepository,
     @Inject(MailerService) private readonly mailer: MailerService,
     @Inject(ConfigService) private readonly config: ConfigService,
-    @Inject(NEST_PATH) private readonly path: NestPath,
-    @Inject(HandlebarsService) private readonly handlebars: HandlebarsService
+    @Inject(NEST_PATH) private readonly path: Path,
+    @Inject(NEST_HANDLEBARS) private readonly handlebars: HandlebarsService
   ) { }
 
   async send(order: number, mail: number): Promise<void> {

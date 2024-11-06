@@ -4,17 +4,18 @@ import { MedicalOrderMailService } from "./medical-order-mail.service";
 import { ConfigService } from "@nestjs/config";
 import { TestBed } from "@automock/jest";
 import { mockMedicalOrderEntity } from "../stubs/medical-order-entity.stub";
-import { NestPath } from "@/shared/nest-ext/nest-path/nest-path.type";
-import { HandlebarsService } from "@/shared/handlebars/handlebars.service";
-import { NEST_PATH } from "@/shared/nest-ext/nest-path/inject-token";
+import { Path } from "@/shared/nest-ext/path/path.type";
+import { HandlebarsService } from "@/shared/nest-ext/handlebars/handlebars.service";
+import { NEST_PATH } from "@/shared/nest-ext/path/inject-token";
 import { ServerConfig, ServerConfigName } from "@/shared/config/server.config";
+import { NEST_HANDLEBARS } from "@/shared/nest-ext/handlebars/inject-token";
 
 describe('MedicalOrderMailService', () => {
   let service: MedicalOrderMailService;
   let repository: jest.Mocked<MedicalOrderRepository>;
   let mailer: jest.Mocked<MailerService>;
   let config: jest.Mocked<ConfigService>;
-  let path: jest.Mocked<NestPath>;
+  let path: jest.Mocked<Path>;
   let handlebars: jest.Mocked<HandlebarsService>;
 
   beforeEach(async () => {
@@ -25,7 +26,7 @@ describe('MedicalOrderMailService', () => {
     mailer = unitRef.get(MailerService);
     config = unitRef.get(ConfigService);
     path = unitRef.get(NEST_PATH);
-    handlebars = unitRef.get(HandlebarsService);
+    handlebars = unitRef.get(NEST_HANDLEBARS);
   });
 
   afterEach(() => {

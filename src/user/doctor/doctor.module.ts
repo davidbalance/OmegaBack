@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { UserModule } from '../user/user.module';
-import { LocalStorageModule } from '@/shared/storage-manager';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
 import { DoctorExternalConnectionController } from './controllers/doctor-external-connection.controller';
 import { DoctorExternalListener } from './listener/doctor-external.listener';
@@ -13,6 +12,7 @@ import { DoctorRepository } from './repositories/doctor.repository';
 import { DoctorPaginationService } from './services/doctor-pagination.service';
 import { DoctorPaginationController } from './controllers/doctor-pagination.controller';
 import { DoctorEntity } from './entities/doctor.entity';
+import { PathModule } from '@/shared/nest-ext/path/path.module';
 
 @Module({
   imports: [
@@ -20,8 +20,8 @@ import { DoctorEntity } from './entities/doctor.entity';
       DoctorEntity
     ]),
     UserModule,
-    LocalStorageModule,
     AuthenticationGuardModule,
+    PathModule
   ],
   controllers: [
     DoctorExternalConnectionController,

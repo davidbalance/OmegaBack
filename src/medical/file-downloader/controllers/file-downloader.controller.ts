@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Logger, Param, Post, Query, Res, StreamableFile, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Inject, Logger, Param, Post, Res, StreamableFile, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { FileDownloaderService } from '../services/file-downloader.service';
@@ -6,8 +6,6 @@ import { PostFileSourceRequestDto } from '../dtos/request/file-source.post.dto';
 import { PostDownloadZipRequestDto } from '../dtos/request/download-zip.post.dto';
 import { JwtAuthGuard } from '@/shared/guards/authentication-guard/guards/jwt-auth.guard';
 import { User } from '@/shared/decorator';
-import { DownloadTreeRequest } from '../dtos/request/download-tree.dto';
-import { MedicalResultFileTreeService } from '@/medical/medical-result/services/medical-result-file-tree.service';
 
 @ApiTags('Medical>File', 'External Connection')
 @Controller('medical/file')

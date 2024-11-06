@@ -5,14 +5,14 @@ import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { SessionEntity } from './entities/session.entity';
 import { SessionRepository } from './respository/session.repository';
 import { SessionStrategy } from './strategies/session.strategy';
-import { NestUuidModule } from '@/shared/nest-ext/nest-uuid/nest-uuid.module';
+import { UuidModule } from '@/shared/nest-ext/uuid/uuid.module';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([
       SessionEntity
     ]),
-    NestUuidModule
+    UuidModule
   ],
   controllers: [
     SessionController

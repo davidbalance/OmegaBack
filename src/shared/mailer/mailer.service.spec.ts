@@ -2,9 +2,9 @@ import { MailerService } from './mailer.service';
 import { MailerModuleOptions, MailerSender } from './mailer.interface';
 import { MODULE_OPTIONS_TOKEN } from './mailer.module-definition';
 import { TestBed } from '@automock/jest';
-import { NestNodemailerModule } from '../nest-ext/nest-nodemailer/nest-nodemailer.module';
+import { NodemailerModule } from '../nest-ext/nodemailer/nodemailer.module';
 import Mail from 'nodemailer/lib/mailer';
-import { NEST_NODEMAILER } from '../nest-ext/nest-nodemailer/inject-token';
+import { NEST_NODEMAILER } from '../nest-ext/nodemailer/inject-token';
 
 jest.mock('nodemailer');
 jest.mock('handlebars');

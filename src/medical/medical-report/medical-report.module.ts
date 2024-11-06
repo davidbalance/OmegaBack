@@ -1,6 +1,5 @@
 import { SqlDatabaseModule } from "@/shared/sql-database/sql-database.module";
 import { Module } from "@nestjs/common";
-import { LocalStorageModule } from "@/shared/storage-manager";
 import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
 import { MedicalReportPdfController } from "./controllers/medical-report-pdf.controller";
 import { MedicalReportManagementService } from "./services/medical-report-management.service";
@@ -12,6 +11,8 @@ import { MedicalReportManagementController } from "./controllers/medical-report-
 import { MedicalReportFileManagementController } from "./controllers/medical-report-file-management.controller";
 import { PdfManagerModule } from "@/shared/pdf-manager/pdf-manager.module";
 import { MedicalReportEntity } from "./entities/medical-report.entity";
+import { PathModule } from "@/shared/nest-ext/path/path.module";
+import { FSModule } from "@/shared/nest-ext/fs/fs.module";
 
 @Module({
   imports: [
@@ -20,8 +21,9 @@ import { MedicalReportEntity } from "./entities/medical-report.entity";
     ]),
     AuthenticationGuardModule,
     MedicalResultModule,
-    LocalStorageModule,
-    PdfManagerModule
+    PdfManagerModule,
+    PathModule,
+    FSModule
   ],
   controllers: [
     MedicalReportFileManagementController,

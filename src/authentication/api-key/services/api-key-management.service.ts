@@ -6,8 +6,8 @@ import { UserCredentialService } from '../../user-credential/services/user-crede
 import { PostApiKeyRequestDto } from '../dtos/request/post.api-key.request.dto';
 import { ApiKey } from '../entities/api-key.entity';
 import { PatchApiKeyRequestDto } from '../dtos/request/patch.api-key.request.dto';
-import { NEST_UUID } from '@/shared/nest-ext/nest-uuid/inject-token';
-import { NestUuid } from '@/shared/nest-ext/nest-uuid/nest-uuid.type';
+import { NEST_UUID } from '@/shared/nest-ext/uuid/inject-token';
+import { Uuid } from '@/shared/nest-ext/uuid/uuid.type';
 import { AuthConfig, AuthConfigName } from '@/shared/config/auth.config';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class ApiKeyManagementService {
     @Inject(ApiKeyRepository) private readonly repository: ApiKeyRepository,
     @Inject(UserCredentialService) private readonly credentialService: UserCredentialService,
     @Inject(ConfigService) private readonly configService: ConfigService,
-    @Inject(NEST_UUID) private readonly uuid: NestUuid,
+    @Inject(NEST_UUID) private readonly uuid: Uuid,
   ) { }
 
   async create(id: number, { name }: PostApiKeyRequestDto): Promise<ApiKey> {

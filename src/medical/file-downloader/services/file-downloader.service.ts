@@ -1,21 +1,21 @@
 import { MedicalReportFileManagementService } from "@/medical/medical-report/services/medical-report-file-management.service";
 import { MedicalResultFileManagementService } from "@/medical/medical-result/services/medical-result-file-management.service";
-import { FileManagementService } from "@/shared/utils/bases/base.file-service";
 import { ZipperService } from "@/shared/zipper/zipper.service";
 import { Injectable, Inject, StreamableFile, NotFoundException, Logger } from "@nestjs/common";
 import { FileSourceEnum, FileSourceRequestDto } from "../dtos/request/file-source.base.dto";
 import { PostDownloadZipRequestDto } from "../dtos/request/download-zip.post.dto";
 import { ReadStream } from "fs";
+import { IFileManagement } from "@/shared/utils/bases/base.file-service";
 
 @Injectable()
 export class FileDownloaderService {
 
-    private readonly fileServices: Record<FileSourceEnum, FileManagementService<number>>;
+    private readonly fileServices: Record<FileSourceEnum, IFileManagement<number>>;
 
     constructor(
         @Inject(ZipperService) private readonly zipper: ZipperService,
-        @Inject(MedicalResultFileManagementService) medicalResultService: FileManagementService<number>,
-        @Inject(MedicalReportFileManagementService) medicalReportService: FileManagementService<number>,
+        @Inject(MedicalResultFileManagementService) medicalResultService: IFileManagement<number>,
+        @Inject(MedicalReportFileManagementService) medicalReportService: IFileManagement<number>,
     ) {
         this.fileServices = {
             report: medicalReportService,
@@ -23,9 +23,8 @@ export class FileDownloaderService {
         };
     }
 
-    async downloadFile({ id, type }: FileSourceRequestDto): Promise<ReadStream> {
-        const stream = await this.fileServices[type].getFile(id);
-        return stream;
+    async downloadFile({ id, type }: FileSourceRequestDto): Promise<Buffer> {
+        return this.fileServices[type].getFile(id);
     }
 
     async downloadMultipleFiles({ files }: PostDownloadZipRequestDto): Promise<StreamableFile> {

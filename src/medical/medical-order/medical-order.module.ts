@@ -26,13 +26,12 @@ import { MedicalOrderDoctorPaginationService } from "./services/medical-order-do
 import { MedicalOrderExpandedPaginationService } from "./services/medical-order-expanded-pagination.service";
 import { MedicalOrderExternalConnectionProvider, MedicalOrderExternalConnectionService } from "./services/medical-order-external-connection.service";
 import { MedicalOrderExpandedPaginationController } from "./controllers/medical-order-expanded-pagination.controller";
-import { LocalStorageModule } from "@/shared/storage-manager";
 import { Base64Module } from "@/shared/base64/base64.module";
 import { MedicalOrderProcessController } from "./controllers/medical-order-process.controller";
 import { MedicalOrderProcessService } from "./services/medical-order-process.service";
-import { NestHandlebarsModule } from "@/shared/nest-ext/nest-handlebars/nest-handlebars.module";
-import { HandlebarsModule } from "@/shared/handlebars/handlebars.module";
 import { MailOrderConfig, MailOrderConfigName } from "@/shared/config/mail-order.config";
+import { PathModule } from "@/shared/nest-ext/path/path.module";
+import { HandlebarsModule } from "@/shared/nest-ext/handlebars/handlebars.module";
 
 @Module({
   imports: [
@@ -44,14 +43,13 @@ import { MailOrderConfig, MailOrderConfigName } from "@/shared/config/mail-order
     AuthenticationGuardModule,
     UserInterceptorModule,
     MedicalClientModule,
-    LocalStorageModule,
     Base64Module,
-    NestHandlebarsModule,
+    PathModule,
     HandlebarsModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => config.get<MailOrderConfig>(MailOrderConfigName)
-    })
+    }),
   ],
   controllers: [
     MedicalOrderCloudController,

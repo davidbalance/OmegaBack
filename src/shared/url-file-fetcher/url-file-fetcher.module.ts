@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { UrlFileFetcherService } from './url-file-fetcher.service';
-import { NestUuidModule } from '../nest-ext/nest-uuid/nest-uuid.module';
+import { UuidModule } from '../nest-ext/uuid/uuid.module';
 
 @Module({
-  imports: [NestUuidModule],
+  imports: [UuidModule],
   providers: [UrlFileFetcherService],
   exports: [UrlFileFetcherService]
 })

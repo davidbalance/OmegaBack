@@ -1,25 +1,25 @@
-import { INJECT_STORAGE_MANAGER, StorageManager } from "@/shared/storage-manager";
 import { DoctorRepository } from "../repositories/doctor.repository";
 import { DoctorFileManagementService } from "./doctor-file-management.service";
 import { TestBed } from "@automock/jest";
 import { mockDoctorEntity } from "../stub/doctor-entity.stub";
 import { signaturePath } from "@/shared/utils";
-import { ReadStream } from "fs";
-import { NestPath } from "@/shared/nest-ext/nest-path/nest-path.type";
-import { NEST_PATH } from "@/shared/nest-ext/nest-path/inject-token";
+import { Path } from "@/shared/nest-ext/path/path.type";
+import { NEST_PATH } from "@/shared/nest-ext/path/inject-token";
+import { IFileSystem } from "@/shared/file-system/file-system.interface";
+import { FILE_SYSTEM } from "@/shared/file-system/inject-token";
 
 describe('DoctorFileManagementService', () => {
     let service: DoctorFileManagementService;
     let repository: jest.Mocked<DoctorRepository>;
-    let storage: jest.Mocked<StorageManager>;
-    let path: jest.Mocked<NestPath>;
+    let fileSystem: jest.Mocked<IFileSystem>;
+    let path: jest.Mocked<Path>;
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(DoctorFileManagementService).compile();
 
         service = unit;
         repository = unitRef.get(DoctorRepository);
-        storage = unitRef.get(INJECT_STORAGE_MANAGER);
+        fileSystem = unitRef.get(FILE_SYSTEM);
         path = unitRef.get(NEST_PATH);
     });
 
@@ -32,14 +32,14 @@ describe('DoctorFileManagementService', () => {
         const mockedDoctor = mockDoctorEntity();
         const filepath: string = signaturePath({ dni: mockedDoctor.user.dni });
         const directoryImage: string = '/path/to/file.png'
-        const mockedReadStream = {} as ReadStream;
-        const expectedData = mockedReadStream;
+        const mockedBuffer = {} as Buffer;
+        const expectedData = mockedBuffer;
 
         it('should find a file', async () => {
             // Arrange
             repository.findOne.mockResolvedValue(mockedDoctor);
             path.join.mockReturnValue(directoryImage);
-            storage.readFile.mockResolvedValue(mockedReadStream);
+            fileSystem.read.mockResolvedValue(mockedBuffer);
 
             // Act
             const result = await service.findFile(id);
@@ -47,7 +47,7 @@ describe('DoctorFileManagementService', () => {
             // Assert
             expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id } });
             expect(path.join).toHaveBeenCalledWith(filepath, `${mockedDoctor.user.dni}.png`);
-            expect(storage.readFile).toHaveBeenCalledWith(directoryImage);
+            expect(fileSystem.read).toHaveBeenCalledWith(directoryImage);
             expect(result).toEqual(expectedData);
         });
     });
@@ -59,15 +59,16 @@ describe('DoctorFileManagementService', () => {
             originalname: 'test.png',
             buffer: Buffer.from('test'),
         } as Express.Multer.File;
-        const directory = mockedDoctor.user.dni;
         const extension = '.png';
+        const filename = '/path/to/file.png';
 
         it('should upload a file', async () => {
             // Arrange
             repository.findOne.mockResolvedValue(mockedDoctor);
             path.extname.mockReturnValue(extension);
-            storage.saveFile.mockResolvedValue(undefined);
+            fileSystem.write.mockResolvedValue(undefined);
             repository.findOneAndUpdate.mockResolvedValue(undefined);
+            path.resolve.mockReturnValue(filename);
 
             // Act
             await service.uploadFile(id, signature);
@@ -80,12 +81,7 @@ describe('DoctorFileManagementService', () => {
                 },
             });
             expect(path.extname).toHaveBeenCalledWith(signature.originalname);
-            expect(storage.saveFile).toHaveBeenCalledWith(
-                signature.buffer,
-                extension,
-                path.resolve(signaturePath({ dni: directory })),
-                mockedDoctor.user.dni,
-            );
+            expect(fileSystem.write).toHaveBeenCalledWith(filename, signature.buffer, { extension: extension, filename: mockedDoctor.user.dni });
             expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id }, { hasFile: true });
         });
     });

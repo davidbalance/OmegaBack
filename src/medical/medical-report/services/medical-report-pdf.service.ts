@@ -1,16 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import dayjs from 'dayjs';
 import es from "dayjs/locale/es";
-import { INJECT_STORAGE_MANAGER, StorageManager } from '@/shared/storage-manager';
 import { fileReportPath } from '@/shared/utils';
 import { MedicalReportRepository } from '../repositories/medical-report.repository';
 import { medicalReportDocumentLayout } from '../utils/medical-report-document-layout';
 import { PdfManagerService } from '@/shared/pdf-manager/pdf-manager.service';
 import { MedicalReportEntity } from '../entities/medical-report.entity';
-import { NEST_PATH } from '@/shared/nest-ext/nest-path/inject-token';
-import { NestPath } from '@/shared/nest-ext/nest-path/nest-path.type';
-import { NEST_FS } from '@/shared/nest-ext/nest-fs/inject-token';
-import { NestFS } from '@/shared/nest-ext/nest-fs/nest-fs.type';
+import { NEST_PATH } from '@/shared/nest-ext/path/inject-token';
+import { Path } from '@/shared/nest-ext/path/path.type';
+import { FILE_SYSTEM } from '@/shared/file-system/inject-token';
+import { IFileSystem } from '@/shared/file-system/file-system.interface';
+import { FS } from '@/shared/nest-ext/fs/fs.type';
+import { NEST_FS } from '@/shared/nest-ext/fs/inject-token';
 
 @Injectable()
 export class MedicalReportPdfService {
@@ -18,9 +19,9 @@ export class MedicalReportPdfService {
   constructor(
     @Inject(MedicalReportRepository) private readonly repository: MedicalReportRepository,
     @Inject(PdfManagerService) private readonly pdfService: PdfManagerService,
-    @Inject(INJECT_STORAGE_MANAGER) private readonly storage: StorageManager,
-    @Inject(NEST_PATH) private readonly path: NestPath,
-    @Inject(NEST_FS) private readonly fs: NestFS,
+    @Inject(FILE_SYSTEM) private readonly fileSystem: IFileSystem,
+    @Inject(NEST_PATH) private readonly path: Path,
+    @Inject(NEST_FS) private readonly fs: FS,
   ) { }
 
   public async craft(data: MedicalReportEntity): Promise<MedicalReportEntity> {
@@ -51,29 +52,37 @@ export class MedicalReportPdfService {
     return redo;
   }
 
+  private async signatureBase64(path: string): Promise<string> {
+    const buffer = await this.fileSystem.read(path);
+    return buffer.toString('base64');
+  }
+
+  private headerBase64(path: string): string {
+    console.log(path);
+    const headerDirectory = this.path.resolve(path);
+    const buffer = this.fs.readFileSync(headerDirectory);
+    return buffer.toString('base64');
+  }
+
   private async processPdf(data: MedicalReportEntity): Promise<string> {
-    const signatureDirectory = this.path.resolve(data.doctorSignature);
-    const signatureImg = this.fs.readFileSync(signatureDirectory);
-    const signatureBase64 = Buffer.from(signatureImg).toString('base64');
+    const headerPath = 'templates/medical-result/medical-report/header.png';
+    const signature = await this.signatureBase64(data.doctorSignature);
+    const header = this.headerBase64(headerPath);
 
-    const headerDirectory = this.path.resolve('templates/medical-result/medical-report/header.png');
-    const headerImg = this.fs.readFileSync(headerDirectory);
-    const headerBase64 = Buffer.from(headerImg).toString('base64');
+    const htmlContent = this.pdfService.parseHtml(data.content);
 
-    const newContent = this.pdfService.parseHtml(data.content);
-
-    const baseContent = this.getContent(data, {
-      signature: signatureBase64,
-      header: headerBase64
+    const reportContent = this.getContent(data, {
+      signature: signature,
+      header: header
     });
 
-    const docLayout = medicalReportDocumentLayout(baseContent, newContent);
+    const docLayout = medicalReportDocumentLayout(reportContent, htmlContent);
 
     const buffer = await this.pdfService.craft(docLayout);
 
-    const filePath = fileReportPath({ dni: data.patientDni, order: data.order });
-
-    const output = this.storage.saveFile(buffer, '.pdf', filePath, data.examName.toLocaleLowerCase().replace(/\s/g, '_'));
+    const filepath = fileReportPath({ dni: data.patientDni, order: data.order });
+    const filename = data.examName.toLocaleLowerCase().replace(/\s/g, '_');
+    const output = this.fileSystem.write(filepath, buffer, { extension: '.pdf', filename: filename });
 
     return output;
   }

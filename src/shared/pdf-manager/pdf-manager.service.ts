@@ -3,15 +3,15 @@ import htmlToPdfmake from 'html-to-pdfmake';
 import { JSDOM } from 'jsdom'
 import PdfPrinter from 'pdfmake';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
-import { NestPath } from '../nest-ext/nest-path/nest-path.type';
-import { NEST_PATH } from '../nest-ext/nest-path/inject-token';
+import { Path } from '../nest-ext/path/path.type';
+import { NEST_PATH } from '../nest-ext/path/inject-token';
 
 @Injectable()
 export class PdfManagerService {
     private printer: PdfPrinter;
 
     constructor(
-        @Inject(NEST_PATH) path: NestPath
+        @Inject(NEST_PATH) path: Path
     ) {
         this.printer = new PdfPrinter({
             Roboto: {

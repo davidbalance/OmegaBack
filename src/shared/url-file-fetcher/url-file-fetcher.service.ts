@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import axios, { AxiosResponse } from 'axios';
 import { fileExtension } from '../utils/file-extension';
-import { NEST_UUID } from '../nest-ext/nest-uuid/inject-token';
-import { NestUuid } from '../nest-ext/nest-uuid/nest-uuid.type';
+import { NEST_UUID } from '../nest-ext/uuid/inject-token';
+import { Uuid } from '../nest-ext/uuid/uuid.type';
 
 @Injectable()
 export class UrlFileFetcherService {
 
     constructor(
-        @Inject(NEST_UUID) private readonly uuid: NestUuid,
+        @Inject(NEST_UUID) private readonly uuid: Uuid,
     ) { }
 
     public async fetch(url: string): Promise<{ filename: string, mimetype: string, buffer: Buffer }> {

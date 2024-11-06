@@ -1,0 +1,12 @@
+import { Global, Module } from "@nestjs/common";
+import { NEST_FS } from "./inject-token";
+import fs from 'fs'
+
+@Module({
+    providers: [{
+        provide: NEST_FS,
+        useValue: fs
+    }],
+    exports: [NEST_FS]
+})
+export class FSModule { }

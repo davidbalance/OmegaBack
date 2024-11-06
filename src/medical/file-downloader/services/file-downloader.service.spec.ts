@@ -2,19 +2,18 @@ import { TestBed } from "@automock/jest";
 import { FileDownloaderService } from "./file-downloader.service";
 import { MedicalReportFileManagementService } from "@/medical/medical-report/services/medical-report-file-management.service";
 import { MedicalResultFileManagementService } from "@/medical/medical-result/services/medical-result-file-management.service";
-import { FileManagementService } from "@/shared/utils/bases/base.file-service";
+import { IFileManagement } from "@/shared/utils/bases/base.file-service";
 import { ZipperService } from "@/shared/zipper/zipper.service";
 import { StreamableFile, NotFoundException } from "@nestjs/common";
 import { PostDownloadZipRequestDto } from "../dtos/request/download-zip.post.dto";
 import { FileSourceEnum } from "../dtos/request/file-source.base.dto";
-import { ReadStream } from "typeorm/platform/PlatformTools";
 import { PassThrough } from "stream";
 
 describe('FileDownloaderService', () => {
     let service: FileDownloaderService;
     let zipper: jest.Mocked<ZipperService>;
-    let medicalResultService: jest.Mocked<FileManagementService<number>>;
-    let medicalReportService: jest.Mocked<FileManagementService<number>>;
+    let medicalResultService: jest.Mocked<IFileManagement<number>>;
+    let medicalReportService: jest.Mocked<IFileManagement<number>>;
 
     beforeEach(async () => {
         const { unit, unitRef } = TestBed.create(FileDownloaderService).compile();
@@ -31,31 +30,31 @@ describe('FileDownloaderService', () => {
 
     describe('downloadFile', () => {
         const id = 1;
-        const mockedStream: ReadStream = {} as ReadStream;
+        const mockedBuffer = {} as Buffer;
 
         it('should download a report file', async () => {
             // Arrange
             const type: FileSourceEnum = FileSourceEnum.REPORT;
-            medicalReportService.getFile.mockResolvedValueOnce(mockedStream);
+            medicalReportService.getFile.mockResolvedValueOnce(mockedBuffer);
 
             // Act
             const result = await service.downloadFile({ id, type });
 
             // Assert
-            expect(result).toEqual(mockedStream);
+            expect(result).toEqual(mockedBuffer);
             expect(medicalReportService.getFile).toHaveBeenCalledWith(id);
         });
 
         it('should download a result file', async () => {
             // Arrange
             const type: FileSourceEnum = FileSourceEnum.RESULT;
-            medicalResultService.getFile.mockResolvedValueOnce(mockedStream);
+            medicalResultService.getFile.mockResolvedValueOnce(mockedBuffer);
 
             // Act
             const result = await service.downloadFile({ id, type });
 
             // Assert
-            expect(result).toEqual(mockedStream);
+            expect(result).toEqual(mockedBuffer);
             expect(medicalResultService.getFile).toHaveBeenCalledWith(id);
         });
     });
