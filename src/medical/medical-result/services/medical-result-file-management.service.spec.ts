@@ -147,12 +147,11 @@ describe('MedicalResultFileManagementService', () => {
       expect(repository.query().addSelect).toHaveBeenNthCalledWith(2, 'order.companyName', 'companyName');
       expect(repository.query().addSelect).toHaveBeenNthCalledWith(3, 'order.companyRuc', 'companyRuc');
       expect(repository.query().addSelect).toHaveBeenNthCalledWith(4, 'order.branchName', 'branch');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(5, 'client.branchName', 'branch');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(6, 'client.dni', 'patientDni');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(7, 'client.name', 'clientName');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(8, 'client.lastname', 'clientLastname');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(9, 'result.examName', 'examName');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(10, 'order.id', 'orderId');
+      expect(repository.query().addSelect).toHaveBeenNthCalledWith(5, 'client.dni', 'patientDni');
+      expect(repository.query().addSelect).toHaveBeenNthCalledWith(6, 'client.name', 'clientName');
+      expect(repository.query().addSelect).toHaveBeenNthCalledWith(7, 'client.lastname', 'clientLastname');
+      expect(repository.query().addSelect).toHaveBeenNthCalledWith(8, 'result.examName', 'examName');
+      expect(repository.query().addSelect).toHaveBeenNthCalledWith(9, 'order.id', 'orderId');
       expect(repository.query().where).toHaveBeenCalledWith('result.id = :id', { id: key });
       expect(fileSystem.write).toHaveBeenCalledWith(expectedPath, file.buffer, { extension: '.pdf', filename: `${mockedOrderId.toString().padStart(9, '0')}_${mockedExamName.toLocaleLowerCase().replace(/[^A-Z0-9]+/ig, '_')}` });
       expect(repository.findOneAndUpdate).toHaveBeenCalledWith({ id: key }, { filePath: `${mockedFilepath}`, hasFile: true });
