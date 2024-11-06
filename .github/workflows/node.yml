@@ -76,9 +76,9 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ${{ secrets.DOCKER_COMPOSE_DIRECTORY }}
-            docker-compose stop ${{ secrets.DOCKER_SERVICE }} ${{ secrets.DOCKER_SERVICE_MIGRATION }} || true
-            docker-compose rm -f ${{ secrets.DOCKER_SERVICE }} ${{ secrets.DOCKER_SERVICE_MIGRATION }}
-            docker-compose pull ${{ secrets.DOCKER_SERVICE }} ${{ secrets.DOCKER_SERVICE_MIGRATION }}
-            docker-compose up -d --build ${{ secrets.DOCKER_SERVICE }} ${{ secrets.DOCKER_SERVICE_MIGRATION }}
+            docker-compose stop ${{ secrets.DOCKER_SERVICE }} || true
+            docker-compose rm -f ${{ secrets.DOCKER_SERVICE }}
+            docker-compose pull ${{ secrets.DOCKER_SERVICE }}
+            docker-compose up -d --build ${{ secrets.DOCKER_SERVICE }}
             docker rmi $(docker images -f "dangling=true" -q) || true
             docker system prune -a
