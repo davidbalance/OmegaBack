@@ -18,6 +18,8 @@ import { MedicalClientEntity } from './entities/medical-client.entity';
 import { MedicalEmailEntity } from './entities/medical-email.entity';
 import { MedicalClientDoctorPaginationController } from './controllers/medical-client-doctor-pagination.controller';
 import { MedicalClientDoctorPaginationService } from './services/medical-client-doctor-pagination.service';
+import { MedicalClientLocalService } from './services/medical-client-local.service';
+import { MedicalClientManagementController } from './controllers/medical-client-management.controller';
 
 @Module({
   imports: [
@@ -33,6 +35,7 @@ import { MedicalClientDoctorPaginationService } from './services/medical-client-
     MedicalClientEmailController,
     MedicalClientJobPositionController,
     MedicalClientLocationController,
+    MedicalClientManagementController
   ],
   providers: [
     MedicalClientRepository,
@@ -43,6 +46,7 @@ import { MedicalClientDoctorPaginationService } from './services/medical-client-
     MedicalClientEventService,
     MedicalClientExternalService,
     MedicalClientJobPositionService,
+    MedicalClientLocalService,
     MedicalClientLocationService,
     MedicalClientManagementService,
   ],

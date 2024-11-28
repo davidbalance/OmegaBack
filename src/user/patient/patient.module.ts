@@ -16,6 +16,7 @@ import { SqlDatabaseModule } from '@/shared/sql-database/sql-database.module';
 import { PatientEntity } from './entities/patient.entity';
 import { PatientLookForCompanyPaginationController } from './controllers/patient-look-for-company-pagination.controller';
 import { PatientLookForCompanyPaginationService } from './service/patient-look-for-company-pagination.service';
+import { PatientListener } from './listeners/patient.listener';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { PatientLookForCompanyPaginationService } from './service/patient-look-f
   providers: [
     PatientRepository,
     PatientExternalListener,
+    PatientListener,
     PatientEeqPaginationService,
     PatientEventService,
     PatientExternalConnectionService,
