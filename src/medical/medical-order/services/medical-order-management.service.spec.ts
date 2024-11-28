@@ -2,6 +2,7 @@ import { TestBed } from "@automock/jest";
 import { MedicalOrderRepository } from "../repositories/medical-order.repository";
 import { MedicalOrderManagementService } from "./medical-order-management.service";
 import { mockMedicalOrderEntities, mockMedicalOrderEntity } from "../stubs/medical-order-entity.stub";
+import { MedicalOrderRequestDto } from "../dtos/request/medical-order.base.dto";
 
 describe('MedicalOrderManagementService', () => {
   let service: MedicalOrderManagementService;
@@ -46,6 +47,30 @@ describe('MedicalOrderManagementService', () => {
       // Assert
       expect(repository.findOne).toHaveBeenCalledWith({ where: { id } });
       expect(result).toEqual(mockedOrder);
+    });
+  });
+
+  describe('create', () => {
+    it('should create a medical order', async () => {
+      // Arrange
+      const data: MedicalOrderRequestDto = {
+        branchName: 'Branch',
+        companyName: 'Company',
+        corporativeName: "Corporative",
+        companyRuc: "1234567890001",
+        patientDni: "1234567890",
+        process: "SAMPLE"
+      };
+      const mockedOrder = mockMedicalOrderEntity();
+      const expectedValue = mockedOrder;
+      repository.create.mockResolvedValue(mockedOrder);
+
+      // Act
+      const result = await service.create(data);
+
+      // Assert
+      expect(repository.create).toHaveBeenCalledWith(data);
+      expect(result).toEqual(expectedValue);
     });
   });
 
