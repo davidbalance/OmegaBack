@@ -3,16 +3,20 @@ import { MedicalOrderRepository } from "../repositories/medical-order.repository
 import { MedicalOrderManagementService } from "./medical-order-management.service";
 import { mockMedicalOrderEntities, mockMedicalOrderEntity } from "../stubs/medical-order-entity.stub";
 import { MedicalOrderRequestDto } from "../dtos/request/medical-order.base.dto";
+import { MedicalClientManagementService } from "@/medical/medical-client/services/medical-client-management.service";
+import { mockMedicalClient } from "@/medical/medical-client/stub/medical-client.stub";
 
 describe('MedicalOrderManagementService', () => {
   let service: MedicalOrderManagementService;
   let repository: jest.Mocked<MedicalOrderRepository>;
+  let clientService: jest.Mocked<MedicalClientManagementService>;
 
   beforeEach(async () => {
     const { unit, unitRef } = TestBed.create(MedicalOrderManagementService).compile();
 
     service = unit;
     repository = unitRef.get(MedicalOrderRepository);
+    clientService = unitRef.get(MedicalClientManagementService);
   });
 
   afterEach(() => {
@@ -61,15 +65,20 @@ describe('MedicalOrderManagementService', () => {
         patientDni: "1234567890",
         process: "SAMPLE"
       };
+      const mockedClient = mockMedicalClient();
       const mockedOrder = mockMedicalOrderEntity();
       const expectedValue = mockedOrder;
+
+      clientService.findOneByDni.mockResolvedValue(mockedClient);
       repository.create.mockResolvedValue(mockedOrder);
 
       // Act
       const result = await service.create(data);
 
       // Assert
-      expect(repository.create).toHaveBeenCalledWith(data);
+      const { patientDni, ...order } = data;
+      expect(clientService.findOneByDni).toHaveBeenCalledWith(patientDni);
+      expect(repository.create).toHaveBeenCalledWith({ ...order, client: mockedClient });
       expect(result).toEqual(expectedValue);
     });
   });

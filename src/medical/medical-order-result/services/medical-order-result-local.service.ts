@@ -20,6 +20,6 @@ export class MedicalOrderResultLocalService {
             const newResult = await this.resultService.create({ order: newOrder.id, ...result });
             currentResults.push(newResult);
         }
-        return { ...order, results: currentResults };
+        return { ...newOrder, results: currentResults };
     }
 }
