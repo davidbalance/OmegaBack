@@ -6,6 +6,7 @@ export class MedicalResult {
     @Expose() public readonly examSubtype?: string;
     @Expose() public readonly examName: string;
     @Expose() public readonly hasFile: boolean;
+    @Expose() public readonly checklistStatus: boolean;
 
     @Expose() public readonly diseases: string[];
     @Expose() public readonly reportId: number;

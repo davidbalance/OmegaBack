@@ -31,6 +31,7 @@ import { MedicalOrderProcessService } from "./services/medical-order-process.ser
 import { MailOrderConfig, MailOrderConfigName } from "@/shared/config/mail-order.config";
 import { PathModule } from "@/shared/nest-ext/path/path.module";
 import { HandlebarsModule } from "@/shared/nest-ext/handlebars/handlebars.module";
+import { MedicalOrderChecklistService } from "./services/medical-order-checklist.service";
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { HandlebarsModule } from "@/shared/nest-ext/handlebars/handlebars.module
   providers: [
     MedicalOrderExternalKeyRepository,
     MedicalOrderRepository,
+    MedicalOrderChecklistService,
     MedicalOrderCloudService,
     MedicalOrderDoctorPaginationService,
     MedicalOrderEventService,
@@ -76,6 +78,7 @@ import { HandlebarsModule } from "@/shared/nest-ext/handlebars/handlebars.module
     MedicalOrderProcessService
   ],
   exports: [
+    MedicalOrderChecklistService,
     MedicalOrderExternalConnectionProvider,
     MedicalOrderManagementService
   ]

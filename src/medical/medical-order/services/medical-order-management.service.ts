@@ -21,7 +21,7 @@ export class MedicalOrderManagementService {
   async findOne(id: number): Promise<MedicalOrder> {
     return this.repository.findOne({ where: { id: id } });
   }
-
+  
   async create({ patientDni, ...data }: MedicalOrderRequestDto): Promise<MedicalOrder> {
     const client = await this.clientService.findOneByDni(patientDni);
     return this.repository.create({ ...data, client });
