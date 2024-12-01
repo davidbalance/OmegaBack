@@ -4,7 +4,7 @@ import { MedicalReport } from "@/medical/medical-report/dtos/response/medical-re
 import { MedicalResult } from "./medical-result.base.dto";
 import { OmitType } from "@nestjs/mapped-types";
 
-export class ExternalMedicalResult extends OmitType(MedicalResult, ['diseases', 'reportId', 'reportHasFile', 'orderHasFile']) {
+export class ExternalMedicalResult extends OmitType(MedicalResult, ['diseases', 'reportId', 'reportHasFile', 'orderHasFile', 'checklistStatus']) {
     @Type(() => MedicalResultDisease)
     @Expose() public diseases?: MedicalResultDisease[]
 

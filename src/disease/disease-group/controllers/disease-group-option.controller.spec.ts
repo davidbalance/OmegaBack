@@ -17,7 +17,7 @@ describe('DiseaseGroupOptionController', () => {
     jest.clearAllMocks();
   });
 
-  describe('create', () => {
+  describe('find', () => {
 
     const mockedDiseaseGroup = mockExtendedDiseaseGroups();
     const expectedData = { data: mockedDiseaseGroup };

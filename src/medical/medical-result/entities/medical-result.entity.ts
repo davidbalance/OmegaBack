@@ -35,6 +35,9 @@ export class MedicalResultEntity extends AbstractEntity<number> {
     @Column({ name: 'doctor_signature', type: 'varchar', length: 512, nullable: false })
     public doctorSignature: string;
 
+    @Column({ name: 'checklist_status', type: 'boolean', nullable: false, default: false })
+    public checklistStatus: boolean;
+
     @OneToMany(() => MedicalResultDiseaseEntity, morbidity => morbidity.result, { eager: true, nullable: true })
     public diseases?: MedicalResultDiseaseEntity[];
 

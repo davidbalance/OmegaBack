@@ -14,8 +14,9 @@ const stubMedicalResultEntity = (id: number): MedicalResultEntity => ({
     doctorFullname: "Doctor",
     doctorSignature: "Lastname",
     order: {} as MedicalOrderEntity,
-    report: {} as MedicalReportEntity,
+    report: { id: 1, hasFile: true } as MedicalReportEntity,
     externalKey: {} as MedicalResultExternalKeyEntity,
+    checklistStatus: false,
     createAt: new Date(),
     updateAt: new Date(),
 });

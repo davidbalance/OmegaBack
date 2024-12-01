@@ -1,8 +1,8 @@
 import { Body, Controller, Inject, Post, UseGuards } from "@nestjs/common";
-import { PostMedicalClientRequestDto } from "../dtos/request/medical-client.post.dto";
 import { JwtAuthGuard } from "@/shared/guards/authentication-guard/guards/jwt-auth.guard";
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { MedicalClientLocalService } from "../services/medical-client-local.service";
+import { PostLocalMedicalClientRequestDto } from "../dtos/request/local-medical-client.post.dto";
 
 @ApiTags('Medical>Client')
 @ApiBearerAuth()
@@ -16,7 +16,7 @@ export class MedicalClientManagementController {
 
     @Post()
     async create(
-        @Body() data: PostMedicalClientRequestDto
+        @Body() data: PostLocalMedicalClientRequestDto
     ): Promise<any> {
         await this.service.create(data);
         return "";
