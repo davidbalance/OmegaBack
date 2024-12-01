@@ -17,6 +17,7 @@ const stubExternalMedicalResult = (id: number): MedicalResultEntity => ({
     externalKey: {} as MedicalResultExternalKeyEntity,
     createAt: new Date(),
     updateAt: new Date(),
+    checklistStatus: false
 });
 
 export const mockExternalMedicalResult = () => stubExternalMedicalResult(1);

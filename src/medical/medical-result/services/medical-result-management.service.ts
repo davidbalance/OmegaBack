@@ -72,7 +72,7 @@ export class MedicalResultManagementService {
 
   async updateOne(id: number, data: Partial<Omit<MedicalResult, 'diseases'>>): Promise<MedicalResult> {
     const medicalResult = await this.repository.findOneAndUpdate({ id }, data);
-    return { ...medicalResult, reportId: medicalResult.report.id, reportHasFile: medicalResult.report.hasFile, diseases: medicalResult.diseases.map(e => `${e.diseaseName}, ${e.diseaseCommentary}`) };
+    return { ...medicalResult, reportId: medicalResult.report?.id ?? null, reportHasFile: medicalResult.report?.hasFile ?? false, diseases: medicalResult.diseases.map(e => `${e.diseaseName}, ${e.diseaseCommentary}`) };
   }
 
   async attachReport(id: number, report: MedicalReportEntity): Promise<void> {

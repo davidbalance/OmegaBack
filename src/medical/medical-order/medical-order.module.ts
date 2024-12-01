@@ -1,6 +1,5 @@
 import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
 import { UserInterceptorModule } from "@/shared/interceptors/dni/user-interceptor.module";
-import { MailerModule } from "@/shared/mailer/mailer.module";
 import { SqlDatabaseModule } from "@/shared/sql-database/sql-database.module";
 import { UserModule } from "@/user/user.module";
 import { Module } from "@nestjs/common";
@@ -32,6 +31,7 @@ import { MedicalOrderProcessService } from "./services/medical-order-process.ser
 import { MailOrderConfig, MailOrderConfigName } from "@/shared/config/mail-order.config";
 import { PathModule } from "@/shared/nest-ext/path/path.module";
 import { HandlebarsModule } from "@/shared/nest-ext/handlebars/handlebars.module";
+import { MedicalOrderChecklistService } from "./services/medical-order-checklist.service";
 
 @Module({
   imports: [
@@ -64,6 +64,7 @@ import { HandlebarsModule } from "@/shared/nest-ext/handlebars/handlebars.module
   providers: [
     MedicalOrderExternalKeyRepository,
     MedicalOrderRepository,
+    MedicalOrderChecklistService,
     MedicalOrderCloudService,
     MedicalOrderDoctorPaginationService,
     MedicalOrderEventService,
@@ -77,6 +78,7 @@ import { HandlebarsModule } from "@/shared/nest-ext/handlebars/handlebars.module
     MedicalOrderProcessService
   ],
   exports: [
+    MedicalOrderChecklistService,
     MedicalOrderExternalConnectionProvider,
     MedicalOrderManagementService
   ]

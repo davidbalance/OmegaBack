@@ -13,6 +13,8 @@ import { DoctorPaginationService } from './services/doctor-pagination.service';
 import { DoctorPaginationController } from './controllers/doctor-pagination.controller';
 import { DoctorEntity } from './entities/doctor.entity';
 import { PathModule } from '@/shared/nest-ext/path/path.module';
+import { DoctorOptionController } from './controllers/doctor-option.controller';
+import { DoctorOptionService } from './services/doctor-option.service';
 
 @Module({
   imports: [
@@ -26,6 +28,7 @@ import { PathModule } from '@/shared/nest-ext/path/path.module';
   controllers: [
     DoctorExternalConnectionController,
     DoctorFileManagerController,
+    DoctorOptionController,
     DoctorPaginationController
   ],
   providers: [
@@ -34,6 +37,7 @@ import { PathModule } from '@/shared/nest-ext/path/path.module';
     DoctorExternalConnectionService,
     DoctorFileManagementService,
     DoctorManagementService,
+    DoctorOptionService,
     DoctorPaginationService
   ],
   exports: [

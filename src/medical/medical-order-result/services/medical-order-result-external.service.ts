@@ -1,5 +1,5 @@
 import { ExternalKeyParam, IExternalConnectionService } from '@/shared/utils/bases/base.external-connection';
-import { BadRequestException, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, Logger } from '@nestjs/common';
 import { ExternalMedicalOrderRequestDto } from '../../medical-order/dtos/request/external-medical-order.base.dto';
 import { ExternalMedicalOrder } from '../../medical-order/dtos/response/external-medical-order.base.dto';
 import { INJECT_MEDICAL_ORDER_EXTERNAL_CONNECTION } from '../../medical-order/services/medical-order-external-connection.service';

@@ -13,6 +13,7 @@ import { JobPositionEntity } from './entities/job-position.entity';
 import { JobPositionExternalKeyEntity } from './entities/job-position-external-key.entity';
 import { JobPositionOptionController } from './controllers/job-position-option.controller';
 import { JobPositionManagementService } from './services/job-position-management.service';
+import { JobPositionListener } from './listeners/job-position.listener';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { JobPositionManagementService } from './services/job-position-management
     JobPositionExternalKeyRepository,
     JobPositionRepository,
     JobPositionExternalListener,
+    JobPositionListener,
     JobPositionExternalConnectionService,
     JobPositionExternalKeyService,
     JobPositionManagementService,
