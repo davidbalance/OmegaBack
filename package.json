@@ -23,6 +23,8 @@
     "migration:generate": "npm run typeorm  -- -d ./typeorm.config.ts migration:generate ./database/migrations/%npm_config_name%",
     "migration:run": "npm run typeorm migration:run -- -d ./typeorm.config.ts",
     "migration:revert": "npm run typeorm migration:revert -- -d ./typeorm.config.ts",
+    "migration:rollback": "npm run typeorm schema:drop -- -d ./typeorm.config.ts",
+    "migration:refresh": "npm run migration:rollback && npm run migration:run",
     "migration:show": "npm run typeorm migration:show -- -d ./typeorm.config.ts"
   },
   "dependencies": {

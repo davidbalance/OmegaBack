@@ -29,18 +29,26 @@ export class MedicalResultDiseaseReportService {
     async generateReport(searchParam: PostMedicalResultDiseaseReportRequestDto): Promise<StreamableFile> {
         const values = await this.find(searchParam);
 
-        const processedValues: ExcelReportType[] = values.map((e) => ({
-            ...e,
-            ageRange: (e.age < 50)
-                ? 'de 18 a 19'
-                : (e.age >= 50 && e.age <= 64
-                    ? 'de 50 a 64'
-                    : 'mayor a 64'),
-            diseaseFindings: e.examType === 'LABORATORIO CLINICO'
-                ? 'SALUD GENERAL'
-                : '',
-            gender: e.gender.toLocaleUpperCase().slice(0, 1)
-        }));
+        const processedValues: ExcelReportType[] = values
+            .map((e) => ({
+                ...e,
+                ageRange: (e.age < 50)
+                    ? 'de 18 a 19'
+                    : (e.age >= 50 && e.age <= 64
+                        ? 'de 50 a 64'
+                        : 'mayor a 64'),
+                diseaseFindings: e.examType === 'LABORATORIO CLINICO'
+                    ? 'SALUD GENERAL'
+                    : '',
+                gender: e.gender.toLocaleUpperCase().slice(0, 1)
+            })).map(e => Object
+                .entries(e)
+                .reduce((prev, [key, value]) => ({
+                    ...prev,
+                    [key]: typeof value === "number"
+                        ? value
+                        : `${value}`.toUpperCase()
+                }), e));
 
         const stream = await this.excel.craft(processedValues, excelColumns as any, `morbilidades_export_data-${dayjs().format('YYYYMM')}`)
         return stream;
