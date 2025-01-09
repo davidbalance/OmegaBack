@@ -51,35 +51,6 @@ describe('ManagementService', () => {
     });
   });
 
-  describe('hasAreas', () => {
-    const id = 1;
-    const mockedData = mockManagementEntity();
-
-    it('should return true if the management has areas', async () => {
-      // Arrange
-      repository.findOne.mockResolvedValue({ ...mockedData, areas: [{ id: 1 } as any] });
-
-      // Act
-      const result = await service.hasAreas(id);
-
-      // Assert
-      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id }, relations: { areas: true } });
-      expect(result).toBe(true);
-    });
-
-    it('should return false if the management has no areas', async () => {
-      // Arrange
-      repository.findOne.mockResolvedValue(mockedData);
-
-      // Act
-      const result = await service.hasAreas(id);
-
-      // Assert
-      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: id }, relations: { areas: true } });
-      expect(result).toBe(false);
-    });
-  });
-
   describe('updateOne', () => {
     it('should update a management', async () => {
       // Arrange

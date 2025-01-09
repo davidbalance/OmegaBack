@@ -21,8 +21,7 @@ describe('AreaManagementController', () => {
 
   describe('create', () => {
     const mockDto: PostAreaRequestDto = {
-      name: 'New Disease',
-      management: 1
+      name: 'New Disease'
     };
     const mockedArea = mockArea();
 

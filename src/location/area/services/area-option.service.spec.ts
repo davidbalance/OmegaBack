@@ -30,8 +30,7 @@ describe('AreaOptionService', () => {
 
       // Assert
       expect(repository.find).toHaveBeenCalledWith({
-        where: { status: true },
-        relations: { areas: true },
+        where: { status: true }
       });
       expect(result).toEqual(mockedData);
     });

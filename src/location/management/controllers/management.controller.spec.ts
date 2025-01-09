@@ -53,24 +53,6 @@ describe('ManagementController', () => {
     });
   });
 
-  describe('hasAreas', () => {
-    const id = 1;
-    const mockedValue = true;
-    const expectedData = { hasValue: mockedValue };
-
-    it('should call the service to update a disease', async () => {
-      // Arrange
-      service.hasAreas.mockResolvedValue(mockedValue);
-
-      // Act
-      const result = await controller.hasAreas(id);
-
-      // Assert
-      expect(service.hasAreas).toHaveBeenCalledWith(id);
-      expect(result).toEqual(expectedData);
-    });
-  });
-
   describe('updateOne', () => {
     const id = 1;
     const mockDto: PatchMagementRequestDto = {

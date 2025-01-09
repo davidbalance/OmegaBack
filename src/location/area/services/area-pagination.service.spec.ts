@@ -29,7 +29,6 @@ describe('AreaPaginationService', () => {
 
     beforeEach(() => {
       repository.query.mockReturnValue({
-        innerJoinAndSelect: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
         addSelect: jest.fn().mockReturnThis(),
         where: jest.fn().mockReturnThis(),
@@ -47,10 +46,8 @@ describe('AreaPaginationService', () => {
 
       // Assert
       expect(repository.query).toHaveBeenCalledWith('area');
-      expect(repository.query().innerJoinAndSelect).toHaveBeenCalledWith('area.management', 'management', 'management.id = :management', { management: extras });
       expect(repository.query().select).toHaveBeenCalledWith('area.id', 'id');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(1, 'area.name', 'name');
-      expect(repository.query().addSelect).toHaveBeenNthCalledWith(2, 'management.id', 'management');
+      expect(repository.query().addSelect).toHaveBeenCalledWith('area.name', 'name');
       expect(repository.query().where).toHaveBeenCalledWith('area.name LIKE :name', { name: `%${search}%` });
       expect(repository.query().limit).toHaveBeenCalledWith(take);
       expect(repository.query().offset).toHaveBeenCalledWith(page);

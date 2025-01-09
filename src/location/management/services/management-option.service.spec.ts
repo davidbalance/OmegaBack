@@ -29,10 +29,7 @@ describe('ManagementOptionService', () => {
       const result = await service.find();
 
       // Assert
-      expect(repository.find).toHaveBeenCalledWith({
-        where: { status: true },
-        relations: { areas: true },
-      });
+      expect(repository.find).toHaveBeenCalledWith({ where: { status: true } });
       expect(result).toEqual(mockedData);
     });
   });
