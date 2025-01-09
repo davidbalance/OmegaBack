@@ -20,11 +20,6 @@ export class ManagementService {
     return management;
   }
 
-  async hasAreas(id: number): Promise<boolean> {
-    const management = await this.repository.findOne({ where: { id: id }, relations: { areas: true } });
-    return management.areas.length > 0;
-  }
-
   async updateOne(id: number, updateManagementDto: PatchMagementRequestDto): Promise<Management> {
     const management = await this.repository.findOneAndUpdate({ id: id }, updateManagementDto);
     return management;

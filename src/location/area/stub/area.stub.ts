@@ -2,8 +2,7 @@ import { Area } from "../dtos/response/area.base.dto";
 
 const stubArea = (id: number): Area => ({
     id: id,
-    name: "Stub city",
-    management: 1
+    name: "Stub city"
 });
 
 export const mockArea = () => stubArea(1);

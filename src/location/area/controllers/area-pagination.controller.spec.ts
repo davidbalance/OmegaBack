@@ -19,7 +19,6 @@ describe('AreaPaginationController', () => {
   });
 
   describe('find', () => {
-    const subtype: number = 1;
     const query: FilterMetaDto = { page: 0, take: 100 }
     const mockedExams = mockAreas();
     const expectedData = { data: mockedExams };
@@ -29,16 +28,15 @@ describe('AreaPaginationController', () => {
       service.find.mockResolvedValue(mockedExams);
 
       // Act
-      const result = await controller.find(subtype, query);
+      const result = await controller.find(query);
 
       // Assert
-      expect(service.find).toHaveBeenCalledWith(query, subtype);
+      expect(service.find).toHaveBeenCalledWith(query);
       expect(result).toEqual(expectedData);
     });
   });
 
   describe('count', () => {
-    const subtype: number = 1;
     const query: FilterMetaDto = { page: 0, take: 100 }
     const mockedCount: number = 1;
     const expectedData = { pages: mockedCount };
@@ -48,10 +46,10 @@ describe('AreaPaginationController', () => {
       service.count.mockResolvedValue(mockedCount);
 
       // Act
-      const result = await controller.count(subtype, query);
+      const result = await controller.count(query);
 
       // Assert
-      expect(service.count).toHaveBeenCalledWith(query, subtype);
+      expect(service.count).toHaveBeenCalledWith(query);
       expect(result).toEqual(expectedData);
     });
   });

@@ -12,7 +12,4 @@ export class ManagementEntity extends AbstractEntity<number> {
 
     @Column({ name: 'management_status', type: 'boolean', default: true, nullable: false })
     public status: boolean;
-
-    @OneToMany(() => AreaEntity, area => area.management, { eager: true, nullable: true })
-    public areas: AreaEntity[];
 }

@@ -9,7 +9,7 @@ import { AreaPaginationService } from '../services/area-pagination.service';
 @ApiTags('Location>Area', 'Pagination')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller('location/:management/areas')
+@Controller('location/areas')
 export class AreaPaginationController {
   constructor(
     @Inject(AreaPaginationService) private readonly service: AreaPaginationService
@@ -17,19 +17,17 @@ export class AreaPaginationController {
 
   @Get('paginate')
   async find(
-    @Param('management') management: number,
     @Query() query: FilterMetaDto
   ): Promise<GetAreaArrayResponseDto> {
-    const data = await this.service.find(query, management);
+    const data = await this.service.find(query);
     return plainToInstance(GetAreaArrayResponseDto, { data });
   }
 
   @Get('pages')
   async count(
-    @Param('management') management: number,
     @Query() query: CountMetaDto
   ): Promise<PageResponseDto> {
-    const pages = await this.service.count(query, management);
+    const pages = await this.service.count(query);
     return plainToInstance(PageResponseDto, { pages });
   }
 }

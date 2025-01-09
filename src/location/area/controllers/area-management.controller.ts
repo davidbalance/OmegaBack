@@ -20,7 +20,7 @@ export class AreaManagementController {
   async create(
     @Body() createAreaDto: PostAreaRequestDto
   ): Promise<any> {
-    const area = await this.service.create(createAreaDto);
+    await this.service.create(createAreaDto);
     return {}
   }
 
@@ -37,7 +37,7 @@ export class AreaManagementController {
     @Param('id') id: number,
     @Body() updateAreaDto: PatchAreaRequestDto
   ): Promise<any> {
-    const area = await this.service.updateOne(+id, updateAreaDto);
+    await this.service.updateOne(+id, updateAreaDto);
     return {}
   }
 
