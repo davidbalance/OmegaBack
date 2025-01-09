@@ -10,8 +10,7 @@ export class ManagementOptionService {
 
   async find(): Promise<ExtendedManagement[]> {
     const managements = await this.repository.find({
-      where: { status: true },
-      relations: { areas: true }
+      where: { status: true }
     });
     return managements;
   }

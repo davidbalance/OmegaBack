@@ -32,6 +32,8 @@ export class MedicalResultDiseaseReportService {
         const processedValues: ExcelReportType[] = values
             .map((e) => ({
                 ...e,
+                date: dayjs(e.date).format("YYYY-MM-DD"),
+                birthday: dayjs(e.birthday).format("YYYY-MM-DD"),
                 ageRange: (e.age < 50)
                     ? 'de 18 a 19'
                     : (e.age >= 50 && e.age <= 64
@@ -45,9 +47,11 @@ export class MedicalResultDiseaseReportService {
                 .entries(e)
                 .reduce((prev, [key, value]) => ({
                     ...prev,
-                    [key]: typeof value === "number"
-                        ? value
-                        : `${value}`.toUpperCase()
+                    [key]: value === 'NULL' || value === null
+                        ? ""
+                        : typeof value === "number"
+                            ? value
+                            : `${value}`.toUpperCase()
                 }), e));
 
         const stream = await this.excel.craft(processedValues, excelColumns as any, `morbilidades_export_data-${dayjs().format('YYYYMM')}`)

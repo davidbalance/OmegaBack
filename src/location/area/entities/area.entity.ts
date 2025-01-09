@@ -10,7 +10,6 @@ export class AreaEntity extends AbstractEntity<number> {
     @Column({ name: 'area_name', type: 'varchar', length: 128, nullable: false })
     public name: string;
 
-    @ManyToOne(() => ManagementEntity, management => management.areas, { eager: false, nullable: false })
-    @JoinColumn({ foreignKeyConstraintName: 'fk_lo_managements_areas', referencedColumnName: 'id', name: 'management_id' })
-    public management: ManagementEntity;
+    @Column({ name: 'area_status', type: 'boolean', default: true, nullable: false })
+    public status: boolean;
 }

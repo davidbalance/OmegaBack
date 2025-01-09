@@ -8,6 +8,8 @@ import { AreaManagementService } from './services/area-management.service';
 import { AreaPaginationController } from './controllers/area-pagination.controller';
 import { AreaPaginationService } from './services/area-pagination.service';
 import { AreaEntity } from './entities/area.entity';
+import { AreaOptionController } from './controllers/area-option.controller';
+import { AreaOptionService } from './services/area-option.service';
 
 @Module({
   imports: [
@@ -17,12 +19,14 @@ import { AreaEntity } from './entities/area.entity';
   ],
   controllers: [
     AreaManagementController,
-    AreaPaginationController
+    AreaPaginationController,
+    AreaOptionController
   ],
   providers: [
     AreaRepository,
     AreaManagementService,
     AreaPaginationService,
+    AreaOptionService
   ],
   exports: [
     AreaManagementService

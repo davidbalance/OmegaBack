@@ -1,12 +1,11 @@
 import { AreaEntity } from "@/location/area/entities/area.entity";
-import { ManagementEntity } from "@/location/management/entities/management.entity";
 
 const stubAreaEntity = (id: number): AreaEntity => ({
     id: id,
     name: "my-stub-name",
-    management: { id: 1 } as ManagementEntity,
     createAt: new Date(),
-    updateAt: new Date()
+    updateAt: new Date(),
+    status: true
 });
 
 export const mockAreaEntity = () => stubAreaEntity(1);

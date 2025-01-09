@@ -4,7 +4,6 @@ const stubManagementEntity = (id: number): ManagementEntity => ({
     id: id,
     name: "my-stub-name",
     status: true,
-    areas: [],
     createAt: new Date(),
     updateAt: new Date()
 });

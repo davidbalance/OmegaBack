@@ -33,14 +33,6 @@ export class ManagementController {
     return plainToInstance(GetManagementResponseDto, data);
   }
 
-  @Get(':id/has/areas')
-  async hasAreas(
-    @Param('id') id: number
-  ): Promise<HasValueResponseDto> {
-    const hasValue = await this.service.hasAreas(id);
-    return plainToInstance(HasValueResponseDto, { hasValue });
-  }
-
   @Patch(':id')
   async updateOne(
     @Param('id') id: number,

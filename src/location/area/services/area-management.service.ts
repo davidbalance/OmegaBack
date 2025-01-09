@@ -10,28 +10,19 @@ export class AreaManagementService {
 
   constructor(
     @Inject(AreaRepository) private readonly repository: AreaRepository,
-    @Inject(ManagementService) private readonly managementService: ManagementService
   ) { }
 
-  async create({ management, ...data }: PostAreaRequestDto): Promise<Area> {
-    const foundManagement = await this.managementService.findOne(management);
-    const area = await this.repository.create({ ...data, management: foundManagement });
-    return { ...area, management };
+  async create(data: PostAreaRequestDto): Promise<Area> {
+    return this.repository.create(data);
   }
 
   async findOne(id: number): Promise<Area> {
-    const area = await this.repository.findOne({ where: { id }, relations: { management: true } });
-    return { ...area, management: area.management.id };
+    return this.repository.findOne({ where: { id } });
   }
 
-  async updateOne(id: number, { management, ...data }: PatchAreaRequestDto): Promise<Area> {
-    if (management) {
-      const foundManagement = await this.managementService.findOne(management);
-      data['management'] = foundManagement;
-    }
+  async updateOne(id: number, data: PatchAreaRequestDto): Promise<Area> {
     await this.repository.findOneAndUpdate({ id: id }, { ...data });
-    const area = await this.repository.findOne({ where: { id: id }, relations: { management: true } });
-    return { ...area, management: area.management.id };
+    return await this.repository.findOne({ where: { id: id } });
   }
 
   async deleteOne(id: number): Promise<void> {
