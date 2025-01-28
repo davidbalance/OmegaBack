@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException, StreamableFile } from "@nestjs/common";
+import { Inject, Injectable, Logger, NotFoundException, StreamableFile } from "@nestjs/common";
 import { MedicalResultRepository } from "../repositories/medical-result.repository";
 import { ExcelManagerService } from "@/shared/excel-manager/excel-manager.service";
 import dayjs from "dayjs";
@@ -58,12 +58,20 @@ export class MedicalResultFileCheckService {
         const ids: number[] = [];
 
         for (let i = 0; i < files.length; i += batchSize) {
-            const batch = files.slice(i, i + batchSize);
-            const batchedIds = await Promise.all(batch.filter((value) => !existsSync(value.filePath)).map(e => e.id));
-            ids.push(...batchedIds);
+            try {
+                const batch = files.slice(i, i + batchSize);
+                const batchedIds = batch.filter((value) => !existsSync(value.filePath)).map(e => e.id);
+                await this.repository.updateInIds(batchedIds, { hasFile: false });
+                ids.push(...batchedIds);
+            } catch (error) {
+                if (error instanceof Error) {
+                    Logger.error(error.message);
+                } else {
+                    Logger.error("Unknown error");
+                }
+            }
         }
 
-        await this.repository.updateInIds(ids, { hasFile: false });
         return {
             total: files.length,
             match: files.length - ids.length,
