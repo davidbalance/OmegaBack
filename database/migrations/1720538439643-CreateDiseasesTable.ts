@@ -1,6 +1,7 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
+import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from "typeorm";
 
 const TABLE_NAME: string = 'tbl_d_diseases';
+const INDEX_UNIQUE_GROUP_NAME: string = 'idx_unq_group_name';
 
 const FK_DISEASE_GROUPS_DISEASE: TableForeignKey = new TableForeignKey({
     name: 'fk_disease_group_disease',
@@ -22,9 +23,7 @@ export class CreateDiseasesTable1720538439643 implements MigrationInterface {
                     {
                         name: 'disease_name',
                         type: 'varchar',
-                        length: '128',
-                        isNullable: false,
-                        isUnique: true,
+                        length: '128'
                     },
                     {
                         name: 'disease_status',
@@ -41,6 +40,12 @@ export class CreateDiseasesTable1720538439643 implements MigrationInterface {
             }),
             true,
         );
+
+        await queryRunner.createIndex(TABLE_NAME, new TableIndex({
+            name: INDEX_UNIQUE_GROUP_NAME,
+            columnNames: ['disease_group_id', 'disease_name'],
+            isUnique: true
+        }));
 
         await queryRunner.createForeignKey(TABLE_NAME, FK_DISEASE_GROUPS_DISEASE);
     }

@@ -22,8 +22,7 @@ export class CreateLabExamsTable1720538889482 implements MigrationInterface {
                     {
                         name: 'exam_name',
                         type: 'varchar',
-                        length: '256',
-                        isUnique: true
+                        length: '256'
                     },
                     {
                         name: 'external_key',
