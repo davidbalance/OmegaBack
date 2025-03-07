@@ -1,1 +1,0 @@
-export const NEST_UUID = 'nest-uuid';

@@ -1,4 +1,0 @@
-import { UserRequestDto } from "@/user/user/dtos/request/user.base.dto";
-import { OmitType } from "@nestjs/mapped-types";
-
-export class DoctorRequestDto extends OmitType(UserRequestDto, ['role']) { }
