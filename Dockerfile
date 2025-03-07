@@ -46,6 +46,7 @@ COPY --from=builder --chown=node:node /usr/src/app/package*.json ./
 COPY --from=builder --chown=node:node /usr/src/app/node_modules ./node_modules/
 COPY --from=builder --chown=node:node /usr/src/app/dist ./dist/
 COPY --from=builder --chown=node:node /usr/src/app/static ./static/
+COPY --from=builder --chown=node:node /usr/src/app/prisma ./prisma/
 
 # Default command to run the app
 CMD ["node", "dist/main.js"]
