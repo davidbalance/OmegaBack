@@ -2,7 +2,7 @@
 FROM node:23-alpine AS builder
 
 # Install dependencies for building
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat bash
 
 WORKDIR /usr/src/app
 
@@ -25,7 +25,7 @@ RUN npx prisma generate && npm run build && npm prune --omit=dev
 FROM node:23-alpine AS production
 
 # Install dependencies needed for runtime
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat bash
 
 WORKDIR /usr/src/app
 
