@@ -1,0 +1,44 @@
+import { ClientAreaModel } from "@omega/medical/core/model/client/client-area.model";
+import { ClientDoctorModel } from "@omega/medical/core/model/client/client-doctor.model";
+import { ClientEmailModel } from "@omega/medical/core/model/client/client-email.model";
+import { ClientJobPositionModel } from "@omega/medical/core/model/client/client-job-position.model";
+import { ClientManagementModel } from "@omega/medical/core/model/client/client-management.model";
+import { ClientRecordModel } from "@omega/medical/core/model/client/client-record.model";
+import { ClientModel } from "@omega/medical/core/model/client/client.model";
+import { OrderChecklistModel } from "@omega/medical/core/model/order/order-checklist.model";
+import { OrderCloudFileModel } from "@omega/medical/core/model/order/order-cloud-file.model";
+import { OrderDoctorModel } from "@omega/medical/core/model/order/order-doctor.model";
+import { OrderPatientModel } from "@omega/medical/core/model/order/order-patient.model";
+import { OrderProcessModel } from "@omega/medical/core/model/order/order-process.model";
+import { OrderYearModel } from "@omega/medical/core/model/order/order-year.model";
+import { OrderModel } from "@omega/medical/core/model/order/order.model";
+import { DiseaseReportModel } from "@omega/medical/core/model/test/disease-report.model";
+import { ReportModel } from "@omega/medical/core/model/test/report.model";
+import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
+import { TestReportModel } from "@omega/medical/core/model/test/test-report.model";
+import { TestModel } from "@omega/medical/core/model/test/test.model";
+import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_result.model";
+import { CountRepository, ModelRepository } from "@shared/shared/providers";
+
+export type ClientAreaRepository = ModelRepository<ClientAreaModel>;
+export type ClientDoctorRepository = ModelRepository<ClientDoctorModel> & CountRepository<ClientDoctorModel>;
+export type ClientEmailRepository = ModelRepository<ClientEmailModel>;
+export type ClientJobPositionRepository = ModelRepository<ClientJobPositionModel>;
+export type ClientManagementRepository = ModelRepository<ClientManagementModel>;
+export type ClientRepository = ModelRepository<ClientModel> & CountRepository<ClientModel>;
+export type ClientRecordRepository = ModelRepository<ClientRecordModel>;
+
+export type OrderChecklistRepository = ModelRepository<OrderChecklistModel>;
+export type OrderCloudFileRepository = ModelRepository<OrderCloudFileModel>;
+export type OrderDoctorRepository = ModelRepository<OrderDoctorModel> & CountRepository<OrderDoctorModel>;
+export type OrderPatientRepository = ModelRepository<OrderPatientModel> & CountRepository<OrderPatientModel>;
+export type OrderProcessRepository = ModelRepository<OrderProcessModel>;
+export type OrderYearRepository = ModelRepository<OrderYearModel>;
+export type OrderRepository = ModelRepository<OrderModel> & CountRepository<OrderModel>;
+
+export type DiseaseReportRepository = ModelRepository<DiseaseReportModel>;
+export type ReportRepository = ModelRepository<ReportModel>;
+export type ResultFilepathRepository = ModelRepository<ResultFilepathModel>;
+export type TestReportRepository = ModelRepository<TestReportModel>;
+export type TestRepository = ModelRepository<TestModel>;
+export type TestFileResultRepository = ModelRepository<TestFileResultModel> & CountRepository<TestFileResultModel>;

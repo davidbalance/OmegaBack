@@ -6,25 +6,85 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "target": "ES2021",
     "sourceMap": true,
-    "esModuleInterop": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "paths": {
-      "@/": [
-        "./src/"
-      ],
-      "@/*": [
-        "./src/*"
-      ],
-    },
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
+    "esModuleInterop": true,
     "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@db-logger/db-logger": [
+        "libs/db-logger/src"
+      ],
+      "@db-logger/db-logger/*": [
+        "libs/db-logger/src/*"
+      ],
+      "@email/local-email": [
+        "libs/local-email/src"
+      ],
+      "@email/local-email/*": [
+        "libs/local-email/src/*"
+      ],
+      "@html-loader/html-loader": [
+        "libs/html-loader/src"
+      ],
+      "@html-loader/html-loader/*": [
+        "libs/html-loader/src/*"
+      ],
+      "@local-hash/local-hash": [
+        "libs/local-hash/src"
+      ],
+      "@local-hash/local-hash/*": [
+        "libs/local-hash/src/*"
+      ],
+      "@local-jwt/local-jwt": [
+        "libs/local-jwt/src"
+      ],
+      "@local-jwt/local-jwt/*": [
+        "libs/local-jwt/src/*"
+      ],
+      "@local-pdf/local-pdf": [
+        "libs/local-pdf/src"
+      ],
+      "@local-pdf/local-pdf/*": [
+        "libs/local-pdf/src/*"
+      ],
+      "@local-zip/local-zip": [
+        "libs/local-zip/src"
+      ],
+      "@local-zip/local-zip/*": [
+        "libs/local-zip/src/*"
+      ],
+      "@omega": [
+        "src"
+      ],
+      "@omega/*": [
+        "src/*"
+      ],
+      "@shared/shared": [
+        "libs/shared/src"
+      ],
+      "@shared/shared/*": [
+        "libs/shared/src/*"
+      ],
+      "local-file/local-file": [
+        "libs/local-file/src"
+      ],
+      "local-file/local-file/*": [
+        "libs/local-file/src/*"
+      ],
+      "local-spreadsheet/local-spreadsheet": [
+        "libs/local-spreadsheet/src"
+      ],
+      "local-spreadsheet/local-spreadsheet/*": [
+        "libs/local-spreadsheet/src/*"
+      ]
+    }
   }
 }

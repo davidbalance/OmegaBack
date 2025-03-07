@@ -11,6 +11,23 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "^@/(.*)$": "<rootDir>/../src/$1"
+    "@db-logger/db-logger": "<rootDir>/../libs/db-logger/src",
+    "@db-logger/db-logger/(.*)": "<rootDir>/../libs/db-logger/src/$1",
+    "@html-loader/html-loader": "<rootDir>/../libs/html-loader/src",
+    "@html-loader/html-loader/(.*)": "<rootDir>/../libs/html-loader/src/$1",
+    "@local-hash/local-hash": "<rootDir>/../libs/local-hash/src",
+    "@local-hash/local-hash/(.*)": "<rootDir>/../libs/local-hash/src/$1",
+    "@local-jwt/local-jwt": "<rootDir>/../libs/local-jwt/src",
+    "@local-jwt/local-jwt/(.*)": "<rootDir>/../libs/local-jwt/src/$1",
+    "@local-pdf/local-pdf": "<rootDir>/../libs/local-pdf/src",
+    "@local-pdf/local-pdf/(.*)": "<rootDir>/../libs/local-pdf/src/$1",
+    "@local-zip/local-zip": "<rootDir>/../libs/local-zip/src",
+    "@local-zip/local-zip/(.*)": "<rootDir>/../libs/local-zip/src/$1",
+    "@shared/shared": "<rootDir>/../libs/shared/src",
+    "@shared/shared/(.*)": "<rootDir>/../libs/shared/src/$1",
+    "local-file/local-file": "<rootDir>/../libs/local-file/src",
+    "local-file/local-file/(.*)": "<rootDir>/../libs/local-file/src/$1",
+    "local-spreadsheet/local-spreadsheet": "<rootDir>/../libs/local-spreadsheet/src",
+    "local-spreadsheet/local-spreadsheet/(.*)": "<rootDir>/../libs/local-spreadsheet/src/$1"
   }
 }
