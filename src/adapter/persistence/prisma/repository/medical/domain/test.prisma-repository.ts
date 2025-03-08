@@ -25,16 +25,6 @@ export class TestPrismaRepository implements TestRepository {
         @Inject(PrismaService) private readonly prisma: PrismaService
     ) { }
 
-    async batchAsync(event: DomainEvent<unknown>) {
-        if (ResultIsEvent.isResultFileRemoveBatchEvent(event))
-            await this.batchRemoveResult(event.value);
-    }
-
-    private async batchRemoveResult(event: ResultFileRemoveBatchEventPayload): Promise<void> {
-        console.log(event.testIds.length);
-        await this.prisma.medicalResult.updateMany({ where: { testId: { in: event.testIds } }, data: { hasFile: false } });
-    }
-
     async findOneAsync(filter: SearchCriteria<TestProps>): Promise<Test | null> {
         try {
             const where = PrismaFilterMapper.map<TestProps, Prisma.MedicalTestWhereInput>(filter.filter);
