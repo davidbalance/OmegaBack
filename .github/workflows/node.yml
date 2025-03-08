@@ -59,14 +59,14 @@ jobs:
       - name: Check Repository
         uses: actions/checkout@v4
 
-      - name: SSH into server and backup database
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            docker exec ${{ secrets.MYSQL_CONTAINER_NAME }} bash -c "mysqldump --no-create-info -u ${{ secrets.MYSQL_USER }} -p${{ secrets.MYSQL_PASSWORD }} ${{ secrets.MYSQL_DATABASE }} > /backup/backup_$(date +%F_%T).sql"
+      # - name: SSH into server and backup database
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.SERVER_HOST }}
+      #     username: ${{ secrets.SERVER_USERNAME }}
+      #     password: ${{ secrets.SERVER_PASSWORD }}
+      #     script: |
+      #       docker exec ${{ secrets.MYSQL_CONTAINER_NAME }} bash -c "mysqldump --no-create-info -u ${{ secrets.MYSQL_USER }} -p${{ secrets.MYSQL_PASSWORD }} ${{ secrets.MYSQL_DATABASE }} > /backup/backup_$(date +%F_%T).sql"
 
       - name: SSH into server and deploy application
         uses: appleboy/ssh-action@master
