@@ -27,7 +27,7 @@ export class TestCheckFileCommand implements CommandHandlerAsync<undefined, void
                 try {
                     await this.file.handleAsync({ testId: value.testId });
                 } catch (error) {
-                    console.error(`Error handling file for testId ${value.testId}:`);
+                    console.error(`Iteration: ${i.toString().padStart(6, ' ')} - Error handling file for testId: ${value.testId}`);
                 }
             });
 

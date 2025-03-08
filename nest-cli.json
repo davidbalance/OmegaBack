@@ -19,6 +19,15 @@
         "tsConfigPath": "libs/db-logger/tsconfig.lib.json"
       }
     },
+    "heart-beat": {
+      "type": "library",
+      "root": "libs/heart-beat",
+      "entryFile": "index",
+      "sourceRoot": "libs/heart-beat/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/heart-beat/tsconfig.lib.json"
+      }
+    },
     "html-loader": {
       "type": "library",
       "root": "libs/html-loader",

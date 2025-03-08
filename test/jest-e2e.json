@@ -13,6 +13,8 @@
   "moduleNameMapper": {
     "@db-logger/db-logger": "<rootDir>/../libs/db-logger/src",
     "@db-logger/db-logger/(.*)": "<rootDir>/../libs/db-logger/src/$1",
+    "@heart-beat/heart-beat": "<rootDir>/../libs/heart-beat/src",
+    "@heart-beat/heart-beat/(.*)": "<rootDir>/../libs/heart-beat/src/$1",
     "@html-loader/html-loader": "<rootDir>/../libs/html-loader/src",
     "@html-loader/html-loader/(.*)": "<rootDir>/../libs/html-loader/src/$1",
     "@local-hash/local-hash": "<rootDir>/../libs/local-hash/src",

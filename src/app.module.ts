@@ -13,6 +13,7 @@ import serverSchema from './_setup/config/server.schema';
 import { ZodValidatorFactory } from '@shared/shared/nest/factories';
 import { AttributeProxyModule } from './adapter/proxy/attribute_proxy/attribute_proxy.module';
 import { WinstonModule } from '@db-logger/db-logger';
+import { HeartBeatModule } from '@heart-beat/heart-beat';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { WinstonModule } from '@db-logger/db-logger';
     }),
     PrismaModule,
     WinstonModule,
+    HeartBeatModule,
     AuthProxyModule,
     AttributeProxyModule,
     AuthModule,

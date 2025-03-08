@@ -31,6 +31,12 @@
       "@email/local-email/*": [
         "libs/local-email/src/*"
       ],
+      "@heart-beat/heart-beat": [
+        "libs/heart-beat/src"
+      ],
+      "@heart-beat/heart-beat/*": [
+        "libs/heart-beat/src/*"
+      ],
       "@html-loader/html-loader": [
         "libs/html-loader/src"
       ],
