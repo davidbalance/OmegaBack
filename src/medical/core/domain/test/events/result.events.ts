@@ -5,6 +5,7 @@ const ResultEventKeys = {
     Created: "result.created",
     FileAdded: "result.fileAdded",
     FileRemoved: "result.fileRemoved",
+    BatchFileRemoved: "result.batchFileRemoved",
 };
 
 export class ResultIsEvent {
@@ -18,6 +19,10 @@ export class ResultIsEvent {
 
     public static isResultFileRemovedEvent(event: DomainEvent<unknown>): event is ResultFileRemovedEvent {
         return event.key === ResultEventKeys.FileRemoved;
+    }
+
+    public static isResultFileRemoveBatchEvent(event: DomainEvent<unknown>): event is ResultFileRemoveBatchEvent {
+        return event.key === ResultEventKeys.BatchFileRemoved;
     }
 }
 
@@ -43,5 +48,14 @@ export type ResultFileRemovedEventPayload = {
 export class ResultFileRemovedEvent extends DomainEvent<ResultFileRemovedEventPayload> {
     constructor(resultId: string) {
         super({ key: ResultEventKeys.FileRemoved, value: { resultId } });
+    }
+}
+
+export type ResultFileRemoveBatchEventPayload = {
+    testIds: string[];
+}
+export class ResultFileRemoveBatchEvent extends DomainEvent<ResultFileRemoveBatchEventPayload> {
+    constructor(testIds: string[]) {
+        super({ key: ResultEventKeys.BatchFileRemoved, value: { testIds } });
     }
 }

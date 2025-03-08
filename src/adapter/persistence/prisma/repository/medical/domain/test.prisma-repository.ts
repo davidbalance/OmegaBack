@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger, Provider } from "@nestjs/common";
 import { PrismaService } from "../../../prisma.service";
-import { AggregateEvent, SearchCriteria } from "@shared/shared/domain";
+import { AggregateEvent, DomainEvent, SearchCriteria } from "@shared/shared/domain";
 import { PrismaFilterMapper } from "../../../filter-mapper";
 import { Prisma } from "@prisma/client";
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
@@ -9,7 +9,7 @@ import { TestDomainMapper } from "../../../mapper/medical/domain/test.domain-map
 import { TestCheckedEventPayload, TestDiseaseRemovedEventPayload, TestExamChangedEventPayload, TestIsEvent, TestUncheckedEventPayload } from "@omega/medical/core/domain/test/events/test.events";
 import { DiseaseReport } from "@omega/medical/core/domain/test/disease_report.domain";
 import { DiseaseReportDomainMapper } from "../../../mapper/medical/domain/disease_report.domain-mapper";
-import { ResultFileAddedEventPayload, ResultFileRemovedEventPayload, ResultIsEvent } from "@omega/medical/core/domain/test/events/result.events";
+import { ResultFileAddedEventPayload, ResultFileRemoveBatchEventPayload, ResultFileRemovedEventPayload, ResultIsEvent } from "@omega/medical/core/domain/test/events/result.events";
 import { ResultDomainMapper } from "../../../mapper/medical/domain/result.domain-mapper";
 import { Result } from "@omega/medical/core/domain/test/result.domain";
 import { Report } from "@omega/medical/core/domain/test/report.domain";
@@ -24,6 +24,15 @@ export class TestPrismaRepository implements TestRepository {
     constructor(
         @Inject(PrismaService) private readonly prisma: PrismaService
     ) { }
+
+    async batchAsync(event: DomainEvent<unknown>) {
+        if (ResultIsEvent.isResultFileRemoveBatchEvent(event))
+            await this.batchRemoveResult(event.value);
+    }
+
+    private async batchRemoveResult(event: ResultFileRemoveBatchEventPayload): Promise<void> {
+        await this.prisma.medicalResult.updateMany({ where: { testId: { in: event.testIds } }, data: { hasFile: false } });
+    }
 
     async findOneAsync(filter: SearchCriteria<TestProps>): Promise<Test | null> {
         try {
