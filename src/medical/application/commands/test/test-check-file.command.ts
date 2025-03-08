@@ -11,7 +11,7 @@ export class TestCheckFileCommand implements CommandHandlerAsync<undefined, void
     ) { }
 
     async handleAsync(): Promise<void> {
-        const take: number = 1000;
+        const take: number = 100;
         const filter: (FilterGroup<TestFileResultModel> | Filter<TestFileResultModel>)[] = [{ field: 'resultHasFile', operator: 'eq', value: true }];
 
         const totalCount = await this.model.countAsync(filter);
