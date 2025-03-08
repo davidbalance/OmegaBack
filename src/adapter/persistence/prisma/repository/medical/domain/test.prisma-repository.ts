@@ -31,6 +31,7 @@ export class TestPrismaRepository implements TestRepository {
     }
 
     private async batchRemoveResult(event: ResultFileRemoveBatchEventPayload): Promise<void> {
+        console.log(event.testIds.length);
         await this.prisma.medicalResult.updateMany({ where: { testId: { in: event.testIds } }, data: { hasFile: false } });
     }
 

@@ -29,7 +29,12 @@ export class TestFileResultPrismaRepository implements TestFileResultRepository 
     async findManyAsync(filter: SearchCriteria<TestFileResultModel>): Promise<TestFileResultModel[]> {
         try {
             const where = PrismaFilterMapper.map<TestFileResultModel, Prisma.TestFileResultModelWhereInput>(filter.filter);
-            const values = await this.prisma.testFileResultModel.findMany({ where });
+            const values = await this.prisma.testFileResultModel.findMany({
+                where,
+                orderBy: filter.order,
+                skip: filter.skip,
+                take: filter.limit
+            });
             return values.map(e => TestFileResultModelMapper.toModel(e));
         } catch (error) {
             Logger.error(error);
