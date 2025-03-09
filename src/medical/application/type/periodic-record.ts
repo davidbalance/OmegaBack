@@ -1,80 +1,51 @@
-import {
-    BiologicalRisk,
-    ChemicalRisk,
-    CompanyRecord,
-    ErgonomicRisk,
-    FamilyHistory,
-    GeneralExamResult,
-    JobAccident,
-    LifeStyle,
-    MechanicalRisk,
-    MedicalConsultation,
-    MedicalDiagnostic,
-    MedicalFitnessForJob,
-    MedicalRecommendation,
-    OccupationalDisease,
-    PatientRecord,
-    PhysicalRegionalExam,
-    PhysicalRisk,
-    PsychosocialRisk,
-    RecordType,
-    ReviewOfOrgansAndSystem,
-    ToxicHabit,
-    VitalSignsAndAnthropometry
-} from "./record.type";
+import { BiologicalRisk, ChemicalRisk, CompanyRecord, ErgonomicRisk, FamilyHistory, GeneralExam, JobAccident, LifeStyle, MechanicalRisk, MedicalDiagnostic, MedicalFitnessForJob, OccupationalDisease, PatientRecord, PhysicalRegionalExam, PhysicalRisk, PsychosocialRisk, RecordType, ReviewOfOrgansAndSystem, ToxicDetail, VitalSignsAndAnthropometry } from "./record.type";
 
-type CompanyAndPatientData = {
-    company: CompanyRecord;
-    patient: PatientRecord;
-    jobPosition: string;
-}
-
-type PatientHistory = {
-    medicalAndSurgicalHistory: { description: string; };
-    toxicHabits: ToxicHabit;
-    lifeStyle: LifeStyle;
-    incidents: { description: string; };
-    jobAccident: JobAccident;
-    occupationalDisease: OccupationalDisease;
-}
-
-type JobPositionRisk = {
-    jobPosition: string;
+export type JobRisk = {
+    name: string;
     activity: string;
     months: number;
-    physical: Record<PhysicalRisk, boolean> | { 'other': string };
-    mechanic: Record<MechanicalRisk, boolean> | { 'other': string };
-    chemical: Record<ChemicalRisk, boolean> | { 'other': string };
-    biological: Record<BiologicalRisk, boolean> | { 'other': string };
-    ergonomic: Record<ErgonomicRisk, boolean> | { 'other': string };
+    physical: Record<PhysicalRisk, boolean> | { other: string };
+    mechanic: Record<MechanicalRisk, boolean> | { other: string };
+    chemical: Record<ChemicalRisk, boolean> | { other: string };
+    biological: Record<BiologicalRisk, boolean> | { other: string };
+    ergonomic: Record<ErgonomicRisk, boolean> | { other: string };
 }
 
-type JobPositionRiskWithPreventiveMeasure = {
-    jobPosition: string;
+export type JobRiskWithPreventiveMeasure = {
+    name: string;
     activity: string;
     months: number;
-    phychosocial: Record<PsychosocialRisk, boolean> | { 'other': string };
+    psychosocial: Record<PsychosocialRisk, boolean> | { other: string };
     preventiveMeasure: string;
 }
 
-export type PeriodicRecord = RecordType<'periodico'> & {
-    institution: CompanyAndPatientData;
-    medicalConsultation: MedicalConsultation;
-    patientHistory: PatientHistory;
-    familyHistory: FamilyHistory;
-    jobPositionRisk: {
-        risks: JobPositionRisk[];
-        riskWithPreventiveMeasure: JobPositionRiskWithPreventiveMeasure[];
-    };
-    currentDisease: { description: string; };
-    reviewOfOrganAndSystems: ReviewOfOrgansAndSystem;
-    vitalSignsAndAnthropometry: VitalSignsAndAnthropometry;
-    physicalRegionalExam: PhysicalRegionalExam;
-    generalExamResult: {
-        results: GeneralExamResult[];
-        observation: string;
+export type PeriodicRecord = RecordType<'periodico'> & CompanyRecord & PatientRecord & LifeStyle &
+    JobAccident & OccupationalDisease & GeneralExam & FamilyHistory & ReviewOfOrgansAndSystem & VitalSignsAndAnthropometry &
+    PhysicalRegionalExam & MedicalFitnessForJob & {
+        /** Institution & Patient Information */
+        institutionHealthFacility: string;
+        jobPosition: string;
+
+        /** Medical Consultation */
+        medicalConsultationDescription: string;
+
+        /** Patient History */
+        medicalAndSurgicalHistory: string;
+        toxicHabitTobacco?: ToxicDetail;
+        toxicHabitAlcohol?: ToxicDetail;
+        toxicHabitOther?: ToxicDetail;
+        incidentDescription: string;
+
+        /** Job Position Risks */
+        jobRisks: JobRisk[];
+        jobRiskWithPreventiveMeasure: JobRiskWithPreventiveMeasure[];
+
+        /** Extra Activities & Diseases */
+        currentDiseaseDescription: string;
+
+        /** Diagnostics */
+        diagnostics: MedicalDiagnostic[];
+
+        /** Medical Recommendations */
+        recommendationDescription: string;
     }
-    diagnostics: MedicalDiagnostic[];
-    medicalFitnessForJob: MedicalFitnessForJob;
-    recommendation: MedicalRecommendation;
-}

@@ -46,7 +46,7 @@ export class TestWriteController {
         await this.testCreateCommand.handleAsync(body);
         return "ok";
     }
-     
+
     @Post("file/check")
     async checkTestFile(): Promise<string> {
         await this.testCheckFileCommand.handleAsync();

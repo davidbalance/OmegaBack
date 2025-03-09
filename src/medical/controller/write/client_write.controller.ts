@@ -10,6 +10,12 @@ import { ClientAddAreaRequestDto, ClientAddJobPositionRequestDto, ClientAddManag
 import { EmailCreateCommand } from "@omega/medical/application/commands/client/email-create.command";
 import { EmailDefaultCommand } from "@omega/medical/application/commands/client/email-default.command";
 import { EmailRemoveCommand } from "@omega/medical/application/commands/client/email-remove.command";
+import { ClientAddRecordCommand } from "@omega/medical/application/commands/client/client-add-record.command";
+import { InitialRecordRequestDto } from "../dto/request/record/initial-record.dto";
+import { PeriodicRecordRequestDto } from "../dto/request/record/periodic-record.dto";
+import { ReintegrateRecordRequestDto } from "../dto/request/record/reintegrate-record.dto";
+import { RetirementRecordRequestDto } from "../dto/request/record/retirement-record.dto";
+import { CertficateRecordRequestDto } from "../dto/request/record/certificate-record.dto";
 
 @ApiTags('Medical', 'Write')
 @ApiBearerAuth()
@@ -24,6 +30,7 @@ export class ClientWriteController {
         @InjectCommand('EmailCreate') private readonly emailCreateCommand: EmailCreateCommand,
         @InjectCommand('EmailDefault') private readonly emailDefaultCommand: EmailDefaultCommand,
         @InjectCommand('EmailRemove') private readonly emailRemoveCommand: EmailRemoveCommand,
+        @InjectCommand('ClientAddRecord') private readonly addRecordCommand: ClientAddRecordCommand,
     ) { }
 
     @Post()
@@ -93,6 +100,52 @@ export class ClientWriteController {
         @Param('emailId') emailId: string,
     ): Promise<string> {
         await this.emailRemoveCommand.handleAsync({ patientDni, emailId });
+        return "ok";
+    }
+
+
+    @Post(':patientDni/record/inital')
+    async addRecordInitial(
+        @Param('patientDni') patientDni: string,
+        @Body() body: InitialRecordRequestDto,
+    ): Promise<string> {
+        await this.addRecordCommand.handleAsync({ type: 'initial', patientDni, ...body });
+        return "ok";
+    }
+
+    @Post(':patientDni/record/periodic')
+    async addRecordPeriodic(
+        @Param('patientDni') patientDni: string,
+        @Body() body: PeriodicRecordRequestDto,
+    ): Promise<string> {
+        await this.addRecordCommand.handleAsync({ type: 'periodico', patientDni, ...body });
+        return "ok";
+    }
+
+    @Post(':patientDni/record/reintegrate')
+    async addRecordReintegrate(
+        @Param('patientDni') patientDni: string,
+        @Body() body: ReintegrateRecordRequestDto,
+    ): Promise<string> {
+        await this.addRecordCommand.handleAsync({ type: 'reintegrar', patientDni, ...body });
+        return "ok";
+    }
+
+    @Post(':patientDni/record/retirement')
+    async addRecordRetirement(
+        @Param('patientDni') patientDni: string,
+        @Body() body: RetirementRecordRequestDto,
+    ): Promise<string> {
+        await this.addRecordCommand.handleAsync({ type: 'retiro', patientDni, ...body });
+        return "ok";
+    }
+
+    @Post(':patientDni/record/certificate')
+    async addRecordCertificate(
+        @Param('patientDni') patientDni: string,
+        @Body() body: CertficateRecordRequestDto,
+    ): Promise<string> {
+        await this.addRecordCommand.handleAsync({ type: 'certificado', patientDni, ...body });
         return "ok";
     }
 }

@@ -1,40 +1,32 @@
-import { CompanyRecord, GeneralExamResult, JobAccident, MedicalConsultation, MedicalDiagnostic, MedicalRecommendation, OccupationalDisease, PatientRecord, PhysicalRegionalExam, RecordType, VitalSignsAndAnthropometry } from "./record.type";
+import { CompanyRecord, GeneralExam, JobAccident, MedicalDiagnostic, OccupationalDisease, PatientRecord, PhysicalRegionalExam, RecordType, VitalSignsAndAnthropometry } from "./record.type";
 
-type CompanyAndPatientData = {
-    company: CompanyRecord;
-    healthFacility: string;
-    patient: PatientRecord;
-    workStartDate: Date;
-    endDate: Date;
-    time: number;
-    jobPosition: string;
-    activities: { activity: string; risk: string; }[];
+export type InstitutionActivity = {
+    activity: string;
+    risk: string;
 }
 
-type PatientHistory = {
-    medicalAndSurgicalHistory: { description: string; };
-    jobAccident: JobAccident;
-    occupationalDisease: OccupationalDisease;
+export type RetirementEvaluation = {
+    retirementDone: boolean;
+    retirementobservation: string;
 }
 
-type MedicalRetirementEvaluation = {
-    done: boolean;
-    observation: string;
-}
+export type RetirementRecord = RecordType<'retiro'> & PatientRecord & CompanyRecord &
+    JobAccident & OccupationalDisease & GeneralExam & VitalSignsAndAnthropometry & PhysicalRegionalExam &
+    RetirementEvaluation & {
+        /** Institution & Patient Information */
+        institutionHealthFacility: string;
+        institutionActivities: InstitutionActivity[];
+        workStartDate: Date;
+        workingTime: number;
+        workingEndDate: Date;
+        jobPosition: string;
 
-export type RetirementRecord = RecordType<'retirement'> & {
-    institution: CompanyAndPatientData;
-    medicalConsultation: MedicalConsultation;
-    patientHistory: PatientHistory;
-    vitalSignsAndAnthropometry: VitalSignsAndAnthropometry;
-    physicalRegionalExam: PhysicalRegionalExam & {
-        observation: string;
-    };
-    generalExamResult: {
-        results: GeneralExamResult[];
-        observation: string;
+        /** Medical Consultation */
+        medicalAndSurgicalHistory: string;
+
+        /** Diagnostics */
+        diagnostics: MedicalDiagnostic[];
+
+        /** Medical Recommendations */
+        recommendationDescription: string;
     }
-    diagnostics: MedicalDiagnostic[];
-    medicalEvaluation: MedicalRetirementEvaluation;
-    recommendation: MedicalRecommendation;
-}

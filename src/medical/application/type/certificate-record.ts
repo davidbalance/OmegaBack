@@ -1,27 +1,23 @@
-import { CompanyRecord, MedicalFitnessForJob, MedicalRecommendation, PatientRecord, RecordType } from "./record.type";
+import { CompanyRecord, MedicalFitnessForJob, PatientRecord, RecordType } from "./record.type";
 
+type GeneralData = 'entry' | 'periodic' | 'reintegrate' | 'retirement'
+type DiagnosticCondition = 'presumptive' | 'definitive' | 'no-apply';
+type RetirementHealth = 'yes' | 'no' | 'no-apply';
 
-type CompanyAndPatientData = {
-    company: CompanyRecord;
-    healthFacility: string;
-    patient: PatientRecord;
-    jobPosition: string;
-}
+export type CertficateRecord = RecordType<'certificado'> & PatientRecord & CompanyRecord
+    & MedicalFitnessForJob & {
+        /** Institution & Patient Information */
+        institutionHealthFacility: string;
+        jobPosition?: string;
 
-type GeneralData = {
-    evaluation: 'entry' | 'periodic' | 'reintegrate' | 'retirement';
-}
+        /** General data */
+        generalDataEvaluation: GeneralData;
 
-type MedicalRetirementEvaluation = {
-    evaluationHasDone: boolean;
-    diagnosticCondition: 'presumptive' | 'definitive' | 'no-apply';
-    jobHealth: 'yes' | 'no' | 'no-apply';
-}
+        /** Medical Retirement Evaluation */
+        retirementEvaluationDone: boolean;
+        retirementDiagnosticCondition: DiagnosticCondition;
+        retirementHealth: RetirementHealth;
 
-export type CertficateRecord = RecordType<'certificado'> & {
-    institution: CompanyAndPatientData;
-    generalData: GeneralData;
-    medicalFitnessForJob: MedicalFitnessForJob;
-    retirementEvaluation: MedicalRetirementEvaluation;
-    recommendation: MedicalRecommendation;
-}
+        /** Medical Recommendations */
+        recommendationDescription: string;
+    }
