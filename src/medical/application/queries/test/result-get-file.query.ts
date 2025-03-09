@@ -1,7 +1,7 @@
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { FileOperation } from "@shared/shared/providers";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
-import { ResultFilepathRepository } from "../../repository/model.repositories";
+import { TestFileResultRepository } from "../../repository/model.repositories";
 import { TestRepository } from "../../repository/aggregate.repositories";
 
 export type ResultGetFileQueryPayload = {
@@ -10,16 +10,17 @@ export type ResultGetFileQueryPayload = {
 export class ResultGetFileQuery implements QueryHandlerAsync<ResultGetFileQueryPayload, Buffer> {
     constructor(
         private readonly file: FileOperation,
-        private readonly repository: ResultFilepathRepository,
+        private readonly repository: TestFileResultRepository,
         private readonly result: TestRepository
     ) { }
 
     async handleAsync(query: ResultGetFileQueryPayload): Promise<Buffer> {
-        const filepath = await this.repository.findOneAsync([{ field: 'testId', operator: 'eq', value: query.testId }]);
-        if (!filepath) throw new TestNotFoundError(query.testId);
+        const test = await this.repository.findOneAsync([{ field: 'testId', operator: 'eq', value: query.testId }]);
+        if (!test) throw new TestNotFoundError(query.testId);
+        if (!test.resultHasFile) throw new TestNotFoundError(query.testId);
 
         try {
-            const buffer = await this.file.read(filepath.path);
+            const buffer = await this.file.read(test.resultFilepath);
             return buffer;
         } catch (error) {
             const value = await this.result.findOneAsync({ filter: [{ field: 'id', operator: 'eq', value: query.testId }] });

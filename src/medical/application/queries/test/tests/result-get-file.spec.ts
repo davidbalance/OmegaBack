@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
-import { ResultFilepathRepository } from "@omega/medical/application/repository/model.repositories";
+import { ResultFilepathRepository, TestFileResultRepository } from "@omega/medical/application/repository/model.repositories";
 import { FileOperation } from "@shared/shared/providers";
 import { ResultGetFileQuery, ResultGetFileQueryPayload } from "../result-get-file.query";
 import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
+import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_result.model";
 
 describe('ResultGetFileQuery', () => {
     let file: jest.Mocked<FileOperation>;
-    let repository: jest.Mocked<ResultFilepathRepository>;
+    let repository: jest.Mocked<TestFileResultRepository>;
     let result: jest.Mocked<TestRepository>;
     let queryHandler: ResultGetFileQuery;
 
@@ -20,7 +21,7 @@ describe('ResultGetFileQuery', () => {
 
         repository = {
             findOneAsync: jest.fn(),
-        } as unknown as jest.Mocked<ResultFilepathRepository>;
+        } as unknown as jest.Mocked<TestFileResultRepository>;
 
         result = {
             findOneAsync: jest.fn(),
@@ -33,20 +34,22 @@ describe('ResultGetFileQuery', () => {
     it('should return file buffer when filepath exists and file is readable', async () => {
         const queryPayload: ResultGetFileQueryPayload = { testId: 'test-id' };
 
-        const mockFilepath = { path: 'path/to/result-file.pdf' } as unknown as ResultFilepathModel;
+        const mockTest: TestFileResultModel = {
+            resultHasFile: true, resultFilepath: '/path/to/file.pdf'
+        } as unknown as TestFileResultModel;
         const mockFileBuffer = Buffer.from('file content');
 
-        repository.findOneAsync.mockResolvedValue(mockFilepath);
+        repository.findOneAsync.mockResolvedValue(mockTest);
         file.read.mockResolvedValue(mockFileBuffer);
 
         const resultBuffer = await queryHandler.handleAsync(queryPayload);
 
         expect(repository.findOneAsync).toHaveBeenCalledWith([{ field: 'testId', operator: 'eq', value: queryPayload.testId }]);
-        expect(file.read).toHaveBeenCalledWith(mockFilepath.path);
+        expect(file.read).toHaveBeenCalledWith(mockTest.resultFilepath);
         expect(resultBuffer).toBe(mockFileBuffer);
     });
 
-    it('should throw TestNotFoundError when filepath is not found', async () => {
+    it('should throw TestNotFoundError when test is not found', async () => {
         const queryPayload: ResultGetFileQueryPayload = { testId: 'test-id' };
 
         repository.findOneAsync.mockResolvedValue(null);
@@ -54,12 +57,26 @@ describe('ResultGetFileQuery', () => {
         await expect(queryHandler.handleAsync(queryPayload)).rejects.toThrow(TestNotFoundError);
     });
 
+    it('should throw TestNotFoundError when test do not have a file', async () => {
+        const queryPayload: ResultGetFileQueryPayload = { testId: 'test-id' };
+
+        const mockTest: TestFileResultModel = {
+            resultHasFile: false, resultFilepath: '/path/to/file.pdf'
+        } as unknown as TestFileResultModel;
+
+        repository.findOneAsync.mockResolvedValue(mockTest);
+
+        await expect(queryHandler.handleAsync(queryPayload)).rejects.toThrow(TestNotFoundError);
+    });
+
     it('should remove result from aggregate repository when file read fails and no filepath is available', async () => {
         const queryPayload: ResultGetFileQueryPayload = { testId: 'test-id' };
 
-        const mockFilepath = { path: 'path/to/result-file.pdf' } as unknown as ResultFilepathModel;
+        const mockTestResult: TestFileResultModel = {
+            resultHasFile: true, resultFilepath: '/path/to/file.pdf'
+        } as unknown as TestFileResultModel;
 
-        repository.findOneAsync.mockResolvedValue(mockFilepath);
+        repository.findOneAsync.mockResolvedValue(mockTestResult);
         file.read.mockRejectedValue(new Error('File read error'));
 
         const mockTest = {
@@ -78,9 +95,11 @@ describe('ResultGetFileQuery', () => {
     it('should throw TestNotFoundError when no test is found in aggregate repository after file read fails', async () => {
         const queryPayload: ResultGetFileQueryPayload = { testId: 'test-id' };
 
-        const mockFilepath = { path: 'path/to/result-file.pdf' } as unknown as ResultFilepathModel;
+        const mockTestResult: TestFileResultModel = {
+            resultHasFile: true, resultFilepath: '/path/to/file.pdf'
+        } as unknown as TestFileResultModel;
 
-        repository.findOneAsync.mockResolvedValue(mockFilepath);
+        repository.findOneAsync.mockResolvedValue(mockTestResult);
         file.read.mockRejectedValue(new Error('File read error'));
 
         result.findOneAsync.mockResolvedValue(null);
