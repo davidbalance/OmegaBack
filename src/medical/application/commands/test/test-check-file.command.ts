@@ -12,6 +12,7 @@ export class TestCheckFileCommand implements CommandHandlerAsync<undefined, void
 
     async handleAsync(): Promise<void> {
         const take: number = 100;
+        let skip: number = 0;
         const filter: (FilterGroup<TestFileResultModel> | Filter<TestFileResultModel>)[] = [{ field: 'resultHasFile', operator: 'eq', value: true }];
 
         const totalCount = await this.model.countAsync(filter);
@@ -20,18 +21,21 @@ export class TestCheckFileCommand implements CommandHandlerAsync<undefined, void
             const data = await this.model.findManyAsync({
                 filter: filter,
                 limit: take,
-                skip: i * take
+                skip: 0 + skip
             });
 
             const promises = data.map(async (value) => {
                 try {
                     await this.file.handleAsync({ testId: value.testId });
+                    return 1;
                 } catch (error) {
-                    console.error(`Iteration: ${i.toString().padStart(6, ' ')} - Error handling file for testId: ${value.testId}`);
+                    console.error(`Iteration: ${i.toString().padStart(6, ' ')} - Error handling file for testId: ${value.resultFilepath}`);
+                    return 0;
                 }
             });
 
-            await Promise.all(promises);
+            const values = await Promise.all(promises);
+            skip += values.reduce((prev, curr) => prev + curr, 0);
         }
     }
 }
