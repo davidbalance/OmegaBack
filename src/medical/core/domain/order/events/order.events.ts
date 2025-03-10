@@ -1,6 +1,7 @@
 import { DomainEvent } from "@shared/shared/domain";
 
 const OrderEventKeys = {
+    Removed: "order.removed",
     MailSended: "order.mailSended",
     StatusChangedToCreated: "order.statusChangedToOpen",
     statusChangedToValidated: "order.statusChangedToValidated"
@@ -19,6 +20,9 @@ export class OrderIsEvent {
         return event.key === OrderEventKeys.statusChangedToValidated;
     }
 
+    public static isOrderRemovedEvent(event: DomainEvent<unknown>): event is OrderRemovedEvent {
+        return event.key === OrderEventKeys.Removed;
+    }
 }
 
 export type OrderMailSendedEventPayload = {
@@ -45,5 +49,14 @@ export type OrderStatusChangedToValidatedEventPayload = {
 export class OrderStatusChangedToValidatedEvent extends DomainEvent<OrderStatusChangedToValidatedEventPayload> {
     constructor(orderId: string) {
         super({ key: OrderEventKeys.statusChangedToValidated, value: { orderId } });
+    }
+}
+
+export type OrderRemovedEventPayload = {
+    orderId: string;
+}
+export class OrderRemovedEvent extends DomainEvent<OrderRemovedEventPayload> {
+    constructor(orderId: string) {
+        super({ key: OrderEventKeys.Removed, value: { orderId } });
     }
 }

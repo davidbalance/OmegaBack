@@ -92,7 +92,7 @@ export const checklistLayoutLoader = (data: OrderChecklistModel[], image: string
             },
             {
                 type: 'circle',
-                ul: data.map(e => ({
+                ul: data.filter(e => !e.testCheck).map(e => ({
                     columns: [
                         {
                             text: e.examName

@@ -4,7 +4,7 @@ import { ClientDoctorFindManyQuery } from "@omega/medical/application/queries/cl
 import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { DniInterceptor } from "@shared/shared/nest/interceptors/dni.interceptor";
-import { ClientAreaResponseDto, ClientEmailResponseDto, ClientJobPositionResponseDto, ClientManagementResponseDto, ClientManyResponseDto } from "../dto/response/client.dto";
+import { ClientAreaResponseDto, ClientEmailResponseDto, ClientJobPositionResponseDto, ClientManagementResponseDto, ClientManyResponseDto, ClientResponseDto } from "../dto/response/client.dto";
 import { CurrentUser } from "@shared/shared/nest/decorators/current_user.decorator";
 import { ClientDoctorFindManyQueryDto, ClientFindManyQueryDto } from "../dto/query/client_query.dto";
 import { plainToInstance } from "class-transformer";
@@ -20,6 +20,7 @@ import { ClientFindManyQuery } from "@omega/medical/application/queries/client/c
 import { ClientModelMapper } from "../mapper/client.model_mapper";
 import { AttributeInterceptor } from "@shared/shared/nest/interceptors/attribute.interceptor";
 import { Attribute } from "@shared/shared/nest/decorators/attribute.decorator";
+import { ClientFindOneByDniQuery } from "@omega/medical/application/queries/client/client-find-one-by-dni.query";
 
 @ApiTags('Medical', 'Read')
 @ApiBearerAuth()
@@ -28,12 +29,22 @@ import { Attribute } from "@shared/shared/nest/decorators/attribute.decorator";
 export class ClientReadController {
     constructor(
         @InjectQuery('ClientFindMany') private readonly findManyQuery: ClientFindManyQuery,
+        @InjectQuery('ClientFindOneByDni') private readonly findOneByDni: ClientFindOneByDniQuery,
         @InjectQuery('ClientDoctorFindMany') private readonly doctorfindManyQuery: ClientDoctorFindManyQuery,
         @InjectQuery('ClientEmailFindMany') private readonly emailFindManyQuery: ClientEmailFindManyQuery,
         @InjectQuery('ClientAreaFindOne') private readonly areaFindOneQuery: ClientAreaFindOneQuery,
         @InjectQuery('ClientJobPositionFindOne') private readonly jobPositionFindOneQuery: ClientJobPositionFindOneQuery,
         @InjectQuery('ClientManagementFindOne') private readonly managementFindOneQuery: ClientManagementFindOneQuery,
     ) { }
+
+    @Get(':patientDni')
+    async findOneClientByDni(
+        @Param('patientDni') patientDni: string
+    ): Promise<ClientResponseDto> {
+        const value = await this.findOneByDni.handleAsync({ patientDni });
+        const data = ClientModelMapper.toDTO(value);
+        return plainToInstance(ClientResponseDto, data);
+    }
 
     @Get()
     async findManyClient(

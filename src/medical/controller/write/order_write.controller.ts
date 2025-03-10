@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { InjectCommand } from "@omega/medical/nest/inject/command.inject";
@@ -7,6 +7,7 @@ import { OrderCreateRequestDto, OrderSendEmailRequestDto } from "../dto/request/
 import { OrderCreateCommand } from "@omega/medical/application/commands/order/order-create.command";
 import { OrderCreatedStatusCommand } from "@omega/medical/application/commands/order/order-created-status.command";
 import { OrderValidatedStatusCommand } from "@omega/medical/application/commands/order/order-validated-status.command";
+import { OrderRemoveCommand } from "@omega/medical/application/commands/order/order-remove.command";
 
 @ApiTags('Medical', 'Write')
 @ApiBearerAuth()
@@ -15,6 +16,7 @@ import { OrderValidatedStatusCommand } from "@omega/medical/application/commands
 export class OrderWriteController {
     constructor(
         @InjectCommand('OrderCreate') private readonly orderCreateCommand: OrderCreateCommand,
+        @InjectCommand('OrderRemove') private readonly orderRemoveCommand: OrderRemoveCommand,
         @InjectCommand('OrderSendMail') private readonly orderSendMailCommand: OrderSendMailCommand,
         @InjectCommand('OrderCreatedStatus') private readonly orderCreatedStatusCommand: OrderCreatedStatusCommand,
         @InjectCommand('OrderValidatedStatus') private readonly orderValidatedStatusCommand: OrderValidatedStatusCommand,
@@ -25,6 +27,14 @@ export class OrderWriteController {
         @Body() body: OrderCreateRequestDto
     ): Promise<string> {
         await this.orderCreateCommand.handleAsync(body);
+        return "ok";
+    }
+
+    @Delete(':orderId')
+    async remove(
+        @Param('orderId') orderId: string
+    ): Promise<string> {
+        await this.orderRemoveCommand.handleAsync({ orderId });
         return "ok";
     }
 

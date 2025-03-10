@@ -9,6 +9,7 @@ import { OrderIsEvent, OrderMailSendedEventPayload, OrderStatusChangedToValidate
 import { OrderDomainMapper } from "../../../mapper/medical/domain/order.domain-mapper";
 import { OrderAggregateRepositoryToken } from "@omega/medical/nest/inject/aggregate-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
+import { OrderRemoveCommandPayload } from "@omega/medical/application/commands/order/order-remove.command";
 
 @Injectable()
 export class OrderPrismaRepository implements OrderRepository {
@@ -41,6 +42,9 @@ export class OrderPrismaRepository implements OrderRepository {
 
             else if (OrderIsEvent.isOrderStatusChangedToValidatedEvent(event))
                 await this.changeToValidated(event.value);
+
+            else if (OrderIsEvent.isOrderRemovedEvent(event))
+                await this.removeOrder(event.value);
         }
     }
 
@@ -75,6 +79,15 @@ export class OrderPrismaRepository implements OrderRepository {
     async changeToValidated(value: OrderStatusChangedToValidatedEventPayload): Promise<void> {
         try {
             await this.prisma.medicalOrder.update({ where: { id: value.orderId }, data: { status: "validated" } });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async removeOrder(value: OrderRemoveCommandPayload): Promise<void> {
+        try {
+            await this.prisma.medicalOrder.update({ where: { id: value.orderId }, data: { isActive: false } });
         } catch (error) {
             Logger.error(error);
             throw new RepositoryError();

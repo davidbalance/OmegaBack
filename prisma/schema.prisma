@@ -197,6 +197,7 @@ model MedicalOrder {
   year                    Int                @map("medical_order_year") @db.Int
   status                  MedicalOrderStatus @default(created) @map("medical_order_status")
 
+  isActive  Boolean   @default(true) @map("is_active") @db.TinyInt
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
@@ -217,6 +218,7 @@ model MedicalTest {
   examType    String  @map("exam_type") @db.VarChar(64)
   checklist   Boolean @default(false) @map("medical_test_checklist_status") @db.TinyInt
 
+  isActive  Boolean   @default(true) @map("is_active") @db.TinyInt
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 

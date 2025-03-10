@@ -79,6 +79,7 @@ import { ClientRecordFindOneQueryProvider } from "./nest/query/client/client-rec
 import { ClientHelperModule } from "@omega/adapter/helpers/medical/client/client-helper.module";
 import { RecordReadController } from "./controller/read/record_read.controller";
 import { ClientRecordFindManyQueryProvider } from "./nest/query/client/client-record-find-many.nest-query";
+import { OrderRemoveCommandProvider } from "./nest/command/order/order-remove.nest-command";
 
 @Module({
     imports: [
@@ -121,6 +122,7 @@ import { ClientRecordFindManyQueryProvider } from "./nest/query/client/client-re
         OrderCreatedStatusCommandProvider,
         OrderSendMailCommandProvider,
         OrderValidatedStatusCommandProvider,
+        OrderRemoveCommandProvider,
         DiseaseReportCreateCommandProvider,
         DiseaseReportEditCommandProvider,
         DiseaseReportRemoveCommandProvider,

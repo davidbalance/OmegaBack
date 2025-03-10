@@ -1,8 +1,9 @@
 import { DoctorValueObject } from "./value_objects/doctor.value_object";
 import { LocationValueObject } from "./value_objects/location.value_object";
 import { CreateOrderPayload } from "./payloads/order.payloads";
-import { OrderMailSendedEvent, OrderStatusChangedToValidatedEvent, OrderStatusChangedToCreatedEvent } from "./events/order.events";
+import { OrderMailSendedEvent, OrderStatusChangedToValidatedEvent, OrderStatusChangedToCreatedEvent, OrderRemovedEvent } from "./events/order.events";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
+import { OrderRemoveCommand } from "@omega/medical/application/commands/order/order-remove.command";
 
 export type OrderStatus = 'created' | 'validated';
 export type OrderProps = AggregateProps & {
@@ -94,5 +95,9 @@ export class Order extends Aggregate<OrderProps> {
     public changeStatusValidated(): void {
         this.updateProps({ status: "validated" });
         this.emit(new OrderStatusChangedToValidatedEvent(this.id));
+    }
+
+    public remove(): void {
+        this.emit(new OrderRemovedEvent(this.id));
     }
 }

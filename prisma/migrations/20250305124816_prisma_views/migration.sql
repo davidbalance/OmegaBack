@@ -96,7 +96,8 @@ SELECT
 	tmc.job_position_name AS location_job_position_name
 FROM tbl_m_tests tmt 
 JOIN tbl_m_orders tmo ON tmo.medical_order_id = tmt.medical_order_id
-JOIN tbl_m_clients tmc ON tmc.medical_client_id = tmo.medical_client_id;
+JOIN tbl_m_clients tmc ON tmc.medical_client_id = tmo.medical_client_id
+WHERE tmo.is_active = 1;
 
 -- Create View
 CREATE VIEW v_m_order_cloud_file_items AS
@@ -112,7 +113,8 @@ FROM tbl_m_tests tmt
 LEFT JOIN tbl_m_results tmr ON tmr.medical_test_id = tmt.medical_test_id
 LEFT JOIN tbl_m_reports tmr2 ON tmr2.medical_test_id = tmt.medical_test_id
 JOIN tbl_m_orders tmo ON tmo.medical_order_id = tmt.medical_order_id 
-JOIN tbl_m_clients tmc ON tmc.medical_client_id = tmo.medical_client_id;
+JOIN tbl_m_clients tmc ON tmc.medical_client_id = tmo.medical_client_id
+WHERE tmo.is_active = 1;
 
 -- Create View
 CREATE VIEW v_m_order_doctors AS
@@ -129,6 +131,7 @@ FROM tbl_m_orders tmo
 JOIN tbl_m_tests tmt ON tmt.medical_order_id = tmo.medical_order_id 
 JOIN tbl_m_reports tmr ON tmr.medical_test_id = tmt.medical_test_id 
 JOIN tbl_m_clients tmc ON tmc.medical_client_id = tmo.medical_client_id
+WHERE tmo.is_active = 1
 GROUP BY tmo.medical_order_id, 
 	tmo.medical_order_process,
 	tmo.medical_order_email_status, 
@@ -151,7 +154,8 @@ SELECT tmo.medical_order_id,
 	tmo.company_name AS location_company_name, 
 	tmo.branch_name AS location_branch_name
 FROM tbl_m_orders tmo
-JOIN tbl_m_clients tmc ON tmc.medical_client_id = tmo.medical_client_id;
+JOIN tbl_m_clients tmc ON tmc.medical_client_id = tmo.medical_client_id
+WHERE tmo.is_active = 1;
 
 -- Create View
 CREATE VIEW v_m_order_process AS
@@ -173,7 +177,8 @@ SELECT tmo.medical_order_id,
 	tmc.patient_dni,
 	tmo.medical_order_year 
 FROM tbl_m_orders tmo 
-JOIN tbl_m_clients tmc ON tmc.medical_client_id = tmo.medical_client_id ;
+JOIN tbl_m_clients tmc ON tmc.medical_client_id = tmo.medical_client_id
+WHERE tmo.is_active = 1;
 
 -- Create View
 CREATE VIEW v_m_disease_reports AS
@@ -247,7 +252,7 @@ SELECT
 	IF (tmt.exam_type = 'LABORATORIO CLINICO', 'SALUD GENERAL', '') AS medical_disease_findings
 FROM tbl_m_disease_reports tmdr 
 JOIN tbl_m_tests tmt ON tmt.medical_test_id = tmdr.medical_test_id
-JOIN tbl_m_orders tmo ON tmo.medical_order_id = tmt.medical_order_id
+INNER JOIN tbl_m_orders tmo ON tmo.medical_order_id = tmt.medical_order_id AND tmo.is_active = 1
 JOIN (
 	SELECT 
 		medical_client_id, 
@@ -263,7 +268,7 @@ JOIN (
 		DATE_FORMAT(FROM_DAYS(DATEDIFF(CURRENT_DATE(), patient_birthday)), '%Y')+0 AS patient_age
 	FROM tbl_m_clients
 ) tmc ON tmc.medical_client_id = tmo.medical_client_id
-JOIN tbl_m_emails tme ON tme.medical_client_id = tmc.medical_client_id AND tme.medical_email_default = 1;
+JOIN tbl_m_emails tme ON tme.medical_client_id = tmc.medical_client_id AND tme.medical_email_default = 1
 
 -- Create View
 CREATE VIEW v_m_tests AS

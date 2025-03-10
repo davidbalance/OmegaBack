@@ -18,7 +18,9 @@ export class ClientPrismaRepository implements ClientRepository {
     async countAsync(filter: (Filter<ClientModel> | FilterGroup<ClientModel>)[]): Promise<number> {
         try {
             const where = PrismaFilterMapper.map<ClientModel, Prisma.ClientModelWhereInput>(filter);
-            const value = await this.prisma.clientModel.count({ where });
+            const value = await this.prisma.clientModel.count({
+                where,
+            });
             return value;
         } catch (error) {
             Logger.error(error);
@@ -29,12 +31,22 @@ export class ClientPrismaRepository implements ClientRepository {
     async findManyAsync(filter: SearchCriteria<ClientModel>): Promise<ClientModel[]> {
         try {
             const where = PrismaFilterMapper.map<ClientModel, Prisma.ClientModelWhereInput>(filter.filter);
-            const values = await this.prisma.clientModel.findMany({ 
+            const values = await this.prisma.clientModel.findMany({
                 where,
+                select: {
+                    patientId: true,
+                    patientDni: true,
+                    patientName: true,
+                    patientLastname: true,
+                    patientBirthday: true,
+                    patientGender: true,
+                    patientRole: true,
+                },
                 orderBy: filter.order,
                 skip: filter.skip,
-                take: filter.limit
-             });
+                take: filter.limit,
+                distinct: ['patientId', 'patientDni', 'patientName', 'patientLastname', 'patientBirthday', 'patientGender', 'patientRole']
+            });
             return values.map(e => ClientModelMapper.toModel(e));
         } catch (error) {
             Logger.error(error);

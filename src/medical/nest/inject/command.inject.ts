@@ -14,6 +14,7 @@ export const OrderCreateCommandToken = 'OrderCreateCommand';
 export const OrderCreatedStatusCommandToken = 'OrderCreatedStatusCommand';
 export const OrderSendMailCommandToken = 'OrderSendMailCommand';
 export const OrderValidatedStatusCommandToken = 'OrderValidatedStatusCommand';
+export const OrderRemoveCommandToken = 'OrderRemoveCommand';
 export const DiseaseReportCreateCommandToken = 'DiseaseReportCreateCommand';
 export const DiseaseReportEditCommandToken = 'DiseaseReportEditCommand';
 export const DiseaseReportRemoveCommandToken = 'DiseaseReportRemoveCommand';
@@ -44,6 +45,7 @@ const command = {
     OrderCreatedStatus: OrderCreatedStatusCommandToken,
     OrderSendMail: OrderSendMailCommandToken,
     OrderValidatedStatus: OrderValidatedStatusCommandToken,
+    OrderRemove: OrderRemoveCommandToken,
     DiseaseReportCreate: DiseaseReportCreateCommandToken,
     DiseaseReportEdit: DiseaseReportEditCommandToken,
     DiseaseReportRemove: DiseaseReportRemoveCommandToken,

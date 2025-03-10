@@ -3,7 +3,7 @@ import { OrderRepository } from "@omega/medical/application/repository/aggregate
 import { InjectAggregateRepository } from "../../inject/aggregate-repository.inject";
 import { OrderSendMailCommandToken } from "../../inject/command.inject";
 import { OrderSendMailCommand } from "@omega/medical/application/commands/order/order-send-mail.command";
-import { HtmlLoaderProviderToken, InjectEmail } from "@shared/shared/nest/inject";
+import { InjectEmail, InjectHtmlLoader } from "@shared/shared/nest/inject";
 import { EmailAttachmentToken, RedirectEmailUrlToken } from "../../inject/function.inject";
 import { EmailAttachment, EmailProvider } from "@shared/shared/providers/email.provider";
 import { HtmlLoaderProvider } from "@shared/shared/providers/html-loader.provider";
@@ -15,7 +15,7 @@ class OrderSendMailNestCommand extends OrderSendMailCommand {
     constructor(
         @InjectAggregateRepository("Order") repository: OrderRepository,
         @InjectEmail() email: EmailProvider,
-        @Inject(HtmlLoaderProviderToken) layout: HtmlLoaderProvider<{ url: string, patientFullname: string }>,
+        @InjectHtmlLoader() layout: HtmlLoaderProvider<{ url: string, patientFullname: string }>,
         @Inject(EmailAttachmentToken) attachment: EmailAttachment[],
         @Inject(RedirectEmailUrlToken) redirectUrl: string,
         @InjectModelRepository('OrderPatient') modelRepository: OrderPatientRepository
