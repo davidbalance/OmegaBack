@@ -16,6 +16,7 @@ import { TestFindOneQuery } from "@omega/medical/application/queries/test/test-f
 import { TestFileResultCountQuery } from "@omega/medical/application/queries/test/test-file-result-count.query";
 import { TestFileResultReportQuery } from "@omega/medical/application/queries/test/test-file-result-report.query";
 import { Response } from "express";
+import { DiseaseReportFindManyQuery } from "@omega/medical/application/queries/test/disease-report-find-many.query";
 
 @ApiTags('Medical', 'Read')
 @ApiBearerAuth()
@@ -24,6 +25,7 @@ import { Response } from "express";
 export class TestReadController {
     constructor(
         @InjectQuery('DiseaseReportFindOne') private readonly diseaseReportFindOneQuery: DiseaseReportFindOneQuery,
+        @InjectQuery('DiseaseReportFindMany') private readonly diseaseReportFindManyQuery: DiseaseReportFindManyQuery,
         @InjectQuery('ReportFindOne') private readonly reportFindOneQuery: ReportFindOneQuery,
         @InjectQuery('TestFindMany') private readonly testFindManyQuery: TestFindManyQuery,
         @InjectQuery('TestFindOne') private readonly testFindOneQuery: TestFindOneQuery,
@@ -38,6 +40,15 @@ export class TestReadController {
     ): Promise<DiseaseReportResponseDto> {
         const values = await this.diseaseReportFindOneQuery.handleAsync({ diseaseReportId });
         const data = DiseaseReportModelMapper.toDTO(values);
+        return plainToInstance(DiseaseReportResponseDto, data);
+    }
+
+    @Get(':testId/diseases')
+    async findManyDiseases(
+        @Param('testId') testId: string
+    ): Promise<DiseaseReportResponseDto[]> {
+        const values = await this.diseaseReportFindManyQuery.handleAsync({ testId });
+        const data = values.map(e => DiseaseReportModelMapper.toDTO(e))
         return plainToInstance(DiseaseReportResponseDto, data);
     }
 
@@ -82,7 +93,7 @@ export class TestReadController {
     }
 
     @Get(':testId/test')
-    async findManyDiseases(
+    async findManyTest(
         @Param('testId') testId: string
     ): Promise<TestResponseDto> {
         const value = await this.testFindOneQuery.handleAsync({ testId, });
