@@ -268,7 +268,7 @@ JOIN (
 		DATE_FORMAT(FROM_DAYS(DATEDIFF(CURRENT_DATE(), patient_birthday)), '%Y')+0 AS patient_age
 	FROM tbl_m_clients
 ) tmc ON tmc.medical_client_id = tmo.medical_client_id
-JOIN tbl_m_emails tme ON tme.medical_client_id = tmc.medical_client_id AND tme.medical_email_default = 1
+JOIN tbl_m_emails tme ON tme.medical_client_id = tmc.medical_client_id AND tme.medical_email_default = 1;
 
 -- Create View
 CREATE VIEW v_m_tests AS
