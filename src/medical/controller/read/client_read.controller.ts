@@ -37,9 +37,9 @@ export class ClientReadController {
         @InjectQuery('ClientManagementFindOne') private readonly managementFindOneQuery: ClientManagementFindOneQuery,
     ) { }
 
-    @Get(':patientDni')
+    @Get(':dni/patient')
     async findOneClientByDni(
-        @Param('patientDni') patientDni: string
+        @Param('dni') patientDni: string
     ): Promise<ClientResponseDto> {
         const value = await this.findOneByDni.handleAsync({ patientDni });
         const data = ClientModelMapper.toDTO(value);
