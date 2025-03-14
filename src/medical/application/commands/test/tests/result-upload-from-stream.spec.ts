@@ -43,7 +43,7 @@ describe("ResultUploadFromStreamCommand", () => {
 
         filepathRepository.findOneAsync.mockResolvedValue(mockFilepath);
         repository.findOneAsync.mockResolvedValue(mockTest);
-        file.write.mockResolvedValue("");
+        file.write.mockResolvedValue("path/to/result.pdf");
         repository.saveAsync.mockResolvedValue();
 
         const buffer = Buffer.from("test data");
@@ -60,8 +60,8 @@ describe("ResultUploadFromStreamCommand", () => {
         expect(repository.findOneAsync).toHaveBeenCalledWith({
             filter: [{ field: "id", operator: "eq", value: payload.testId }],
         });
-        expect(mockTest.addResult).toHaveBeenCalledWith(mockFilepath.path);
         expect(file.write).toHaveBeenCalledWith(mockFilepath.filepath, mockFilepath.filename, buffer);
+        expect(mockTest.addResult).toHaveBeenCalledWith("path/to/result.pdf");
         expect(repository.saveAsync).toHaveBeenCalledWith(mockTest);
     });
 

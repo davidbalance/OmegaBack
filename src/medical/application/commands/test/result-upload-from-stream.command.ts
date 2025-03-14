@@ -21,9 +21,9 @@ export class ResultUploadFromStreamCommand implements CommandHandlerAsync<Result
 
         const test = await this.repository.findOneAsync({ filter: [{ field: 'id', operator: 'eq', value: value.testId }] });
         if (!test) throw new TestNotFoundError(value.testId);
-        test.addResult(filepath.path);
 
-        await this.file.write(filepath.filepath, filepath.filename, value.buffer);
+        const path = await this.file.write(filepath.filepath, filepath.filename, value.buffer);
+        test.addResult(path);
 
         await this.repository.saveAsync(test);
     }

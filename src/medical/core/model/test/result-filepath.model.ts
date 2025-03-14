@@ -23,7 +23,7 @@ export class ResultFilepathModel extends Model<ResultFilepathModelProps> {
 
     public get filepath(): Readonly<string> {
         const path = `${this.props.orderYear}/${this.props.locationCorporative}/${this.props.locationCompany}/${this.props.locationBranch}/${this.props.patient}/${this.props.order}`;
-        return `medical_file/${path}/`;
+        return `medical_file/${path}`;
     }
 
     public get filename(): Readonly<string> {
