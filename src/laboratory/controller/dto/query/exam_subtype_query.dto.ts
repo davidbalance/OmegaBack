@@ -13,6 +13,10 @@ export class ExamSubtypeFindManyQueryDto implements OrderingQuery<ExamSubtypeMod
     @IsEnum({ asc: 'asc', desc: 'desc' })
     public readonly orderValue?: "asc" | "desc";
 
+    @IsOptional()
+    @IsString()
+    public readonly filter?: string | undefined;
+
     @Type(() => Number)
     @Min(0)
     public readonly skip: number;

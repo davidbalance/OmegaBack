@@ -31,10 +31,10 @@ export class OrderPatientPrismaRepository implements OrderPatientRepository {
             const where = PrismaFilterMapper.map<OrderPatientModel, Prisma.OrderPatientModelWhereInput>(filter.filter);
             const values = await this.prisma.orderPatientModel.findMany({
                 where,
-                orderBy: {
-                    orderEmissionDate: 'desc',
-                    ...filter.order
-                },
+                orderBy: [
+                    { orderEmissionDate: 'desc' },
+                    { ...filter.order },
+                ],
                 skip: filter.skip,
                 take: filter.limit
             });
