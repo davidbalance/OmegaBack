@@ -109,7 +109,7 @@ export class ClientWriteController {
         @Param('patientDni') patientDni: string,
         @Body() body: InitialRecordRequestDto,
     ): Promise<string> {
-        await this.addRecordCommand.handleAsync({ type: 'initial', patientDni, ...body });
+        await this.addRecordCommand.handleAsync({ type: 'inicial', patientDni, ...body });
         return "ok";
     }
 

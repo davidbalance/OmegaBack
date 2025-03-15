@@ -1,43 +1,43 @@
-import { CompanyRecord, GeneralExamResult, JobAccident, LifeStyle, MedicalDiagnostic, MedicalFitnessForJob, OccupationalDisease, PatientRecord, PhysicalRegionalExam, ReviewOfOrgansAndSystem, ToxicDetail, VitalSignsAndAnthropometry } from '@omega/medical/application/type/record.type';
+import { JobHistory } from '@omega/medical/application/type/initial-record';
+import { GeneralExamResult, JobAccident, LifeStyle, MedicalDiagnostic, MedicalFitnessForJob, MedicalFitnessTypeEnum, OccupationalDisease, PhysicalRegionalExam, ReviewOfOrgansAndSystem, ToxicDetail, VitalSignsAndAnthropometry } from '@omega/medical/application/type/record.type';
 import { Type } from 'class-transformer';
 import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
-// Enums
-export enum PatientRecordGender {
-    MALE = 'male',
-    FEMALE = 'female',
-}
-
-export enum MedicalFitnessType {
-    FIT = 'fit',
-    FIT_OBSERVATION = 'fit-observation',
-    FIT_LIMITATION = 'fit-limitation',
-    NO_FIT = 'no-fit',
-}
-
 // DTOs
-
 export class ToxicDetailRequestDto implements ToxicDetail {
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly consumed: boolean;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly consumptionTime: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(1)
     public readonly quantity: number;
 
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly consumer: boolean;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly timeOfAbstinence: number;
+
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
+    public readonly other?: string | undefined;
+
 }
 
 export class LifeStyleRequestDto implements LifeStyle {
+
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly lifestylePhysicalActivityActive: boolean;
 
@@ -47,10 +47,12 @@ export class LifeStyleRequestDto implements LifeStyle {
     public readonly lifestylePhysicalActivityType?: string | undefined;
 
     @IsOptional()
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly lifestylePhysicalActivityDuration?: number | undefined;
 
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly lifestyleMedicationTaking: boolean;
 
@@ -60,17 +62,61 @@ export class LifeStyleRequestDto implements LifeStyle {
     public readonly lifestyleMedicationName?: string | undefined;
 
     @IsOptional()
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly lifestyleMedicationQuantity?: number | undefined;
+}
 
-    @IsOptional()
+export class JobHistoryRequestDto implements JobHistory {
+    @IsString()
+    @IsNotEmpty()
+    public readonly lastJobCompany: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly lastJobPosition: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly lastJobActivity: string;
+
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
-    public readonly lifestyleMedicationDuration?: number | undefined;
+    public readonly lastJobTime: number;
+
+    @Type(() => Boolean)
+    @IsBoolean()
+    public readonly lastJobRiskPhysical: boolean;
+
+    @Type(() => Boolean)
+    @IsBoolean()
+    public readonly lastJobRiskMechanical: boolean;
+
+    @Type(() => Boolean)
+    @IsBoolean()
+    public readonly lastJobRiskChemical: boolean;
+
+    @Type(() => Boolean)
+    @IsBoolean()
+    public readonly lastJobRiskBiological: boolean;
+
+    @Type(() => Boolean)
+    @IsBoolean()
+    public readonly lastJobRiskErgonomic: boolean;
+
+    @Type(() => Boolean)
+    @IsBoolean()
+    public readonly lastJobRiskPsychosocial: boolean;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly lastJobObservation: string;
 }
 
 export class JabAccidentRequestDto implements JobAccident {
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly jobAccidentHappened: boolean;
 
@@ -91,6 +137,7 @@ export class JabAccidentRequestDto implements JobAccident {
 }
 
 export class OccupationalDiseaseRequestDto implements OccupationalDisease {
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly occupationalDiseaseHappened: boolean;
 
@@ -100,14 +147,15 @@ export class OccupationalDiseaseRequestDto implements OccupationalDisease {
     public readonly occupationalDiseaseDescription?: string | undefined;
 
     @IsOptional()
-    @IsString()
-    @IsNotEmpty()
-    public readonly occupationalDiseaseDate?: string | undefined;
+    @Type(() => Date)
+    @IsDate()
+    public readonly occupationalDiseaseDate?: Date | undefined;
 
     @IsOptional()
     @IsString()
     @IsNotEmpty()
     public readonly occupationalDiseaseObservation?: string | undefined;
+
 }
 
 export class ReviewOfOrgansAndSystemRequestDto implements ReviewOfOrgansAndSystem {
@@ -430,8 +478,8 @@ export class MedicalDiagnosticRequestDto implements MedicalDiagnostic {
 }
 
 export class MedicalFitnessForJobRequestDto implements MedicalFitnessForJob {
-    @IsEnum(MedicalFitnessType)
-    public readonly medicalFitnessType: MedicalFitnessType;
+    @IsEnum(MedicalFitnessTypeEnum)
+    public readonly medicalFitnessType: MedicalFitnessTypeEnum;
 
     @IsString()
     @IsNotEmpty()
@@ -440,4 +488,5 @@ export class MedicalFitnessForJobRequestDto implements MedicalFitnessForJob {
     @IsString()
     @IsNotEmpty()
     public readonly medicalFitnessLimitation: string;
+
 }

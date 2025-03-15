@@ -1,47 +1,11 @@
-import { ExamResult, ReintegrateRecord } from "@omega/medical/application/type/reintegrate-record";
-import { PatientGender } from "@prisma/client";
-import { MedicalDiagnosticRequestDto, MedicalFitnessType } from "./_base.dto";
-import { IsArray, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min, ValidateNested } from "class-validator";
+import { ReintegrateRecord } from "@omega/medical/application/type/reintegrate-record";
+import { PatientRecordGenderEnum, GeneralExamResult, MedicalFitnessTypeEnum, MedicalDiagnostic } from "@omega/medical/application/type/record.type";
+import { IsArray, IsDate, IsEnum, IsNotEmpty, IsNumber, IsObject, IsOptional, IsPositive, IsString, Min, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
-
-class ExamResultRequestDto implements ExamResult {
-    @IsString()
-    @IsNotEmpty()
-    public readonly exam: string;
-
-    @IsDate()
-    public readonly date: Date;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly result: string;
-}
+import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto } from "./_base.dto";
 
 export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'type'> {
     /** Institution & Patient Information */
-    @IsString()
-    @IsNotEmpty()
-    public readonly patientFirstName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly patientMiddleName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly patientLastName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly patientSecondLastName: string;
-
-    @IsEnum(PatientGender)
-    public readonly patientGender: PatientGender;
-
-    @IsNumber()
-    @Min(0)
-    public readonly patientAge: number;
-
     @IsString()
     @IsNotEmpty()
     public readonly companyName: string;
@@ -60,11 +24,36 @@ export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'typ
 
     @IsString()
     @IsNotEmpty()
+    public readonly patientFirstName: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientMiddleName: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientLastName: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientSecondLastName: string;
+
+    @IsEnum(PatientRecordGenderEnum)
+    public readonly patientGender: PatientRecordGenderEnum;
+
+    @IsNumber()
+    @IsPositive()
+    public readonly patientAge: number;
+
+    @IsString()
+    @IsNotEmpty()
     public readonly jobPosition: string;
 
+    @Type(() => Date)
     @IsDate()
     public readonly workingEndDate: Date;
 
+    @Type(() => Date)
     @IsDate()
     public readonly workingReintegrationDate: Date;
 
@@ -87,38 +76,47 @@ export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'typ
     public readonly currentDiseaseDescription: string;
 
     /** Vital Signs and Anthropometry */
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsBloodPressure: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsTemperature: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsHeartRate: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsOxygenSaturation: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsRespiratoryRate: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsWeight: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsSize: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsMassIndex: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsAbdominalPerimeter: number;
@@ -282,6 +280,11 @@ export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'typ
     @IsOptional()
     @IsString()
     @IsNotEmpty()
+    public readonly examPelvis?: string | undefined;
+
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
     public readonly examPelvisGenitals?: string | undefined;
 
     @IsOptional()
@@ -319,21 +322,27 @@ export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'typ
     @IsNotEmpty()
     public readonly examNeurologicReflex?: string | undefined;
 
-    /** Exam result */
+    /** General Exam and Specific */
     @IsArray()
+    @IsObject({ each: true })
     @ValidateNested({ each: true })
-    @Type(() => ExamResultRequestDto)
-    public readonly examResults: ExamResultRequestDto[];
+    @Type(() => GeneralExamResultRequestDto)
+    public readonly generalExamResults: GeneralExamResultRequestDto[];
 
-    /** Diagnostics */
+    @IsString()
+    @IsNotEmpty()
+    public readonly generalExamObservation: string;
+
+    /** Diagnostic */
     @IsArray()
+    @IsObject({ each: true })
     @ValidateNested({ each: true })
     @Type(() => MedicalDiagnosticRequestDto)
     public readonly diagnostics: MedicalDiagnosticRequestDto[];
 
-    /** Medical Fitness for Job */
-    @IsEnum(MedicalFitnessType)
-    public readonly medicalFitnessType: MedicalFitnessType;
+    /** Medical Fitness */
+    @IsEnum(MedicalFitnessTypeEnum)
+    public readonly medicalFitnessType: MedicalFitnessTypeEnum;
 
     @IsString()
     @IsNotEmpty()
@@ -343,8 +352,9 @@ export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'typ
     @IsNotEmpty()
     public readonly medicalFitnessLimitation: string;
 
-    /** Medical Recommendations */
+    /** Recommendation */
     @IsString()
     @IsNotEmpty()
     public readonly recommendationDescription: string;
+
 }

@@ -1,21 +1,21 @@
-import { CompanyRecord, GeneralExam, JobAccident, MedicalDiagnostic, OccupationalDisease, PatientRecord, PhysicalRegionalExam, RecordType, VitalSignsAndAnthropometry } from "./record.type";
+import { CompanyRecord, GeneralExamResultAndSpecific, JobAccident, MedicalDiagnostic, OccupationalDisease, PatientRecord, PhysicalRegionalExam, RecordType, VitalSignsAndAnthropometry } from "./record.type";
 
-export type InstitutionActivity = {
+export type RetirementInstitutionActivity = {
     activity: string;
     risk: string;
 }
 
 export type RetirementEvaluation = {
     retirementDone: boolean;
-    retirementobservation: string;
+    retirementObservation: string;
 }
 
 export type RetirementRecord = RecordType<'retiro'> & PatientRecord & CompanyRecord &
-    JobAccident & OccupationalDisease & GeneralExam & VitalSignsAndAnthropometry & PhysicalRegionalExam &
+    JobAccident & OccupationalDisease & GeneralExamResultAndSpecific & VitalSignsAndAnthropometry & PhysicalRegionalExam &
     RetirementEvaluation & {
         /** Institution & Patient Information */
         institutionHealthFacility: string;
-        institutionActivities: InstitutionActivity[];
+        institutionActivities: RetirementInstitutionActivity[];
         workStartDate: Date;
         workingTime: number;
         workingEndDate: Date;

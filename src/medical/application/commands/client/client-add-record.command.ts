@@ -5,13 +5,13 @@ import { InitialRecord } from "../../type/initial-record";
 import { PeriodicRecord } from "../../type/periodic-record";
 import { ReintegrateRecord } from "../../type/reintegrate-record";
 import { RetirementRecord } from "../../type/retirement-record";
-import { CertficateRecord } from "../../type/certificate-record";
+import { CertificateRecord } from "../../type/certificate-record";
 import { PdfProvider } from "@shared/shared/providers/pdf.provider";
 import { FileOperation } from "@shared/shared/providers";
 
-export type ClientRecordLayoutFunc = (value: InitialRecord | PeriodicRecord | ReintegrateRecord | RetirementRecord | CertficateRecord) => unknown;
+export type ClientRecordLayoutFunc = (value: InitialRecord | PeriodicRecord | ReintegrateRecord | RetirementRecord | CertificateRecord) => unknown;
 export type ClientRecordFilenameFunc = (name: string) => string;
-export type ClientAddRecordCommandPayload = (InitialRecord | PeriodicRecord | ReintegrateRecord | RetirementRecord | CertficateRecord) & {
+export type ClientAddRecordCommandPayload = (InitialRecord | PeriodicRecord | ReintegrateRecord | RetirementRecord | CertificateRecord) & {
     patientDni: string;
 }
 export class ClientAddRecordCommand implements CommandHandlerAsync<ClientAddRecordCommandPayload, void> {

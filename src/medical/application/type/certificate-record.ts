@@ -1,23 +1,36 @@
-import { CompanyRecord, MedicalFitnessForJob, PatientRecord, RecordType } from "./record.type";
+import { CompanyRecord, MedicalFitnessForJob, PatientRecord, RecordRecommendation, RecordType } from "./record.type";
 
-type GeneralData = 'entry' | 'periodic' | 'reintegrate' | 'retirement'
-type DiagnosticCondition = 'presumptive' | 'definitive' | 'no-apply';
-type RetirementHealth = 'yes' | 'no' | 'no-apply';
+export enum GeneralDataEnum {
+    ENTRY = 'entry',
+    PERIODIC = 'periodic',
+    REINTEGRATE = 'reintegrate',
+    RETIREMENT = 'retirement',
+}
 
-export type CertficateRecord = RecordType<'certificado'> & PatientRecord & CompanyRecord
-    & MedicalFitnessForJob & {
+export type GeneralData = {
+    generalData: GeneralDataEnum
+};
+
+export enum EvaluationConditionEnum {
+    PRESUNTIVE = 'presuntive',
+    DEFINITIVE = 'definitive',
+    NO_APPLY = 'no-apply'
+}
+export enum EvaluationConditionWithJobEnum {
+    YES = 'yes',
+    NO = 'no',
+    NO_APPLY = 'no-apply'
+}
+export type RetirementEvaluation = {
+    retirementEvaluationDone: boolean;
+    retirementEvaluationCondition: EvaluationConditionEnum;
+    retirementEvaluationConditionWithJob: EvaluationConditionWithJobEnum;
+}
+
+export type CertificateRecord = RecordType<'certificado'> & PatientRecord & CompanyRecord &
+    GeneralData & MedicalFitnessForJob & RetirementEvaluation &
+    RecordRecommendation & {
         /** Institution & Patient Information */
         institutionHealthFacility: string;
-        jobPosition?: string;
-
-        /** General data */
-        generalDataEvaluation: GeneralData;
-
-        /** Medical Retirement Evaluation */
-        retirementEvaluationDone: boolean;
-        retirementDiagnosticCondition: DiagnosticCondition;
-        retirementHealth: RetirementHealth;
-
-        /** Medical Recommendations */
-        recommendationDescription: string;
+        jobPosition: string;
     }

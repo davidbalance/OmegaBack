@@ -1,10 +1,10 @@
-import { GeneralExamResult, MedicalDiagnostic } from "@omega/medical/application/type/record.type";
-import { InstitutionActivity, RetirementEvaluation, RetirementRecord } from "@omega/medical/application/type/retirement-record";
-import { IsArray, IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min, ValidateNested } from "class-validator";
-import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, PatientRecordGender } from "./_base.dto";
+import { PatientRecordGenderEnum, GeneralExamResult, MedicalDiagnostic } from "@omega/medical/application/type/record.type";
+import { RetirementInstitutionActivity, RetirementRecord } from "@omega/medical/application/type/retirement-record";
 import { Type } from "class-transformer";
+import { IsArray, IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, Min, ValidateNested } from "class-validator";
+import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto } from "./_base.dto";
 
-export class InstitutionActivityRequestDto implements InstitutionActivity {
+class RetirementInstitutionActivityRequestDto implements RetirementInstitutionActivity {
     @IsString()
     @IsNotEmpty()
     public readonly activity: string;
@@ -14,37 +14,8 @@ export class InstitutionActivityRequestDto implements InstitutionActivity {
     public readonly risk: string;
 }
 
-export class RetirementEvaluationRequestDto implements RetirementEvaluation {
-    @IsBoolean()
-    public readonly retirementDone: boolean;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly retirementobservation: string;
-}
-
-
 export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'> {
     /** Institution & Patient Information */
-    @IsString()
-    @IsNotEmpty()
-    public readonly patientFirstName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly patientMiddleName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly patientLastName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly patientSecondLastName: string;
-
-    @IsEnum(PatientRecordGender)
-    public readonly patientGender: PatientRecordGender;
-
     @IsString()
     @IsNotEmpty()
     public readonly companyName: string;
@@ -61,32 +32,54 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     @IsNotEmpty()
     public readonly institutionHealthFacility: string;
 
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => InstitutionActivityRequestDto)
-    public readonly institutionActivities: InstitutionActivityRequestDto[];
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientFirstName: string;
 
-    @IsDate()
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientMiddleName: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientLastName: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientSecondLastName: string;
+
+    @IsEnum(PatientRecordGenderEnum)
+    public readonly patientGender: PatientRecordGenderEnum;
+
     @Type(() => Date)
+    @IsDate()
     public readonly workStartDate: Date;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly workingTime: number;
 
-    @IsDate()
     @Type(() => Date)
+    @IsDate()
     public readonly workingEndDate: Date;
 
     @IsString()
     @IsNotEmpty()
     public readonly jobPosition: string;
 
-    /** Patient History */
+    @IsArray()
+    @IsObject({ each: true })
+    @ValidateNested({ each: true })
+    @Type(() => RetirementInstitutionActivityRequestDto)
+    public readonly institutionActivities: RetirementInstitutionActivityRequestDto[];
+
+    /** Personal information */
     @IsString()
     @IsNotEmpty()
     public readonly medicalAndSurgicalHistory: string;
 
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly jobAccidentHappened: boolean;
 
@@ -96,8 +89,8 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     public readonly jobAccidentDescription?: string | undefined;
 
     @IsOptional()
-    @IsDate()
     @Type(() => Date)
+    @IsDate()
     public readonly jobAccidentDate?: Date | undefined;
 
     @IsOptional()
@@ -105,6 +98,7 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     @IsNotEmpty()
     public readonly jobAccidentObservation?: string | undefined;
 
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly occupationalDiseaseHappened: boolean;
 
@@ -114,9 +108,9 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     public readonly occupationalDiseaseDescription?: string | undefined;
 
     @IsOptional()
-    @IsString()
-    @IsNotEmpty()
-    public readonly occupationalDiseaseDate?: string | undefined;
+    @Type(() => Date)
+    @IsDate()
+    public readonly occupationalDiseaseDate?: Date | undefined;
 
     @IsOptional()
     @IsString()
@@ -124,38 +118,47 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     public readonly occupationalDiseaseObservation?: string | undefined;
 
     /** Vital Signs and Anthropometry */
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsBloodPressure: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsTemperature: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsHeartRate: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsOxygenSaturation: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsRespiratoryRate: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsWeight: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsSize: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsMassIndex: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsAbdominalPerimeter: number;
@@ -319,6 +322,11 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     @IsOptional()
     @IsString()
     @IsNotEmpty()
+    public readonly examPelvis?: string | undefined;
+
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
     public readonly examPelvisGenitals?: string | undefined;
 
     @IsOptional()
@@ -356,8 +364,9 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     @IsNotEmpty()
     public readonly examNeurologicReflex?: string | undefined;
 
-    /** General Exam */
+    /** General Exam and Specific */
     @IsArray()
+    @IsObject({ each: true })
     @ValidateNested({ each: true })
     @Type(() => GeneralExamResultRequestDto)
     public readonly generalExamResults: GeneralExamResultRequestDto[];
@@ -366,22 +375,26 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     @IsNotEmpty()
     public readonly generalExamObservation: string;
 
-    /** Diagnostics */
+    /** Diagnostic */
     @IsArray()
+    @IsObject({ each: true })
     @ValidateNested({ each: true })
     @Type(() => MedicalDiagnosticRequestDto)
     public readonly diagnostics: MedicalDiagnosticRequestDto[];
 
     /** Retirement Evaluation */
-    @IsString()
-    @IsNotEmpty()
-    public readonly recommendationDescription: string;
 
-    /** Medical Recommendations */
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly retirementDone: boolean;
 
     @IsString()
     @IsNotEmpty()
-    public readonly retirementobservation: string;
+    public readonly retirementObservation: string;
+
+    /** Recommendation */
+    @IsString()
+    @IsNotEmpty()
+    public readonly recommendationDescription: string;
+
 }

@@ -1,4 +1,4 @@
-import { CompanyRecord, MedicalDiagnostic, MedicalFitnessForJob, PatientRecord, PhysicalRegionalExam, RecordType, VitalSignsAndAnthropometry } from "./record.type";
+import { CompanyRecord, CurrentDisease, GeneralExamResultAndSpecific, MedicalConsultation, MedicalDiagnostic, MedicalFitnessForJob, PatientRecord, PhysicalRegionalExam, RecordRecommendation, RecordType, VitalSignsAndAnthropometry } from "./record.type";
 
 export type ExamResult = {
     exam: string;
@@ -6,8 +6,9 @@ export type ExamResult = {
     result: string;
 }
 
-export type ReintegrateRecord = RecordType<'reintegrar'> & PatientRecord & CompanyRecord &
-    VitalSignsAndAnthropometry & PhysicalRegionalExam & MedicalFitnessForJob & {
+export type ReintegrateRecord = RecordType<'reintegrar'> & PatientRecord & CompanyRecord & MedicalConsultation &
+    VitalSignsAndAnthropometry & PhysicalRegionalExam & GeneralExamResultAndSpecific & MedicalFitnessForJob &
+    CurrentDisease & RecordRecommendation & {
         /** Institution & Patient Information */
         institutionHealthFacility: string;
         patientAge: number;
@@ -17,18 +18,6 @@ export type ReintegrateRecord = RecordType<'reintegrar'> & PatientRecord & Compa
         workingTime: number;
         workingLeftCause: string;
 
-        /** Medical Consultation */
-        medicalConsultationDescription: string;
-
-        /** Current disease */
-        currentDiseaseDescription: string;
-
-        /** ExamResults */
-        examResults: ExamResult[];
-
         /** Diagnostics */
         diagnostics: MedicalDiagnostic[];
-
-        /** Medical Recommendations */
-        recommendationDescription: string;
     }

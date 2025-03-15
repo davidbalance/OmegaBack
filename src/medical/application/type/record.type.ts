@@ -2,12 +2,16 @@ export type RecordType<T = string> = {
     type: T
 }
 
+export enum PatientRecordGenderEnum {
+    MALE = 'male',
+    FEMALE = 'female',
+}
 export type PatientRecord = {
     patientFirstName: string;
     patientMiddleName: string;
     patientLastName: string;
     patientSecondLastName: string;
-    patientGender: 'male' | 'female';
+    patientGender: PatientRecordGenderEnum;
 };
 
 export type CompanyRecord = {
@@ -16,12 +20,44 @@ export type CompanyRecord = {
     companyCIU: string;
 };
 
+export type MedicalConsultation = {
+    medicalConsultationDescription: string;
+}
+
+export type ExtraActivity = {
+    extraActivityDescription: string;
+}
+
+export type CurrentDisease = {
+    currentDiseaseDescription: string;
+}
+
+export type GeneralExamResult = {
+    exam: string;
+    date: Date;
+    result: string;
+};
+
+export type GeneralExamResultAndSpecific = {
+    generalExamResults: GeneralExamResult[];
+    generalExamObservation: string;
+}
+
+export type MedicalAndSurgicalHistory = {
+    medicalAndSurgicalHistory: string;
+}
+
+export type IndentRecord = {
+    incidentDescription: string;
+}
+
 export type ToxicDetail = {
     consumed: boolean;
     consumptionTime: number;
     quantity: number;
     consumer: boolean;
     timeOfAbstinence: number;
+    other?: string;
 };
 
 export type LifeStyle = {
@@ -31,7 +67,6 @@ export type LifeStyle = {
     lifestyleMedicationTaking: boolean;
     lifestyleMedicationName?: string;
     lifestyleMedicationQuantity?: number;
-    lifestyleMedicationDuration?: number;
 };
 
 export type JobAccident = {
@@ -44,24 +79,80 @@ export type JobAccident = {
 export type OccupationalDisease = {
     occupationalDiseaseHappened: boolean;
     occupationalDiseaseDescription?: string;
-    occupationalDiseaseDate?: string;
+    occupationalDiseaseDate?: Date;
     occupationalDiseaseObservation?: string;
 };
 
-export type GeneralExam = {
-    generalExamResults: GeneralExamResult[];
-    generalExamObservation: string;
+export type PhysicalRisk<T> = {
+    physicalRiskHighTemperature: T;
+    physicalRiskLowTemperature: T;
+    physicalRiskIonicRadiation: T;
+    physicalRiskNonIonicRadiation: T;
+    physicalRiskNoise: T;
+    physicalRiskVibration: T;
+    physicalRiskIllumination: T;
+    physicalRiskVentilation: T;
+    physicalRiskElectricFluid: T;
 }
 
-/* type FamilyDisease = 'cardio-vascular' | 'metabolic' | 'neurologic' | 'oncologic' | 'infectious' | 'hereditary' | 'disability';
-export type FamilyHistory = Record<FamilyDisease, string>; */
+export type MechanicalRisk<T> = {
+    mechanicRiskEntrapmentBetweenMachines: T;
+    mechanicRiskTrappingBetweenSurfaces: T;
+    mechanicRiskEntrapmentBetweenObjects: T;
+    mechanicRiskObjectFalling: T;
+    mechanicRiskSameLevelFalling: T;
+    mechanicRiskDifferentLevelFalling: T;
+    mechanicRiskElectricContact: T;
+    mechanicRiskSurfacesContact: T;
+    mechanicRiskParticlesProjection: T;
+    mechanicRiskFluidProjection: T;
+    mechanicRiskJab: T;
+    mechanicRiskCut: T;
+    mechanicRiskHitByVehicles: T;
+    mechanicRiskVehicleCollision: T;
+}
 
-export type PhysicalRisk = 'high-temperature' | 'low-temperature' | 'ionic-radiation' | 'non-ionic-radiation' | 'noise' | 'vibration' | 'illumination' | 'ventilation' | 'electric-fluid';
-export type MechanicalRisk = 'entrapment-between-machines' | 'trapping-between-surfaces' | 'entrapment-between-objects' | 'object-falling' | 'same-level-falling' | 'different-level-falling' | 'electric-contact' | 'surfaces-contact' | 'particles-projection' | 'fluid-projection' | 'jab' | 'cut' | 'hit-by-vehicles' | 'vehicle-collision';
-export type ChemicalRisk = 'solid' | 'dust' | 'smoke' | 'liquid' | 'steam' | 'aerosol' | 'mist' | 'gas';
-export type BiologicalRisk = 'virus' | 'fungus' | 'bacteria' | 'parasites' | 'exposure-to-vectors' | 'exposure-to-wildlife-animals';
-export type ErgonomicRisk = 'manual-handling-loads' | 'repetitive-moves' | 'forced-postures' | 'work-with-pvd';
-export type PsychosocialRisk = 'monotony' | 'work-overload' | 'thoroughness-of-the-task' | 'high-responsibility' | 'taking-responsibility-autonomy' | 'supervision' | 'role-conflict' | 'non-function-clarify' | 'bad-work-distribution' | 'rotative-shift' | 'intrapersonal-relations' | 'job-instability';
+export type ChemicalRisk<T> = {
+    chemicalRiskSolid: T;
+    chemicalRiskDust: T;
+    chemicalRiskSmoke: T;
+    chemicalRiskLiquid: T;
+    chemicalRiskSteam: T;
+    chemicalRiskAerosol: T;
+    chemicalRiskMist: T;
+    chemicalRiskGas: T;
+}
+
+export type BiologicalRisk<T> = {
+    biologicalRiskVirus: T;
+    biologicalRiskFungus: T;
+    biologicalRiskBacteria: T;
+    biologicalRiskParasites: T;
+    biologicalRiskExposureToVectors: T;
+    biologicalRiskExposureToWildlifeAnimals: T;
+}
+
+export type ErgonomicRisk<T> = {
+    ergonomicRiskManualHandlingLoads: T;
+    ergonomicRiskRepetitiveMoves: T;
+    ergonomicRiskForcedPostures: T;
+    ergonomicRiskWorkWithPvd: T;
+}
+
+export type PsychosocialRisk<T> = {
+    psychosocialRiskMonotony: T;
+    psychosocialRiskWorkOverload: T;
+    psychosocialRiskThoroughnessOfTheTask: T;
+    psychosocialRiskHighResponsibility: T;
+    psychosocialRiskTakingResponsibilityAutonomy: T;
+    psychosocialRiskSupervision: T;
+    psychosocialRiskRoleConflict: T;
+    psychosocialRiskNonFunctionClarify: T;
+    psychosocialRiskBadWorkDistribution: T;
+    psychosocialRiskRotativeShift: T;
+    psychosocialRiskIntrapersonalRelations: T;
+    psychosocialRiskJobInstability: T;
+}
 
 export type FamilyHistory = {
     familyHistoryCardioVascular?: string;
@@ -131,6 +222,7 @@ export type PhysicalRegionalExam = {
     examColumnFlexibility?: string;
     examColumnDeviation?: string;
     examColumnPain?: string;
+    examPelvis?: string;
     examPelvisGenitals?: string;
     examLimbVascular?: string;
     examLimbUpper?: string;
@@ -141,12 +233,6 @@ export type PhysicalRegionalExam = {
     examNeurologicReflex?: string;
 };
 
-export type GeneralExamResult = {
-    exam: string;
-    date: Date;
-    result: string;
-};
-
 export type MedicalDiagnostic = {
     description: string;
     cie: string;
@@ -154,8 +240,19 @@ export type MedicalDiagnostic = {
     def: boolean;
 };
 
+
+export enum MedicalFitnessTypeEnum {
+    FIT = 'fit',
+    FIT_OBSERVATION = 'fit-observation',
+    FIT_LIMITATION = 'fit-limitation',
+    NO_FIT = 'no-fit',
+}
 export type MedicalFitnessForJob = {
-    medicalFitnessType: 'fit' | 'fit-observation' | 'fit-limitation' | 'no-fit';
+    medicalFitnessType: MedicalFitnessTypeEnum;
     medicalFitnessObservation: string;
     medicalFitnessLimitation: string;
+};
+
+export type RecordRecommendation = {
+    recommendationDescription: string;
 };

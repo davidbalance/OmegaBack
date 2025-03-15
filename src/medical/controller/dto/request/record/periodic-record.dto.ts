@@ -1,9 +1,8 @@
-import { InitialRecord, ExamHistoryResult } from "@omega/medical/application/type/initial-record";
 import { Type } from "class-transformer";
 import { IsArray, IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, Min, ValidateNested } from "class-validator";
-import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, MedicalFitnessType, PatientRecordGender, ToxicDetailRequestDto } from "./_base.dto";
+import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, ToxicDetailRequestDto } from "./_base.dto";
 import { JobRisk, JobRiskWithPreventiveMeasure, PeriodicRecord } from "@omega/medical/application/type/periodic-record";
-import { ToxicDetail, GeneralExamResult, MedicalDiagnostic } from "@omega/medical/application/type/record.type";
+import { PatientRecordGenderEnum, MedicalFitnessTypeEnum, ToxicDetail, MedicalDiagnostic } from "@omega/medical/application/type/record.type";
 
 // DTOs
 export class JobRiskRequestDto implements JobRisk {
@@ -62,25 +61,6 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     /** Institution & Patient Information */
     @IsString()
     @IsNotEmpty()
-    public readonly patientFirstName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly patientMiddleName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly patientLastName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly patientSecondLastName: string;
-
-    @IsEnum(PatientRecordGender)
-    public readonly patientGender: PatientRecordGender;
-
-    @IsString()
-    @IsNotEmpty()
     public readonly companyName: string;
 
     @IsString()
@@ -97,6 +77,25 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
 
     @IsString()
     @IsNotEmpty()
+    public readonly patientFirstName: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientMiddleName: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientLastName: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientSecondLastName: string;
+
+    @IsEnum(PatientRecordGenderEnum)
+    public readonly patientGender: PatientRecordGenderEnum;
+
+    @IsString()
+    @IsNotEmpty()
     public readonly jobPosition: string;
 
     /** Medical Consultation */
@@ -104,26 +103,30 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     @IsNotEmpty()
     public readonly medicalConsultationDescription: string;
 
-    /** Patient History */
+    /** Personal information */
     @IsString()
     @IsNotEmpty()
     public readonly medicalAndSurgicalHistory: string;
 
     @IsOptional()
+    @IsObject()
     @ValidateNested()
     @Type(() => ToxicDetailRequestDto)
     public readonly toxicHabitTobacco?: ToxicDetailRequestDto | undefined;
 
     @IsOptional()
+    @IsObject()
     @ValidateNested()
     @Type(() => ToxicDetailRequestDto)
     public readonly toxicHabitAlcohol?: ToxicDetailRequestDto | undefined;
 
     @IsOptional()
+    @IsObject()
     @ValidateNested()
     @Type(() => ToxicDetailRequestDto)
     public readonly toxicHabitOther?: ToxicDetailRequestDto | undefined;
 
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly lifestylePhysicalActivityActive: boolean;
 
@@ -133,9 +136,12 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     public readonly lifestylePhysicalActivityType?: string | undefined;
 
     @IsOptional()
+    @Type(() => Number)
     @IsNumber()
+    @Min(0)
     public readonly lifestylePhysicalActivityDuration?: number | undefined;
 
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly lifestyleMedicationTaking: boolean;
 
@@ -145,17 +151,16 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     public readonly lifestyleMedicationName?: string | undefined;
 
     @IsOptional()
+    @Type(() => Number)
     @IsNumber()
+    @Min(0)
     public readonly lifestyleMedicationQuantity?: number | undefined;
-
-    @IsOptional()
-    @IsNumber()
-    public readonly lifestyleMedicationDuration?: number | undefined;
 
     @IsString()
     @IsNotEmpty()
     public readonly incidentDescription: string;
 
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly jobAccidentHappened: boolean;
 
@@ -165,8 +170,8 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     public readonly jobAccidentDescription?: string | undefined;
 
     @IsOptional()
-    @IsDate()
     @Type(() => Date)
+    @IsDate()
     public readonly jobAccidentDate?: Date | undefined;
 
     @IsOptional()
@@ -174,6 +179,7 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     @IsNotEmpty()
     public readonly jobAccidentObservation?: string | undefined;
 
+    @Type(() => Boolean)
     @IsBoolean()
     public readonly occupationalDiseaseHappened: boolean;
 
@@ -183,9 +189,9 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     public readonly occupationalDiseaseDescription?: string | undefined;
 
     @IsOptional()
-    @IsString()
-    @IsNotEmpty()
-    public readonly occupationalDiseaseDate?: string | undefined;
+    @Type(() => Date)
+    @IsDate()
+    public readonly occupationalDiseaseDate?: Date | undefined;
 
     @IsOptional()
     @IsString()
@@ -233,23 +239,25 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     @IsNotEmpty()
     public readonly familyHistoryOther?: string | undefined;
 
-    /** Job Position Risks */
+    /** Job Risk */
     @IsArray()
+    @IsObject({ each: true })
     @ValidateNested({ each: true })
     @Type(() => JobRiskRequestDto)
     public readonly jobRisks: JobRiskRequestDto[];
 
     @IsArray()
+    @IsObject({ each: true })
     @ValidateNested({ each: true })
     @Type(() => JobRiskWithPreventiveMeasureRequestDto)
     public readonly jobRiskWithPreventiveMeasure: JobRiskWithPreventiveMeasureRequestDto[];
 
-    /** Current Diseases */
+    /** Current Disease */
     @IsString()
     @IsNotEmpty()
     public readonly currentDiseaseDescription: string;
 
-    /** Review of Organs and System */
+    /** Review Organs and Systems */
     @IsOptional()
     @IsString()
     @IsNotEmpty()
@@ -301,38 +309,47 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     public readonly reviewOfOrgansHighlyStrung?: string | undefined;
 
     /** Vital Signs and Anthropometry */
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsBloodPressure: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsTemperature: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsHeartRate: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsOxygenSaturation: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsRespiratoryRate: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsWeight: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsSize: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsMassIndex: number;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly vitalSignsAbdominalPerimeter: number;
@@ -496,6 +513,11 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     @IsOptional()
     @IsString()
     @IsNotEmpty()
+    public readonly examPelvis?: string | undefined;
+
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
     public readonly examPelvisGenitals?: string | undefined;
 
     @IsOptional()
@@ -533,8 +555,9 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     @IsNotEmpty()
     public readonly examNeurologicReflex?: string | undefined;
 
-    /** General Exam */
+    /** General Exam and Specific */
     @IsArray()
+    @IsObject({ each: true })
     @ValidateNested({ each: true })
     @Type(() => GeneralExamResultRequestDto)
     public readonly generalExamResults: GeneralExamResultRequestDto[];
@@ -543,15 +566,9 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     @IsNotEmpty()
     public readonly generalExamObservation: string;
 
-    /** Diagnostics */
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => MedicalDiagnosticRequestDto)
-    public readonly diagnostics: MedicalDiagnosticRequestDto[];
-
-    /** Medical Fitness for Job */
-    @IsEnum(MedicalFitnessType)
-    public readonly medicalFitnessType: MedicalFitnessType;
+    /** Medical Fitness */
+    @IsEnum(MedicalFitnessTypeEnum)
+    public readonly medicalFitnessType: MedicalFitnessTypeEnum;
 
     @IsString()
     @IsNotEmpty()
@@ -561,7 +578,14 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type'> {
     @IsNotEmpty()
     public readonly medicalFitnessLimitation: string;
 
-    /** Medical Recommendations */
+    /** Diagnostic */
+    @IsArray()
+    @IsObject({ each: true })
+    @ValidateNested({ each: true })
+    @Type(() => MedicalDiagnosticRequestDto)
+    public readonly diagnostics: MedicalDiagnosticRequestDto[];
+
+    /** Recommendation */
     @IsString()
     @IsNotEmpty()
     public readonly recommendationDescription: string;
