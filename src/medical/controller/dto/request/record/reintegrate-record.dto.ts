@@ -1,8 +1,7 @@
 import { ReintegrateRecord } from "@omega/medical/application/type/reintegrate-record";
-import { PatientRecordGenderEnum, GeneralExamResult, MedicalFitnessTypeEnum, MedicalDiagnostic } from "@omega/medical/application/type/record.type";
 import { IsArray, IsDate, IsEnum, IsNotEmpty, IsNumber, IsObject, IsOptional, IsPositive, IsString, Min, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
-import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto } from "./_base.dto";
+import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, MedicalFitnessTypeEnum, PatientRecordGenderEnum } from "./_base.dto";
 
 export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'type'> {
     /** Institution & Patient Information */

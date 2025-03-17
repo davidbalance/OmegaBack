@@ -1,30 +1,13 @@
 import { CompanyRecord, MedicalFitnessForJob, PatientRecord, RecordRecommendation, RecordType } from "./record.type";
 
-export enum GeneralDataEnum {
-    ENTRY = 'entry',
-    PERIODIC = 'periodic',
-    REINTEGRATE = 'reintegrate',
-    RETIREMENT = 'retirement',
-}
-
 export type GeneralData = {
-    generalData: GeneralDataEnum
+    generalData: 'entry' | 'periodic' | 'reintegrate' | 'retirement'
 };
 
-export enum EvaluationConditionEnum {
-    PRESUNTIVE = 'presuntive',
-    DEFINITIVE = 'definitive',
-    NO_APPLY = 'no-apply'
-}
-export enum EvaluationConditionWithJobEnum {
-    YES = 'yes',
-    NO = 'no',
-    NO_APPLY = 'no-apply'
-}
 export type RetirementEvaluation = {
     retirementEvaluationDone: boolean;
-    retirementEvaluationCondition: EvaluationConditionEnum;
-    retirementEvaluationConditionWithJob: EvaluationConditionWithJobEnum;
+    retirementEvaluationCondition: 'presuntive' | 'definitive' | 'no-apply';
+    retirementEvaluationConditionWithJob: 'yes' | 'no' | 'no-apply';
 }
 
 export type CertificateRecord = RecordType<'certificado'> & PatientRecord & CompanyRecord &

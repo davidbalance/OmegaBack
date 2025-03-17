@@ -1,8 +1,7 @@
-import { PatientRecordGenderEnum, GeneralExamResult, MedicalDiagnostic } from "@omega/medical/application/type/record.type";
 import { RetirementInstitutionActivity, RetirementRecord } from "@omega/medical/application/type/retirement-record";
 import { Type } from "class-transformer";
 import { IsArray, IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, Min, ValidateNested } from "class-validator";
-import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto } from "./_base.dto";
+import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, PatientRecordGenderEnum } from "./_base.dto";
 
 class RetirementInstitutionActivityRequestDto implements RetirementInstitutionActivity {
     @IsString()
@@ -37,7 +36,7 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     public readonly patientFirstName: string;
 
     @IsString()
-    @IsNotEmpty()
+    @IsNotEmpty() 
     public readonly patientMiddleName: string;
 
     @IsString()

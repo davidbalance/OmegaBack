@@ -104,7 +104,7 @@ export class ClientWriteController {
     }
 
 
-    @Post(':patientDni/record/inital')
+    @Post(':patientDni/record/initial')
     async addRecordInitial(
         @Param('patientDni') patientDni: string,
         @Body() body: InitialRecordRequestDto,

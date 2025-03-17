@@ -2,16 +2,13 @@ export type RecordType<T = string> = {
     type: T
 }
 
-export enum PatientRecordGenderEnum {
-    MALE = 'male',
-    FEMALE = 'female',
-}
+type PatientRecordGender = 'male' | 'female';
 export type PatientRecord = {
     patientFirstName: string;
     patientMiddleName: string;
     patientLastName: string;
     patientSecondLastName: string;
-    patientGender: PatientRecordGenderEnum;
+    patientGender: PatientRecordGender;
 };
 
 export type CompanyRecord = {
@@ -240,15 +237,9 @@ export type MedicalDiagnostic = {
     def: boolean;
 };
 
-
-export enum MedicalFitnessTypeEnum {
-    FIT = 'fit',
-    FIT_OBSERVATION = 'fit-observation',
-    FIT_LIMITATION = 'fit-limitation',
-    NO_FIT = 'no-fit',
-}
+type MedicalFitnessType = 'fit' | 'fit-observation' | 'fit-limitation' | 'no-fit'
 export type MedicalFitnessForJob = {
-    medicalFitnessType: MedicalFitnessTypeEnum;
+    medicalFitnessType: MedicalFitnessType;
     medicalFitnessObservation: string;
     medicalFitnessLimitation: string;
 };

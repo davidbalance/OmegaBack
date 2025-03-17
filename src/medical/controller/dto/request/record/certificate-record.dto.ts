@@ -1,7 +1,28 @@
-import { CertificateRecord, EvaluationConditionEnum, EvaluationConditionWithJobEnum, GeneralDataEnum } from "@omega/medical/application/type/certificate-record";
-import { PatientRecordGenderEnum, MedicalFitnessTypeEnum } from "@omega/medical/application/type/record.type";
+import { CertificateRecord } from "@omega/medical/application/type/certificate-record";
 import { Type } from "class-transformer";
 import { IsBoolean, IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { MedicalFitnessTypeEnum, PatientRecordGenderEnum } from "./_base.dto";
+
+// Enums
+enum GeneralDataEnum {
+    ENTRY = 'entry',
+    PERIODIC = 'periodic',
+    REINTEGRATE = 'reintegrate',
+    RETIREMENT = 'retirement',
+}
+
+enum EvaluationConditionEnum {
+    PRESUNTIVE = 'presuntive',
+    DEFINITIVE = 'definitive',
+    NO_APPLY = 'no-apply'
+}
+
+enum EvaluationConditionWithJobEnum {
+    YES = 'yes',
+    NO = 'no',
+    NO_APPLY = 'no-apply'
+}
+
 
 // DTOs
 export class CertficateRecordRequestDto implements Omit<CertificateRecord, 'type'> {

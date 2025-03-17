@@ -1,8 +1,7 @@
 import { Type } from "class-transformer";
 import { IsArray, IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, Min, ValidateNested } from "class-validator";
-import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, ToxicDetailRequestDto } from "./_base.dto";
+import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, MedicalFitnessTypeEnum, PatientRecordGenderEnum, ToxicDetailRequestDto } from "./_base.dto";
 import { JobRisk, JobRiskWithPreventiveMeasure, PeriodicRecord } from "@omega/medical/application/type/periodic-record";
-import { PatientRecordGenderEnum, MedicalFitnessTypeEnum, ToxicDetail, MedicalDiagnostic } from "@omega/medical/application/type/record.type";
 
 // DTOs
 export class JobRiskRequestDto implements JobRisk {

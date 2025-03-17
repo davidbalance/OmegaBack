@@ -9,9 +9,10 @@ import { CertificateRecord } from "../../type/certificate-record";
 import { PdfProvider } from "@shared/shared/providers/pdf.provider";
 import { FileOperation } from "@shared/shared/providers";
 
-export type ClientRecordLayoutFunc = (value: InitialRecord | PeriodicRecord | ReintegrateRecord | RetirementRecord | CertificateRecord) => unknown;
+export type GenericRecord = InitialRecord | PeriodicRecord | ReintegrateRecord | RetirementRecord | CertificateRecord;
+export type ClientRecordLayoutFunc = (value: GenericRecord) => unknown;
 export type ClientRecordFilenameFunc = (name: string) => string;
-export type ClientAddRecordCommandPayload = (InitialRecord | PeriodicRecord | ReintegrateRecord | RetirementRecord | CertificateRecord) & {
+export type ClientAddRecordCommandPayload = GenericRecord & {
     patientDni: string;
 }
 export class ClientAddRecordCommand implements CommandHandlerAsync<ClientAddRecordCommandPayload, void> {
@@ -33,6 +34,6 @@ export class ClientAddRecordCommand implements CommandHandlerAsync<ClientAddReco
         const path = await this.file.write(filepath, filename, buffer);
 
         client.addRecord({ filepath: path, name: value.type });
-        await this.repository.saveAsync(client);
+        // await this.repository.saveAsync(client);
     }
 }

@@ -1,43 +1,23 @@
 import { BiologicalRisk, ChemicalRisk, CompanyRecord, CurrentDisease, ErgonomicRisk, ExtraActivity, FamilyHistory, GeneralExamResultAndSpecific, JobAccident, LifeStyle, MechanicalRisk, MedicalAndSurgicalHistory, MedicalConsultation, MedicalDiagnostic, MedicalFitnessForJob, OccupationalDisease, PatientRecord, PhysicalRegionalExam, PhysicalRisk, PsychosocialRisk, RecordRecommendation, RecordType, ReviewOfOrgansAndSystem, ToxicDetail, VitalSignsAndAnthropometry } from "./record.type";
 
-export enum ReligionRecordEnum {
-    CATHOLIC = "catholic",
-    EVANGELICAL = "evangelical",
-    JEHOVAHS_WITNESSES = "jehovah's witnesses",
-    MORMON = "mormon",
-    OTHER = "other",
-}
-
-export enum SexualOrientationEnum {
-    LESBIAN = 'lesbian',
-    GAY = 'gay',
-    BISEXUAL = 'bisexual',
-    HETEROSEXUAL = 'heterosexual',
-    UNKNOWN = 'unknown',
-}
-
-export enum GenderIdentityEnum {
-    MALE = 'male',
-    FEMALEfemale = 'female',
-    TRANS_FEMALE = 'trans-female',
-    TRANS_MALE = 'trans-male',
-    UNKNOWN = 'unknown',
-}
+type ReligionRecord = "catholic" | "evangelical" | "jehovah's witnesses" | "mormon" | "other";
+type SexualOrientation = 'lesbian' | 'gay' | 'bisexual' | 'heterosexual' | 'unknown';
+type GenderIdentity = 'male' | 'female' | 'trans-female' | 'trans-male' | 'unknown';
 
 export type ExamHistoryResult = {
     done: boolean;
-    time: number;
-    result: string;
+    time?: number;
+    result?: string;
 };
 
 export type GynecologicalHistory = {
     gynecologicalMenarche: string;
     gynecologicalCycle: string;
     gynecologicalLastMenstruationDate: Date;
-    gynecologicalDeeds: string;
-    gynecologicalBirths: string;
-    gynecologicalCesarean: string;
-    gynecologicalAbortions: string;
+    gynecologicalDeeds: number;
+    gynecologicalBirths: number;
+    gynecologicalCesarean: number;
+    gynecologicalAbortions: number;
     gynecologicalDeadChildren: number;
     gynecologicalLivingChildren: number;
     gynecologicalSexualLife: boolean;
@@ -102,12 +82,12 @@ export type InitialRecord = RecordType<'inicial'> & PatientRecord & CompanyRecor
         /** Institution & Patient Information */
         institutionHealthFacility: string;
         patientAge: number;
-        patientReligion: ReligionRecordEnum;
+        patientReligion: ReligionRecord;
         patientOtherReligion?: string;
         patientBloodType: string;
         patientLaterality: string;
-        patientSexualOrientation: SexualOrientationEnum;
-        patientGenderIdentity: GenderIdentityEnum;
+        patientSexualOrientation: SexualOrientation;
+        patientGenderIdentity: GenderIdentity;
         patientDisabilityType?: string;
         patientDisabilityPercent?: number;
 
