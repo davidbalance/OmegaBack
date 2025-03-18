@@ -90,6 +90,15 @@ export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc
                     bold: true,
                     color: 'black',
                     fontSize: 9,
+                },
+                verticalText: {
+                    textRenderer: (text: string) => {
+                        return {
+                            text: text,
+                            absolutePosition: { x: 0, y: 0 },
+                            rotation: Math.PI / 2 // 90 degrees in radians
+                        };
+                    }
                 }
             },
             defaultStyle: {

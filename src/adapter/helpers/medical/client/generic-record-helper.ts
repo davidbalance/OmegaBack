@@ -5,8 +5,9 @@ import { PeriodicRecord } from "@omega/medical/application/type/periodic-record"
 import { ReintegrateRecord } from "@omega/medical/application/type/reintegrate-record"
 import { RetirementRecord } from "@omega/medical/application/type/retirement-record"
 import { createInitialRecord } from "./initial-record-helper"
-import { JobAccident, LifeStyle, MedicalAndSurgicalHistory, MedicalConsultation, OccupationalDisease, PhysicalRegionalExam, ToxicDetail } from "@omega/medical/application/type/record.type"
+import { CurrentDisease, ExtraActivity, FamilyHistory, GeneralExamResultAndSpecific, JobAccident, LifeStyle, MedicalAndSurgicalHistory, MedicalConsultation, MedicalDiagnostic, MedicalFitnessForJob, OccupationalDisease, PhysicalRegionalExam, RecordRecommendation, ReviewOfOrgansAndSystem, ToxicDetail, VitalSignsAndAnthropometry } from "@omega/medical/application/type/record.type"
 import { formatDate } from "date-fns"
+import { createPeriodicRecord } from "./periodic-record-helper"
 
 const isInitialRecord = (record: GenericRecord): record is InitialRecord => record.type === 'inicial';
 const isPeriodicRecord = (record: GenericRecord): record is PeriodicRecord => record.type === 'periodico';
@@ -25,7 +26,9 @@ export const createRecordLayout = (record: GenericRecord, headerLayout: HeaderLa
     if (isInitialRecord(record)) {
         return createInitialRecord(record, createHeader(headerLayout), subheaderLayout);
     }
-    if (isPeriodicRecord(record)) { }
+    if (isPeriodicRecord(record)) {
+        return createPeriodicRecord(record, createHeader(headerLayout), subheaderLayout);
+    }
     if (isReintegrateRecord(record)) { }
     if (isRetirementRecord(record)) { }
     if (isCertificateRecord(record)) { }
@@ -37,6 +40,31 @@ export const craftSpacing = () => ({
     text: '',
     marginTop: 10
 })
+
+type VerticalTextOptions = Partial<{
+    maxHeight: number;
+    maxWidth: number;
+    fontSize: number;
+}>
+const defaultOptions: Required<VerticalTextOptions> = {
+    maxHeight: 100,
+    maxWidth: 10,
+    fontSize: 8,
+}
+export const verticalText = (text: string, options: VerticalTextOptions = defaultOptions): object => {
+    const currentOptions: Required<VerticalTextOptions> = { ...defaultOptions, ...options };
+    const { fontSize, maxHeight, maxWidth } = currentOptions;
+    const xPos = 6;
+    const yPos = maxHeight - 5;
+
+    return {
+        svg: `<svg width="${maxWidth}" height="${maxHeight}">
+              <text x="${xPos}" y="${yPos}" transform="rotate(-90, ${xPos}, ${yPos})" font-size="${fontSize}">
+                ${text}
+              </text>
+            </svg>`,
+    };
+}
 
 export const craftMedicalConsultation = (value: MedicalConsultation): object => ({
     width: '*',
@@ -270,7 +298,7 @@ export const craftJobAccident = (value: JobAccident, subheader: SubheaderLayoutF
                 ],
                 [
                     {
-                        text: `ESPECIFICAR: ${value.jobAccidentDescription ?? ''}`,
+                        text: `ESPECIFICAR: - ${value.jobAccidentDescription ?? ''}`,
                     },
                     {
                         text: !!value.jobAccidentDate ? formatDate(value.jobAccidentDate, 'yyyy/MM/dd') : '',
@@ -332,7 +360,7 @@ export const craftOccupationalDisease = (value: OccupationalDisease, subheader: 
                 ],
                 [
                     {
-                        text: `ESPECIFICAR: ${value.occupationalDiseaseDescription ?? ''}`,
+                        text: `ESPECIFICAR: - ${value.occupationalDiseaseDescription ?? ''}`,
                     },
                     {
                         text: !!value.occupationalDiseaseDate ? formatDate(value.occupationalDiseaseDate, 'yyyy/MM/dd') : '',
@@ -357,6 +385,171 @@ export const craftOccupationalDisease = (value: OccupationalDisease, subheader: 
         }
     }];
 
+
+const familyHistory = (title: string, value: string) => [
+    {
+        style: 'itemHeader',
+        text: title,
+    }, value
+]
+
+export const craftFamilyHistory = (value: FamilyHistory, subheader: SubheaderLayoutFunc): object[] => [
+    {
+        width: '*',
+        style: 'itemElement',
+        table: {
+            widths: ["auto", "*"],
+            body: [
+                !!value.familyHistoryCardioVascular ? familyHistory('ENFERMEDAD CARDIO-VASCULAR', value.familyHistoryCardioVascular) : undefined,
+                !!value.familyHistoryMetabolic ? familyHistory('ENFERMEDAD METABÓLICA', value.familyHistoryMetabolic) : undefined,
+                !!value.familyHistoryNeurologic ? familyHistory('ENFERMEDAD NEUROLÓGICA', value.familyHistoryNeurologic) : undefined,
+                !!value.familyHistoryOncologic ? familyHistory('ENFERMEDAD ONCOLÓGICA', value.familyHistoryOncologic) : undefined,
+                !!value.familyHistoryInfectious ? familyHistory('ENFERMEDAD INFECCIOSA', value.familyHistoryInfectious) : undefined,
+                !!value.familyHistoryHereditary ? familyHistory('ENFERMEDAD HEREDITARIA/CONGÉNITA', value.familyHistoryHereditary) : undefined,
+                !!value.familyHistoryDisability ? familyHistory('DISCAPACIDADES', value.familyHistoryDisability) : undefined,
+                !!value.familyHistoryOther ? familyHistory('OTROS', value.familyHistoryOther) : undefined,
+            ].filter(e => !!e)
+        },
+    },
+];
+
+export const craftExtraActivity = (value: ExtraActivity): object => ({
+    width: '*',
+    style: 'itemElement',
+    table: {
+        widths: ["*"],
+        body: [
+            [
+                {
+                    border: [true, true, true, false],
+                    style: 'descriptionItem',
+                    text: 'Descripción',
+                }
+            ],
+            [
+                {
+                    border: [true, false, true, true],
+                    text: value.extraActivityDescription,
+                }
+            ],
+        ]
+    }
+});
+
+export const craftCurrentDisease = (value: CurrentDisease): object => ({
+    width: '*',
+    style: 'itemElement',
+    table: {
+        widths: ["*"],
+        body: [
+            [
+                {
+                    border: [true, true, true, false],
+                    style: 'descriptionItem',
+                    text: 'Descripción',
+                }
+            ],
+            [
+                {
+                    border: [true, false, true, true],
+                    text: value.currentDiseaseDescription,
+                }
+            ],
+        ]
+    }
+});
+
+const reviewOfOrgansAndSystem = (title: string, value: string) => [
+    {
+        style: 'itemHeader',
+        text: title,
+    }, value
+];
+
+export const craftReviewOfOrgansAndSystem = (value: ReviewOfOrgansAndSystem): object[] => [
+    {
+        width: '*',
+        style: 'itemElement',
+        table: {
+            widths: ["auto", "*"],
+            body: [
+                !!value.reviewOfOrgansSkin ? reviewOfOrgansAndSystem('PIEL - ANEXOS', value.reviewOfOrgansSkin) : undefined,
+                !!value.reviewOfOrgansSenseOrgans ? reviewOfOrgansAndSystem('ÓRGANOS DE LOS SENTIDOS', value.reviewOfOrgansSenseOrgans) : undefined,
+                !!value.reviewOfOrgansBreath ? reviewOfOrgansAndSystem('RESPIRATORIO', value.reviewOfOrgansBreath) : undefined,
+                !!value.reviewOfOrgansCardiovascular ? reviewOfOrgansAndSystem('CARDIO-VASCULAR', value.reviewOfOrgansCardiovascular) : undefined,
+                !!value.reviewOfOrgansDigestive ? reviewOfOrgansAndSystem('DIGESTIVO', value.reviewOfOrgansDigestive) : undefined,
+                !!value.reviewOfOrgansUrinary ? reviewOfOrgansAndSystem('GENITO - URINARIO', value.reviewOfOrgansUrinary) : undefined,
+                !!value.reviewOfOrgansSkeletalMuscle ? reviewOfOrgansAndSystem('MÚSCULO ESQUELÉTICO', value.reviewOfOrgansSkeletalMuscle) : undefined,
+                !!value.reviewOfOrgansEndocrinic ? reviewOfOrgansAndSystem('ENDOCRINO', value.reviewOfOrgansEndocrinic) : undefined,
+                !!value.reviewOfOrgansHemoLymphatic ? reviewOfOrgansAndSystem('HEMO LINFÁTICO', value.reviewOfOrgansHemoLymphatic) : undefined,
+                !!value.reviewOfOrgansHighlyStrung ? reviewOfOrgansAndSystem('NERVIOSO', value.reviewOfOrgansHighlyStrung) : undefined
+            ].filter(e => !!e)
+        },
+    },
+];
+export const craftVitalSignsAndAnthropometry = (value: VitalSignsAndAnthropometry, subheader: SubheaderLayoutFunc): object[] => [
+    {
+        width: '*',
+        style: 'itemElement',
+        table: {
+            widths: ["auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
+            body: [
+                [
+                    {
+                        style: 'itemElement',
+                        text: 'PRESIÓN ARTERIAL (mmHg)'
+                    },
+                    {
+                        style: 'itemElement',
+                        text: 'TEMPERATURA (°C)'
+                    },
+                    {
+                        style: 'itemElement',
+                        text: 'FRECUENCIA CARDIACA (Lat/min)'
+                    },
+                    {
+                        style: 'itemElement',
+                        text: 'SATURACIÓN DE OXÍGENO (O2%)'
+                    },
+                    {
+                        style: 'itemElement',
+                        text: 'FRECUENCIA RESPIRATORIA (fr/min)'
+                    },
+                    {
+                        style: 'itemElement',
+                        text: 'PESO (Kg)'
+                    },
+                    {
+                        style: 'itemElement',
+                        text: 'TALLA (cm)'
+                    },
+                    {
+                        style: 'itemElement',
+                        text: 'ÍNDICE DE MASA CORPORAL (kg/m2)'
+                    },
+                    {
+                        style: 'itemElement',
+                        text: 'PERÍMETRO ABDOMINAL (cm)'
+                    },
+                ],
+                [
+                    value.vitalSignsBloodPressure,
+                    value.vitalSignsTemperature,
+                    value.vitalSignsHeartRate,
+                    value.vitalSignsOxygenSaturation,
+                    value.vitalSignsRespiratoryRate,
+                    value.vitalSignsWeight,
+                    value.vitalSignsSize,
+                    value.vitalSignsMassIndex,
+                    value.vitalSignsAbdominalPerimeter,
+                ]
+            ]
+        },
+        layout: {
+            fillColor: subheader
+        }
+    },
+];
 
 const physicalItem = (title: string, values: { label: string, value: boolean }[], subheader: SubheaderLayoutFunc): object =>
 ({
@@ -408,104 +601,291 @@ export const craftPhysicalRegionalExam = (value: PhysicalRegionalExam, subheader
             body: [
                 [
                     physicalItem('Piel', [
-                        { label: 'Cicatrices', value: false },
-                        { label: 'Tatuajes', value: false },
-                        { label: 'Piel y Faneras', value: false }
+                        { label: 'Cicatrices', value: !!value.examSkinScar },
+                        { label: 'Tatuajes', value: !!value.examSkinTattoo },
+                        { label: 'Piel y Faneras', value: !!value.examSkinLesions }
                     ], subheader),
                     physicalItem('Oido', [
-                        { label: 'C. auditivo externo', value: false },
-                        { label: 'Pabellón', value: false },
-                        { label: 'Tímpanos', value: false }
+                        { label: 'C. auditivo externo', value: !!value.examEyeEyelids },
+                        { label: 'Pabellón', value: !!value.examEyeConjunctiva },
+                        { label: 'Tímpanos', value: !!value.examEyePupils }
                     ], subheader),
                     physicalItem('Nariz', [
-                        { label: 'Tabique', value: false },
-                        { label: 'Cornetes', value: false },
-                        { label: 'Mucosas', value: false },
-                        { label: 'Senos paranasales', value: false }
+                        { label: 'Tabique', value: !!value.examEyeCorneas },
+                        { label: 'Cornetes', value: !!value.examEyeMotility },
+                        { label: 'Mucosas', value: !!value.examEarAuditoryExternal },
+                        { label: 'Senos paranasales', value: !!value.examEarAuricle }
                     ], subheader),
                     physicalItem('Abdomen', [
-                        { label: 'Vísceras', value: false },
-                        { label: 'Pared abdominal', value: false }
+                        { label: 'Vísceras', value: !!value.examEarEardrum },
+                        { label: 'Pared abdominal', value: !!value.examPharynxLips }
                     ], subheader),
                     physicalItem('Pelvis', [
-                        { label: 'Pelvis', value: false },
-                        { label: 'Genitales', value: false }
+                        { label: 'Pelvis', value: !!value.examPharynxTongue },
+                        { label: 'Genitales', value: !!value.examPharynxPharynx }
                     ], subheader),
                 ],
                 [
                     physicalItem('Ojos', [
-                        { label: 'Párpados', value: false },
-                        { label: 'Conjuntivas', value: false },
-                        { label: 'Pupilas', value: false },
-                        { label: 'Córnea', value: false },
-                        { label: 'Motilidad', value: false },
+                        { label: 'Párpados', value: !!value.examPharynxTonsils },
+                        { label: 'Conjuntivas', value: !!value.examPharynxTeeth },
+                        { label: 'Pupilas', value: !!value.examNosePartition },
+                        { label: 'Córnea', value: !!value.examNoseTurbinates },
+                        { label: 'Motilidad', value: !!value.examNoseMucousMembranes },
                     ], subheader),
                     physicalItem('Oro faringe', [
-                        { label: 'Labios', value: false },
-                        { label: 'Lengua', value: false },
-                        { label: 'Faringe', value: false },
-                        { label: 'Amígdalas', value: false },
-                        { label: 'Dentadura', value: false },
+                        { label: 'Labios', value: !!value.examNoseParanasalSinuses },
+                        { label: 'Lengua', value: !!value.examNeckThyroid },
+                        { label: 'Faringe', value: !!value.examNeckMobility },
+                        { label: 'Amígdalas', value: !!value.examChestBreast },
+                        { label: 'Dentadura', value: !!value.examChestHeart },
                     ], subheader),
                     physicalItem('Cuello', [
-                        { label: 'Tiroides / masas', value: false },
-                        { label: 'Movilidad', value: false },
+                        { label: 'Tiroides / masas', value: !!value.examChestLungs },
+                        { label: 'Movilidad', value: !!value.examChestRibCage },
                     ], subheader),
                     physicalItem('Columna', [
-                        { label: 'Flexibilidad', value: false },
-                        { label: 'Desviación', value: false },
-                        { label: 'Dolor', value: false }
+                        { label: 'Flexibilidad', value: !!value.examAbdomenViscera },
+                        { label: 'Desviación', value: !!value.examAbdomenAbdominalWall },
+                        { label: 'Dolor', value: !!value.examColumnFlexibility }
                     ], subheader),
                     physicalItem('Extremidades', [
-                        { label: 'Vascular', value: false },
-                        { label: 'Miembros superiores', value: false },
-                        { label: 'Miembros inferiores', value: false }
+                        { label: 'Vascular', value: !!value.examColumnDeviation },
+                        { label: 'Miembros superiores', value: !!value.examColumnPain },
+                        { label: 'Miembros inferiores', value: !!value.examPelvis }
                     ], subheader),
                 ],
                 [
                     physicalItem('Tórax', [
-                        { label: 'Mamas', value: false },
-                        { label: 'Corazón', value: false },
-                        { label: 'Pulmones', value: false },
-                        { label: 'Parrilla Costal', value: false },
+                        { label: 'Mamas', value: !!value.examPelvisGenitals },
+                        { label: 'Corazón', value: !!value.examLimbVascular },
+                        { label: 'Pulmones', value: !!value.examLimbUpper },
+                        { label: 'Parrilla Costal', value: !!value.examLimbLower },
                     ], subheader),
                     physicalItem('Neurológico', [
-                        { label: 'Fuerza', value: false },
-                        { label: 'Sensibilidad', value: false },
-                        { label: 'Marcha', value: false },
-                        { label: 'Reflejos', value: false },
+                        { label: 'Fuerza', value: !!value.examNeurologicForce },
+                        { label: 'Sensibilidad', value: !!value.examNeurologicSensitivity },
+                        { label: 'Marcha', value: !!value.examNeurologicGait },
+                        { label: 'Reflejos', value: !!value.examNeurologicReflex },
                     ], subheader), {}, {}, {}
                 ],
+            ]
+        }
+    },
+    {
+        width: '*',
+        table: {
+            widths: ["*"],
+            body: [
                 [
                     {
                         border: [true, true, true, false],
                         style: 'descriptionItem',
                         text: 'Observaciones:',
-                        colSpan: 5
-                    }, {}, {}, {}, {}
-                ]
-            ]
-        }
-    }
-    /* ,
-    {
-        width: '*',
-        table: {
-            widths: ["*", "auto", "*", "auto", "*", "auto", "*", "auto", "*", "auto"],
-            body: [
+                    }
+                ],
                 [
                     {
-                        style: 'itemElement',
-                        text: 'Piel',
-                        colSpan: 2
-                    }, {}, '', '', '', '', '', '', '', ''
+                        stack: [
+                            !!value.examSkinScar ? `Cicatrices - ${value.examSkinScar}` : '',
+                            !!value.examSkinTattoo ? `Tatuajes - ${value.examSkinTattoo}` : '',
+                            !!value.examSkinLesions ? `Piel y Faneras - ${value.examSkinLesions}` : '',
+                            !!value.examEyeEyelids ? `C. auditivo externo - ${value.examEyeEyelids}` : '',
+                            !!value.examEyeConjunctiva ? `Pabellón - ${value.examEyeConjunctiva}` : '',
+                            !!value.examEyePupils ? `Tímpanos - ${value.examEyePupils}` : '',
+                            !!value.examEyeCorneas ? `Tabique - ${value.examEyeCorneas}` : '',
+                            !!value.examEyeMotility ? `Cornetes - ${value.examEyeMotility}` : '',
+                            !!value.examEarAuditoryExternal ? `Mucosas - ${value.examEarAuditoryExternal}` : '',
+                            !!value.examEarAuricle ? `Senos paranasales - ${value.examEarAuricle}` : '',
+                            !!value.examEarEardrum ? `Vísceras - ${value.examEarEardrum}` : '',
+                            !!value.examPharynxLips ? `Pared abdominal - ${value.examPharynxLips}` : '',
+                            !!value.examPharynxTongue ? `Pelvis - ${value.examPharynxTongue}` : '',
+                            !!value.examPharynxPharynx ? `Genitales - ${value.examPharynxPharynx}` : '',
+                            !!value.examPharynxTonsils ? `Párpados - ${value.examPharynxTonsils}` : '',
+                            !!value.examPharynxTeeth ? `Conjuntivas - ${value.examPharynxTeeth}` : '',
+                            !!value.examNosePartition ? `Pupilas - ${value.examNosePartition}` : '',
+                            !!value.examNoseTurbinates ? `Córnea - ${value.examNoseTurbinates}` : '',
+                            !!value.examNoseMucousMembranes ? `Motilidad - ${value.examNoseMucousMembranes}` : '',
+                            !!value.examNoseParanasalSinuses ? `Labios - ${value.examNoseParanasalSinuses}` : '',
+                            !!value.examNeckThyroid ? `Lengua - ${value.examNeckThyroid}` : '',
+                            !!value.examNeckMobility ? `Faringe - ${value.examNeckMobility}` : '',
+                            !!value.examChestBreast ? `Amígdalas - ${value.examChestBreast}` : '',
+                            !!value.examChestHeart ? `Dentadura - ${value.examChestHeart}` : '',
+                            !!value.examChestLungs ? `Tiroides / masas - ${value.examChestLungs}` : '',
+                            !!value.examChestRibCage ? `Movilidad - ${value.examChestRibCage}` : '',
+                            !!value.examAbdomenViscera ? `Flexibilidad - ${value.examAbdomenViscera}` : '',
+                            !!value.examAbdomenAbdominalWall ? `Desviación - ${value.examAbdomenAbdominalWall}` : '',
+                            !!value.examColumnFlexibility ? `Dolor - ${value.examColumnFlexibility}` : '',
+                            !!value.examColumnDeviation ? `Vascular - ${value.examColumnDeviation}` : '',
+                            !!value.examColumnPain ? `Miembros superiores - ${value.examColumnPain}` : '',
+                            !!value.examPelvis ? `Miembros inferiores - ${value.examPelvis}` : '',
+                            !!value.examPelvisGenitals ? `Mamas - ${value.examPelvisGenitals}` : '',
+                            !!value.examLimbVascular ? `Corazón - ${value.examLimbVascular}` : '',
+                            !!value.examLimbUpper ? `Pulmones - ${value.examLimbUpper}` : '',
+                            !!value.examLimbLower ? `Parrilla Costal - ${value.examLimbLower}` : '',
+                            !!value.examNeurologicForce ? `Fuerza - ${value.examNeurologicForce}` : '',
+                            !!value.examNeurologicSensitivity ? `Sensibilidad - ${value.examNeurologicSensitivity}` : '',
+                            !!value.examNeurologicGait ? `Marcha - ${value.examNeurologicGait}` : '',
+                            !!value.examNeurologicReflex ? `Reflejos - ${value.examNeurologicReflex}` : '',
+                        ],
+                    }
                 ],
-                ['Cicatrices', '', '', '', '', '', '', '', '', '',],
-                ['Tatuajes', '', '', '', '', '', '', '', '', '',],
-                ['Piel y Faneras', '', '', '', '', '', '', '', '', '',],
             ]
         }
-    } */];
+    }];
+
+export const craftSpecificAndGeneralResults = (value: GeneralExamResultAndSpecific, subheader: SubheaderLayoutFunc): object =>
+({
+    width: '*',
+    style: 'itemElement',
+    table: {
+        widths: ["auto", "auto", '*'],
+        body: [
+            [
+                {
+                    style: 'itemElement',
+                    text: 'EXAMEN',
+                },
+                {
+                    style: 'itemElement',
+                    text: 'FECHA',
+                },
+                {
+                    style: 'itemElement',
+                    text: 'RESULTADOS',
+                }
+            ],
+            ...value.generalExamResults.map(e => [
+                {
+                    text: e.exam
+                },
+                {
+                    text: formatDate(e.date, 'yyyy/MM/dd')
+                },
+                {
+                    text: e.result
+                }
+            ]),
+            [
+                {
+                    border: [true, false, true, false],
+                    style: 'descriptionItem',
+                    text: 'Observaciones:',
+                    colSpan: 3,
+                }, {}, {}
+            ],
+            [
+                {
+                    text: value.generalExamObservation,
+                    colSpan: 3,
+                }, {}, {}
+            ]
+        ]
+    },
+    layout: {
+        fillColor: subheader
+    }
+});
+
+export const craftMedicalDiagnostic = (values: MedicalDiagnostic[], subheader: SubheaderLayoutFunc): object => ({
+    width: '*',
+    style: 'itemElement',
+    table: {
+        widths: ["*", 'auto', 'auto', 'auto'],
+        body: [
+            [
+                {
+                    style: 'itemElement',
+                    text: 'Descripcion',
+                },
+                {
+                    style: 'itemElement',
+                    text: 'CIE',
+                },
+                {
+                    style: 'itemElement',
+                    text: 'PRE',
+                },
+                {
+                    style: 'itemElement',
+                    text: 'DEF',
+                }
+            ],
+            ...values.map(e => [
+                e.description,
+                e.cie,
+                e.pre ? 'Si' : 'No',
+                e.def ? 'Si' : 'No'
+            ]),
+        ]
+    },
+    layout: {
+        fillColor: subheader
+    }
+});
+
+export const craftMedicalFitnessForJob = (value: MedicalFitnessForJob, subheader: SubheaderLayoutFunc): object => ({
+    width: '*',
+    style: 'itemElement',
+    table: {
+        widths: ["auto", "*"],
+        body: [
+            [
+                {
+                    style: 'itemElement',
+                    text: 'ESTADO',
+                },
+                value.medicalFitnessType === 'fit'
+                    ? 'APTO'
+                    : (value.medicalFitnessType === 'fit-observation'
+                        ? 'APTO EN OBSERVACION'
+                        : (value.medicalFitnessLimitation)
+                            ? 'APTO CON LIMITACIONES'
+                            : 'NO APTO'),
+            ],
+            [
+                {
+                    style: 'itemElement',
+                    text: 'OBSERVACION',
+                },
+                value.medicalFitnessObservation,
+            ],
+            [
+                {
+                    style: 'itemElement',
+                    text: 'LIMITACION',
+                },
+                value.medicalFitnessLimitation
+            ],
+        ]
+    },
+    layout: {
+        fillColor: (_col, _node, rowIndex) => subheader(rowIndex)
+    }
+});
+
+export const craftRecommendation = (value: RecordRecommendation): object => ({
+    width: '*',
+    style: 'itemElement',
+    table: {
+        widths: ["*"],
+        body: [
+            [
+                {
+                    border: [true, true, true, false],
+                    style: 'descriptionItem',
+                    text: 'Descripción',
+                }
+            ],
+            [
+                {
+                    border: [true, false, true, true],
+                    text: value.recommendationDescription,
+                }
+            ],
+        ]
+    }
+});
 
 const createHeader = (headerLayout: HeaderLayoutFunc): CreateHeaderFunc =>
     (text) => ({
