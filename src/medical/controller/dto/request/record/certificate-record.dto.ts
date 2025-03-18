@@ -97,5 +97,4 @@ export class CertficateRecordRequestDto implements Omit<CertificateRecord, 'type
     @IsString()
     @IsNotEmpty()
     public readonly recommendationDescription: string;
-
 }

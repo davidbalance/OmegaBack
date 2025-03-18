@@ -10,6 +10,7 @@ import { formatDate } from "date-fns"
 import { createPeriodicRecord } from "./periodic-record-helper"
 import { createRetirementRecord } from "./retirement-record-helper"
 import { createReintegrationRecord } from "./reintegration-record-helper"
+import { createCertificateRecord } from "./certificate-record-helper"
 
 const isInitialRecord = (record: GenericRecord): record is InitialRecord => record.type === 'inicial';
 const isPeriodicRecord = (record: GenericRecord): record is PeriodicRecord => record.type === 'periodico';
@@ -37,7 +38,9 @@ export const createRecordLayout = (record: GenericRecord, headerLayout: HeaderLa
     if (isRetirementRecord(record)) {
         return createRetirementRecord(record, createHeader(headerLayout), subheaderLayout);
     }
-    if (isCertificateRecord(record)) { }
+    if (isCertificateRecord(record)) {
+        return createCertificateRecord(record, createHeader(headerLayout), subheaderLayout);
+    }
 
     return [];
 }
