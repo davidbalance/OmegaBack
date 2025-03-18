@@ -1,9 +1,9 @@
 import { ReintegrateRecord } from "@omega/medical/application/type/reintegrate-record";
 import { IsArray, IsDate, IsEnum, IsNotEmpty, IsNumber, IsObject, IsOptional, IsPositive, IsString, Min, ValidateNested } from "class-validator";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, MedicalFitnessTypeEnum, PatientRecordGenderEnum } from "./_base.dto";
 
-export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'type'> {
+export class ReintegrateRecordRequestDto /* implements Omit<ReintegrateRecord, 'type'>  */ {
     /** Institution & Patient Information */
     @IsString()
     @IsNotEmpty()
@@ -56,6 +56,7 @@ export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'typ
     @IsDate()
     public readonly workingReintegrationDate: Date;
 
+    @Type(() => Number)
     @IsNumber()
     @Min(0)
     public readonly workingTime: number;
@@ -123,202 +124,202 @@ export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'typ
     /** Physical Regional Exam */
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examSkinScar?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examSkinTattoo?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examSkinLesions?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEyeEyelids?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEyeConjunctiva?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEyePupils?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEyeCorneas?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEyeMotility?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEarAuditoryExternal?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEarAuricle?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEarEardrum?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPharynxLips?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPharynxTongue?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPharynxPharynx?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPharynxTonsils?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPharynxTeeth?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNosePartition?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNoseTurbinates?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNoseMucousMembranes?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNoseParanasalSinuses?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNeckThyroid?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNeckMobility?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examChestBreast?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examChestHeart?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examChestLungs?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examChestRibCage?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examAbdomenViscera?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examAbdomenAbdominalWall?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examColumnFlexibility?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examColumnDeviation?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examColumnPain?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPelvis?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPelvisGenitals?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examLimbVascular?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examLimbUpper?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examLimbLower?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNeurologicForce?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNeurologicSensitivity?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNeurologicGait?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNeurologicReflex?: string | undefined;
 
     /** General Exam and Specific */

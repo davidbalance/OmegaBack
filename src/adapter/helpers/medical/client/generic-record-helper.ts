@@ -9,6 +9,7 @@ import { CurrentDisease, ExtraActivity, FamilyHistory, GeneralExamResultAndSpeci
 import { formatDate } from "date-fns"
 import { createPeriodicRecord } from "./periodic-record-helper"
 import { createRetirementRecord } from "./retirement-record-helper"
+import { createReintegrationRecord } from "./reintegration-record-helper"
 
 const isInitialRecord = (record: GenericRecord): record is InitialRecord => record.type === 'inicial';
 const isPeriodicRecord = (record: GenericRecord): record is PeriodicRecord => record.type === 'periodico';
@@ -30,7 +31,9 @@ export const createRecordLayout = (record: GenericRecord, headerLayout: HeaderLa
     if (isPeriodicRecord(record)) {
         return createPeriodicRecord(record, createHeader(headerLayout), subheaderLayout);
     }
-    if (isReintegrateRecord(record)) { }
+    if (isReintegrateRecord(record)) {
+        return createReintegrationRecord(record, createHeader(headerLayout), subheaderLayout);
+    }
     if (isRetirementRecord(record)) {
         return createRetirementRecord(record, createHeader(headerLayout), subheaderLayout);
     }
