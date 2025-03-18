@@ -2,36 +2,44 @@ import { formatDate } from "date-fns";
 import { RetirementRecord } from "@omega/medical/application/type/retirement-record";
 import { craftJobAccident, craftMedicalAndSurgicalHistory, craftMedicalDiagnostic, craftOccupationalDisease, craftPhysicalRegionalExam, craftRecommendation, CraftRecordFunc, craftSpacing, craftSpecificAndGeneralResults, craftVitalSignsAndAnthropometry, CratftRecordItemFunc } from "./generic-record-helper";
 
-export const createRetirementRecord: CraftRecordFunc<RetirementRecord> = (record: RetirementRecord, header, subheader) => [
-    header('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
-    institutionLayout(record, subheader),
-    craftSpacing(),
-    header('ANTECEDENTES PERSONALES'),
-    craftMedicalAndSurgicalHistory(record, subheader),
-    craftJobAccident(record, subheader),
-    craftOccupationalDisease(record, subheader),
-    craftSpacing(),
-    header('CONSTANTES VITALES Y ANTROPOMETRÍA'),
-    craftVitalSignsAndAnthropometry(record, subheader),
-    craftSpacing(),
-    header('EXAMEN FÍSICO REGIONAL'),
-    craftPhysicalRegionalExam(record, subheader),
-    craftSpacing(),
-    header('RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)'),
-    craftSpecificAndGeneralResults(record, subheader),
-    craftSpacing(),
-    header('DIAGNÓSTICO'),
-    craftMedicalDiagnostic(record.diagnostics, subheader),
-    craftSpacing(),
-    header('EVALUACIÓN MÉDICA DE RETIRO'),
-    medicalRetirementEvaluation(record, subheader),
-    craftSpacing(),
-    header('RECOMENDACIONES Y/O TRATAMIENTO'),
-    craftRecommendation(record),
-    craftSpacing(),
-];
+export const createRetirementRecord: CraftRecordFunc<RetirementRecord> = (record: RetirementRecord, {
+    clinicNumber,
+    fileNumber,
+    headerLayout: header,
+    subheaderLayout: subheader
+}) => [
+        header('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
+        institutionLayout({ ...record, clinicNumber, fileNumber }, subheader),
+        craftSpacing(),
+        header('ANTECEDENTES PERSONALES'),
+        craftMedicalAndSurgicalHistory(record, subheader),
+        craftJobAccident(record, subheader),
+        craftOccupationalDisease(record, subheader),
+        craftSpacing(),
+        header('CONSTANTES VITALES Y ANTROPOMETRÍA'),
+        craftVitalSignsAndAnthropometry(record, subheader),
+        craftSpacing(),
+        header('EXAMEN FÍSICO REGIONAL'),
+        craftPhysicalRegionalExam(record, subheader),
+        craftSpacing(),
+        header('RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)'),
+        craftSpecificAndGeneralResults(record, subheader),
+        craftSpacing(),
+        header('DIAGNÓSTICO'),
+        craftMedicalDiagnostic(record.diagnostics, subheader),
+        craftSpacing(),
+        header('EVALUACIÓN MÉDICA DE RETIRO'),
+        medicalRetirementEvaluation(record, subheader),
+        craftSpacing(),
+        header('RECOMENDACIONES Y/O TRATAMIENTO'),
+        craftRecommendation(record),
+        craftSpacing(),
+    ];
 
-const institutionLayout: CratftRecordItemFunc<RetirementRecord> = (record, subheader): any => [
+const institutionLayout: CratftRecordItemFunc<RetirementRecord & {
+    clinicNumber: number;
+    fileNumber: number;
+}> = (record, subheader): any => [
     {
         width: '*',
         style: 'itemElement',
@@ -69,8 +77,8 @@ const institutionLayout: CratftRecordItemFunc<RetirementRecord> = (record, subhe
                     record.companyRUC,
                     record.companyCIU,
                     record.institutionHealthFacility,
-                    '',
-                    '',
+                    record.clinicNumber.toString().padStart(12, '0'),
+                    record.fileNumber.toString().padStart(12, '0'),
                 ],
             ]
         },

@@ -34,6 +34,18 @@ model Logger {
   @@map("logger")
 }
 
+// Increment Module
+model Increment {
+  id    String @id @default(uuid()) @map("increment_id") @db.Char(36)
+  key   String @unique() @map("increment_key") @db.VarChar(32)
+  count Int    @default(0) @map("increment_count") @db.Int
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("tbl_increments")
+}
+
 // Auth Module
 model Auth {
   id       String @id @default(uuid()) @map("auth_id") @db.Char(36)

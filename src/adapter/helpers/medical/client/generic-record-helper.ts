@@ -22,24 +22,56 @@ export type HeaderLayoutFunc = (rowIndex: number) => string | null;
 export type SubheaderLayoutFunc = (rowIndex: number) => string | null;
 
 type CreateHeaderFunc = (text: string) => object;
-export type CraftRecordFunc<T extends GenericRecord> = (record: T, headerLayout: CreateHeaderFunc, subheader: SubheaderLayoutFunc) => object[];
+type CreateHeaderOption = {
+    clinicNumber: number;
+    fileNumber: number;
+    headerLayout: CreateHeaderFunc;
+    subheaderLayout: SubheaderLayoutFunc;
+}
+export type CraftRecordFunc<T extends GenericRecord> = (record: T, option: CreateHeaderOption) => object[];
 export type CratftRecordItemFunc<T extends GenericRecord> = (record: T, subheader: SubheaderLayoutFunc) => object | object[];
 
-export const createRecordLayout = (record: GenericRecord, headerLayout: HeaderLayoutFunc, subheaderLayout: SubheaderLayoutFunc): object[] => {
+type RecordOption = {
+    clinicNumber: number;
+    fileNumber: number;
+    headerLayout: HeaderLayoutFunc,
+    subheaderLayout: SubheaderLayoutFunc,
+}
+export const createRecordLayout = (record: GenericRecord, option: RecordOption): object[] => {
     if (isInitialRecord(record)) {
-        return createInitialRecord(record, createHeader(headerLayout), subheaderLayout);
+        return createInitialRecord(record, {
+            ...option,
+            headerLayout: createHeader(option.headerLayout),
+            subheaderLayout: option.subheaderLayout
+        });
     }
     if (isPeriodicRecord(record)) {
-        return createPeriodicRecord(record, createHeader(headerLayout), subheaderLayout);
+        return createPeriodicRecord(record, {
+            ...option,
+            headerLayout: createHeader(option.headerLayout),
+            subheaderLayout: option.subheaderLayout
+        });
     }
     if (isReintegrateRecord(record)) {
-        return createReintegrationRecord(record, createHeader(headerLayout), subheaderLayout);
+        return createReintegrationRecord(record, {
+            ...option,
+            headerLayout: createHeader(option.headerLayout),
+            subheaderLayout: option.subheaderLayout
+        });
     }
     if (isRetirementRecord(record)) {
-        return createRetirementRecord(record, createHeader(headerLayout), subheaderLayout);
+        return createRetirementRecord(record, {
+            ...option,
+            headerLayout: createHeader(option.headerLayout),
+            subheaderLayout: option.subheaderLayout
+        });
     }
     if (isCertificateRecord(record)) {
-        return createCertificateRecord(record, createHeader(headerLayout), subheaderLayout);
+        return createCertificateRecord(record, {
+            ...option,
+            headerLayout: createHeader(option.headerLayout),
+            subheaderLayout: option.subheaderLayout
+        });
     }
 
     return [];

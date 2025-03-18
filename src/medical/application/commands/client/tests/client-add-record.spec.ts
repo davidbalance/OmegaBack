@@ -4,12 +4,13 @@ import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/cl
 import { ClientAddRecordCommand, ClientAddRecordCommandPayload } from "../client-add-record.command";
 import { ClientRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { PdfProvider } from "@shared/shared/providers/pdf.provider";
-import { FileOperation } from "@shared/shared/providers";
+import { FileOperation, IncrementProvider } from "@shared/shared/providers";
 
 describe("ClientAddRecordCommand", () => {
     let repository: jest.Mocked<ClientRepository>;
     let pdf: jest.Mocked<PdfProvider>;
     let file: jest.Mocked<FileOperation>;
+    let increment: jest.Mocked<IncrementProvider>;
     let layoutHelper: jest.Mock;
     let filenameHelper: jest.Mock;
     let handler: ClientAddRecordCommand;
@@ -24,6 +25,10 @@ describe("ClientAddRecordCommand", () => {
             craft: jest.fn(),
         } as unknown as jest.Mocked<PdfProvider>;
 
+        increment = {
+            next: jest.fn(),
+        } as unknown as jest.Mocked<IncrementProvider>;
+
         file = {
             write: jest.fn(),
         } as unknown as jest.Mocked<FileOperation>;
@@ -31,7 +36,7 @@ describe("ClientAddRecordCommand", () => {
         layoutHelper = jest.fn().mockReturnValue({});
         filenameHelper = jest.fn().mockReturnValue("report.pdf");
 
-        handler = new ClientAddRecordCommand(repository, pdf, file, layoutHelper, filenameHelper);
+        handler = new ClientAddRecordCommand(repository, pdf, file, layoutHelper, filenameHelper, increment);
     });
 
     it("should add a record to the client when client exists", async () => {
@@ -42,9 +47,11 @@ describe("ClientAddRecordCommand", () => {
             addRecord: jest.fn(),
         } as unknown as Client;
 
+        const mockedNext: number = 0;
         const mockFile = Buffer.from('Test pdf');
 
         repository.findOneAsync.mockResolvedValue(mockClient);
+        increment.next.mockResolvedValue(mockedNext);
         pdf.craft.mockResolvedValue(mockFile);
         file.write.mockResolvedValue('/path/to/report.pdf');
         repository.saveAsync.mockResolvedValue();
@@ -61,7 +68,9 @@ describe("ClientAddRecordCommand", () => {
         expect(repository.findOneAsync).toHaveBeenCalledWith({
             filter: [{ field: "patientDni", operator: "eq", value: payload.patientDni }],
         });
-        expect(layoutHelper).toHaveBeenCalledWith(payload);
+        expect(increment.next).toHaveBeenCalledWith('clinic-history');
+        expect(increment.next).toHaveBeenCalledWith(payload.type);
+        expect(layoutHelper).toHaveBeenCalledWith(payload, mockedNext, mockedNext);
         expect(pdf.craft).toHaveBeenCalledWith({});
         expect(filenameHelper).toHaveBeenCalledWith(payload.type);
         expect(file.write).toHaveBeenCalledWith(expectedFilepath, "report.pdf", mockFile);
@@ -82,6 +91,7 @@ describe("ClientAddRecordCommand", () => {
         expect(repository.findOneAsync).toHaveBeenCalledWith({
             filter: [{ field: "patientDni", operator: "eq", value: payload.patientDni }],
         });
+        expect(increment.next).not.toHaveBeenCalled();
         expect(layoutHelper).not.toHaveBeenCalled();
         expect(pdf.craft).not.toHaveBeenCalled();
         expect(filenameHelper).not.toHaveBeenCalled();

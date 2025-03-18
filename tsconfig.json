@@ -49,6 +49,12 @@
       "@local-hash/local-hash/*": [
         "libs/local-hash/src/*"
       ],
+      "@local-increment/local-increment": [
+        "libs/local-increment/src"
+      ],
+      "@local-increment/local-increment/*": [
+        "libs/local-increment/src/*"
+      ],
       "@local-jwt/local-jwt": [
         "libs/local-jwt/src"
       ],

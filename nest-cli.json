@@ -64,6 +64,15 @@
         "tsConfigPath": "libs/local-hash/tsconfig.lib.json"
       }
     },
+    "local-increment": {
+      "type": "library",
+      "root": "libs/local-increment",
+      "entryFile": "index",
+      "sourceRoot": "libs/local-increment/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/local-increment/tsconfig.lib.json"
+      }
+    },
     "local-jwt": {
       "type": "library",
       "root": "libs/local-jwt",

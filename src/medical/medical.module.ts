@@ -80,6 +80,7 @@ import { ClientHelperModule } from "@omega/adapter/helpers/medical/client/client
 import { RecordReadController } from "./controller/read/record_read.controller";
 import { ClientRecordFindManyQueryProvider } from "./nest/query/client/client-record-find-many.nest-query";
 import { OrderRemoveCommandProvider } from "./nest/command/order/order-remove.nest-command";
+import { LocalIncrementModule } from "@local-increment/local-increment";
 
 @Module({
     imports: [
@@ -92,7 +93,8 @@ import { OrderRemoveCommandProvider } from "./nest/command/order/order-remove.ne
         OrderHelperModule,
         TestHelperModule,
         PatientProxyModule,
-        LocalZipModule
+        LocalZipModule,
+        LocalIncrementModule
     ],
     controllers: [
         ClientReadController,

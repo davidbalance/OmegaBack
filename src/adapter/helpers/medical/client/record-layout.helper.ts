@@ -5,7 +5,7 @@ import { ClientRecordLayoutFunc } from "@omega/medical/application/commands/clie
 const headerLayout: HeaderLayoutFunc = (rowIndex: any) => (rowIndex === 0) ? '#CCCCFF' : null;
 const subheaderLayout: SubheaderLayoutFunc = (rowIndex: any) => (rowIndex === 0) ? '#CCFFCC' : null;
 export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc =>
-    (e) => {
+    (e, clinicNumber, fileNumber) => {
 
         const date = new Date();
         const formatedDate = formatDate(date, 'yyyy/MM/dd');
@@ -15,7 +15,7 @@ export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc
             pageSize: 'A4',
             pageMargins: [30, 50, 30, 30],
             content: [
-                ...createRecordLayout(e, headerLayout, subheaderLayout),
+                ...createRecordLayout(e, { clinicNumber, fileNumber, headerLayout, subheaderLayout }),
                 {
                     marginBottom: 5,
                     text: "CERTIFICO QUE LO ANTERIORMENTE EXPRESADO EN RELACIÓN A MI ESTADO DE SALUD ES VERDAD. SE ME HA INFORMADO LAS MEDIDAS PREVENTIVAS A TOMAR PARA DISMINUIR O MITIGAR LOS RIESGOS RELACIONADOS CON MI ACTIVIDAD LABORAL.",

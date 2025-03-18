@@ -2,37 +2,45 @@ import { formatDate } from "date-fns";
 import { craftCurrentDisease, craftMedicalConsultation, craftMedicalDiagnostic, craftMedicalFitnessForJob, craftPhysicalRegionalExam, craftRecommendation, CraftRecordFunc, craftSpacing, craftSpecificAndGeneralResults, craftVitalSignsAndAnthropometry, CratftRecordItemFunc } from "./generic-record-helper";
 import { ReintegrateRecord } from "@omega/medical/application/type/reintegrate-record";
 
-export const createReintegrationRecord: CraftRecordFunc<ReintegrateRecord> = (record: ReintegrateRecord, header, subheader) => [
-    header('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
-    institutionLayout(record, subheader),
-    craftSpacing(),
-    header('MOTIVO DE CONSULTA'),
-    craftMedicalConsultation(record),
-    craftSpacing(),
-    header('ENFERMEDAD ACTUAL'),
-    craftCurrentDisease(record),
-    craftSpacing(),
-    header('CONSTANTES VITALES Y ANTROPOMETRÍA'),
-    craftVitalSignsAndAnthropometry(record, subheader),
-    craftSpacing(),
-    header('EXAMEN FÍSICO REGIONAL'),
-    craftPhysicalRegionalExam(record, subheader),
-    craftSpacing(),
-    header('RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)'),
-    craftSpecificAndGeneralResults(record, subheader),
-    craftSpacing(),
-    header('DIAGNÓSTICO'),
-    craftMedicalDiagnostic(record.diagnostics, subheader),
-    craftSpacing(),
-    header('APTITUD MÉDICA PARA EL TRABAJO'),
-    craftMedicalFitnessForJob(record, subheader),
-    craftSpacing(),
-    header('RECOMENDACIONES Y/O TRATAMIENTO'),
-    craftRecommendation(record),
-    craftSpacing(),
-];
+export const createReintegrationRecord: CraftRecordFunc<ReintegrateRecord> = (record: ReintegrateRecord, {
+    clinicNumber,
+    fileNumber,
+    headerLayout: header,
+    subheaderLayout: subheader
+}) => [
+        header('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
+        institutionLayout({ ...record, clinicNumber, fileNumber }, subheader),
+        craftSpacing(),
+        header('MOTIVO DE CONSULTA'),
+        craftMedicalConsultation(record),
+        craftSpacing(),
+        header('ENFERMEDAD ACTUAL'),
+        craftCurrentDisease(record),
+        craftSpacing(),
+        header('CONSTANTES VITALES Y ANTROPOMETRÍA'),
+        craftVitalSignsAndAnthropometry(record, subheader),
+        craftSpacing(),
+        header('EXAMEN FÍSICO REGIONAL'),
+        craftPhysicalRegionalExam(record, subheader),
+        craftSpacing(),
+        header('RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)'),
+        craftSpecificAndGeneralResults(record, subheader),
+        craftSpacing(),
+        header('DIAGNÓSTICO'),
+        craftMedicalDiagnostic(record.diagnostics, subheader),
+        craftSpacing(),
+        header('APTITUD MÉDICA PARA EL TRABAJO'),
+        craftMedicalFitnessForJob(record, subheader),
+        craftSpacing(),
+        header('RECOMENDACIONES Y/O TRATAMIENTO'),
+        craftRecommendation(record),
+        craftSpacing(),
+    ];
 
-const institutionLayout: CratftRecordItemFunc<ReintegrateRecord> = (record, subheader): any => [
+const institutionLayout: CratftRecordItemFunc<ReintegrateRecord & {
+    clinicNumber: number;
+    fileNumber: number;
+}> = (record, subheader): any => [
     {
         width: '*',
         style: 'itemElement',
@@ -70,8 +78,8 @@ const institutionLayout: CratftRecordItemFunc<ReintegrateRecord> = (record, subh
                     record.companyRUC,
                     record.companyCIU,
                     record.institutionHealthFacility,
-                    '',
-                    '',
+                    record.clinicNumber.toString().padStart(12, '0'),
+                    record.fileNumber.toString().padStart(12, '0'),
                 ],
             ]
         },

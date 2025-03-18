@@ -110,6 +110,7 @@
       "^@heart-beat/heart-beat(|/.*)$": "<rootDir>/libs/heart-beat/src/$1",
       "^@html-loader/html-loader(|/.*)$": "<rootDir>/libs/html-loader/src/$1",
       "^@local-hash/local-hash(|/.*)$": "<rootDir>/libs/local-hash/src/$1",
+      "^@local-increment/local-increment(|/.*)$": "<rootDir>/libs/local-increment/src/$1",
       "^@local-jwt/local-jwt(|/.*)$": "<rootDir>/libs/local-jwt/src/$1",
       "^@local-pdf/local-pdf(|/.*)$": "<rootDir>/libs/local-pdf/src/$1",
       "^@local-zip/local-zip(|/.*)$": "<rootDir>/libs/local-zip/src/$1",

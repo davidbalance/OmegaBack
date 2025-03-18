@@ -27,6 +27,8 @@ export const InjectLogger = () => Inject(LoggerProviderToken);
 export const ZipperProviderToken = 'ZipperProvider';
 export const InjectZipper = () => Inject(ZipperProviderToken);
 
+export const IncrementProviderToken = 'IncrementProvider';
+export const InjectIncrement = () => Inject(IncrementProviderToken);
 
 export const JwtAccessProviderToken = 'JwtAccessProvider';
 export const JwtRefreshProviderToken = 'JwtRefreshProvider';

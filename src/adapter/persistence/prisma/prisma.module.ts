@@ -77,6 +77,8 @@ import { LoggerRepositoryToken } from "@db-logger/db-logger/nest/inject/reposito
 import { ClientDoctorModelRepositoryProvider } from "./repository/medical/model/client_doctor.prisma-repository";
 import { TestFileResultRepositoryProvider } from "./repository/medical/model/test_file_result.prisma_repository";
 import { ClientRecordModelRepositoryProvider } from "./repository/medical/model/client-record.prisma-repository";
+import { IncrementDomainRepositoryProvider } from "./repository/increment/increment.prisma-repository";
+import { IncrementRepositoryToken } from "@local-increment/local-increment/repository/increment.repository";
 
 @Global()
 @Module({
@@ -145,7 +147,8 @@ import { ClientRecordModelRepositoryProvider } from "./repository/medical/model/
         ResultFilepathModelRepositoryProvider,
         TestFileResultRepositoryProvider,
         TestReportModelRepositoryProvider,
-        TestModelRepositoryProvider
+        TestModelRepositoryProvider,
+        IncrementDomainRepositoryProvider
     ],
     exports: [
         AuthAggregateRepositoryToken,
@@ -211,7 +214,8 @@ import { ClientRecordModelRepositoryProvider } from "./repository/medical/model/
         ResultFilepathModelRepositoryToken,
         TestFileResultRepositoryToken,
         TestReportModelRepositoryToken,
-        TestModelRepositoryToken
+        TestModelRepositoryToken,
+        IncrementRepositoryToken
     ]
 })
 export class PrismaModule { }

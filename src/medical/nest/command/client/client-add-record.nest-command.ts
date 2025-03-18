@@ -3,9 +3,9 @@ import { ClientRepository } from "@omega/medical/application/repository/aggregat
 import { InjectAggregateRepository } from "../../inject/aggregate-repository.inject";
 import { ClientAddRecordCommandToken } from "../../inject/command.inject";
 import { ClientAddRecordCommand, ClientRecordFilenameFunc, ClientRecordLayoutFunc } from "@omega/medical/application/commands/client/client-add-record.command";
-import { InjectFile, InjectPdf } from "@shared/shared/nest/inject";
+import { InjectFile, InjectIncrement, InjectPdf } from "@shared/shared/nest/inject";
 import { PdfProvider } from "@shared/shared/providers/pdf.provider";
-import { FileOperation } from "@shared/shared/providers";
+import { FileOperation, IncrementProvider } from "@shared/shared/providers";
 import { RecordFilenameHelperToken, RecordLayoutHelperToken } from "../../inject/function.inject";
 
 @Injectable()
@@ -16,8 +16,9 @@ class ClientAddRecordNestCommand extends ClientAddRecordCommand {
         @InjectFile() file: FileOperation,
         @Inject(RecordLayoutHelperToken) layoutHelper: ClientRecordLayoutFunc,
         @Inject(RecordFilenameHelperToken) filenameHelper: ClientRecordFilenameFunc,
+        @InjectIncrement() increment: IncrementProvider
     ) {
-        super(repository, pdf, file, layoutHelper, filenameHelper);
+        super(repository, pdf, file, layoutHelper, filenameHelper, increment);
     }
 }
 

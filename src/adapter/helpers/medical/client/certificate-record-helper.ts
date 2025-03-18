@@ -2,25 +2,33 @@ import { formatDate } from "date-fns";
 import { craftMedicalFitnessForJob, craftRecommendation, CraftRecordFunc, craftSpacing, CratftRecordItemFunc } from "./generic-record-helper";
 import { CertificateRecord } from "@omega/medical/application/type/certificate-record";
 
-export const createCertificateRecord: CraftRecordFunc<CertificateRecord> = (record: CertificateRecord, header, subheader) => [
-    header('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
-    institutionLayout(record, subheader),
-    craftSpacing(),
-    header('DATOS GENERALES'),
-    generalDataLayout(record, subheader),
-    craftSpacing(),
-    header('APTITUD MÉDICA PARA EL TRABAJO'),
-    craftMedicalFitnessForJob(record, subheader),
-    craftSpacing(),
-    header('EVALUACIÓN MÉDICA DE RETIRO'),
-    retireEvaluation(record, subheader),
-    craftSpacing(),
-    header('RECOMENDACIONES Y/O TRATAMIENTO'),
-    craftRecommendation(record),
-    craftSpacing(),
-];
+export const createCertificateRecord: CraftRecordFunc<CertificateRecord> = (record: CertificateRecord, {
+    clinicNumber,
+    fileNumber,
+    headerLayout: header,
+    subheaderLayout: subheader
+}) => [
+        header('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
+        institutionLayout({ ...record, clinicNumber, fileNumber }, subheader),
+        craftSpacing(),
+        header('DATOS GENERALES'),
+        generalDataLayout(record, subheader),
+        craftSpacing(),
+        header('APTITUD MÉDICA PARA EL TRABAJO'),
+        craftMedicalFitnessForJob(record, subheader),
+        craftSpacing(),
+        header('EVALUACIÓN MÉDICA DE RETIRO'),
+        retireEvaluation(record, subheader),
+        craftSpacing(),
+        header('RECOMENDACIONES Y/O TRATAMIENTO'),
+        craftRecommendation(record),
+        craftSpacing(),
+    ];
 
-const institutionLayout: CratftRecordItemFunc<CertificateRecord> = (record, subheader): any => [
+const institutionLayout: CratftRecordItemFunc<CertificateRecord & {
+    clinicNumber: number;
+    fileNumber: number;
+}> = (record, subheader): any => [
     {
         width: '*',
         style: 'itemElement',
@@ -58,8 +66,8 @@ const institutionLayout: CratftRecordItemFunc<CertificateRecord> = (record, subh
                     record.companyRUC,
                     record.companyCIU,
                     record.institutionHealthFacility,
-                    '',
-                    '',
+                    record.clinicNumber.toString().padStart(12, '0'),
+                    record.fileNumber.toString().padStart(12, '0'),
                 ],
             ]
         },
