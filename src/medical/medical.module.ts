@@ -81,6 +81,7 @@ import { RecordReadController } from "./controller/read/record_read.controller";
 import { ClientRecordFindManyQueryProvider } from "./nest/query/client/client-record-find-many.nest-query";
 import { OrderRemoveCommandProvider } from "./nest/command/order/order-remove.nest-command";
 import { LocalIncrementModule } from "@local-increment/local-increment";
+import { ClientCreateManyCommandProvider } from "./nest/command/client/client-create-many.nest-command";
 
 @Module({
     imports: [
@@ -113,6 +114,7 @@ import { LocalIncrementModule } from "@local-increment/local-increment";
         ClientAddJobPositionCommandProvider,
         ClientAddManagementCommandProvider,
         ClientAddRecordCommandProvider,
+        ClientCreateManyCommandProvider,
         ClientRecordFindOneQueryProvider,
         ClientCreateCommandProvider,
         ClientDeleteCommandProvider,

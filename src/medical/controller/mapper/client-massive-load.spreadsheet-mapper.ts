@@ -5,7 +5,7 @@ export class ClientMassiveLoadSpreadSheetMapper {
 
     public static toDTO(value: [string, string, string, string, string, string, Date]): ClientCreateRequestDto {
         return plainToInstance(ClientCreateRequestDto, {
-            patientDni: value[0],
+            patientDni: `${value[0]}`,
             patientName: value[1],
             patientLastname: value[2],
             patientEmail: value[3],

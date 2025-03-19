@@ -3,7 +3,7 @@ import { ClientAddJobPositionCommandPayload } from "@omega/medical/application/c
 import { ClientAddManagementCommandPayload } from "@omega/medical/application/commands/client/client-add-management.command";
 import { ClientCreateCommandPayload } from "@omega/medical/application/commands/client/client-create.command";
 import { EmailCreateCommandPayload } from "@omega/medical/application/commands/client/email-create.command";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID, Length } from "class-validator";
 
 export class ClientAddAreaRequestDto implements Omit<ClientAddAreaCommandPayload, 'patientDni'> {
@@ -47,7 +47,6 @@ export class ClientCreateRequestDto implements ClientCreateCommandPayload {
     public readonly patientRole?: string;
 
     @IsEnum({ male: 'male', female: 'female' })
-    @IsNotEmpty()
     public readonly patientGender: "male" | "female";
 
     @Type(() => Date)

@@ -4,6 +4,7 @@ export const ClientAddAreaCommandToken = 'ClientAddAreaCommand';
 export const ClientAddJobPositionCommandToken = 'ClientAddJobPositionCommand';
 export const ClientAddManagementCommandToken = 'ClientAddManagementCommand';
 export const ClientAddRecordCommandToken = 'ClientAddRecordCommand';
+export const ClientCreateManyCommandToken = 'ClientCreateManyCommand';
 export const ClientCreateCommandToken = 'ClientCreateCommand';
 export const ClientDeleteCommandToken = 'ClientDeleteCommand';
 export const ClientEditCommandToken = 'ClientEditCommand';
@@ -38,6 +39,7 @@ const command = {
     ClientCreate: ClientCreateCommandToken,
     ClientDelete: ClientDeleteCommandToken,
     ClientEdit: ClientEditCommandToken,
+    ClientCreateMany: ClientCreateManyCommandToken,
     EmailCreate: EmailCreateCommandToken,
     EmailDefault: EmailDefaultCommandToken,
     EmailRemove: EmailRemoveCommandToken,

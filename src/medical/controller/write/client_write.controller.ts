@@ -19,10 +19,9 @@ import { CertficateRecordRequestDto } from "../dto/request/record/certificate-re
 import { FileInterceptor } from "@nestjs/platform-express";
 import { InjectSpreadSheet } from "@shared/shared/nest/inject";
 import { SpreadsheetProvider } from "@shared/shared/providers";
-import { ClientModel } from "@omega/medical/core/model/client/client.model";
-import { ClientModelMapper } from "../mapper/client.model_mapper";
 import { ClientMassiveLoadSpreadSheetMapper } from "../mapper/client-massive-load.spreadsheet-mapper";
 import { ClientMassiveLoadSpreadSheetValidator } from "../validator/client-massive-load.spreadsheet-validator";
+import { ClientCreateManyCommand } from "@omega/medical/application/commands/client/client-create-many.command";
 
 @ApiTags('Medical', 'Write')
 @ApiBearerAuth()
@@ -38,6 +37,7 @@ export class ClientWriteController {
         @InjectCommand('EmailDefault') private readonly emailDefaultCommand: EmailDefaultCommand,
         @InjectCommand('EmailRemove') private readonly emailRemoveCommand: EmailRemoveCommand,
         @InjectCommand('ClientAddRecord') private readonly addRecordCommand: ClientAddRecordCommand,
+        @InjectCommand('ClientCreateMany') private readonly createManyCommand: ClientCreateManyCommand,
 
         @InjectSpreadSheet() private readonly spreadsheet: SpreadsheetProvider<any>
     ) { }
@@ -164,11 +164,10 @@ export class ClientWriteController {
         @UploadedFile() file: Express.Multer.File
     ): Promise<string> {
         const data = await this.spreadsheet.read(file.buffer);
-        const parsed = data.map(e => ClientMassiveLoadSpreadSheetMapper.toDTO(e.slice(1)));
-        console.log(parsed);
+        const parsed = data.slice(1).map(e => ClientMassiveLoadSpreadSheetMapper.toDTO(e.slice(1)));
         const promises = parsed.map((async (e) => await ClientMassiveLoadSpreadSheetValidator.validate(e)));
         await Promise.all(promises);
-        console.log(parsed);
+        await this.createManyCommand.handleAsync({ data: parsed });
         return "ok";
     }
 }
