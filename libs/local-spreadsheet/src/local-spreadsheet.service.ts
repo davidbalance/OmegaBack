@@ -7,6 +7,21 @@ import { Column, Workbook } from 'exceljs';
 @Injectable()
 export class LocalSpreadsheetService<T extends object> implements SpreadsheetProvider<T> {
 
+    async read(buffer: Buffer): Promise<any[]> {
+        const workbook = new Workbook();
+        const data: any[] = [];
+
+        await workbook.xlsx.load(buffer);
+        const worksheet = workbook.worksheets[0];
+
+        worksheet.eachRow((row) => {
+            const rowData = row.values;
+            data.push(rowData);
+        });
+
+        return data;
+    }
+
     async craft(data: T[], columns: SpreadsheetColumn<T>[], worksheetName: string = 'Book1'): Promise<Buffer> {
         try {
             const workbook = new Workbook();
