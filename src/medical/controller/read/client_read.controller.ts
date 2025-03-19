@@ -50,6 +50,7 @@ export class ClientReadController {
     async findManyClient(
         @Query() query: ClientFindManyQueryDto
     ): Promise<ClientManyResponseDto> {
+    
         const values = await this.findManyQuery.handleAsync({
             ...query,
             order: query.orderField && query.orderValue ? { [query.orderField]: query.orderValue } : undefined

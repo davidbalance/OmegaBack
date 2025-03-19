@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { InjectCommand } from "@omega/medical/nest/inject/command.inject";
@@ -8,6 +8,12 @@ import { OrderCreateCommand } from "@omega/medical/application/commands/order/or
 import { OrderCreatedStatusCommand } from "@omega/medical/application/commands/order/order-created-status.command";
 import { OrderValidatedStatusCommand } from "@omega/medical/application/commands/order/order-validated-status.command";
 import { OrderRemoveCommand } from "@omega/medical/application/commands/order/order-remove.command";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { InjectSpreadSheet } from "@shared/shared/nest/inject";
+import { SpreadsheetProvider } from "@shared/shared/providers";
+import { OrderMassiveLoadSpreadSheetMapper } from "../mapper/order-massive-load.spreadsheet-mapper";
+import { OrderMassiveLoadSpreadSheetValidator } from "../validator/order-massive-load.spreadsheet-validator";
+import { OrderCreateManyCommand } from "@omega/medical/application/commands/order/order-create-many.command";
 
 @ApiTags('Medical', 'Write')
 @ApiBearerAuth()
@@ -20,6 +26,8 @@ export class OrderWriteController {
         @InjectCommand('OrderSendMail') private readonly orderSendMailCommand: OrderSendMailCommand,
         @InjectCommand('OrderCreatedStatus') private readonly orderCreatedStatusCommand: OrderCreatedStatusCommand,
         @InjectCommand('OrderValidatedStatus') private readonly orderValidatedStatusCommand: OrderValidatedStatusCommand,
+        @InjectCommand('OrderCreateMany') private readonly orderCreateManyCommand: OrderCreateManyCommand,
+        @InjectSpreadSheet() private readonly spreadsheet: SpreadsheetProvider<any>
     ) { }
 
     @Post()
@@ -59,6 +67,19 @@ export class OrderWriteController {
         @Body() body: OrderSendEmailRequestDto
     ): Promise<string> {
         await this.orderSendMailCommand.handleAsync(body);
+        return "ok";
+    }
+
+    @Post('massive-load/excel')
+    @UseInterceptors(FileInterceptor('file'))
+    async massiveLoadFromExcel(
+        @UploadedFile() file: Express.Multer.File
+    ): Promise<string> {
+        const data = await this.spreadsheet.read(file.buffer);
+        const parsed = data.slice(1).map(e => OrderMassiveLoadSpreadSheetMapper.toDTO(e.slice(1)));
+        const promises = parsed.map((async (e) => await OrderMassiveLoadSpreadSheetValidator.validate(e)));
+        await Promise.all(promises);
+        await this.orderCreateManyCommand.handleAsync({ data: parsed });
         return "ok";
     }
 }

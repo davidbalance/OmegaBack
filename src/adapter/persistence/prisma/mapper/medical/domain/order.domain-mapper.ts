@@ -4,6 +4,7 @@ import { MedicalOrder as PrismaOrder, Prisma } from "@prisma/client";
 export class OrderDomainMapper {
     static toPrisma(value: Order): Prisma.MedicalOrderUncheckedCreateInput {
         return {
+            id: value.id,
             year: value.year,
             process: value.process,
             clientId: value.patientId,

@@ -43,7 +43,7 @@ export class ClientPrismaRepository implements ClientRepository {
                     patientRole: true,
                 },
                 orderBy: filter.order,
-                skip: filter.skip,
+                skip: (filter?.skip ?? 0) * (filter?.limit ?? 1),
                 take: filter.limit,
                 distinct: ['patientId', 'patientDni', 'patientName', 'patientLastname', 'patientBirthday', 'patientGender', 'patientRole']
             });

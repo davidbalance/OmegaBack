@@ -20,7 +20,7 @@ export class UserPrismaRepository implements UserRepository {
             const where = PrismaFilterMapper.map<UserModel, Prisma.UserModelWhereInput>(filter.filter);
             const values = await this.prisma.userModel.findMany({
                 where,
-                skip: filter.skip,
+                skip: (filter?.skip ?? 0) * (filter?.limit ?? 1),
                 take: filter.limit,
                 orderBy: filter.order
             });

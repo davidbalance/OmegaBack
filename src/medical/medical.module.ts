@@ -82,6 +82,7 @@ import { ClientRecordFindManyQueryProvider } from "./nest/query/client/client-re
 import { OrderRemoveCommandProvider } from "./nest/command/order/order-remove.nest-command";
 import { LocalIncrementModule } from "@local-increment/local-increment";
 import { ClientCreateManyCommandProvider } from "./nest/command/client/client-create-many.nest-command";
+import { OrderCreateManyCommandProvider } from "./nest/command/order/order-create-many.nest-command";
 
 @Module({
     imports: [
@@ -122,6 +123,7 @@ import { ClientCreateManyCommandProvider } from "./nest/command/client/client-cr
         EmailCreateCommandProvider,
         EmailDefaultCommandProvider,
         EmailRemoveCommandProvider,
+        OrderCreateManyCommandProvider,
         OrderCreateCommandProvider,
         OrderCreatedStatusCommandProvider,
         OrderSendMailCommandProvider,

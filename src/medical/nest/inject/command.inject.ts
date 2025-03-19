@@ -11,6 +11,7 @@ export const ClientEditCommandToken = 'ClientEditCommand';
 export const EmailCreateCommandToken = 'EmailCreateCommand';
 export const EmailDefaultCommandToken = 'EmailDefaultCommand';
 export const EmailRemoveCommandToken = 'EmailRemoveCommand';
+export const OrderCreateManyCommandToken = 'OrderCreateManyCommand';
 export const OrderCreateCommandToken = 'OrderCreateCommand';
 export const OrderCreatedStatusCommandToken = 'OrderCreatedStatusCommand';
 export const OrderSendMailCommandToken = 'OrderSendMailCommand';
@@ -43,6 +44,7 @@ const command = {
     EmailCreate: EmailCreateCommandToken,
     EmailDefault: EmailDefaultCommandToken,
     EmailRemove: EmailRemoveCommandToken,
+    OrderCreateMany: OrderCreateManyCommandToken,
     OrderCreate: OrderCreateCommandToken,
     OrderCreatedStatus: OrderCreatedStatusCommandToken,
     OrderSendMail: OrderSendMailCommandToken,

@@ -32,7 +32,7 @@ export class CorporativePrismaRepository implements CorporativeRepository {
             const values = await this.prisma.corporativeModel.findMany({
                 where,
                 orderBy: filter.order,
-                skip: filter.skip,
+                skip: (filter?.skip ?? 0) * (filter?.limit ?? 1),
                 take: filter.limit
             });
             return values.map(e => CorporativeModelMapper.toModel(e));

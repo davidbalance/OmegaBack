@@ -38,7 +38,6 @@ export class ClientWriteController {
         @InjectCommand('EmailRemove') private readonly emailRemoveCommand: EmailRemoveCommand,
         @InjectCommand('ClientAddRecord') private readonly addRecordCommand: ClientAddRecordCommand,
         @InjectCommand('ClientCreateMany') private readonly createManyCommand: ClientCreateManyCommand,
-
         @InjectSpreadSheet() private readonly spreadsheet: SpreadsheetProvider<any>
     ) { }
 
