@@ -2,6 +2,7 @@ import { ClientAddAreaCommandPayload } from "@omega/medical/application/commands
 import { ClientAddJobPositionCommandPayload } from "@omega/medical/application/commands/client/client-add-job-position.command";
 import { ClientAddManagementCommandPayload } from "@omega/medical/application/commands/client/client-add-management.command";
 import { ClientCreateCommandPayload } from "@omega/medical/application/commands/client/client-create.command";
+import { ClientEditCommand, ClientEditCommandPayload } from "@omega/medical/application/commands/client/client-edit.command";
 import { EmailCreateCommandPayload } from "@omega/medical/application/commands/client/email-create.command";
 import { Transform, Type } from "class-transformer";
 import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID, Length } from "class-validator";
@@ -28,6 +29,12 @@ export class ClientAddManagementRequestDto implements Omit<ClientAddManagementCo
     @IsString()
     @IsNotEmpty()
     public readonly managementName: string;
+}
+
+export class ClientChangeRoleRequestDto implements Pick<ClientEditCommandPayload, 'patientRole'> {
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientRole: string;
 }
 
 export class ClientCreateRequestDto implements ClientCreateCommandPayload {

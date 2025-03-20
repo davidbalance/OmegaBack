@@ -6,7 +6,7 @@ import { ClientAddAreaCommand } from "@omega/medical/application/commands/client
 import { ClientAddJobPositionCommand } from "@omega/medical/application/commands/client/client-add-job-position.command";
 import { ClientAddManagementCommand } from "@omega/medical/application/commands/client/client-add-management.command";
 import { ClientCreateCommand } from "@omega/medical/application/commands/client/client-create.command";
-import { ClientAddAreaRequestDto, ClientAddJobPositionRequestDto, ClientAddManagementRequestDto, ClientCreateRequestDto, ClientEmailCreateRequestDto } from "../dto/request/client.dto";
+import { ClientAddAreaRequestDto, ClientAddJobPositionRequestDto, ClientAddManagementRequestDto, ClientChangeRoleRequestDto, ClientCreateRequestDto, ClientEmailCreateRequestDto } from "../dto/request/client.dto";
 import { EmailCreateCommand } from "@omega/medical/application/commands/client/email-create.command";
 import { EmailDefaultCommand } from "@omega/medical/application/commands/client/email-default.command";
 import { EmailRemoveCommand } from "@omega/medical/application/commands/client/email-remove.command";
@@ -22,6 +22,7 @@ import { SpreadsheetProvider } from "@shared/shared/providers";
 import { ClientMassiveLoadSpreadSheetMapper } from "../mapper/client-massive-load.spreadsheet-mapper";
 import { ClientMassiveLoadSpreadSheetValidator } from "../validator/client-massive-load.spreadsheet-validator";
 import { ClientCreateManyCommand } from "@omega/medical/application/commands/client/client-create-many.command";
+import { ClientEditCommand } from "@omega/medical/application/commands/client/client-edit.command";
 
 @ApiTags('Medical', 'Write')
 @ApiBearerAuth()
@@ -33,6 +34,7 @@ export class ClientWriteController {
         @InjectCommand('ClientAddJobPosition') private readonly addJobPositionCommand: ClientAddJobPositionCommand,
         @InjectCommand('ClientAddManagement') private readonly addManagementCommand: ClientAddManagementCommand,
         @InjectCommand('ClientCreate') private readonly createCommand: ClientCreateCommand,
+        @InjectCommand('ClientEdit') private readonly editCommand: ClientEditCommand,
         @InjectCommand('EmailCreate') private readonly emailCreateCommand: EmailCreateCommand,
         @InjectCommand('EmailDefault') private readonly emailDefaultCommand: EmailDefaultCommand,
         @InjectCommand('EmailRemove') private readonly emailRemoveCommand: EmailRemoveCommand,
@@ -79,6 +81,18 @@ export class ClientWriteController {
         @Body() body: ClientAddManagementRequestDto
     ): Promise<string> {
         await this.addManagementCommand.handleAsync({
+            ...body,
+            patientDni: dni
+        });
+        return "ok";
+    }
+
+    @Put(':dni/role')
+    async addRole(
+        @Param('dni') dni: string,
+        @Body() body: ClientChangeRoleRequestDto
+    ): Promise<string> {
+        await this.editCommand.handleAsync({
             ...body,
             patientDni: dni
         });
