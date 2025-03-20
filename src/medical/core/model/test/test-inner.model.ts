@@ -6,6 +6,7 @@ export type TestInnerModelProps = {
     examName: string;
     examSubtype: string;
     examType: string;
+    isActive: boolean;
 }
 
 export class TestInnerModel extends Model<TestInnerModelProps> {
@@ -28,5 +29,9 @@ export class TestInnerModel extends Model<TestInnerModelProps> {
 
     public get examName(): Readonly<string> {
         return this.props.examName;
+    }
+
+    public get isActive(): Readonly<boolean> {
+        return this.props.isActive;
     }
 }

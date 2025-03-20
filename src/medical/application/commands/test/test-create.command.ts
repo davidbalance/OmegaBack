@@ -3,7 +3,7 @@ import { CreateTestPayload } from "@omega/medical/core/domain/test/payloads/test
 import { TestRepository as TestAggregateRepository } from "../../repository/aggregate.repositories";
 import { TestInnerRepository } from "../../repository/model.repositories";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
-import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
+import { TestConflictError, TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 
 export type TestCreateCommandPayload = CreateTestPayload;
 export class TestCreateCommand implements CommandHandlerAsync<TestCreateCommandPayload, void> {
@@ -21,6 +21,7 @@ export class TestCreateCommand implements CommandHandlerAsync<TestCreateCommandP
         ]);
         let test: Test;
         if (exists) {
+            if (exists.isActive) throw new TestConflictError();
             const value = await this.repository.findOneAsync({ filter: [{ field: 'id', operator: 'eq', value: exists.testId }] });
             if (!value) throw new TestNotFoundError(exists.testId);
             test = value;

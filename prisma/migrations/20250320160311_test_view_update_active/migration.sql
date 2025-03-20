@@ -200,5 +200,6 @@ SELECT
 	tmt.medical_order_id,
 	tmt.exam_name, 
 	tmt.exam_subtype, 
-	tmt.exam_type
+	tmt.exam_type,
+	tmt.is_active
 FROM tbl_m_tests tmt;

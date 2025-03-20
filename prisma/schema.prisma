@@ -837,11 +837,12 @@ view TestModel {
 }
 
 view TestInnerModel {
-  testId           String  @unique @map("medical_test_id") @db.Char(36)
-  orderId          String  @map("medical_order_id") @db.Char(36)
-  examName         String  @map("exam_name") @db.VarChar(128)
-  examSubtype      String  @map("exam_subtype") @db.VarChar(64)
-  examType         String  @map("exam_type") @db.VarChar(64)
+  testId      String  @unique @map("medical_test_id") @db.Char(36)
+  orderId     String  @map("medical_order_id") @db.Char(36)
+  examName    String  @map("exam_name") @db.VarChar(128)
+  examSubtype String  @map("exam_subtype") @db.VarChar(64)
+  examType    String  @map("exam_type") @db.VarChar(64)
+  isActive    Boolean @map("is_active") @db.TinyInt
 
   @@map("v_m_tests_inner")
 }
