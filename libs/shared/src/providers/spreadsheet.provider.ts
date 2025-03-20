@@ -5,4 +5,5 @@ export type SpreadsheetColumn<T extends object> = {
 
 export interface SpreadsheetProvider<T extends object> {
     craft(data: T[], columns: SpreadsheetColumn<T>[], worksheetName?: string): Promise<Buffer>;
+    read(buffer: Buffer): Promise<any[]>;
 }

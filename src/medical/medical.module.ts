@@ -81,6 +81,10 @@ import { RecordReadController } from "./controller/read/record_read.controller";
 import { ClientRecordFindManyQueryProvider } from "./nest/query/client/client-record-find-many.nest-query";
 import { OrderRemoveCommandProvider } from "./nest/command/order/order-remove.nest-command";
 import { LocalIncrementModule } from "@local-increment/local-increment";
+import { ClientCreateManyCommandProvider } from "./nest/command/client/client-create-many.nest-command";
+import { OrderCreateManyCommandProvider } from "./nest/command/order/order-create-many.nest-command";
+import { OrderFindMassiveLoadTemplateQueryProvider } from "./nest/query/order/order-find-massive-load-template.nest-query copy";
+import { ClientFindMassiveLoadTemplateQueryProvider } from "./nest/query/client/client-find-massive-load-template.nest-query copy";
 
 @Module({
     imports: [
@@ -113,6 +117,7 @@ import { LocalIncrementModule } from "@local-increment/local-increment";
         ClientAddJobPositionCommandProvider,
         ClientAddManagementCommandProvider,
         ClientAddRecordCommandProvider,
+        ClientCreateManyCommandProvider,
         ClientRecordFindOneQueryProvider,
         ClientCreateCommandProvider,
         ClientDeleteCommandProvider,
@@ -120,6 +125,7 @@ import { LocalIncrementModule } from "@local-increment/local-increment";
         EmailCreateCommandProvider,
         EmailDefaultCommandProvider,
         EmailRemoveCommandProvider,
+        OrderCreateManyCommandProvider,
         OrderCreateCommandProvider,
         OrderCreatedStatusCommandProvider,
         OrderSendMailCommandProvider,
@@ -144,6 +150,7 @@ import { LocalIncrementModule } from "@local-increment/local-increment";
         ClientEmailFindManyQueryProvider,
         ClientFindManyByCompanyRucQueryProvider,
         ClientFindManyQueryProvider,
+        ClientFindMassiveLoadTemplateQueryProvider,
         ClientFindOneByDniQueryProvider,
         ClientFindOneQueryProvider,
         ClientRecordFindManyQueryProvider,
@@ -154,6 +161,7 @@ import { LocalIncrementModule } from "@local-increment/local-increment";
         OrderChecklistGetFileQueryProvider,
         OrderCloudFindManyQueryProvider,
         OrderDoctorFindManyQueryProvider,
+        OrderFindMassiveLoadTemplateQueryProvider,
         OrderPatientFindManyQueryProvider,
         OrderProcessFindManyQueryProvider,
         OrderYearFindManyQueryProvider,

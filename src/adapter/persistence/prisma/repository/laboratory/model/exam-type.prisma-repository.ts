@@ -32,7 +32,7 @@ export class ExamTypePrismaRepository implements ExamTypeRepository {
             const values = await this.prisma.examTypeModel.findMany({
                 where,
                 orderBy: filter.order,
-                skip: filter.skip,
+                skip: (filter?.skip ?? 0) * (filter?.limit ?? 1),
                 take: filter.limit
             });
             return values.map(e => ExamTypeModelMapper.toModel(e));

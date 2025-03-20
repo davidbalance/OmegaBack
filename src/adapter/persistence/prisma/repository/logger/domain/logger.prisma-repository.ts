@@ -42,7 +42,7 @@ export class LoggerPrismaRepository implements LoggerRepository {
             const where = PrismaFilterMapper.map<LoggerModel, Prisma.LoggerWhereInput>(filter.filter);
             const values = await this.prisma.logger.findMany({
                 where: where,
-                skip: filter.skip,
+                skip: (filter?.skip ?? 0) * (filter?.limit ?? 1),
                 take: filter.limit
             });
             return values.map(e => LoggerDomainMapper.toDomain(e));

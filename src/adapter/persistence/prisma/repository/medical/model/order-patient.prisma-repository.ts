@@ -35,7 +35,7 @@ export class OrderPatientPrismaRepository implements OrderPatientRepository {
                     { orderEmissionDate: 'desc' },
                     { ...filter.order },
                 ],
-                skip: filter.skip,
+                skip: (filter?.skip ?? 0) * (filter?.limit ?? 1),
                 take: filter.limit
             });
             return values.map(e => OrderPatientModelMapper.toModel(e));

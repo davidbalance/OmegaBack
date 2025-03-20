@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Controller, Get, Param, Query, Res, StreamableFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { ClientDoctorFindManyQuery } from "@omega/medical/application/queries/client/client-doctor-find-many.query";
 import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
@@ -21,6 +21,8 @@ import { ClientModelMapper } from "../mapper/client.model_mapper";
 import { AttributeInterceptor } from "@shared/shared/nest/interceptors/attribute.interceptor";
 import { Attribute } from "@shared/shared/nest/decorators/attribute.decorator";
 import { ClientFindOneByDniQuery } from "@omega/medical/application/queries/client/client-find-one-by-dni.query";
+import { Response } from "express";
+import { ClientFindMassiveLoadTemplateQuery } from "@omega/medical/application/queries/client/client-find-massive-load-template.query";
 
 @ApiTags('Medical', 'Read')
 @ApiBearerAuth()
@@ -35,6 +37,7 @@ export class ClientReadController {
         @InjectQuery('ClientAreaFindOne') private readonly areaFindOneQuery: ClientAreaFindOneQuery,
         @InjectQuery('ClientJobPositionFindOne') private readonly jobPositionFindOneQuery: ClientJobPositionFindOneQuery,
         @InjectQuery('ClientManagementFindOne') private readonly managementFindOneQuery: ClientManagementFindOneQuery,
+        @InjectQuery('ClientFindMassiveLoadTemplate') private readonly loadTemplate: ClientFindMassiveLoadTemplateQuery,
     ) { }
 
     @Get(':dni/patient')
@@ -50,6 +53,7 @@ export class ClientReadController {
     async findManyClient(
         @Query() query: ClientFindManyQueryDto
     ): Promise<ClientManyResponseDto> {
+
         const values = await this.findManyQuery.handleAsync({
             ...query,
             order: query.orderField && query.orderValue ? { [query.orderField]: query.orderValue } : undefined
@@ -137,5 +141,17 @@ export class ClientReadController {
         const value = await this.managementFindOneQuery.handleAsync({ patientDni: dni });
         const data = ClientManagementModelMapper.toDTO(value);
         return plainToInstance(ClientManagementResponseDto, data);
+    }
+
+    @Get('massive-load/template')
+    async findMassiveLoadTemplate(
+        @Res({ passthrough: true }) response: Response
+    ): Promise<StreamableFile> {
+        const buffer = await this.loadTemplate.handleAsync();
+        response.set({
+            'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition': 'attachment;filename="massive_patient_load_template.xlsx"'
+        });
+        return new StreamableFile(buffer);
     }
 }

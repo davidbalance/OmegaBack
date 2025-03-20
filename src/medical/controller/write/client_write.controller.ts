@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { InjectCommand } from "@omega/medical/nest/inject/command.inject";
@@ -16,6 +16,12 @@ import { PeriodicRecordRequestDto } from "../dto/request/record/periodic-record.
 import { ReintegrateRecordRequestDto } from "../dto/request/record/reintegrate-record.dto";
 import { RetirementRecordRequestDto } from "../dto/request/record/retirement-record.dto";
 import { CertficateRecordRequestDto } from "../dto/request/record/certificate-record.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { InjectSpreadSheet } from "@shared/shared/nest/inject";
+import { SpreadsheetProvider } from "@shared/shared/providers";
+import { ClientMassiveLoadSpreadSheetMapper } from "../mapper/client-massive-load.spreadsheet-mapper";
+import { ClientMassiveLoadSpreadSheetValidator } from "../validator/client-massive-load.spreadsheet-validator";
+import { ClientCreateManyCommand } from "@omega/medical/application/commands/client/client-create-many.command";
 
 @ApiTags('Medical', 'Write')
 @ApiBearerAuth()
@@ -31,6 +37,8 @@ export class ClientWriteController {
         @InjectCommand('EmailDefault') private readonly emailDefaultCommand: EmailDefaultCommand,
         @InjectCommand('EmailRemove') private readonly emailRemoveCommand: EmailRemoveCommand,
         @InjectCommand('ClientAddRecord') private readonly addRecordCommand: ClientAddRecordCommand,
+        @InjectCommand('ClientCreateMany') private readonly createManyCommand: ClientCreateManyCommand,
+        @InjectSpreadSheet() private readonly spreadsheet: SpreadsheetProvider<any>
     ) { }
 
     @Post()
@@ -146,6 +154,19 @@ export class ClientWriteController {
         @Body() body: CertficateRecordRequestDto,
     ): Promise<string> {
         await this.addRecordCommand.handleAsync({ type: 'certificado', patientDni, ...body });
+        return "ok";
+    }
+
+    @Post('massive-load/excel')
+    @UseInterceptors(FileInterceptor('file'))
+    async massiveLoadFromExcel(
+        @UploadedFile() file: Express.Multer.File
+    ): Promise<string> {
+        const data = await this.spreadsheet.read(file.buffer);
+        const parsed = data.slice(1).map(e => ClientMassiveLoadSpreadSheetMapper.toDTO(e.slice(1)));
+        const promises = parsed.map((async (e) => await ClientMassiveLoadSpreadSheetValidator.validate(e)));
+        await Promise.all(promises);
+        await this.createManyCommand.handleAsync({ data: parsed });
         return "ok";
     }
 }

@@ -5,6 +5,7 @@ export const ClientDoctorFindManyQueryToken = 'ClientDoctorFindManyQuery';
 export const ClientEmailFindManyQueryToken = 'ClientEmailFindManyQuery';
 export const ClientFindManyByCompanyRucQueryToken = 'ClientFindManyByCompanyRucQuery';
 export const ClientFindManyQueryToken = 'ClientFindManyQuery';
+export const ClientFindMassiveLoadTemplateQueryToken = 'ClientFindMassiveLoadTemplateQuery';
 export const ClientFindOneByDniQueryToken = 'ClientFindOneByDniQuery';
 export const ClientFindOneQueryToken = 'ClientFindOneQuery';
 export const ClientJobPositionFindOneQueryToken = 'ClientJobPositionFindOneQuery';
@@ -15,6 +16,7 @@ export const OrderChecklistFindManyQueryToken = 'OrderChecklistFindManyQuery';
 export const OrderChecklistGetFileQueryToken = 'OrderChecklistGetFileQuery';
 export const OrderCloudFindManyQueryToken = 'OrderCloudFindManyQuery';
 export const OrderDoctorFindManyQueryToken = 'OrderDoctorFindManyQuery';
+export const OrderFindMassiveLoadTemplateQueryToken = 'OrderFindMassiveLoadTemplateQuery';
 export const OrderPatientFindManyQueryToken = 'OrderPatientFindManyQuery';
 export const OrderProcessFindManyQueryToken = 'OrderProcessFindManyQuery';
 export const OrderFindOneQueryToken = 'OrderFindOneQuery';
@@ -39,6 +41,7 @@ const query = {
     ClientEmailFindMany: ClientEmailFindManyQueryToken,
     ClientFindManyByCompany: ClientFindManyByCompanyRucQueryToken,
     ClientFindMany: ClientFindManyQueryToken,
+    ClientFindMassiveLoadTemplate: ClientFindMassiveLoadTemplateQueryToken,
     ClientFindOneByDni: ClientFindOneByDniQueryToken,
     ClientFindOne: ClientFindOneQueryToken,
     ClientJobPositionFindOne: ClientJobPositionFindOneQueryToken,
@@ -49,6 +52,7 @@ const query = {
     OrderChecklistGetFile: OrderChecklistGetFileQueryToken,
     OrderCloudFindMany: OrderCloudFindManyQueryToken,
     OrderDoctorFindMany: OrderDoctorFindManyQueryToken,
+    OrderFindMassiveLoadTemplate: OrderFindMassiveLoadTemplateQueryToken,
     OrderPatientFindMany: OrderPatientFindManyQueryToken,
     OrderProcessFindMany: OrderProcessFindManyQueryToken,
     OrderFindOne: OrderFindOneQueryToken,
