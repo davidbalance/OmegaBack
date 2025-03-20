@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, StreamableFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Controller, Get, Param, Query, Res, StreamableFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
@@ -19,6 +19,8 @@ import { OrderChecklistModelMapper } from "../mapper/order_checklist.mapper";
 import { OrderChecklistGetFileQuery } from "@omega/medical/application/queries/order/order-checklist-get-file.query";
 import { OrderFindOneQuery } from "@omega/medical/application/queries/order/order.find-one.query";
 import { OrderDoctorModelMapper } from "../mapper/order_doctor.mapper";
+import { Response } from "express";
+import { OrderFindMassiveLoadTemplateQuery } from "@omega/medical/application/queries/order/order-find-massive-load-template.query";
 
 @ApiTags('Medical', 'Read')
 @ApiBearerAuth()
@@ -33,6 +35,7 @@ export class OrderReadController {
         @InjectQuery('OrderDoctorFindMany') private readonly doctorFindManyQuery: OrderDoctorFindManyQuery,
         @InjectQuery('OrderChecklistFindMany') private readonly checklistFindManyQuery: OrderChecklistFindManyQuery,
         @InjectQuery('OrderChecklistGetFile') private readonly checklistGetFileQuery: OrderChecklistGetFileQuery,
+        @InjectQuery('OrderFindMassiveLoadTemplate') private readonly loadTemplate: OrderFindMassiveLoadTemplateQuery,
     ) { }
 
     @Get(':patientDni')
@@ -111,5 +114,17 @@ export class OrderReadController {
         });
         const data = value.data.map(e => OrderDoctorModelMapper.toDTO(e));
         return plainToInstance(OrderDoctorManyResponseDto, { ...value, data });
+    }
+
+    @Get('massive-load/template')
+    async findMassiveLoadTemplate(
+        @Res({ passthrough: true }) response: Response
+    ): Promise<StreamableFile> {
+        const buffer = await this.loadTemplate.handleAsync();
+        response.set({
+            'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition': 'attachment;filename="massive_order_load_template.xlsx"'
+        });
+        return new StreamableFile(buffer);
     }
 }

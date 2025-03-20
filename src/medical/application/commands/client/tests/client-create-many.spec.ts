@@ -1,71 +1,76 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { Client } from "@omega/medical/core/domain/client/client.domain";
-import { ClientConflictError } from "@omega/medical/core/domain/client/errors/client.errors";
-import { ClientRepository } from "@omega/medical/application/repository/aggregate.repositories";
-import { CreateClientPayload } from "@omega/medical/core/domain/client/payloads/client.payloads";
-import { NotificationProvider } from "@shared/shared/providers/notification.provider";
-import { ClientCreateManyCommand } from "../client-create-many.command";
+import { ClientCreateManyCommand, ClientCreateManyCommandPayload } from "../client-create-many.command";
+import { ClientCreateCommand } from "../client-create.command";
 
 describe("ClientCreateManyCommand", () => {
-    let repository: jest.Mocked<ClientRepository>;
-    let userNotify: jest.Mocked<NotificationProvider<CreateClientPayload>>
+    let command: jest.Mocked<ClientCreateCommand>;
     let handler: ClientCreateManyCommand;
 
     beforeEach(() => {
-        repository = {
-            findOneAsync: jest.fn(),
-            saveAsync: jest.fn(),
-        } as unknown as jest.Mocked<ClientRepository>;
+        command = {
+            handleAsync: jest.fn(),
+        } as unknown as jest.Mocked<ClientCreateCommand>;
 
-        userNotify = {
-            emitAsync: jest.fn()
-        } as unknown as jest.Mocked<NotificationProvider<CreateClientPayload>>
-
-        handler = new ClientCreateManyCommand(repository, userNotify);
+        handler = new ClientCreateManyCommand(command);
     });
 
-    it("should create a client when DNI does not exist", async () => {
-        repository.findOneAsync.mockResolvedValue(null);
-        repository.saveAsync.mockResolvedValue();
-
+    it("should process batches of 50 items at a time", async () => {
         const payload: ClientCreateManyCommandPayload = {
-            patientEmail: "stub@email.com",
-            patientDni: "0000000000",
-            patientName: "Stub client",
-            patientLastname: "Stub client",
-            patientGender: "male",
-            patientRole: "",
-            patientBirthday: new Date("2000-01-01")
+            data: new Array(150).fill({})
         };
 
         await handler.handleAsync(payload);
 
-        expect(repository.findOneAsync).toHaveBeenCalledWith({
-            filter: [{ field: "patientDni", operator: "eq", value: payload.patientDni }],
-        });
-        expect(repository.saveAsync).toHaveBeenCalled();
-        expect(userNotify.emitAsync).toHaveBeenCalled();
+        expect(command.handleAsync).toHaveBeenCalledTimes(150);
+        expect(command.handleAsync).toHaveBeenCalledWith(payload.data[0]);
+        expect(command.handleAsync).toHaveBeenCalledWith(payload.data[49]);
+        expect(command.handleAsync).toHaveBeenCalledWith(payload.data[50]);
     });
 
-    it("should throw ClientConflictError when client with DNI already exists", async () => {
-        repository.findOneAsync.mockResolvedValue({} as Client);
-
+    it("should handle fewer than 50 items correctly", async () => {
         const payload: ClientCreateManyCommandPayload = {
-            patientEmail: "stub@email.com",
-            patientDni: "0000000000",
-            patientName: "Stub client",
-            patientLastname: "Stub client",
-            patientGender: "male",
-            patientRole: "",
-            patientBirthday: new Date("2000-01-01")
+            data: new Array(10).fill({})
         };
 
-        await expect(handler.handleAsync(payload)).rejects.toThrow(ClientConflictError);
+        await handler.handleAsync(payload);
 
-        expect(repository.findOneAsync).toHaveBeenCalledWith({
-            filter: [{ field: "patientDni", operator: "eq", value: payload.patientDni }],
-        });
-        expect(repository.saveAsync).not.toHaveBeenCalled();
-        expect(userNotify.emitAsync).not.toHaveBeenCalled();
+        expect(command.handleAsync).toHaveBeenCalledTimes(10);
+    });
+
+    it("should handle exactly 50 items correctly", async () => {
+        const payload: ClientCreateManyCommandPayload = {
+            data: new Array(50).fill({})
+        };
+
+        await handler.handleAsync(payload);
+
+        expect(command.handleAsync).toHaveBeenCalledTimes(50);
+    });
+
+    it("should catch and log errors without halting execution", async () => {
+        const payload: ClientCreateManyCommandPayload = {
+            data: new Array(3).fill({})
+        };
+
+        command.handleAsync.mockImplementationOnce(() => Promise.resolve())
+            .mockImplementationOnce(() => Promise.reject(new Error("Error processing client")))
+            .mockImplementationOnce(() => Promise.resolve());
+
+        await handler.handleAsync(payload);
+
+        expect(command.handleAsync).toHaveBeenCalledTimes(3);
+        expect(command.handleAsync).toHaveBeenCalledWith(payload.data[0]);
+        expect(command.handleAsync).toHaveBeenCalledWith(payload.data[2]);
+        expect(command.handleAsync).toHaveBeenCalledWith(payload.data[1]);
+    });
+
+    it("should not process any items when the data array is empty", async () => {
+        const payload: ClientCreateManyCommandPayload = {
+            data: []
+        };
+
+        await handler.handleAsync(payload);
+
+        expect(command.handleAsync).not.toHaveBeenCalled();
     });
 });

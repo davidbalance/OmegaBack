@@ -3,7 +3,6 @@ import { ClientRepository } from "../../repository/model.repositories";
 import { OrderRepository, TestRepository } from "../../repository/aggregate.repositories";
 import { OrderCreateCommandPayload } from "./order-create.command";
 import { TestCreateCommandPayload } from "../test/test-create.command";
-import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { Order } from "@omega/medical/core/domain/order/order.domain";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 

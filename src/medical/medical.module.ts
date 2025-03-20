@@ -83,6 +83,8 @@ import { OrderRemoveCommandProvider } from "./nest/command/order/order-remove.ne
 import { LocalIncrementModule } from "@local-increment/local-increment";
 import { ClientCreateManyCommandProvider } from "./nest/command/client/client-create-many.nest-command";
 import { OrderCreateManyCommandProvider } from "./nest/command/order/order-create-many.nest-command";
+import { OrderFindMassiveLoadTemplateQueryProvider } from "./nest/query/order/order-find-massive-load-template.nest-query copy";
+import { ClientFindMassiveLoadTemplateQueryProvider } from "./nest/query/client/client-find-massive-load-template.nest-query copy";
 
 @Module({
     imports: [
@@ -148,6 +150,7 @@ import { OrderCreateManyCommandProvider } from "./nest/command/order/order-creat
         ClientEmailFindManyQueryProvider,
         ClientFindManyByCompanyRucQueryProvider,
         ClientFindManyQueryProvider,
+        ClientFindMassiveLoadTemplateQueryProvider,
         ClientFindOneByDniQueryProvider,
         ClientFindOneQueryProvider,
         ClientRecordFindManyQueryProvider,
@@ -158,6 +161,7 @@ import { OrderCreateManyCommandProvider } from "./nest/command/order/order-creat
         OrderChecklistGetFileQueryProvider,
         OrderCloudFindManyQueryProvider,
         OrderDoctorFindManyQueryProvider,
+        OrderFindMassiveLoadTemplateQueryProvider,
         OrderPatientFindManyQueryProvider,
         OrderProcessFindManyQueryProvider,
         OrderYearFindManyQueryProvider,
