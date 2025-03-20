@@ -177,6 +177,7 @@ export class ClientWriteController {
         @UploadedFile() file: Express.Multer.File
     ): Promise<string> {
         const data = await this.spreadsheet.read(file.buffer);
+        console.log(data);
         const parsed = data.slice(1).map(e => ClientMassiveLoadSpreadSheetMapper.toDTO(e.slice(1)));
         const promises = parsed.map((async (e) => await ClientMassiveLoadSpreadSheetValidator.validate(e)));
         await Promise.all(promises);
