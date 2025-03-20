@@ -49,8 +49,9 @@ export class ClientCreateRequestDto implements ClientCreateCommandPayload {
     @IsNotEmpty()
     public readonly patientLastname: string;
 
-    @IsString()
     @IsOptional()
+    @Type(() => String)
+    @IsString()
     public readonly patientRole?: string;
 
     @IsEnum({ male: 'male', female: 'female' })
