@@ -4,7 +4,7 @@ import { Report } from "./report.domain";
 import { ExamValueObject } from "./value_objects/exam.value_object";
 import { ResultCreatedEvent, ResultFileAddedEvent, ResultFileRemovedEvent } from "./events/result.events";
 import { ReportAddedContentEvent, ReportAddedFilepathEvent, ReportCreatedEvent, ReportRemovedContentEvent } from "./events/report.events";
-import { TestCheckedEvent, TestDiseaseAddedEvent, TestDiseaseRemovedEvent, TestExamChangedEvent, TestUncheckedEvent } from "./events/test.events";
+import { TestCheckedEvent, TestDiseaseAddedEvent, TestDiseaseRemovedEvent, TestExamChangedEvent, TestReactivatedEvent, TestRemovedEvent, TestUncheckedEvent } from "./events/test.events";
 import { CreateDiseaseReportPayload, CreateTestPayload, ExamPayload, UpdateDiseaseReportPayload } from "./payloads/test.payloads";
 import { DiseaseReportUpdatedEvent } from "./events/disease.events";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
@@ -88,6 +88,20 @@ export class Test extends Aggregate<TestProps> {
         const report = new Test({ ...value, exam });
         report.commit();
         return report;
+    }
+
+    public remove(): void {
+        this.emit(new TestRemovedEvent(this.id));
+    }
+
+    public reactivate(): void {
+        this.emit(new TestReactivatedEvent(this.id));
+        this.check();
+        for (const disease of this.diseases) {
+            this.removeDisease(disease.id);
+        }
+        this.removeResult();
+        this.removeReport();
     }
 
     public addResult(filepath: string): void {

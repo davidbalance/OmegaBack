@@ -1,15 +1,15 @@
 import { Inject, Injectable, Logger, Provider } from "@nestjs/common";
 import { PrismaService } from "../../../prisma.service";
-import { AggregateEvent, DomainEvent, SearchCriteria } from "@shared/shared/domain";
+import { AggregateEvent, SearchCriteria } from "@shared/shared/domain";
 import { PrismaFilterMapper } from "../../../filter-mapper";
 import { Prisma } from "@prisma/client";
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { Test, TestProps } from "@omega/medical/core/domain/test/test.domain";
 import { TestDomainMapper } from "../../../mapper/medical/domain/test.domain-mapper";
-import { TestCheckedEventPayload, TestDiseaseRemovedEventPayload, TestExamChangedEventPayload, TestIsEvent, TestUncheckedEventPayload } from "@omega/medical/core/domain/test/events/test.events";
+import { TestCheckedEventPayload, TestDiseaseRemovedEventPayload, TestExamChangedEventPayload, TestIsEvent, TestReactivatedEventPayload, TestRemovedEventPayload, TestUncheckedEventPayload } from "@omega/medical/core/domain/test/events/test.events";
 import { DiseaseReport } from "@omega/medical/core/domain/test/disease_report.domain";
 import { DiseaseReportDomainMapper } from "../../../mapper/medical/domain/disease_report.domain-mapper";
-import { ResultFileAddedEventPayload, ResultFileRemoveBatchEventPayload, ResultFileRemovedEventPayload, ResultIsEvent } from "@omega/medical/core/domain/test/events/result.events";
+import { ResultFileAddedEventPayload, ResultFileRemovedEventPayload, ResultIsEvent } from "@omega/medical/core/domain/test/events/result.events";
 import { ResultDomainMapper } from "../../../mapper/medical/domain/result.domain-mapper";
 import { Result } from "@omega/medical/core/domain/test/result.domain";
 import { Report } from "@omega/medical/core/domain/test/report.domain";
@@ -48,6 +48,12 @@ export class TestPrismaRepository implements TestRepository {
         for (const event of events) {
             if (AggregateEvent.isAggregatedCreatedEvent<Test>(event))
                 await this.createTest(aggregate);
+
+            else if (TestIsEvent.isTestRemovedEvent(event))
+                await this.removeTest(event.value);
+
+            else if (TestIsEvent.isTestReactivatedEvent(event))
+                await this.reactivateTest(event.value);
 
             else if (TestIsEvent.isTestCheckedEvent(event))
                 await this.checkTest(event.value);
@@ -114,6 +120,24 @@ export class TestPrismaRepository implements TestRepository {
         try {
             const data = ReportDomainMapper.toPrisma(value);
             await this.prisma.medicalReport.create({ data });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async removeTest(value: TestRemovedEventPayload): Promise<void> {
+        try {
+            await this.prisma.medicalTest.update({ where: { id: value.testId }, data: { isActive: false } });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async reactivateTest(value: TestReactivatedEventPayload): Promise<void> {
+        try {
+            await this.prisma.medicalTest.update({ where: { id: value.testId }, data: { isActive: true } });
         } catch (error) {
             Logger.error(error);
             throw new RepositoryError();

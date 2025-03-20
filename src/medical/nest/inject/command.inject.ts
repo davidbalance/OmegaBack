@@ -30,6 +30,7 @@ export const TestCheckFileCommandToken = 'TestCheckFileCommand';
 export const TestCreateCommandToken = 'TestCreateCommand';
 export const TestCheckCommandToken = 'TestCheckCommand';
 export const TestEditExamCommandToken = 'TestEditExamCommand';
+export const TestRemoveCommandToken = 'TestRemoveCommand';
 export const TestUncheckCommandToken = 'TestUncheckCommand';
 
 const command = {
@@ -63,6 +64,7 @@ const command = {
     TestCreate: TestCreateCommandToken,
     TestCheck: TestCheckCommandToken,
     TestEditExam: TestEditExamCommandToken,
+    TestRemove: TestRemoveCommandToken,
     TestUncheck: TestUncheckCommandToken,
 }
 

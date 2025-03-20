@@ -17,6 +17,7 @@ import { TestCheckCommand } from "@omega/medical/application/commands/test/test-
 import { TestUncheckCommand } from "@omega/medical/application/commands/test/test-uncheck.command";
 import { ReportUploadFromStreamCommand } from "@omega/medical/application/commands/test/report-upload-from-stream.command";
 import { TestCheckFileCommand } from "@omega/medical/application/commands/test/test-check-file.command";
+import { TestRemoveCommand } from "@omega/medical/application/commands/test/test-remove.command";
 
 @ApiTags('Medical', 'Write')
 @ApiBearerAuth()
@@ -36,6 +37,7 @@ export class TestWriteController {
         @InjectCommand('TestCreate') private readonly testCreateCommand: TestCreateCommand,
         @InjectCommand('TestCheck') private readonly testCheckCommand: TestCheckCommand,
         @InjectCommand('TestEditExam') private readonly testEditCommand: TestEditExamCommand,
+        @InjectCommand('TestRemove') private readonly testRemoveCommand: TestRemoveCommand,
         @InjectCommand('TestUncheck') private readonly testUncheckCommand: TestUncheckCommand,
     ) { }
 
@@ -66,6 +68,14 @@ export class TestWriteController {
         @Param('testId') testId: string,
     ): Promise<string> {
         await this.testUncheckCommand.handleAsync({ testId });
+        return "ok";
+    }
+
+    @Delete(':testId/test')
+    async removeTest(
+        @Param('testId') testId: string,
+    ): Promise<string> {
+        await this.testRemoveCommand.handleAsync({ testId });
         return "ok";
     }
 

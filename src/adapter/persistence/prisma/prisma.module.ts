@@ -44,7 +44,7 @@ import { JobPositionModelRepositoryProvider } from "./repository/location/model/
 import { ManagementOptionModelRepositoryProvider } from "./repository/location/model/management-option.prisma-repository";
 import { ManagementModelRepositoryProvider } from "./repository/location/model/management.prisma-repository";
 import { ClientAggregateRepositoryToken, OrderAggregateRepositoryToken, TestAggregateRepositoryToken } from "@omega/medical/nest/inject/aggregate-repository.inject";
-import { ClientAreaModelRepositoryToken, ClientDoctorModelRepositoryToken, ClientEmailModelRepositoryToken, ClientJobPositionModelRepositoryToken, ClientManagementModelRepositoryToken, ClientModelRepositoryToken, OrderChecklistModelRepositoryToken, OrderCloudFileModelRepositoryToken, OrderPatientModelRepositoryToken, OrderProcessModelRepositoryToken, OrderYearModelRepositoryToken, OrderModelRepositoryToken, DiseaseReportModelRepositoryToken, ReportModelRepositoryToken, ResultFilepathModelRepositoryToken, TestReportModelRepositoryToken, TestModelRepositoryToken, OrderDoctorModelRepositoryToken, TestFileResultRepositoryToken, ClientRecordModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
+import { ClientAreaModelRepositoryToken, ClientDoctorModelRepositoryToken, ClientEmailModelRepositoryToken, ClientJobPositionModelRepositoryToken, ClientManagementModelRepositoryToken, ClientModelRepositoryToken, OrderChecklistModelRepositoryToken, OrderCloudFileModelRepositoryToken, OrderPatientModelRepositoryToken, OrderProcessModelRepositoryToken, OrderYearModelRepositoryToken, OrderModelRepositoryToken, DiseaseReportModelRepositoryToken, ReportModelRepositoryToken, ResultFilepathModelRepositoryToken, TestReportModelRepositoryToken, TestModelRepositoryToken, OrderDoctorModelRepositoryToken, TestFileResultRepositoryToken, ClientRecordModelRepositoryToken, TestInnerModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
 import { ClientAggregateRepositoryProvider } from "./repository/medical/domain/client.prisma-repository";
 import { OrderAggregateRepositoryProvider } from "./repository/medical/domain/order.prisma-repository";
 import { TestAggregateRepositoryProvider } from "./repository/medical/domain/test.prisma-repository";
@@ -79,6 +79,7 @@ import { TestFileResultRepositoryProvider } from "./repository/medical/model/tes
 import { ClientRecordModelRepositoryProvider } from "./repository/medical/model/client-record.prisma-repository";
 import { IncrementDomainRepositoryProvider } from "./repository/increment/increment.prisma-repository";
 import { IncrementRepositoryToken } from "@local-increment/local-increment/repository/increment.repository";
+import { TestInnerModelRepositoryProvider } from "./repository/medical/model/test-inner.prisma-repository";
 
 @Global()
 @Module({
@@ -146,6 +147,7 @@ import { IncrementRepositoryToken } from "@local-increment/local-increment/repos
         ReportModelRepositoryProvider,
         ResultFilepathModelRepositoryProvider,
         TestFileResultRepositoryProvider,
+        TestInnerModelRepositoryProvider,
         TestReportModelRepositoryProvider,
         TestModelRepositoryProvider,
         IncrementDomainRepositoryProvider
@@ -213,6 +215,7 @@ import { IncrementRepositoryToken } from "@local-increment/local-increment/repos
         ReportModelRepositoryToken,
         ResultFilepathModelRepositoryToken,
         TestFileResultRepositoryToken,
+        TestInnerModelRepositoryToken,
         TestReportModelRepositoryToken,
         TestModelRepositoryToken,
         IncrementRepositoryToken

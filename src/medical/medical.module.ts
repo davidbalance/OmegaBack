@@ -85,6 +85,7 @@ import { ClientCreateManyCommandProvider } from "./nest/command/client/client-cr
 import { OrderCreateManyCommandProvider } from "./nest/command/order/order-create-many.nest-command";
 import { OrderFindMassiveLoadTemplateQueryProvider } from "./nest/query/order/order-find-massive-load-template.nest-query copy";
 import { ClientFindMassiveLoadTemplateQueryProvider } from "./nest/query/client/client-find-massive-load-template.nest-query copy";
+import { TestRemoveCommandProvider } from "./nest/command/test/test-remove.nest-command";
 
 @Module({
     imports: [
@@ -143,6 +144,7 @@ import { ClientFindMassiveLoadTemplateQueryProvider } from "./nest/query/client/
         TestCheckFileCommandProvider,
         TestCheckCommandProvider,
         TestCreateCommandProvider,
+        TestRemoveCommandProvider,
         TestUncheckCommandProvider,
         TestEditExamCommandProvider,
         ClientAreaFindOneQueryProvider,

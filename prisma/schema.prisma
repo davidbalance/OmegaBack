@@ -836,6 +836,16 @@ view TestModel {
   @@map("v_m_tests")
 }
 
+view TestInnerModel {
+  testId           String  @unique @map("medical_test_id") @db.Char(36)
+  orderId          String  @map("medical_order_id") @db.Char(36)
+  examName         String  @map("exam_name") @db.VarChar(128)
+  examSubtype      String  @map("exam_subtype") @db.VarChar(64)
+  examType         String  @map("exam_type") @db.VarChar(64)
+
+  @@map("v_m_tests_inner")
+}
+
 view TestFileResultModel {
   testId          String  @unique @map("medical_test_id") @db.Char(36)
   patientName     String  @map("patient_name") @db.VarChar(128)

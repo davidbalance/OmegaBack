@@ -4,13 +4,13 @@ import { InjectAggregateRepository } from "../../inject/aggregate-repository.inj
 import { TestCreateCommandToken } from "../../inject/command.inject";
 import { TestCreateCommand } from "@omega/medical/application/commands/test/test-create.command";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
-import { TestRepository as TestModelRepository } from "@omega/medical/application/repository/model.repositories";
+import { TestInnerRepository } from "@omega/medical/application/repository/model.repositories";
 
 @Injectable()
 class TestCreateNestCommand extends TestCreateCommand {
     constructor(
         @InjectAggregateRepository("Test") aggregate: TestAggregateRepository,
-        @InjectModelRepository("Test") model: TestModelRepository,
+        @InjectModelRepository("TestInner") model: TestInnerRepository,
     ) {
         super(aggregate, model);
     }

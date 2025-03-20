@@ -1,15 +1,15 @@
 import { CommandHandlerAsync } from "@shared/shared/application";
 import { CreateTestPayload } from "@omega/medical/core/domain/test/payloads/test.payloads";
 import { TestRepository as TestAggregateRepository } from "../../repository/aggregate.repositories";
-import { TestRepository as TestModelRepository } from "../../repository/model.repositories";
+import { TestInnerRepository } from "../../repository/model.repositories";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
-import { TestConflictError } from "@omega/medical/core/domain/test/errors/test.errors";
+import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 
 export type TestCreateCommandPayload = CreateTestPayload;
 export class TestCreateCommand implements CommandHandlerAsync<TestCreateCommandPayload, void> {
     constructor(
         private readonly repository: TestAggregateRepository,
-        private readonly model: TestModelRepository
+        private readonly model: TestInnerRepository
     ) { }
 
     async handleAsync(value: TestCreateCommandPayload): Promise<void> {
@@ -19,8 +19,15 @@ export class TestCreateCommand implements CommandHandlerAsync<TestCreateCommandP
             { field: 'examSubtype', operator: 'eq', value: value.examSubtype },
             { field: 'examType', operator: 'eq', value: value.examType },
         ]);
-        if (exists) throw new TestConflictError();
-        const test = Test.create(value);
+        let test: Test;
+        if (exists) {
+            const value = await this.repository.findOneAsync({ filter: [{ field: 'id', operator: 'eq', value: exists.testId }] });
+            if (!value) throw new TestNotFoundError(exists.testId);
+            test = value;
+            test.reactivate();
+        } else {
+            test = Test.create(value);
+        }
         await this.repository.saveAsync(test);
     }
 }

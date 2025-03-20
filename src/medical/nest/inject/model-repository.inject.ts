@@ -20,6 +20,7 @@ export const ResultFilepathModelRepositoryToken = 'ResultFilepathModelRepository
 export const TestDoctorModelRepositoryToken = 'TestDoctorModelRepository';
 export const TestReportModelRepositoryToken = 'TestReportModelRepository';
 export const TestModelRepositoryToken = 'TestModelRepository';
+export const TestInnerModelRepositoryToken = 'TestInnerModelRepository';
 export const TestFileResultRepositoryToken = 'TestFileResultModelRepository';
 
 const repository = {
@@ -43,6 +44,7 @@ const repository = {
     TestDoctor: TestDoctorModelRepositoryToken,
     TestReport: TestReportModelRepositoryToken,
     Test: TestModelRepositoryToken,
+    TestInner: TestInnerModelRepositoryToken,
     TestFileResult: TestFileResultRepositoryToken,
 }
 
