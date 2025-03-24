@@ -1,8 +1,12 @@
-import { formatDate } from "date-fns";
-import { craftMedicalFitnessForJob, craftRecommendation, CraftRecordFunc, craftSpacing, CratftRecordItemFunc } from "./generic-record-helper";
+import { CraftRecordFunc } from "./generic-record-helper";
 import { CertificateRecord } from "@omega/medical/application/type/certificate-record";
 
 export const createCertificateRecord: CraftRecordFunc<CertificateRecord> = (record: CertificateRecord, {
+    clinicNumber,
+    fileNumber,
+}) => [];
+
+/* export const createCertificateRecord: CraftRecordFunc<CertificateRecord> = (record: CertificateRecord, {
     clinicNumber,
     fileNumber,
     headerLayout: header,
@@ -209,4 +213,4 @@ const retireEvaluation: CratftRecordItemFunc<CertificateRecord> = (record, subhe
             ]
         },
     }
-];
+]; */

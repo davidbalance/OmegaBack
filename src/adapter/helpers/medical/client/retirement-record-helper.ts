@@ -1,8 +1,9 @@
-import { formatDate } from "date-fns";
 import { RetirementRecord } from "@omega/medical/application/type/retirement-record";
-import { craftJobAccident, craftMedicalAndSurgicalHistory, craftMedicalDiagnostic, craftOccupationalDisease, craftPhysicalRegionalExam, craftRecommendation, CraftRecordFunc, craftSpacing, craftSpecificAndGeneralResults, craftVitalSignsAndAnthropometry, CratftRecordItemFunc } from "./generic-record-helper";
+import { CraftRecordFunc } from "./generic-record-helper";
 
-export const createRetirementRecord: CraftRecordFunc<RetirementRecord> = (record: RetirementRecord, {
+export const createRetirementRecord: CraftRecordFunc<RetirementRecord> = (record: RetirementRecord, { clinicNumber, fileNumber, }) => [];
+
+/* export const createRetirementRecord: CraftRecordFunc<RetirementRecord> = (record: RetirementRecord, {
     clinicNumber,
     fileNumber,
     headerLayout: header,
@@ -229,4 +230,4 @@ const medicalRetirementEvaluation: CratftRecordItemFunc<RetirementRecord> = (rec
             ]
         },
     },
-];
+]; */

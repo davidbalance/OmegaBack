@@ -1,7 +1,9 @@
-import { craftCurrentDisease, craftFamilyHistory, craftJobAccident, craftMedicalAndSurgicalHistory, craftMedicalConsultation, craftMedicalDiagnostic, craftMedicalFitnessForJob, craftOccupationalDisease, craftPhysicalRegionalExam, craftRecommendation, CraftRecordFunc, craftReviewOfOrgansAndSystem, craftSpacing, craftSpecificAndGeneralResults, craftToxicHabits, craftVitalSignsAndAnthropometry, CratftRecordItemFunc, verticalText } from "./generic-record-helper";
+import { CraftRecordFunc } from "./generic-record-helper";
 import { PeriodicRecord } from "@omega/medical/application/type/periodic-record";
 
-export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: PeriodicRecord, {
+export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: PeriodicRecord, { clinicNumber, fileNumber, }) => [];
+
+/* export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: PeriodicRecord, {
     clinicNumber,
     fileNumber,
     headerLayout: header,
@@ -565,4 +567,4 @@ const jobRiskPreventionLayout: CratftRecordItemFunc<PeriodicRecord> = (record, s
             fillColor: (index) => subheader(index === 1 ? 0 : index)
         }
     },
-];
+]; */

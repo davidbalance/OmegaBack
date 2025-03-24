@@ -1,8 +1,9 @@
-import { formatDate } from "date-fns";
-import { craftCurrentDisease, craftMedicalConsultation, craftMedicalDiagnostic, craftMedicalFitnessForJob, craftPhysicalRegionalExam, craftRecommendation, CraftRecordFunc, craftSpacing, craftSpecificAndGeneralResults, craftVitalSignsAndAnthropometry, CratftRecordItemFunc } from "./generic-record-helper";
+import { CraftRecordFunc } from "./generic-record-helper";
 import { ReintegrateRecord } from "@omega/medical/application/type/reintegrate-record";
 
-export const createReintegrationRecord: CraftRecordFunc<ReintegrateRecord> = (record: ReintegrateRecord, {
+export const createReintegrationRecord: CraftRecordFunc<ReintegrateRecord> = (record: ReintegrateRecord, { clinicNumber, fileNumber, }) => [];
+
+/* export const createReintegrationRecord: CraftRecordFunc<ReintegrateRecord> = (record: ReintegrateRecord, {
     clinicNumber,
     fileNumber,
     headerLayout: header,
@@ -183,4 +184,4 @@ const institutionLayout: CratftRecordItemFunc<ReintegrateRecord & {
             fillColor: subheader
         }
     }
-];
+]; */

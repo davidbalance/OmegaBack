@@ -1,916 +1,484 @@
 import { InitialRecord } from "@omega/medical/application/type/initial-record";
-import { craftCurrentDisease, craftExtraActivity, craftFamilyHistory, craftJobAccident, craftLifeStyle, craftMedicalAndSurgicalHistory, craftMedicalConsultation, craftMedicalDiagnostic, craftMedicalFitnessForJob, craftOccupationalDisease, craftPhysicalRegionalExam, craftRecommendation, CraftRecordFunc, craftReviewOfOrgansAndSystem, craftSpacing, craftSpecificAndGeneralResults, craftToxicHabits, craftVitalSignsAndAnthropometry, CratftRecordItemFunc, verticalText } from "./generic-record-helper";
+import { craftCurrentDisease, craftDiagnosticHeader, craftExtraActivity, craftFamilyHistory, CraftItemFunc, craftJobAccident, craftMedicalAndSurgicalHistory, craftMedicalConsultation, craftMedicalDiagnostic, craftMedicalFitnessForJob, craftOccupationalDisease, craftPhysicalRegionalExam, craftRecommendation, CraftRecordFunc, craftReviewOfOrgansAndSystem, craftSpecificAndGeneralResults, craftToxicHabitsAndLifeStyle, craftVitalSignsAndAnthropometry, flatRecord } from "./generic-record-helper";
 import { formatDate } from "date-fns";
+import { Cell, craftCell, craftHeader, craftRow, craftSpacing, craftSubtitle, craftTitle, emptyCell, Row } from "./table.helper";
 
-export const createInitialRecord: CraftRecordFunc<InitialRecord> = (record: InitialRecord, {
-    clinicNumber,
-    fileNumber,
-    headerLayout: header,
-    subheaderLayout: subheader
-}) => [
-        header('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
-        institutionLayout({ ...record, clinicNumber, fileNumber }, subheader),
-        craftSpacing(),
-        header('MOTIVO DE CONSULTA'),
-        craftMedicalConsultation(record),
-        craftSpacing(),
-        header('ANTECEDENTES PERSONALES'),
-        craftMedicalAndSurgicalHistory(record, subheader),
-        gynecologicalHistoryLayout(record, subheader),
-        maleReproducitveHistoryLayout(record, subheader),
-        craftToxicHabits([
-            { ...record.toxicHabitTobacco, name: 'Tabaco' },
-            { ...record.toxicHabitTobacco, name: 'Alcohol' },
-            { ...record.toxicHabitTobacco, name: 'other' },
-        ].filter(e => !!e), subheader),
-        craftLifeStyle(record, subheader),
-        craftSpacing(),
-        header('ANTECEDENTES DE TRABAJO'),
-        jobHistoryLayout(record, subheader),
-        craftJobAccident(record, subheader),
-        craftOccupationalDisease(record, subheader),
-        craftSpacing(),
-        header('ANTECEDENTES FAMILIARES (DETALLAR EL PARENTESCO)'),
-        craftFamilyHistory(record, subheader),
-        craftSpacing(),
-        header('FACTORES DE RIESGOS DEL PUESTO DE TRABAJO ACTUAL'),
-        jobRiskLayout(record, subheader),
-        jobRiskPreventionLayout(record, subheader),
-        craftSpacing(),
-        header('ACTIVIDADES EXTRA LABORALES'),
-        craftExtraActivity(record),
-        craftSpacing(),
-        header('ENFERMEDAD ACTUAL'),
-        craftCurrentDisease(record),
-        craftSpacing(),
-        header('REVISIÓN ACTUAL DE ÓRGANOS Y SISTEMAS'),
-        craftReviewOfOrgansAndSystem(record),
-        craftSpacing(),
-        header('CONSTANTES VITALES Y ANTROPOMETRÍA'),
-        craftVitalSignsAndAnthropometry(record, subheader),
-        craftSpacing(),
-        header('EXAMEN FÍSICO REGIONAL'),
-        craftPhysicalRegionalExam(record, subheader),
-        craftSpacing(),
-        header('RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)'),
-        craftSpecificAndGeneralResults(record, subheader),
-        craftSpacing(),
-        header('DIAGNÓSTICO'),
-        craftMedicalDiagnostic(record.diagnostics, subheader),
-        craftSpacing(),
-        header('APTITUD MÉDICA PARA EL TRABAJO'),
-        craftMedicalFitnessForJob(record, subheader),
-        craftSpacing(),
-        header('RECOMENDACIONES Y/O TRATAMIENTO'),
-        craftRecommendation(record),
-        craftSpacing(),
-    ];
+export const createInitialRecord: CraftRecordFunc<InitialRecord> = (record: InitialRecord, { clinicNumber, fileNumber }) => flatRecord([
+    craftHeader('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
+    institutionLayout({ ...record, clinicNumber, fileNumber }),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('MOTIVO DE CONSULTA'),
+    craftMedicalConsultation(record),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('ANTECEDENTES PERSONALES'),
+    craftMedicalAndSurgicalHistory(record),
+    gynecologicalHistoryLayout(record),
+    maleReproducitveHistoryLayout(record),
+    craftToxicHabitsAndLifeStyle({
+        tobacco: { ...record.toxicHabitTobacco },
+        alcohol: { ...record.toxicHabitAlcohol },
+        other: { ...record.toxicHabitOther },
+    }, record),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('ANTECEDENTES DE TRABAJO'),
+    jobHistoryLayout(record),
+    craftJobAccident(record),
+    craftOccupationalDisease(record),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('ANTECEDENTES FAMILIARES (DETALLAR EL PARENTESCO)'),
+    craftFamilyHistory(record),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('FACTORES DE RIESGOS DEL PUESTO DE TRABAJO ACTUAL'),
+    jobRiskLayout(record),
+    craftRow(emptyCell({ colSpan: 70 })),
+    jobRiskPreventionLayout(record),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('ACTIVIDADES EXTRA LABORALES'),
+    craftExtraActivity(record),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('ENFERMEDAD ACTUAL'),
+    craftCurrentDisease(record),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('REVISIÓN ACTUAL DE ÓRGANOS Y SISTEMAS'),
+    craftReviewOfOrgansAndSystem(record),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('CONSTANTES VITALES Y ANTROPOMETRÍA'),
+    craftVitalSignsAndAnthropometry(record),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('EXAMEN FÍSICO REGIONAL'),
+    craftPhysicalRegionalExam(record),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)'),
+    craftSpecificAndGeneralResults(record),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftDiagnosticHeader(),
+    craftMedicalDiagnostic(record.diagnostics),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('APTITUD MÉDICA PARA EL TRABAJO'),
+    craftMedicalFitnessForJob(record),
+    craftRow(craftSpacing({ colSpan: 70 })),
+    craftHeader('RECOMENDACIONES Y/O TRATAMIENTO'),
+    craftRecommendation(record)
+]);
 
-
-const institutionLayout: CratftRecordItemFunc<InitialRecord & {
+const institutionLayout: CraftItemFunc<InitialRecord & {
     clinicNumber: number;
     fileNumber: number;
-}> = (record, subheader): any => [
-    {
-        width: '*',
-        style: 'itemElement',
-        table: {
-            widths: ["auto", "auto", "auto", "auto", "auto", "auto"],
-            body: [
-                [
-                    {
-                        style: 'itemHeader',
-                        text: 'INSTITUCIÓN DEL SISTEMA O NOMBRE DE LA EMPRESA',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'RUC',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'CIU',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'ESTABLECIMIENTO DE SALUD',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'NÚMERO DE HISTORIA CLÍNICA',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'NÚMERO DE ARCHIVO',
-                    }
-                ],
-                [
-                    record.companyName,
-                    record.companyRUC,
-                    record.companyCIU,
-                    record.institutionHealthFacility,
-                    record.clinicNumber.toString().padStart(12, '0'),
-                    record.fileNumber.toString().padStart(12, '0'),
-                ],
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
-            body: [
-                [
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'PRIMER APELLIDO ',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'SEGUNDO APELLIDO ',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'PRIMER NOMBRE',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'SEGUNDO NOMBRE',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'SEXO ',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'EDAD (AÑOS)',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'RELIGIÓN',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'GRUPO SANGUÍNEO',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'LATERALIDA',
-                    }
-                ],
-                [
-                    record.patientLastName,
-                    record.patientSecondLastName,
-                    record.patientFirstName,
-                    record.patientMiddleName,
-                    record.patientGender === 'male' ? 'Masculino' : 'Femenino',
-                    record.patientAge,
-                    record.patientReligion === 'catholic'
-                        ? 'Catolica'
-                        : (record.patientReligion === 'evangelical'
-                            ? 'Evangelica'
-                            : (record.patientReligion === 'mormon'
-                                ? 'Mormona'
-                                : (record.patientReligion === 'jehovah\'s witnesses'
-                                    ? 'Testigos de Jehova'
-                                    : record.patientOtherReligion ?? ''
-                                )
-                            )
-                        ),
-                    record.patientBloodType,
-                    record.patientLaterality
-                ],
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "auto", "auto", "auto", "auto", "auto", "auto"],
-            body: [
-                [
-                    {
-                        border: [true, false, true, true],
-                        text: 'ORIENTACIÓN SEXUAL',
-                        style: 'itemHeader',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        text: 'IDENTIDAD DE GÉNERO',
-                        style: 'itemHeader',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        text: ' DISCAPACIDAD',
-                        style: 'itemHeader',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        text: 'FECHA DE INGRESO AL TRABAJO',
-                        style: 'itemHeader',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        text: 'PUESTO DE TRABAJO (CIUO)',
-                        style: 'itemHeader',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        text: 'ÁREA DE TRABAJO',
-                        style: 'itemHeader',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        text: 'ACTIVIDADES RELEVANTES AL PUESTO DE TRABAJO A OCUPAR',
-                        style: 'itemHeader',
-                    },
-                ],
-                [
-                    record.patientSexualOrientation === 'lesbian'
-                        ? 'Lesbiana'
-                        : (record.patientSexualOrientation === 'bisexual'
-                            ? 'Bisexual'
-                            : (record.patientSexualOrientation === 'gay'
-                                ? 'Gay'
-                                : (record.patientSexualOrientation === 'heterosexual'
-                                    ? 'Heterosexual'
-                                    : 'No aplica'
-                                )
-                            )
-                        ),
-                    record.patientGenderIdentity === 'male'
-                        ? 'Masculino'
-                        : (record.patientGenderIdentity === 'female'
-                            ? 'Femenino'
-                            : (record.patientGenderIdentity === 'trans-male'
-                                ? 'Trans-masculino'
-                                : (record.patientGenderIdentity === 'trans-female'
-                                    ? 'Trans-femenino'
-                                    : 'No aplica'
-                                )
-                            )
-                        ),
-                    !!record.patientDisabilityType ? `${record.patientDisabilityType} ${record.patientDisabilityPercent}%` : 'No aplica',
-                    formatDate(record.jobStartDate, 'yyyy/MM/dd'),
-                    record.jobPosition,
-                    record.jobArea,
-                    record.jobActivity
-                ],
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    }
+}> = (record) => [
+    craftRow(
+        craftTitle('INSTITUCIÓN DEL SISTEMA O NOMBRE DE LA EMPRESA', { colSpan: 16 }),
+        craftTitle('RUC', { colSpan: 10 }),
+        craftTitle('CIU', { colSpan: 5 }),
+        craftTitle('ESTABLECIMIENTO DE SALUD', { colSpan: 15 }),
+        craftTitle('NÚMERO DE HISTORIA CLÍNICA', { colSpan: 14 }),
+        craftTitle('NÚMERO DE ARCHIVO', { colSpan: 10 }),
+    ),
+    craftRow(
+        craftCell(record.companyName, { colSpan: 16 }),
+        craftCell(record.companyRUC, { colSpan: 10 }),
+        craftCell(record.companyCIU, { colSpan: 5 }),
+        craftCell(record.institutionHealthFacility, { colSpan: 15 }),
+        craftCell(record.clinicNumber.toString().padStart(12, '0'), { colSpan: 14 }),
+        craftCell(record.fileNumber.toString().padStart(12, '0'), { colSpan: 10 }),
+    ),
+    craftRow(
+        craftTitle('PRIMER APELLIDO', { rowSpan: 2, colSpan: 10 }),
+        craftTitle('SEGUNDO APELLIDO', { rowSpan: 2, colSpan: 10 }),
+        craftTitle('PRIMER NOMBRE', { rowSpan: 2, colSpan: 10 }),
+        craftTitle('SEGUNDO NOMBRE', { rowSpan: 2, colSpan: 10 }),
+        craftTitle('SEXO', { rowSpan: 2, colSpan: 3 }),
+        craftTitle('EDAD (AÑOS)', { rowSpan: 2, colSpan: 3 }),
+        craftTitle('RELIGIÓN', { colSpan: 10 }),
+        craftTitle('GRUPO SANGUÍNEO', { rowSpan: 2, colSpan: 6 }),
+        craftTitle('LATERALIDA', { rowSpan: 2, colSpan: 8 }),
+    ),
+    craftRow(
+        craftCell('Católica', { orientation: 'vertical', style: 'itemTitle', colSpan: 2, height: 50, fontSize: 5 }),
+        craftCell('Evangélica', { orientation: 'vertical', style: 'itemTitle', colSpan: 2, height: 50, fontSize: 5 }),
+        craftCell('Testigos de Jehová', { orientation: 'vertical', style: 'itemTitle', colSpan: 2, height: 50, fontSize: 5 }),
+        craftCell('Mormona', { orientation: 'vertical', style: 'itemTitle', colSpan: 2, height: 50, fontSize: 5 }),
+        craftCell('Otras', { orientation: 'vertical', style: 'itemTitle', colSpan: 2, height: 50, fontSize: 5 }),
+    ),
+    craftRow(
+        craftCell(record.patientLastName, { colSpan: 10 }),
+        craftCell(record.patientSecondLastName, { colSpan: 10 }),
+        craftCell(record.patientFirstName, { colSpan: 10 }),
+        craftCell(record.patientMiddleName, { colSpan: 10 }),
+        craftCell(record.patientGender === 'male' ? 'Masculino' : 'Femenino', { colSpan: 3, fontSize: 5 }),
+        craftCell(record.patientAge.toString(), { colSpan: 3 }),
+        craftCell(record.patientReligion === 'catholic' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientReligion === 'evangelical' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientReligion === 'jehovah\'s witnesses' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientReligion === 'mormon' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientReligion === 'other' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientBloodType, { colSpan: 6 }),
+        craftCell(record.patientLaterality, { colSpan: 8 }),
+    ),
+    craftRow(
+        craftTitle('ORIENTACIÓN SEXUAL', { colSpan: 10 }),
+        craftTitle('IDENTIDAD DE GÉNERO', { colSpan: 10 }),
+        craftTitle('DISCAPACIDAD', { colSpan: 13 }),
+        craftTitle('FECHA DE INGRESO AL TRABAJO', { rowSpan: 2, colSpan: 5 }),
+        craftTitle('PUESTO DE TRABAJO (CIUO)', { rowSpan: 2, colSpan: 5 }),
+        craftTitle('ÁREA DE TRABAJO', { rowSpan: 2, colSpan: 6 }),
+        craftTitle('ACTIVIDADES RELEVANTES AL PUESTO DE TRABAJO A OCUPAR', { rowSpan: 2, colSpan: 21 }),
+    ),
+    craftRow(
+        craftCell('Lesbiana', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
+        craftCell('Gay', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
+        craftCell('Bisexual', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
+        craftCell('Heterosexual', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
+        craftCell('No sabe / No responde', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
+        craftCell('Femenino', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
+        craftCell('Masculino', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
+        craftCell('Trans-femenino', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
+        craftCell('Trans-masculino', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
+        craftCell('No sabe / No responde', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
+        craftTitle('SI', { colSpan: 2 }),
+        craftTitle('NO', { colSpan: 2 }),
+        craftTitle('TIPO', { colSpan: 6 }),
+        craftTitle('%', { colSpan: 3 }),
+    ),
+    craftRow(
+        craftCell(record.patientSexualOrientation === 'lesbian' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientSexualOrientation === 'gay' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientSexualOrientation === 'bisexual' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientSexualOrientation === 'heterosexual' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientSexualOrientation === 'unknown' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientGenderIdentity === 'female' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientGenderIdentity === 'male' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientGenderIdentity === 'trans-female' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientGenderIdentity === 'trans-male' ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientGenderIdentity === 'unknown' ? 'x' : '', { colSpan: 2 }),
+        craftCell(!!record.patientDisabilityType ? 'x' : '', { colSpan: 2 }),
+        craftCell(!record.patientDisabilityType ? 'x' : '', { colSpan: 2 }),
+        craftCell(record.patientDisabilityType ?? '', { colSpan: 6 }),
+        craftCell(record.patientDisabilityPercent?.toString() ?? '0', { colSpan: 3 }),
+        craftCell(formatDate(record.jobStartDate, 'yyyy/MM/dd'), { colSpan: 5 }),
+        craftCell(record.jobPosition, { colSpan: 5 }),
+        craftCell(record.jobArea, { colSpan: 6 }),
+        craftCell(record.jobActivity, { colSpan: 21 }),
+    ),
 ];
 
-const gynecologicalHistoryLayout: CratftRecordItemFunc<InitialRecord> = (record, subheader) => [
-    {
-        width: '*',
-        style: 'itemElement',
-        table: {
-            widths: ["*"],
-            body: [
-                [
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'ANTECEDENTES GINECO OBSTÉTRICOS',
-                    },
-                ]
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
-            body: [
-                [
-                    {
-                        style: 'itemHeader',
-                        text: 'MENARQUÍA',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'CICLOS',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'FECHA DE ULTIMA MENSTRUACIÓN',
-                    },
-                    {
-                        style: 'itemHeader',
-                        stack: [
-                            { text: 'G' },
-                            { text: 'E' },
-                            { text: 'S' },
-                            { text: 'T' },
-                            { text: 'A' },
-                            { text: 'S' },
-                        ],
-                        alignment: 'center',
-                    },
-                    {
-                        style: 'itemHeader',
-                        stack: [
-                            { text: 'P' },
-                            { text: 'A' },
-                            { text: 'R' },
-                            { text: 'T' },
-                            { text: 'O' },
-                            { text: 'S' },
-                        ],
-                        alignment: 'center',
-                    },
-                    {
-                        style: 'itemHeader',
-                        stack: [
-                            { text: 'C' },
-                            { text: 'E' },
-                            { text: 'S' },
-                            { text: 'A' },
-                            { text: 'R' },
-                            { text: 'E' },
-                            { text: 'Á' },
-                            { text: 'S' },
-                        ],
-                        alignment: 'center',
-                    },
-                    {
-                        style: 'itemHeader',
-                        stack: [
-                            { text: 'A' },
-                            { text: 'B' },
-                            { text: 'O' },
-                            { text: 'R' },
-                            { text: 'T' },
-                            { text: 'O' },
-                            { text: 'S' },
-                        ],
-                        alignment: 'center',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'HIJOS VIVOS',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'HIJOS MUERTOS',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'VIDA SEXUAL ACTIVA',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'MÉTODO DE PLANIFICACIÓN FAMILIAR',
-                    },
-                ],
-                [
-                    record.gynecologicalMenarche,
-                    record.gynecologicalCycle,
-                    formatDate(record.gynecologicalLastMenstruationDate, 'yyyy/MM/dd'),
-                    record.gynecologicalDeeds,
-                    record.gynecologicalBirths,
-                    record.gynecologicalCesarean,
-                    record.gynecologicalAbortions,
-                    record.gynecologicalLivingChildren,
-                    record.gynecologicalDeadChildren,
-                    record.gynecologicalSexualLife ? 'Si' : 'No',
-                    record.gynecologicalFamilyPlanningType ? record.gynecologicalFamilyPlanningType : 'No',
-                ],
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "auto", "auto", "auto", "*"],
-            body: [
-                [
-                    {
-                        border: [true, false, true, false],
-                        style: 'itemHeader',
-                        text: 'EXÁMENES REALIZADOS',
-                    },
-                    {
-                        border: [true, false, true, false],
-                        style: 'itemHeader',
-                        text: 'SI ',
-                    },
-                    {
-                        border: [true, false, true, false],
-                        style: 'itemHeader',
-                        text: 'NO',
-                    },
-                    {
-                        border: [true, false, true, false],
-                        style: 'itemHeader',
-                        text: 'TIEMPO (años)',
-                    },
-                    {
-                        border: [true, false, true, false],
-                        style: 'itemHeader',
-                        text: 'RESULTADO',
-                    },
-                ],
-                [
-                    'PAPANICOLAOU',
-                    record.gynecologicalExamPapanicolau.done ? 'x' : '',
-                    !record.gynecologicalExamPapanicolau.done ? 'x' : '',
-                    record.gynecologicalExamPapanicolau.time ?? '',
-                    record.gynecologicalExamPapanicolau.result ?? '',
-                ],
-                [
-                    'COLPOSCOPIA',
-                    record.gynecologicalExamColposcopy.done ? 'x' : '',
-                    !record.gynecologicalExamColposcopy.done ? 'x' : '',
-                    record.gynecologicalExamColposcopy.time ?? '',
-                    record.gynecologicalExamColposcopy.result ?? '',
-                ],
-                [
-                    'ECO MAMARIO',
-                    record.gynecologicalExamBreastEcho.done ? 'x' : '',
-                    !record.gynecologicalExamBreastEcho.done ? 'x' : '',
-                    record.gynecologicalExamBreastEcho.time ?? '',
-                    record.gynecologicalExamBreastEcho.result ?? '',
-                ],
-                [
-                    'MAMOGRAFÍA',
-                    record.gynecologicalExamMammography.done ? 'x' : '',
-                    !record.gynecologicalExamMammography.done ? 'x' : '',
-                    record.gynecologicalExamMammography.time ?? '',
-                    record.gynecologicalExamMammography.result ?? '',
-                ],
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
+const gynecologicalHistoryLayout: CraftItemFunc<InitialRecord> = (record) => [
+    craftRow(craftTitle('ANTECEDENTES GINECO OBSTÉTRICOS', { colSpan: 70 })),
+    craftRow(
+        craftSubtitle('MENARQUÍA', { rowSpan: 2, colSpan: 11 }),
+        craftSubtitle('CICLOS', { rowSpan: 2, colSpan: 6 }),
+        craftSubtitle('FECHA DE ULTIMA MENSTRUACIÓN', { rowSpan: 2, colSpan: 6 }),
+        craftSubtitle('GESTAS', { rowSpan: 2, colSpan: 4 }),
+        craftSubtitle('PARTOS', { rowSpan: 2, colSpan: 4 }),
+        craftSubtitle('CESÁREAS', { rowSpan: 2, colSpan: 4 }),
+        craftSubtitle('ABORTOS', { rowSpan: 2, colSpan: 4 }),
+        craftSubtitle('HIJOS', { colSpan: 8 }),
+        craftSubtitle('VIDA SEXUAL ACTIVA', { colSpan: 8 }),
+        craftSubtitle('MÉTODO DE PLANIFICACIÓN FAMILIAR', { colSpan: 15 }),
+    ),
+    craftRow(
+        craftSubtitle('VIVOS', { colSpan: 4 }),
+        craftSubtitle('MUERTOS', { colSpan: 4 }),
+        craftSubtitle('SI', { colSpan: 4 }),
+        craftSubtitle('NO', { colSpan: 4 }),
+        craftSubtitle('SI', { colSpan: 4 }),
+        craftSubtitle('NO', { colSpan: 4 }),
+        craftSubtitle('TIPO', { colSpan: 7 }),
+    ),
+    craftRow(
+        craftCell(record.gynecologicalMenarche, { colSpan: 11 }),
+        craftCell(record.gynecologicalCycle, { colSpan: 6 }),
+        craftCell(formatDate(record.gynecologicalLastMenstruationDate, 'yyyy/MM/dd'), { colSpan: 6 }),
+        craftCell(record.gynecologicalDeeds.toString(), { colSpan: 4 }),
+        craftCell(record.gynecologicalBirths.toString(), { colSpan: 4 }),
+        craftCell(record.gynecologicalCesarean.toString(), { colSpan: 4 }),
+        craftCell(record.gynecologicalAbortions.toString(), { colSpan: 4 }),
+        craftCell(record.gynecologicalLivingChildren.toString(), { colSpan: 4 }),
+        craftCell(record.gynecologicalDeadChildren.toString(), { colSpan: 4 }),
+        craftCell(record.gynecologicalSexualLife ? 'x' : '', { colSpan: 4 }),
+        craftCell(!record.gynecologicalSexualLife ? 'x' : '', { colSpan: 4 }),
+        craftCell(!!record.gynecologicalFamilyPlanningType ? 'x' : '', { colSpan: 4 }),
+        craftCell(!record.gynecologicalFamilyPlanningType ? 'x' : '', { colSpan: 4 }),
+        craftCell(record.gynecologicalFamilyPlanningType ?? '', { colSpan: 7 })
+    ),
+    craftRow(
+        ...patientHistoryExamHeader({ exam: 12, done: 2, time: 8, result: 11 }),
+        ...patientHistoryExamHeader({ exam: 12, done: 2, time: 8, result: 11 }),
+    ),
+    craftRow(
+        ...patientHistoryExamLayout({
+            exam: 'PAPANICOLAOU',
+            done: record.gynecologicalExamPapanicolau.done,
+            time: record.gynecologicalExamPapanicolau.time ?? 0,
+            result: record.gynecologicalExamPapanicolau.result ?? ''
+        }, { exam: 12, done: 2, time: 8, result: 11 }),
+        ...patientHistoryExamLayout({
+            exam: 'ECO MAMARIO',
+            done: record.gynecologicalExamBreastEcho.done,
+            time: record.gynecologicalExamBreastEcho.time ?? 0,
+            result: record.gynecologicalExamBreastEcho.result ?? ''
+        }, { exam: 12, done: 2, time: 8, result: 11 }),
+    ),
+    craftRow(
+        ...patientHistoryExamLayout({
+            exam: 'COLPOSCOPIA',
+            done: record.gynecologicalExamColposcopy.done,
+            time: record.gynecologicalExamColposcopy.time ?? 0,
+            result: record.gynecologicalExamColposcopy.result ?? ''
+        }, { exam: 12, done: 2, time: 8, result: 11 }),
+        ...patientHistoryExamLayout({
+            exam: 'MAMOGRAFÍA',
+            done: record.gynecologicalExamMammography.done,
+            time: record.gynecologicalExamMammography.time ?? 0,
+            result: record.gynecologicalExamMammography.result ?? ''
+        }, { exam: 12, done: 2, time: 8, result: 11 }),
+    )
+]
+
+const maleReproducitveHistoryLayout: CraftItemFunc<InitialRecord> = (record) => [
+    craftRow(craftTitle('ANTECEDENTES REPRODUCTIVOS MASCULINOS', { colSpan: 70 })),
+    craftRow(
+        ...patientHistoryExamHeader({ exam: 12, done: 2, time: 8, result: 11 }, 2),
+        craftSubtitle('MÉTODO DE PLANIFICACIÓN FAMILIAR', { colSpan: 21 }),
+        craftSubtitle('HIJOS', { colSpan: 14 }),
+    ),
+    craftRow(
+        craftSubtitle('SI', { colSpan: 6 }),
+        craftSubtitle('NO', { colSpan: 6 }),
+        craftSubtitle('TIPO', { colSpan: 9 }),
+        craftSubtitle('VIVOS', { colSpan: 7 }),
+        craftSubtitle('MUERTOS', { colSpan: 7 }),
+    ),
+    craftRow(
+        ...patientHistoryExamLayout({
+            exam: 'ANTÍGENO PROSTÁTICO',
+            done: record.maleReproductiveExamProstateAntigen.done,
+            time: record.maleReproductiveExamProstateAntigen.time ?? 0,
+            result: record.maleReproductiveExamProstateAntigen.result ?? ''
+        }, { exam: 12, done: 2, time: 8, result: 11 }),
+        craftCell(!!record.maleReproductiveFamilyPlanningType ? 'x' : '', { rowSpan: 2, colSpan: 6 }),
+        craftCell(!record.maleReproductiveFamilyPlanningType ? 'x' : '', { rowSpan: 2, colSpan: 6 }),
+        craftCell(record.maleReproductiveFamilyPlanningType ?? '', { rowSpan: 2, colSpan: 9 }),
+        craftCell(record.maleReproductiveLivingChildren.toString() ?? '', { rowSpan: 2, colSpan: 7 }),
+        craftCell(record.maleReproductiveDeadChildren.toString() ?? '', { rowSpan: 2, colSpan: 7 }),
+    ),
+    craftRow(
+        ...patientHistoryExamLayout({
+            exam: 'ECO PROSTÁTICO',
+            done: record.maleReproductiveExamProstateEcho.done,
+            time: record.maleReproductiveExamProstateEcho.time ?? 0,
+            result: record.maleReproductiveExamProstateEcho.result ?? ''
+        }, { exam: 12, done: 2, time: 8, result: 11 }),
+    )
 ];
 
-const maleReproducitveHistoryLayout: CratftRecordItemFunc<InitialRecord> = (record, subheader) => [
-    {
-        style: 'itemElement',
-        width: '*',
-        table: {
-            widths: ["*"],
-            body: [
-                [
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'ANTECEDENTES REPRODUCTIVOS MASCULINOS',
-                    },
-                ]
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "auto", "auto", "auto", "*"],
-            body: [
-                [
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'EXÁMENES REALIZADOS',
-                    },
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'SI ',
-                    },
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'NO',
-                    },
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'TIEMPO (años)',
-                    },
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'RESULTADO',
-                    },
-                ],
-                [
-                    'ANTÍGENO PROSTÁTICO',
-                    record.maleReproductiveExamProstateAntigen.done ? 'x' : '',
-                    !record.maleReproductiveExamProstateAntigen.done ? 'x' : '',
-                    record.maleReproductiveExamProstateAntigen.time ?? '',
-                    record.maleReproductiveExamProstateAntigen.result ?? '',
-                ],
-                [
-                    'ECO PROSTÁTICO',
-                    record.maleReproductiveExamProstateEcho.done ? 'x' : '',
-                    !record.maleReproductiveExamProstateEcho.done ? 'x' : '',
-                    record.maleReproductiveExamProstateEcho.time ?? '',
-                    record.maleReproductiveExamProstateEcho.result ?? '',
-                ]
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "auto", "*"],
-            body: [
-                [
-                    {
-                        border: [true, false, true],
-                        style: 'itemHeader',
-                        text: 'HIJOS VIVOS',
-                    },
-                    {
-                        border: [true, false, true],
-                        style: 'itemHeader',
-                        text: 'HIJOS MUERTOS',
-                    },
-                    {
-                        border: [true, false, true],
-                        style: 'itemHeader',
-                        text: 'MÉTODO DE PLANIFICACIÓN FAMILIAR',
-                    },
-                ],
-                [
-                    record.maleReproductiveLivingChildren,
-                    record.maleReproductiveDeadChildren,
-                    record.maleReproductiveFamilyPlanningType,
-                ],
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
+const patientHistoryExamHeader = (span: { exam: number, done: number, time: number, result: number }, rowSpan: number = 1): Cell[] => [
+    craftSubtitle('EXÁMENES REALIZADOS', { colSpan: span.exam, rowSpan }),
+    craftSubtitle('SI', { colSpan: span.done, rowSpan }),
+    craftSubtitle('NO', { colSpan: span.done, rowSpan }),
+    craftSubtitle('TIEMPO', { colSpan: span.time, rowSpan }),
+    craftSubtitle('RESULTADO', { colSpan: span.result, rowSpan }),
 ];
 
-const jobHistoryLayout: CratftRecordItemFunc<InitialRecord> = (record, subheader) => [
-    {
-        style: 'itemElement',
-        width: '*',
-        table: {
-            widths: ["*"],
-            body: [
-                [
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'ANTECEDENTES DE EMPLEOS ANTERIORES',
-                    },
-                ]
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["*", "*", "*", "*", "auto", "auto", "auto", "auto", "auto", "auto", '*'],
-            body: [
-                [
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'EMPRESA',
-                        rowSpan: 2
-                    },
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'PUESTO DE TRABAJO',
-                        rowSpan: 2
-                    },
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'ACTIVIDADES QUE DESEMPEÑABA',
-                        rowSpan: 2
-                    },
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'TIEMPO DE TRABAJO',
-                        rowSpan: 2
-                    },
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'RIESGO',
-                        colSpan: 6
-                    },
-                    {}, {}, {}, {}, {},
-                    {
-                        border: [true, true, true, false],
-                        style: 'itemHeader',
-                        text: 'OBSERVACIONES',
-                        rowSpan: 2
-                    }
-                ],
-                [
-                    '', '', '', '',
-                    {
-                        style: 'itemHeader',
-                        stack: [{ text: 'F' }, { text: 'I' }, { text: 'S' }, { text: 'I' }, { text: 'C' }, { text: 'O' },],
-                        alignment: 'center',
-                        fontSize: 8
-                    },
-                    {
-                        style: 'itemHeader',
-                        stack: [{ text: 'M' }, { text: 'E' }, { text: 'C' }, { text: 'Á' }, { text: 'N' }, { text: 'I' }, { text: 'C' }, { text: 'O' },],
-                        alignment: 'center',
-                        fontSize: 8
-                    },
-                    {
-                        style: 'itemHeader',
-                        stack: [{ text: 'Q' }, { text: 'U' }, { text: 'Í' }, { text: 'M' }, { text: 'I' }, { text: 'C' }, { text: 'O' },],
-                        alignment: 'center',
-                        fontSize: 8
-                    },
-                    {
-                        style: 'itemHeader',
-                        stack: [{ text: 'B' }, { text: 'I' }, { text: 'O' }, { text: 'L' }, { text: 'Ó' }, { text: 'G' }, { text: 'I' }, { text: 'C' }, { text: 'O' },],
-                        alignment: 'center',
-                        fontSize: 8
-                    },
-                    {
-                        style: 'itemHeader',
-                        stack: [{ text: 'E' }, { text: 'R' }, { text: 'G' }, { text: 'O' }, { text: 'N' }, { text: 'Ó' }, { text: 'M' }, { text: 'I' }, { text: 'C' }, { text: 'O' },],
-                        alignment: 'center',
-                        fontSize: 8
-                    },
-                    {
-                        style: 'itemHeader',
-                        stack: [{ text: 'P' }, { text: 'S' }, { text: 'I' }, { text: 'C' }, { text: 'O' }, { text: 'S' }, { text: 'O' }, { text: 'C' }, { text: 'I' }, { text: 'A' }, { text: 'L' },],
-                        alignment: 'center',
-                        fontSize: 8
-                    },
-                    ''
-                ],
-                ...record.jobHistory.map(e => [
-                    e.lastJobCompany,
-                    e.lastJobPosition,
-                    e.lastJobActivity,
-                    e.lastJobTime,
-                    e.lastJobRiskPhysical ? 'x' : '',
-                    e.lastJobRiskMechanical ? 'x' : '',
-                    e.lastJobRiskChemical ? 'x' : '',
-                    e.lastJobRiskBiological ? 'x' : '',
-                    e.lastJobRiskErgonomic ? 'x' : '',
-                    e.lastJobRiskPhysical ? 'x' : '',
-                    e.lastJobObservation
-                ])
-            ]
-        },
-        layout: {
-            fillColor: (index) => subheader(index === 1 ? 0 : index)
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "auto", "*"],
-            body: [
-                [
-                    {
-                        border: [true, false, true],
-                        style: 'itemHeader',
-                        text: 'HIJOS VIVOS',
-                    },
-                    {
-                        border: [true, false, true],
-                        style: 'itemHeader',
-                        text: 'HIJOS MUERTOS',
-                    },
-                    {
-                        border: [true, false, true],
-                        style: 'itemHeader',
-                        text: 'MÉTODO DE PLANIFICACIÓN FAMILIAR',
-                    },
-                ],
-                [
-                    record.maleReproductiveLivingChildren,
-                    record.maleReproductiveDeadChildren,
-                    record.maleReproductiveFamilyPlanningType,
-                ],
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
+const patientHistoryExamLayout = (values: { exam: string, done: boolean, time: number, result: string }, span: { exam: number, done: number, time: number, result: number }) => [
+    craftCell(values.exam, { colSpan: span.exam }),
+    craftCell(values.done ? 'x' : '', { colSpan: span.done }),
+    craftCell(!values.done ? 'x' : '', { colSpan: span.done }),
+    craftCell(values.time.toString(), { colSpan: span.time }),
+    craftCell(values.result, { colSpan: span.result }),
 ];
 
-const jobRiskLayout: CratftRecordItemFunc<InitialRecord> = (record, subheader) => [
-    {
-        style: 'itemElement',
-        width: '*',
-        table: {
-            widths: ["*"],
-            body: [[{
-                style: 'itemHeader',
-                border: [true, true, true, false],
-                text: 'RIESGOS DEL PUESTO DE TRABAJO'
-            }]]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "*", "*"],
-            body: [
-                [
-                    {
-                        style: 'itemHeader',
-                        text: 'No',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'PUESTO DE TRABAJO / ÁREA',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'ACTIVIDADES',
-                    }
-                ],
-                ...record.jobRisks.map((e, i) => [
-                    i.toString().padStart(2, '0'),
-                    e.name,
-                    e.activity,
-                ]),
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],
-            body: [
-                [
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'No',
-                        rowSpan: 2
-                    },
-                    {
-                        border: [true, false, true, false],
-                        style: 'itemHeader',
-                        text: 'FÍSICO',
-                        colSpan: 10
-                    }, {}, {}, {}, {}, {}, {}, {}, {}, {},
-                    {
-                        border: [true, false, true, false],
-                        style: 'itemHeader',
-                        text: 'MECÁNICO',
-                        colSpan: 15
-                    }, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-                    {
-                        border: [true, false, true, false],
-                        style: 'itemHeader',
-                        text: 'QUÍMICO',
-                        colSpan: 9
-                    }, {}, {}, {}, {}, {}, {}, {}, {}
-                ],
-                [
-                    '',
-                    verticalText('Temperaturas altas', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Temperaturas bajas', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Radiación Ionizante', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Radiación No Ionizante', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Ruido', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Vibración', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Iluminación', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Ventilación', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Fluido eléctrico', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Otros', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Atrapamiento entre máquinas', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Atrapamiento entre superficies', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Atrapamiento entre objetos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Caída de objetos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Caídas al mismo nivel', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Caídas a diferente nivel', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Contacto eléctrico', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Contacto con superficies de trabajos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Proyección de partículas/fragmentos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Proyección de fluidos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Pinchazos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Cortes', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Atropellamientos por vehículos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Choques/Colisión vehicular', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Otros', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Sólidos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Polvos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Humos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('líquidos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('vapores', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Aerosoles', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Neblinas', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Gaseosos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Otros', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                ],
-                ...record.jobRisks.map((e, i) => [
-                    i.toString().padStart(2, '0'),
-                    e.physicalRiskHighTemperature ? 'x' : '',
-                    e.physicalRiskLowTemperature ? 'x' : '',
-                    e.physicalRiskIonicRadiation ? 'x' : '',
-                    e.physicalRiskNonIonicRadiation ? 'x' : '',
-                    e.physicalRiskNoise ? 'x' : '',
-                    e.physicalRiskVibration ? 'x' : '',
-                    e.physicalRiskIllumination ? 'x' : '',
-                    e.physicalRiskVentilation ? 'x' : '',
-                    e.physicalRiskElectricFluid ? 'x' : '',
-                    e.physicalRiskOther ? 'x' : '',
-                    e.mechanicRiskEntrapmentBetweenMachines ? 'x' : '',
-                    e.mechanicRiskTrappingBetweenSurfaces ? 'x' : '',
-                    e.mechanicRiskEntrapmentBetweenObjects ? 'x' : '',
-                    e.mechanicRiskObjectFalling ? 'x' : '',
-                    e.mechanicRiskSameLevelFalling ? 'x' : '',
-                    e.mechanicRiskDifferentLevelFalling ? 'x' : '',
-                    e.mechanicRiskElectricContact ? 'x' : '',
-                    e.mechanicRiskSurfacesContact ? 'x' : '',
-                    e.mechanicRiskParticlesProjection ? 'x' : '',
-                    e.mechanicRiskFluidProjection ? 'x' : '',
-                    e.mechanicRiskJab ? 'x' : '',
-                    e.mechanicRiskCut ? 'x' : '',
-                    e.mechanicRiskHitByVehicles ? 'x' : '',
-                    e.mechanicRiskVehicleCollision ? 'x' : '',
-                    e.mechanicRiskOther ? 'x' : '',
-                    e.chemicalRiskSolid ? 'x' : '',
-                    e.chemicalRiskDust ? 'x' : '',
-                    e.chemicalRiskSmoke ? 'x' : '',
-                    e.chemicalRiskLiquid ? 'x' : '',
-                    e.chemicalRiskSteam ? 'x' : '',
-                    e.chemicalRiskAerosol ? 'x' : '',
-                    e.chemicalRiskMist ? 'x' : '',
-                    e.chemicalRiskGas ? 'x' : '',
-                    e.chemicalRiskOther ? 'x' : '',
-                ]),
-                ...record.jobRisks.map((e, i) => [
-                    i.toString().padStart(2, '0'),
-                    {
-                        text: e.physicalRiskOther ?? '',
-                        colSpan: 10
-                    }, {}, {}, {}, {}, {}, {}, {}, {}, {},
-                    {
-                        text: e.mechanicRiskOther ?? '',
-                        colSpan: 15
-                    }, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-                    {
-                        text: e.chemicalRiskOther ?? '',
-                        colSpan: 9
-                    }, {}, {}, {}, {}, {}, {}, {}, {}
-                ])
-            ]
-        },
-        layout: {
-            fillColor: (index) => subheader(index === 1 ? 0 : index)
-        }
-    },
+const jobHistoryLayout: CraftItemFunc<InitialRecord> = (record) => [
+    craftRow(craftTitle('ANTECEDENTES DE EMPLEOS ANTERIORES', { colSpan: 70 })),
+    craftRow(
+        craftTitle('EMPRESA', { rowSpan: 2, colSpan: 12 }),
+        craftTitle('PUESTO DE TRABAJO', { rowSpan: 2, colSpan: 10 }),
+        craftTitle('ACTIVIDADES QUE DESEMPEÑABA', { rowSpan: 2, colSpan: 15 }),
+        craftTitle('TIEMPO DE TRABAJO (meses)', { rowSpan: 2, colSpan: 6 }),
+        craftTitle('RIESGO', { colSpan: 12 }),
+        craftTitle('OBSERVACIONES', { rowSpan: 2, colSpan: 15 }),
+    ),
+    craftRow(
+        craftCell('FÍSICO', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
+        craftCell('MECÁNICO', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
+        craftCell('QUÍMICO', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
+        craftCell('BIOLÓGICO', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
+        craftCell('ERGONÓMICO', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
+        craftCell('PSICOSOCIAL', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
+    ),
+    ...record.jobHistory.map(e => craftRow(
+        craftCell(e.lastJobCompany, { colSpan: 12 }),
+        craftCell(e.lastJobPosition, { colSpan: 10 }),
+        craftCell(e.lastJobActivity, { colSpan: 15 }),
+        craftCell(e.lastJobTime.toString(), { colSpan: 6 }),
+        craftCell(e.lastJobRiskPhysical ? 'x' : ' ', { colSpan: 2 }),
+        craftCell(e.lastJobRiskMechanical ? 'x' : ' ', { colSpan: 2 }),
+        craftCell(e.lastJobRiskChemical ? 'x' : ' ', { colSpan: 2 }),
+        craftCell(e.lastJobRiskBiological ? 'x' : ' ', { colSpan: 2 }),
+        craftCell(e.lastJobRiskErgonomic ? 'x' : ' ', { colSpan: 2 }),
+        craftCell(e.lastJobRiskPsychosocial ? 'x' : ' ', { colSpan: 2 }),
+        craftCell(e.lastJobObservation, { colSpan: 15 }),
+    ))
 ];
 
-const jobRiskPreventionLayout: CratftRecordItemFunc<InitialRecord> = (record, subheader) => [
+const jobRiskLayout: CraftItemFunc<InitialRecord> = (record) => [
+    craftRow(
+        craftTitle('PUESTO DE TRABAJO / ÁREA', { rowSpan: 2, colSpan: 17 }),
+        craftTitle('ACTIVIDADES', { rowSpan: 2, colSpan: 19 }),
+        craftTitle('FISICO', { colSpan: 10 }),
+        craftTitle('MECÁNICO', { colSpan: 15 }),
+        craftTitle('QUÍMICO', { colSpan: 9 }),
+    ),
+    craftRow(
+        craftCell('Temperaturas altas', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Temperaturas bajas', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Radiación Ionizante', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Radiación No Ionizante', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Ruido', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Vibración', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Iluminación', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Ventilación', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Fluido eléctrico', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Otros', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+
+        craftCell('Atrapamiento entre máquinas', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Atrapamiento entre superficies', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Atrapamiento entre objetos', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Caída de objetos', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Caídas al mismo nivel', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Caídas a diferente nivel', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Contacto eléctrico', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Contacto con superficies de trabajos', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Proyección de partículas - fragmentos', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Proyección de fluidos', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Pinchazos', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Cortes', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Atropellamientos por vehículos', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Choques / Colisión vehicular', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Otros', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+
+        craftCell('Sólidos', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Polvos', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Humos', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Líquidos', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Vapores', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Aerosoles', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Neblinas', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Gaseosos', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Otros', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
+    ),
+    ...record.jobRisks.map((e, i) => craftRow(
+        craftCell((i + 1).toString().padStart(2, '0'), { colSpan: 2 }),
+        craftCell(e.name, { colSpan: 15 }),
+        craftCell(e.activity, { colSpan: 19 }),
+        craftCell(e.physicalRiskHighTemperature ? 'x' : ''),
+        craftCell(e.physicalRiskLowTemperature ? 'x' : ''),
+        craftCell(e.physicalRiskIonicRadiation ? 'x' : ''),
+        craftCell(e.physicalRiskNonIonicRadiation ? 'x' : ''),
+        craftCell(e.physicalRiskNoise ? 'x' : ''),
+        craftCell(e.physicalRiskVibration ? 'x' : ''),
+        craftCell(e.physicalRiskIllumination ? 'x' : ''),
+        craftCell(e.physicalRiskVentilation ? 'x' : ''),
+        craftCell(e.physicalRiskElectricFluid ? 'x' : ''),
+        craftCell(e.physicalRiskOther ? 'x' : ''),
+        craftCell(e.mechanicRiskEntrapmentBetweenMachines ? 'x' : ''),
+        craftCell(e.mechanicRiskTrappingBetweenSurfaces ? 'x' : ''),
+        craftCell(e.mechanicRiskEntrapmentBetweenObjects ? 'x' : ''),
+        craftCell(e.mechanicRiskObjectFalling ? 'x' : ''),
+        craftCell(e.mechanicRiskSameLevelFalling ? 'x' : ''),
+        craftCell(e.mechanicRiskDifferentLevelFalling ? 'x' : ''),
+        craftCell(e.mechanicRiskElectricContact ? 'x' : ''),
+        craftCell(e.mechanicRiskSurfacesContact ? 'x' : ''),
+        craftCell(e.mechanicRiskParticlesProjection ? 'x' : ''),
+        craftCell(e.mechanicRiskFluidProjection ? 'x' : ''),
+        craftCell(e.mechanicRiskJab ? 'x' : ''),
+        craftCell(e.mechanicRiskCut ? 'x' : ''),
+        craftCell(e.mechanicRiskHitByVehicles ? 'x' : ''),
+        craftCell(e.mechanicRiskVehicleCollision ? 'x' : ''),
+        craftCell(e.mechanicRiskOther ? 'x' : ''),
+        craftCell(e.chemicalRiskSolid ? 'x' : ''),
+        craftCell(e.chemicalRiskDust ? 'x' : ''),
+        craftCell(e.chemicalRiskSmoke ? 'x' : ''),
+        craftCell(e.chemicalRiskLiquid ? 'x' : ''),
+        craftCell(e.chemicalRiskSteam ? 'x' : ''),
+        craftCell(e.chemicalRiskAerosol ? 'x' : ''),
+        craftCell(e.chemicalRiskMist ? 'x' : ''),
+        craftCell(e.chemicalRiskGas ? 'x' : ''),
+        craftCell(e.chemicalRiskOther ? 'x' : ''),
+    ))
+];
+
+const jobRiskPreventionLayout: CraftItemFunc<InitialRecord> = (record) => [
+    craftRow(
+        craftTitle('PUESTO DE TRABAJO / ÁREA', { rowSpan: 2, colSpan: 13 }),
+        craftTitle('ACTIVIDADES', { rowSpan: 2, colSpan: 13 }),
+        craftTitle('BIOLÓGICO', { colSpan: 7 }),
+        craftTitle('ERGONÓMICO', { colSpan: 5 }),
+        craftTitle('PSICOSOCIAL', { colSpan: 13 }),
+        craftTitle('MEDIDAS PREVENTIVAS', { rowSpan: 2, colSpan: 19 }),
+    ),
+    craftRow(
+        craftCell('Virus', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Hongos', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Bacterias', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Parásitos', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Exposición a vectores', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Exposición a animales selváticos', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Otros', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+
+        craftCell('Manejo manual de cargas', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Movimiento repetitivos', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Posturas forzadas', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Trabajos con PVD', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Otros', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+
+        craftCell('Monotonía del trabajo', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Sobrecarga laboral', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Minuciosidad de la tarea', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Alta responsabilidad', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Autonomía  en la toma de decisiones', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Supervisión y estilos de dirección deficiente', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Conflicto de rol', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Falta de Claridad en las funciones', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Incorrecta distribución del trabajo', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Turnos rotativos', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Relaciones interpersonales', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Inestabilidad laboral', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Otros', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+    ),
+    ...record.jobRiskWithPreventiveMeasure.map((e, i) => craftRow(
+        craftCell((i + 1).toString().padStart(2, '0'), { colSpan: 2 }),
+        craftCell(e.name, { colSpan: 11 }),
+        craftCell(e.activity, { colSpan: 13 }),
+        craftCell(e.biologicalRiskVirus ? 'x' : ''),
+        craftCell(e.biologicalRiskFungus ? 'x' : ''),
+        craftCell(e.biologicalRiskBacteria ? 'x' : ''),
+        craftCell(e.biologicalRiskParasites ? 'x' : ''),
+        craftCell(e.biologicalRiskExposureToVectors ? 'x' : ''),
+        craftCell(e.biologicalRiskExposureToWildlifeAnimals ? 'x' : ''),
+        craftCell(e.biologicalRiskOther ? 'x' : ''),
+        craftCell(e.ergonomicRiskManualHandlingLoads ? 'x' : ''),
+        craftCell(e.ergonomicRiskRepetitiveMoves ? 'x' : ''),
+        craftCell(e.ergonomicRiskForcedPostures ? 'x' : ''),
+        craftCell(e.ergonomicRiskWorkWithPvd ? 'x' : ''),
+        craftCell(e.ergonomicRiskOther ? 'x' : ''),
+        craftCell(e.psychosocialRiskMonotony ? 'x' : ''),
+        craftCell(e.psychosocialRiskWorkOverload ? 'x' : ''),
+        craftCell(e.psychosocialRiskThoroughnessOfTheTask ? 'x' : ''),
+        craftCell(e.psychosocialRiskHighResponsibility ? 'x' : ''),
+        craftCell(e.psychosocialRiskTakingResponsibilityAutonomy ? 'x' : ''),
+        craftCell(e.psychosocialRiskSupervision ? 'x' : ''),
+        craftCell(e.psychosocialRiskRoleConflict ? 'x' : ''),
+        craftCell(e.psychosocialRiskNonFunctionClarify ? 'x' : ''),
+        craftCell(e.psychosocialRiskBadWorkDistribution ? 'x' : ''),
+        craftCell(e.psychosocialRiskRotativeShift ? 'x' : ''),
+        craftCell(e.psychosocialRiskIntrapersonalRelations ? 'x' : ''),
+        craftCell(e.psychosocialRiskJobInstability ? 'x' : ''),
+        craftCell(e.psychosocialRiskOther ? 'x' : ''),
+        craftCell(e.preventiveMeasure, { colSpan: 19 }),
+    ))
+]
+
+/* [
 
     {
         style: 'itemElement',
@@ -1022,32 +590,6 @@ const jobRiskPreventionLayout: CratftRecordItemFunc<InitialRecord> = (record, su
                     verticalText('Otros', { maxHeight: 175, }),
                 ],
                 ...record.jobRiskWithPreventiveMeasure.map((e, i) => [
-                    i.toString().padStart(2, '0'),
-                    e.biologicalRiskVirus ? 'x' : '',
-                    e.biologicalRiskFungus ? 'x' : '',
-                    e.biologicalRiskBacteria ? 'x' : '',
-                    e.biologicalRiskParasites ? 'x' : '',
-                    e.biologicalRiskExposureToVectors ? 'x' : '',
-                    e.biologicalRiskExposureToWildlifeAnimals ? 'x' : '',
-                    e.biologicalRiskOther ? 'x' : '',
-                    e.ergonomicRiskManualHandlingLoads ? 'x' : '',
-                    e.ergonomicRiskRepetitiveMoves ? 'x' : '',
-                    e.ergonomicRiskForcedPostures ? 'x' : '',
-                    e.ergonomicRiskWorkWithPvd ? 'x' : '',
-                    e.ergonomicRiskOther ? 'x' : '',
-                    e.psychosocialRiskMonotony ? 'x' : '',
-                    e.psychosocialRiskWorkOverload ? 'x' : '',
-                    e.psychosocialRiskThoroughnessOfTheTask ? 'x' : '',
-                    e.psychosocialRiskHighResponsibility ? 'x' : '',
-                    e.psychosocialRiskTakingResponsibilityAutonomy ? 'x' : '',
-                    e.psychosocialRiskSupervision ? 'x' : '',
-                    e.psychosocialRiskRoleConflict ? 'x' : '',
-                    e.psychosocialRiskNonFunctionClarify ? 'x' : '',
-                    e.psychosocialRiskBadWorkDistribution ? 'x' : '',
-                    e.psychosocialRiskRotativeShift ? 'x' : '',
-                    e.psychosocialRiskIntrapersonalRelations ? 'x' : '',
-                    e.psychosocialRiskJobInstability ? 'x' : '',
-                    e.psychosocialRiskOther ? 'x' : '',
                 ]),
                 ...record.jobRiskWithPreventiveMeasure.map((e, i) => [
                     i.toString().padStart(2, '0'),
@@ -1070,4 +612,22 @@ const jobRiskPreventionLayout: CratftRecordItemFunc<InitialRecord> = (record, su
             fillColor: (index) => subheader(index === 1 ? 0 : index)
         }
     },
-];
+] */;
+
+/* export const createInitialRecord: CraftRecordFunc<InitialRecord> = (record: InitialRecord, {
+    clinicNumber,
+    fileNumber,
+    headerLayout: header,
+    subheaderLayout: subheader
+}) => [
+        header('DIAGNÓSTICO'),
+        craftMedicalDiagnostic(record.diagnostics, subheader),
+        craftSpacing(),
+        header('APTITUD MÉDICA PARA EL TRABAJO'),
+        craftMedicalFitnessForJob(record, subheader),
+        craftSpacing(),
+        header('RECOMENDACIONES Y/O TRATAMIENTO'),
+        craftRecommendation(record),
+        craftSpacing(),
+    ];
+ */
