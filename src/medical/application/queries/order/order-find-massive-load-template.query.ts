@@ -18,10 +18,10 @@ export const spreadsheetData: MassiveLoadTemplate[] = [
 ]
 export const massiveLoadTemplateSpreadsheet: SpreadsheetColumn<MassiveLoadTemplate>[] = [
     { header: 'Cedula del Paciente', key: 'patientDni' },
-    { header: 'Sucursal', key: 'branchName' },
     { header: 'Grupo corporativo', key: 'corporativeName' },
     { header: 'Ruc de empresa', key: 'companyRuc' },
     { header: 'Nombre de la empresa', key: 'companyName' },
+    { header: 'Sucursal', key: 'branchName' },
     { header: 'Cedula del medico', key: 'doctorDni' },
     { header: 'Nombre completo del medico', key: 'doctorFullname' },
     { header: 'Proceso', key: 'process' },
