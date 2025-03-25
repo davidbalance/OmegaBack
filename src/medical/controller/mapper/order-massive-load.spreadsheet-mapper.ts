@@ -17,9 +17,9 @@ export class OrderMassiveLoadSpreadSheetMapper {
             doctorFullname: value[6],
             process: value[7],
             year: value[8],
-            examName: value[9],
+            examType: value[9],
             examSubtype: value[10],
-            examType: value[11],
+            examName: value[11],
         });
     }
 

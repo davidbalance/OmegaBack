@@ -26,9 +26,9 @@ export const massiveLoadTemplateSpreadsheet: SpreadsheetColumn<MassiveLoadTempla
     { header: 'Nombre completo del medico', key: 'doctorFullname' },
     { header: 'Proceso', key: 'process' },
     { header: 'Periodo', key: 'year' },
-    { header: 'Prueba', key: 'examName' },
-    { header: 'Subtipo de Prueba', key: 'examSubtype' },
     { header: 'Tipo de Prueba', key: 'examType' },
+    { header: 'Subtipo de Prueba', key: 'examSubtype' },
+    { header: 'Prueba', key: 'examName' },
 ]
 export class OrderFindMassiveLoadTemplateQuery implements QueryHandlerAsync<undefined, Buffer> {
     constructor(
