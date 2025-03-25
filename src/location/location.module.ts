@@ -38,6 +38,9 @@ import { AreaWriteController } from "./controller/write/area_write.controller";
 import { ManagementWriteController } from "./controller/write/management_write.controller";
 import { CompanyMoveCommandProvider } from "./nest/command/corporative/company_move.nest_command";
 import { BranchMoveCommandProvider } from "./nest/command/corporative/branch_move.nest_command";
+import { CorporativeWriteController } from "./controller/write/corporative-write.controller";
+import { CompanyWriteController } from "./controller/write/company-write.controller";
+import { BranchWriteController } from "./controller/write/branch-write.controller";
 
 @Module({
     controllers: [
@@ -48,7 +51,10 @@ import { BranchMoveCommandProvider } from "./nest/command/corporative/branch_mov
         JobPositionReadController,
         ManagementReadController,
         AreaWriteController,
-        ManagementWriteController
+        ManagementWriteController,
+        CorporativeWriteController,
+        CompanyWriteController,
+        BranchWriteController
     ],
     providers: [
         AreaCreateCommandProvider,
