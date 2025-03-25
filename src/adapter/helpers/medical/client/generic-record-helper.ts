@@ -4,11 +4,14 @@ import { InitialRecord } from "@omega/medical/application/type/initial-record"
 import { PeriodicRecord } from "@omega/medical/application/type/periodic-record"
 import { ReintegrateRecord } from "@omega/medical/application/type/reintegrate-record"
 import { RetirementRecord } from "@omega/medical/application/type/retirement-record"
-import { createInitialRecord } from "./initial-record-helper"
+import { createInitialRecord } from "./record/initial-record-helper"
 import { Cell, craftCell, craftRow, craftSubtitle, craftTitle, emptyCell, Row, RowSpan } from "./table.helper"
 import { CurrentDisease, ExtraActivity, FamilyHistory, GeneralExamResultAndSpecific, JobAccident, LifeStyle, MedicalAndSurgicalHistory, MedicalConsultation, MedicalDiagnostic, MedicalFitnessForJob, OccupationalDisease, PhysicalRegionalExam, RecordRecommendation, ReviewOfOrgansAndSystem, ToxicDetail, VitalSignsAndAnthropometry } from "@omega/medical/application/type/record.type"
 import { formatDate } from "date-fns"
-import { createPeriodicRecord } from "./periodic-record-helper"
+import { createPeriodicRecord } from "./record/periodic-record-helper"
+import { createRetirementRecord } from "./record/retirement-record-helper"
+import { createReintegrationRecord } from "./record/reintegration-record-helper"
+import { createCertificateRecord } from "./record/certificate-record-helper"
 
 const isInitialRecord = (record: GenericRecord): record is InitialRecord => record.type === 'inicial';
 const isPeriodicRecord = (record: GenericRecord): record is PeriodicRecord => record.type === 'periodico';
@@ -30,25 +33,13 @@ export const createRecordLayout = (record: GenericRecord, option: RecordOption):
         return createPeriodicRecord(record, { ...option });
     }
     if (isReintegrateRecord(record)) {
-        /* return createReintegrationRecord(record, {
-            ...option,
-            headerLayout: createHeader(option.headerLayout),
-            subheaderLayout: option.subheaderLayout
-        }); */
+        return createReintegrationRecord(record, { ...option });
     }
     if (isRetirementRecord(record)) {
-        /* return createRetirementRecord(record, {
-            ...option,
-            headerLayout: createHeader(option.headerLayout),
-            subheaderLayout: option.subheaderLayout
-        }); */
+        return createRetirementRecord(record, { ...option });
     }
     if (isCertificateRecord(record)) {
-        /* return createCertificateRecord(record, {
-            ...option,
-            headerLayout: createHeader(option.headerLayout),
-            subheaderLayout: option.subheaderLayout
-        }); */
+        return createCertificateRecord(record, { ...option });
     }
 
     return [];
@@ -167,7 +158,7 @@ export const craftJobAccident = (value: JobAccident): Row[] => [
     craftLabel('Observaciones:'),
     craftRow(
         craftCell(value.jobAccidentObservation ?? '', { colSpan: 70, border: ['bottom', "left", 'right'] })
-    )
+    ),
 ];
 
 export const craftOccupationalDisease = (value: OccupationalDisease): Row[] => [

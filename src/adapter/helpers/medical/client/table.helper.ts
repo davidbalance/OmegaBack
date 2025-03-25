@@ -48,7 +48,7 @@ export type Cell = CellContent & (VerticalCellContent | HorizontalCellContent);
 type CellOption = Pick<CellContent, 'colSpan' | 'rowSpan' | 'style'> & {
     border: ('left' | 'right' | 'top' | 'bottom')[];
 }
-type HorizontalCellOption = { orientation: 'horizontal' } & CellOption & Partial<HorizontalContentOption>;
+type HorizontalCellOption = { orientation: 'horizontal' } & CellOption & Partial<HorizontalContentOption> & { alignment?: 'center' | 'left' | 'right' };
 type VerticalCellOption = { orientation: 'vertical' } & CellOption & Partial<VerticalContentOption>;
 type StrictCellOption = HorizontalCellOption | VerticalCellOption;
 
@@ -57,6 +57,7 @@ const defaultCellOptions: StrictCellOption = {
     colSpan: 1,
     rowSpan: 1,
     border: ['left', 'right', 'top', 'bottom'],
+    alignment: 'left'
 }
 export const craftCell = (value: string, options: Partial<StrictCellOption> = {}): Cell => {
     const initialOptions: StrictCellOption = { ...defaultCellOptions, ...options };
@@ -79,12 +80,12 @@ const defaultSpacingOptions: SpacingOptions = {
 }
 export const craftSpacing = (options: Partial<SpacingOptions> = {}): Cell => craftCell(' ', { ...defaultSpacingOptions, ...options, border: [] });
 
-type CraftTitleOption = Omit<StrictCellOption, 'border' | 'style' | 'orientation'>
-const defaultTitleOption: CraftTitleOption = { colSpan: 1, rowSpan: 1 }
+type CraftTitleOption = Omit<StrictCellOption, | 'style' | 'orientation'>
+const defaultTitleOption: CraftTitleOption = { colSpan: 1, rowSpan: 1, border: ['bottom', 'left', 'right', 'top'] }
 export const craftTitle = (text: string, option: Partial<CraftTitleOption> = {}): Cell => craftCell(text, { ...defaultTitleOption, ...option, style: 'itemTitle' });
 
-type CraftSubtitleOption = Omit<StrictCellOption, 'border' | 'style' | 'orientation'>
-const defaultSubtitleOption: CraftSubtitleOption = { colSpan: 1, rowSpan: 1 }
+type CraftSubtitleOption = Omit<StrictCellOption, 'style' | 'orientation'>
+const defaultSubtitleOption: CraftSubtitleOption = { colSpan: 1, rowSpan: 1, border: ['bottom', 'left', 'right', 'top'] }
 export const craftSubtitle = (text: string, option: Partial<CraftSubtitleOption> = {}): Cell => craftCell(text, { ...defaultSubtitleOption, ...option, style: 'itemSubtitle' });
 
 type EmptyCellOptions = Pick<CellOption, 'border' | 'colSpan'>

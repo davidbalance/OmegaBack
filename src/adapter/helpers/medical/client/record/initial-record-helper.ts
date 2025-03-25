@@ -1,7 +1,7 @@
 import { InitialRecord } from "@omega/medical/application/type/initial-record";
-import { craftCurrentDisease, craftDiagnosticHeader, craftExtraActivity, craftFamilyHistory, CraftItemFunc, craftJobAccident, craftMedicalAndSurgicalHistory, craftMedicalConsultation, craftMedicalDiagnostic, craftMedicalFitnessForJob, craftOccupationalDisease, craftPhysicalRegionalExam, craftRecommendation, CraftRecordFunc, craftReviewOfOrgansAndSystem, craftSpecificAndGeneralResults, craftToxicHabitsAndLifeStyle, craftVitalSignsAndAnthropometry, flatRecord } from "./generic-record-helper";
+import { craftCurrentDisease, craftDiagnosticHeader, craftExtraActivity, craftFamilyHistory, CraftItemFunc, craftJobAccident, craftMedicalAndSurgicalHistory, craftMedicalConsultation, craftMedicalDiagnostic, craftMedicalFitnessForJob, craftOccupationalDisease, craftPhysicalRegionalExam, craftRecommendation, CraftRecordFunc, craftReviewOfOrgansAndSystem, craftSpecificAndGeneralResults, craftToxicHabitsAndLifeStyle, craftVitalSignsAndAnthropometry, flatRecord } from "../generic-record-helper";
 import { formatDate } from "date-fns";
-import { Cell, craftCell, craftHeader, craftRow, craftSpacing, craftSubtitle, craftTitle, emptyCell, Row } from "./table.helper";
+import { Cell, craftCell, craftHeader, craftRow, craftSpacing, craftSubtitle, craftTitle, emptyCell, Row } from "../table.helper";
 
 export const createInitialRecord: CraftRecordFunc<InitialRecord> = (record: InitialRecord, { clinicNumber, fileNumber }) => flatRecord([
     craftHeader('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
@@ -90,7 +90,7 @@ const institutionLayout: CraftItemFunc<InitialRecord & {
         craftTitle('EDAD (AÑOS)', { rowSpan: 2, colSpan: 3 }),
         craftTitle('RELIGIÓN', { colSpan: 10 }),
         craftTitle('GRUPO SANGUÍNEO', { rowSpan: 2, colSpan: 6 }),
-        craftTitle('LATERALIDA', { rowSpan: 2, colSpan: 8 }),
+        craftTitle('LATERALIDAD', { rowSpan: 2, colSpan: 8 }),
     ),
     craftRow(
         craftCell('Católica', { orientation: 'vertical', style: 'itemTitle', colSpan: 2, height: 50, fontSize: 5 }),

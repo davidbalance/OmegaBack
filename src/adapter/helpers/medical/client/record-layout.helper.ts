@@ -13,15 +13,23 @@ export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc
         const tableSize: number = 70;
 
         const table = craftTable(tableSize, 6,
+            craftRow(
+                craftCell(`Ficha: ${e.type.toUpperCase()}`, {
+                    border: [],
+                    colSpan: tableSize,
+                    style: 'recordTitle',
+                })
+            ),
+            craftRow(craftSpacing({ colSpan: tableSize })),
             ...createRecordLayout(e, { clinicNumber, fileNumber }),
-            craftRow(craftSpacing({ colSpan: 70 })),
+            craftRow(craftSpacing({ colSpan: tableSize })),
             craftRow(
                 craftCell("CERTIFICO QUE LO ANTERIORMENTE EXPRESADO EN RELACIÓN A MI ESTADO DE SALUD ES VERDAD. SE ME HA INFORMADO LAS MEDIDAS PREVENTIVAS A TOMAR PARA DISMINUIR O MITIGAR LOS RIESGOS RELACIONADOS CON MI ACTIVIDAD LABORAL.", {
                     colSpan: tableSize,
                     style: 'certificateMessage',
                     border: []
                 })),
-            craftRow(craftSpacing({ colSpan: 70 })),
+            craftRow(craftSpacing({ colSpan: tableSize })),
             craftRow(
                 craftCell("DATOS DEL PROFESIONAL", {
                     colSpan: 50,
@@ -77,6 +85,11 @@ export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc
                 },
             ],
             styles: {
+                recordTitle: {
+                    bold: true,
+                    fontSize: 8,
+                    color: 'black',
+                },
                 tableHeader: {
                     bold: true,
                     fontSize: 7,

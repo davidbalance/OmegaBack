@@ -1,6 +1,6 @@
-import { craftCurrentDisease, craftDiagnosticHeader, craftFamilyHistory, CraftItemFunc, craftJobAccident, craftLabel, craftMedicalAndSurgicalHistory, craftMedicalConsultation, craftMedicalDiagnostic, craftMedicalFitnessForJob, craftOccupationalDisease, craftPhysicalRegionalExam, craftRecommendation, CraftRecordFunc, craftReviewOfOrgansAndSystem, craftSpecificAndGeneralResults, craftToxicHabitsAndLifeStyle, craftVitalSignsAndAnthropometry, flatRecord } from "./generic-record-helper";
+import { craftCurrentDisease, craftDiagnosticHeader, craftFamilyHistory, CraftItemFunc, craftJobAccident, craftLabel, craftMedicalAndSurgicalHistory, craftMedicalConsultation, craftMedicalDiagnostic, craftMedicalFitnessForJob, craftOccupationalDisease, craftPhysicalRegionalExam, craftRecommendation, CraftRecordFunc, craftReviewOfOrgansAndSystem, craftSpecificAndGeneralResults, craftToxicHabitsAndLifeStyle, craftVitalSignsAndAnthropometry, flatRecord } from "../generic-record-helper";
 import { PeriodicRecord } from "@omega/medical/application/type/periodic-record";
-import { craftCell, craftHeader, craftRow, craftSpacing, craftTitle, emptyCell, Row } from "./table.helper";
+import { craftCell, craftHeader, craftRow, craftSpacing, craftTitle, emptyCell, Row } from "../table.helper";
 
 export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: PeriodicRecord, { clinicNumber, fileNumber }) => flatRecord([
     craftHeader('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
@@ -26,6 +26,7 @@ export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: Pe
     jobRiskPreventionLayout(record),
     craftHeader('ENFERMEDAD ACTUAL'),
     craftCurrentDisease(record),
+    craftRow(craftSpacing({ colSpan: 70 })),
     craftHeader('REVISIÓN ACTUAL DE ÓRGANOS Y SISTEMAS'),
     craftReviewOfOrgansAndSystem(record),
     craftRow(craftSpacing({ colSpan: 70 })),
