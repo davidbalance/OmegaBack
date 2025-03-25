@@ -27,7 +27,7 @@ export class CompanyWriteController {
         return 'ok';
     }
 
-    @Put(':corporativeId/:companyId')
+    @Put(':corporativeId/:companyId/move')
     async moveCompany(
         @Param('corporativeId') corporativeId: string,
         @Param('companyId') companyId: string,

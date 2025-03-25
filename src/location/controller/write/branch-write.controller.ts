@@ -31,7 +31,7 @@ export class BranchWriteController {
         return 'ok';
     }
 
-    @Put(':corporativeId/:companyId/:branchId')
+    @Put(':corporativeId/:companyId/:branchId/move')
     async moveBranch(
         @Param('corporativeId') corporativeId: string,
         @Param('companyId') companyId: string,
