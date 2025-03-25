@@ -8,6 +8,7 @@ import { createInitialRecord } from "./initial-record-helper"
 import { Cell, craftCell, craftRow, craftSubtitle, craftTitle, emptyCell, Row, RowSpan } from "./table.helper"
 import { CurrentDisease, ExtraActivity, FamilyHistory, GeneralExamResultAndSpecific, JobAccident, LifeStyle, MedicalAndSurgicalHistory, MedicalConsultation, MedicalDiagnostic, MedicalFitnessForJob, OccupationalDisease, PhysicalRegionalExam, RecordRecommendation, ReviewOfOrgansAndSystem, ToxicDetail, VitalSignsAndAnthropometry } from "@omega/medical/application/type/record.type"
 import { formatDate } from "date-fns"
+import { createPeriodicRecord } from "./periodic-record-helper"
 
 const isInitialRecord = (record: GenericRecord): record is InitialRecord => record.type === 'inicial';
 const isPeriodicRecord = (record: GenericRecord): record is PeriodicRecord => record.type === 'periodico';
@@ -26,11 +27,7 @@ export const createRecordLayout = (record: GenericRecord, option: RecordOption):
         return createInitialRecord(record, { ...option });
     }
     if (isPeriodicRecord(record)) {
-        /* return createPeriodicRecord(record, {
-            ...option,
-            headerLayout: createHeader(option.headerLayout),
-            subheaderLayout: option.subheaderLayout
-        }); */
+        return createPeriodicRecord(record, { ...option });
     }
     if (isReintegrateRecord(record)) {
         /* return createReintegrationRecord(record, {
