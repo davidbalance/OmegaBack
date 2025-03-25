@@ -999,7 +999,7 @@ view CompanyOptionModel {
   companyValue String @map("company_value") @db.Char(36)
   companyLabel String @map("company_label") @db.VarChar(128)
 
-  @@map("v_lab_company_options")
+  @@map("v_lo_company_options")
 }
 
 view CorporativeModel {
@@ -1016,7 +1016,7 @@ view CorporativeOptionModel {
   corporativeValue String @map("corporative_value") @db.Char(36)
   corporativeLabel String @map("corporative_label") @db.VarChar(128)
 
-  @@map("v_lab_corporative_options")
+  @@map("v_lo_corporative_options")
 }
 
 // Profile Module

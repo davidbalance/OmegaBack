@@ -17,6 +17,6 @@ export class RucValueObject extends ValueObject<RucValueObjectProps> {
     }
 
     protected isValid(): boolean {
-        return this._props.ruc.length === 10 && /^[0-9]*$/.test(this._props.ruc);
+        return this._props.ruc.length === 13 && /^[0-9]*$/.test(this._props.ruc);
     }
 }

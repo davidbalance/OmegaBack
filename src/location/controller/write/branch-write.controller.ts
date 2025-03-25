@@ -2,11 +2,6 @@ import { Body, Controller, Delete, Param, Post, Put, UseGuards } from "@nestjs/c
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { InjectCommand } from "@omega/location/nest/inject/command.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
-import { CorporativeCreateRequestDto } from "../dto/request/corporative.dto";
-import { CompanyCreateCommand } from "@omega/location/application/command/corporative/company-create.command";
-import { CompanyMoveCommand } from "@omega/location/application/command/corporative/company-move.command";
-import { CompanyRemoveCommand } from "@omega/location/application/command/corporative/company-remove.command";
-import { CompanyCreateRequestDto, CompanyMoveRequestDto } from "../dto/request/company.dto";
 import { BranchCreateCommand } from "@omega/location/application/command/corporative/branch-create.command";
 import { BranchMoveCommand } from "@omega/location/application/command/corporative/branch-move.command";
 import { BranchRemoveCommand } from "@omega/location/application/command/corporative/branch-remove.command";
