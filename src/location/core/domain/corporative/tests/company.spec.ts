@@ -9,7 +9,7 @@ describe('Company Entity', () => {
         company = Company.create({
             corporativeId: 'Corp1',
             name: 'Company 1',
-            ruc: '1234567890',
+            ruc: '1234567890001',
             address: '123 Main St',
             phone: '123-456-7890'
         });
@@ -18,7 +18,7 @@ describe('Company Entity', () => {
     it('should get the correct initial state', () => {
         expect(company.corporativeId).toEqual('Corp1');
         expect(company.name).toEqual('Company 1');
-        expect(company.ruc).toEqual('1234567890');
+        expect(company.ruc).toEqual('1234567890001');
         expect(company.address).toEqual('123 Main St');
         expect(company.phone).toEqual('123-456-7890');
     });
@@ -75,7 +75,7 @@ describe('Company Entity', () => {
         const targetCompany = Company.create({
             corporativeId: 'Corp2',
             name: 'Company 2',
-            ruc: '0987654321',
+            ruc: '0987654321001',
             address: '456 Secondary St',
             phone: '987-654-3210'
         });
@@ -91,7 +91,7 @@ describe('Company Entity', () => {
         const targetCompany = Company.create({
             corporativeId: 'Corp2',
             name: 'Company 2',
-            ruc: '0987654321',
+            ruc: '0987654321001',
             address: '456 Secondary St',
             phone: '987-654-3210'
         });
@@ -106,7 +106,7 @@ describe('Company Entity', () => {
             id: company.id,
             corporativeId: 'Corp1',
             name: 'Company 1',
-            ruc: '1234567890',
+            ruc: '1234567890001',
             address: '123 Main St',
             phone: '123-456-7890',
             branches: []

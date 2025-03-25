@@ -14,7 +14,7 @@ describe('Corporative Entity', () => {
 
         corporative.addCompany({
             name: 'Company A',
-            ruc: '1234567890',
+            ruc: '1234567890001',
             address: '123 Main St',
             phone: '123-456-7890'
         });
@@ -55,7 +55,7 @@ describe('Corporative Entity', () => {
     it('should add a company', () => {
         corporative.addCompany({
             name: 'Company B',
-            ruc: '0987654321',
+            ruc: '0987654321001',
             address: '456 Secondary St',
             phone: '987-654-3210'
         });
@@ -68,7 +68,7 @@ describe('Corporative Entity', () => {
         expect(() => {
             corporative.addCompany({
                 name: 'Company C',
-                ruc: '1234567890',
+                ruc: '1234567890001',
                 address: '789 Another St',
                 phone: '111-222-3333'
             });
@@ -153,7 +153,7 @@ describe('Corporative Entity', () => {
     it('should move a branch between companies', () => {
         corporative.addCompany({
             name: 'Company B',
-            ruc: '0987654321',
+            ruc: '0987654321001',
             address: '456 Secondary St',
             phone: '987-654-3210'
         });
