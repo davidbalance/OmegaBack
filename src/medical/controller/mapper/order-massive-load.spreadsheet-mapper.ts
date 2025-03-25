@@ -7,7 +7,7 @@ export class OrderMassiveLoadSpreadSheetMapper {
         return plainToInstance(OrderMassiveLoadRequestDto, {
             patientDni: value[0],
             corporativeName: value[1],
-            companyRuc: value[2],
+            companyRuc: typeof value[2] !== 'string' ? `${value[2]}` : value[2],
             companyName: value[3],
             branchName: value[4],
             doctorDni: value[5],
