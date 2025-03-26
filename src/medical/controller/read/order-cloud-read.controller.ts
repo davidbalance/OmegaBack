@@ -7,13 +7,13 @@ import { OrderCloudFileResponseDto } from "../dto/response/order.dto";
 import { OrderCloudFileModelMapper } from "../mapper/order_cloud_file.mapper";
 
 @ApiTags('Medical', 'Read')
-@Controller('medical-orders')
+@Controller('medical-order-cloud')
 export class OrderCloudReadController {
     constructor(
         @InjectQuery('OrderCloudFindMany') private readonly cloudFindManyQuery: OrderCloudFindManyQuery
     ) { }
 
-    @Get('cloud/:orderId')
+    @Get(':orderId')
     async findCloudFiles(
         @Param('orderId') orderId: string
     ): Promise<OrderCloudFileResponseDto[]> {
