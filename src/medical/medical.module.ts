@@ -86,6 +86,7 @@ import { OrderCreateManyCommandProvider } from "./nest/command/order/order-creat
 import { OrderFindMassiveLoadTemplateQueryProvider } from "./nest/query/order/order-find-massive-load-template.nest-query copy";
 import { ClientFindMassiveLoadTemplateQueryProvider } from "./nest/query/client/client-find-massive-load-template.nest-query copy";
 import { TestRemoveCommandProvider } from "./nest/command/test/test-remove.nest-command";
+import { OrderCloudReadController } from "./controller/read/order-cloud-read.controller";
 
 @Module({
     imports: [
@@ -107,6 +108,7 @@ import { TestRemoveCommandProvider } from "./nest/command/test/test-remove.nest-
         FileReadController,
         OrderProcessReadController,
         OrderReadController,
+        OrderCloudReadController,
         OrderYearReadController,
         OrderWriteController,
         TestReadController,
