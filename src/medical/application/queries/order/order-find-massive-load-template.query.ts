@@ -66,14 +66,14 @@ export class OrderFindMassiveLoadTemplateQuery implements QueryHandlerAsync<unde
             value: x.value,
             colSpan: x.children.length
         }))).reduce((prev, curr) => [...prev, ...curr], []);
-        
+
         const examColumns: SpreadsheetCell[] = columns.map(e => e.children.map(x => x.children.map<SpreadsheetCell>(y => ({
             value: y,
             position: 'vertical'
         }))).reduce((prev, curr) => [...prev, ...curr], [])
         ).reduce((prev, curr) => [...prev, ...curr], []);
 
-        const value = await this.spreadsheet.newCraft([mainHeader, subtypeColumns,/*  examColumns */]);
+        const value = await this.spreadsheet.newCraft([mainHeader, subtypeColumns, examColumns]);
         return value;
     }
 }
