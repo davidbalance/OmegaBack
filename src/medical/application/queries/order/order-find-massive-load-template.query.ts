@@ -1,7 +1,8 @@
 import { QueryHandlerAsync } from "@shared/shared/application";
-import { SpreadsheetColumn, SpreadsheetProvider } from "@shared/shared/providers";
+import { SpreadsheetCell, SpreadsheetColumn, SpreadsheetProvider } from "@shared/shared/providers";
 import { TestCreateCommandPayload } from "../../commands/test/test-create.command";
 import { OrderCreateCommandPayload } from "../../commands/order/order-create.command";
+import { ExamColumnProvider } from "../../providers/exam-column.provider";
 
 export type MassiveLoadTemplate = (OrderCreateCommandPayload & Omit<TestCreateCommandPayload, 'orderId'>);
 export const spreadsheetData: MassiveLoadTemplate[] = [
@@ -16,7 +17,7 @@ export const spreadsheetData: MassiveLoadTemplate[] = [
     { patientDni: "90123456", branchName: "Premier Hospital", corporativeName: "Advanced Health", companyRuc: "20901234567", companyName: "ProCare Medical", doctorDni: "09876543", doctorFullname: "Dr. James White", process: "Chronic Condition Monitoring", year: 2025, examName: "Blood Sugar Test", examSubtype: "HbA1c", examType: "Endocrinology" },
     { patientDni: "01234567", branchName: "Family Health Clinic", corporativeName: "Holistic Health", companyRuc: "21012345678", companyName: "Total Wellness", doctorDni: "98765432", doctorFullname: "Dr. Olivia Harris", process: "Prenatal Screening", year: 2025, examName: "Genetic Test", examSubtype: "Carrier Screening", examType: "Genetics" }
 ]
-export const massiveLoadTemplateSpreadsheet: SpreadsheetColumn<MassiveLoadTemplate>[] = [
+/* export const massiveLoadTemplateSpreadsheet: SpreadsheetColumn<MassiveLoadTemplate>[] = [
     { header: 'Cedula del Paciente', key: 'patientDni' },
     { header: 'Grupo corporativo', key: 'corporativeName' },
     { header: 'Ruc de empresa', key: 'companyRuc' },
@@ -29,14 +30,50 @@ export const massiveLoadTemplateSpreadsheet: SpreadsheetColumn<MassiveLoadTempla
     { header: 'Tipo de Prueba', key: 'examType' },
     { header: 'Subtipo de Prueba', key: 'examSubtype' },
     { header: 'Prueba', key: 'examName' },
-]
+] */
+
+export const massiveLoadTemplateSpreadsheet: SpreadsheetCell[] = [
+    { value: 'Cedula del Paciente', rowSpan: 3 },
+    { value: 'Grupo corporativo', rowSpan: 3 },
+    { value: 'Ruc de empresa', rowSpan: 3 },
+    { value: 'Nombre de la empresa', rowSpan: 3 },
+    { value: 'Sucursal', rowSpan: 3 },
+    { value: 'Cedula del medico', rowSpan: 3 },
+    { value: 'Nombre completo del medico', rowSpan: 3 },
+    { value: 'Proceso', rowSpan: 3 },
+    { value: 'Periodo', rowSpan: 3 },
+];
+
 export class OrderFindMassiveLoadTemplateQuery implements QueryHandlerAsync<undefined, Buffer> {
     constructor(
-        private readonly spreadsheet: SpreadsheetProvider<MassiveLoadTemplate>
+        private readonly spreadsheet: SpreadsheetProvider<MassiveLoadTemplate>,
+        private readonly provider: ExamColumnProvider
     ) { }
 
     async handleAsync(): Promise<Buffer> {
-        const value = await this.spreadsheet.craft(spreadsheetData, massiveLoadTemplateSpreadsheet);
+        const columns = await this.provider.find();
+
+        const headerColumn = massiveLoadTemplateSpreadsheet;
+
+        const typeColumns: SpreadsheetCell[] = columns.map(e => ({
+            value: e.value,
+            colSpan: e.children.map(x => x.children.length).reduce((prev, curr) => prev + curr, 0)
+        }));
+
+        const mainHeader = [...headerColumn, ...typeColumns];
+
+        const subtypeColumns: SpreadsheetCell[] = columns.map(e => e.children.map<SpreadsheetCell>(x => ({
+            value: x.value,
+            colSpan: x.children.length
+        }))).reduce((prev, curr) => [...prev, ...curr], []);
+        
+        const examColumns: SpreadsheetCell[] = columns.map(e => e.children.map(x => x.children.map<SpreadsheetCell>(y => ({
+            value: y,
+            position: 'vertical'
+        }))).reduce((prev, curr) => [...prev, ...curr], [])
+        ).reduce((prev, curr) => [...prev, ...curr], []);
+
+        const value = await this.spreadsheet.newCraft([mainHeader, subtypeColumns,/*  examColumns */]);
         return value;
     }
 }

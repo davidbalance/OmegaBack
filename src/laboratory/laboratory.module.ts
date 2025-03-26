@@ -22,6 +22,7 @@ import { ExamWriteController } from "./controller/write/exam_write.controller";
 import { ExamSubtypeWriteController } from "./controller/write/exam_subtype_write.controller";
 import { ExamSubtypeMoveCommandProvider } from "./nest/command/exam_subtype_move.nest_command";
 import { ExamMoveCommandProvider } from "./nest/command/exam_move.nest_command";
+import { ExamTypeFindOptionsQueryToken } from "./nest/inject/query.inject";
 
 @Module({
     controllers: [
@@ -50,6 +51,7 @@ import { ExamMoveCommandProvider } from "./nest/command/exam_move.nest_command";
         ExamTypeFindManyQueryProvider,
         ExamTypeFindOneQueryProvider,
         ExamTypeFindOptionsQueryProvider,
-    ]
+    ],
+    exports: [ExamTypeFindOptionsQueryToken]
 })
 export class LaboratoryModule { }
