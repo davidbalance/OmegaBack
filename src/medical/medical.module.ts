@@ -87,6 +87,7 @@ import { OrderFindMassiveLoadTemplateQueryProvider } from "./nest/query/order/or
 import { ClientFindMassiveLoadTemplateQueryProvider } from "./nest/query/client/client-find-massive-load-template.nest-query copy";
 import { TestRemoveCommandProvider } from "./nest/command/test/test-remove.nest-command";
 import { LaboratoryProxyModule } from "@omega/adapter/proxy/laboratory-proxy/laboratory-proxy.module";
+import { OrderCloudReadController } from "./controller/read/order-cloud-read.controller";
 
 @Module({
     imports: [
@@ -109,6 +110,7 @@ import { LaboratoryProxyModule } from "@omega/adapter/proxy/laboratory-proxy/lab
         FileReadController,
         OrderProcessReadController,
         OrderReadController,
+        OrderCloudReadController,
         OrderYearReadController,
         OrderWriteController,
         TestReadController,
