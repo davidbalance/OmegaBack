@@ -8,7 +8,7 @@ import { TestZipRequestDto } from "../dto/request/test.dto";
 import { TestGetZipQuery } from "@omega/medical/application/queries/test/test-get-zip.query";
 
 @ApiTags('Medical', 'Read')
-@Controller('medical-tests')
+@Controller('medical-files')
 export class FileReadController {
     constructor(
         @InjectQuery('ReportGetFile') private readonly reportGetFileQuery: ReportGetFileQuery,
@@ -16,7 +16,7 @@ export class FileReadController {
         @InjectQuery('TestGetZipQuery') private readonly testGetZipQuery: TestGetZipQuery,
     ) { }
 
-    @Get(':testId/report/file')
+    @Get(':testId/report')
     async findOneReportFile(
         @Param('testId') testId: string,
         @Res({ passthrough: true }) response: Response
@@ -29,7 +29,7 @@ export class FileReadController {
         return new StreamableFile(buffer);
     }
 
-    @Get(':testId/result/file')
+    @Get(':testId/result')
     async findOneResultFile(
         @Param('testId') testId: string,
         @Res({ passthrough: true }) response: Response
@@ -42,7 +42,7 @@ export class FileReadController {
         return new StreamableFile(buffer);
     }
 
-    @Post('zip/file')
+    @Post('zip')
     async findZipFile(
         @Body() body: TestZipRequestDto,
         @Res({ passthrough: true }) response: Response
