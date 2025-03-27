@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { OrderRepository, TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { ClientRepository } from "@omega/medical/application/repository/model.repositories";
-import { OrderCreateManyCommand } from "../order-create-many.command";
+import { OrderCreateBatch, OrderCreateManyCommand, OrderCreateManyCommandPayload } from "../order-create-many.command";
 import { ClientModel } from "@omega/medical/core/model/client/client.model";
 import { Order } from "@omega/medical/core/domain/order/order.domain";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
@@ -28,9 +28,15 @@ describe("OrderCreateManyCommand", () => {
         handler = new OrderCreateManyCommand(order, test, client);
     });
 
-    const payload = [
-        { patientDni: '12345', branchName: 'Clinic A', companyName: 'Health Co.', companyRuc: '123456789', corporativeName: 'Corp A', doctorDni: '54321', doctorFullname: 'Dr. Test', process: 'Checkup', year: 2025, examName: 'Blood Test', examSubtype: 'CBC', examType: 'Lab', },
-        { patientDni: '12345', branchName: 'Clinic A', companyName: 'Health Co.', companyRuc: '123456789', corporativeName: 'Corp A', doctorDni: '54321', doctorFullname: 'Dr. Test', process: 'Checkup', year: 2025, examName: 'X-Ray', examSubtype: 'Chest X-Ray', examType: 'Radiology', },
+    const payload: OrderCreateBatch[] = [
+        {
+            patientDni: '12345', branchName: 'Clinic A', companyName: 'Health Co.', companyRuc: '123456789', corporativeName: 'Corp A', doctorDni: '54321', doctorFullname: 'Dr. Test', process: 'Checkup', year: 2025,
+            tests: [{ examName: 'Blood Test', examSubtype: 'CBC', examType: 'Lab' }]
+        },
+        {
+            patientDni: '12345', branchName: 'Clinic A', companyName: 'Health Co.', companyRuc: '123456789', corporativeName: 'Corp A', doctorDni: '54321', doctorFullname: 'Dr. Test', process: 'Checkup', year: 2025,
+            tests: [{ examName: 'X-Ray', examSubtype: 'Chest X-Ray', examType: 'Radiology' }]
+        }
     ];
 
     it('should fetch and cache patient data to avoid redundant requests', async () => {

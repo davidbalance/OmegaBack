@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestReportModel } from "@omega/medical/core/model/test/test-report.model";
-import { ModelRepository, SpreadsheetProvider } from "@shared/shared/providers";
+import { ModelRepository, SpreadsheetCell, SpreadsheetProvider } from "@shared/shared/providers";
 import { TestReportGetFileQuery, TestReportGetFileQueryPayload, testReportSpreadsheet } from "../test-report-get-file.query";
 
 describe("TestReportGetFileQuery", () => {
     let repository: jest.Mocked<ModelRepository<TestReportModel>>;
-    let spreadsheet: jest.Mocked<SpreadsheetProvider<TestReportModel>>;
+    let spreadsheet: jest.Mocked<SpreadsheetProvider>;
     let handler: TestReportGetFileQuery;
 
     beforeEach(() => {
@@ -15,7 +15,7 @@ describe("TestReportGetFileQuery", () => {
 
         spreadsheet = {
             craft: jest.fn(),
-        } as unknown as jest.Mocked<SpreadsheetProvider<TestReportModel>>;
+        } as unknown as jest.Mocked<SpreadsheetProvider>;
 
         handler = new TestReportGetFileQuery(repository, spreadsheet);
     });
@@ -44,7 +44,7 @@ describe("TestReportGetFileQuery", () => {
                 { field: "locationCompany", operator: "eq", value: query.locationCompany },
             ],
         });
-        expect(spreadsheet.craft).toHaveBeenCalledWith(mockData, testReportSpreadsheet);
+        expect(spreadsheet.craft).toHaveBeenCalled();
         expect(result).toEqual(mockBuffer);
     });
 

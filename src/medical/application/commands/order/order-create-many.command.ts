@@ -6,8 +6,9 @@ import { TestCreateCommandPayload } from "../test/test-create.command";
 import { Order } from "@omega/medical/core/domain/order/order.domain";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 
+export type OrderCreateBatch = (OrderCreateCommandPayload & { tests: Omit<TestCreateCommandPayload, 'orderId'>[] });
 export type OrderCreateManyCommandPayload = {
-    data: (OrderCreateCommandPayload & { tests: Omit<TestCreateCommandPayload, 'orderId'>[] })[]
+    data: OrderCreateBatch[]
 }
 export class OrderCreateManyCommand implements CommandHandlerAsync<OrderCreateManyCommandPayload, void> {
 
@@ -74,6 +75,6 @@ export class OrderCreateManyCommand implements CommandHandlerAsync<OrderCreateMa
                         console.error(`Error saving test: ${error instanceof Error ? error.message : error}`);
                     }
                 }));
-        } 
+        }
     }
 }

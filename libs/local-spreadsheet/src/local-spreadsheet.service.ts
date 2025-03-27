@@ -49,12 +49,11 @@ export class LocalSpreadsheetService implements SpreadsheetProvider {
                     cell.alignment = value.position === 'vertical' ? { ...cell.alignment, textRotation: 90 } : cell.alignment;
 
                     let style = cell.style || {};
-                    style.font = style.font || {}; // Initialize font if not already present
+                    style.font = style.font || {};
                     style.font = value.font?.bold ? { ...style.font, bold: value.font.bold } : style.font;
                     style.font = value.font?.color ? { ...style.font, color: { argb: value.font.color } } : style.font;
                     style.font = value.font?.size ? { ...style.font, size: value.font.size } : style.font;
 
-                    // Merge the highlight (background color) conditionally
                     style.fill = value.highlight ? {
                         type: 'pattern',
                         pattern: 'solid',

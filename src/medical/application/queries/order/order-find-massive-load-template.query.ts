@@ -39,7 +39,7 @@ export class OrderFindMassiveLoadTemplateQuery implements QueryHandlerAsync<unde
     async handleAsync(): Promise<Buffer> {
         const columns = await this.provider.find();
 
-        const headerColumn = massiveLoadTemplateSpreadsheet;
+        const headerColumns = massiveLoadTemplateSpreadsheet;
 
         const typeColumns: SpreadsheetCell[] = columns.map(e => ({
             value: e.value,
@@ -47,7 +47,7 @@ export class OrderFindMassiveLoadTemplateQuery implements QueryHandlerAsync<unde
             font: { bold: true, color: "366092" }
         }));
 
-        const mainHeader = [...headerColumn, ...typeColumns];
+        const mainHeader = [...headerColumns, ...typeColumns];
 
         const subtypeColumns: SpreadsheetCell[] = columns.map(e => e.children.map<SpreadsheetCell>(x => ({
             value: x.value,
