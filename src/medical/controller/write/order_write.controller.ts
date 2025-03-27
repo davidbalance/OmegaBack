@@ -27,7 +27,7 @@ export class OrderWriteController {
         @InjectCommand('OrderCreatedStatus') private readonly orderCreatedStatusCommand: OrderCreatedStatusCommand,
         @InjectCommand('OrderValidatedStatus') private readonly orderValidatedStatusCommand: OrderValidatedStatusCommand,
         @InjectCommand('OrderCreateMany') private readonly orderCreateManyCommand: OrderCreateManyCommand,
-        @InjectSpreadSheet() private readonly spreadsheet: SpreadsheetProvider<any>
+        @InjectSpreadSheet() private readonly spreadsheet: SpreadsheetProvider
     ) { }
 
     @Post()

@@ -1,5 +1,5 @@
 import { QueryHandlerAsync } from "@shared/shared/application";
-import { SpreadsheetColumn, SpreadsheetProvider } from "@shared/shared/providers";
+import { SpreadsheetCell, SpreadsheetProvider } from "@shared/shared/providers";
 import { ClientCreateCommandPayload } from "../../commands/client/client-create.command";
 
 export type MassiveLoadTemplate = Omit<ClientCreateCommandPayload, 'patientGender' | 'patientBirthday'> & {
@@ -18,22 +18,25 @@ const spreadsheetData: MassiveLoadTemplate[] = [
     { patientDni: "90123456", patientName: "James", patientLastname: "White", patientEmail: "james.white@example.com", patientGender: "Masculino", patientRole: "Your role can be empty", patientBirthday: "1975-03-28" },
     { patientDni: "01234567", patientName: "Olivia", patientLastname: "Harris", patientEmail: "olivia.harris@example.com", patientGender: "Femenino", patientRole: "Your role can be empty", patientBirthday: "2000-01-14" }
 ]
-export const massiveLoadTemplateSpreadsheet: SpreadsheetColumn<MassiveLoadTemplate>[] = [
-    { header: 'Cedula del Paciente', key: 'patientDni' },
-    { header: 'Nombre del Paciente', key: 'patientName' },
-    { header: 'Apellido del Paciente', key: 'patientLastname' },
-    { header: 'Correo Electronico', key: 'patientEmail' },
-    { header: 'Sexo', key: 'patientGender' },
-    { header: 'Role', key: 'patientRole' },
-    { header: 'Cumpleaños', key: 'patientBirthday' },
+export const massiveLoadTemplateSpreadsheet: SpreadsheetCell[] = [
+    { value: 'Cedula del Paciente', font: { color: "366092", bold: true } },
+    { value: 'Nombre del Paciente', font: { color: "366092", bold: true } },
+    { value: 'Apellido del Paciente', font: { color: "366092", bold: true } },
+    { value: 'Correo Electronico', font: { color: "366092", bold: true } },
+    { value: 'Sexo', font: { color: "366092", bold: true } },
+    { value: 'Role', font: { color: "366092", bold: true } },
+    { value: 'Cumpleaños', font: { color: "366092", bold: true } },
 ]
 export class ClientFindMassiveLoadTemplateQuery implements QueryHandlerAsync<undefined, Buffer> {
     constructor(
-        private readonly spreadsheet: SpreadsheetProvider<MassiveLoadTemplate>
+        private readonly spreadsheet: SpreadsheetProvider
     ) { }
 
     async handleAsync(): Promise<Buffer> {
-        const value = await this.spreadsheet.craft(spreadsheetData, massiveLoadTemplateSpreadsheet);
+
+        const data = spreadsheetData.map<SpreadsheetCell[]>(e => [...Object.values(e).map<SpreadsheetCell>(x => ({ value: x }))]);
+
+        const value = await this.spreadsheet.craft([massiveLoadTemplateSpreadsheet, ...data]);
         return value;
     }
 }

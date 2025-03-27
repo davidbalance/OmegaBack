@@ -1,5 +1,5 @@
 import { QueryHandlerAsync } from "@shared/shared/application";
-import { SpreadsheetCell, SpreadsheetColumn, SpreadsheetProvider } from "@shared/shared/providers";
+import { SpreadsheetCell, SpreadsheetProvider } from "@shared/shared/providers";
 import { TestCreateCommandPayload } from "../../commands/test/test-create.command";
 import { OrderCreateCommandPayload } from "../../commands/order/order-create.command";
 import { ExamColumnProvider } from "../../providers/exam-column.provider";
@@ -19,20 +19,20 @@ export const spreadsheetData: MassiveLoadTemplate[] = [
 ]
 
 export const massiveLoadTemplateSpreadsheet: SpreadsheetCell[] = [
-    { value: 'Cedula del Paciente', rowSpan: 3 },
-    { value: 'Grupo corporativo', rowSpan: 3 },
-    { value: 'Ruc de empresa', rowSpan: 3 },
-    { value: 'Nombre de la empresa', rowSpan: 3 },
-    { value: 'Sucursal', rowSpan: 3 },
-    { value: 'Cedula del medico', rowSpan: 3 },
-    { value: 'Nombre completo del medico', rowSpan: 3 },
-    { value: 'Proceso', rowSpan: 3 },
-    { value: 'Periodo', rowSpan: 3 },
+    { value: 'Cedula del Paciente', rowSpan: 3, font: { color: "366092", bold: true } },
+    { value: 'Grupo corporativo', rowSpan: 3, font: { color: "366092", bold: true } },
+    { value: 'Ruc de empresa', rowSpan: 3, font: { color: "366092", bold: true } },
+    { value: 'Nombre de la empresa', rowSpan: 3, font: { color: "366092", bold: true } },
+    { value: 'Sucursal', rowSpan: 3, font: { color: "366092", bold: true } },
+    { value: 'Cedula del medico', rowSpan: 3, font: { color: "366092", bold: true } },
+    { value: 'Nombre completo del medico', rowSpan: 3, font: { color: "366092", bold: true } },
+    { value: 'Proceso', rowSpan: 3, font: { color: "366092", bold: true } },
+    { value: 'Periodo', rowSpan: 3, font: { color: "366092", bold: true } },
 ];
 
 export class OrderFindMassiveLoadTemplateQuery implements QueryHandlerAsync<undefined, Buffer> {
     constructor(
-        private readonly spreadsheet: SpreadsheetProvider<MassiveLoadTemplate>,
+        private readonly spreadsheet: SpreadsheetProvider,
         private readonly provider: ExamColumnProvider
     ) { }
 
@@ -43,19 +43,22 @@ export class OrderFindMassiveLoadTemplateQuery implements QueryHandlerAsync<unde
 
         const typeColumns: SpreadsheetCell[] = columns.map(e => ({
             value: e.value,
-            colSpan: e.children.map(x => x.children.length).reduce((prev, curr) => prev + curr, 0)
+            colSpan: e.children.map(x => x.children.length).reduce((prev, curr) => prev + curr, 0),
+            font: { bold: true, color: "366092" }
         }));
 
         const mainHeader = [...headerColumn, ...typeColumns];
 
         const subtypeColumns: SpreadsheetCell[] = columns.map(e => e.children.map<SpreadsheetCell>(x => ({
             value: x.value,
-            colSpan: x.children.length
+            colSpan: x.children.length,
+            font: { bold: true, color: "366092" }
         }))).reduce((prev, curr) => [...prev, ...curr], []);
 
         const examColumns: SpreadsheetCell[] = columns.map(e => e.children.map(x => x.children.map<SpreadsheetCell>(y => ({
             value: y,
-            position: 'vertical'
+            position: 'vertical',
+            font: { bold: true, color: "366092", size: 8 }
         }))).reduce((prev, curr) => [...prev, ...curr], [])
         ).reduce((prev, curr) => [...prev, ...curr], []);
 
@@ -69,7 +72,7 @@ export class OrderFindMassiveLoadTemplateQuery implements QueryHandlerAsync<unde
                 .fill({ value: '' })
         ]);
 
-        const value = await this.spreadsheet.newCraft([mainHeader, subtypeColumns, examColumns, ...data]);
+        const value = await this.spreadsheet.craft([mainHeader, subtypeColumns, examColumns, ...data]);
         return value;
     }
 }

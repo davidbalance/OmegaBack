@@ -83,8 +83,8 @@ import { OrderRemoveCommandProvider } from "./nest/command/order/order-remove.ne
 import { LocalIncrementModule } from "@local-increment/local-increment";
 import { ClientCreateManyCommandProvider } from "./nest/command/client/client-create-many.nest-command";
 import { OrderCreateManyCommandProvider } from "./nest/command/order/order-create-many.nest-command";
-import { OrderFindMassiveLoadTemplateQueryProvider } from "./nest/query/order/order-find-massive-load-template.nest-query copy";
-import { ClientFindMassiveLoadTemplateQueryProvider } from "./nest/query/client/client-find-massive-load-template.nest-query copy";
+import { OrderFindMassiveLoadTemplateQueryProvider } from "./nest/query/order/order-find-massive-load-template.nest-query";
+import { ClientFindMassiveLoadTemplateQueryProvider } from "./nest/query/client/client-find-massive-load-template.nest-query";
 import { TestRemoveCommandProvider } from "./nest/command/test/test-remove.nest-command";
 import { LaboratoryProxyModule } from "@omega/adapter/proxy/laboratory-proxy/laboratory-proxy.module";
 import { OrderCloudReadController } from "./controller/read/order-cloud-read.controller";
