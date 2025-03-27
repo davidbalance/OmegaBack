@@ -41,7 +41,7 @@ export class LocalSpreadsheetService<T extends object> implements SpreadsheetPro
     }
 
     async newCraft(data: SpreadsheetWorkbook, worksheetName?: string): Promise<Buffer> {
-        const maxLength = data.map(e => e.map(x => x.colSpan ?? 1).reduce((prev, curr) => prev + curr, 0)).reduce((prev, curr) => prev < curr ? curr : prev, -1);
+        const maxLength = data.map(e => e.map(x => x?.colSpan ?? 1).reduce((prev, curr) => prev + curr, 0)).reduce((prev, curr) => prev < curr ? curr : prev, -1);
         let nextSpan = Array.from<{ horizontal: number, vertical: number }>({ length: maxLength }).fill({ horizontal: 0, vertical: 0 });
 
         try {
@@ -55,30 +55,31 @@ export class LocalSpreadsheetService<T extends object> implements SpreadsheetPro
 
                 for (const value of row) {
                     let spanColumn = nextSpan[spreadsheetCol - 1];
-
                     while (spanColumn && spanColumn.vertical !== 0) {
                         spreadsheetCol += spanColumn.horizontal > 0 ? spanColumn.horizontal : 1;
                         spanColumn = nextSpan[spreadsheetCol - 1];
                     }
-
+                    
                     const colLetter: string = worksheet.getColumn(spreadsheetCol).letter;
                     const cell = spreadsheetRow.getCell(spreadsheetCol);
+                    
                     cell.value = value.value;
                     cell.alignment = value.position === 'vertical' ? { ...cell.alignment, textRotation: 90 } : cell.alignment;
-                    if (value.colSpan && value.rowSpan) {
+
+                    if (value?.colSpan && value?.rowSpan) {
                         const nextColumn = worksheet.getColumn(spreadsheetCol + value.colSpan - 1).letter;
                         worksheet.mergeCells(`${colLetter}${rowIndex}:${nextColumn}${rowIndex + value.rowSpan - 1}`);
-                    } else if (value.colSpan) {
+                    } else if (value?.colSpan) {
                         const nextColumn = worksheet.getColumn(spreadsheetCol + value.colSpan - 1).letter;
                         worksheet.mergeCells(`${colLetter}${rowIndex}:${nextColumn}${rowIndex}`);
-                    } else if (value.rowSpan) {
+                    } else if (value?.rowSpan) {
                         worksheet.mergeCells(`${colLetter}${rowIndex}:${colLetter}${rowIndex + value.rowSpan - 1}`);
                     }
-
-                    if (value.rowSpan && value.rowSpan > 1) {
-                        nextSpan[spreadsheetCol - 1] = { horizontal: value.colSpan ?? 0, vertical: value.rowSpan ?? 0 }
+                    
+                    if (value?.rowSpan && value.rowSpan > 1) {
+                        nextSpan[spreadsheetCol - 1] = { horizontal: value?.colSpan ?? 0, vertical: value.rowSpan ?? 0 }
                     }
-                    if (value.colSpan) {
+                    if (value?.colSpan) {
                         spreadsheetCol += value.colSpan > 0 ? value.colSpan - 1 : 0;
                     }
                     spreadsheetCol++;

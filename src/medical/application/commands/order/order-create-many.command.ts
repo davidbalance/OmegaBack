@@ -6,13 +6,8 @@ import { TestCreateCommandPayload } from "../test/test-create.command";
 import { Order } from "@omega/medical/core/domain/order/order.domain";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 
-type OrderManyPayload = {
-    [key: string]: OrderCreateCommandPayload & {
-        tests: Omit<TestCreateCommandPayload, 'orderId'>[]
-    }
-}
 export type OrderCreateManyCommandPayload = {
-    data: (OrderCreateCommandPayload & Omit<TestCreateCommandPayload, 'orderId'>)[]
+    data: (OrderCreateCommandPayload & { tests: Omit<TestCreateCommandPayload, 'orderId'>[] })[]
 }
 export class OrderCreateManyCommand implements CommandHandlerAsync<OrderCreateManyCommandPayload, void> {
 
@@ -28,32 +23,8 @@ export class OrderCreateManyCommand implements CommandHandlerAsync<OrderCreateMa
         const orders: Order[] = [];
         const tests: Test[] = [];
 
-        const data = value.data.reduce<OrderManyPayload>((prev, curr) => {
-            const key = `${curr.patientDni}-${curr.process}`;
-            if (!prev[key]) prev[key] = {
-                branchName: curr.branchName,
-                companyName: curr.companyName,
-                companyRuc: curr.companyRuc,
-                corporativeName: curr.corporativeName,
-                doctorDni: curr.doctorDni,
-                doctorFullname: curr.doctorFullname,
-                patientDni: curr.patientDni,
-                process: curr.process,
-                year: curr.year,
-                tests: []
-            };
-            prev[key].tests.push({
-                examName: curr.examName,
-                examSubtype: curr.examSubtype,
-                examType: curr.examType,
-            });
-            return prev;
-        }, {});
-
-        const keys = Object.keys(data);
-
-        for (const key of keys) {
-            const { tests: testPayloads, ...orderPayload } = data[key];
+        for (const data of value.data) {
+            const { tests: testPayloads, ...orderPayload } = data;
 
             let patientId = patientCache.get(orderPayload.patientDni);
 
@@ -103,6 +74,6 @@ export class OrderCreateManyCommand implements CommandHandlerAsync<OrderCreateMa
                         console.error(`Error saving test: ${error instanceof Error ? error.message : error}`);
                     }
                 }));
-        }
+        } 
     }
 }

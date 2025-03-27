@@ -4,8 +4,15 @@ import { BadRequestException } from "@nestjs/common";
 
 export class OrderMassiveLoadSpreadSheetMapper {
 
-    public static toDTO(value: unknown[]): OrderMassiveLoadRequestDto {
-        if (value.length < 12) throw new BadRequestException('Not enough values');
+    public static toDTO(value: unknown[], types: string[], subtypes: string[], exams: string[]): OrderMassiveLoadRequestDto {
+        if (value.length < 12) throw new BadRequestException('Not enough values.');
+        if (types.length !== subtypes.length && types.length !== exams.length) throw new BadRequestException('Not valid exams.');
+
+        const newTests = value.slice(9).map((e, i) => !!e && typeof e === 'string' && e.trim() !== '' ? ({
+            examType: types[i],
+            examSubtype: subtypes[i],
+            examName: exams[i],
+        }) : null).filter(e => !!e);
 
         return plainToInstance(OrderMassiveLoadRequestDto, {
             patientDni: this.validateDni(value[0]),
@@ -17,9 +24,7 @@ export class OrderMassiveLoadSpreadSheetMapper {
             doctorFullname: value[6],
             process: value[7],
             year: value[8],
-            examType: value[9],
-            examSubtype: value[10],
-            examName: value[11],
+            tests: newTests
         });
     }
 

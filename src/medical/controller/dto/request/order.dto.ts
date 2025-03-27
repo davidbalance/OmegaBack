@@ -2,7 +2,7 @@ import { OrderCreateCommandPayload } from "@omega/medical/application/commands/o
 import { OrderSendMailCommandPayload } from "@omega/medical/application/commands/order/order-send-mail.command";
 import { TestCreateCommandPayload } from "@omega/medical/application/commands/test/test-create.command";
 import { Transform, Type } from "class-transformer";
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Length, Min } from "class-validator";
+import { IsArray, IsEmail, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, IsUUID, Length, Min, ValidateNested } from "class-validator";
 
 export class OrderCreateRequestDto implements OrderCreateCommandPayload {
     @IsString()
@@ -52,7 +52,21 @@ export class OrderSendEmailRequestDto implements OrderSendMailCommandPayload {
     public readonly email: string;
 }
 
-export class OrderMassiveLoadRequestDto implements OrderCreateCommandPayload, Omit<TestCreateCommandPayload, 'orderId'> {
+class MassiveTestRequestDto implements Omit<TestCreateCommandPayload, 'orderId'> {
+    @IsString()
+    @IsNotEmpty()
+    public readonly examName: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly examSubtype: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly examType: string;
+}
+
+export class OrderMassiveLoadRequestDto implements OrderCreateCommandPayload {
     @IsString()
     @IsNotEmpty()
     @Length(10, 10)
@@ -95,15 +109,9 @@ export class OrderMassiveLoadRequestDto implements OrderCreateCommandPayload, Om
     @Min(1900)
     public readonly year: number;
 
-    @IsString()
-    @IsNotEmpty()
-    public readonly examName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly examSubtype: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly examType: string;
+    @IsArray()
+    @IsObject({ each: true })
+    @ValidateNested({ each: true })
+    @Type(() => MassiveTestRequestDto)
+    public readonly tests: MassiveTestRequestDto[]
 }
