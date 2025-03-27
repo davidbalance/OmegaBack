@@ -27,7 +27,7 @@ export class OrderWriteController {
         @InjectCommand('OrderCreatedStatus') private readonly orderCreatedStatusCommand: OrderCreatedStatusCommand,
         @InjectCommand('OrderValidatedStatus') private readonly orderValidatedStatusCommand: OrderValidatedStatusCommand,
         @InjectCommand('OrderCreateMany') private readonly orderCreateManyCommand: OrderCreateManyCommand,
-        @InjectSpreadSheet() private readonly spreadsheet: SpreadsheetProvider<any>
+        @InjectSpreadSheet() private readonly spreadsheet: SpreadsheetProvider
     ) { }
 
     @Post()
@@ -76,7 +76,10 @@ export class OrderWriteController {
         @UploadedFile() file: Express.Multer.File
     ): Promise<string> {
         const data = await this.spreadsheet.read(file.buffer);
-        const parsed = data.slice(1).map(e => OrderMassiveLoadSpreadSheetMapper.toDTO(e.slice(1)));
+        const examTypes = data[0].slice(10);
+        const examSubtypes = data[1].slice(10);
+        const exams = data[2].slice(10);
+        const parsed = data.slice(3).map(e => OrderMassiveLoadSpreadSheetMapper.toDTO(e.slice(1), examTypes, examSubtypes, exams));
         const promises = parsed.map((async (e) => await OrderMassiveLoadSpreadSheetValidator.validate(e)));
         await Promise.all(promises);
         await this.orderCreateManyCommand.handleAsync({ data: parsed });

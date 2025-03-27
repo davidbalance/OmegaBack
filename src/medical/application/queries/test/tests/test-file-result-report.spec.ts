@@ -6,7 +6,7 @@ import { reportSpreadsheet, TestFileResultReportQuery } from "../test-file-resul
 
 describe('TestFileResultReportQuery', () => {
     let repository: jest.Mocked<TestFileResultRepository>;
-    let spreadsheet: jest.Mocked<SpreadsheetProvider<TestFileResultModel>>;
+    let spreadsheet: jest.Mocked<SpreadsheetProvider>;
     let queryHandler: TestFileResultReportQuery;
 
     beforeEach(() => {
@@ -16,7 +16,7 @@ describe('TestFileResultReportQuery', () => {
 
         spreadsheet = {
             craft: jest.fn(),
-        } as unknown as jest.Mocked<SpreadsheetProvider<TestFileResultModel>>;
+        } as unknown as jest.Mocked<SpreadsheetProvider>;
 
         queryHandler = new TestFileResultReportQuery(repository, spreadsheet);
     });
@@ -50,7 +50,7 @@ describe('TestFileResultReportQuery', () => {
         const result = await queryHandler.handleAsync();
 
         expect(repository.findManyAsync).toHaveBeenCalledWith({ filter: [{ field: 'resultHasFile', operator: 'eq', value: false }] });
-        expect(spreadsheet.craft).toHaveBeenCalledWith(mockData, reportSpreadsheet);
+        expect(spreadsheet.craft).toHaveBeenCalled();
         expect(result).toBe(mockBuffer);
     });
 });

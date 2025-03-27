@@ -5,13 +5,12 @@ import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { TestReportGetFileQueryToken } from "../../inject/query.inject";
 import { InjectSpreadSheet } from "@shared/shared/nest/inject";
 import { SpreadsheetProvider } from "@shared/shared/providers";
-import { TestReportModel } from "@omega/medical/core/model/test/test-report.model";
 
 @Injectable()
 class TestReportGetFileNestQuery extends TestReportGetFileQuery {
     constructor(
         @InjectModelRepository("TestReport") repository: TestReportRepository,
-        @InjectSpreadSheet() spreadsheet: SpreadsheetProvider<TestReportModel>
+        @InjectSpreadSheet() spreadsheet: SpreadsheetProvider
     ) {
         super(repository, spreadsheet);
     }

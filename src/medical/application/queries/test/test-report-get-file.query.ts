@@ -2,34 +2,36 @@ import { ModelRepository } from "@shared/shared/providers/model.repository";
 import { TestReportModel } from "@omega/medical/core/model/test/test-report.model";
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Filter } from "@shared/shared/domain";
-import { SpreadsheetColumn, SpreadsheetProvider } from "@shared/shared/providers";
+import { SpreadsheetCell, SpreadsheetProvider, SpreadsheetWorkbook } from "@shared/shared/providers";
 
-export const testReportSpreadsheet: SpreadsheetColumn<TestReportModel>[] = [
-    { header: 'Empresa', key: 'locationCompany' },
-    { header: 'Sucursal', key: 'locationBranch' },
-    { header: 'Gerencia', key: 'locationManagement' },
-    { header: 'Area', key: 'locationArea' },
-    { header: 'Año', key: 'orderYear' },
-    { header: 'Proceso', key: 'orderProcess' },
-    { header: 'Fecha', key: 'orderDate' },
-    { header: 'Puesto de Trabajo', key: 'locationJobPosition' },
-    { header: 'Rol', key: 'patientRole' },
-    { header: 'Cedula', key: 'patientDni' },
-    { header: 'Nombre', key: 'patientName' },
-    { header: 'Apellido', key: 'patientLastname' },
-    { header: 'Email', key: 'patientEmail' },
-    { header: 'Cumpleaños', key: 'patientBirthday' },
-    { header: 'Edad', key: 'patientAge' },
-    { header: 'Rango de edad', key: 'patientAge' },
-    { header: 'Sexo', key: 'patientGender' },
-    { header: 'T. Prueba', key: 'examType' },
-    { header: 'S.T. Prueba', key: 'examSubtype' },
-    { header: 'Prueba', key: 'examName' },
-    { header: 'Grupo Morbilidad', key: 'diseaseGroup' },
-    { header: 'Morbilidad', key: 'diseaseName' },
-    { header: 'Observacion', key: 'diseaseCommentary' },
-    { header: 'Hallazgos de Morbilidad', key: 'diseaseFindings' },
+export const testReportSpreadsheet: SpreadsheetCell[] = [
+    { value: 'Empresa', font: { bold: true, color: '366092' } },
+    { value: 'Sucursal', font: { bold: true, color: '366092' } },
+    { value: 'Gerencia', font: { bold: true, color: '366092' } },
+    { value: 'Area', font: { bold: true, color: '366092' } },
+    { value: 'Año', font: { bold: true, color: '366092' } },
+    { value: 'Proceso', font: { bold: true, color: '366092' } },
+    { value: 'Fecha', font: { bold: true, color: '366092' } },
+    { value: 'Puesto de Trabajo', font: { bold: true, color: '366092' } },
+    { value: 'Rol', font: { bold: true, color: '366092' } },
+    { value: 'Cedula', font: { bold: true, color: '366092' } },
+    { value: 'Nombre', font: { bold: true, color: '366092' } },
+    { value: 'Apellido', font: { bold: true, color: '366092' } },
+    { value: 'Email', font: { bold: true, color: '366092' } },
+    { value: 'Cumpleaños', font: { bold: true, color: '366092' } },
+    { value: 'Edad', font: { bold: true, color: '366092' } },
+    { value: 'Rango de edad', font: { bold: true, color: '366092' } },
+    { value: 'Sexo', font: { bold: true, color: '366092' } },
+    { value: 'T. Prueba', font: { bold: true, color: '366092' } },
+    { value: 'S.T. Prueba', font: { bold: true, color: '366092' } },
+    { value: 'Prueba', font: { bold: true, color: '366092' } },
+    { value: 'Grupo Morbilidad', font: { bold: true, color: '366092' } },
+    { value: 'Morbilidad', font: { bold: true, color: '366092' } },
+    { value: 'Observacion', font: { bold: true, color: '366092' } },
+    { value: 'Hallazgos de Morbilidad', font: { bold: true, color: '366092' } },
 ]
+
+const cellOrdering: { key: keyof TestReportModel }[] = [{ key: 'locationCompany' }, { key: 'locationBranch' }, { key: 'locationManagement' }, { key: 'locationArea' }, { key: 'orderYear' }, { key: 'orderProcess' }, { key: 'orderDate' }, { key: 'locationJobPosition' }, { key: 'patientRole' }, { key: 'patientDni' }, { key: 'patientName' }, { key: 'patientLastname' }, { key: 'patientEmail' }, { key: 'patientBirthday' }, { key: 'patientAge' }, { key: 'patientAge' }, { key: 'patientGender' }, { key: 'examType' }, { key: 'examSubtype' }, { key: 'examName' }, { key: 'diseaseGroup' }, { key: 'diseaseName' }, { key: 'diseaseCommentary' }, { key: 'diseaseFindings' },]
 
 export type TestReportGetFileQueryPayload = {
     orderYear?: number;
@@ -39,7 +41,7 @@ export type TestReportGetFileQueryPayload = {
 export class TestReportGetFileQuery implements QueryHandlerAsync<TestReportGetFileQueryPayload, Buffer> {
     constructor(
         private readonly repository: ModelRepository<TestReportModel>,
-        private readonly spreadsheet: SpreadsheetProvider<TestReportModel>
+        private readonly spreadsheet: SpreadsheetProvider
     ) { }
 
     async handleAsync(query: TestReportGetFileQueryPayload): Promise<Buffer> {
@@ -55,7 +57,11 @@ export class TestReportGetFileQuery implements QueryHandlerAsync<TestReportGetFi
 
         const values = await this.repository.findManyAsync({ filter: filter });
 
-        const buffer = await this.spreadsheet.craft(values, testReportSpreadsheet);
+        const cells: SpreadsheetWorkbook = values.map(e => cellOrdering.map<SpreadsheetCell>(x => ({
+            value: e[x.key as any] ?? ''
+        })))
+
+        const buffer = await this.spreadsheet.craft([testReportSpreadsheet, ...cells]);
         return buffer;
     }
 }
