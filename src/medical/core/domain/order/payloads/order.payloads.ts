@@ -1,3 +1,5 @@
+import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
+
 export type CreateOrderPayload = {
     patientId: string;
     corporativeName: string;
@@ -9,3 +11,5 @@ export type CreateOrderPayload = {
     process: string;
     year: number;
 }
+
+export type AddOrderExternalKeyPayload = ExternalKeyProps;

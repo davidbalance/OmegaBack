@@ -1,5 +1,6 @@
+import { OrderExternalKeyConflictError } from "../errors/order-external-key.errors";
 import { Order } from "../order.domain";
-import { CreateOrderPayload } from "../payloads/order.payloads";
+import { AddOrderExternalKeyPayload, CreateOrderPayload } from "../payloads/order.payloads";
 
 describe('Order Aggregate', () => {
 
@@ -49,5 +50,22 @@ describe('Order Aggregate', () => {
     it('should change the mail property', () => {
         order.sendMail();
         expect(order.email).toBeTruthy();
+    });
+
+    it('should add an external key property', () => {
+        const payload: AddOrderExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
+
+        order.addKey(payload);
+
+        expect(order.externalKeys).toHaveLength(1);
+        expect(order.externalKeys[0].owner).toBe(payload.owner);
+        expect(order.externalKeys[0].value).toBe(payload.value);
+    });
+
+    it('should throw a conflict error when add a repeated jkey', () => {
+        const payload: AddOrderExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
+        order.addKey(payload);
+
+        expect(() => order.addKey(payload)).toThrow(OrderExternalKeyConflictError);
     });
 });
