@@ -4,11 +4,14 @@ import { Report } from "./report.domain";
 import { ExamValueObject } from "./value_objects/exam.value_object";
 import { ResultCreatedEvent, ResultFileAddedEvent, ResultFileRemovedEvent } from "./events/result.events";
 import { ReportAddedContentEvent, ReportAddedFilepathEvent, ReportCreatedEvent, ReportRemovedContentEvent } from "./events/report.events";
-import { TestCheckedEvent, TestDiseaseAddedEvent, TestDiseaseRemovedEvent, TestExamChangedEvent, TestReactivatedEvent, TestRemovedEvent, TestUncheckedEvent } from "./events/test.events";
-import { CreateDiseaseReportPayload, CreateTestPayload, ExamPayload, UpdateDiseaseReportPayload } from "./payloads/test.payloads";
+import { TestCheckedEvent, TestDiseaseAddedEvent, TestDiseaseRemovedEvent, TestExamChangedEvent, TestExternalKeyAddedEvent, TestReactivatedEvent, TestRemovedEvent, TestUncheckedEvent } from "./events/test.events";
+import { AddTestExternalKeyPayload, CreateDiseaseReportPayload, CreateTestPayload, ExamPayload, UpdateDiseaseReportPayload } from "./payloads/test.payloads";
 import { DiseaseReportUpdatedEvent } from "./events/disease.events";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
 import { DiseaseReportConflictError, DiseaseReportNotFoundError } from "./errors/disease_report.errors";
+import { TestExternalKey } from "./value_objects/test-external-key.value-object";
+import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
+import { TestExternalKeyConflictError } from "./errors/test-external-key.errors";
 
 export type TestProps = AggregateProps & {
     orderId: string;
@@ -17,6 +20,7 @@ export type TestProps = AggregateProps & {
     report: Report;
     diseases: DiseaseReport[];
     checklist: boolean;
+    externalKeys: TestExternalKey[];
 };
 export type RehydrateDiseaseReportPayload = CreateTestPayload & {
     id: string;
@@ -24,6 +28,7 @@ export type RehydrateDiseaseReportPayload = CreateTestPayload & {
     checklist: boolean;
     result: Result;
     report: Report;
+    externalKeys: TestExternalKey[];
 };
 export class Test extends Aggregate<TestProps> {
 
@@ -51,6 +56,14 @@ export class Test extends Aggregate<TestProps> {
         return this.props.checklist;
     }
 
+    public get externalKeys(): ReadonlyArray<TestExternalKey> {
+        return this.props.externalKeys;
+    }
+
+    private ensureUniqueExternalKey(key: ExternalKeyProps): void {
+        if (this.props.externalKeys.some(e => e.owner === key.owner && e.value === key.value)) throw new TestExternalKeyConflictError(key.owner, key.value);
+    }
+
     public static create(value: CreateTestPayload): Test {
 
         const testId: string = crypto.randomUUID();
@@ -70,6 +83,7 @@ export class Test extends Aggregate<TestProps> {
             report: newReport,
             diseases: [],
             checklist: false,
+            externalKeys: [],
             ...value
         });
 
@@ -85,9 +99,11 @@ export class Test extends Aggregate<TestProps> {
             subtype: value.examSubtype,
             type: value.examType,
         });
-        const report = new Test({ ...value, exam });
-        report.commit();
-        return report;
+
+        console.log(JSON.stringify(value));
+        const test = new Test({ ...value, exam });
+        test.commit();
+        return test;
     }
 
     public remove(): void {
@@ -192,5 +208,13 @@ export class Test extends Aggregate<TestProps> {
         this.updateProps({ diseases: [...diseases] });
 
         this.emit(new TestDiseaseRemovedEvent(diseaseId));
+    }
+
+    public addKey(payload: AddTestExternalKeyPayload): void {
+        this.ensureUniqueExternalKey(payload);
+        const newKey = TestExternalKey.create({ ...payload, testId: this.id });
+        const newExternalKeys = [...this.props.externalKeys, newKey];
+        this.updateProps({ externalKeys: newExternalKeys });
+        this.emit(new TestExternalKeyAddedEvent(newKey));
     }
 }

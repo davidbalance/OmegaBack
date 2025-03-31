@@ -1,8 +1,10 @@
 import { DiseaseReportConflictError, DiseaseReportNotFoundError } from "../errors/disease_report.errors";
-import { CreateDiseaseReportPayload, CreateTestPayload, ExamPayload, UpdateDiseaseReportPayload } from "../payloads/test.payloads";
+import { TestExternalKeyConflictError } from "../errors/test-external-key.errors";
+import { AddTestExternalKeyPayload, CreateDiseaseReportPayload, CreateTestPayload, ExamPayload, UpdateDiseaseReportPayload } from "../payloads/test.payloads";
 import { Report } from "../report.domain";
 import { Result } from "../result.domain";
 import { Test } from "../test.domain";
+import { TestExternalKey } from "../value_objects/test-external-key.value-object";
 
 describe('Test Aggregate', () => {
 
@@ -24,6 +26,7 @@ describe('Test Aggregate', () => {
         expect(test.exam.subtype).toEqual('Subtype1');
         expect(test.exam.type).toEqual('Type1');
         expect(test.diseases).toHaveLength(0);
+        expect(test.externalKeys).toHaveLength(0);
     });
 
     it('should rehydrate', () => {
@@ -37,15 +40,17 @@ describe('Test Aggregate', () => {
             diseases: [],
             checklist: false,
             report: Report.create({ testId: testId }),
-            result: Result.create({ testId: testId })
+            result: Result.create({ testId: testId }),
+            externalKeys: [TestExternalKey.create({ owner: 'app', testId: testId, value: 'key' })]
         });
 
         expect(rehydrated.id).toEqual(testId);
-        expect(test.orderId).toEqual('Order1');
-        expect(test.exam.name).toEqual('Blood Test');
-        expect(test.exam.subtype).toEqual('Subtype1');
-        expect(test.exam.type).toEqual('Type1');
-        expect(test.diseases).toHaveLength(0);
+        expect(rehydrated.orderId).toEqual('Order1');
+        expect(rehydrated.exam.name).toEqual('Blood Test');
+        expect(rehydrated.exam.subtype).toEqual('Subtype1');
+        expect(rehydrated.exam.type).toEqual('Type1');
+        expect(rehydrated.diseases).toHaveLength(0);
+        expect(rehydrated.externalKeys).toHaveLength(1);
     });
 
     it('should add a result to the Test aggregate', () => {
@@ -180,5 +185,22 @@ describe('Test Aggregate', () => {
 
     it('should throw an error when removing a non-existent disease', () => {
         expect(() => test.removeDisease('non-existent-id')).toThrow(DiseaseReportNotFoundError);
+    });
+
+    it('should add an external key property', () => {
+        const payload: AddTestExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
+
+        test.addKey(payload);
+
+        expect(test.externalKeys).toHaveLength(1);
+        expect(test.externalKeys[0].owner).toBe(payload.owner);
+        expect(test.externalKeys[0].value).toBe(payload.value);
+    });
+
+    it('should throw a conflict error when add a repeated jkey', () => {
+        const payload: AddTestExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
+        test.addKey(payload);
+
+        expect(() => test.addKey(payload)).toThrow(TestExternalKeyConflictError);
     });
 });

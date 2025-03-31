@@ -1,11 +1,11 @@
 import { DoctorValueObject } from "./value_objects/doctor.value_object";
 import { LocationValueObject } from "./value_objects/location.value_object";
 import { AddOrderExternalKeyPayload, CreateOrderPayload } from "./payloads/order.payloads";
-import { OrderMailSendedEvent, OrderStatusChangedToValidatedEvent, OrderStatusChangedToCreatedEvent, OrderRemovedEvent } from "./events/order.events";
+import { OrderMailSendedEvent, OrderStatusChangedToValidatedEvent, OrderStatusChangedToCreatedEvent, OrderRemovedEvent, OrderExternalKeyAddedEvent } from "./events/order.events";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
 import { OrderExternalKey } from "./order-external-key.domain";
 import { OrderExternalKeyConflictError } from "./errors/order-external-key.errors";
-import { OrderExternalKeyCreatedEvent } from "./events/order-external-key.events";
+import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
 
 export type OrderStatus = 'created' | 'validated';
 export type OrderProps = AggregateProps & {
@@ -60,7 +60,7 @@ export class Order extends Aggregate<OrderProps> {
         return this.props.externalKeys;
     }
 
-    private ensureUniqueExternalKey(key: { owner: string, value: string }): void {
+    private ensureUniqueExternalKey(key: ExternalKeyProps): void {
         if (this.props.externalKeys.some(e => e.owner === key.owner && e.value === key.value)) throw new OrderExternalKeyConflictError(key.owner, key.value);
     }
 
@@ -118,6 +118,6 @@ export class Order extends Aggregate<OrderProps> {
         const newKey = OrderExternalKey.create({ ...payload, orderId: this.id });
         const newExternalKeys = [...this.props.externalKeys, newKey];
         this.updateProps({ externalKeys: newExternalKeys });
-        this.emit(new OrderExternalKeyCreatedEvent(newKey));
+        this.emit(new OrderExternalKeyAddedEvent(newKey));
     }
 }

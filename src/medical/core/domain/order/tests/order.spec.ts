@@ -1,4 +1,5 @@
 import { OrderExternalKeyConflictError } from "../errors/order-external-key.errors";
+import { OrderExternalKey } from "../order-external-key.domain";
 import { Order } from "../order.domain";
 import { AddOrderExternalKeyPayload, CreateOrderPayload } from "../payloads/order.payloads";
 
@@ -24,7 +25,6 @@ describe('Order Aggregate', () => {
     })
 
     it('should create an Order aggregate correctly', () => {
-
         expect(order.patientId).toEqual('John Doe');
         expect(order.doctor.dni).toEqual('12345');
         expect(order.doctor.fullname).toEqual('Dr. Smith');
@@ -35,6 +35,39 @@ describe('Order Aggregate', () => {
         expect(order.location.branchName).toEqual('Quito');
         expect(order.status).toEqual("created");
         expect(order.email).toBeFalsy();
+        expect(order.externalKeys).toHaveLength(0);
+    });
+
+    it('should rehydrate', () => {
+        const orderId = crypto.randomUUID();
+        const rehydrated = Order.rehydrate({
+            id: orderId,
+            patientId: 'John Doe',
+            doctorDni: '12345',
+            doctorFullname: 'Dr. Smith',
+            locationCorporativeName: 'Omega',
+            locationCompanyName: 'Omega',
+            locationCompanyRuc: '0000000000',
+            locationBranchName: 'Quito',
+            process: 'Test Process',
+            year: 2025,
+            doctorSignature: "/path/to/signature.png",
+            email: true,
+            status: 'created',
+            externalKeys: [OrderExternalKey.create({ owner: 'app', orderId: orderId, value: 'key' })]
+        });
+
+        expect(rehydrated.patientId).toEqual('John Doe');
+        expect(rehydrated.doctor.dni).toEqual('12345');
+        expect(rehydrated.doctor.fullname).toEqual('Dr. Smith');
+        expect(rehydrated.doctor.signature).toEqual("/path/to/signature.png");
+        expect(rehydrated.location.corporativeName).toEqual('Omega');
+        expect(rehydrated.location.companyName).toEqual('Omega');
+        expect(rehydrated.location.companyRuc).toEqual('0000000000');
+        expect(rehydrated.location.branchName).toEqual('Quito');
+        expect(rehydrated.status).toEqual("created");
+        expect(rehydrated.email).toBeTruthy();
+        expect(rehydrated.externalKeys).toHaveLength(1);
     });
 
     it('should change status to open', () => {

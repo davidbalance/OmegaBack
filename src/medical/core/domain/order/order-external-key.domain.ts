@@ -20,8 +20,4 @@ export class OrderExternalKey extends ExternalKey {
     public static create(props: CreateOrderExternalKeyPayload): OrderExternalKey {
         return new OrderExternalKey({ ...props });
     }
-
-    public static rehydrate(props: OrderExternalKeyProps): OrderExternalKey {
-        return new OrderExternalKey({ ...props });
-    }
 }
