@@ -35,6 +35,7 @@ export class LocalFileService implements FileOperation {
     }
 
     async read(filepath: string): Promise<Buffer> {
+        console.log(filepath);
         const readpath = this.path.join(this.diskPath, filepath);
 
         if (!this.file.existsSync(readpath)) {

@@ -168,7 +168,8 @@ GROUP BY tmt.medical_test_id,
 	tmt.medical_order_id, 
 	tmt.exam_name, 
 	tmt.exam_subtype, 
-	tmt.exam_type;
+	tmt.exam_type
+ORDER BY tmt.exam_name ASC;
 
 DROP VIEW v_m_test_file_result;
 CREATE VIEW v_m_test_file_result AS

@@ -20,7 +20,6 @@ export class ResultGetFileQuery implements QueryHandlerAsync<ResultGetFileQueryP
         if (!test.resultHasFile) throw new TestNotFoundError(query.testId);
 
         try {
-            console.log(test.resultFilepath);
             const buffer = await this.file.read(test.resultFilepath);
             return buffer;
         } catch (error) {
