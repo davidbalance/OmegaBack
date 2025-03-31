@@ -1,8 +1,11 @@
 import { Entity, EntityProps } from "@shared/shared/domain";
 import { Branch } from "./branch.domain";
 import { RucValueObject } from "./value_objects/ruc.value_object";
-import { AddBranchToCompanyPayload, CreateCompanyPayload } from "./payloads/company.payloads";
+import { AddBranchExternalKeyFromCompanyPayload, AddBranchToCompanyPayload, AddCompanyExternalKeyPayload, CreateCompanyPayload } from "./payloads/company.payloads";
 import { BranchConflictError, BranchNotFoundError } from "./errors/branch.errors";
+import { CompanyExternalKey } from "./value_objects/company-external-key.value-object";
+import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
+import { CompanyExternalKeyConflictError } from "./errors/company-external-key.errors";
 
 type CompanyProps = EntityProps & {
     corporativeId: string;
@@ -11,6 +14,7 @@ type CompanyProps = EntityProps & {
     ruc: RucValueObject;
     address: string;
     phone: string;
+    externalKeys: CompanyExternalKey[];
 };
 export class Company extends Entity<CompanyProps> {
     public get corporativeId(): Readonly<string> {
@@ -37,13 +41,27 @@ export class Company extends Entity<CompanyProps> {
         return this.props.phone;
     }
 
+    public get externalKeys(): ReadonlyArray<CompanyExternalKey> {
+        return this.props.externalKeys;
+    }
+
+    private ensureUniqueExternalKey(key: ExternalKeyProps): void {
+        if (this.props.externalKeys.some(e => e.owner === key.owner && e.value === key.value)) throw new CompanyExternalKeyConflictError(key.owner, key.value);
+    }
+
+    private ensureUniqueBranchName(name: string): void {
+        if (this.props.branches.some(x => x.name === name))
+            throw new BranchConflictError(name);
+    }
+
     public static create(value: CreateCompanyPayload): Company {
         const ruc = RucValueObject.create({ ruc: value.ruc });
         return new Company({
             ...value,
             id: crypto.randomUUID(),
             branches: [],
-            ruc
+            ruc,
+            externalKeys: []
         });
     }
 
@@ -53,11 +71,6 @@ export class Company extends Entity<CompanyProps> {
             ...props,
             ruc
         });
-    }
-
-    private ensureUniqueBranchName(name: string): void {
-        if (this.props.branches.some(x => x.name === name))
-            throw new BranchConflictError(name);
     }
 
     public addBranch(value: AddBranchToCompanyPayload): void {
@@ -87,5 +100,18 @@ export class Company extends Entity<CompanyProps> {
 
         this.removeBranch(branchId);
         target.updateProps({ branches: [...target.branches, branchToMove] });
+    }
+
+    public addExternalKey(payload: AddCompanyExternalKeyPayload): void {
+        this.ensureUniqueExternalKey(payload);
+        const newKey = CompanyExternalKey.create({ ...payload, companyId: this.id });
+        const newExternalKeys = [...this.props.externalKeys, newKey];
+        this.updateProps({ externalKeys: newExternalKeys });
+    }
+
+    public addExternalKeyToBranch(payload: AddBranchExternalKeyFromCompanyPayload): void {
+        const branch = this.props.branches.find(e => e.id === payload.branchId);
+        if (!branch) throw new BranchNotFoundError(payload.branchId);
+        branch.addExternalKey(payload);
     }
 }

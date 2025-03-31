@@ -1,3 +1,4 @@
+import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
 import { CreateBranchPayload } from "./branch.payloads";
 
 export type CreateCompanyPayload = {
@@ -9,3 +10,9 @@ export type CreateCompanyPayload = {
 }
 
 export type AddBranchToCompanyPayload = Omit<CreateBranchPayload, 'companyId'>;
+
+export type AddCompanyExternalKeyPayload = ExternalKeyProps;
+
+export type AddBranchExternalKeyFromCompanyPayload = ExternalKeyProps & {
+    branchId: string;
+};

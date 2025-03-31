@@ -100,7 +100,6 @@ export class Test extends Aggregate<TestProps> {
             type: value.examType,
         });
 
-        console.log(JSON.stringify(value));
         const test = new Test({ ...value, exam });
         test.commit();
         return test;

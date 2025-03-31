@@ -27,7 +27,6 @@ export class Exam extends Entity<ExamProps> {
         if (this.props.externalKeys.some(e => e.owner === key.owner && e.value === key.value)) throw new ExamExternalKeyConflictError(key.owner, key.value);
     }
 
-
     public static create(value: CreateExamPayload): Exam {
         return new Exam({
             ...value,

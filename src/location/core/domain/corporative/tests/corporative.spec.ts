@@ -1,8 +1,12 @@
 import { Branch } from "../branch.domain";
 import { Company } from "../company.domain";
 import { Corporative } from "../corporative.domain";
+import { BranchExternalKeyConflictError } from "../errors/branch-external-key.errors";
+import { CompanyExternalKeyConflictError } from "../errors/company-external-key.errors";
 import { CompanyConflictError, CompanyNotFoundError } from "../errors/company.errors";
+import { CorporativeExternalKeyConflictError } from "../errors/corporative-external-key.errors";
 import { CorporativeForbiddenError } from "../errors/corporative.errors";
+import { AddBranchExternalKeyFromCorporativePayload, AddCompanyExternalKeyFromCorporativePayload, AddCorporativeExternalKeyPayload } from "../payloads/corporative.payloads";
 
 describe('Corporative Entity', () => {
     let corporative: Corporative;
@@ -33,18 +37,21 @@ describe('Corporative Entity', () => {
         expect(corporative.name).toEqual('Corporative 1');
         expect(corporative.companies).toHaveLength(1);
         expect(company.name).toEqual('Company A');
+        expect(corporative.externalKeys).toHaveLength(0);
     });
 
     it('should rehydrate a corporative', () => {
         const rehydrated = Corporative.rehydrate({
             id: corporative.id,
             name: 'Corporative 1',
-            companies: []
+            companies: [],
+            externalKeys: []
         });
 
         expect(rehydrated.id).toEqual(corporative.id);
         expect(rehydrated.name).toEqual('Corporative 1');
         expect(rehydrated.companies).toHaveLength(0);
+        expect(rehydrated.externalKeys).toHaveLength(0);
     });
 
     it('should throw an error if tries to remove item with companies', () => {
@@ -179,5 +186,102 @@ describe('Corporative Entity', () => {
                 branchId: branch.id
             });
         }).toThrow(CompanyNotFoundError);
+    });
+
+    it('should add an external key property', () => {
+        const payload: AddCorporativeExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
+
+        corporative.addExternalKey(payload);
+
+        expect(corporative.externalKeys).toHaveLength(1);
+        expect(corporative.externalKeys[0].owner).toBe(payload.owner);
+        expect(corporative.externalKeys[0].value).toBe(payload.value);
+    });
+
+    it('should throw a conflict error when add a repeated key', () => {
+        const payload: AddCorporativeExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
+        corporative.addExternalKey(payload);
+
+        expect(() => corporative.addExternalKey(payload)).toThrow(CorporativeExternalKeyConflictError);
+    });
+
+    it('should add an external key for company', () => {
+        corporative.addCompany({ name: 'Company B', ruc: '0987654321001', address: '456 Secondary St', phone: '987-654-3210' });
+        const value = [...corporative.companies].pop()!;
+        const payload: AddCompanyExternalKeyFromCorporativePayload = {
+            owner: 'omega',
+            value: 'sample-key',
+            companyId: value.id
+        };
+
+        corporative.addExternalKeyToCompany(payload);
+
+        const company = [...corporative.companies].pop()!;
+        expect(company.externalKeys).toHaveLength(1);
+        expect(company.externalKeys[0].owner).toBe(payload.owner);
+        expect(company.externalKeys[0].value).toBe(payload.value);
+    });
+
+    it('should throw a conflict error when add a repeated key exists on company', () => {
+        corporative.addCompany({ name: 'Company B', ruc: '0987654321001', address: '456 Secondary St', phone: '987-654-3210' });
+        const value = [...corporative.companies].pop()!;
+        const payload: AddCompanyExternalKeyFromCorporativePayload = {
+            owner: 'omega',
+            value: 'sample-key',
+            companyId: value.id
+        };
+
+        corporative.addExternalKeyToCompany(payload);
+
+        expect(() => corporative.addExternalKeyToCompany(payload)).toThrow(CompanyExternalKeyConflictError);
+    });
+
+    it('should add an external key for branch', () => {
+        corporative.addCompany({ name: 'Company B', ruc: '0987654321001', address: '456 Secondary St', phone: '987-654-3210' });
+        const company = [...corporative.companies].pop()!;
+
+        corporative.addBranchToCompany({
+            companyId: company.id,
+            name: 'Branch C',
+            cityId: 3
+        });
+        const branch = [...[...corporative.companies].pop()!.branches].pop()!;
+
+        const payload: AddBranchExternalKeyFromCorporativePayload = {
+            owner: 'omega',
+            value: 'sample-key',
+            branchId: branch.id,
+            companyId: company.id
+        };
+
+        corporative.addExternalKeyToBranch(payload);
+
+        const testCompany = [...corporative.companies].pop()!;
+        expect(testCompany.branches[0].externalKeys).toHaveLength(1);
+        expect(testCompany.branches[0].externalKeys[0].owner).toBe(payload.owner);
+        expect(testCompany.branches[0].externalKeys[0].value).toBe(payload.value);
+    });
+
+    it('should throw a conflict error when add a repeated key exists on branch', () => {
+        corporative.addCompany({ name: 'Company B', ruc: '0987654321001', address: '456 Secondary St', phone: '987-654-3210' });
+        const company = [...corporative.companies].pop()!;
+
+        corporative.addBranchToCompany({
+            companyId: company.id,
+            name: 'Branch C',
+            cityId: 3
+        });
+        const branch = [...[...corporative.companies].pop()!.branches].pop()!;
+
+        const payload: AddBranchExternalKeyFromCorporativePayload = {
+            owner: 'omega',
+            value: 'sample-key',
+            branchId: branch.id,
+            companyId: company.id
+        };
+
+        corporative.addExternalKeyToBranch(payload);
+
+        expect(() => corporative.addExternalKeyToBranch(payload)).toThrow(BranchExternalKeyConflictError);
     });
 });

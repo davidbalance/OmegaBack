@@ -1,5 +1,8 @@
 import { Company } from "../company.domain";
+import { BranchExternalKeyConflictError } from "../errors/branch-external-key.errors";
 import { BranchConflictError, BranchNotFoundError } from "../errors/branch.errors";
+import { CompanyExternalKeyConflictError } from "../errors/company-external-key.errors";
+import { AddBranchExternalKeyFromCompanyPayload, AddCompanyExternalKeyPayload } from "../payloads/company.payloads";
 
 describe('Company Entity', () => {
     let company: Company;
@@ -21,6 +24,7 @@ describe('Company Entity', () => {
         expect(company.ruc).toEqual('1234567890001');
         expect(company.address).toEqual('123 Main St');
         expect(company.phone).toEqual('123-456-7890');
+        expect(company.externalKeys).toHaveLength(0);
     });
 
     it('should add a branch to the company', () => {
@@ -109,10 +113,60 @@ describe('Company Entity', () => {
             ruc: '1234567890001',
             address: '123 Main St',
             phone: '123-456-7890',
-            branches: []
+            branches: [],
+            externalKeys: []
         });
 
         expect(rehydrated.id).toEqual(company.id);
+        expect(rehydrated.corporativeId).toEqual(company.corporativeId);
+        expect(rehydrated.name).toEqual(company.name);
+        expect(rehydrated.ruc).toEqual(company.ruc);
+        expect(rehydrated.address).toEqual(company.address);
+        expect(rehydrated.phone).toEqual(company.phone);
         expect(rehydrated.branches).toHaveLength(0);
+        expect(rehydrated.externalKeys).toHaveLength(0);
+    });
+
+    it('should add an external key property', () => {
+        const payload: AddCompanyExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
+
+        company.addExternalKey(payload);
+
+        expect(company.externalKeys).toHaveLength(1);
+        expect(company.externalKeys[0].owner).toBe(payload.owner);
+        expect(company.externalKeys[0].value).toBe(payload.value);
+    });
+
+    it('should throw a conflict error when add a repeated key', () => {
+        const payload: AddCompanyExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
+        company.addExternalKey(payload);
+
+        expect(() => company.addExternalKey(payload)).toThrow(CompanyExternalKeyConflictError);
+    });
+
+    it('should add an external key for branch', () => {
+        company.addBranch({ name: branchName, cityId: 1 });
+        const payload: AddCompanyExternalKeyPayload = { owner: 'omega', value: 'sample-key' };
+
+        company.addExternalKey(payload);
+
+        expect(company.externalKeys).toHaveLength(1);
+        expect(company.externalKeys[0].owner).toBe(payload.owner);
+        expect(company.externalKeys[0].value).toBe(payload.value);
+    });
+
+    it('should throw a conflict error when add a repeated key exists on branch', () => {
+        company.addBranch({ name: branchName, cityId: 1 });
+        const value = [...company.branches].pop()!;
+
+        const payload: AddBranchExternalKeyFromCompanyPayload = {
+            owner: 'omega',
+            value: 'sample-key',
+            branchId: value.id
+        };
+
+        company.addExternalKeyToBranch(payload);
+
+        expect(() => company.addExternalKeyToBranch(payload)).toThrow(BranchExternalKeyConflictError);
     });
 });

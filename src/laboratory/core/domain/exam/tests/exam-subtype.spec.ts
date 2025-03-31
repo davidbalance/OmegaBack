@@ -111,7 +111,6 @@ describe('ExamSubtype Entity', () => {
 
     it('should add an external key for exam', () => {
         examSubtype.addExam({ examName: 'rx' });
-        const value = [...examSubtype.exams].pop()!;
         const payload: AddExamSubtypeExternalKeyPayload = { owner: 'omega', value: 'sample-key' };
 
         examSubtype.addExternalKey(payload);
