@@ -95,7 +95,7 @@ describe('Order Aggregate', () => {
         expect(order.externalKeys[0].value).toBe(payload.value);
     });
 
-    it('should throw a conflict error when add a repeated jkey', () => {
+    it('should throw a conflict error when add a repeated key', () => {
         const payload: AddOrderExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
         order.addKey(payload);
 

@@ -1,15 +1,19 @@
 import { ExamSubtype } from "./exam-subtype.domain";
-import { AddExamFromTypePayload, AddSubtypeToTypePayload, CreateExamTypePayload, MoveExamPayload, RemoveExamFromTypePayload, RenameExamFromTypePayload, RenameSubtypeFromTypePayload } from "./payloads/exam-type.payload";
-import { ExamTypeSubtypeMovedEvent, ExamTypeRenamedEvent, ExamTypeSubtypeAddedEvent, ExamTypeSubtypeRemovedEvent, ExamTypeRemovedEvent } from "./events/exam-type.events";
-import { ExamSubtypeExamAddedEvent, ExamSubtypeExamMovedEvent, ExamSubtypeExamRemovedEvent, ExamSubtypeRenamedEvent } from "./events/exam-subtype.events";
-import { ExamRenamedEvent } from "./events/exam.events";
+import { AddExamExternalKeyFromExamType, AddExamFromTypePayload, AddExamSubtypeExternalKeyFromExamType, AddExamTypeExternalKey, AddSubtypeToTypePayload, CreateExamTypePayload, MoveExamPayload, RemoveExamFromTypePayload, RenameExamFromTypePayload, RenameSubtypeFromTypePayload } from "./payloads/exam-type.payload";
+import { ExamTypeSubtypeMovedEvent, ExamTypeRenamedEvent, ExamTypeSubtypeAddedEvent, ExamTypeSubtypeRemovedEvent, ExamTypeRemovedEvent, ExamTypeExternalKeyAddedEvent } from "./events/exam-type.events";
+import { ExamSubtypeExamAddedEvent, ExamSubtypeExamMovedEvent, ExamSubtypeExamRemovedEvent, ExamSubtypeExternalKeyAddedEvent, ExamSubtypeRenamedEvent } from "./events/exam-subtype.events";
+import { ExamExternalKeyAddedEvent, ExamRenamedEvent } from "./events/exam.events";
 import { ExamTypeInvalidError } from "./errors/exam-type.errors";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
 import { ExamSubtypeConflictError, ExamSubtypeNotFoundError } from "./errors/exam-subtype.errors";
+import { ExamTypeExternalKey } from "./value-objects/exam-type-external-key.value-object";
+import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
+import { ExamTypeExternalKeyConflictError } from "./errors/exam-type-external-key.errors";
 
 export type ExamTypeProps = AggregateProps & {
     subtypes: ExamSubtype[];
     name: string;
+    externalKeys: ExamTypeExternalKey[];
 };
 export class ExamType extends Aggregate<ExamTypeProps> {
     public get subtypes(): ReadonlyArray<ExamSubtype> {
@@ -20,11 +24,24 @@ export class ExamType extends Aggregate<ExamTypeProps> {
         return this.props.name;
     }
 
+    get externalKeys(): ReadonlyArray<ExamTypeExternalKey> {
+        return this.props.externalKeys;
+    }
+
+    private ensureUniqueExternalKey(key: ExternalKeyProps): void {
+        if (this.props.externalKeys.some(e => e.owner === key.owner && e.value === key.value)) throw new ExamTypeExternalKeyConflictError(key.owner, key.value);
+    }
+
+    private ensureUniqueSubtypeName(name: string): void {
+        if (this.props.subtypes.some(x => x.name === name)) throw new ExamSubtypeConflictError(name);
+    }
+
     public static create(value: CreateExamTypePayload): ExamType {
         return new ExamType({
+            ...value,
             id: crypto.randomUUID(),
             subtypes: [],
-            ...value
+            externalKeys: []
         });
     }
 
@@ -32,10 +49,6 @@ export class ExamType extends Aggregate<ExamTypeProps> {
         const type = new ExamType(props);
         type.commit();
         return type;
-    }
-
-    private ensureUniqueSubtypeName(name: string): void {
-        if (this.props.subtypes.some(x => x.name === name)) throw new ExamSubtypeConflictError(name);
     }
 
     public rename(name: string): void {
@@ -89,6 +102,7 @@ export class ExamType extends Aggregate<ExamTypeProps> {
             id: newSubtype[subtypeIndex].id,
             typeId: newSubtype[subtypeIndex].typeId,
             exams: [...newSubtype[subtypeIndex].exams],
+            externalKeys: [...newSubtype[subtypeIndex].externalKeys],
             name: value.subtypeName
         });
         this.updateProps({ subtypes: newSubtype });
@@ -159,5 +173,27 @@ export class ExamType extends Aggregate<ExamTypeProps> {
 
         this.updateProps({ subtypes: newSubtypes });
         this.emit(new ExamRenamedEvent(value));
+    }
+
+    public addExternalKey(payload: AddExamTypeExternalKey): void {
+        this.ensureUniqueExternalKey(payload);
+        const newKey = ExamTypeExternalKey.create({ ...payload, typeExamId: this.id, });
+        const newExternalKeys = [...this.props.externalKeys, newKey];
+        this.updateProps({ externalKeys: newExternalKeys });
+        this.emit(new ExamTypeExternalKeyAddedEvent({ ...payload, typeExamId: this.id }));
+    }
+
+    public addExternalKeyToSubtype(payload: AddExamSubtypeExternalKeyFromExamType): void {
+        const subtype = this.props.subtypes.find(e => e.id === payload.subtypeId);
+        if (!subtype) throw new ExamSubtypeNotFoundError(payload.subtypeId);
+        subtype.addExternalKey(payload);
+        this.emit(new ExamSubtypeExternalKeyAddedEvent({ ...payload, subtypeExamId: payload.subtypeId }));
+    }
+
+    public addExternalKeyToExam(payload: AddExamExternalKeyFromExamType): void {
+        const subtype = this.props.subtypes.find(e => e.id === payload.subtypeId);
+        if (!subtype) throw new ExamSubtypeNotFoundError(payload.subtypeId);
+        subtype.addExternalKeyToExam(payload);
+        this.emit(new ExamExternalKeyAddedEvent({ ...payload }));
     }
 }

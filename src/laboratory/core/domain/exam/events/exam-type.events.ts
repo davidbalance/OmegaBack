@@ -1,5 +1,6 @@
 import { DomainEvent } from "@shared/shared/domain";
 import { ExamSubtype } from "../exam-subtype.domain";
+import { ExamTypeExternalKey, ExamTypeExternalKeyProps } from "../value-objects/exam-type-external-key.value-object";
 
 const ExamTypeEventKeys = {
     Renamed: "examType.renamed",
@@ -7,6 +8,7 @@ const ExamTypeEventKeys = {
     SubtypeAdded: "examType.subtypeAdded",
     SubtypeRemoved: "examType.subtypeRemoved",
     SubtypeMoved: "examType.subtypeMoved",
+    ExternalKeyAdded: "examType.externalKey.added",
 }
 
 export class ExamTypeIsEvent {
@@ -29,6 +31,10 @@ export class ExamTypeIsEvent {
 
     public static isExamTypeSubtypeMovedEvent(event: DomainEvent<unknown>): event is ExamTypeSubtypeMovedEvent {
         return event.key === ExamTypeEventKeys.SubtypeMoved;
+    }
+
+    public static isExamTypeExternalKeyAddedEvent(event: DomainEvent<unknown>): event is ExamTypeExternalKeyAddedEvent {
+        return event.key === ExamTypeEventKeys.ExternalKeyAdded;
     }
 }
 
@@ -74,5 +80,11 @@ export type ExamTypeSubtypeMovedEventPayload = {
 export class ExamTypeSubtypeMovedEvent extends DomainEvent<ExamTypeSubtypeMovedEventPayload> {
     constructor(value: ExamTypeSubtypeMovedEventPayload) {
         super({ key: ExamTypeEventKeys.SubtypeMoved, value });
+    }
+}
+
+export class ExamTypeExternalKeyAddedEvent extends DomainEvent<ExamTypeExternalKeyProps> {
+    constructor(value: ExamTypeExternalKeyProps) {
+        super({ key: ExamTypeEventKeys.ExternalKeyAdded, value });
     }
 }

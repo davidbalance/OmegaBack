@@ -197,7 +197,7 @@ describe('Test Aggregate', () => {
         expect(test.externalKeys[0].value).toBe(payload.value);
     });
 
-    it('should throw a conflict error when add a repeated jkey', () => {
+    it('should throw a conflict error when add a repeated key', () => {
         const payload: AddTestExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
         test.addKey(payload);
 
