@@ -225,8 +225,8 @@ model MedicalOrder {
 }
 
 model MedicalOrderExternalKey {
-  owner String @map("external_owner") @db.Char(128)
-  value String @map("external_value") @db.Char(128)
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
 
   orders  MedicalOrder @relation(fields: [orderId], references: [id])
   orderId String       @map("medical_order_id") @db.Char(36)
@@ -261,8 +261,8 @@ model MedicalTest {
 }
 
 model MedicalTestExternalKey {
-  owner String @map("external_owner") @db.Char(128)
-  value String @map("external_value") @db.Char(128)
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
 
   tests  MedicalTest @relation(fields: [testId], references: [id])
   testId String      @map("medical_test_id") @db.Char(36)
@@ -365,8 +365,8 @@ model ExamType {
 }
 
 model ExamTypeExternalKey {
-  owner String @map("external_owner") @db.Char(128)
-  value String @map("external_value") @db.Char(128)
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
 
   types  ExamType @relation(fields: [typeId], references: [id])
   typeId String   @map("exam_type_id") @db.Char(36)
@@ -397,8 +397,8 @@ model ExamSubtype {
 }
 
 model ExamSubtypeExternalKey {
-  owner String @map("external_owner") @db.Char(128)
-  value String @map("external_value") @db.Char(128)
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
 
   subtypes  ExamSubtype @relation(fields: [subtypeId], references: [id])
   subtypeId String      @map("exam_subtype_id") @db.Char(36)
@@ -427,8 +427,8 @@ model Exam {
 }
 
 model ExamExternalKey {
-  owner String @map("external_owner") @db.Char(128)
-  value String @map("external_value") @db.Char(128)
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
 
   exams  Exam   @relation(fields: [examId], references: [id])
   examId String @map("exam_id") @db.Char(36)
@@ -456,8 +456,8 @@ model CorporativeGroup {
 }
 
 model CorporativeExternalKey {
-  owner String @map("external_owner") @db.Char(128)
-  value String @map("external_value") @db.Char(128)
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
 
   corporatives  CorporativeGroup @relation(fields: [corporativeId], references: [id])
   corporativeId String           @map("corporative_id") @db.Char(36)
@@ -492,8 +492,8 @@ model Company {
 }
 
 model CompanyExternalKey {
-  owner String @map("external_owner") @db.Char(128)
-  value String @map("external_value") @db.Char(128)
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
 
   companies Company @relation(fields: [companyId], references: [id])
   companyId String  @map("company_id") @db.Char(36)
@@ -525,8 +525,8 @@ model Branch {
 }
 
 model BranchExternalKey {
-  owner String @map("external_owner") @db.Char(128)
-  value String @map("external_value") @db.Char(128)
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
 
   branches Branch @relation(fields: [branchId], references: [id])
   branchId String @map("branch_id") @db.Char(36)
@@ -1172,7 +1172,7 @@ view UserAttributeModel {
 }
 
 view UserModel {
-  userId       String @id @map("user_id") @db.Char(36)
+  userId       String @unique @map("user_id") @db.Char(36)
   userDni      String @map("user_dni") @db.VarChar(16)
   userEmail    String @map("user_email") @db.VarChar(128)
   userName     String @map("user_name") @db.VarChar(128)
@@ -1180,4 +1180,22 @@ view UserModel {
   authId       String @map("auth_id") @db.Char(36)
 
   @@map("v_u_users")
+}
+
+// External Connection
+view OrderExternalConnectionModel {
+  orderId            String @unique @map("order_id") @db.Char(36)
+  orderExternalKey   String @map("external_owner") @db.VarChar(128)
+  orderExternalOwner String @map("external_value") @db.VarChar(128)
+  patientDni         String @map("patient_dni") @db.VarChar(16)
+
+  @@map("v_m_order_external_connection")
+}
+
+view TestExternalConnectionModel {
+  testId            String @unique @map("medical_test_id") @db.Char(36)
+  testExternalKey   String @map("external_owner") @db.VarChar(128)
+  testExternalOwner String @map("external_value") @db.VarChar(128)
+
+  @@map("v_m_test_external_connection")
 }

@@ -88,6 +88,8 @@ import { ClientFindMassiveLoadTemplateQueryProvider } from "./nest/query/client/
 import { TestRemoveCommandProvider } from "./nest/command/test/test-remove.nest-command";
 import { LaboratoryProxyModule } from "@omega/adapter/proxy/laboratory-proxy/laboratory-proxy.module";
 import { OrderCloudReadController } from "./controller/read/order-cloud-read.controller";
+import { TestFindOneByExternalKeyQueryProvider } from "./nest/query/test/test-find-one-by-external-key.query";
+import { OrderFindOneByExternalKeyQueryProvider } from "./nest/query/order/order.find-one-by-external-key.nest-query";
 
 @Module({
     imports: [
@@ -173,6 +175,7 @@ import { OrderCloudReadController } from "./controller/read/order-cloud-read.con
         OrderYearFindManyQueryProvider,
         OrderFindManyQueryProvider,
         OrderFindOneQueryProvider,
+        OrderFindOneByExternalKeyQueryProvider,
         DiseaseReportFindManyQueryProvider,
         DiseaseReportFindOneQueryProvider,
         ReportGetFileQueryProvider,
@@ -183,6 +186,7 @@ import { OrderCloudReadController } from "./controller/read/order-cloud-read.con
         TestFileResultReportQueryProvider,
         TestGetZipQueryProvider,
         TestFindOneQueryProvider,
+        TestFindOneByExternalKeyQueryProvider,
         TestFindManyQueryProvider,
         TestReportGetFileQueryProvider
     ]
