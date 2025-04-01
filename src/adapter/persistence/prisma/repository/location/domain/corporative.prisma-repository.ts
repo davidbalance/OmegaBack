@@ -25,7 +25,15 @@ export class CorporativePrismaRepository implements CorporativeRepository {
         try {
             const where = PrismaFilterMapper.map<CorporativeProps, Prisma.CorporativeGroupWhereInput>(filter.filter);
             const value = await this.prisma.corporativeGroup.findFirst({
-                include: { companies: { include: { branches: true } } },
+                include: {
+                    externalKeys: true,
+                    companies: {
+                        include: {
+                            branches: { include: { externalKeys: true } },
+                            externalKeys: true
+                        }
+                    }
+                },
                 where: where
             });
             return value ? CorporativeDomainMapper.toDomain(value) : null;

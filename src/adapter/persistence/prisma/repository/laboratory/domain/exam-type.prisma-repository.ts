@@ -25,7 +25,15 @@ export class ExamTypePrismaRepository implements ExamTypeRepository {
         try {
             const where = PrismaFilterMapper.map<ExamTypeProps, Prisma.ExamTypeWhereInput>(filter.filter);
             const value = await this.prisma.examType.findFirst({
-                include: { subtypes: { include: { exams: true } } },
+                include: {
+                    externalKeys: true,
+                    subtypes: {
+                        include: {
+                            externalKeys: true,
+                            exams: { include: { externalKeys: true } }
+                        }
+                    },
+                },
                 where: where
             });
             return value ? ExamTypeDomainMapper.toDomain(value) : null;

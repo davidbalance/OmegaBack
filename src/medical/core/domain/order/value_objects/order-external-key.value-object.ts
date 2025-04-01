@@ -1,5 +1,5 @@
 import { ExternalKey, ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
-import { CreateOrderExternalKeyPayload } from "./payloads/order-external-key.payloads";
+import { CreateOrderExternalKeyPayload } from "../payloads/order-external-key.payloads";
 
 export type OrderExternalKeyProps = ExternalKeyProps & {
     orderId: string;

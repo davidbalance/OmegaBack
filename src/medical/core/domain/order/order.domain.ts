@@ -3,7 +3,7 @@ import { LocationValueObject } from "./value_objects/location.value_object";
 import { AddOrderExternalKeyPayload, CreateOrderPayload } from "./payloads/order.payloads";
 import { OrderMailSendedEvent, OrderStatusChangedToValidatedEvent, OrderStatusChangedToCreatedEvent, OrderRemovedEvent, OrderExternalKeyAddedEvent } from "./events/order.events";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
-import { OrderExternalKey } from "./order-external-key.domain";
+import { OrderExternalKey } from "./value_objects/order-external-key.value-object";
 import { OrderExternalKeyConflictError } from "./errors/order-external-key.errors";
 import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
 

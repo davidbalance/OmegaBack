@@ -29,7 +29,7 @@ export class TestPrismaRepository implements TestRepository {
         try {
             const where = PrismaFilterMapper.map<TestProps, Prisma.MedicalTestWhereInput>(filter.filter);
             const value = await this.prisma.medicalTest.findFirst({
-                include: { result: true, report: true, diseases: true },
+                include: { result: true, report: true, diseases: true, externalKeys: true },
                 where: where
             });
             return value ? TestDomainMapper.toDomain({

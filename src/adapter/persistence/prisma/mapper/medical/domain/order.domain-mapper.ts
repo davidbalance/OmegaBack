@@ -1,5 +1,8 @@
 import { Order } from "@omega/medical/core/domain/order/order.domain";
-import { MedicalOrder as PrismaOrder, Prisma } from "@prisma/client";
+import { OrderExternalKey } from "@omega/medical/core/domain/order/value_objects/order-external-key.value-object";
+import { MedicalOrder as PrismaOrder, MedicalOrderExternalKey as PrismaExternalKey, Prisma } from "@prisma/client";
+
+type PrismaOrderExtended = PrismaOrder & { externalKeys: PrismaExternalKey[] };
 
 export class OrderDomainMapper {
     static toPrisma(value: Order): Prisma.MedicalOrderUncheckedCreateInput {
@@ -18,10 +21,11 @@ export class OrderDomainMapper {
         };
     }
 
-    static toDomain(value: PrismaOrder): Order {
+    static toDomain(value: PrismaOrderExtended): Order {
         return Order.rehydrate({
             ...value,
-            patientId: value.clientId
+            patientId: value.clientId,
+            externalKeys: value.externalKeys.map(e => OrderExternalKey.create({ ...e }))
         });
     }
 }

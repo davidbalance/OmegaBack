@@ -1,8 +1,12 @@
 import { ExamSubtype } from "@omega/laboratory/core/domain/exam/exam-subtype.domain";
-import { ExamSubtype as PrismaExamSubtype, Exam as PrismaExam, Prisma } from "@prisma/client";
-import { ExamDomainMapper } from "./exam.domain-mapper";
+import { ExamSubtype as PrismaExamSubtype, ExamSubtypeExternalKey as PrismaExternalKey, Prisma } from "@prisma/client";
+import { ExamDomainMapper, PrismaExamExtended } from "./exam.domain-mapper";
+import { ExamSubtypeExternalKey } from "@omega/laboratory/core/domain/exam/value-objects/exam-subtype-external-key.value-object";
 
-type PrismaExamSubtypeWithExams = PrismaExamSubtype & { exams: PrismaExam[] }
+export type PrismaExamSubtypeExtended = PrismaExamSubtype & {
+    exams: PrismaExamExtended[],
+    externalKeys: PrismaExternalKey[]
+}
 
 export class ExamSubtypeDomainMapper {
     static toPrisma(value: ExamSubtype): Prisma.ExamSubtypeUncheckedCreateInput {
@@ -13,10 +17,11 @@ export class ExamSubtypeDomainMapper {
         };
     }
 
-    static toDomain(value: PrismaExamSubtypeWithExams): ExamSubtype {
+    static toDomain(value: PrismaExamSubtypeExtended): ExamSubtype {
         return ExamSubtype.rehydrate({
             ...value,
-            exams: value.exams.map(e => ExamDomainMapper.toDomain(e))
+            exams: value.exams.map(e => ExamDomainMapper.toDomain(e)),
+            externalKeys: value.externalKeys.map(e => ExamSubtypeExternalKey.create({ ...e, subtypeExamId: e.subtypeId }))
         });
     }
 }

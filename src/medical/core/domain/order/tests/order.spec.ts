@@ -1,5 +1,5 @@
 import { OrderExternalKeyConflictError } from "../errors/order-external-key.errors";
-import { OrderExternalKey } from "../order-external-key.domain";
+import { OrderExternalKey } from "../value_objects/order-external-key.value-object";
 import { Order } from "../order.domain";
 import { AddOrderExternalKeyPayload, CreateOrderPayload } from "../payloads/order.payloads";
 

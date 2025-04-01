@@ -20,7 +20,7 @@ export class OrderPrismaRepository implements OrderRepository {
     async findOneAsync(filter: SearchCriteria<OrderProps>): Promise<Order | null> {
         try {
             const where = PrismaFilterMapper.map<OrderProps, Prisma.MedicalOrderWhereInput>(filter.filter);
-            const value = await this.prisma.medicalOrder.findFirst({ where: where });
+            const value = await this.prisma.medicalOrder.findFirst({ where: where, include: { externalKeys: true } });
             return value ? OrderDomainMapper.toDomain(value) : null;
         } catch (error) {
             Logger.error(error);
