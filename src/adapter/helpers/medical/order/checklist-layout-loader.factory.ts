@@ -10,7 +10,7 @@ export const checklistLayoutLoader = (data: OrderChecklistModel[], image: string
 
     return {
         pageSize: 'A4',
-        pageMargins: [30, 75, 30, 200],
+        pageMargins: [30, 75, 30, 125],
         header: [
             {
                 margin: 5,
@@ -20,28 +20,13 @@ export const checklistLayoutLoader = (data: OrderChecklistModel[], image: string
             },
             {
                 table: {
-                    widths: ["*", "*", "*", "*"],
+                    widths: ["*"],
                     body: [
                         [
-                            { text: 'CHECKLIST DE EXAMENES', style: 'header', colSpan: 2, rowSpan: 2 },
-                            { text: '', rowSpan: 2 },
                             {
-                                text: 'FECHA DE EMISION',
-                                bold: true,
-                                fontSize: 12,
-                                rowSpan: 2
+                                text: 'CHECKLIST DE EXAMENES',
+                                style: 'header'
                             },
-                            {
-                                text: formatDate(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-                                fontSize: 10,
-                                rowSpan: 2
-                            }
-                        ],
-                        [
-                            { text: '' },
-                            { text: '' },
-                            { text: '' },
-                            { text: '' },
                         ]
                     ]
                 },
@@ -54,71 +39,279 @@ export const checklistLayoutLoader = (data: OrderChecklistModel[], image: string
                     widths: ['*', '*', '*', '*'],
                     body: [
                         [
-                            { text: 'FECHA DE INGRESO', style: 'tableCell' },
-                            { text: '' },
-                            { text: 'HORA DE INGRESO', style: 'tableCell' },
+                            {
+                                text: 'FECHA DE INGRESO',
+                                style: 'itemTitle',
+                                marginTop: 3,
+                                marginBottom: 3
+                            },
+                            {
+                                text: formatDate(new Date, 'yyyy/MM/dd'),
+                                style: 'itemText',
+                                marginTop: 3,
+                                marginBottom: 3
+                            },
+                            {
+                                text: 'HORA DE INGRESO PACIENTE',
+                                style: 'itemTitle',
+                                marginTop: 3,
+                                marginBottom: 3
+                            },
                             { text: '' },
                         ],
                         [
-                            { text: 'FECHA DE ATENCION', style: 'tableCell' },
-                            { text: '' },
-                            { text: 'HORA DE SALIDA', style: 'tableCell' },
-                            { text: '' },
-                        ],
-                        [
-                            { text: 'CARGO', style: 'tableCell' },
                             {
-                                text: order.locationJobPosition ? order.locationJobPosition : '',
-                                italics: true,
-                                alignment: 'center',
-                                fontSize: 8
+                                text: 'FECHA DE ATENCION',
+                                style: 'itemTitle',
+                                marginTop: 3,
+                                marginBottom: 3
                             },
-                            { text: 'TIPO', style: 'tableCell' },
+                            { text: '' },
                             {
-                                text: order.orderProcess,
-                                italics: true,
-                                alignment: 'center',
-                                fontSize: 8
+                                text: 'HORA DE SALIDA PACIENTE',
+                                style: 'itemTitle',
+                                marginTop: 3,
+                                marginBottom: 3
                             },
+                            { text: '' },
                         ]
                     ]
                 },
-                margin: [0, 10]
+                margin: [0, 5]
             },
             {
-                text: 'Checklist de Examenes',
-                style: 'sectionTitle',
-                margin: [0, 20]
-            },
-            {
-                type: 'circle',
-                ul: data.filter(e => !e.testCheck).map(e => ({
-                    columns: [
-                        {
-                            text: e.examName
-                        },
-                        {
-                            text: 'Resp: ________________________'
-                        }
+                table: {
+                    widths: ['*', '*', 'auto', '*', '*', 'auto', '*', '*'],
+                    body: [
+                        [
+                            {
+                                stack: [
+                                    {
+                                        text: 'PUESTO',
+                                        style: 'itemTitle',
+                                    },
+                                    {
+                                        text: order.locationJobPosition ? order.locationJobPosition : '',
+                                        italics: true,
+                                        style: 'itemText',
+                                    }
+                                ],
+                                colSpan: 2,
+                                rowSpan: 3
+                            },
+                            { text: '' },
+                            { text: '', border: [false, false, false, false], rowSpan: 6 },
+                            {
+                                stack: [
+                                    {
+                                        text: 'PACIENTE',
+                                        style: 'itemTitle',
+                                    },
+                                    {
+                                        text: `${order.patientName} ${order.patientLastname}`,
+                                        style: 'itemText',
+                                    }
+                                ],
+                                colSpan: 2,
+                                rowSpan: 2
+                            },
+                            { text: '' },
+                            { text: '', border: [false, false, false, false], rowSpan: 6 },
+                            {
+                                stack: [
+                                    {
+                                        text: 'EMPRESA',
+                                        style: 'itemTitle'
+                                    },
+                                    {
+                                        text: order.locationCompanyName,
+                                        style: 'itemText',
+                                    }
+                                ],
+                                colSpan: 2,
+                                rowSpan: 3
+                            },
+                            { text: '' },
+                        ],
+                        ['', '', '', '', '', '', '', ''],
+                        ['', '', '',
+                            {
+                                stack: [
+                                    {
+                                        text: 'CEDULA',
+                                        style: 'itemTitle',
+                                    },
+                                    {
+                                        text: order.patientDni,
+                                        style: 'itemText',
+                                    }
+                                ],
+                                colSpan: 2,
+                                rowSpan: 2
+                            },
+                            '', '', ''],
+                        [
+                            {
+                                stack: [
+                                    {
+                                        text: 'TIPO',
+                                        style: 'itemTitle',
+                                    },
+                                    {
+                                        text: order.orderProcess,
+                                        italics: true,
+                                        style: 'itemText',
+                                    }
+                                ],
+                                colSpan: 2,
+                                rowSpan: 3
+                            },
+                            { text: '' },
+                            { text: '' },
+                            { text: '' },
+                            { text: '' },
+                            { text: '' },
+                            {
+                                stack: [
+                                    {
+                                        text: 'RUC',
+                                        style: 'itemTitle'
+                                    },
+                                    {
+                                        text: order.locationCompanyRuc,
+                                        style: 'itemText',
+                                    }
+                                ],
+                                colSpan: 2,
+                                rowSpan: 3
+                            },
+                            { text: '' },
+                        ],
+                        ['', '', '',
+                            {
+                                text: 'EDAD',
+                                style: 'itemTitle',
+                                rowSpan: 2
+                            },
+                            {
+                                text: '',
+                                rowSpan: 2
+                            },
+                            '', '', ''],
+                        ['', '', '', '', '', '', '', ''],
                     ]
-                }))
+                },
+                margin: [0, 5]
             },
+            {
+                table: {
+                    widths: ['auto', '*', 'auto', 'auto'],
+                    body: data.filter(e => !e.testCheck).map(e => [
+                        [
+                            {
+                                table: {
+                                    widths: ['auto'],
+                                    body: [[{ text: '', margin: [1, 3, 1, 3] }]]
+                                },
+                                border: [false],
+                            },
+                            {
+                                text: e.examName,
+                                style: 'itemText',
+                                alignment: 'left',
+                                border: [false]
+                            },
+                            {
+                                text: 'Resp:________________________',
+                                style: 'itemText',
+                                alignment: 'left',
+                                border: [false]
+                            },
+                            {
+                                text: 'Observación:_____________________________________________',
+                                style: 'itemText',
+                                alignment: 'left',
+                                border: [false, false, false, false],
+                            }
+                        ],
+                        [
+                            { text: '', marginTop: 2, marginBottom: 2, border: [false] },
+                            { text: '', border: [false] },
+                            { text: '', border: [false] },
+                            { text: '', border: [false] },
+                        ]
+                    ]).reduce((prev, curr) => [...prev, ...curr], [])
+                },
+                marginTop: 30
+            }
         ],
         footer: [
             {
-                stack: [
-                    {
-                        text: '',
-                        alignment: 'center',
-                        style: 'signature'
-                    },
-                    {
-                        text: 'FIRMA DEL PACIENTE',
-                        alignment: 'center',
-                        style: 'signature'
-                    },
-                ],
+                table: {
+                    widths: ['*', '*', '*', '*', '*'],
+                    body: [
+                        [
+                            {
+                                text: '',
+                                border: [false]
+                            },
+                            {
+                                text: '',
+                                border: [false]
+                            },
+                            {
+                                text: '',
+                                border: [false]
+                            },
+                            {
+                                text: '',
+                                border: [false]
+                            },
+                            {
+                                text: '',
+                                border: [false]
+                            }
+                        ],
+                        [
+                            {
+                                text: '',
+                                border: [false]
+                            },
+                            {
+                                text: '',
+                                border: [false]
+                            },
+                            {
+                                text: 'FIRMA DEL PACIENTE',
+                                alignment: 'center',
+                                style: 'itemText',
+                                border: [false, true, false, false,]
+                            },
+                            {
+                                text: '',
+                                border: [false]
+                            }, {
+                                text: '',
+                                border: [false]
+                            },
+                        ]
+                    ]
+                }
             }
+            /*             {
+                            stack: [
+                                {
+                                    text: '',
+                                    alignment: 'center',
+                                    style: 'signature'
+                                },
+                                {
+                                    text: 'FIRMA DEL PACIENTE',
+                                    alignment: 'center',
+                                    style: 'itemText'
+                                },
+                            ],
+                        } */
         ],
         styles: {
             header: {
@@ -128,6 +321,15 @@ export const checklistLayoutLoader = (data: OrderChecklistModel[], image: string
             },
             tableCell: {
                 fontSize: 12,
+                alignment: 'center'
+            },
+            itemTitle: {
+                fontSize: 8,
+                bold: true,
+                alignment: 'center'
+            },
+            itemText: {
+                fontSize: 8,
                 alignment: 'center'
             },
             sectionTitle: {
