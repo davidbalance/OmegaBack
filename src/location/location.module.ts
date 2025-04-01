@@ -41,6 +41,9 @@ import { BranchMoveCommandProvider } from "./nest/command/corporative/branch_mov
 import { CorporativeWriteController } from "./controller/write/corporative-write.controller";
 import { CompanyWriteController } from "./controller/write/company-write.controller";
 import { BranchWriteController } from "./controller/write/branch-write.controller";
+import { BranchFindOneByExternalKeyQueryProvider } from "./nest/query/corporative/branch-find-one-by-external-key.nest-query";
+import { CompanyFindOneByExternalKeyQueryProvider } from "./nest/query/corporative/company-find-one-by-external-key.nest-query";
+import { CorporativeFindOneByExternalKeyQueryProvider } from "./nest/query/corporative/corporative-find-one-by-external-key.nest-query";
 
 @Module({
     controllers: [
@@ -78,8 +81,11 @@ import { BranchWriteController } from "./controller/write/branch-write.controlle
         AreaFindOneQueryProvider,
         AreaFindOptionsQueryProvider,
         BranchFindManyQueryProvider,
+        BranchFindOneByExternalKeyQueryProvider,
         CompanyFindManyQueryProvider,
+        CompanyFindOneByExternalKeyQueryProvider,
         CorporativeFindManyQueryProvider,
+        CorporativeFindOneByExternalKeyQueryProvider,
         CorporativeFindOptionsQueryProvider,
         JobPositionFindManyQueryProvider,
         JobPositionFindOneQueryProvider,

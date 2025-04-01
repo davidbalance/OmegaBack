@@ -27,7 +27,7 @@ import { ExamTypeOptionModelRepositoryProvider } from "./repository/laboratory/m
 import { ExamTypeModelRepositoryProvider } from "./repository/laboratory/model/exam-type.prisma-repository";
 import { ExamModelRepositoryProvider } from "./repository/laboratory/model/exam.prisma-repository";
 import { AreaAggregateRepositoryToken, CorporativeAggregateRepositoryToken, JobPositionAggregateRepositoryToken, ManagementAggregateRepositoryToken } from "@omega/location/nest/inject/aggregate-repository.inject";
-import { AreaOptionModelRepositoryToken, AreaModelRepositoryToken, BranchModelRepositoryToken, CompanyOptionModelRepositoryToken, CompanyModelRepositoryToken, CorporativeOptionModelRepositoryToken, CorporativeModelRepositoryToken, JobPositionOptionModelRepositoryToken, JobPositionModelRepositoryToken, ManagementOptionModelRepositoryToken, ManagementModelRepositoryToken } from "@omega/location/nest/inject/model-repository.inject";
+import { AreaOptionModelRepositoryToken, AreaModelRepositoryToken, BranchModelRepositoryToken, CompanyOptionModelRepositoryToken, CompanyModelRepositoryToken, CorporativeOptionModelRepositoryToken, CorporativeModelRepositoryToken, JobPositionOptionModelRepositoryToken, JobPositionModelRepositoryToken, ManagementOptionModelRepositoryToken, ManagementModelRepositoryToken, BranchExternalConnectionModelRepositoryToken, CompanyExternalConnectionModelRepositoryToken, CorporativeExternalConnectionModelRepositoryToken } from "@omega/location/nest/inject/model-repository.inject";
 import { AreaAggregateRepositoryProvider } from "./repository/location/domain/area.prisma-repository";
 import { CorporativeAggregateRepositoryProvider } from "./repository/location/domain/corporative.prisma-repository";
 import { JobPositionAggregateRepositoryProvider } from "./repository/location/domain/job-position.prisma-repository";
@@ -85,6 +85,9 @@ import { OrderExternalConnectionModelRepositoryProvider } from "./repository/med
 import { ExamExternalConnectionModelRepositoryProvider } from "./repository/laboratory/model/exam-external-key.prisma-repository";
 import { ExamSubtypeExternalConnectionModelRepositoryProvider } from "./repository/laboratory/model/exam-subtype-external-key.prisma-repository";
 import { ExamTypeExternalConnectionModelRepositoryProvider } from "./repository/laboratory/model/exam-type-external-key.prisma-repository";
+import { BranchExternalConnectionModelRepositoryProvider } from "./repository/location/model/branch-external-connection.prisma-repository";
+import { CompanyExternalConnectionModelRepositoryProvider } from "./repository/location/model/company-external-connection.prisma-repository";
+import { CorporativeExternalConnectionModelRepositoryProvider } from "./repository/location/model/corporative-external-connection.prisma-repository";
 
 @Global()
 @Module({
@@ -119,9 +122,12 @@ import { ExamTypeExternalConnectionModelRepositoryProvider } from "./repository/
         ManagementAggregateRepositoryProvider,
         AreaOptionModelRepositoryProvider,
         AreaModelRepositoryProvider,
+        BranchExternalConnectionModelRepositoryProvider,
         BranchModelRepositoryProvider,
+        CompanyExternalConnectionModelRepositoryProvider,
         CompanyOptionModelRepositoryProvider,
         CompanyModelRepositoryProvider,
+        CorporativeExternalConnectionModelRepositoryProvider,
         CorporativeOptionModelRepositoryProvider,
         CorporativeModelRepositoryProvider,
         JobPositionOptionModelRepositoryProvider,
@@ -192,9 +198,12 @@ import { ExamTypeExternalConnectionModelRepositoryProvider } from "./repository/
         ManagementAggregateRepositoryToken,
         AreaOptionModelRepositoryToken,
         AreaModelRepositoryToken,
+        BranchExternalConnectionModelRepositoryToken,
         BranchModelRepositoryToken,
+        CompanyExternalConnectionModelRepositoryToken,
         CompanyOptionModelRepositoryToken,
         CompanyModelRepositoryToken,
+        CorporativeExternalConnectionModelRepositoryToken,
         CorporativeOptionModelRepositoryToken,
         CorporativeModelRepositoryToken,
         JobPositionOptionModelRepositoryToken,

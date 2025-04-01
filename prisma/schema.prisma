@@ -1204,7 +1204,7 @@ view ExamExternalConnectionModel {
   examId            String @unique @map("exam_id") @db.Char(36)
   examExternalKey   String @map("external_owner") @db.VarChar(128)
   examExternalOwner String @map("external_value") @db.VarChar(128)
-  subtypeId         String @unique @map("exam_subtype_id") @db.Char(36)
+  subtypeId         String @map("exam_subtype_id") @db.Char(36)
 
   @@map("v_lab_exam_external_connection")
 }
@@ -1224,4 +1224,30 @@ view ExamTypeExternalConnectionModel {
   typeExternalOwner String @map("external_value") @db.VarChar(128)
 
   @@map("v_lab_exam_type_external_connection")
+}
+
+view BranchExternalConnectionModel {
+  branchId            String @unique @map("branch_id") @db.Char(36)
+  branchExternalKey   String @map("external_owner") @db.VarChar(128)
+  branchExternalOwner String @map("external_value") @db.VarChar(128)
+  companyId           String @map("company_id") @db.Char(36)
+
+  @@map("v_lo_branch_external_connection")
+}
+
+view CompanyExternalConnectionModel {
+  companyId            String @unique @map("company_id") @db.Char(36)
+  companyExternalKey   String @map("external_owner") @db.VarChar(128)
+  companyExternalOwner String @map("external_value") @db.VarChar(128)
+  corporativeId        String @map("corporative_id") @db.Char(36)
+
+  @@map("v_lo_company_external_connection")
+}
+
+view CorporativeExternalConnectionModel {
+  corporativeId            String @unique @map("corporative_id") @db.Char(36)
+  corporativeExternalKey   String @map("external_owner") @db.VarChar(128)
+  corporativeExternalOwner String @map("external_value") @db.VarChar(128)
+
+  @@map("v_lo_corporative_external_connection")
 }
