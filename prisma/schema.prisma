@@ -702,6 +702,7 @@ view OrderDoctorModel {
   orderLeftReport   Int                @map("medical_order_left_reports") @db.Int
   orderEmissionDate DateTime           @map("medical_order_emission_date") @db.Date
   doctorDni         String             @map("doctor_dni") @db.VarChar(10)
+  companyRuc        String             @map("company_ruc") @db.VarChar(13)
   patientDni        String             @map("patient_dni") @db.VarChar(16)
 
   @@map("v_m_order_doctors")
@@ -743,6 +744,7 @@ view OrderModel {
   orderEmissionDate DateTime           @map("medical_order_emission_date") @db.Date
   orderStatus       MedicalOrderStatus @map("medical_order_status")
   orderYear         Int                @map("medical_order_year") @db.Int
+  companyRuc        String             @map("company_ruc") @db.VarChar(13)
   patientDni        String             @map("patient_dni") @db.VarChar(16)
 
   @@map("v_m_orders")

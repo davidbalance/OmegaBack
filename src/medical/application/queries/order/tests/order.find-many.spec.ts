@@ -104,4 +104,35 @@ describe("OrderFindManyQuery", () => {
         expect(result.data).toEqual(mockData);
         expect(result.amount).toBe(mockData.length);
     });
+
+    it("should handle case with no companyRuc", async () => {
+        const queryPayload: OrderFindManyQueryPayload = {
+            patientDni: "patient-123",
+            companyRuc: "123456789001",
+            skip: 0,
+            limit: 10,
+            order: { orderEmissionDate: "desc" },
+        };
+
+        const mockData: OrderModel[] = [
+            { id: "1", patientDni: "patient-123", orderProcess: "regular", orderEmissionDate: new Date() },
+        ] as unknown as OrderModel[];
+
+        repository.findManyAsync.mockResolvedValue(mockData);
+        repository.countAsync.mockResolvedValue(mockData.length);
+
+        const result = await queryHandler.handleAsync(queryPayload);
+
+        expect(repository.findManyAsync).toHaveBeenCalledWith({
+            filter: [
+                { field: 'patientDni', operator: 'eq', value: queryPayload.patientDni },
+                { field: 'companyRuc', operator: 'eq', value: queryPayload.companyRuc },
+            ],
+            skip: queryPayload.skip,
+            limit: queryPayload.limit,
+            order: { orderEmissionDate: 'desc' }
+        });
+        expect(result.data).toEqual(mockData);
+        expect(result.amount).toBe(mockData.length);
+    });
 });

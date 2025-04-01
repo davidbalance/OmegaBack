@@ -7,6 +7,7 @@ export type OrderModelProps = {
     orderProcess: string;
     orderEmissionDate: Date;
     orderStatus: OrderStatus;
+    companyRuc: string;
     patientDni: string;
 }
 export class OrderModel extends Model<OrderModelProps> {
@@ -28,6 +29,10 @@ export class OrderModel extends Model<OrderModelProps> {
 
     public get orderStatus(): Readonly<OrderStatus> {
         return this.props.orderStatus;
+    }
+
+    public get companyRuc(): Readonly<string> {
+        return this.props.companyRuc;
     }
 
     public get patientDni(): Readonly<string> {
