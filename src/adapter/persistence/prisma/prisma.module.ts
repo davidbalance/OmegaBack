@@ -19,7 +19,7 @@ import { DiseaseGroupOptionModelRepositoryProvider } from "./repository/disease/
 import { DiseaseGroupModelRepositoryProvider } from "./repository/disease/model/disease-group.prisma-repository";
 import { DiseaseModelRepositoryProvider } from "./repository/disease/model/disease.prisma-repository";
 import { ExamTypeAggregateRepositoryToken } from "@omega/laboratory/nest/inject/aggregate-repository.inject";
-import { ExamSubtypeOptionModelRepositoryToken, ExamSubtypeModelRepositoryToken, ExamTypeOptionModelRepositoryToken, ExamTypeModelRepositoryToken, ExamModelRepositoryToken } from "@omega/laboratory/nest/inject/model-repository.inject";
+import { ExamSubtypeOptionModelRepositoryToken, ExamSubtypeModelRepositoryToken, ExamTypeOptionModelRepositoryToken, ExamTypeModelRepositoryToken, ExamModelRepositoryToken, ExamExternalConnectionModelRepositoryToken, ExamSubtypeExternalConnectionModelRepositoryToken, ExamTypeExternalConnectionModelRepositoryToken } from "@omega/laboratory/nest/inject/model-repository.inject";
 import { ExamTypeAggregateRepositoryProvider } from "./repository/laboratory/domain/exam-type.prisma-repository";
 import { ExamSubtypeOptionModelRepositoryProvider } from "./repository/laboratory/model/exam-subtype-option.prisma-repository";
 import { ExamSubtypeModelRepositoryProvider } from "./repository/laboratory/model/exam-subtype.prisma-repository";
@@ -82,6 +82,9 @@ import { IncrementRepositoryToken } from "@local-increment/local-increment/repos
 import { TestInnerModelRepositoryProvider } from "./repository/medical/model/test-inner.prisma-repository";
 import { TestExternalConnectionModelRepositoryProvider } from "./repository/medical/model/test-external-connection.prisma-repository";
 import { OrderExternalConnectionModelRepositoryProvider } from "./repository/medical/model/order-external-connection.prisma-repository";
+import { ExamExternalConnectionModelRepositoryProvider } from "./repository/laboratory/model/exam-external-key.prisma-repository";
+import { ExamSubtypeExternalConnectionModelRepositoryProvider } from "./repository/laboratory/model/exam-subtype-external-key.prisma-repository";
+import { ExamTypeExternalConnectionModelRepositoryProvider } from "./repository/laboratory/model/exam-type-external-key.prisma-repository";
 
 @Global()
 @Module({
@@ -102,6 +105,9 @@ import { OrderExternalConnectionModelRepositoryProvider } from "./repository/med
         DiseaseGroupModelRepositoryProvider,
         DiseaseModelRepositoryProvider,
         ExamTypeAggregateRepositoryProvider,
+        ExamExternalConnectionModelRepositoryProvider,
+        ExamSubtypeExternalConnectionModelRepositoryProvider,
+        ExamTypeExternalConnectionModelRepositoryProvider,
         ExamSubtypeOptionModelRepositoryProvider,
         ExamSubtypeModelRepositoryProvider,
         ExamTypeOptionModelRepositoryProvider,
@@ -172,6 +178,9 @@ import { OrderExternalConnectionModelRepositoryProvider } from "./repository/med
         DiseaseGroupModelRepositoryToken,
         DiseaseModelRepositoryToken,
         ExamTypeAggregateRepositoryToken,
+        ExamExternalConnectionModelRepositoryToken,
+        ExamSubtypeExternalConnectionModelRepositoryToken,
+        ExamTypeExternalConnectionModelRepositoryToken,
         ExamSubtypeOptionModelRepositoryToken,
         ExamSubtypeModelRepositoryToken,
         ExamTypeOptionModelRepositoryToken,

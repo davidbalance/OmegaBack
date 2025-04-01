@@ -23,6 +23,9 @@ import { ExamSubtypeWriteController } from "./controller/write/exam_subtype_writ
 import { ExamSubtypeMoveCommandProvider } from "./nest/command/exam_subtype_move.nest_command";
 import { ExamMoveCommandProvider } from "./nest/command/exam_move.nest_command";
 import { ExamTypeFindOptionsQueryToken } from "./nest/inject/query.inject";
+import { ExamFindOneByExternalKeyQueryProvider } from "./nest/query/exam-find-one-by-external-key.nest-query";
+import { ExamSubtypeFindOneByExternalKeyQueryProvider } from "./nest/query/exam-subtype-find-one-by-external-key.nest-query";
+import { ExamTypeFindOneByExternalKeyQueryProvider } from "./nest/query/exam-type-find-one-by-external-key.nest-query";
 
 @Module({
     controllers: [
@@ -45,10 +48,13 @@ import { ExamTypeFindOptionsQueryToken } from "./nest/inject/query.inject";
         ExamTypeEditCommandProvider,
         ExamTypeRemoveCommandProvider,
         ExamFindManyQueryProvider,
+        ExamFindOneByExternalKeyQueryProvider,
         ExamFindOneQueryProvider,
         ExamSubtypeFindManyQueryProvider,
+        ExamSubtypeFindOneByExternalKeyQueryProvider,
         ExamSubtypeFindOneQueryProvider,
         ExamTypeFindManyQueryProvider,
+        ExamTypeFindOneByExternalKeyQueryProvider,
         ExamTypeFindOneQueryProvider,
         ExamTypeFindOptionsQueryProvider,
     ],

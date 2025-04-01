@@ -1199,3 +1199,29 @@ view TestExternalConnectionModel {
 
   @@map("v_m_test_external_connection")
 }
+
+view ExamExternalConnectionModel {
+  examId            String @unique @map("exam_id") @db.Char(36)
+  examExternalKey   String @map("external_owner") @db.VarChar(128)
+  examExternalOwner String @map("external_value") @db.VarChar(128)
+  subtypeId         String @unique @map("exam_subtype_id") @db.Char(36)
+
+  @@map("v_lab_exam_external_connection")
+}
+
+view ExamSubtypeExternalConnectionModel {
+  subtypeId            String @unique @map("exam_subtype_id") @db.Char(36)
+  subtypeExternalKey   String @map("external_owner") @db.VarChar(128)
+  subtypeExternalOwner String @map("external_value") @db.VarChar(128)
+  typeId               String @map("exam_type_id") @db.Char(36)
+
+  @@map("v_lab_exam_subtype_external_connection")
+}
+
+view ExamTypeExternalConnectionModel {
+  typeId            String @unique @map("exam_type_id") @db.Char(36)
+  typeExternalKey   String @map("external_owner") @db.VarChar(128)
+  typeExternalOwner String @map("external_value") @db.VarChar(128)
+
+  @@map("v_lab_exam_type_external_connection")
+}
