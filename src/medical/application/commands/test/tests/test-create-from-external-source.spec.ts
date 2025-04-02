@@ -73,12 +73,11 @@ describe("TestCreateFromExternalSourceCommand", () => {
     });
 
     it("should reactivate a test if already exists and is not active", async () => {
-        const mockedTestModel = {
-            testId: "test-1",
-            isActive: false,
+        const mockedTestModel = { testId: "test-1", isActive: false } as unknown as TestInnerModel;
+        const mockedTestAggregate = {
+            reactivate: jest.fn(),
             addExternalKey: jest.fn()
-        } as unknown as TestInnerModel;
-        const mockedTestAggregate = { reactivate: jest.fn() } as unknown as Test;
+        } as unknown as Test;
 
         const payload: TestCreateFromExternalSourceCommandPayload = {
             externalKeyOwner: 'external-owner',
