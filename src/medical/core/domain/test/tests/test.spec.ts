@@ -190,7 +190,7 @@ describe('Test Aggregate', () => {
     it('should add an external key property', () => {
         const payload: AddTestExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
 
-        test.addKey(payload);
+        test.addExternalKey(payload);
 
         expect(test.externalKeys).toHaveLength(1);
         expect(test.externalKeys[0].owner).toBe(payload.owner);
@@ -199,8 +199,8 @@ describe('Test Aggregate', () => {
 
     it('should throw a conflict error when add a repeated key', () => {
         const payload: AddTestExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
-        test.addKey(payload);
+        test.addExternalKey(payload);
 
-        expect(() => test.addKey(payload)).toThrow(TestExternalKeyConflictError);
+        expect(() => test.addExternalKey(payload)).toThrow(TestExternalKeyConflictError);
     });
 });

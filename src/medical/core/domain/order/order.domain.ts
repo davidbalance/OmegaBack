@@ -113,7 +113,7 @@ export class Order extends Aggregate<OrderProps> {
         this.emit(new OrderRemovedEvent(this.id));
     }
 
-    public addKey(payload: AddOrderExternalKeyPayload): void {
+    public addExternalKey(payload: AddOrderExternalKeyPayload): void {
         this.ensureUniqueExternalKey(payload);
         const newKey = OrderExternalKey.create({ ...payload, orderId: this.id });
         const newExternalKeys = [...this.props.externalKeys, newKey];

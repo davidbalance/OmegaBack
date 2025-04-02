@@ -107,7 +107,7 @@ describe('LocalFileService', () => {
       path.join.mockImplementation((...args) => args.join('/'));
       file.existsSync.mockReturnValue(false);
 
-      await expect(service.read(filepath)).rejects.toThrowError(new FileNotFoundError(readpath));
+      await expect(service.read(filepath)).rejects.toThrow(new FileNotFoundError(readpath));
     });
 
     it('should handle error during file read', async () => {
@@ -145,7 +145,7 @@ describe('LocalFileService', () => {
       path.join.mockImplementation((...args) => args.join('/'));
       file.existsSync.mockReturnValue(false);
 
-      await expect(service.remove(filepath)).rejects.toThrowError(new FileNotFoundError(readpath));
+      await expect(service.remove(filepath)).rejects.toThrow(new FileNotFoundError(readpath));
     });
 
     it('should handle error during file remove', async () => {

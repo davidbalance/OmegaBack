@@ -5,6 +5,11 @@ export type ExternalKeyProps = {
     value: string;
 }
 
+export type ExternalKeyCommandPayload = {
+    externalKeyOwner: string;
+    externalKeyValue: string;
+}
+
 export abstract class ExternalKey extends ValueObject<ExternalKeyProps> {
     public get owner(): Readonly<string> {
         return this._props.owner;

@@ -1,14 +1,14 @@
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { OrderModel } from "@omega/medical/core/model/order/order.model";
 import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
-import { OrderExternalKeyRepository, OrderRepository } from "../../repository/model.repositories";
+import { OrderExternalConnectionRepository, OrderRepository } from "../../repository/model.repositories";
 import { OrderNotFoundError } from "@omega/medical/core/domain/order/errors/order.errors";
 import { OrderExternalKeyNotFoundError } from "@omega/medical/core/domain/order/errors/order-external-key.errors";
 
 export type OrderFindOneByExternalKeyQueryPayload = ExternalKeyProps;
 export class OrderFindOneByExternalKeyQuery implements QueryHandlerAsync<OrderFindOneByExternalKeyQueryPayload, OrderModel> {
     constructor(
-        private readonly externalConnectionRepository: OrderExternalKeyRepository,
+        private readonly externalConnectionRepository: OrderExternalConnectionRepository,
         private readonly modelRepository: OrderRepository
     ) { }
 

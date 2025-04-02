@@ -5,12 +5,12 @@ import { PrismaFilterMapper } from "../../../filter-mapper";
 import { Prisma } from "@prisma/client";
 import { TestExternalConnectionModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
-import { TestExternalKeyRepository } from "@omega/medical/application/repository/model.repositories";
+import { TestExternalConnectionRepository } from "@omega/medical/application/repository/model.repositories";
 import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection";
 import { TestExternalConnectionModelMapper } from "../../../mapper/medical/model/test-external-connection.model-mapper";
 
 @Injectable()
-export class TestExternalConnectionPrismaRepository implements TestExternalKeyRepository {
+export class TestExternalConnectionPrismaRepository implements TestExternalConnectionRepository {
     constructor(
         @Inject(PrismaService) private readonly prisma: PrismaService
     ) { }

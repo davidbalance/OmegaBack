@@ -1,5 +1,5 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { OrderExternalKeyRepository, OrderRepository } from "@omega/medical/application/repository/model.repositories";
+import { OrderExternalConnectionRepository, OrderRepository } from "@omega/medical/application/repository/model.repositories";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { OrderFindOneByExternalKeyQueryToken } from "../../inject/query.inject";
 import { OrderFindOneByExternalKeyQuery } from "@omega/medical/application/queries/order/order.find-one-by-external-key.query";
@@ -7,7 +7,7 @@ import { OrderFindOneByExternalKeyQuery } from "@omega/medical/application/queri
 @Injectable()
 class OrderFindOneByExternalKeyNestQuery extends OrderFindOneByExternalKeyQuery {
     constructor(
-        @InjectModelRepository("OrderExternalConnection") externalConnectionRepository: OrderExternalKeyRepository,
+        @InjectModelRepository("OrderExternalConnection") externalConnectionRepository: OrderExternalConnectionRepository,
         @InjectModelRepository("Order") modelRepository: OrderRepository,
     ) {
         super(externalConnectionRepository, modelRepository);

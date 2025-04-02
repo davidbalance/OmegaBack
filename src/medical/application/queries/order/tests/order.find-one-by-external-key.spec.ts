@@ -2,19 +2,19 @@
 import { OrderNotFoundError } from "@omega/medical/core/domain/order/errors/order.errors";
 import { OrderModel } from "@omega/medical/core/model/order/order.model";
 import { OrderFindOneByExternalKeyQuery, OrderFindOneByExternalKeyQueryPayload } from "../order.find-one-by-external-key.query";
-import { OrderExternalKeyRepository, OrderRepository } from "@omega/medical/application/repository/model.repositories";
+import { OrderExternalConnectionRepository, OrderRepository } from "@omega/medical/application/repository/model.repositories";
 import { OrderExternalConnectionModel } from "@omega/medical/core/model/order/order-external-connection.model";
 import { OrderExternalKeyNotFoundError } from "@omega/medical/core/domain/order/errors/order-external-key.errors";
 
 describe("OrderFindOneByExternalKeyQuery", () => {
-    let externalConnectionRepository: jest.Mocked<OrderExternalKeyRepository>;
+    let externalConnectionRepository: jest.Mocked<OrderExternalConnectionRepository>;
     let modelRepository: jest.Mocked<OrderRepository>;
     let handler: OrderFindOneByExternalKeyQuery;
 
     beforeEach(() => {
         externalConnectionRepository = {
             findOneAsync: jest.fn(),
-        } as unknown as jest.Mocked<OrderExternalKeyRepository>;
+        } as unknown as jest.Mocked<OrderExternalConnectionRepository>;
 
         modelRepository = {
             findOneAsync: jest.fn(),

@@ -209,7 +209,7 @@ export class Test extends Aggregate<TestProps> {
         this.emit(new TestDiseaseRemovedEvent(diseaseId));
     }
 
-    public addKey(payload: AddTestExternalKeyPayload): void {
+    public addExternalKey(payload: AddTestExternalKeyPayload): void {
         this.ensureUniqueExternalKey(payload);
         const newKey = TestExternalKey.create({ ...payload, testId: this.id });
         const newExternalKeys = [...this.props.externalKeys, newKey];

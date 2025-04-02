@@ -38,7 +38,7 @@ export type OrderPatientRepository = ModelRepository<OrderPatientModel> & CountR
 export type OrderProcessRepository = ModelRepository<OrderProcessModel>;
 export type OrderYearRepository = ModelRepository<OrderYearModel>;
 export type OrderRepository = ModelRepository<OrderModel> & CountRepository<OrderModel>;
-export type OrderExternalKeyRepository = ModelRepository<OrderExternalConnectionModel>;
+export type OrderExternalConnectionRepository = ModelRepository<OrderExternalConnectionModel>;
 
 export type DiseaseReportRepository = ModelRepository<DiseaseReportModel>;
 export type ReportRepository = ModelRepository<ReportModel>;
@@ -47,4 +47,4 @@ export type TestReportRepository = ModelRepository<TestReportModel>;
 export type TestRepository = ModelRepository<TestModel>;
 export type TestInnerRepository = ModelRepository<TestInnerModel>;
 export type TestFileResultRepository = ModelRepository<TestFileResultModel> & CountRepository<TestFileResultModel>;
-export type TestExternalKeyRepository = ModelRepository<TestExternalConnectionModel>;
+export type TestExternalConnectionRepository = ModelRepository<TestExternalConnectionModel>;

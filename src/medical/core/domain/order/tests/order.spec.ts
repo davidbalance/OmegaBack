@@ -88,7 +88,7 @@ describe('Order Aggregate', () => {
     it('should add an external key property', () => {
         const payload: AddOrderExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
 
-        order.addKey(payload);
+        order.addExternalKey(payload);
 
         expect(order.externalKeys).toHaveLength(1);
         expect(order.externalKeys[0].owner).toBe(payload.owner);
@@ -97,8 +97,8 @@ describe('Order Aggregate', () => {
 
     it('should throw a conflict error when add a repeated key', () => {
         const payload: AddOrderExternalKeyPayload = { owner: 'omega', value: 'sample-key' }
-        order.addKey(payload);
+        order.addExternalKey(payload);
 
-        expect(() => order.addKey(payload)).toThrow(OrderExternalKeyConflictError);
+        expect(() => order.addExternalKey(payload)).toThrow(OrderExternalKeyConflictError);
     });
 });

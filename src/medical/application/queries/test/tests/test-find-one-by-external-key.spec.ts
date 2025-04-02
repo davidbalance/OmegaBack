@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { TestExternalKeyRepository, TestRepository } from "@omega/medical/application/repository/model.repositories";
+import { TestExternalConnectionRepository, TestRepository } from "@omega/medical/application/repository/model.repositories";
 import { TestModel } from "@omega/medical/core/model/test/test.model";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { TestFindOneByExternalKeyQuery, TestFindOneByExternalKeyQueryPayload } from "../test-find-one-by-external-key.query";
@@ -7,14 +7,14 @@ import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test
 import { TestExternalKeyNotFoundError } from "@omega/medical/core/domain/test/errors/test-external-key.errors";
 
 describe("TestFindOneByExternalKeyQuery", () => {
-    let externalConnectionRepository: jest.Mocked<TestExternalKeyRepository>;
+    let externalConnectionRepository: jest.Mocked<TestExternalConnectionRepository>;
     let modelRepository: jest.Mocked<TestRepository>;
     let handler: TestFindOneByExternalKeyQuery;
 
     beforeEach(() => {
         externalConnectionRepository = {
             findOneAsync: jest.fn(),
-        } as unknown as jest.Mocked<TestExternalKeyRepository>;
+        } as unknown as jest.Mocked<TestExternalConnectionRepository>;
 
         modelRepository = {
             findOneAsync: jest.fn(),

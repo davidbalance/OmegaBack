@@ -3,12 +3,12 @@ import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.e
 import { TestModel } from "@omega/medical/core/model/test/test.model";
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
-import { TestExternalKeyRepository, TestRepository } from "../../repository/model.repositories";
+import { TestExternalConnectionRepository, TestRepository } from "../../repository/model.repositories";
 
 export type TestFindOneByExternalKeyQueryPayload = ExternalKeyProps;
 export class TestFindOneByExternalKeyQuery implements QueryHandlerAsync<TestFindOneByExternalKeyQueryPayload, TestModel> {
     constructor(
-        private readonly externalConnectionRepository: TestExternalKeyRepository,
+        private readonly externalConnectionRepository: TestExternalConnectionRepository,
         private readonly modelRepository: TestRepository,
     ) { }
 
