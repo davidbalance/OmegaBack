@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Corporative } from "@omega/location/core/domain/corporative/corporative.domain";
-import { CorporativeConflictError } from "@omega/location/core/domain/corporative/errors/corporative.errors";
 import { CorporativeRepository } from "@omega/location/application/repository/aggregate.repositories";
 import { CorporativeCreateFromExternalSourceCommand, CorporativeCreateFromExternalSourceCommandPayload } from "../corporative-create-from-external-source.command";
 import { CorporativeExternalConnectionRepository } from "@omega/location/application/repository/model.repositories";
