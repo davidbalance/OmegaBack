@@ -23,7 +23,6 @@ export class CorporativeCreateFromExternalSourceCommand extends BaseCorporativeC
 
         let corporative = await this.aggregateRepository.findOneAsync({ filter: [{ field: 'name', operator: 'eq', value: value.name }] });
         if (!corporative) {
-            console.log("I'm here!")
             corporative = this.createCorporative(value);
         }
         corporative.addExternalKey({ owner: value.externalKeyOwner, value: value.externalKeyValue });
