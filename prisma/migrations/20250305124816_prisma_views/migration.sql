@@ -126,6 +126,7 @@ SELECT
 	SUM(IF(tmr.medical_report_content IS NULL AND tmr.medical_report_filepath IS NULL, 1, 0)) AS medical_order_left_reports,  
 	tmo.created_at AS medical_order_emission_date, 
 	tmo.doctor_dni, 
+	tmo.company_ruc,
 	tmc.patient_dni
 FROM tbl_m_orders tmo
 JOIN tbl_m_tests tmt ON tmt.medical_order_id = tmo.medical_order_id 
@@ -137,6 +138,7 @@ GROUP BY tmo.medical_order_id,
 	tmo.medical_order_email_status, 
 	tmo.medical_order_status, 
 	tmo.doctor_dni, 
+	tmo.company_ruc, 
 	tmc.patient_dni;
 
 -- Create View
@@ -175,6 +177,7 @@ SELECT tmo.medical_order_id,
 	tmo.created_at AS medical_order_emission_date, 
 	tmo.medical_order_status, 
 	tmc.patient_dni,
+	tmo.company_ruc,
 	tmo.medical_order_year 
 FROM tbl_m_orders tmo 
 JOIN tbl_m_clients tmc ON tmc.medical_client_id = tmo.medical_client_id

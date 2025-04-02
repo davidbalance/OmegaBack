@@ -21,6 +21,8 @@ import { OrderFindOneQuery } from "@omega/medical/application/queries/order/orde
 import { OrderDoctorModelMapper } from "../mapper/order_doctor.mapper";
 import { Response } from "express";
 import { OrderFindMassiveLoadTemplateQuery } from "@omega/medical/application/queries/order/order-find-massive-load-template.query";
+import { Attribute } from "@shared/shared/nest/decorators/attribute.decorator";
+import { AttributeInterceptor } from "@shared/shared/nest/interceptors/attribute.interceptor";
 
 @ApiTags('Medical', 'Read')
 @ApiBearerAuth()
@@ -46,6 +48,40 @@ export class OrderReadController {
         const value = await this.findManyQuery.handleAsync({
             ...query,
             patientDni,
+            order: query.orderField && query.orderValue ? { [query.orderField]: query.orderValue } : undefined
+        });
+        const data = value.data.map(e => OrderModelMapper.toDTO(e));
+        return plainToInstance(OrderManyResponseDto, { ...value, data });
+    }
+
+    @Get(':patientDni/eeq')
+    async findManyOrdersFromEEQ(
+        @Param('patientDni') patientDni: string,
+        @Query() query: OrderFindManyQueryDto
+    ): Promise<OrderManyResponseDto> {
+        const companyRuc: string = '1790053881001';
+        const value = await this.findManyQuery.handleAsync({
+            ...query,
+            patientDni,
+            companyRuc,
+            order: query.orderField && query.orderValue ? { [query.orderField]: query.orderValue } : undefined
+        });
+        const data = value.data.map(e => OrderModelMapper.toDTO(e));
+        return plainToInstance(OrderManyResponseDto, { ...value, data });
+    }
+
+    @Attribute('look_for_company')
+    @UseInterceptors(AttributeInterceptor)
+    @Get(':patientDni/company')
+    async findManyOrdersFromCompany(
+        @Param('patientDni') patientDni: string,
+        @CurrentUser() companyRuc: string,
+        @Query() query: OrderFindManyQueryDto
+    ): Promise<OrderManyResponseDto> {
+        const value = await this.findManyQuery.handleAsync({
+            ...query,
+            patientDni,
+            companyRuc,
             order: query.orderField && query.orderValue ? { [query.orderField]: query.orderValue } : undefined
         });
         const data = value.data.map(e => OrderModelMapper.toDTO(e));
