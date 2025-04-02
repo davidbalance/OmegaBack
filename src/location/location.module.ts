@@ -44,6 +44,9 @@ import { BranchWriteController } from "./controller/write/branch-write.controlle
 import { BranchFindOneByExternalKeyQueryProvider } from "./nest/query/corporative/branch-find-one-by-external-key.nest-query";
 import { CompanyFindOneByExternalKeyQueryProvider } from "./nest/query/corporative/company-find-one-by-external-key.nest-query";
 import { CorporativeFindOneByExternalKeyQueryProvider } from "./nest/query/corporative/corporative-find-one-by-external-key.nest-query";
+import { CorporativeCreateFromExternalSourceCommandProvider } from "./nest/command/corporative/corporative-create-from-external-source.nest-command";
+import { CompanyCreateFromExternalSourceCommandProvider } from "./nest/command/corporative/company-create-from-external-source.nest-command";
+import { BranchCreateFromExternalSourceCommandProvider } from "./nest/command/corporative/branch-create-from-external-source.nest-command";
 
 @Module({
     controllers: [
@@ -64,11 +67,14 @@ import { CorporativeFindOneByExternalKeyQueryProvider } from "./nest/query/corpo
         AreaEditCommandProvider,
         AreaRemoveCommandProvider,
         BranchMoveCommandProvider,
+        BranchCreateFromExternalSourceCommandProvider,
         BranchCreateCommandProvider,
         BranchRemoveCommandProvider,
         CompanyMoveCommandProvider,
+        CompanyCreateFromExternalSourceCommandProvider,
         CompanyCreateCommandProvider,
         CompanyRemoveCommandProvider,
+        CorporativeCreateFromExternalSourceCommandProvider,
         CorporativeCreateCommandProvider,
         CorporativeRemoveCommandProvider,
         JobPositionCreateCommandProvider,

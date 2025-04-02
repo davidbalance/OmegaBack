@@ -10,9 +10,9 @@ export class BranchCreateFromExternalSourceCommand extends BaseBranchCreateComma
     constructor(
         private readonly externalConnectionRepository: BranchExternalConnectionRepository,
         private readonly modelRepository: BranchRepository,
-        agggregateRepository: CorporativeRepository,
+        aggregateRepository: CorporativeRepository,
     ) {
-        super(agggregateRepository);
+        super(aggregateRepository);
     }
 
     async handleAsync(value: BranchCreateFromExternalSourceCommandPayload): Promise<void> {
