@@ -1,20 +1,10 @@
-import { CorporativeNotFoundError } from "@omega/location/core/domain/corporative/errors/corporative.errors";
-import { AddBranchToCorporativePayload } from "@omega/location/core/domain/corporative/payloads/corporative.payloads";
-import { CommandHandlerAsync } from "@shared/shared/application";
-import { CorporativeRepository } from "../../repository/aggregate.repositories";
+import { BaseBranchCreateCommand, BaseBranchCreateCommandPayload } from "./base.branch-create.command";
 
-export type BranchCreateCommandPayload = {
-    corporativeId: string
-} & AddBranchToCorporativePayload;
-export class BranchCreateCommand implements CommandHandlerAsync<BranchCreateCommandPayload, void> {
-    constructor(
-        private readonly repository: CorporativeRepository
-    ) { }
+export type BranchCreateCommandPayload = BaseBranchCreateCommandPayload;
+export class BranchCreateCommand extends BaseBranchCreateCommand<BranchCreateCommandPayload> {
 
     async handleAsync(value: BranchCreateCommandPayload): Promise<void> {
-        const corporative = await this.repository.findOneAsync({ filter: [{ field: 'id', operator: 'eq', value: value.corporativeId }] });
-        if (!corporative) throw new CorporativeNotFoundError(value.corporativeId);
-
+        const corporative = await this.getAggregate(value);
         corporative.addBranchToCompany(value);
         await this.repository.saveAsync(corporative);
     }

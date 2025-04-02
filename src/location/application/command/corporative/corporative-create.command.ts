@@ -1,20 +1,14 @@
-import { Corporative } from "@omega/location/core/domain/corporative/corporative.domain";
 import { CorporativeConflictError } from "@omega/location/core/domain/corporative/errors/corporative.errors";
-import { CreateCorporativePayload } from "@omega/location/core/domain/corporative/payloads/corporative.payloads";
-import { CommandHandlerAsync } from "@shared/shared/application";
-import { CorporativeRepository } from "../../repository/aggregate.repositories";
+import { BaseCorporativeCreateCommand, BaseCorporativeCreateCommandPayload } from "./base.corporative-create.command";
 
-export type CorporativeCreateCommandPayload = CreateCorporativePayload;
-export class CorporativeCreateCommand implements CommandHandlerAsync<CorporativeCreateCommandPayload, void> {
-    constructor(
-        private readonly repository: CorporativeRepository
-    ) { }
+export type CorporativeCreateCommandPayload = BaseCorporativeCreateCommandPayload;
+export class CorporativeCreateCommand extends BaseCorporativeCreateCommand<CorporativeCreateCommandPayload> {
 
     async handleAsync(value: CorporativeCreateCommandPayload): Promise<void> {
-        const exists = await this.repository.findOneAsync({ filter: [{ field: 'name', operator: 'eq', value: value.name }] });
+        const exists = await this.aggregateRepository.findOneAsync({ filter: [{ field: 'name', operator: 'eq', value: value.name }] });
         if (exists) throw new CorporativeConflictError(value.name);
 
-        const corporative = Corporative.create(value);
-        await this.repository.saveAsync(corporative);
+        const corporative = this.createCorporative(value);
+        await this.aggregateRepository.saveAsync(corporative);
     }
 }
