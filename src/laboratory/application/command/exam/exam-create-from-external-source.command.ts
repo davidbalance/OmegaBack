@@ -37,7 +37,6 @@ export class ExamCreateFromExternalSourceCommand extends BaseExamCreateCommand<E
             examId = exam.examId;
         }
 
-        type.addExamToSubtype(value);
         type.addExternalKeyToExam({ examId: examId, subtypeId: value.subtypeId, owner: value.externalKeyOwner, value: value.externalKeyValue });
         await this.aggregateRepository.saveAsync(type);
     }
