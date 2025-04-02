@@ -64,7 +64,7 @@ import { TestEditExamCommandProvider } from "./nest/command/test/test_edit_exam.
 import { OrderCreatedStatusCommandProvider } from "./nest/command/order/order_created_status.nest_command";
 import { OrderValidatedStatusCommandProvider } from "./nest/command/order/order_validated_status.nest_command";
 import { PatientProxyModule } from "@omega/adapter/proxy/patient_proxy/patient_proxy.module";
-import { TestCreateCommandProvider } from "./nest/command/test/test_create.nest-command";
+import { TestCreateCommandProvider } from "./nest/command/test/test-create.nest-command";
 import { TestCheckCommandProvider } from "./nest/command/test/test_check.nest-command";
 import { TestUncheckCommandProvider } from "./nest/command/test/test_uncheck.nest_command";
 import { ReportUploadFromStreamCommandProvider } from "./nest/command/test/report_upload_from_stream.nest_command";
@@ -90,6 +90,8 @@ import { LaboratoryProxyModule } from "@omega/adapter/proxy/laboratory-proxy/lab
 import { OrderCloudReadController } from "./controller/read/order-cloud-read.controller";
 import { TestFindOneByExternalKeyQueryProvider } from "./nest/query/test/test-find-one-by-external-key.query";
 import { OrderFindOneByExternalKeyQueryProvider } from "./nest/query/order/order.find-one-by-external-key.nest-query";
+import { OrderCreateFromExternalSourceCommandProvider } from "./nest/command/order/order-create-from-external-source.nest-command";
+import { TestCreateFromExternalSourceCommandProvider } from "./nest/command/test/test-create-from-external-source.nest-command";
 
 @Module({
     imports: [
@@ -133,6 +135,7 @@ import { OrderFindOneByExternalKeyQueryProvider } from "./nest/query/order/order
         EmailDefaultCommandProvider,
         EmailRemoveCommandProvider,
         OrderCreateManyCommandProvider,
+        OrderCreateFromExternalSourceCommandProvider,
         OrderCreateCommandProvider,
         OrderCreatedStatusCommandProvider,
         OrderSendMailCommandProvider,
@@ -149,6 +152,7 @@ import { OrderFindOneByExternalKeyQueryProvider } from "./nest/query/order/order
         ResultUploadFromStreamCommandProvider,
         TestCheckFileCommandProvider,
         TestCheckCommandProvider,
+        TestCreateFromExternalSourceCommandProvider,
         TestCreateCommandProvider,
         TestRemoveCommandProvider,
         TestUncheckCommandProvider,
