@@ -18,6 +18,7 @@ import { ReportAddedContentEventPayload, ReportAddedFilepathEventPayload, Report
 import { DiseaseReportIsEvent } from "@omega/medical/core/domain/test/events/disease.events";
 import { TestAggregateRepositoryToken } from "@omega/medical/nest/inject/aggregate-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
+import { TestExternalKey } from "@omega/medical/core/domain/test/value_objects/test-external-key.value-object";
 
 @Injectable()
 export class TestPrismaRepository implements TestRepository {
@@ -93,6 +94,9 @@ export class TestPrismaRepository implements TestRepository {
 
             else if (DiseaseReportIsEvent.isDiseaseReportUpdatedEvent(event))
                 await this.editDiseaseReport(event.value);
+
+            else if (TestIsEvent.isTestExternalKeyAddedEvent(event))
+                await this.addTestExternalKey(event.value);
         }
     }
 
@@ -255,6 +259,17 @@ export class TestPrismaRepository implements TestRepository {
                     diseaseGroupId: value.diseaseGroupId,
                     diseaseGroupName: value.diseaseGroupName,
                 }
+            });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async addTestExternalKey(value: TestExternalKey): Promise<void> {
+        try {
+            await this.prisma.medicalTestExternalKey.create({
+                data: { owner: value.owner, value: value.value, testId: value.testId }
             });
         } catch (error) {
             Logger.error(error);

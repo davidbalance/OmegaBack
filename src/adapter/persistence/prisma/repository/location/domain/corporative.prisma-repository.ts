@@ -14,6 +14,10 @@ import { BranchDomainMapper } from "../../../mapper/location/domain/branch.domai
 import { Branch } from "@omega/location/core/domain/corporative/branch.domain";
 import { CorporativeAggregateRepositoryToken } from "@omega/location/nest/inject/aggregate-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
+import { BranchIsEvent } from "@omega/location/core/domain/corporative/events/branch.events";
+import { CorporativeExternalKeyProps } from "@omega/location/core/domain/corporative/value_objects/corporative-external-key.value-object";
+import { CompanyExternalKeyProps } from "@omega/location/core/domain/corporative/value_objects/company-external-key.value-object";
+import { BranchExternalKeyProps } from "@omega/location/core/domain/corporative/value_objects/branch-external-key.value-object";
 
 @Injectable()
 export class CorporativePrismaRepository implements CorporativeRepository {
@@ -61,6 +65,9 @@ export class CorporativePrismaRepository implements CorporativeRepository {
             else if (CorporativeIsEvent.isCorporativeCompanyMovedEvent(event))
                 await this.moveCompany(event.value);
 
+            else if (CorporativeIsEvent.isCorporativeExternalKeyAddedEvent(event))
+                await this.addCorporativeExternalKey(event.value);
+
             else if (CompanyIsEvent.isCompanyBranchAddedEvent(event))
                 await this.addBranch(event.value);
 
@@ -69,6 +76,12 @@ export class CorporativePrismaRepository implements CorporativeRepository {
 
             else if (CompanyIsEvent.isCompanyBranchMovedEvent(event))
                 await this.moveBranch(event.value);
+
+            else if (CompanyIsEvent.isCompanyExternalKeyAddedEvent(event))
+                await this.addCompanyExternalKey(event.value);
+
+            else if (BranchIsEvent.isBranchExternalKeyAddedEvent(event))
+                await this.addBranchExternalKey(event.value);
         }
     }
 
@@ -87,6 +100,17 @@ export class CorporativePrismaRepository implements CorporativeRepository {
             await this.prisma.corporativeGroup.update({
                 where: { id: value.corporativeId },
                 data: { isActive: false }
+            });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async addCorporativeExternalKey(value: CorporativeExternalKeyProps): Promise<void> {
+        try {
+            await this.prisma.corporativeExternalKey.create({
+                data: { owner: value.owner, value: value.value, corporativeId: value.corporativeId }
             });
         } catch (error) {
             Logger.error(error);
@@ -122,6 +146,17 @@ export class CorporativePrismaRepository implements CorporativeRepository {
         }
     }
 
+    async addCompanyExternalKey(value: CompanyExternalKeyProps): Promise<void> {
+        try {
+            await this.prisma.companyExternalKey.create({
+                data: { owner: value.owner, value: value.value, companyId: value.companyId }
+            });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
     async addBranch(value: Branch): Promise<void> {
         try {
             const data = BranchDomainMapper.toPrisma(value);
@@ -144,6 +179,17 @@ export class CorporativePrismaRepository implements CorporativeRepository {
     async moveBranch(value: CompanyBranchMovedEventPayload): Promise<void> {
         try {
             await this.prisma.branch.update({ where: { id: value.branchId }, data: { companyId: value.toCompanyId } });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async addBranchExternalKey(value: BranchExternalKeyProps): Promise<void> {
+        try {
+            await this.prisma.branchExternalKey.create({
+                data: { owner: value.owner, value: value.value, branchId: value.branchId }
+            });
         } catch (error) {
             Logger.error(error);
             throw new RepositoryError();
