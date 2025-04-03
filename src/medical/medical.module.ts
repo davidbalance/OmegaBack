@@ -92,6 +92,12 @@ import { TestFindOneByExternalKeyQueryProvider } from "./nest/query/test/test-fi
 import { OrderFindOneByExternalKeyQueryProvider } from "./nest/query/order/order.find-one-by-external-key.nest-query";
 import { OrderCreateFromExternalSourceCommandProvider } from "./nest/command/order/order-create-from-external-source.nest-command";
 import { TestCreateFromExternalSourceCommandProvider } from "./nest/command/test/test-create-from-external-source.nest-command";
+import { CreateOrderFromExternalSourceServiceProvider } from "./nest/service/create-order-from-external-source.nest-service";
+import { PatientExternalSourceResolverProvider } from "./nest/resolver/patient-external-source.nest-resolver";
+import { OrderExternalSourceResolverProvider } from "./nest/resolver/order-external-source.nest-resolver";
+import { TestExternalSourceResolverProvider } from "./nest/resolver/test-external-source.nest-resolver";
+import { CreatePatientFromExternalSourceServiceProvider } from "./nest/service/create-patient-from-external-source.nest-service";
+import { CreateTestFromExternalSourceServiceProvider } from "./nest/service/create-test-from-external-source.nest-service";
 
 @Module({
     imports: [
@@ -122,6 +128,15 @@ import { TestCreateFromExternalSourceCommandProvider } from "./nest/command/test
         RecordReadController
     ],
     providers: [
+
+        PatientExternalSourceResolverProvider,
+        OrderExternalSourceResolverProvider,
+        TestExternalSourceResolverProvider,
+
+        CreatePatientFromExternalSourceServiceProvider,
+        CreateOrderFromExternalSourceServiceProvider,
+        CreateTestFromExternalSourceServiceProvider,
+
         ClientAddAreaCommandProvider,
         ClientAddJobPositionCommandProvider,
         ClientAddManagementCommandProvider,

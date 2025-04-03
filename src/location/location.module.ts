@@ -47,6 +47,12 @@ import { CorporativeFindOneByExternalKeyQueryProvider } from "./nest/query/corpo
 import { CorporativeCreateFromExternalSourceCommandProvider } from "./nest/command/corporative/corporative-create-from-external-source.nest-command";
 import { CompanyCreateFromExternalSourceCommandProvider } from "./nest/command/corporative/company-create-from-external-source.nest-command";
 import { BranchCreateFromExternalSourceCommandProvider } from "./nest/command/corporative/branch-create-from-external-source.nest-command";
+import { CreateBranchFromExternalSourceServiceProvider } from "./nest/service/create-branch-from-external-source.nest-service";
+import { CreateCompanyFromExternalSourceServiceProvider } from "./nest/service/create-company-from-external-source.nest-service";
+import { CreateCorporativeFromExternalSourceServiceProvider } from "./nest/service/create-corporative-from-external-source.nest-service";
+import { BranchExternalSourceResolverProvider } from "./nest/resolver/branch-external-source.nest-resolver";
+import { CompanyExternalSourceResolverProvider } from "./nest/resolver/company-external-source.nest-resolver";
+import { CorporativeExternalSourceResolverProvider } from "./nest/resolver/corporative-external-source.nest-resolver";
 
 @Module({
     controllers: [
@@ -63,6 +69,14 @@ import { BranchCreateFromExternalSourceCommandProvider } from "./nest/command/co
         BranchWriteController
     ],
     providers: [
+        BranchExternalSourceResolverProvider,
+        CompanyExternalSourceResolverProvider,
+        CorporativeExternalSourceResolverProvider,
+
+        CreateBranchFromExternalSourceServiceProvider,
+        CreateCompanyFromExternalSourceServiceProvider,
+        CreateCorporativeFromExternalSourceServiceProvider,
+
         AreaCreateCommandProvider,
         AreaEditCommandProvider,
         AreaRemoveCommandProvider,

@@ -29,6 +29,12 @@ import { ExamTypeFindOneByExternalKeyQueryProvider } from "./nest/query/exam-typ
 import { ExamCreateFromExternalSourceCommandProvider } from "./nest/command/exam-create-from-external-source.nest-command";
 import { ExamSubtypeCreateFromExternalSourceCommandProvider } from "./nest/command/exam-subtype-create-from-external-source.nest-command";
 import { ExamTypeCreateFromExternalSourceCommandProvider } from "./nest/command/exam-type-create-from-external-source.nest-command";
+import { ExamTypeExternalSourceResolverProvider } from "./nest/resolver/exam-type-external-source.nest-resolver";
+import { ExamSubtypeExternalSourceResolverProvider } from "./nest/resolver/exam-subtype-external-source.nest-resolver";
+import { ExamExternalSourceResolverProvider } from "./nest/resolver/exam-external-source.nest-resolver";
+import { CreateExamTypeFromExternalSourceServiceProvider } from "./nest/service/create-exam-type-from-external-source.nest-service";
+import { CreateExamSubtypeFromExternalSourceServiceProvider } from "./nest/service/create-exam-subtype-from-external-source.nest-service";
+import { CreateExamFromExternalSourceServiceProvider } from "./nest/service/create-exam-from-external-source.nest-service";
 
 @Module({
     controllers: [
@@ -39,6 +45,14 @@ import { ExamTypeCreateFromExternalSourceCommandProvider } from "./nest/command/
         ExamSubtypeWriteController
     ],
     providers: [
+        CreateExamTypeFromExternalSourceServiceProvider,
+        CreateExamSubtypeFromExternalSourceServiceProvider,
+        CreateExamFromExternalSourceServiceProvider,
+
+        ExamTypeExternalSourceResolverProvider,
+        ExamSubtypeExternalSourceResolverProvider,
+        ExamExternalSourceResolverProvider,
+
         ExamMoveCommandProvider,
         ExamSubtypeMoveCommandProvider,
         ExamCreateFromExternalSourceCommandProvider,
