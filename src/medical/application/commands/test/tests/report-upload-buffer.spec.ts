@@ -3,15 +3,15 @@ import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.e
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 import { FileOperation } from "@shared/shared/providers";
 import { ResultFilepathRepository } from "@omega/medical/application/repository/model.repositories";
-import { ReportUploadFromStreamCommand } from "../report-upload-from-stream.command";
+import { ReportUploadBufferCommand } from "../report-upload-buffer.command";
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
 
-describe("ReportRemoveContentCommand", () => {
+describe("ReportUploadBufferCommand", () => {
     let file: jest.Mocked<FileOperation>;
     let repository: jest.Mocked<TestRepository>;
     let filepathRepository: jest.Mocked<ResultFilepathRepository>;
-    let handler: ReportUploadFromStreamCommand;
+    let handler: ReportUploadBufferCommand;
 
     beforeEach(() => {
         file = {
@@ -27,7 +27,7 @@ describe("ReportRemoveContentCommand", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ResultFilepathRepository>;
 
-        handler = new ReportUploadFromStreamCommand(file, repository, filepathRepository);
+        handler = new ReportUploadBufferCommand(file, repository, filepathRepository);
     });
 
     it("should successfully upload a report and update the test", async () => {

@@ -53,9 +53,16 @@ import { CreateCorporativeFromExternalSourceServiceProvider } from "./nest/servi
 import { BranchExternalSourceResolverProvider } from "./nest/resolver/branch-external-source.nest-resolver";
 import { CompanyExternalSourceResolverProvider } from "./nest/resolver/company-external-source.nest-resolver";
 import { CorporativeExternalSourceResolverProvider } from "./nest/resolver/corporative-external-source.nest-resolver";
+import { CompanyExternalController } from "./controller/external/company-external.controller";
+import { BranchExternalController } from "./controller/external/branch-external.controller";
+import { CorporativeExternalController } from "./controller/external/corporative-external.controller";
 
 @Module({
     controllers: [
+        CorporativeExternalController,
+        CompanyExternalController,
+        BranchExternalController,
+
         AreaReadController,
         BranchReadController,
         CompanyReadController,

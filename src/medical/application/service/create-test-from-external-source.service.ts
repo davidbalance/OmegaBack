@@ -1,6 +1,6 @@
 import { CreateFromExternalSource, CreateFromExternalSourcePayload } from "@shared/shared/application/from-external-source.interface";
 import { Filter } from "@shared/shared/domain";
-import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection";
+import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 import { OrderExternalSourceResolver, OrderExternalSourceResolverPayload } from "../resolver/order-external-source.resolver";
 import { TestExternalSourceResolver, TestExternalSourceResolverPayload } from "../resolver/test-external-source.resolver";
 import { PatientExternalSourceResolver, PatientExternalSourceResolverPayload } from "../resolver/patient-external-source.resolver";

@@ -1,3 +1,4 @@
+import { ApiResponseProperty } from "@nestjs/swagger";
 import { PaginationResponse } from "@shared/shared/nest/pagination_response";
 import { Expose, Type } from "class-transformer";
 
@@ -6,9 +7,11 @@ export class ClientResponseDto {
     @Expose() public readonly patientName: string;
     @Expose() public readonly patientLastname: string;
     @Expose() public readonly patientBirthday: Date;
+
+    @ApiResponseProperty({ enum: { male: 'male', female: 'female' } })
     @Expose() public readonly patientGender: 'male' | 'female';
+    
     @Expose() public readonly patientRole: string | null;
-    @Expose() public readonly companyRuc: string;
 }
 
 export class ClientManyResponseDto implements PaginationResponse<ClientResponseDto> {

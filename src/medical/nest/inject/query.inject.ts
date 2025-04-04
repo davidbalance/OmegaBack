@@ -27,6 +27,7 @@ export const DiseaseReportFindManyQueryToken = 'DiseaseReportFindManyQuery';
 export const DiseaseReportFindOneQueryToken = 'DiseaseReportFindOneQuery';
 export const ReportFindOneQueryToken = 'ReportFindOneQuery';
 export const ReportGetFileQueryToken = 'ReportGetFileQuery';
+export const ResultGetFileFromExternalSourceQueryToken = 'ResultGetFileFromExternalSourceQuery';
 export const ResultGetFileQueryToken = 'ResultGetFileQuery';
 export const ResultGetFilepathQueryToken = 'ResultGetFilepathQuery';
 export const TestGetZipQueryToken = 'TestGetZipQuery';
@@ -65,6 +66,7 @@ const query = {
     DiseaseReportFindOne: DiseaseReportFindOneQueryToken,
     ReportFindOne: ReportFindOneQueryToken,
     ReportGetFile: ReportGetFileQueryToken,
+    ResultGetFileFromExternalSource: ResultGetFileFromExternalSourceQueryToken,
     ResultGetFile: ResultGetFileQueryToken,
     ResultGetFilepath: ResultGetFilepathQueryToken,
     TestGetZipQuery: TestGetZipQueryToken,

@@ -1,15 +1,15 @@
 import { ExamModel } from "@omega/laboratory/core/model/exam/exam.model";
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
-import { ExamExternalConnectionRepository, ExamRepository } from "../../repository/model.repositories";
+import { ExamExternalConnectionRepository } from "../../repository/model.repositories";
 import { ExamExternalKeyNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-external-key.errors";
-import { ExamNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam.errors";
+import { ExamFindOneQuery } from "./exam-find-one.query";
 
 export type ExamFindOneByExternalKeyQueryPayload = ExternalKeyProps;
 export class ExamFindOneByExternalKeyQuery implements QueryHandlerAsync<ExamFindOneByExternalKeyQueryPayload, ExamModel> {
     constructor(
         private readonly externalConnectionRepository: ExamExternalConnectionRepository,
-        private readonly modelRepository: ExamRepository
+        private readonly findOneQuery: ExamFindOneQuery
     ) { }
 
     async handleAsync(query: ExamFindOneByExternalKeyQueryPayload): Promise<ExamModel> {
@@ -20,9 +20,6 @@ export class ExamFindOneByExternalKeyQuery implements QueryHandlerAsync<ExamFind
 
         if (!value) throw new ExamExternalKeyNotFoundError(query.owner, query.value);
 
-        const exam = await this.modelRepository.findOneAsync([{ field: 'examId', operator: 'eq', value: value.examId }]);
-        if (!exam) throw new ExamNotFoundError(value.examId);
-
-        return exam;
+        return this.findOneQuery.handleAsync({ examId: value.examId })
     }
 }

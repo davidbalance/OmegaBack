@@ -1,4 +1,4 @@
-import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection";
+import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 import { Resolver, ResolverPayload } from "@shared/shared/application/resolver.interface";
 
 export type TestExternalSourceResolverPayload = ResolverPayload & {

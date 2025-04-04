@@ -14,6 +14,7 @@ import { ZodValidatorFactory } from '@shared/shared/nest/factories';
 import { AttributeProxyModule } from './adapter/proxy/attribute_proxy/attribute_proxy.module';
 import { WinstonModule } from '@db-logger/db-logger';
 import { HeartBeatModule } from '@heart-beat/heart-beat';
+import { ApiKeyProxyModule } from './adapter/proxy/api-key-proxy/api-key-proxy.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { HeartBeatModule } from '@heart-beat/heart-beat';
     WinstonModule,
     HeartBeatModule,
     AuthProxyModule,
+    ApiKeyProxyModule,
     AttributeProxyModule,
     AuthModule,
     DiseaseModule,

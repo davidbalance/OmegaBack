@@ -7,7 +7,7 @@ import { TestExternalConnectionRepository } from "@omega/medical/application/rep
 import { TestCreateFromExternalSourceCommand } from "@omega/medical/application/commands/test/test-create-from-external-source.command";
 import { TestExternalSourceResolverToken } from "../inject/resolver.inject";
 import { TestExternalKeyNotFoundError } from "@omega/medical/core/domain/test/errors/test-external-key.errors";
-import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection";
+import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 
 @Injectable()
 export class TestExternalSourceNestResolver implements TestExternalSourceResolver {

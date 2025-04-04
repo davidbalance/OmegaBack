@@ -1,16 +1,17 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { ExamFindOneByExternalKeyQueryToken } from "../inject/query.inject";
-import { ExamExternalConnectionRepository, ExamRepository } from "@omega/laboratory/application/repository/model.repositories";
+import { ExamFindOneByExternalKeyQueryToken, InjectQuery } from "../inject/query.inject";
+import { ExamExternalConnectionRepository } from "@omega/laboratory/application/repository/model.repositories";
 import { InjectModelRepository } from "../inject/model-repository.inject";
 import { ExamFindOneByExternalKeyQuery } from "@omega/laboratory/application/query/exam/exam-find-one-by-external-key.query";
+import { ExamFindOneQuery } from "@omega/laboratory/application/query/exam/exam-find-one.query";
 
 @Injectable()
 class ExamFindOneByExternalKeyNestQuery extends ExamFindOneByExternalKeyQuery {
     constructor(
         @InjectModelRepository("ExamExternalConnection") externalConnectionRepository: ExamExternalConnectionRepository,
-        @InjectModelRepository("Exam") modelRepository: ExamRepository,
+        @InjectQuery("ExamFindOne") findOneQuery: ExamFindOneQuery
     ) {
-        super(externalConnectionRepository, modelRepository);
+        super(externalConnectionRepository, findOneQuery);
     }
 }
 

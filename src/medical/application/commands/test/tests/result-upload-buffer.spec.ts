@@ -3,15 +3,15 @@ import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.e
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
 import { FileOperation } from "@shared/shared/providers";
-import { ResultUploadFromStreamCommand, ResultUploadFromStreamCommandPayload } from "../result-upload-from-stream.command";
+import { ResultUploadBufferCommand, ResultUploadBufferCommandPayload } from "../result-upload-buffer.command";
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { ResultFilepathRepository } from "@omega/medical/application/repository/model.repositories";
 
-describe("ResultUploadFromStreamCommand", () => {
+describe("ResultUploadBufferCommand", () => {
     let file: jest.Mocked<FileOperation>;
     let repository: jest.Mocked<TestRepository>;
     let filepathRepository: jest.Mocked<ResultFilepathRepository>;
-    let handler: ResultUploadFromStreamCommand;
+    let handler: ResultUploadBufferCommand;
 
     beforeEach(() => {
         file = {
@@ -27,7 +27,7 @@ describe("ResultUploadFromStreamCommand", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ResultFilepathRepository>;
 
-        handler = new ResultUploadFromStreamCommand(file, repository, filepathRepository);
+        handler = new ResultUploadBufferCommand(file, repository, filepathRepository);
     });
 
     it("should upload the result file when test and filepath exist", async () => {
@@ -36,7 +36,7 @@ describe("ResultUploadFromStreamCommand", () => {
         } as unknown as Test;
 
         const mockFilepath = {
-            filepath: "path/to", 
+            filepath: "path/to",
             filename: 'result.pdf',
             path: 'path/to/result.pdf'
         } as unknown as ResultFilepathModel;
@@ -47,7 +47,7 @@ describe("ResultUploadFromStreamCommand", () => {
         repository.saveAsync.mockResolvedValue();
 
         const buffer = Buffer.from("test data");
-        const payload: ResultUploadFromStreamCommandPayload = {
+        const payload: ResultUploadBufferCommandPayload = {
             testId: "test-id-123",
             buffer,
         };
@@ -69,7 +69,7 @@ describe("ResultUploadFromStreamCommand", () => {
         filepathRepository.findOneAsync.mockResolvedValue(null);
 
         const buffer = Buffer.from("test data");
-        const payload: ResultUploadFromStreamCommandPayload = {
+        const payload: ResultUploadBufferCommandPayload = {
             testId: "test-id-123",
             buffer,
         };
@@ -90,7 +90,7 @@ describe("ResultUploadFromStreamCommand", () => {
         repository.findOneAsync.mockResolvedValue(null);
 
         const buffer = Buffer.from("test data");
-        const payload: ResultUploadFromStreamCommandPayload = {
+        const payload: ResultUploadBufferCommandPayload = {
             testId: "test-id-123",
             buffer,
         };

@@ -1,33 +1,32 @@
 import { CommandHandlerAsync } from "@shared/shared/application";
-import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { FileOperation } from "@shared/shared/providers";
+import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { TestRepository } from "../../repository/aggregate.repositories";
 import { ResultFilepathRepository } from "../../repository/model.repositories";
 
-export type ReportUploadFromStreamCommandPayload = {
+export type ResultUploadBase64CommandPayload = {
     testId: string;
-    buffer: Buffer
+    base64: string;
 }
-export class ReportUploadFromStreamCommand implements CommandHandlerAsync<ReportUploadFromStreamCommandPayload, void> {
+export class ResultUploadBase64Command implements CommandHandlerAsync<ResultUploadBase64CommandPayload, void> {
     constructor(
         private readonly file: FileOperation,
         private readonly repository: TestRepository,
         private readonly filepathRepository: ResultFilepathRepository
     ) { }
 
-    async handleAsync(value: ReportUploadFromStreamCommandPayload): Promise<void> {
+    async handleAsync(value: ResultUploadBase64CommandPayload): Promise<void> {
         const filepath = await this.filepathRepository.findOneAsync([{ field: 'testId', operator: 'eq', value: value.testId }])
         if (!filepath) throw new TestNotFoundError(value.testId);
 
         const test = await this.repository.findOneAsync({ filter: [{ field: 'id', operator: 'eq', value: value.testId }] });
         if (!test) throw new TestNotFoundError(value.testId);
 
-        const basepath = `medical_report/${filepath.patient}/${filepath.order}`;
-        const filename = `${filepath.exam.toLocaleLowerCase().replaceAll(/\s/ig, '_')}.pdf`;
+        const base64Value = value.base64.replace(/^data:application\/\w+;base64,/, '');
+        const buffer = Buffer.from(base64Value, 'base64');
+        const path = await this.file.write(filepath.filepath, filepath.filename, buffer);
+        test.addResult(path);
 
-        const output = await this.file.write(basepath, filename, value.buffer);
-
-        test.addReportFile(output);
         await this.repository.saveAsync(test);
     }
 

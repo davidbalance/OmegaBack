@@ -6,7 +6,7 @@ import { TestExternalConnectionRepository, TestInnerRepository } from "@omega/me
 import { TestInnerModel } from "@omega/medical/core/model/test/test-inner.model";
 import { TestCreateFromExternalSourceCommand, TestCreateFromExternalSourceCommandPayload } from "../test-create-from-external-source.command";
 import { TestExternalKeyConflictError } from "@omega/medical/core/domain/test/errors/test-external-key.errors";
-import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection";
+import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 
 describe("TestCreateFromExternalSourceCommand", () => {
     let externalConnectionRepository: jest.Mocked<TestExternalConnectionRepository>;

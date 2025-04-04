@@ -16,7 +16,7 @@ import { OrderModel } from "@omega/medical/core/model/order/order.model";
 import { DiseaseReportModel } from "@omega/medical/core/model/test/disease-report.model";
 import { ReportModel } from "@omega/medical/core/model/test/report.model";
 import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
-import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection";
+import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 import { TestInnerModel } from "@omega/medical/core/model/test/test-inner.model";
 import { TestReportModel } from "@omega/medical/core/model/test/test-report.model";
 import { TestModel } from "@omega/medical/core/model/test/test.model";

@@ -4,7 +4,7 @@ import { TestExternalConnectionModelRepositoryToken } from '../../inject/model-r
 import { TestExternalSourceNestResolver } from '../test-external-source.nest-resolver';
 import { TestExternalConnectionRepository } from '@omega/medical/application/repository/model.repositories';
 import { TestCreateFromExternalSourceCommand } from '@omega/medical/application/commands/test/test-create-from-external-source.command';
-import { TestExternalConnectionModel } from '@omega/medical/core/model/test/test-external-connection';
+import { TestExternalConnectionModel } from '@omega/medical/core/model/test/test-external-connection.model';
 import { TestExternalSourceResolverPayload } from '@omega/medical/application/resolver/test-external-source.resolver';
 import { TestExternalKeyNotFoundError } from '@omega/medical/core/domain/test/errors/test-external-key.errors';
 

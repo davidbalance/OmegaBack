@@ -4,28 +4,26 @@ import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.e
 import { TestRepository } from "../../repository/aggregate.repositories";
 import { ResultFilepathRepository } from "../../repository/model.repositories";
 
-export type ResultUploadFromBase64CommandPayload = {
+export type ResultUploadBufferCommandPayload = {
     testId: string;
-    base64: string;
+    buffer: Buffer
 }
-export class ResultUploadFromBase64Command implements CommandHandlerAsync<ResultUploadFromBase64CommandPayload, void> {
+export class ResultUploadBufferCommand implements CommandHandlerAsync<ResultUploadBufferCommandPayload, void> {
     constructor(
         private readonly file: FileOperation,
         private readonly repository: TestRepository,
         private readonly filepathRepository: ResultFilepathRepository
     ) { }
 
-    async handleAsync(value: ResultUploadFromBase64CommandPayload): Promise<void> {
+    async handleAsync(value: ResultUploadBufferCommandPayload): Promise<void> {
         const filepath = await this.filepathRepository.findOneAsync([{ field: 'testId', operator: 'eq', value: value.testId }])
         if (!filepath) throw new TestNotFoundError(value.testId);
 
         const test = await this.repository.findOneAsync({ filter: [{ field: 'id', operator: 'eq', value: value.testId }] });
         if (!test) throw new TestNotFoundError(value.testId);
-        test.addResult(filepath.filepath);
 
-        const base64Value = value.base64.replace(/^data:application\/\w+;base64,/, '');
-        const buffer = Buffer.from(base64Value, 'base64');
-        await this.file.write(filepath.filepath, filepath.filename, buffer);
+        const path = await this.file.write(filepath.filepath, filepath.filename, value.buffer);
+        test.addResult(path);
 
         await this.repository.saveAsync(test);
     }

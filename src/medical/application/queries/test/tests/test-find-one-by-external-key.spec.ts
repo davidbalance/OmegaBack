@@ -3,7 +3,7 @@ import { TestExternalConnectionRepository, TestRepository } from "@omega/medical
 import { TestModel } from "@omega/medical/core/model/test/test.model";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { TestFindOneByExternalKeyQuery, TestFindOneByExternalKeyQueryPayload } from "../test-find-one-by-external-key.query";
-import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection";
+import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 import { TestExternalKeyNotFoundError } from "@omega/medical/core/domain/test/errors/test-external-key.errors";
 
 describe("TestFindOneByExternalKeyQuery", () => {

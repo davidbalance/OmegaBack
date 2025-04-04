@@ -16,8 +16,6 @@ import { DiseaseReportRemoveCommandProvider } from "./nest/command/test/disease-
 import { ReportAddContentCommandProvider } from "./nest/command/test/report-add-content.nest-command";
 import { ReportRemoveContentCommandProvider } from "./nest/command/test/report-remove-content.nest-command";
 import { ResultRemoveFileCommandProvider } from "./nest/command/test/result-remove-file.nest-command";
-import { ResultUploadFromBase64CommandProvider } from "./nest/command/test/result-upload-from-base64.nest-command";
-import { ResultUploadFromStreamCommandProvider } from "./nest/command/test/result-upload-from-stream.nest-command";
 import { ClientAreaFindOneQueryProvider } from "./nest/query/client/client-area-find-one.nest-query";
 import { ClientDoctorFindManyQueryProvider } from "./nest/query/client/client-doctor-find-many.nest-query";
 import { ClientEmailFindManyQueryProvider } from "./nest/query/client/client-email-find-many.nest-query";
@@ -57,7 +55,6 @@ import { OrderReadController } from "./controller/read/order_read.controller";
 import { OrderYearReadController } from "./controller/read/order_year_read.controller";
 import { OrderWriteController } from "./controller/write/order_write.controller";
 import { TestReadController } from "./controller/read/test_read.controller";
-import { TestWriteController } from "./controller/write/test_write.controller";
 import { ReportFindOneQueryProvider } from "./nest/query/test/report-find-one.nest-query";
 import { TestFindOneQueryProvider } from "./nest/query/test/test-find-one.query";
 import { TestEditExamCommandProvider } from "./nest/command/test/test_edit_exam.nest-command";
@@ -67,7 +64,6 @@ import { PatientProxyModule } from "@omega/adapter/proxy/patient_proxy/patient_p
 import { TestCreateCommandProvider } from "./nest/command/test/test-create.nest-command";
 import { TestCheckCommandProvider } from "./nest/command/test/test_check.nest-command";
 import { TestUncheckCommandProvider } from "./nest/command/test/test_uncheck.nest_command";
-import { ReportUploadFromStreamCommandProvider } from "./nest/command/test/report_upload_from_stream.nest_command";
 import { TestGetZipQueryProvider } from "./nest/query/test/test_get_zip.nest_query";
 import { FileReadController } from "./controller/read/file_read.controller";
 import { LocalZipModule } from "@local-zip/local-zip";
@@ -98,6 +94,16 @@ import { OrderExternalSourceResolverProvider } from "./nest/resolver/order-exter
 import { TestExternalSourceResolverProvider } from "./nest/resolver/test-external-source.nest-resolver";
 import { CreatePatientFromExternalSourceServiceProvider } from "./nest/service/create-patient-from-external-source.nest-service";
 import { CreateTestFromExternalSourceServiceProvider } from "./nest/service/create-test-from-external-source.nest-service";
+import { ClientExternalController } from "./controller/external/client-external.controller";
+import { OrderExternalController } from "./controller/external/order-external.controller";
+import { TestExternalController } from "./controller/external/test-external.controller";
+import { ReportUploadBufferCommandProvider } from "./nest/command/test/report-upload-buffer.nest-command";
+import { ResultUploadBase64CommandProvider } from "./nest/command/test/result-upload-base64.nest-command";
+import { ResultUploadBufferCommandProvider } from "./nest/command/test/result-upload-buffer.nest-command";
+import { ResultUploadBase64FromExternalSourceCommandProvider } from "./nest/command/test/result-upload-base64-from-external-source.nest-command";
+import { ResultUploadBufferFromExternalSourceCommandProvider } from "./nest/command/test/result-upload-buffer-from-external-source.nest-command";
+import { TestWriteController } from "./controller/write/test-write.controller";
+import { ResultGetFileFromExternalSourceQueryProvider } from "./nest/query/test/result-get-file-from-external-source.nest-query";
 
 @Module({
     imports: [
@@ -115,6 +121,10 @@ import { CreateTestFromExternalSourceServiceProvider } from "./nest/service/crea
         LaboratoryProxyModule
     ],
     controllers: [
+        ClientExternalController,
+        OrderExternalController,
+        TestExternalController,
+
         ClientReadController,
         ClientWriteController,
         FileReadController,
@@ -136,6 +146,7 @@ import { CreateTestFromExternalSourceServiceProvider } from "./nest/service/crea
         CreatePatientFromExternalSourceServiceProvider,
         CreateOrderFromExternalSourceServiceProvider,
         CreateTestFromExternalSourceServiceProvider,
+        ResultGetFileFromExternalSourceQueryProvider,
 
         ClientAddAreaCommandProvider,
         ClientAddJobPositionCommandProvider,
@@ -160,11 +171,13 @@ import { CreateTestFromExternalSourceServiceProvider } from "./nest/service/crea
         DiseaseReportEditCommandProvider,
         DiseaseReportRemoveCommandProvider,
         ReportAddContentCommandProvider,
-        ReportUploadFromStreamCommandProvider,
+        ReportUploadBufferCommandProvider,
         ReportRemoveContentCommandProvider,
         ResultRemoveFileCommandProvider,
-        ResultUploadFromBase64CommandProvider,
-        ResultUploadFromStreamCommandProvider,
+        ResultUploadBase64CommandProvider,
+        ResultUploadBase64FromExternalSourceCommandProvider,
+        ResultUploadBufferCommandProvider,
+        ResultUploadBufferFromExternalSourceCommandProvider,
         TestCheckFileCommandProvider,
         TestCheckCommandProvider,
         TestCreateFromExternalSourceCommandProvider,

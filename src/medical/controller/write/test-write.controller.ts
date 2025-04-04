@@ -8,14 +8,14 @@ import { DiseaseReportRemoveCommand } from "@omega/medical/application/commands/
 import { ReportAddContentCommand } from "@omega/medical/application/commands/test/report-add-content.command";
 import { ReportRemoveContentCommand } from "@omega/medical/application/commands/test/report-remove-content.command";
 import { ResultRemoveFileCommand } from "@omega/medical/application/commands/test/result-remove-file.command";
-import { ResultUploadFromStreamCommand } from "@omega/medical/application/commands/test/result-upload-from-stream.command";
+import { ResultUploadBufferCommand } from "@omega/medical/application/commands/test/result-upload-buffer.command";
 import { DiseaseReportCreateRequestDto, DiseaseReportEditRequestDto, ReportRequestDto, TestCreateRequestDto, TestEditExamRequestDto } from "../dto/request/test.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { TestEditExamCommand } from "@omega/medical/application/commands/test/test-edit-exam.command";
 import { TestCreateCommand } from "@omega/medical/application/commands/test/test-create.command";
 import { TestCheckCommand } from "@omega/medical/application/commands/test/test-check.command";
 import { TestUncheckCommand } from "@omega/medical/application/commands/test/test-uncheck.command";
-import { ReportUploadFromStreamCommand } from "@omega/medical/application/commands/test/report-upload-from-stream.command";
+import { ReportUploadBufferCommand } from "@omega/medical/application/commands/test/report-upload-buffer.command";
 import { TestCheckFileCommand } from "@omega/medical/application/commands/test/test-check-file.command";
 import { TestRemoveCommand } from "@omega/medical/application/commands/test/test-remove.command";
 
@@ -29,10 +29,10 @@ export class TestWriteController {
         @InjectCommand('DiseaseReportEdit') private readonly diseaseReportEditCommand: DiseaseReportEditCommand,
         @InjectCommand('DiseaseReportRemove') private readonly diseaseReportRemoveCommand: DiseaseReportRemoveCommand,
         @InjectCommand('ReportAddContent') private readonly reportAddContentCommand: ReportAddContentCommand,
-        @InjectCommand('ReportUploadFromStream') private readonly reportUploadFromStreamCommand: ReportUploadFromStreamCommand,
+        @InjectCommand('ReportUploadBuffer') private readonly reportUploadFromStreamCommand: ReportUploadBufferCommand,
         @InjectCommand('ReportRemoveContent') private readonly reportRemoveContentCommand: ReportRemoveContentCommand,
         @InjectCommand('ResultRemoveFile') private readonly resultRemoveFileCommand: ResultRemoveFileCommand,
-        @InjectCommand('ResultUploadFromStream') private readonly resultUploadFromStreamCommand: ResultUploadFromStreamCommand,
+        @InjectCommand('ResultUploadBuffer') private readonly resultUploadFromStreamCommand: ResultUploadBufferCommand,
         @InjectCommand('TestCheckFile') private readonly testCheckFileCommand: TestCheckFileCommand,
         @InjectCommand('TestCreate') private readonly testCreateCommand: TestCreateCommand,
         @InjectCommand('TestCheck') private readonly testCheckCommand: TestCheckCommand,

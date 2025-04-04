@@ -1,15 +1,15 @@
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
-import { ExamSubtypeExternalConnectionRepository, ExamSubtypeRepository } from "../../repository/model.repositories";
+import { ExamSubtypeExternalConnectionRepository } from "../../repository/model.repositories";
 import { ExamSubtypeModel } from "@omega/laboratory/core/model/exam/exam-subtype.model";
-import { ExamSubtypeNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-subtype.errors";
 import { ExamSubtypeExternalKeyNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-subtype-external-key.errors";
+import { ExamSubtypeFindOneQuery } from "./exam-subtype-find-one.query";
 
 export type ExamSubtypeFindOneByExternalKeyQueryPayload = ExternalKeyProps;
 export class ExamSubtypeFindOneByExternalKeyQuery implements QueryHandlerAsync<ExamSubtypeFindOneByExternalKeyQueryPayload, ExamSubtypeModel> {
     constructor(
         private readonly externalConnectionRepository: ExamSubtypeExternalConnectionRepository,
-        private readonly modelRepository: ExamSubtypeRepository
+        private readonly findOneQuery: ExamSubtypeFindOneQuery
     ) { }
 
     async handleAsync(query: ExamSubtypeFindOneByExternalKeyQueryPayload): Promise<ExamSubtypeModel> {
@@ -19,10 +19,6 @@ export class ExamSubtypeFindOneByExternalKeyQuery implements QueryHandlerAsync<E
         ]);
 
         if (!value) throw new ExamSubtypeExternalKeyNotFoundError(query.owner, query.value);
-
-        const exam = await this.modelRepository.findOneAsync([{ field: 'subtypeId', operator: 'eq', value: value.subtypeId }]);
-        if (!exam) throw new ExamSubtypeNotFoundError(value.subtypeId);
-
-        return exam;
+        return this.findOneQuery.handleAsync({ subtypeId: value.subtypeId });
     }
 }

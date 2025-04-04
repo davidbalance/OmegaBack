@@ -35,9 +35,16 @@ import { ExamExternalSourceResolverProvider } from "./nest/resolver/exam-externa
 import { CreateExamTypeFromExternalSourceServiceProvider } from "./nest/service/create-exam-type-from-external-source.nest-service";
 import { CreateExamSubtypeFromExternalSourceServiceProvider } from "./nest/service/create-exam-subtype-from-external-source.nest-service";
 import { CreateExamFromExternalSourceServiceProvider } from "./nest/service/create-exam-from-external-source.nest-service";
+import { ExamExternalController } from "./controller/external/exam-external.controller";
+import { ExamSubtypeExternalController } from "./controller/external/exam-subtype-external.controller";
+import { ExamTypeExternalController } from "./controller/external/exam-type-external.controller";
 
 @Module({
     controllers: [
+        ExamTypeExternalController,
+        ExamSubtypeExternalController,
+        ExamExternalController,
+
         ExamReadController,
         ExamSubtypeReadController,
         ExamTypeReadController,

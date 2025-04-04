@@ -6,7 +6,7 @@ import { Prisma } from "@prisma/client";
 import { TestExternalConnectionModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
 import { TestExternalConnectionRepository } from "@omega/medical/application/repository/model.repositories";
-import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection";
+import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 import { TestExternalConnectionModelMapper } from "../../../mapper/medical/model/test-external-connection.model-mapper";
 
 @Injectable()

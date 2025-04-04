@@ -3,6 +3,9 @@ import { Inject } from "@nestjs/common";
 export const AuthProviderToken = 'AuthProvider';
 export const InjectAuth = () => Inject(AuthProviderToken);
 
+export const ApiKeyProviderToken = 'ApiKeyProvider';
+export const InjectApiKey = () => Inject(ApiKeyProviderToken);
+
 export const EmailProviderToken = 'EmailProvider';
 export const InjectEmail = () => Inject(EmailProviderToken);
 

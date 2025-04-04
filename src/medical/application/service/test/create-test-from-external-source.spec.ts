@@ -3,7 +3,7 @@ import { CreateTestFromExternalSourcePayload, CreateTestFromExternalSourceServic
 import { PatientExternalSourceResolver } from "../../resolver/patient-external-source.resolver";
 import { OrderExternalSourceResolver } from "../../resolver/order-external-source.resolver";
 import { TestExternalSourceResolver } from "../../resolver/test-external-source.resolver";
-import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection";
+import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 import { ClientModel } from "@omega/medical/core/model/client/client.model";
 import { OrderExternalConnectionModel } from "@omega/medical/core/model/order/order-external-connection.model";
 

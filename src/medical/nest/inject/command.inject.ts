@@ -24,11 +24,13 @@ export const DiseaseReportCreateCommandToken = 'DiseaseReportCreateCommand';
 export const DiseaseReportEditCommandToken = 'DiseaseReportEditCommand';
 export const DiseaseReportRemoveCommandToken = 'DiseaseReportRemoveCommand';
 export const ReportAddContentCommandToken = 'ReportAddContentCommand';
-export const ReportUploadFromStreamCommandToken = 'ReportUploadFromStreamCommand';
+export const ReportUploadBufferCommandToken = 'ReportUploadBufferCommand';
 export const ReportRemoveContentCommandToken = 'ReportRemoveContentCommand';
 export const ResultRemoveFileCommandToken = 'ResultRemoveFileCommand';
-export const ResultUploadFromBase64CommandToken = 'ResultUploadFromBase64Command';
-export const ResultUploadFromStreamCommandToken = 'ResultUploadFromStreamCommand';
+export const ResultUploadBase64CommandToken = 'ResultUploadBase64Command';
+export const ResultUploadBase64FromExternalSourceCommandToken = 'ResultUploadBase64FromExternalSourceCommand';
+export const ResultUploadBufferCommandToken = 'ResultUploadBufferCommand';
+export const ResultUploadBufferFromExternalSourceCommandToken = 'ResultUploadBufferFromExternalSourceCommand';
 export const TestCheckFileCommandToken = 'TestCheckFileCommand';
 export const TestCreateCommandToken = 'TestCreateCommand';
 export const TestCheckCommandToken = 'TestCheckCommand';
@@ -49,7 +51,7 @@ const command = {
     EmailCreate: EmailCreateCommandToken,
     EmailDefault: EmailDefaultCommandToken,
     EmailRemove: EmailRemoveCommandToken,
-    
+
     OrderCreateMany: OrderCreateManyCommandToken,
     OrderCreate: OrderCreateCommandToken,
     OrderCreatedStatus: OrderCreatedStatusCommandToken,
@@ -57,16 +59,18 @@ const command = {
     OrderValidatedStatus: OrderValidatedStatusCommandToken,
     OrderRemove: OrderRemoveCommandToken,
     OrderCreateFromExternalSource: OrderCreateFromExternalSourceCommandToken,
-    
+
     DiseaseReportCreate: DiseaseReportCreateCommandToken,
     DiseaseReportEdit: DiseaseReportEditCommandToken,
     DiseaseReportRemove: DiseaseReportRemoveCommandToken,
     ReportAddContent: ReportAddContentCommandToken,
-    ReportUploadFromStream: ReportUploadFromStreamCommandToken,
+    ReportUploadBuffer: ReportUploadBufferCommandToken,
     ReportRemoveContent: ReportRemoveContentCommandToken,
     ResultRemoveFile: ResultRemoveFileCommandToken,
-    ResultUploadFromBase64: ResultUploadFromBase64CommandToken,
-    ResultUploadFromStream: ResultUploadFromStreamCommandToken,
+    ResultUploadBase64: ResultUploadBase64CommandToken,
+    ResultUploadBase64FromExternalSource: ResultUploadBase64FromExternalSourceCommandToken,
+    ResultUploadBuffer: ResultUploadBufferCommandToken,
+    ResultUploadBufferFromExternalSource: ResultUploadBufferFromExternalSourceCommandToken,
     TestCheckFile: TestCheckFileCommandToken,
     TestCreate: TestCreateCommandToken,
     TestCheck: TestCheckCommandToken,

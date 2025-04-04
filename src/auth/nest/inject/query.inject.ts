@@ -4,6 +4,7 @@ export const AuthGenerateTokenQueryToken = 'AuthGenerateTokenQuery';
 export const AuthIntrospectQueryToken = 'AuthIntrospect';
 export const AuthFindManyResourcesQueryToken = 'AuthFindManyResources';
 export const ApiKeyFindManyQueryToken = 'ApiKeyFindMany';
+export const ApiKeyFindOneByValueQueryToken = 'ApiKeyFindOneByValue';
 export const LogoFindManyQueryToken = 'LogoFindManyQuery';
 export const ResourceFindManyQueryToken = 'ResourceFindManyQuery';
 export const ResourceFindOneQueryToken = 'ResourceFindOneQuery';
@@ -13,6 +14,7 @@ const query = {
     AuthIntrospect: AuthIntrospectQueryToken,
     AuthFindManyResources: AuthFindManyResourcesQueryToken,
     ApiKeyFindMany: ApiKeyFindManyQueryToken,
+    ApiKeyFindOneByValue: ApiKeyFindOneByValueQueryToken,
     LogoFindMany: LogoFindManyQueryToken,
     ResourceFindMany: ResourceFindManyQueryToken,
     ResourceFindOne: ResourceFindOneQueryToken,
