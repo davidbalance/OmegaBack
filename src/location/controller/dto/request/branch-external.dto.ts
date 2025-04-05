@@ -1,5 +1,6 @@
 import { CreateBranchFromExternalSourcePayload } from "@omega/location/application/service/create-branch-from-external-source.service";
-import { IsNotEmpty, IsString, Length } from "class-validator";
+import { Type } from "class-transformer";
+import { IsNotEmpty, IsNumber, IsString, Length, Min } from "class-validator";
 
 export class CreateBranchFromExternalRequestDto implements Omit<CreateBranchFromExternalSourcePayload, 'owner'> {
     @IsString()
@@ -13,10 +14,6 @@ export class CreateBranchFromExternalRequestDto implements Omit<CreateBranchFrom
     @IsString()
     @IsNotEmpty()
     public readonly corporativeName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly corporativeId: string;
 
     @IsString()
     @IsNotEmpty()
@@ -34,12 +31,9 @@ export class CreateBranchFromExternalRequestDto implements Omit<CreateBranchFrom
     @IsNotEmpty()
     public readonly companyAddress: string;
 
-    @IsString()
-    @IsNotEmpty()
-    public readonly companyId: string;
-
-    @IsString()
-    @IsNotEmpty()
+    @Type(() => Number)
+    @IsNumber()
+    @Min(1)
     public readonly cityId: number;
 
     @IsString()

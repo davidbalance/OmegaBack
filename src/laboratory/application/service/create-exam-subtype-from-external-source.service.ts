@@ -5,7 +5,7 @@ import { ExamTypeExternalSourceResolver, ExamTypeExternalSourceResolverPayload }
 import { CreateFromExternalSource, CreateFromExternalSourcePayload } from "@shared/shared/application/from-external-source.interface";
 import { ExamSubtypeExternalConnectionModel } from "@omega/laboratory/core/model/exam/exam-subtype-external-connection.model";
 
-export type CreateExamSubtypeFromExternalSourcePayload = CreateFromExternalSourcePayload & ExamTypeExternalSourceResolverPayload & ExamSubtypeExternalSourceResolverPayload;
+export type CreateExamSubtypeFromExternalSourcePayload = CreateFromExternalSourcePayload & ExamTypeExternalSourceResolverPayload & Omit<ExamSubtypeExternalSourceResolverPayload, 'typeId'>;
 export class CreateExamSubtypeFromExternalSourceService
     implements CreateFromExternalSource<CreateExamSubtypeFromExternalSourcePayload, ExamSubtypeExternalConnectionModel> {
     constructor(

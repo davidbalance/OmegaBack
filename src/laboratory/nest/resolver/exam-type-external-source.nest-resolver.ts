@@ -18,11 +18,10 @@ export class ExamTypeExternalSourceNestResolver implements ExamTypeExternalSourc
 
     async resolve(value: { owner: string; typeKey: string; typeName: string; }): Promise<ExamTypeExternalConnectionModel> {
         const filter: Filter<ExamTypeExternalConnectionModel>[] = [
-            { field: 'typeExternalKey', operator: 'eq', value: value.typeKey },
             { field: 'typeExternalOwner', operator: 'eq', value: value.owner },
+            { field: 'typeExternalKey', operator: 'eq', value: value.typeKey },
         ]
         let externalExam = await this.externalConnection.findOneAsync(filter);
-
         if (!externalExam) {
             await this.createCommand.handleAsync({
                 externalKeyOwner: value.owner,

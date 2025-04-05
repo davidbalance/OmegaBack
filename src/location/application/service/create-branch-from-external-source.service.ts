@@ -6,7 +6,9 @@ import { BranchExternalConnectionRepository } from "../repository/model.reposito
 import { Filter } from "@shared/shared/domain";
 import { BranchExternalConnectionModel } from "@omega/location/core/models/corporative/branch-external-connection.model";
 
-export type CreateBranchFromExternalSourcePayload = CreateFromExternalSourcePayload & CorporativeExternalSourceResolverPayload & CompanyExternalSourceResolverPayload & BranchExternalSourceResolverPayload;
+export type CreateBranchFromExternalSourcePayload = CreateFromExternalSourcePayload & CorporativeExternalSourceResolverPayload &
+    Omit<CompanyExternalSourceResolverPayload, 'corporativeId'> &
+    Omit<BranchExternalSourceResolverPayload, 'corporativeId' | 'companyId'>;
 export class CreateBranchFromExternalSourceService
     implements CreateFromExternalSource<CreateBranchFromExternalSourcePayload, BranchExternalConnectionModel> {
     constructor(

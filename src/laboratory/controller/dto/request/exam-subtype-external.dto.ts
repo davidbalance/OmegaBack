@@ -17,8 +17,4 @@ export class CreateExamSubtypeExternalRequestDto implements Omit<CreateExamSubty
     @IsString()
     @IsNotEmpty()
     public readonly subtypeName: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly typeId: string;
 }

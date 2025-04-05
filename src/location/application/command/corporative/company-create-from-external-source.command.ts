@@ -26,7 +26,7 @@ export class CompanyCreateFromExternalSourceCommand extends BaseCompanyCreateCom
 
         const company = await this.modelRepository.findOneAsync([
             { field: 'corporativeId', operator: 'eq', value: value.corporativeId },
-            { field: 'companyName', operator: 'eq', value: value.name },
+            { field: 'companyRuc', operator: 'eq', value: value.ruc },
         ]);
         let companyId: string;
         if (!company) {

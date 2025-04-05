@@ -12,10 +12,6 @@ export class CreateCompanyFromExternalRequestDto implements Omit<CreateCompanyFr
 
     @IsString()
     @IsNotEmpty()
-    public readonly corporativeId: string;
-
-    @IsString()
-    @IsNotEmpty()
     public readonly companyKey: string;
 
     @IsString()

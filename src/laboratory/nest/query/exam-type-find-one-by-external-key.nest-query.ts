@@ -8,8 +8,8 @@ import { ExamTypeFindOneQuery } from "@omega/laboratory/application/query/exam/e
 @Injectable()
 class ExamTypeFindOneByExternalKeyNestQuery extends ExamTypeFindOneByExternalKeyQuery {
     constructor(
-        @InjectModelRepository("ExamSubtypeExternalConnection") externalConnectionRepository: ExamTypeExternalConnectionRepository,
-        @InjectQuery("ExamSubtypeFindOneByExternalKey") findOneQuery: ExamTypeFindOneQuery,
+        @InjectModelRepository("ExamTypeExternalConnection") externalConnectionRepository: ExamTypeExternalConnectionRepository,
+        @InjectQuery("ExamTypeFindOne") findOneQuery: ExamTypeFindOneQuery,
     ) {
         super(externalConnectionRepository, findOneQuery);
     }

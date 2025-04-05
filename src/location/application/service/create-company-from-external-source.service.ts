@@ -5,7 +5,7 @@ import { CompanyExternalConnectionRepository } from "../repository/model.reposit
 import { Filter } from "@shared/shared/domain";
 import { CompanyExternalConnectionModel } from "@omega/location/core/models/corporative/company-external-connection.model";
 
-export type CreateCompanyFromExternalSourcePayload = CreateFromExternalSourcePayload & CorporativeExternalSourceResolverPayload & CompanyExternalSourceResolverPayload;
+export type CreateCompanyFromExternalSourcePayload = CreateFromExternalSourcePayload & CorporativeExternalSourceResolverPayload & Omit<CompanyExternalSourceResolverPayload, 'corporativeId'>;
 export class CreateCompanyFromExternalSourceService
     implements CreateFromExternalSource<CreateCompanyFromExternalSourcePayload, CompanyExternalConnectionModel> {
     constructor(
