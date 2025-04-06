@@ -4,6 +4,7 @@ import { OrderExternalConnectionModel } from "@omega/medical/core/model/order/or
 import { Filter } from "@shared/shared/domain";
 import { PatientExternalSourceResolver, PatientExternalSourceResolverPayload } from "../resolver/patient-external-source.resolver";
 import { OrderExternalSourceResolver, OrderExternalSourceResolverPayload } from "../resolver/order-external-source.resolver";
+import { OrderExternalNotificationDispatcher } from "../notification-dispatcher/order-external.notification-dispatcher";
 
 export type CreateOrderFromExternalSourcePayload = CreateFromExternalSourcePayload & PatientExternalSourceResolverPayload & OrderExternalSourceResolverPayload;
 export class CreateOrderFromExternalSourceService
@@ -12,6 +13,7 @@ export class CreateOrderFromExternalSourceService
         private readonly externalConnection: OrderExternalConnectionRepository,
         private readonly patientResolver: PatientExternalSourceResolver,
         private readonly orderResolver: OrderExternalSourceResolver,
+        private readonly notificationDispatcher: OrderExternalNotificationDispatcher
     ) { }
 
     async createAsync(value: CreateOrderFromExternalSourcePayload): Promise<OrderExternalConnectionModel> {
@@ -26,6 +28,8 @@ export class CreateOrderFromExternalSourceService
         }
 
         const externalPatient = await this.patientResolver.resolve({ ...value });
-        return await this.orderResolver.resolve({ ...value, patientDni: externalPatient.patientDni });
+        externalOrder = await this.orderResolver.resolve({ ...value, patientDni: externalPatient.patientDni });
+        await this.notificationDispatcher.emitAsync({ ...value, patientDni: externalPatient.patientDni })
+        return externalOrder;
     }
 }

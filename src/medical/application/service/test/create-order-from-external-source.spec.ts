@@ -4,12 +4,14 @@ import { OrderExternalSourceResolver } from "../../resolver/order-external-sourc
 import { PatientExternalSourceResolver } from "../../resolver/patient-external-source.resolver";
 import { CreateOrderFromExternalSourcePayload, CreateOrderFromExternalSourceService } from "../create-order-from-external-source.service";
 import { ClientModel } from "@omega/medical/core/model/client/client.model";
+import { OrderExternalNotificationDispatcher } from "../../notification-dispatcher/order-external.notification-dispatcher";
 
 describe('CreateOrderFromExternalSourceService', () => {
-    let service: CreateOrderFromExternalSourceService;
     let externalConnection: jest.Mocked<OrderExternalConnectionRepository>;
     let patientResolver: jest.Mocked<PatientExternalSourceResolver>;
     let orderResolver: jest.Mocked<OrderExternalSourceResolver>;
+    let notificationDispatcher: jest.Mocked<OrderExternalNotificationDispatcher>;
+    let service: CreateOrderFromExternalSourceService;
 
     beforeEach(async () => {
         externalConnection = {
@@ -24,7 +26,16 @@ describe('CreateOrderFromExternalSourceService', () => {
             resolve: jest.fn(),
         } as unknown as jest.Mocked<OrderExternalSourceResolver>;
 
-        service = new CreateOrderFromExternalSourceService(externalConnection, patientResolver, orderResolver);
+        notificationDispatcher = {
+            emitAsync: jest.fn(),
+        } as unknown as jest.Mocked<OrderExternalNotificationDispatcher>;
+
+        service = new CreateOrderFromExternalSourceService(
+            externalConnection,
+            patientResolver,
+            orderResolver,
+            notificationDispatcher
+        );
     });
 
     it('should return an existing order if it is already present in the repository', async () => {
@@ -63,6 +74,7 @@ describe('CreateOrderFromExternalSourceService', () => {
         expect(patientResolver.resolve).not.toHaveBeenCalled();
         expect(orderResolver.resolve).not.toHaveBeenCalled();
         expect(orderResolver.resolve).not.toHaveBeenCalled();
+        expect(notificationDispatcher.emitAsync).not.toHaveBeenCalled();
         expect(result).toEqual(mockOrder);
     });
 
@@ -102,6 +114,7 @@ describe('CreateOrderFromExternalSourceService', () => {
         ]);
         expect(patientResolver.resolve).toHaveBeenCalledWith(payload);
         expect(orderResolver.resolve).toHaveBeenCalledWith({ ...payload, patientDni: resolvedPatient.patientDni });
+        expect(notificationDispatcher.emitAsync).toHaveBeenCalledWith({ ...payload, patientDni: resolvedPatient.patientDni });
         expect(result).toEqual(resolvedOrder);
     });
 });

@@ -60,6 +60,7 @@ export class ReportRequestDto implements Omit<ReportAddContentCommandPayload, 't
 
 export class ResultUploadBase64RequestDto implements Omit<ResultUploadBase64CommandPayload, 'testId'> {
     @IsBase64()
+    @IsNotEmpty()
     public readonly base64: string;
 }
 

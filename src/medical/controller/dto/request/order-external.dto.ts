@@ -1,5 +1,5 @@
 import { CreateOrderFromExternalSourcePayload } from "@omega/medical/application/service/create-order-from-external-source.service";
-import { IsNotEmpty, IsNumber, IsString, Length, Min } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString, Length, Min } from "class-validator";
 import { CreatePatientFromExternalSourceDto } from "./client-external.dto";
 
 export class CreateOrderFromExternalSourceDto
@@ -23,14 +23,16 @@ export class CreateOrderFromExternalSourceDto
     @IsNotEmpty()
     public readonly branchName: string;
 
+    @IsOptional()
     @IsString()
     @IsNotEmpty()
     @Length(10, 10)
-    public readonly doctorDni: string;
+    public readonly doctorDni: string = '0000000000';
 
+    @IsOptional()
     @IsString()
     @IsNotEmpty()
-    public readonly doctorFullname: string;
+    public readonly doctorFullname: string = 'NO ESPECIFICO';
 
     @IsString()
     @IsNotEmpty()

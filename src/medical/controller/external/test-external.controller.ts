@@ -34,23 +34,23 @@ export class TestExternalController {
         @InjectCommand('ResultUploadBase64FromExternalSource') private readonly uploadBase64FromExternalSource: ResultUploadBase64FromExternalSourceCommand,
     ) { }
 
-    @Get(':testId')
+    @Get(':key')
     async findFromExternalSource(
         @CurrentUser() app: string,
-        @Param('testId') testId: string
+        @Param('key') key: string
     ): Promise<TestResponseDto> {
-        const value = await this.findOneByExternalKey.handleAsync({ owner: app, value: testId });
+        const value = await this.findOneByExternalKey.handleAsync({ owner: app, value: key });
         const data = TestModelMapper.toDTO(value);
         return plainToInstance(TestResponseDto, data);
     }
 
-    @Get(':testId/result')
+    @Get(':key/result')
     async getResultFile(
         @CurrentUser() app: string,
-        @Param('testId') testId: string,
+        @Param('key') key: string,
         @Res({ passthrough: true }) response: Response
     ): Promise<StreamableFile> {
-        const buffer = await this.resultGetFileQuery.handleAsync({ owner: app, value: testId });
+        const buffer = await this.resultGetFileQuery.handleAsync({ owner: app, value: key });
         response.set({
             'Content-Type': 'application/pdf',
             'Content-Disposition': 'attachment;filename="medical_file.pdf"'
@@ -68,27 +68,27 @@ export class TestExternalController {
         return plainToInstance(TestExternalResponseDto, data);
     }
 
-    @Post(':testId/result/base64')
+    @Post(':key/result/base64')
     async uploadResultBase64FromExternalSource(
-        @Param('testId') testId: string,
+        @Param('key') key: string,
         @CurrentUser() app: string,
         @Body() body: ResultUploadBase64RequestDto
     ): Promise<string> {
-        await this.uploadBase64FromExternalSource.handleAsync({ ...body, owner: app, value: testId });
+        await this.uploadBase64FromExternalSource.handleAsync({ ...body, owner: app, value: key });
         return "Ok";
     }
 
     @ApiConsumes('multipart/form-data')
     @UseInterceptors(FileInterceptor('file'))
-    @Post(':testId/result/file')
+    @Post(':key/result/file')
     async uploadResultFileFromExternalSource(
-        @Param('testId') testId: string,
+        @Param('key') key: string,
         @CurrentUser() app: string,
         @UploadedFile() file: Express.Multer.File
     ): Promise<string> {
         await this.uploadBufferFromExternalSource.handleAsync({
             owner: app,
-            value: testId,
+            value: key,
             buffer: file.buffer
         });
         return "Ok";

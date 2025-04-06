@@ -24,12 +24,12 @@ export class OrderExternalController {
         @InjectService('CreateOrderFromExternalSource') private readonly createByExternalSource: CreateOrderFromExternalSourceService,
     ) { }
 
-    @Get(':orderId')
+    @Get(':key')
     async findFromExternalSource(
         @CurrentUser() app: string,
-        @Param('orderId') orderId: string
+        @Param('key') key: string
     ): Promise<OrderResponseDto> {
-        const value = await this.findOneByExternalKey.handleAsync({ owner: app, value: orderId });
+        const value = await this.findOneByExternalKey.handleAsync({ owner: app, value: key });
         const data = OrderModelMapper.toDTO(value);
         return plainToInstance(OrderResponseDto, data);
     }

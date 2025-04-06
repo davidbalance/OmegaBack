@@ -104,6 +104,9 @@ import { ResultUploadBase64FromExternalSourceCommandProvider } from "./nest/comm
 import { ResultUploadBufferFromExternalSourceCommandProvider } from "./nest/command/test/result-upload-buffer-from-external-source.nest-command";
 import { TestWriteController } from "./controller/write/test-write.controller";
 import { ResultGetFileFromExternalSourceQueryProvider } from "./nest/query/test/result-get-file-from-external-source.nest-query";
+import { OrderExternalNotificationDispatcherProvider } from "./nest/notification-dispatcher/order-external.nest-notification-dispatcher";
+import { TestExternalNotificationDispatcherProvider } from "./nest/notification-dispatcher/test-external.nest-notification-dispatcher";
+import { PatientExternalNotificationDispatcherProvider } from "./nest/notification-dispatcher/patient-external.nest-notification-dispatcher";
 
 @Module({
     imports: [
@@ -147,6 +150,10 @@ import { ResultGetFileFromExternalSourceQueryProvider } from "./nest/query/test/
         CreateOrderFromExternalSourceServiceProvider,
         CreateTestFromExternalSourceServiceProvider,
         ResultGetFileFromExternalSourceQueryProvider,
+
+        PatientExternalNotificationDispatcherProvider,
+        OrderExternalNotificationDispatcherProvider,
+        TestExternalNotificationDispatcherProvider,
 
         ClientAddAreaCommandProvider,
         ClientAddJobPositionCommandProvider,

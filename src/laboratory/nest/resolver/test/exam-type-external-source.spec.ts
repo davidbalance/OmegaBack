@@ -51,8 +51,8 @@ describe('ExamTypeExternalSourceNestResolver', () => {
         const result = await resolver.resolve(payload);
 
         expect(externalConnection.findOneAsync).toHaveBeenCalledWith([
-            { field: 'typeExternalKey', operator: 'eq', value: payload.typeKey },
             { field: 'typeExternalOwner', operator: 'eq', value: payload.owner },
+            { field: 'typeExternalKey', operator: 'eq', value: payload.typeKey },
         ]);
         expect(createCommand.handleAsync).not.toHaveBeenCalled();
         expect(result).toEqual(mockSubtype);
@@ -78,8 +78,8 @@ describe('ExamTypeExternalSourceNestResolver', () => {
         await resolver.resolve(payload);
 
         expect(externalConnection.findOneAsync).toHaveBeenCalledWith([
-            { field: 'typeExternalKey', operator: 'eq', value: payload.typeKey },
             { field: 'typeExternalOwner', operator: 'eq', value: payload.owner },
+            { field: 'typeExternalKey', operator: 'eq', value: payload.typeKey },
         ]);
         expect(createCommand.handleAsync).toHaveBeenCalledWith({
             externalKeyOwner: payload.owner,
@@ -103,8 +103,8 @@ describe('ExamTypeExternalSourceNestResolver', () => {
             .toThrow(ExamTypeExternalKeyNotFoundError);
 
         expect(externalConnection.findOneAsync).toHaveBeenCalledWith([
-            { field: 'typeExternalKey', operator: 'eq', value: payload.typeKey },
             { field: 'typeExternalOwner', operator: 'eq', value: payload.owner },
+            { field: 'typeExternalKey', operator: 'eq', value: payload.typeKey },
         ]);
         expect(createCommand.handleAsync).toHaveBeenCalledWith({
             externalKeyOwner: payload.owner,

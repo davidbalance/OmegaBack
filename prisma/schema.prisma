@@ -1196,7 +1196,7 @@ view OrderExternalConnectionModel {
 }
 
 view TestExternalConnectionModel {
-  testId            String @map("medical_test_id") @db.Char(36)
+  testId            String @map("test_id") @db.Char(36)
   testExternalKey   String @map("external_value") @db.VarChar(128)
   testExternalOwner String @map("external_owner") @db.VarChar(128)
 

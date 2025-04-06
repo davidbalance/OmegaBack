@@ -8,6 +8,10 @@ export type TestExternalSourceResolverPayload = ResolverPayload & {
     examSubtype: string;
     examType: string;
     orderId: string;
+
+    examTypeKey?: string;
+    examSubtypeKey?: string;
+    examKey?: string;
 }
 export interface TestExternalSourceResolver
     extends Resolver<TestExternalSourceResolverPayload, TestExternalConnectionModel> { }

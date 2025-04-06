@@ -66,7 +66,7 @@ describe("CompanyCreateFromExternalSourceCommand", () => {
         expect(agggregateRepository.findOneAsync).toHaveBeenCalledWith({ filter: [{ field: "id", operator: "eq", value: payload.corporativeId }] });
         expect(modelRepository.findOneAsync).toHaveBeenCalledWith([
             { field: 'corporativeId', operator: 'eq', value: payload.corporativeId },
-            { field: 'companyName', operator: 'eq', value: payload.name },
+            { field: 'companyRuc', operator: 'eq', value: payload.ruc },
         ]);
         expect(mockCorporative.addCompany).toHaveBeenCalledWith(payload);
         expect(mockCorporative.addExternalKeyToCompany).toHaveBeenCalledWith({
@@ -106,7 +106,7 @@ describe("CompanyCreateFromExternalSourceCommand", () => {
         expect(agggregateRepository.findOneAsync).toHaveBeenCalledWith({ filter: [{ field: "id", operator: "eq", value: payload.corporativeId }] });
         expect(modelRepository.findOneAsync).toHaveBeenCalledWith([
             { field: 'corporativeId', operator: 'eq', value: payload.corporativeId },
-            { field: 'companyName', operator: 'eq', value: payload.name },
+            { field: 'companyRuc', operator: 'eq', value: payload.ruc },
         ]);
         expect(mockCorporative.addExternalKeyToCompany).toHaveBeenCalledWith({
             companyId: mockCompany.companyId,

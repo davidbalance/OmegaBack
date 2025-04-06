@@ -38,7 +38,6 @@ describe('CreateExamSubtypeFromExternalSourceService', () => {
 
         const payload: CreateExamSubtypeFromExternalSourcePayload = {
             owner: 'external-value',
-            typeId: 'test-id',
             subtypeKey: 'subtype-key',
             subtypeName: 'subtype-name',
             typeKey: 'type-key',
@@ -69,7 +68,6 @@ describe('CreateExamSubtypeFromExternalSourceService', () => {
             owner: 'external-value',
             subtypeKey: 'external-owner',
             subtypeName: 'subtype-name',
-            typeId: 'test-id',
             typeKey: 'type-key',
             typeName: 'type-name'
         };

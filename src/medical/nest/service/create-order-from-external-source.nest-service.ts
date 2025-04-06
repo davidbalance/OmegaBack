@@ -6,6 +6,8 @@ import { OrderExternalConnectionRepository } from "@omega/medical/application/re
 import { PatientExternalSourceResolver } from "@omega/medical/application/resolver/patient-external-source.resolver";
 import { OrderExternalSourceResolver } from "@omega/medical/application/resolver/order-external-source.resolver";
 import { InjectResolver } from "../inject/resolver.inject";
+import { InjectNotificationDispatcher } from "../inject/notification-dispatcher.inject";
+import { OrderExternalNotificationDispatcher } from "@omega/medical/application/notification-dispatcher/order-external.notification-dispatcher";
 
 @Injectable()
 export class CreateOrderFromExternalSourceNestService
@@ -13,12 +15,14 @@ export class CreateOrderFromExternalSourceNestService
     constructor(
         @InjectModelRepository("OrderExternalConnection") externalConnection: OrderExternalConnectionRepository,
         @InjectResolver("PatientExternalSource") patientResolver: PatientExternalSourceResolver,
-        @InjectResolver("OrderExternalSource") orderResolver: OrderExternalSourceResolver
+        @InjectResolver("OrderExternalSource") orderResolver: OrderExternalSourceResolver,
+        @InjectNotificationDispatcher("OrderExternal") notificationDispatcher: OrderExternalNotificationDispatcher
     ) {
         super(
             externalConnection,
             patientResolver,
-            orderResolver
+            orderResolver,
+            notificationDispatcher
         );
     }
 }
