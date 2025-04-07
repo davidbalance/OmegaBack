@@ -15,6 +15,7 @@ import { AttributeProxyModule } from './adapter/proxy/attribute_proxy/attribute_
 import { WinstonModule } from '@db-logger/db-logger';
 import { HeartBeatModule } from '@heart-beat/heart-beat';
 import { ApiKeyProxyModule } from './adapter/proxy/api-key-proxy/api-key-proxy.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ApiKeyProxyModule } from './adapter/proxy/api-key-proxy/api-key-proxy.m
       validate: ZodValidatorFactory(serverSchema),
       load: [serverConfig]
     }),
+    EventEmitterModule.forRoot({ verboseMemoryLeak: true }),
     PrismaModule,
     WinstonModule,
     HeartBeatModule,

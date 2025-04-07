@@ -45,4 +45,19 @@ export class CreateOrderFromExternalSourceDto
     @IsNumber()
     @Min(1900)
     public readonly orderYear: number;
+
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
+    public readonly branchKey?: string | undefined;
+
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
+    public readonly companyKey?: string | undefined;
+
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
+    public readonly corporativeKey?: string | undefined;
 }

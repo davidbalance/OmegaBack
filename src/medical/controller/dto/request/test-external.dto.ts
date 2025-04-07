@@ -13,13 +13,15 @@ export class CreateTestFromExternalSourceRequestDto
     @IsNotEmpty()
     public readonly examName: string;
 
+    @IsOptional()
     @IsString()
     @IsNotEmpty()
-    public readonly examSubtype: string;
+    public readonly examSubtype: string = 'Default';
 
+    @IsOptional()
     @IsString()
     @IsNotEmpty()
-    public readonly examType: string;
+    public readonly examType: string = 'Default';
 
     @IsOptional()
     @IsString()

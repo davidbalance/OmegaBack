@@ -13,6 +13,10 @@ export type OrderExternalSourceResolverPayload = ResolverPayload & {
     orderKey: string;
     orderProcess: string;
     orderYear: number;
+
+    branchKey?: string;
+    companyKey?: string;
+    corporativeKey?: string;
 }
 export interface OrderExternalSourceResolver
     extends Resolver<OrderExternalSourceResolverPayload, OrderExternalConnectionModel> { }

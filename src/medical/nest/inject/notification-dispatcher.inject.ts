@@ -11,3 +11,9 @@ const Dispatcher = {
 }
 
 export const InjectNotificationDispatcher = (token: keyof typeof Dispatcher) => Inject(Dispatcher[token]);
+
+export const medicalEvent = {
+    testCreated: 'medical.test.created',
+    orderCreated: 'medical.order.created',
+    patientCreated: 'medical.patient.created',
+}
