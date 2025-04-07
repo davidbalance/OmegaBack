@@ -824,7 +824,6 @@ view OrderDoctorModel {
   orderLeftReport   Int                @map("medical_order_left_reports") @db.Int
   orderEmissionDate DateTime           @map("medical_order_emission_date") @db.Date
   doctorDni         String             @map("doctor_dni") @db.VarChar(10)
-  companyRuc        String             @map("company_ruc") @db.VarChar(13)
   patientDni        String             @map("patient_dni") @db.VarChar(16)
 
   @@map("v_m_order_doctors")

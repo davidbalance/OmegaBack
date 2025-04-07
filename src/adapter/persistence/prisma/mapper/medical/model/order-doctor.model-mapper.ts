@@ -3,6 +3,6 @@ import { OrderDoctorModel as PrismaOrderDoctorModel } from "@prisma/client";
 
 export class OrderDoctorModelMapper {
     static toModel(value: PrismaOrderDoctorModel): OrderDoctorModel {
-        return new OrderDoctorModel({ ...value });
+        return new OrderDoctorModel({ ...value, companyRuc: '' });
     }
 }
