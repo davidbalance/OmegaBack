@@ -107,6 +107,7 @@ import { ResultGetFileFromExternalSourceQueryProvider } from "./nest/query/test/
 import { OrderExternalNotificationDispatcherProvider } from "./nest/notification-dispatcher/order-external.nest-notification-dispatcher";
 import { TestExternalNotificationDispatcherProvider } from "./nest/notification-dispatcher/test-external.nest-notification-dispatcher";
 import { PatientExternalNotificationDispatcherProvider } from "./nest/notification-dispatcher/patient-external.nest-notification-dispatcher";
+import { CreateManyTestFromExternalSourceServiceProvider } from "./nest/service/create-many-test-from-external-source.nest-service";
 
 @Module({
     imports: [
@@ -146,6 +147,7 @@ import { PatientExternalNotificationDispatcherProvider } from "./nest/notificati
         OrderExternalSourceResolverProvider,
         TestExternalSourceResolverProvider,
 
+        CreateManyTestFromExternalSourceServiceProvider,
         CreatePatientFromExternalSourceServiceProvider,
         CreateOrderFromExternalSourceServiceProvider,
         CreateTestFromExternalSourceServiceProvider,

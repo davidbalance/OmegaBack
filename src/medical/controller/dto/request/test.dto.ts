@@ -1,4 +1,4 @@
-import { ApiResponseProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiResponseProperty } from "@nestjs/swagger";
 import { DiseaseReportCreateCommandPayload } from "@omega/medical/application/commands/test/disease-report-create.command";
 import { DiseaseReportEditCommandPayload } from "@omega/medical/application/commands/test/disease-report-edit.command";
 import { ReportAddContentCommandPayload } from "@omega/medical/application/commands/test/report-add-content.command";
@@ -62,6 +62,11 @@ export class ResultUploadBase64RequestDto implements Omit<ResultUploadBase64Comm
     @IsBase64()
     @IsNotEmpty()
     public readonly base64: string;
+}
+
+export class ResultUploadBufferRequestDto {
+    @ApiProperty({ type: 'string', format: 'binary' })
+    public readonly file: Express.Multer.File;
 }
 
 export class TestCreateRequestDto implements TestCreateCommandPayload {

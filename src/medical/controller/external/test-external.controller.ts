@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Res, StreamableFile, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
-import { ApiConsumes, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiConsumes, ApiOkResponse, ApiProduces, ApiTags } from "@nestjs/swagger";
 import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
 import { InjectService } from "@omega/medical/nest/inject/service.inject";
 import { ApiKeyGuard, OmegaApiKey } from "@shared/shared/nest/guard";
@@ -7,19 +7,20 @@ import { plainToInstance } from "class-transformer";
 import { CurrentUser } from "@shared/shared/nest/decorators/current_user.decorator";
 import { TestFindOneByExternalKeyQuery } from "@omega/medical/application/queries/test/test-find-one-by-external-key.query";
 import { CreateTestFromExternalSourceService } from "@omega/medical/application/service/create-test-from-external-source.service";
-import { TestModel } from "@omega/medical/core/model/test/test.model";
 import { TestModelMapper } from "../mapper/test.mapper";
-import { TestExternalResponseDto } from "../dto/response/test-external.dto";
-import { TestExternalModelMapper } from "../mapper/test.-external.mapper";
-import { CreateTestFromExternalSourceRequestDto } from "../dto/request/test-external.dto";
+import { TestExternalResponseDto, TestOrderExternalResponseDto } from "../dto/response/test-external.dto";
+import { TestExternalModelMapper } from "../mapper/test-external.mapper";
+import { CreateManyTestFromExternalSourceRequestDto, CreateTestFromExternalSourceRequestDto } from "../dto/request/test-external.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { InjectCommand } from "@omega/medical/nest/inject/command.inject";
 import { ResultUploadBufferFromExternalSourceCommand } from "@omega/medical/application/commands/test/result-upload-buffer-from-external-source.command";
 import { ResultUploadBase64FromExternalSourceCommand } from "@omega/medical/application/commands/test/result-upload-base64-from-external-source.command";
-import { ResultUploadBase64RequestDto } from "../dto/request/test.dto";
+import { ResultUploadBase64RequestDto, ResultUploadBufferRequestDto } from "../dto/request/test.dto";
 import { ResultGetFileFromExternalSourceQuery } from "@omega/medical/application/queries/test/result-get-file-from-external-source.query";
 import { Response } from "express";
 import { TestResponseDto } from "../dto/response/test.dto";
+import { CreateManyTestFromExternalSourceService } from "@omega/medical/application/service/create-many-test-from-external-source.service";
+import { TestOrderExternalModelMapper } from "../mapper/test-order-external.mapper";
 
 @ApiTags('Medical', 'External Connection')
 @OmegaApiKey()
@@ -29,6 +30,7 @@ export class TestExternalController {
     constructor(
         @InjectQuery('TestFindOneByExternalKey') private readonly findOneByExternalKey: TestFindOneByExternalKeyQuery,
         @InjectQuery('ResultGetFileFromExternalSource') private readonly resultGetFileQuery: ResultGetFileFromExternalSourceQuery,
+        @InjectService('CreateManyTestFromExternalSource') private readonly createManyByExternalSource: CreateManyTestFromExternalSourceService,
         @InjectService('CreateTestFromExternalSource') private readonly createByExternalSource: CreateTestFromExternalSourceService,
         @InjectCommand('ResultUploadBufferFromExternalSource') private readonly uploadBufferFromExternalSource: ResultUploadBufferFromExternalSourceCommand,
         @InjectCommand('ResultUploadBase64FromExternalSource') private readonly uploadBase64FromExternalSource: ResultUploadBase64FromExternalSourceCommand,
@@ -44,6 +46,8 @@ export class TestExternalController {
         return plainToInstance(TestResponseDto, data);
     }
 
+    @ApiOkResponse({ schema: { type: 'string', format: 'binary' }, })
+    @ApiProduces('application/pdf')
     @Get(':key/result')
     async getResultFile(
         @CurrentUser() app: string,
@@ -68,6 +72,16 @@ export class TestExternalController {
         return plainToInstance(TestExternalResponseDto, data);
     }
 
+    @Post('many')
+    async createManyFromExternalSource(
+        @CurrentUser() app: string,
+        @Body() body: CreateManyTestFromExternalSourceRequestDto
+    ): Promise<TestOrderExternalResponseDto> {
+        const value = await this.createManyByExternalSource.createAsync({ ...body, owner: app });
+        const data = TestOrderExternalModelMapper.toDTO(value);
+        return plainToInstance(TestOrderExternalResponseDto, data);
+    }
+
     @Post(':key/result/base64')
     async uploadResultBase64FromExternalSource(
         @Param('key') key: string,
@@ -79,6 +93,7 @@ export class TestExternalController {
     }
 
     @ApiConsumes('multipart/form-data')
+    @ApiBody({ type: ResultUploadBufferRequestDto })
     @UseInterceptors(FileInterceptor('file'))
     @Post(':key/result/file')
     async uploadResultFileFromExternalSource(

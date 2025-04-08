@@ -22,11 +22,11 @@ export class ClientExternalController {
         @InjectService('CreatePatientFromExternalSource') private readonly createByExternalSource: CreatePatientFromExternalSourceService,
     ) { }
 
-    @Get(':key')
+    @Get(':patientDni')
     async findFromExternalSource(
-        @Param('key') key: string
+        @Param('patientDni') patientDni: string
     ): Promise<ClientResponseDto> {
-        const value = await this.findOneByExternalKey.handleAsync({ patientDni: key });
+        const value = await this.findOneByExternalKey.handleAsync({ patientDni: patientDni });
         const data = ClientModelMapper.toDTO(value);
         return plainToInstance(ClientResponseDto, data);
     }
