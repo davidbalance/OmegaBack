@@ -2,7 +2,6 @@ import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { ClientFindOneByDniQuery } from "@omega/medical/application/queries/client/client-find-one-by-dni.query";
 import { CreatePatientFromExternalSourceService } from "@omega/medical/application/service/create-patient-from-external-source.service";
-import { ClientModel } from "@omega/medical/core/model/client/client.model";
 import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
 import { InjectService } from "@omega/medical/nest/inject/service.inject";
 import { ApiKeyGuard, OmegaApiKey } from "@shared/shared/nest/guard";

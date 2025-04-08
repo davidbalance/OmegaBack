@@ -6,6 +6,7 @@ import { PatientExternalSourceResolverPayload } from "../resolver/patient-extern
 import { CreateTestFromExternalSourceService } from "./create-test-from-external-source.service";
 import { OrderExternalConnectionRepository } from "../repository/model.repositories";
 import { OrderExternalKeyNotFoundError } from "@omega/medical/core/domain/order/errors/order-external-key.errors";
+import { CreateOrderFromExternalSourceService } from "./create-order-from-external-source.service";
 
 export type TestOrderExternal = {
     patientDni: string;
@@ -24,13 +25,15 @@ export type CreateManyTestFromExternalSourcePayload = CreateFromExternalSourcePa
 export class CreateManyTestFromExternalSourceService
     implements CreateFromExternalSource<CreateManyTestFromExternalSourcePayload, TestOrderExternal> {
     constructor(
-        private readonly externalConnection: OrderExternalConnectionRepository,
+        private readonly createOrder: CreateOrderFromExternalSourceService,
         private readonly createTest: CreateTestFromExternalSourceService
     ) { }
 
     async createAsync({ tests, ...value }: CreateManyTestFromExternalSourcePayload): Promise<TestOrderExternal> {
         const take: number = 5;
         const externalTests: TestExternalConnectionModel[] = [];
+
+        const externalOrder = await this.createOrder.createAsync({ ...value });
 
         for (let i = 0; i < tests.length; i += take) {
             const promises = tests
@@ -40,13 +43,6 @@ export class CreateManyTestFromExternalSourceService
             const newTests = await Promise.all(promises);
             externalTests.push(...newTests);
         }
-
-        const externalOrder = await this.externalConnection.findOneAsync([
-            { field: 'orderExternalKey', operator: 'eq', value: value.orderKey },
-            { field: 'orderExternalOwner', operator: 'eq', value: value.owner },
-        ]);
-
-        if (!externalOrder) throw new OrderExternalKeyNotFoundError(value.orderKey, value.owner);
 
         return {
             patientDni: externalOrder.patientDni,
