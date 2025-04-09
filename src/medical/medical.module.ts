@@ -108,6 +108,7 @@ import { OrderExternalNotificationDispatcherProvider } from "./nest/notification
 import { TestExternalNotificationDispatcherProvider } from "./nest/notification-dispatcher/test-external.nest-notification-dispatcher";
 import { PatientExternalNotificationDispatcherProvider } from "./nest/notification-dispatcher/patient-external.nest-notification-dispatcher";
 import { CreateManyTestFromExternalSourceServiceProvider } from "./nest/service/create-many-test-from-external-source.nest-service";
+import { TestFindManyByExternalKeyQueryProvider } from "./nest/query/test/test-find-many-by-external-key.query";
 
 @Module({
     imports: [
@@ -227,6 +228,7 @@ import { CreateManyTestFromExternalSourceServiceProvider } from "./nest/service/
         TestFileResultReportQueryProvider,
         TestGetZipQueryProvider,
         TestFindOneQueryProvider,
+        TestFindManyByExternalKeyQueryProvider,
         TestFindOneByExternalKeyQueryProvider,
         TestFindManyQueryProvider,
         TestReportGetFileQueryProvider

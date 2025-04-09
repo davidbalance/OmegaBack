@@ -21,6 +21,7 @@ import { Response } from "express";
 import { TestResponseDto } from "../dto/response/test.dto";
 import { CreateManyTestFromExternalSourceService } from "@omega/medical/application/service/create-many-test-from-external-source.service";
 import { TestOrderExternalModelMapper } from "../mapper/test-order-external.mapper";
+import { TestFindManyByExternalKeyQuery } from "@omega/medical/application/queries/test/test-find-many-by-external-key.query";
 
 @ApiTags('Medical', 'External Connection')
 @OmegaApiKey()
@@ -29,6 +30,7 @@ import { TestOrderExternalModelMapper } from "../mapper/test-order-external.mapp
 export class TestExternalController {
     constructor(
         @InjectQuery('TestFindOneByExternalKey') private readonly findOneByExternalKey: TestFindOneByExternalKeyQuery,
+        @InjectQuery('TestFindManyByExternalKey') private readonly findManyByExternalKey: TestFindManyByExternalKeyQuery,
         @InjectQuery('ResultGetFileFromExternalSource') private readonly resultGetFileQuery: ResultGetFileFromExternalSourceQuery,
         @InjectService('CreateManyTestFromExternalSource') private readonly createManyByExternalSource: CreateManyTestFromExternalSourceService,
         @InjectService('CreateTestFromExternalSource') private readonly createByExternalSource: CreateTestFromExternalSourceService,
@@ -43,6 +45,16 @@ export class TestExternalController {
     ): Promise<TestResponseDto> {
         const value = await this.findOneByExternalKey.handleAsync({ owner: app, value: key });
         const data = TestModelMapper.toDTO(value);
+        return plainToInstance(TestResponseDto, data);
+    }
+
+    @Get(':orderKey/many')
+    async findManyFromExternalSource(
+        @CurrentUser() app: string,
+        @Param('key') key: string
+    ): Promise<TestResponseDto[]> {
+        const value = await this.findManyByExternalKey.handleAsync({ owner: app, value: key });
+        const data = value.map(e => TestModelMapper.toDTO(e));
         return plainToInstance(TestResponseDto, data);
     }
 

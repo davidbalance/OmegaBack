@@ -34,6 +34,7 @@ export const TestGetZipQueryToken = 'TestGetZipQuery';
 export const TestFindManyQueryToken = 'TestFindManyQuery';
 export const TestFindOneQueryToken = 'TestFindOneQuery';
 export const TestFindOneByExternalKeyQueryToken = 'TestFindOneByExternalKeyQuery';
+export const TestFindManyByExternalKeyQueryToken = 'TestFindManyByExternalKeyQuery';
 export const TestReportGetFileQueryToken = 'TestReportGetFileQuery';
 export const TestFileResultReportQueryToken = 'TestFileResultReportQuery';
 export const TestFileResultCountQueryToken = 'TestFileResultCountQuery';
@@ -73,6 +74,7 @@ const query = {
     TestFindOne: TestFindOneQueryToken,
     TestFindMany: TestFindManyQueryToken,
     TestFindOneByExternalKey: TestFindOneByExternalKeyQueryToken,
+    TestFindManyByExternalKey: TestFindManyByExternalKeyQueryToken,
     TestReportGetFile: TestReportGetFileQueryToken,
     TestFileResultReport: TestFileResultReportQueryToken,
     TestFileResultCount: TestFileResultCountQueryToken,
