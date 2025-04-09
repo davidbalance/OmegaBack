@@ -109,7 +109,6 @@ export class CorporativePrismaRepository implements CorporativeRepository {
 
     async addCorporativeExternalKey(value: CorporativeExternalKeyProps): Promise<void> {
         try {
-            console.log(value);
             await this.prisma.corporativeExternalKey.create({
                 data: { owner: value.owner, value: value.value, corporativeId: value.corporativeId }
             });

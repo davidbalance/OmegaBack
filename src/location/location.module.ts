@@ -56,7 +56,7 @@ import { CorporativeExternalSourceResolverProvider } from "./nest/resolver/corpo
 import { CompanyExternalController } from "./controller/external/company-external.controller";
 import { BranchExternalController } from "./controller/external/branch-external.controller";
 import { CorporativeExternalController } from "./controller/external/corporative-external.controller";
-import { OrderExternalCreatedListener } from "./listener/order-external-created,listener";
+import { OrderExternalCreatedListener } from "./listener/order-external-created.listener";
 
 @Module({
     controllers: [

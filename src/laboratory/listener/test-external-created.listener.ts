@@ -14,7 +14,6 @@ export class TestExternalCreatedListener {
 
     @OnEvent(medicalEvent.testCreated, { async: true })
     async handleTestCreatedEvent(payload: Required<TestExternalCreatedEventPayload>): Promise<void> {
-        console.log(`TestExternalCreatedListener -> ${JSON.stringify(payload)}`);
         const mapped = TestExternalCreatedMapper.toService(payload);
         await this.service.createAsync(mapped);
     }

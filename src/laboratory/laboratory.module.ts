@@ -38,7 +38,7 @@ import { CreateExamFromExternalSourceServiceProvider } from "./nest/service/crea
 import { ExamExternalController } from "./controller/external/exam-external.controller";
 import { ExamSubtypeExternalController } from "./controller/external/exam-subtype-external.controller";
 import { ExamTypeExternalController } from "./controller/external/exam-type-external.controller";
-import { TestExternalCreatedListener } from "./listener/test-external-created,listener";
+import { TestExternalCreatedListener } from "./listener/test-external-created.listener";
 
 @Module({
     controllers: [

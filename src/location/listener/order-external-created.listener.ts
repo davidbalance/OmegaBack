@@ -14,7 +14,6 @@ export class OrderExternalCreatedListener {
 
     @OnEvent(medicalEvent.orderCreated, { async: true })
     async handleTestCreatedEvent(payload: Required<OrderExternalCreatedEventPayload>): Promise<void> {
-        console.log(`OrderExternalCreatedListener -> ${JSON.stringify(payload)}`);
         const mapped = OrderExternalCreatedMapper.toService(payload);
         await this.service.createAsync(mapped);
     }
