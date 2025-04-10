@@ -443,7 +443,7 @@ model ExamExternalKey {
 // Location Module
 model CorporativeGroup {
   id   String @id @default(uuid()) @map("corporative_id") @db.Char(36)
-  name String @map("corporative_name") @db.VarChar(64)
+  name String @unique @map("corporative_name") @db.VarChar(64)
 
   isActive  Boolean   @default(true) @map("is_active") @db.TinyInt
   createdAt DateTime  @default(now()) @map("created_at")
