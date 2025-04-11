@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build docker image
-        run: docker build -t ${{ secrets.DOCKER_IMAGE }} .
+        run: docker build -t ${{ secrets.DOCKER_IMAGE }}:${{ secrets.DOCKER_DEV_TAG }} .
         working-directory: .
 
       - name: Login to Docker Hub
@@ -47,7 +47,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_IMAGE }}
+        run: docker push ${{ secrets.DOCKER_IMAGE }}:${{ secrets.DOCKER_DEV_TAG }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -59,26 +59,12 @@ jobs:
       - name: Check Repository
         uses: actions/checkout@v4
 
-      # - name: SSH into server and backup database
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.SERVER_HOST }}
-      #     username: ${{ secrets.SERVER_USERNAME }}
-      #     password: ${{ secrets.SERVER_PASSWORD }}
-      #     script: |
-      #       docker exec ${{ secrets.MYSQL_CONTAINER_NAME }} bash -c "mysqldump --no-create-info -u ${{ secrets.MYSQL_USER }} -p${{ secrets.MYSQL_PASSWORD }} ${{ secrets.MYSQL_DATABASE }} > /backup/backup_$(date +%F_%T).sql"
-
       - name: SSH into server and deploy application
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
+          host: ${{ secrets.SERVER_DEV_HOST }}
+          username: ${{ secrets.SERVER_DEV_USERNAME }}
+          password: ${{ secrets.SERVER_DEV_PASSWORD }}
           script: |
             cd ${{ secrets.DOCKER_COMPOSE_DIRECTORY }}
-            docker-compose stop ${{ secrets.DOCKER_SERVICE }} || true
-            docker-compose rm -f ${{ secrets.DOCKER_SERVICE }}
-            docker-compose pull ${{ secrets.DOCKER_SERVICE }}
-            docker-compose up -d --build ${{ secrets.DOCKER_SERVICE }}
-            docker rmi $(docker images -f "dangling=true" -q) || true
-            docker system prune -a
+            sh ./${{ secrets.DEPLOY_SCRIPT }}.sh
