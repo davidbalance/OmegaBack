@@ -1,3 +1,4 @@
+import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
 import { AddExamToSubtypePayload, RenameExamFromSubtypePayload } from "./exam-subtype.payload";
 
 export type CreateExamTypePayload = {
@@ -31,3 +32,14 @@ export type MoveExamPayload = {
     fromSubtypeId: string;
     examId: string;
 }
+
+export type AddExamTypeExternalKey = ExternalKeyProps;
+
+export type AddExamSubtypeExternalKeyFromExamType = ExternalKeyProps & {
+    subtypeId: string;
+};
+
+export type AddExamExternalKeyFromExamType = ExternalKeyProps & {
+    subtypeId: string;
+    examId: string;
+};

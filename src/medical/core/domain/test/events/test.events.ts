@@ -1,6 +1,7 @@
 import { ExamPayload } from "../payloads/test.payloads";
 import { DiseaseReport } from "../disease_report.domain";
 import { DomainEvent } from "@shared/shared/domain";
+import { TestExternalKey } from "../value_objects/test-external-key.value-object";
 
 const TestEventKeys = {
     Removed: "test.removed",
@@ -9,14 +10,15 @@ const TestEventKeys = {
     Unchecked: "test.unchecked",
     ExamChanged: "test.examChanged",
     DiseaseAdded: "test.diseaseAdded",
-    DiseaseRemoved: "test.diseaseRemoved"
+    DiseaseRemoved: "test.diseaseRemoved",
+    ExternalKeyAdded: "test.externalKey.externalKeyAdded",
 };
 
 export class TestIsEvent {
     public static isTestRemovedEvent(event: DomainEvent<unknown>): event is TestRemovedEvent {
         return event.key === TestEventKeys.Removed;
     }
-    
+
     public static isTestReactivatedEvent(event: DomainEvent<unknown>): event is TestReactivatedEvent {
         return event.key === TestEventKeys.Reactivated;
     }
@@ -39,6 +41,10 @@ export class TestIsEvent {
 
     public static isTestDiseaseRemovedEvent(event: DomainEvent<unknown>): event is TestDiseaseRemovedEvent {
         return event.key === TestEventKeys.DiseaseRemoved;
+    }
+
+    public static isTestExternalKeyAddedEvent(event: DomainEvent<unknown>): event is TestExternalKeyAddedEvent {
+        return event.key === TestEventKeys.ExternalKeyAdded;
     }
 }
 
@@ -91,5 +97,11 @@ export type TestReactivatedEventPayload = { testId: string };
 export class TestReactivatedEvent extends DomainEvent<TestReactivatedEventPayload> {
     constructor(testId: string) {
         super({ key: TestEventKeys.Reactivated, value: { testId } });
+    }
+}
+
+export class TestExternalKeyAddedEvent extends DomainEvent<TestExternalKey> {
+    constructor(value: TestExternalKey) {
+        super({ key: TestEventKeys.ExternalKeyAdded, value });
     }
 }

@@ -1,14 +1,20 @@
 import { Company } from "./company.domain";
-import { AddBranchToCorporativePayload, AddCompanyToCorporativePayload, CreateCorporativePayload, MoveBranchPayload, RemoveBranchFromCorporativePayload } from "./payloads/corporative.payloads";
-import { CorporativeCompanyAddedEvent, CorporativeCompanyMovedEvent, CorporativeCompanyRemovedEvent, CorporativeRemovedEvent } from "./events/corporative.events";
-import { CompanyBranchAddedEvent, CompanyBranchMovedEvent, CompanyBranchRemovedEvent } from "./events/company.events";
+import { AddBranchExternalKeyFromCorporativePayload, AddBranchToCorporativePayload, AddCompanyExternalKeyFromCorporativePayload, AddCompanyToCorporativePayload, AddCorporativeExternalKeyPayload, CreateCorporativePayload, MoveBranchPayload, RemoveBranchFromCorporativePayload } from "./payloads/corporative.payloads";
+import { CorporativeCompanyAddedEvent, CorporativeCompanyMovedEvent, CorporativeCompanyRemovedEvent, CorporativeExternalKeyAddedEvent, CorporativeRemovedEvent } from "./events/corporative.events";
+import { CompanyBranchAddedEvent, CompanyBranchMovedEvent, CompanyBranchRemovedEvent, CompanyExternalKeyAddedEvent } from "./events/company.events";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
 import { CompanyConflictError, CompanyNotFoundError } from "./errors/company.errors";
 import { CorporativeForbiddenError, CorporativeInvalidError } from "./errors/corporative.errors";
+import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
+import { CorporativeExternalKey } from "./value_objects/corporative-external-key.value-object";
+import { CorporativeExternalKeyConflictError } from "./errors/corporative-external-key.errors";
+import { BranchNotFoundError } from "./errors/branch.errors";
+import { BranchExternalKeyAddedEvent } from "./events/branch.events";
 
 export type CorporativeProps = AggregateProps & {
     companies: Company[];
     name: string;
+    externalKeys: CorporativeExternalKey[];
 };
 export class Corporative extends Aggregate<CorporativeProps> {
 
@@ -20,10 +26,19 @@ export class Corporative extends Aggregate<CorporativeProps> {
         return this.props.name;
     }
 
+    public get externalKeys(): ReadonlyArray<CorporativeExternalKey> {
+        return this.props.externalKeys;
+    }
+
+    private ensureUniqueExternalKey(key: ExternalKeyProps): void {
+        if (this.props.externalKeys.some(e => e.owner === key.owner && e.value === key.value)) throw new CorporativeExternalKeyConflictError(key.owner, key.value);
+    }
+
     public static create(value: CreateCorporativePayload): Corporative {
         return new Corporative({
             id: crypto.randomUUID(),
             companies: [],
+            externalKeys: [],
             ...value
         });
     }
@@ -126,5 +141,27 @@ export class Corporative extends Aggregate<CorporativeProps> {
             toCompanyId: payload.toCompanyId,
             toCorporativeId: target.id
         }))
+    }
+
+    public addExternalKey(payload: AddCorporativeExternalKeyPayload): void {
+        this.ensureUniqueExternalKey(payload);
+        const newKey = CorporativeExternalKey.create({ ...payload, corporativeId: this.id });
+        const newExternalKeys = [...this.props.externalKeys, newKey];
+        this.updateProps({ externalKeys: newExternalKeys });
+        this.emit(new CorporativeExternalKeyAddedEvent({ ...payload, corporativeId: this.id }));
+    }
+
+    public addExternalKeyToCompany(payload: AddCompanyExternalKeyFromCorporativePayload): void {
+        const company = this.props.companies.find(e => e.id === payload.companyId);
+        if (!company) throw new CompanyNotFoundError(payload.companyId);
+        company.addExternalKey(payload);
+        this.emit(new CompanyExternalKeyAddedEvent(payload));
+    }
+
+    public addExternalKeyToBranch(payload: AddBranchExternalKeyFromCorporativePayload): void {
+        const company = this.props.companies.find(e => e.id === payload.companyId);
+        if (!company) throw new CompanyNotFoundError(payload.companyId);
+        company.addExternalKeyToBranch(payload);
+        this.emit(new BranchExternalKeyAddedEvent(payload));
     }
 }

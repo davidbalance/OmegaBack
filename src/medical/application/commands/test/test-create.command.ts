@@ -1,34 +1,17 @@
-import { CommandHandlerAsync } from "@shared/shared/application";
-import { CreateTestPayload } from "@omega/medical/core/domain/test/payloads/test.payloads";
-import { TestRepository as TestAggregateRepository } from "../../repository/aggregate.repositories";
-import { TestInnerRepository } from "../../repository/model.repositories";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
-import { TestConflictError, TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
+import { BaseTestCreateCommand, BaseTestCreateCommandPayload } from "./base.test-create.command";
 
-export type TestCreateCommandPayload = CreateTestPayload;
-export class TestCreateCommand implements CommandHandlerAsync<TestCreateCommandPayload, void> {
-    constructor(
-        private readonly repository: TestAggregateRepository,
-        private readonly model: TestInnerRepository
-    ) { }
+export type TestCreateCommandPayload = BaseTestCreateCommandPayload;
+export class TestCreateCommand extends BaseTestCreateCommand<TestCreateCommandPayload> {
 
     async handleAsync(value: TestCreateCommandPayload): Promise<void> {
-        const exists = await this.model.findOneAsync([
-            { field: 'orderId', operator: 'eq', value: value.orderId },
-            { field: 'examName', operator: 'eq', value: value.examName },
-            { field: 'examSubtype', operator: 'eq', value: value.examSubtype },
-            { field: 'examType', operator: 'eq', value: value.examType },
-        ]);
+        const exists = await this.getTest(value);
         let test: Test;
         if (exists) {
-            if (exists.isActive) throw new TestConflictError();
-            const value = await this.repository.findOneAsync({ filter: [{ field: 'id', operator: 'eq', value: exists.testId }] });
-            if (!value) throw new TestNotFoundError(exists.testId);
-            test = value;
-            test.reactivate();
+            test = await this.reactivateTest(exists.testId, exists.isActive);
         } else {
-            test = Test.create(value);
+            test = this.createTest(value, value.orderId);
         }
-        await this.repository.saveAsync(test);
+        await this.aggregateRepository.saveAsync(test);
     }
 }

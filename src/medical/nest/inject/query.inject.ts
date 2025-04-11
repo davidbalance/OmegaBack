@@ -22,15 +22,19 @@ export const OrderProcessFindManyQueryToken = 'OrderProcessFindManyQuery';
 export const OrderFindOneQueryToken = 'OrderFindOneQuery';
 export const OrderYearFindManyQueryToken = 'OrderYearFindManyQuery';
 export const OrderFindManyQueryToken = 'OrderFindManyQuery';
+export const OrderFindOneByExternalKeyQueryToken = 'OrderFindOneByExternalKeyQuery';
 export const DiseaseReportFindManyQueryToken = 'DiseaseReportFindManyQuery';
 export const DiseaseReportFindOneQueryToken = 'DiseaseReportFindOneQuery';
 export const ReportFindOneQueryToken = 'ReportFindOneQuery';
 export const ReportGetFileQueryToken = 'ReportGetFileQuery';
+export const ResultGetFileFromExternalSourceQueryToken = 'ResultGetFileFromExternalSourceQuery';
 export const ResultGetFileQueryToken = 'ResultGetFileQuery';
 export const ResultGetFilepathQueryToken = 'ResultGetFilepathQuery';
 export const TestGetZipQueryToken = 'TestGetZipQuery';
 export const TestFindManyQueryToken = 'TestFindManyQuery';
 export const TestFindOneQueryToken = 'TestFindOneQuery';
+export const TestFindOneByExternalKeyQueryToken = 'TestFindOneByExternalKeyQuery';
+export const TestFindManyByExternalKeyQueryToken = 'TestFindManyByExternalKeyQuery';
 export const TestReportGetFileQueryToken = 'TestReportGetFileQuery';
 export const TestFileResultReportQueryToken = 'TestFileResultReportQuery';
 export const TestFileResultCountQueryToken = 'TestFileResultCountQuery';
@@ -58,15 +62,19 @@ const query = {
     OrderFindOne: OrderFindOneQueryToken,
     OrderYearFindMany: OrderYearFindManyQueryToken,
     OrderFindMany: OrderFindManyQueryToken,
+    OrderFindOneByExternalKey: OrderFindOneByExternalKeyQueryToken,
     DiseaseReportFindMany: DiseaseReportFindManyQueryToken,
     DiseaseReportFindOne: DiseaseReportFindOneQueryToken,
     ReportFindOne: ReportFindOneQueryToken,
     ReportGetFile: ReportGetFileQueryToken,
+    ResultGetFileFromExternalSource: ResultGetFileFromExternalSourceQueryToken,
     ResultGetFile: ResultGetFileQueryToken,
     ResultGetFilepath: ResultGetFilepathQueryToken,
     TestGetZipQuery: TestGetZipQueryToken,
     TestFindOne: TestFindOneQueryToken,
     TestFindMany: TestFindManyQueryToken,
+    TestFindOneByExternalKey: TestFindOneByExternalKeyQueryToken,
+    TestFindManyByExternalKey: TestFindManyByExternalKeyQueryToken,
     TestReportGetFile: TestReportGetFileQueryToken,
     TestFileResultReport: TestFileResultReportQueryToken,
     TestFileResultCount: TestFileResultCountQueryToken,

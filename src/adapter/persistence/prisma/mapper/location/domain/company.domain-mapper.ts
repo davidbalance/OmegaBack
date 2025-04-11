@@ -1,8 +1,13 @@
 import { Company } from "@omega/location/core/domain/corporative/company.domain";
-import { Company as PrismaCompany, Prisma, Branch as PrismaBranch } from "@prisma/client";
-import { BranchDomainMapper } from "./branch.domain-mapper";
+import {
+    Company as PrismaCompany,
+    CompanyExternalKey as PrismaCompanyExternalKey,
+    Prisma
+} from "@prisma/client";
+import { BranchDomainMapper, PrismaBranchExtended } from "./branch.domain-mapper";
+import { CompanyExternalKey } from "@omega/location/core/domain/corporative/value_objects/company-external-key.value-object";
 
-type PrismaCompanyWithBranches = PrismaCompany & { branches: PrismaBranch[] }
+export type PrismaCompanyExtended = PrismaCompany & { branches: PrismaBranchExtended[], externalKeys: PrismaCompanyExternalKey[] }
 
 export class CompanyDomainMapper {
     static toPrisma(value: Company): Prisma.CompanyUncheckedCreateInput {
@@ -16,10 +21,11 @@ export class CompanyDomainMapper {
         };
     }
 
-    static toDomain(value: PrismaCompanyWithBranches): Company {
+    static toDomain(value: PrismaCompanyExtended): Company {
         return Company.rehydrate({
             ...value,
-            branches: value.branches.map(e => BranchDomainMapper.toDomain(e))
+            branches: value.branches.map(e => BranchDomainMapper.toDomain(e)),
+            externalKeys: value.externalKeys.map(e => CompanyExternalKey.create({ ...e }))
         });
     }
 }

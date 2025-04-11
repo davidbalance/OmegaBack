@@ -14,6 +14,8 @@ import { ZodValidatorFactory } from '@shared/shared/nest/factories';
 import { AttributeProxyModule } from './adapter/proxy/attribute_proxy/attribute_proxy.module';
 import { WinstonModule } from '@db-logger/db-logger';
 import { HeartBeatModule } from '@heart-beat/heart-beat';
+import { ApiKeyProxyModule } from './adapter/proxy/api-key-proxy/api-key-proxy.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -23,10 +25,12 @@ import { HeartBeatModule } from '@heart-beat/heart-beat';
       validate: ZodValidatorFactory(serverSchema),
       load: [serverConfig]
     }),
+    EventEmitterModule.forRoot({ verboseMemoryLeak: true }),
     PrismaModule,
     WinstonModule,
     HeartBeatModule,
     AuthProxyModule,
+    ApiKeyProxyModule,
     AttributeProxyModule,
     AuthModule,
     DiseaseModule,

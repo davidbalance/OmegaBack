@@ -8,6 +8,7 @@ import { ClientModel } from "@omega/medical/core/model/client/client.model";
 import { OrderChecklistModel } from "@omega/medical/core/model/order/order-checklist.model";
 import { OrderCloudFileModel } from "@omega/medical/core/model/order/order-cloud-file.model";
 import { OrderDoctorModel } from "@omega/medical/core/model/order/order-doctor.model";
+import { OrderExternalConnectionModel } from "@omega/medical/core/model/order/order-external-connection.model";
 import { OrderPatientModel } from "@omega/medical/core/model/order/order-patient.model";
 import { OrderProcessModel } from "@omega/medical/core/model/order/order-process.model";
 import { OrderYearModel } from "@omega/medical/core/model/order/order-year.model";
@@ -15,6 +16,7 @@ import { OrderModel } from "@omega/medical/core/model/order/order.model";
 import { DiseaseReportModel } from "@omega/medical/core/model/test/disease-report.model";
 import { ReportModel } from "@omega/medical/core/model/test/report.model";
 import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
+import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 import { TestInnerModel } from "@omega/medical/core/model/test/test-inner.model";
 import { TestReportModel } from "@omega/medical/core/model/test/test-report.model";
 import { TestModel } from "@omega/medical/core/model/test/test.model";
@@ -36,6 +38,7 @@ export type OrderPatientRepository = ModelRepository<OrderPatientModel> & CountR
 export type OrderProcessRepository = ModelRepository<OrderProcessModel>;
 export type OrderYearRepository = ModelRepository<OrderYearModel>;
 export type OrderRepository = ModelRepository<OrderModel> & CountRepository<OrderModel>;
+export type OrderExternalConnectionRepository = ModelRepository<OrderExternalConnectionModel>;
 
 export type DiseaseReportRepository = ModelRepository<DiseaseReportModel>;
 export type ReportRepository = ModelRepository<ReportModel>;
@@ -44,3 +47,4 @@ export type TestReportRepository = ModelRepository<TestReportModel>;
 export type TestRepository = ModelRepository<TestModel>;
 export type TestInnerRepository = ModelRepository<TestInnerModel>;
 export type TestFileResultRepository = ModelRepository<TestFileResultModel> & CountRepository<TestFileResultModel>;
+export type TestExternalConnectionRepository = ModelRepository<TestExternalConnectionModel>;

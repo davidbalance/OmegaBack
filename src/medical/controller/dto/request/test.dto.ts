@@ -1,11 +1,13 @@
+import { ApiProperty, ApiResponseProperty } from "@nestjs/swagger";
 import { DiseaseReportCreateCommandPayload } from "@omega/medical/application/commands/test/disease-report-create.command";
 import { DiseaseReportEditCommandPayload } from "@omega/medical/application/commands/test/disease-report-edit.command";
 import { ReportAddContentCommandPayload } from "@omega/medical/application/commands/test/report-add-content.command";
+import { ResultUploadBase64CommandPayload } from "@omega/medical/application/commands/test/result-upload-base64.command";
 import { TestCreateCommandPayload } from "@omega/medical/application/commands/test/test-create.command";
 import { TestEditExamCommandPayload } from "@omega/medical/application/commands/test/test-edit-exam.command";
 import { TestFile, TestGetZipQueryPayload } from "@omega/medical/application/queries/test/test-get-zip.query";
 import { Type } from "class-transformer";
-import { IsArray, IsEnum, IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsArray, IsBase64, IsEnum, IsNotEmpty, IsString, IsUUID } from "class-validator";
 
 export class DiseaseReportCreateRequestDto implements DiseaseReportCreateCommandPayload {
     @IsUUID()
@@ -56,10 +58,16 @@ export class ReportRequestDto implements Omit<ReportAddContentCommandPayload, 't
     public readonly content: string;
 }
 
-/* export class ResultUploadFileRequestDto {
+export class ResultUploadBase64RequestDto implements Omit<ResultUploadBase64CommandPayload, 'testId'> {
+    @IsBase64()
+    @IsNotEmpty()
+    public readonly base64: string;
+}
+
+export class ResultUploadBufferRequestDto {
     @ApiProperty({ type: 'string', format: 'binary' })
     public readonly file: Express.Multer.File;
-} */
+}
 
 export class TestCreateRequestDto implements TestCreateCommandPayload {
     @IsUUID()

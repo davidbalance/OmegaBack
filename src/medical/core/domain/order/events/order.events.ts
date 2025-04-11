@@ -1,10 +1,12 @@
 import { DomainEvent } from "@shared/shared/domain";
+import { OrderExternalKey } from "../value_objects/order-external-key.value-object";
 
 const OrderEventKeys = {
     Removed: "order.removed",
     MailSended: "order.mailSended",
     StatusChangedToCreated: "order.statusChangedToOpen",
-    statusChangedToValidated: "order.statusChangedToValidated"
+    StatusChangedToValidated: "order.statusChangedToValidated",
+    ExternalKeyAdded: "order.externalKey.externalKeyAdded",
 }
 
 export class OrderIsEvent {
@@ -17,11 +19,15 @@ export class OrderIsEvent {
     }
 
     public static isOrderStatusChangedToValidatedEvent(event: DomainEvent<unknown>): event is OrderStatusChangedToValidatedEvent {
-        return event.key === OrderEventKeys.statusChangedToValidated;
+        return event.key === OrderEventKeys.StatusChangedToValidated;
     }
 
     public static isOrderRemovedEvent(event: DomainEvent<unknown>): event is OrderRemovedEvent {
         return event.key === OrderEventKeys.Removed;
+    }
+
+    public static isOrderExternalKeyAddedEvent(event: DomainEvent<unknown>): event is OrderExternalKeyAddedEvent {
+        return event.key === OrderEventKeys.ExternalKeyAdded;
     }
 }
 
@@ -48,7 +54,7 @@ export type OrderStatusChangedToValidatedEventPayload = {
 }
 export class OrderStatusChangedToValidatedEvent extends DomainEvent<OrderStatusChangedToValidatedEventPayload> {
     constructor(orderId: string) {
-        super({ key: OrderEventKeys.statusChangedToValidated, value: { orderId } });
+        super({ key: OrderEventKeys.StatusChangedToValidated, value: { orderId } });
     }
 }
 
@@ -58,5 +64,11 @@ export type OrderRemovedEventPayload = {
 export class OrderRemovedEvent extends DomainEvent<OrderRemovedEventPayload> {
     constructor(orderId: string) {
         super({ key: OrderEventKeys.Removed, value: { orderId } });
+    }
+}
+
+export class OrderExternalKeyAddedEvent extends DomainEvent<OrderExternalKey> {
+    constructor(value: OrderExternalKey) {
+        super({ key: OrderEventKeys.ExternalKeyAdded, value });
     }
 }

@@ -1,9 +1,11 @@
 import { DoctorValueObject } from "./value_objects/doctor.value_object";
 import { LocationValueObject } from "./value_objects/location.value_object";
-import { CreateOrderPayload } from "./payloads/order.payloads";
-import { OrderMailSendedEvent, OrderStatusChangedToValidatedEvent, OrderStatusChangedToCreatedEvent, OrderRemovedEvent } from "./events/order.events";
+import { AddOrderExternalKeyPayload, CreateOrderPayload } from "./payloads/order.payloads";
+import { OrderMailSendedEvent, OrderStatusChangedToValidatedEvent, OrderStatusChangedToCreatedEvent, OrderRemovedEvent, OrderExternalKeyAddedEvent } from "./events/order.events";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
-import { OrderRemoveCommand } from "@omega/medical/application/commands/order/order-remove.command";
+import { OrderExternalKey } from "./value_objects/order-external-key.value-object";
+import { OrderExternalKeyConflictError } from "./errors/order-external-key.errors";
+import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
 
 export type OrderStatus = 'created' | 'validated';
 export type OrderProps = AggregateProps & {
@@ -14,6 +16,7 @@ export type OrderProps = AggregateProps & {
     status: OrderStatus;
     process: string;
     year: number;
+    externalKeys: OrderExternalKey[];
 };
 type RehydrateOrderProps = Omit<OrderProps, 'doctor' | 'location'> & {
     doctorDni: string;
@@ -53,6 +56,14 @@ export class Order extends Aggregate<OrderProps> {
         return this.props.year;
     }
 
+    public get externalKeys(): ReadonlyArray<OrderExternalKey> {
+        return this.props.externalKeys;
+    }
+
+    private ensureUniqueExternalKey(key: ExternalKeyProps): void {
+        if (this.props.externalKeys.some(e => e.owner === key.owner && e.value === key.value)) throw new OrderExternalKeyConflictError(key.owner, key.value);
+    }
+
     public static create(value: CreateOrderPayload): Order {
         const newLocation = LocationValueObject.create(value);
         const newDoctor = DoctorValueObject.create({
@@ -66,6 +77,7 @@ export class Order extends Aggregate<OrderProps> {
             doctor: newDoctor,
             email: false,
             status: "created",
+            externalKeys: [],
             ...value
         });
     }
@@ -99,5 +111,13 @@ export class Order extends Aggregate<OrderProps> {
 
     public remove(): void {
         this.emit(new OrderRemovedEvent(this.id));
+    }
+
+    public addExternalKey(payload: AddOrderExternalKeyPayload): void {
+        this.ensureUniqueExternalKey(payload);
+        const newKey = OrderExternalKey.create({ ...payload, orderId: this.id });
+        const newExternalKeys = [...this.props.externalKeys, newKey];
+        this.updateProps({ externalKeys: newExternalKeys });
+        this.emit(new OrderExternalKeyAddedEvent(newKey));
     }
 }

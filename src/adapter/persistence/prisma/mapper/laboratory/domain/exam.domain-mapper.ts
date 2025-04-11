@@ -1,5 +1,8 @@
 import { Exam } from "@omega/laboratory/core/domain/exam/exam.domain";
-import { Exam as PrismaExam, Prisma } from "@prisma/client";
+import { ExamExternalKey } from "@omega/laboratory/core/domain/exam/value-objects/exam-external-key.value-object";
+import { Exam as PrismaExam, ExamExternalKey as PrismaExternalKey, Prisma } from "@prisma/client";
+
+export type PrismaExamExtended = PrismaExam & { externalKeys: PrismaExternalKey[] };
 
 export class ExamDomainMapper {
     static toPrisma(value: Exam): Prisma.ExamUncheckedCreateInput {
@@ -10,7 +13,10 @@ export class ExamDomainMapper {
         };
     }
 
-    static toDomain(value: PrismaExam): Exam {
-        return Exam.rehydrate({ ...value });
+    static toDomain(value: PrismaExamExtended): Exam {
+        return Exam.rehydrate({
+            ...value,
+            externalKeys: value.externalKeys.map(e => ExamExternalKey.create({ ...e }))
+        });
     }
 }

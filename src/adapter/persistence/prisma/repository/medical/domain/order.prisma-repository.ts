@@ -10,6 +10,7 @@ import { OrderDomainMapper } from "../../../mapper/medical/domain/order.domain-m
 import { OrderAggregateRepositoryToken } from "@omega/medical/nest/inject/aggregate-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
 import { OrderRemoveCommandPayload } from "@omega/medical/application/commands/order/order-remove.command";
+import { OrderExternalKey, OrderExternalKeyProps } from "@omega/medical/core/domain/order/value_objects/order-external-key.value-object";
 
 @Injectable()
 export class OrderPrismaRepository implements OrderRepository {
@@ -20,7 +21,7 @@ export class OrderPrismaRepository implements OrderRepository {
     async findOneAsync(filter: SearchCriteria<OrderProps>): Promise<Order | null> {
         try {
             const where = PrismaFilterMapper.map<OrderProps, Prisma.MedicalOrderWhereInput>(filter.filter);
-            const value = await this.prisma.medicalOrder.findFirst({ where: where });
+            const value = await this.prisma.medicalOrder.findFirst({ where: where, include: { externalKeys: true } });
             return value ? OrderDomainMapper.toDomain(value) : null;
         } catch (error) {
             Logger.error(error);
@@ -45,6 +46,9 @@ export class OrderPrismaRepository implements OrderRepository {
 
             else if (OrderIsEvent.isOrderRemovedEvent(event))
                 await this.removeOrder(event.value);
+
+            else if (OrderIsEvent.isOrderExternalKeyAddedEvent(event))
+                await this.addOrderExternalKey(event.value);
         }
     }
 
@@ -88,6 +92,17 @@ export class OrderPrismaRepository implements OrderRepository {
     async removeOrder(value: OrderRemoveCommandPayload): Promise<void> {
         try {
             await this.prisma.medicalOrder.update({ where: { id: value.orderId }, data: { isActive: false } });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async addOrderExternalKey(value: OrderExternalKey): Promise<void> {
+        try {
+            await this.prisma.medicalOrderExternalKey.create({
+                data: { owner: value.owner, value: value.value, orderId: value.orderId }
+            });
         } catch (error) {
             Logger.error(error);
             throw new RepositoryError();

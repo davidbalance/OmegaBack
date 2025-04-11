@@ -14,6 +14,7 @@ export const OrderPatientModelRepositoryToken = 'OrderPatientModelRepository';
 export const OrderProcessModelRepositoryToken = 'OrderProcessModelRepository';
 export const OrderYearModelRepositoryToken = 'OrderYearModelRepository';
 export const OrderModelRepositoryToken = 'OrderModelRepository';
+export const OrderExternalConnectionModelRepositoryToken = 'OrderExternalConnectionModelRepository';
 export const DiseaseReportModelRepositoryToken = 'DiseaseReportModelRepository';
 export const ReportModelRepositoryToken = 'ReportModelRepository';
 export const ResultFilepathModelRepositoryToken = 'ResultFilepathModelRepository';
@@ -22,6 +23,7 @@ export const TestReportModelRepositoryToken = 'TestReportModelRepository';
 export const TestModelRepositoryToken = 'TestModelRepository';
 export const TestInnerModelRepositoryToken = 'TestInnerModelRepository';
 export const TestFileResultRepositoryToken = 'TestFileResultModelRepository';
+export const TestExternalConnectionModelRepositoryToken = 'TestExternalConnectionModelRepository';
 
 const repository = {
     ClientArea: ClientAreaModelRepositoryToken,
@@ -38,6 +40,7 @@ const repository = {
     OrderProcess: OrderProcessModelRepositoryToken,
     OrderYear: OrderYearModelRepositoryToken,
     Order: OrderModelRepositoryToken,
+    OrderExternalConnection: OrderExternalConnectionModelRepositoryToken,
     DiseaseReport: DiseaseReportModelRepositoryToken,
     Report: ReportModelRepositoryToken,
     ResultFilepath: ResultFilepathModelRepositoryToken,
@@ -46,6 +49,7 @@ const repository = {
     Test: TestModelRepositoryToken,
     TestInner: TestInnerModelRepositoryToken,
     TestFileResult: TestFileResultRepositoryToken,
+    TestExternalConnection: TestExternalConnectionModelRepositoryToken,
 }
 
 export const InjectModelRepository = (token: keyof typeof repository) => Inject(repository[token]);

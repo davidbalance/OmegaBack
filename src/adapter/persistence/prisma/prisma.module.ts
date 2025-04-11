@@ -19,7 +19,7 @@ import { DiseaseGroupOptionModelRepositoryProvider } from "./repository/disease/
 import { DiseaseGroupModelRepositoryProvider } from "./repository/disease/model/disease-group.prisma-repository";
 import { DiseaseModelRepositoryProvider } from "./repository/disease/model/disease.prisma-repository";
 import { ExamTypeAggregateRepositoryToken } from "@omega/laboratory/nest/inject/aggregate-repository.inject";
-import { ExamSubtypeOptionModelRepositoryToken, ExamSubtypeModelRepositoryToken, ExamTypeOptionModelRepositoryToken, ExamTypeModelRepositoryToken, ExamModelRepositoryToken } from "@omega/laboratory/nest/inject/model-repository.inject";
+import { ExamSubtypeOptionModelRepositoryToken, ExamSubtypeModelRepositoryToken, ExamTypeOptionModelRepositoryToken, ExamTypeModelRepositoryToken, ExamModelRepositoryToken, ExamExternalConnectionModelRepositoryToken, ExamSubtypeExternalConnectionModelRepositoryToken, ExamTypeExternalConnectionModelRepositoryToken } from "@omega/laboratory/nest/inject/model-repository.inject";
 import { ExamTypeAggregateRepositoryProvider } from "./repository/laboratory/domain/exam-type.prisma-repository";
 import { ExamSubtypeOptionModelRepositoryProvider } from "./repository/laboratory/model/exam-subtype-option.prisma-repository";
 import { ExamSubtypeModelRepositoryProvider } from "./repository/laboratory/model/exam-subtype.prisma-repository";
@@ -27,7 +27,7 @@ import { ExamTypeOptionModelRepositoryProvider } from "./repository/laboratory/m
 import { ExamTypeModelRepositoryProvider } from "./repository/laboratory/model/exam-type.prisma-repository";
 import { ExamModelRepositoryProvider } from "./repository/laboratory/model/exam.prisma-repository";
 import { AreaAggregateRepositoryToken, CorporativeAggregateRepositoryToken, JobPositionAggregateRepositoryToken, ManagementAggregateRepositoryToken } from "@omega/location/nest/inject/aggregate-repository.inject";
-import { AreaOptionModelRepositoryToken, AreaModelRepositoryToken, BranchModelRepositoryToken, CompanyOptionModelRepositoryToken, CompanyModelRepositoryToken, CorporativeOptionModelRepositoryToken, CorporativeModelRepositoryToken, JobPositionOptionModelRepositoryToken, JobPositionModelRepositoryToken, ManagementOptionModelRepositoryToken, ManagementModelRepositoryToken } from "@omega/location/nest/inject/model-repository.inject";
+import { AreaOptionModelRepositoryToken, AreaModelRepositoryToken, BranchModelRepositoryToken, CompanyOptionModelRepositoryToken, CompanyModelRepositoryToken, CorporativeOptionModelRepositoryToken, CorporativeModelRepositoryToken, JobPositionOptionModelRepositoryToken, JobPositionModelRepositoryToken, ManagementOptionModelRepositoryToken, ManagementModelRepositoryToken, BranchExternalConnectionModelRepositoryToken, CompanyExternalConnectionModelRepositoryToken, CorporativeExternalConnectionModelRepositoryToken } from "@omega/location/nest/inject/model-repository.inject";
 import { AreaAggregateRepositoryProvider } from "./repository/location/domain/area.prisma-repository";
 import { CorporativeAggregateRepositoryProvider } from "./repository/location/domain/corporative.prisma-repository";
 import { JobPositionAggregateRepositoryProvider } from "./repository/location/domain/job-position.prisma-repository";
@@ -44,7 +44,7 @@ import { JobPositionModelRepositoryProvider } from "./repository/location/model/
 import { ManagementOptionModelRepositoryProvider } from "./repository/location/model/management-option.prisma-repository";
 import { ManagementModelRepositoryProvider } from "./repository/location/model/management.prisma-repository";
 import { ClientAggregateRepositoryToken, OrderAggregateRepositoryToken, TestAggregateRepositoryToken } from "@omega/medical/nest/inject/aggregate-repository.inject";
-import { ClientAreaModelRepositoryToken, ClientDoctorModelRepositoryToken, ClientEmailModelRepositoryToken, ClientJobPositionModelRepositoryToken, ClientManagementModelRepositoryToken, ClientModelRepositoryToken, OrderChecklistModelRepositoryToken, OrderCloudFileModelRepositoryToken, OrderPatientModelRepositoryToken, OrderProcessModelRepositoryToken, OrderYearModelRepositoryToken, OrderModelRepositoryToken, DiseaseReportModelRepositoryToken, ReportModelRepositoryToken, ResultFilepathModelRepositoryToken, TestReportModelRepositoryToken, TestModelRepositoryToken, OrderDoctorModelRepositoryToken, TestFileResultRepositoryToken, ClientRecordModelRepositoryToken, TestInnerModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
+import { ClientAreaModelRepositoryToken, ClientDoctorModelRepositoryToken, ClientEmailModelRepositoryToken, ClientJobPositionModelRepositoryToken, ClientManagementModelRepositoryToken, ClientModelRepositoryToken, OrderChecklistModelRepositoryToken, OrderCloudFileModelRepositoryToken, OrderPatientModelRepositoryToken, OrderProcessModelRepositoryToken, OrderYearModelRepositoryToken, OrderModelRepositoryToken, DiseaseReportModelRepositoryToken, ReportModelRepositoryToken, ResultFilepathModelRepositoryToken, TestReportModelRepositoryToken, TestModelRepositoryToken, OrderDoctorModelRepositoryToken, TestFileResultRepositoryToken, ClientRecordModelRepositoryToken, TestInnerModelRepositoryToken, TestExternalConnectionModelRepositoryToken, OrderExternalConnectionModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
 import { ClientAggregateRepositoryProvider } from "./repository/medical/domain/client.prisma-repository";
 import { OrderAggregateRepositoryProvider } from "./repository/medical/domain/order.prisma-repository";
 import { TestAggregateRepositoryProvider } from "./repository/medical/domain/test.prisma-repository";
@@ -80,6 +80,14 @@ import { ClientRecordModelRepositoryProvider } from "./repository/medical/model/
 import { IncrementDomainRepositoryProvider } from "./repository/increment/increment.prisma-repository";
 import { IncrementRepositoryToken } from "@local-increment/local-increment/repository/increment.repository";
 import { TestInnerModelRepositoryProvider } from "./repository/medical/model/test-inner.prisma-repository";
+import { TestExternalConnectionModelRepositoryProvider } from "./repository/medical/model/test-external-connection.prisma-repository";
+import { OrderExternalConnectionModelRepositoryProvider } from "./repository/medical/model/order-external-connection.prisma-repository";
+import { ExamExternalConnectionModelRepositoryProvider } from "./repository/laboratory/model/exam-external-key.prisma-repository";
+import { ExamSubtypeExternalConnectionModelRepositoryProvider } from "./repository/laboratory/model/exam-subtype-external-key.prisma-repository";
+import { ExamTypeExternalConnectionModelRepositoryProvider } from "./repository/laboratory/model/exam-type-external-key.prisma-repository";
+import { BranchExternalConnectionModelRepositoryProvider } from "./repository/location/model/branch-external-connection.prisma-repository";
+import { CompanyExternalConnectionModelRepositoryProvider } from "./repository/location/model/company-external-connection.prisma-repository";
+import { CorporativeExternalConnectionModelRepositoryProvider } from "./repository/location/model/corporative-external-connection.prisma-repository";
 
 @Global()
 @Module({
@@ -100,6 +108,9 @@ import { TestInnerModelRepositoryProvider } from "./repository/medical/model/tes
         DiseaseGroupModelRepositoryProvider,
         DiseaseModelRepositoryProvider,
         ExamTypeAggregateRepositoryProvider,
+        ExamExternalConnectionModelRepositoryProvider,
+        ExamSubtypeExternalConnectionModelRepositoryProvider,
+        ExamTypeExternalConnectionModelRepositoryProvider,
         ExamSubtypeOptionModelRepositoryProvider,
         ExamSubtypeModelRepositoryProvider,
         ExamTypeOptionModelRepositoryProvider,
@@ -111,9 +122,12 @@ import { TestInnerModelRepositoryProvider } from "./repository/medical/model/tes
         ManagementAggregateRepositoryProvider,
         AreaOptionModelRepositoryProvider,
         AreaModelRepositoryProvider,
+        BranchExternalConnectionModelRepositoryProvider,
         BranchModelRepositoryProvider,
+        CompanyExternalConnectionModelRepositoryProvider,
         CompanyOptionModelRepositoryProvider,
         CompanyModelRepositoryProvider,
+        CorporativeExternalConnectionModelRepositoryProvider,
         CorporativeOptionModelRepositoryProvider,
         CorporativeModelRepositoryProvider,
         JobPositionOptionModelRepositoryProvider,
@@ -134,6 +148,7 @@ import { TestInnerModelRepositoryProvider } from "./repository/medical/model/tes
         DiseaseReportModelRepositoryProvider,
         OrderChecklistModelRepositoryProvider,
         OrderCloudFileModelRepositoryProvider,
+        OrderExternalConnectionModelRepositoryProvider,
         OrderDoctorModelRepositoryProvider,
         OrderPatientModelRepositoryProvider,
         OrderProcessModelRepositoryProvider,
@@ -147,6 +162,7 @@ import { TestInnerModelRepositoryProvider } from "./repository/medical/model/tes
         ReportModelRepositoryProvider,
         ResultFilepathModelRepositoryProvider,
         TestFileResultRepositoryProvider,
+        TestExternalConnectionModelRepositoryProvider,
         TestInnerModelRepositoryProvider,
         TestReportModelRepositoryProvider,
         TestModelRepositoryProvider,
@@ -168,6 +184,9 @@ import { TestInnerModelRepositoryProvider } from "./repository/medical/model/tes
         DiseaseGroupModelRepositoryToken,
         DiseaseModelRepositoryToken,
         ExamTypeAggregateRepositoryToken,
+        ExamExternalConnectionModelRepositoryToken,
+        ExamSubtypeExternalConnectionModelRepositoryToken,
+        ExamTypeExternalConnectionModelRepositoryToken,
         ExamSubtypeOptionModelRepositoryToken,
         ExamSubtypeModelRepositoryToken,
         ExamTypeOptionModelRepositoryToken,
@@ -179,9 +198,12 @@ import { TestInnerModelRepositoryProvider } from "./repository/medical/model/tes
         ManagementAggregateRepositoryToken,
         AreaOptionModelRepositoryToken,
         AreaModelRepositoryToken,
+        BranchExternalConnectionModelRepositoryToken,
         BranchModelRepositoryToken,
+        CompanyExternalConnectionModelRepositoryToken,
         CompanyOptionModelRepositoryToken,
         CompanyModelRepositoryToken,
+        CorporativeExternalConnectionModelRepositoryToken,
         CorporativeOptionModelRepositoryToken,
         CorporativeModelRepositoryToken,
         JobPositionOptionModelRepositoryToken,
@@ -202,6 +224,7 @@ import { TestInnerModelRepositoryProvider } from "./repository/medical/model/tes
         DiseaseReportModelRepositoryToken,
         OrderChecklistModelRepositoryToken,
         OrderCloudFileModelRepositoryToken,
+        OrderExternalConnectionModelRepositoryToken,
         OrderDoctorModelRepositoryToken,
         OrderPatientModelRepositoryToken,
         OrderProcessModelRepositoryToken,
@@ -215,6 +238,7 @@ import { TestInnerModelRepositoryProvider } from "./repository/medical/model/tes
         ReportModelRepositoryToken,
         ResultFilepathModelRepositoryToken,
         TestFileResultRepositoryToken,
+        TestExternalConnectionModelRepositoryToken,
         TestInnerModelRepositoryToken,
         TestReportModelRepositoryToken,
         TestModelRepositoryToken,

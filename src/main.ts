@@ -8,6 +8,7 @@ import { setupApiReference } from './_setup/helper/setup-api-reference.helper';
 import { DomainErrorFilter } from '@shared/shared/nest/filters';
 import { Logger } from '@nestjs/common';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,6 +21,8 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const serverConfig = configService.getOrThrow<ServerConfig>(ServerConfigName);
+
+  app.use(express.json({ limit: '1mb' }));
 
   const logger = app.get<Logger>(WINSTON_MODULE_NEST_PROVIDER);
   await app.listen(serverConfig.port, serverConfig.network);

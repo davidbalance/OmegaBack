@@ -6,12 +6,12 @@ import { ClientModel } from "@omega/medical/core/model/client/client.model";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 
 describe("OrderCreateCommand", () => {
-    let repository: jest.Mocked<OrderRepository>;
+    let aggregateRepository: jest.Mocked<OrderRepository>;
     let client: jest.Mocked<ClientRepository>;
     let commandHandler: OrderCreateCommand;
 
     beforeEach(() => {
-        repository = {
+        aggregateRepository = {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<OrderRepository>;
 
@@ -19,7 +19,7 @@ describe("OrderCreateCommand", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ClientRepository>;
 
-        commandHandler = new OrderCreateCommand(repository, client);
+        commandHandler = new OrderCreateCommand(aggregateRepository, client);
     });
 
     it("should successfully create an order when a valid patient is found", async () => {
@@ -38,12 +38,12 @@ describe("OrderCreateCommand", () => {
         const patient = { patientId: "patient-1", dni: "12345678A" } as unknown as ClientModel;
 
         client.findOneAsync.mockResolvedValue(patient);
-        repository.saveAsync.mockResolvedValue(undefined);
+        aggregateRepository.saveAsync.mockResolvedValue(undefined);
 
         await commandHandler.handleAsync(orderPayload);
 
         expect(client.findOneAsync).toHaveBeenCalledWith([{ field: 'patientDni', operator: 'eq', value: orderPayload.patientDni }]);
-        expect(repository.saveAsync).toHaveBeenCalled();
+        expect(aggregateRepository.saveAsync).toHaveBeenCalled();
     });
 
     it("should throw an error when patient is not found", async () => {
@@ -62,8 +62,8 @@ describe("OrderCreateCommand", () => {
 
         client.findOneAsync.mockResolvedValue(null);
 
-        await expect(commandHandler.handleAsync(orderPayload)).rejects.toThrowError(ClientNotFoundError);
+        await expect(commandHandler.handleAsync(orderPayload)).rejects.toThrow(ClientNotFoundError);
         expect(client.findOneAsync).toHaveBeenCalledWith([{ field: 'patientDni', operator: 'eq', value: orderPayload.patientDni }]);
-        expect(repository.saveAsync).not.toHaveBeenCalled();
+        expect(aggregateRepository.saveAsync).not.toHaveBeenCalled();
     });
 });

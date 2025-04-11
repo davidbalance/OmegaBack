@@ -32,9 +32,10 @@ import { ResourceReadController } from "./controller/read/resource_read.controll
 import { AuthWriteController } from "./controller/write/auth_write.controlller";
 import { ResourceWriteController } from "./controller/write/resource_write.controlller";
 import { AuthFindManyResourcesQueryProvider } from "./nest/query/auth/auth_find_many_resources.nest_query";
-import { AuthFindManyResourcesQueryToken } from "./nest/inject/query.inject";
+import { ApiKeyFindOneByValueQueryToken, AuthFindManyResourcesQueryToken } from "./nest/inject/query.inject";
 import { ApiKeyReadController } from "./controller/read/api_key_read.controller";
 import { ApiKeyFindManyQueryProvider } from "./nest/query/auth/api_key_find_many.nest_query";
+import { ApiKeyFindOneByValueQueryProvider } from "./nest/query/auth/api-key-find-one-by-value.nest-query";
 
 @Module({
     imports: [
@@ -53,6 +54,7 @@ import { ApiKeyFindManyQueryProvider } from "./nest/query/auth/api_key_find_many
     providers: [
         LocalStrategy,
         ApiKeyFindManyQueryProvider,
+        ApiKeyFindOneByValueQueryProvider,
         AuthAccessTokenCommandProvider,
         AuthAddApiKeyCommandProvider,
         AuthAddLogoCommandProvider,
@@ -79,6 +81,7 @@ import { ApiKeyFindManyQueryProvider } from "./nest/query/auth/api_key_find_many
     ],
     exports: [
         AuthFindManyResourcesQueryToken,
+        ApiKeyFindOneByValueQueryToken,
         AuthAddLogoCommandToken,
         AuthCreateCommandToken,
         AuthAddResourcesCommandToken

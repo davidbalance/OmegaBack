@@ -41,9 +41,29 @@ import { BranchMoveCommandProvider } from "./nest/command/corporative/branch_mov
 import { CorporativeWriteController } from "./controller/write/corporative-write.controller";
 import { CompanyWriteController } from "./controller/write/company-write.controller";
 import { BranchWriteController } from "./controller/write/branch-write.controller";
+import { BranchFindOneByExternalKeyQueryProvider } from "./nest/query/corporative/branch-find-one-by-external-key.nest-query";
+import { CompanyFindOneByExternalKeyQueryProvider } from "./nest/query/corporative/company-find-one-by-external-key.nest-query";
+import { CorporativeFindOneByExternalKeyQueryProvider } from "./nest/query/corporative/corporative-find-one-by-external-key.nest-query";
+import { CorporativeCreateFromExternalSourceCommandProvider } from "./nest/command/corporative/corporative-create-from-external-source.nest-command";
+import { CompanyCreateFromExternalSourceCommandProvider } from "./nest/command/corporative/company-create-from-external-source.nest-command";
+import { BranchCreateFromExternalSourceCommandProvider } from "./nest/command/corporative/branch-create-from-external-source.nest-command";
+import { CreateBranchFromExternalSourceServiceProvider } from "./nest/service/create-branch-from-external-source.nest-service";
+import { CreateCompanyFromExternalSourceServiceProvider } from "./nest/service/create-company-from-external-source.nest-service";
+import { CreateCorporativeFromExternalSourceServiceProvider } from "./nest/service/create-corporative-from-external-source.nest-service";
+import { BranchExternalSourceResolverProvider } from "./nest/resolver/branch-external-source.nest-resolver";
+import { CompanyExternalSourceResolverProvider } from "./nest/resolver/company-external-source.nest-resolver";
+import { CorporativeExternalSourceResolverProvider } from "./nest/resolver/corporative-external-source.nest-resolver";
+import { CompanyExternalController } from "./controller/external/company-external.controller";
+import { BranchExternalController } from "./controller/external/branch-external.controller";
+import { CorporativeExternalController } from "./controller/external/corporative-external.controller";
+import { OrderExternalCreatedListener } from "./listener/order-external-created.listener";
 
 @Module({
     controllers: [
+        CorporativeExternalController,
+        CompanyExternalController,
+        BranchExternalController,
+
         AreaReadController,
         BranchReadController,
         CompanyReadController,
@@ -57,15 +77,28 @@ import { BranchWriteController } from "./controller/write/branch-write.controlle
         BranchWriteController
     ],
     providers: [
+        OrderExternalCreatedListener,
+        
+        BranchExternalSourceResolverProvider,
+        CompanyExternalSourceResolverProvider,
+        CorporativeExternalSourceResolverProvider,
+
+        CreateBranchFromExternalSourceServiceProvider,
+        CreateCompanyFromExternalSourceServiceProvider,
+        CreateCorporativeFromExternalSourceServiceProvider,
+
         AreaCreateCommandProvider,
         AreaEditCommandProvider,
         AreaRemoveCommandProvider,
         BranchMoveCommandProvider,
+        BranchCreateFromExternalSourceCommandProvider,
         BranchCreateCommandProvider,
         BranchRemoveCommandProvider,
         CompanyMoveCommandProvider,
+        CompanyCreateFromExternalSourceCommandProvider,
         CompanyCreateCommandProvider,
         CompanyRemoveCommandProvider,
+        CorporativeCreateFromExternalSourceCommandProvider,
         CorporativeCreateCommandProvider,
         CorporativeRemoveCommandProvider,
         JobPositionCreateCommandProvider,
@@ -78,8 +111,11 @@ import { BranchWriteController } from "./controller/write/branch-write.controlle
         AreaFindOneQueryProvider,
         AreaFindOptionsQueryProvider,
         BranchFindManyQueryProvider,
+        BranchFindOneByExternalKeyQueryProvider,
         CompanyFindManyQueryProvider,
+        CompanyFindOneByExternalKeyQueryProvider,
         CorporativeFindManyQueryProvider,
+        CorporativeFindOneByExternalKeyQueryProvider,
         CorporativeFindOptionsQueryProvider,
         JobPositionFindManyQueryProvider,
         JobPositionFindOneQueryProvider,

@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { CompanyOption } from '@omega/location/core/models/corporative/company-option.model';
 import { CorporativeOption } from '@omega/location/core/models/corporative/corporative-option.model';
 import { Option } from '@shared/shared/domain/option';

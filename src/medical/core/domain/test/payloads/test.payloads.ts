@@ -1,3 +1,5 @@
+import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
+
 export type ExamPayload = {
     examName: string;
     examSubtype: string;
@@ -19,3 +21,5 @@ export type CreateDiseaseReportPayload = {
 export type UpdateDiseaseReportPayload = CreateDiseaseReportPayload & {
     id: string;
 }
+
+export type AddTestExternalKeyPayload = ExternalKeyProps;

@@ -216,11 +216,26 @@ model MedicalOrder {
   client   MedicalClient @relation(fields: [clientId], references: [id], onDelete: Restrict)
   clientId String        @map("medical_client_id") @db.Char(36)
 
-  tests MedicalTest[]
+  tests        MedicalTest[]
+  externalKeys MedicalOrderExternalKey[]
 
   @@index(fields: [doctorDni], map: "idx_m_order_doctorDni")
   @@index(fields: [locationCompanyRuc], map: "idx_m_order_companyRuc")
   @@map("tbl_m_orders")
+}
+
+model MedicalOrderExternalKey {
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
+
+  orders  MedicalOrder @relation(fields: [orderId], references: [id])
+  orderId String       @map("medical_order_id") @db.Char(36)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@id(fields: [owner, value], name: "id_medical_order_external_key")
+  @@map("tbl_m_order_external_keys")
 }
 
 model MedicalTest {
@@ -237,11 +252,26 @@ model MedicalTest {
   order   MedicalOrder @relation(fields: [orderId], references: [id], onDelete: Restrict)
   orderId String       @map("medical_order_id") @db.Char(36)
 
-  result   MedicalResult?
-  report   MedicalReport?
-  diseases MedicalDiseaseReport[]
+  result       MedicalResult?
+  report       MedicalReport?
+  diseases     MedicalDiseaseReport[]
+  externalKeys MedicalTestExternalKey[]
 
   @@map("tbl_m_tests")
+}
+
+model MedicalTestExternalKey {
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
+
+  tests  MedicalTest @relation(fields: [testId], references: [id])
+  testId String      @map("medical_test_id") @db.Char(36)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@id(fields: [owner, value], name: "id_medical_test_external_key")
+  @@map("tbl_m_test_external_keys")
 }
 
 model MedicalResult {
@@ -328,9 +358,24 @@ model ExamType {
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
-  subtypes ExamSubtype[]
+  subtypes     ExamSubtype[]
+  externalKeys ExamTypeExternalKey[]
 
   @@map("tbl_lab_exam_types")
+}
+
+model ExamTypeExternalKey {
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
+
+  types  ExamType @relation(fields: [typeId], references: [id])
+  typeId String   @map("exam_type_id") @db.Char(36)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@id(fields: [owner, value], name: "id_exam_type_external_key")
+  @@map("tbl_lab_exam_type_external_keys")
 }
 
 model ExamSubtype {
@@ -344,10 +389,25 @@ model ExamSubtype {
   type   ExamType @relation(fields: [typeId], references: [id], onDelete: Cascade)
   typeId String   @map("exam_type_id") @db.Char(36)
 
-  exams Exam[]
+  exams        Exam[]
+  externalKeys ExamSubtypeExternalKey[]
 
   @@unique(fields: [name, typeId], map: "unq_lab_examSubtype_name")
   @@map("tbl_lab_exam_subtypes")
+}
+
+model ExamSubtypeExternalKey {
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
+
+  subtypes  ExamSubtype @relation(fields: [subtypeId], references: [id])
+  subtypeId String      @map("exam_subtype_id") @db.Char(36)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@id(fields: [owner, value], name: "id_exam_subtype_external_key")
+  @@map("tbl_lab_exam_subtype_external_keys")
 }
 
 model Exam {
@@ -358,25 +418,55 @@ model Exam {
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
-  subtype   ExamSubtype @relation(fields: [subtypeId], references: [id], onDelete: Cascade)
-  subtypeId String      @map("exam_subtype_id") @db.Char(36)
+  subtype      ExamSubtype       @relation(fields: [subtypeId], references: [id], onDelete: Cascade)
+  subtypeId    String            @map("exam_subtype_id") @db.Char(36)
+  externalKeys ExamExternalKey[]
 
   @@unique(fields: [name, subtypeId], map: "unq_lab_exam_name")
   @@map("tbl_lab_exams")
 }
 
+model ExamExternalKey {
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
+
+  exams  Exam   @relation(fields: [examId], references: [id])
+  examId String @map("exam_id") @db.Char(36)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@id(fields: [owner, value], name: "id_exam_external_key")
+  @@map("tbl_lab_exam_external_keys")
+}
+
 // Location Module
 model CorporativeGroup {
   id   String @id @default(uuid()) @map("corporative_id") @db.Char(36)
-  name String @map("corporative_name") @db.VarChar(64)
+  name String @unique @map("corporative_name") @db.VarChar(64)
 
   isActive  Boolean   @default(true) @map("is_active") @db.TinyInt
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
-  companies Company[]
+  companies    Company[]
+  externalKeys CorporativeExternalKey[]
 
   @@map("tbl_lo_corporative_groups")
+}
+
+model CorporativeExternalKey {
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
+
+  corporatives  CorporativeGroup @relation(fields: [corporativeId], references: [id])
+  corporativeId String           @map("corporative_id") @db.Char(36)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@id(fields: [owner, value], name: "id_corporative_external_key")
+  @@map("tbl_lo_corporative_external_keys")
 }
 
 model Company {
@@ -395,8 +485,24 @@ model Company {
   corporative   CorporativeGroup @relation(fields: [corporativeId], references: [id], onDelete: Cascade)
   corporativeId String           @map("corporative_id") @db.Char(36)
 
+  externalKeys CompanyExternalKey[]
+
   @@unique(fields: [ruc, corporativeId], map: "unq_lo_company_ruc")
   @@map("tbl_lo_companies")
+}
+
+model CompanyExternalKey {
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
+
+  companies Company @relation(fields: [companyId], references: [id])
+  companyId String  @map("company_id") @db.Char(36)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@id(fields: [owner, value], name: "id_company_external_key")
+  @@map("tbl_lo_company_external_keys")
 }
 
 model Branch {
@@ -413,7 +519,23 @@ model Branch {
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   companyId String  @map("company_id") @db.Char(36)
 
+  externalKeys BranchExternalKey[]
+
   @@map("tbl_lo_branches")
+}
+
+model BranchExternalKey {
+  owner String @map("external_owner") @db.VarChar(128)
+  value String @map("external_value") @db.VarChar(128)
+
+  branches Branch @relation(fields: [branchId], references: [id])
+  branchId String @map("branch_id") @db.Char(36)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@id(fields: [owner, value], name: "id_branch_external_key")
+  @@map("tbl_lo_branch_external_keys")
 }
 
 model City {
@@ -702,7 +824,6 @@ view OrderDoctorModel {
   orderLeftReport   Int                @map("medical_order_left_reports") @db.Int
   orderEmissionDate DateTime           @map("medical_order_emission_date") @db.Date
   doctorDni         String             @map("doctor_dni") @db.VarChar(10)
-  companyRuc        String             @map("company_ruc") @db.VarChar(13)
   patientDni        String             @map("patient_dni") @db.VarChar(16)
 
   @@map("v_m_order_doctors")
@@ -1052,7 +1173,7 @@ view UserAttributeModel {
 }
 
 view UserModel {
-  userId       String @id @map("user_id") @db.Char(36)
+  userId       String @unique @map("user_id") @db.Char(36)
   userDni      String @map("user_dni") @db.VarChar(16)
   userEmail    String @map("user_email") @db.VarChar(128)
   userName     String @map("user_name") @db.VarChar(128)
@@ -1060,4 +1181,82 @@ view UserModel {
   authId       String @map("auth_id") @db.Char(36)
 
   @@map("v_u_users")
+}
+
+// External Connection
+view OrderExternalConnectionModel {
+  orderId            String @map("order_id") @db.Char(36)
+  orderExternalKey   String @map("external_value") @db.VarChar(128)
+  orderExternalOwner String @map("external_owner") @db.VarChar(128)
+  patientDni         String @map("patient_dni") @db.VarChar(16)
+
+  @@unique(fields: [orderExternalKey, orderExternalOwner], map: "unq_v_m_order_external")
+  @@map("v_m_order_external_connection")
+}
+
+view TestExternalConnectionModel {
+  testId            String @map("test_id") @db.Char(36)
+  testExternalKey   String @map("external_value") @db.VarChar(128)
+  testExternalOwner String @map("external_owner") @db.VarChar(128)
+
+  @@unique(fields: [testExternalKey, testExternalOwner], map: "unq_v_m_test_external")
+  @@map("v_m_test_external_connection")
+}
+
+view ExamExternalConnectionModel {
+  examId            String @map("exam_id") @db.Char(36)
+  examExternalKey   String @map("external_value") @db.VarChar(128)
+  examExternalOwner String @map("external_owner") @db.VarChar(128)
+  subtypeId         String @map("exam_subtype_id") @db.Char(36)
+
+  @@unique(fields: [examExternalKey, examExternalOwner], map: "unq_v_lab_exam_external")
+  @@map("v_lab_exam_external_connection")
+}
+
+view ExamSubtypeExternalConnectionModel {
+  subtypeId            String @map("exam_subtype_id") @db.Char(36)
+  subtypeExternalKey   String @map("external_value") @db.VarChar(128)
+  subtypeExternalOwner String @map("external_owner") @db.VarChar(128)
+  typeId               String @map("exam_type_id") @db.Char(36)
+
+  @@unique(fields: [subtypeExternalKey, subtypeExternalOwner], map: "unq_v_lab_exam_subtype_external")
+  @@map("v_lab_exam_subtype_external_connection")
+}
+
+view ExamTypeExternalConnectionModel {
+  typeId            String @map("exam_type_id") @db.Char(36)
+  typeExternalKey   String @map("external_value") @db.VarChar(128)
+  typeExternalOwner String @map("external_owner") @db.VarChar(128)
+
+  @@unique(fields: [typeExternalKey, typeExternalOwner], map: "unq_v_lab_exam_type_external")
+  @@map("v_lab_exam_type_external_connection")
+}
+
+view BranchExternalConnectionModel {
+  branchId            String @map("branch_id") @db.Char(36)
+  branchExternalKey   String @map("external_value") @db.VarChar(128)
+  branchExternalOwner String @map("external_owner") @db.VarChar(128)
+  companyId           String @map("company_id") @db.Char(36)
+
+  @@unique(fields: [branchExternalKey, branchExternalOwner], map: "unq_v_lo_branch_external")
+  @@map("v_lo_branch_external_connection")
+}
+
+view CompanyExternalConnectionModel {
+  companyId            String @map("company_id") @db.Char(36)
+  companyExternalKey   String @map("external_value") @db.VarChar(128)
+  companyExternalOwner String @map("external_owner") @db.VarChar(128)
+  corporativeId        String @map("corporative_id") @db.Char(36)
+
+  @@unique(fields: [companyExternalKey, companyExternalOwner], map: "unq_v_lo_company_external")
+  @@map("v_lo_company_external_connection")
+}
+
+view CorporativeExternalConnectionModel {
+  corporativeId            String @map("corporative_id") @db.Char(36)
+  corporativeExternalKey   String @map("external_value") @db.VarChar(128)
+  corporativeExternalOwner String @map("external_owner") @db.VarChar(128)
+
+  @@unique(fields: [corporativeExternalKey, corporativeExternalOwner], map: "unq_v_lo_corporative_external")
+  @@map("v_lo_corporative_external_connection")
 }

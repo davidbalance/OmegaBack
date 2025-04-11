@@ -1,3 +1,4 @@
+import { ApiResponseProperty } from "@nestjs/swagger";
 import { OrderStatus } from "@omega/medical/core/domain/order/order.domain";
 import { PaginationResponse } from "@shared/shared/nest/pagination_response";
 import { Expose, Type } from "class-transformer";
@@ -16,6 +17,8 @@ export class OrderResponseDto {
     @Expose() public readonly orderMail: boolean;
     @Expose() public readonly orderProcess: string;
     @Expose() public readonly orderEmissionDate: Date;
+
+    @ApiResponseProperty({ enum: { created: 'created', validated: 'validated' } as Record<OrderStatus, string> })
     @Expose() public readonly orderStatus: OrderStatus;
 }
 
