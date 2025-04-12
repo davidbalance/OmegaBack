@@ -19,7 +19,7 @@ export abstract class StorageManager {
     /**
      * Replace file
      */
-    abstract replaceFile(): Promise<boolean>; 
+    abstract replaceFile(): Promise<boolean>;
 
     /**
      * Moves the file a another directory
@@ -28,6 +28,10 @@ export abstract class StorageManager {
 
     /**
      * Deletes the file in a desire directory
+     * @param dir 
      */
-    abstract deleteFile(): Promise<boolean>;
+    abstract deleteFile(dir: string): boolean | Promise<boolean>;
 }
+
+
+export const INJECT_STORAGE_MANAGER = typeof StorageManager;

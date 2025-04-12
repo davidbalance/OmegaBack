@@ -1,37 +1,44 @@
-import { Module } from '@nestjs/common';
-import { BranchService } from './branch.service';
-import { BranchController } from './branch.controller';
-import { Branch } from './entities/branch.entity';
-import { SqlDatabaseModule } from 'src/shared';
-import { BranchRepository } from './branch.repository';
-import { BranchExternalKeyModule } from './branch-external-key/branch-external-key.module';
-import { BranchExternalConnectionController } from './external-connection/branch-external-connection.controller';
-import { BranchExternalConnectionService } from './external-connection/branch-external-connection.service';
-import { CompanyModule } from '../company/company.module';
-import { CityModule } from '../city/city.module';
-import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
+import { Module } from "@nestjs/common";
+import { BranchManagementService } from "./services/branch-management.service";
+import { BranchExternalConnectionProvider, BranchExternalConnectionService } from "./services/branch-external-connection.service";
+import { BranchSelectorService } from "./services/branch-selector.service";
+import { BranchRepository } from "./repositories/branch.repository";
+import { BranchSelectorController } from "./controllers/branch-selector.controller";
+import { BranchExternalConnectionController } from "./controllers/branch-external-connection.controller";
+import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
+import { SqlDatabaseModule } from "@/shared/sql-database";
+import { CityModule } from "../city/city.module";
+import { CompanyModule } from "../company/company.module";
+import { BranchExternalKey } from "./entities/branch-external-key.entity";
+import { Branch } from "./entities/branch.entity";
+import { BranchExternalKeyService } from "./services/branch-external-key.service";
+import { BranchExternalKeyRepository } from "./repositories/branch-external-key.repository";
+import { BranchExternalListener } from "./listeners/branch-external.listener";
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([Branch]),
-    BranchExternalKeyModule,
+    SqlDatabaseModule.forFeature([Branch, BranchExternalKey]),
     CompanyModule,
     CityModule,
     AuthenticationGuardModule,
-    LocalAuthorizationModule
   ],
   controllers: [
-    BranchController,
+    BranchSelectorController,
     BranchExternalConnectionController,
   ],
   providers: [
-    BranchService,
     BranchRepository,
+    BranchExternalKeyRepository,
+    BranchSelectorService,
+    BranchManagementService,
+    BranchExternalKeyService,
     BranchExternalConnectionService,
-    AuthorizationGuard
+    BranchExternalConnectionProvider,
+    BranchExternalListener
   ],
-  exports: [BranchService, BranchExternalConnectionService]
+  exports: [
+    BranchManagementService,
+    BranchExternalConnectionProvider
+  ]
 })
 export class BranchModule { }

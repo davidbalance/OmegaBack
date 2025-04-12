@@ -1,23 +1,25 @@
 import { Module } from '@nestjs/common';
-import { CityService } from './city.service';
-import { CityController } from './city.controller';
+import { CityService } from './services/city.service';
 import { City } from './entities/city.entity';
-import { SqlDatabaseModule } from 'src/shared';
-import { CityRepository } from './city.repository';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
+import { SqlDatabaseModule } from '@/shared/sql-database';
+import { CityRepository } from './repositories/city.repository';
+import { CitySelectorController } from './controllers/city-selector.controller';
+import { CitySelectorService } from './services/city-selector.service';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([City]),
-    LocalAuthorizationModule
   ],
-  controllers: [CityController],
+  controllers: [
+    CitySelectorController
+  ],
   providers: [
     CityService,
     CityRepository,
-    AuthorizationGuard
+    CitySelectorService,
   ],
-  exports: [CityService]
+  exports: [
+    CityService
+  ]
 })
 export class CityModule { }

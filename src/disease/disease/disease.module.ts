@@ -1,27 +1,29 @@
 import { Module } from '@nestjs/common';
-import { DiseaseService } from './disease.service';
-import { DiseaseController } from './disease.controller';
-import { SqlDatabaseModule } from 'src/shared';
+import { DiseaseManagementService } from './services/disease-management.service';
+import { DiseaseController } from './controllers/disease-management.controller';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Disease } from './entities/disease.entity';
-import { DiseaseRepository } from './disease.repository';
 import { DiseaseGroupModule } from '../disease-group/disease-group.module';
-import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
+import { DiseaseSelectorController } from './controllers/disease-selector.controller';
+import { DiseaseSelectorService } from './services/disease-selector.service';
+import { DiseaseRepository } from './repositories/disease.repository';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Disease]),
     DiseaseGroupModule,
-    AuthenticationGuardModule,
-    LocalAuthorizationModule
   ],
-  controllers: [DiseaseController],
+  controllers: [
+    DiseaseController,
+    DiseaseSelectorController
+  ],
   providers: [
-    DiseaseService,
+    DiseaseManagementService,
     DiseaseRepository,
-    AuthorizationGuard
+    DiseaseSelectorService,
   ],
-  exports: [DiseaseService]
+  exports: [
+    DiseaseManagementService
+  ]
 })
 export class DiseaseModule { }

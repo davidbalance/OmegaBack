@@ -1,8 +1,8 @@
 import { Column, Index } from "typeorm";
 import { AbstractEntity } from "../sql-database";
 
+@Index('idx_send_attribute_value', ['value'], { unique: false })
 export abstract class AbstractSendAttributeEntity extends AbstractEntity<number> {
-    @Index('send-attribute-value-idx', { unique: false })
-    @Column({ name: 'SEND_ATTRIBUTE_VALUE', type: 'varchar', length: 128 })
+    @Column({ name: 'send_attribute_value', type: 'varchar', length: 128, nullable: false })
     public value: string;
 }

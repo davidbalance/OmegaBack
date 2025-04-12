@@ -1,31 +1,41 @@
-import { Module } from '@nestjs/common';
-import { ExamService } from './exam.service';
-import { ExamController } from './exam.controller';
-import { SqlDatabaseModule } from 'src/shared';
-import { ExamRepository } from './exam.repository';
-import { Exam } from './entities/exam.entity';
-import { ExamExternalKeyModule } from './exam-external-key/exam-external-key.module';
-import { ExamExternalConnectionController } from './external-connections/exam-external-connection.controller';
-import { ExamExternalConnectionService } from './external-connections/exam-external-connection.service';
-import { ResultListener } from './listeners';
-import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
+import { AuthenticationGuardModule } from "@/shared/guards/authentication-guard";
+import { SqlDatabaseModule } from "@/shared/sql-database";
+import { Module } from "@nestjs/common";
+import { ExamExternalConnectionController } from "./controllers/exam-external-connection.controller";
+import { ExamSelectorController } from "./controllers/exam-selector.controller";
+import { ExamExternalKey } from "./entities/exam-external-key.entity";
+import { Exam } from "./entities/exam.entity";
+import { ExamExternalListener } from "./listeners/exam-external.listener";
+import { ExamRepository } from "./repositories/exam.repository";
+import { ExamSelectorService } from "./services/exam-selector.service";
+import { ExamExternalKeyService } from "./services/exam-external-key.service";
+import { ExamExternalConnectionService } from "./services/exam-external-connection.service";
+import { ExamExternalKeyRepository } from "./repositories/exam-external-key.repository";
+import { ExamSubtypeModule } from "../exam-subtype/exam-subtype.module";
+import { ExamTypeModule } from "../exam-type/exam-type.module";
+import { ExamManagementService } from "./services/exam-management.service";
+import { ExamManagementController } from "./controllers/exam-management.controller";
 
 @Module({
   imports: [
-    SqlDatabaseModule.forFeature([Exam]),
-    ExamExternalKeyModule,
-    AuthenticationGuardModule
+    SqlDatabaseModule.forFeature([Exam, ExamExternalKey]),
+    AuthenticationGuardModule,
+    ExamSubtypeModule,
+    ExamTypeModule
   ],
   controllers: [
-    ExamController,
-    ExamExternalConnectionController
+    ExamExternalConnectionController,
+    ExamManagementController,
+    ExamSelectorController,
   ],
   providers: [
-    ExamService,
+    ExamExternalKeyRepository,
     ExamRepository,
     ExamExternalConnectionService,
-    ResultListener
-  ],
-  exports: [ExamService]
+    ExamExternalKeyService,
+    ExamManagementService,
+    ExamSelectorService,
+    ExamExternalListener,
+  ]
 })
 export class ExamModule { }

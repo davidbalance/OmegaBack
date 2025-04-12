@@ -1,35 +1,47 @@
 import { Module } from '@nestjs/common';
-import { PatientService } from './patient.service';
-import { PatientController } from './patient.controller';
-import { SqlDatabaseModule } from 'src/shared';
+import { SqlDatabaseModule } from '@/shared/sql-database';
 import { Patient } from './entities/patient.entity';
-import { PatientRepository } from './patient.repository';
+import { PatientRepository } from './repositories/patient.repository';
 import { UserModule } from '../user/user.module';
-import { PatientExternalConnectionService } from './external-connection/patient-external-connection.service';
-import { PatientExternalConnectionController } from './external-connection/patient-external-connection.controller';
-import { OrderListener } from './listeners';
+import { PatientExternalConnectionController } from './controllers/patient-external-connection.controller';
 import { AuthenticationGuardModule } from '@/shared/guards/authentication-guard';
-import { LocalAuthorizationModule } from '@/shared/shared-authorization/local-authorization/local-authorization.module';
-import { AuthorizationGuard } from '@/shared/guards/authorization-guard/authorization.guard';
+import { ExtraAttributeInterceptorModule } from '@/shared/interceptors/extra-attribute/extra-attribute-interceptor.module';
+import { PatientEeqPaginationController } from './controllers/patient-eeq-pagination.controller';
+import { PatientManagementController } from './controllers/patient-management.controller';
+import { PatientExternalListener } from './listeners/patient-external.listener';
+import { PatientExternalConnectionService } from './service/patient-external-connection.service';
+import { PatientManagementService } from './service/patient-management.service';
+import { PatientPaginationService } from './service/patient-pagination.service';
+import { PatientEeqPaginationService } from './service/patient-eeq-pagination.service';
+import { PatientFlatProvider } from './service/patient-flat.service';
+import { PatientEeqFlatProvider } from './service/patient-eeq-flat.service';
+import { PatientPaginationController } from './controllers/patient-pagination.controller';
 
 @Module({
   imports: [
     SqlDatabaseModule.forFeature([Patient]),
     UserModule,
     AuthenticationGuardModule,
-    LocalAuthorizationModule
+    ExtraAttributeInterceptorModule
   ],
   controllers: [
-    PatientController,
-    PatientExternalConnectionController
+    PatientEeqPaginationController,
+    PatientExternalConnectionController,
+    PatientManagementController,
+    PatientPaginationController,
   ],
   providers: [
-    PatientService,
     PatientRepository,
+    PatientEeqPaginationService,
     PatientExternalConnectionService,
-    OrderListener,
-    AuthorizationGuard
+    PatientManagementService,
+    PatientPaginationService,
+    PatientExternalListener,
+    PatientFlatProvider,
+    PatientEeqFlatProvider
   ],
-  exports: [PatientService]
+  exports: [
+    PatientManagementService
+  ]
 })
 export class PatientModule { }

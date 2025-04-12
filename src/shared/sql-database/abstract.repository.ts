@@ -1,4 +1,4 @@
-import { DeepPartial, FindManyOptions, FindOneOptions, FindOptionsOrder, FindOptionsRelations, FindOptionsSelect, FindOptionsWhere, Repository } from "typeorm";
+import { DeepPartial, FindManyOptions, FindOneOptions, FindOptionsWhere, QueryRunner, Repository } from "typeorm";
 import { AbstractEntity } from "./abstract.entity";
 import { Logger, NotFoundException } from "@nestjs/common";
 
@@ -9,11 +9,13 @@ import { Logger, NotFoundException } from "@nestjs/common";
  */
 export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
 
-    protected abstract logger: Logger;
-
     constructor(
         private readonly model: Repository<TEntity>
     ) { }
+
+    query(alias?: string, queryRunner?: QueryRunner) {
+        return this.model.createQueryBuilder(alias, queryRunner);
+    }
 
     /**
      * Creates a new entity and saves it in the database
@@ -44,7 +46,6 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
     async findOne(options: FindOneOptions<TEntity>): Promise<TEntity> {
         const entity = await this.model.findOne(options);
         if (!entity) {
-            this.logger.warn("Entity not found with the given filterOptions", JSON.stringify(options));
             throw new NotFoundException(["Entity not found with the given filterOptions"]);
         }
         return entity;
@@ -60,7 +61,6 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
     async findOneAndUpdate(filterOptions: FindOptionsWhere<TEntity>, updateOptions: Partial<TEntity>): Promise<TEntity> {
         const entity = await this.findOne({ where: filterOptions });
         if (!entity) {
-            this.logger.warn("Entity not found with the given filterOptions", JSON.stringify(filterOptions));
             throw new NotFoundException(["Entity not found with the given filterOptions"]);
         }
         const updateEntity = { ...entity, ...updateOptions };
@@ -72,5 +72,7 @@ export abstract class AbstractRepository<K, TEntity extends AbstractEntity<K>> {
      * 
      * @param filterOptions Find one item and remove it from the database
      */
-    abstract findOneAndDelete(filterOptions: FindOptionsWhere<TEntity>): void | Promise<void>;
+    async findOneAndDelete(filterOptions: FindOptionsWhere<TEntity>): Promise<void> {
+        await this.model.delete(filterOptions);
+    }
 }
