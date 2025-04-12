@@ -8,7 +8,18 @@ migration.**.sql
 
 /dist
 /node_modules
+<<<<<<< HEAD
 /build
+=======
+
+**/signatures/*
+**/reports/*
+**/medical-report-pdf/*
+
+**/default.values*.sql
+
+**/.env
+>>>>>>> main
 
 # Logs
 logs

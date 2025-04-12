@@ -8,7 +8,21 @@ migration.**.sql
 
 /dist
 /node_modules
+<<<<<<< HEAD
 /build
+=======
+# /database
+Dockerfile
+.dockerignore
+
+**/signatures/*
+**/reports/*
+**/medical-report-pdf/*
+
+**/*.values.sql
+
+**/.env
+>>>>>>> main
 
 # Logs
 logs
