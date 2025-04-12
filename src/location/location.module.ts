@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Module } from "@nestjs/common";
 import { AreaCreateCommandProvider } from "./nest/command/area/area-create.nest-command";
 import { AreaEditCommandProvider } from "./nest/command/area/area-edit.nest-command";
@@ -126,26 +125,5 @@ import { OrderExternalCreatedListener } from "./listener/order-external-created.
         ManagementFindOneQueryProvider,
         ManagementFindOptionsQueryProvider
     ]
-=======
-import { Module } from '@nestjs/common';
-import { CityModule } from './city/city.module';
-import { CompanyModule } from './company/company.module';
-import { CorporativeGroupModule } from './corporative-group/corporative-group.module';
-import { BranchModule } from './branch/branch.module';
-import { ManagementModule } from './management/management.module';
-import { AreaModule } from './area/area.module';
-import { JobPositionModule } from './job-position/job-position.module';
-
-@Module({
-  imports: [
-    CityModule,
-    CompanyModule,
-    CorporativeGroupModule,
-    BranchModule,
-    ManagementModule,
-    AreaModule,
-    JobPositionModule
-  ]
->>>>>>> main
 })
 export class LocationModule { }

@@ -1,25 +1,14 @@
 # compiled output
 
 docker-compose.yml
-.disk/**
+/.disk/**
 migration.**.sql
 
 *.code-workspace
 
 /dist
 /node_modules
-<<<<<<< HEAD
 /build
-=======
-
-**/signatures/*
-**/reports/*
-**/medical-report-pdf/*
-
-**/default.values*.sql
-
-**/.env
->>>>>>> main
 
 # Logs
 logs

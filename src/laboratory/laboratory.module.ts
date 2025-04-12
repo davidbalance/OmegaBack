@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Module } from "@nestjs/common";
 import { ExamCreateCommandProvider } from "./nest/command/exam-create.nest-command";
 import { ExamEditCommandProvider } from "./nest/command/exam-edit.nest-command";
@@ -90,14 +89,5 @@ import { TestExternalCreatedListener } from "./listener/test-external-created.li
         ExamTypeFindOptionsQueryProvider,
     ],
     exports: [ExamTypeFindOptionsQueryToken]
-=======
-import { Module } from '@nestjs/common';
-import { ExamModule } from './exam/exam.module';
-import { ExamTypeModule } from './exam-type/exam-type.module';
-import { ExamSubtypeModule } from './exam-subtype/exam-subtype.module';
-
-@Module({
-    imports: [ExamModule, ExamTypeModule, ExamSubtypeModule]
->>>>>>> main
 })
 export class LaboratoryModule { }
