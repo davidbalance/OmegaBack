@@ -4,8 +4,119 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
+    "webpack": true,
     "plugins": [
       "@nestjs/swagger"
     ]
+  },
+  "projects": {
+    "db-logger": {
+      "type": "library",
+      "root": "libs/db-logger",
+      "entryFile": "index",
+      "sourceRoot": "libs/db-logger/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/db-logger/tsconfig.lib.json"
+      }
+    },
+    "heart-beat": {
+      "type": "library",
+      "root": "libs/heart-beat",
+      "entryFile": "index",
+      "sourceRoot": "libs/heart-beat/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/heart-beat/tsconfig.lib.json"
+      }
+    },
+    "html-loader": {
+      "type": "library",
+      "root": "libs/html-loader",
+      "entryFile": "index",
+      "sourceRoot": "libs/html-loader/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/html-loader/tsconfig.lib.json"
+      }
+    },
+    "local-email": {
+      "type": "library",
+      "root": "libs/local-email",
+      "entryFile": "index",
+      "sourceRoot": "libs/local-email/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/local-email/tsconfig.lib.json"
+      }
+    },
+    "local-file": {
+      "type": "library",
+      "root": "libs/local-file",
+      "entryFile": "index",
+      "sourceRoot": "libs/local-file/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/local-file/tsconfig.lib.json"
+      }
+    },
+    "local-hash": {
+      "type": "library",
+      "root": "libs/local-hash",
+      "entryFile": "index",
+      "sourceRoot": "libs/local-hash/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/local-hash/tsconfig.lib.json"
+      }
+    },
+    "local-increment": {
+      "type": "library",
+      "root": "libs/local-increment",
+      "entryFile": "index",
+      "sourceRoot": "libs/local-increment/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/local-increment/tsconfig.lib.json"
+      }
+    },
+    "local-jwt": {
+      "type": "library",
+      "root": "libs/local-jwt",
+      "entryFile": "index",
+      "sourceRoot": "libs/local-jwt/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/local-jwt/tsconfig.lib.json"
+      }
+    },
+    "local-pdf": {
+      "type": "library",
+      "root": "libs/local-pdf",
+      "entryFile": "index",
+      "sourceRoot": "libs/local-pdf/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/local-pdf/tsconfig.lib.json"
+      }
+    },
+    "local-spreadsheet": {
+      "type": "library",
+      "root": "libs/local-spreadsheet",
+      "entryFile": "index",
+      "sourceRoot": "libs/local-spreadsheet/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/local-spreadsheet/tsconfig.lib.json"
+      }
+    },
+    "local-zip": {
+      "type": "library",
+      "root": "libs/local-zip",
+      "entryFile": "index",
+      "sourceRoot": "libs/local-zip/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/local-zip/tsconfig.lib.json"
+      }
+    },
+    "shared": {
+      "type": "library",
+      "root": "libs/shared",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
+    }
   }
 }
