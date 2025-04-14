@@ -3,7 +3,7 @@ import { ApiKeyRepository } from "@omega/auth/application/repository/auth/model.
 import { Prisma } from "@prisma/client";
 import { SearchCriteria, FilterGroup, Filter } from "@shared/shared/domain";
 import { PrismaFilterMapper } from "../../../filter-mapper";
-import { ApiKeyModelMapper } from "../../../mapper/auth/model/api_key.model-mapper";
+import { ApiKeyModelMapper } from "../../../mapper/auth/model/api-key.model-mapper";
 import { PrismaService } from "../../../prisma.service";
 import { ApiKeyModel } from "@omega/auth/core/model/auth/api_key.model";
 import { ApiKeyModelRepositoryToken } from "@omega/auth/nest/inject/model-repository.inject";

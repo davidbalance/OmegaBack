@@ -4,7 +4,7 @@ import { PrismaService } from "../../../prisma.service";
 import { Filter, FilterGroup, SearchCriteria } from "@shared/shared/domain";
 import { ApiKeyValueModel } from "@omega/auth/core/model/auth/api_key_value.model";
 import { Prisma } from "@prisma/client";
-import { ApiKeyValueModelMapper } from "../../../mapper/auth/model/api_key_value.model-mapper";
+import { ApiKeyValueModelMapper } from "../../../mapper/auth/model/api-key-value.model-mapper";
 import { PrismaFilterMapper } from "../../../filter-mapper";
 import { ApiKeyValueModelRepositoryToken } from "@omega/auth/nest/inject/model-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";

@@ -4,7 +4,7 @@ import { AuthResourceModel } from "@omega/auth/core/model/auth/auth_resource.mod
 import { Prisma } from "@prisma/client";
 import { SearchCriteria, FilterGroup, Filter } from "@shared/shared/domain";
 import { PrismaFilterMapper } from "../../../filter-mapper";
-import { AuthResourceModelMapper } from "../../../mapper/auth/model/auth_resource.model-mapper";
+import { AuthResourceModelMapper } from "../../../mapper/auth/model/auth-resource.model-mapper";
 import { PrismaService } from "../../../prisma.service";
 import { AuthResourceModelRepositoryToken } from "@omega/auth/nest/inject/model-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
