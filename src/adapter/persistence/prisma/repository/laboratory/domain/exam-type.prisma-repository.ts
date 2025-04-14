@@ -5,7 +5,7 @@ import { PrismaFilterMapper } from "../../../filter-mapper";
 import { Prisma } from "@prisma/client";
 import { ExamTypeRepository } from "@omega/laboratory/application/repository/aggregate.repositories";
 import { ExamType, ExamTypeProps } from "@omega/laboratory/core/domain/exam/exam-type.domain";
-import { ExamTypeDomainMapper } from "../../../mapper/laboratory/domain/exam-type.domain-mapper ";
+import { ExamTypeDomainMapper } from "../../../mapper/laboratory/domain/exam-type.domain-mapper";
 import { ExamTypeIsEvent, ExamTypeRemovedEventPayload, ExamTypeRenamedEventPayload, ExamTypeSubtypeMovedEventPayload, ExamTypeSubtypeRemovedEventPayload } from "@omega/laboratory/core/domain/exam/events/exam-type.events";
 import { ExamSubtypeDomainMapper } from "../../../mapper/laboratory/domain/exam-subtype.domain-mapper";
 import { ExamSubtype } from "@omega/laboratory/core/domain/exam/exam-subtype.domain";

@@ -3,7 +3,7 @@ import { ExamType as PrismaExamType, ExamTypeExternalKey as PrismaExternalKey, P
 import { ExamSubtypeDomainMapper, PrismaExamSubtypeExtended } from "./exam-subtype.domain-mapper";
 import { ExamTypeExternalKey } from "@omega/laboratory/core/domain/exam/value-objects/exam-type-external-key.value-object";
 
-type PrismaExamTypeExtended = PrismaExamType & {
+export type PrismaExamTypeExtended = PrismaExamType & {
     subtypes: PrismaExamSubtypeExtended[];
     externalKeys: PrismaExternalKey[];
 };
