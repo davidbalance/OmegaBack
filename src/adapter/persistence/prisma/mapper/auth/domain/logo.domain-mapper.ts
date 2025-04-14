@@ -5,7 +5,7 @@ export class LogoDomainMapper {
     static toPrisma(value: Logo): Prisma.LogoUncheckedCreateInput {
         return {
             id: value.id,
-            name: value.id
+            name: value.name
         };
     }
 
