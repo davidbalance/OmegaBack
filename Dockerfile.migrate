@@ -1,0 +1,10 @@
+FROM node:23-alpine AS builder
+WORKDIR /app
+RUN npm install prisma@6.6.0 --save-exact
+
+FROM node:23-alpine AS production
+WORKDIR /app
+RUN apk add --no-cache libc6-compat openssl bash
+COPY --from=builder /app/node_modules ./node_modules
+COPY prisma ./prisma
+ENTRYPOINT ["npx", "prisma", "migrate", "deploy"]

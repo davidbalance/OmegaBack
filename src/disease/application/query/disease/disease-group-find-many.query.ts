@@ -1,0 +1,26 @@
+import { DiseaseGroupModel } from "@omega/disease/core/model/disease/disease-group.model";
+import { QueryHandlerAsync } from "@shared/shared/application";
+import { Filter, Order, Pagination } from "@shared/shared/domain";
+import { DiseaseGroupRepository } from "../../repository/model.repositories";
+import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+
+export type DiseaseGroupFindManyQueryPayload = {
+    filter?: string;
+} & Required<Pagination> & Order<DiseaseGroupModel>;
+export class DiseaseGroupFindManyQuery implements QueryHandlerAsync<DiseaseGroupFindManyQueryPayload, PaginationResponse<DiseaseGroupModel>> {
+    constructor(
+        private readonly repository: DiseaseGroupRepository
+    ) { }
+
+    async handleAsync(query: DiseaseGroupFindManyQueryPayload): Promise<PaginationResponse<DiseaseGroupModel>> {
+        const filter: Filter<DiseaseGroupModel>[] = [];
+        if (query.filter) {
+            filter.push({ field: 'groupName', operator: 'like', value: query.filter });
+        }
+
+        const data = await this.repository.findManyAsync({ ...query, filter: filter });
+        const amount = await this.repository.countAsync(filter);
+
+        return { data, amount };
+    }
+}
