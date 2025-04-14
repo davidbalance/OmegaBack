@@ -1,7 +1,6 @@
 import { ExamSubtype } from "@omega/laboratory/core/domain/exam/exam-subtype.domain";
 import { ExamSubtypeExternalKey as PrismaExternalKey, Prisma } from "@prisma/client";
 import { ExamSubtypeDomainMapper, PrismaExamSubtypeExtended } from "../exam-subtype.domain-mapper";
-import { CreateExamSubtypePayload } from "@omega/laboratory/core/domain/exam/payloads/exam-subtype.payload";
 import { ExamDomainMapper, PrismaExamExtended } from "../exam.domain-mapper";
 import { ExamSubtypeExternalKey, ExamSubtypeExternalKeyProps } from "@omega/laboratory/core/domain/exam/value-objects/exam-subtype-external-key.value-object";
 import { Exam } from "@omega/laboratory/core/domain/exam/exam.domain";
