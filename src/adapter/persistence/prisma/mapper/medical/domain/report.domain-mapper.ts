@@ -1,5 +1,5 @@
 import { Report } from "@omega/medical/core/domain/test/report.domain";
-import { MedicalReport as MedicalReport, Prisma } from "@prisma/client";
+import { MedicalReport as PrismaReport, Prisma } from "@prisma/client";
 
 export class ReportDomainMapper {
     static toPrisma(value: Report): Prisma.MedicalReportUncheckedCreateInput {
@@ -9,7 +9,7 @@ export class ReportDomainMapper {
         };
     }
 
-    static toDomain(value: MedicalReport): Report {
+    static toDomain(value: PrismaReport): Report {
         return Report.rehydrate({ ...value });
     }
 }

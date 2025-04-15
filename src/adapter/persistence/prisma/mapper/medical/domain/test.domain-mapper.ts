@@ -1,18 +1,11 @@
 import { Test } from "@omega/medical/core/domain/test/test.domain";
-import {
-    MedicalTest as PrismaTest,
-    MedicalReport as PrismaReport,
-    MedicalResult as PrismaResult,
-    MedicalDiseaseReport as PrismaDisease,
-    MedicalTestExternalKey as PrismaExternalKey,
-    Prisma
-} from "@prisma/client";
+import { MedicalTest as PrismaTest, MedicalReport as PrismaReport, MedicalResult as PrismaResult, MedicalDiseaseReport as PrismaDisease, MedicalTestExternalKey as PrismaExternalKey, Prisma } from "@prisma/client";
 import { ResultDomainMapper } from "./result.domain-mapper";
 import { ReportDomainMapper } from "./report.domain-mapper";
-import { DiseaseReportDomainMapper } from "./disease_report.domain-mapper";
+import { DiseaseReportDomainMapper } from "./disease-report.domain-mapper";
 import { TestExternalKey } from "@omega/medical/core/domain/test/value_objects/test-external-key.value-object";
 
-type PrismaTestWithResultAndReportAndDiseases = PrismaTest & {
+export type PrismaTestWithResultAndReportAndDiseases = PrismaTest & {
     result: PrismaResult,
     report: PrismaReport,
     diseases: PrismaDisease[],

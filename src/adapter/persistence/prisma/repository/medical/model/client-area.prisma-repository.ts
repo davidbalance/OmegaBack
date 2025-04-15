@@ -5,7 +5,7 @@ import { PrismaFilterMapper } from "../../../filter-mapper";
 import { Prisma } from "@prisma/client";
 import { ClientAreaRepository } from "@omega/medical/application/repository/model.repositories";
 import { ClientAreaModel } from "@omega/medical/core/model/client/client-area.model";
-import { ClientAreaModelMapper } from "../../../mapper/medical/model/client_area.model_mapper";
+import { ClientAreaModelMapper } from "../../../mapper/medical/model/client-area.model-mapper";
 import { ClientAreaModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
 

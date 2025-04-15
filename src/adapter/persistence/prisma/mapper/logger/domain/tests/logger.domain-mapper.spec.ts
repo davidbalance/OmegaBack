@@ -6,18 +6,20 @@ import { LoggerDomainMapper } from "../logger.domain-mapper";
 describe('LoggerDomainMapper', () => {
     describe('toPrisma', () => {
         it('should correctly map an Area domain object to a Prisma input', () => {
+
+            const timestamp = new Date();
             const domainObj: LocalLogger = {
                 id: 'id-123',
                 level: 'error',
                 message: 'Test messsage',
-                timestamp: new Date()
+                timestamp: timestamp,
             } as unknown as LocalLogger;
 
             const expected: Prisma.LoggerUncheckedCreateInput = {
                 id: 'id-123',
                 level: 'error',
                 message: 'Test messsage',
-                timestamp: new Date()
+                timestamp: timestamp,
             }
 
             const result = LoggerDomainMapper.toPrisma(domainObj);

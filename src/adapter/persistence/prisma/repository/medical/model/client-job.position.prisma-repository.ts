@@ -5,7 +5,7 @@ import { PrismaFilterMapper } from "../../../filter-mapper";
 import { Prisma } from "@prisma/client";
 import { ClientJobPositionRepository } from "@omega/medical/application/repository/model.repositories";
 import { ClientJobPositionModel } from "@omega/medical/core/model/client/client-job-position.model";
-import { ClientJobPositionModelMapper } from "../../../mapper/medical/model/client_job_position.model_mapper";
+import { ClientJobPositionModelMapper } from "../../../mapper/medical/model/client-job-position.model-mapper";
 import { ClientJobPositionModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
 

@@ -3,7 +3,10 @@ import { MedicalClient as PrismaClient, MedicalEmail as PrismaEmail, MedicalReco
 import { EmailDomainMapper } from "./email.domain-mapper";
 import { RecordDomainMapper } from "./record.domain-mapper";
 
-type MedicalClientWithEmailAndRecords = PrismaClient & { email: PrismaEmail[], records: PrismaMedicalRecord[] }
+export type MedicalClientWithEmailAndRecords = PrismaClient & {
+    email: PrismaEmail[],
+    records: PrismaMedicalRecord[]
+}
 
 export class ClientDomainMapper {
     static toPrisma(value: Client): Prisma.MedicalClientUncheckedCreateInput {

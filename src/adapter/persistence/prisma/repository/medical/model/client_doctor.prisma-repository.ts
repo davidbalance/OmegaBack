@@ -7,7 +7,7 @@ import { ClientDoctorRepository } from "@omega/medical/application/repository/mo
 import { ClientDoctorModel } from "@omega/medical/core/model/client/client-doctor.model";
 import { ClientDoctorModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
-import { ClientDoctorModelMapper } from "../../../mapper/medical/model/client_doctor.model_mapper";
+import { ClientDoctorModelMapper } from "../../../mapper/medical/model/client-doctor.model-mapper";
 
 @Injectable()
 export class ClientPrismaRepository implements ClientDoctorRepository {

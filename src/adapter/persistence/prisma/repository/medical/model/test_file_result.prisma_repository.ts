@@ -6,7 +6,7 @@ import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_re
 import { SearchCriteria, FilterGroup, Filter } from "@shared/shared/domain";
 import { PrismaFilterMapper } from "../../../filter-mapper";
 import { Prisma } from "@prisma/client";
-import { TestFileResultModelMapper } from "../../../mapper/medical/model/test_file_result.model_mapper";
+import { TestFileResultModelMapper } from "../../../mapper/medical/model/test-file-result.model-mapper";
 import { RepositoryError } from "@shared/shared/domain/error";
 
 @Injectable()

@@ -8,7 +8,7 @@ import { Test, TestProps } from "@omega/medical/core/domain/test/test.domain";
 import { TestDomainMapper } from "../../../mapper/medical/domain/test.domain-mapper";
 import { TestCheckedEventPayload, TestDiseaseRemovedEventPayload, TestExamChangedEventPayload, TestIsEvent, TestReactivatedEventPayload, TestRemovedEventPayload, TestUncheckedEventPayload } from "@omega/medical/core/domain/test/events/test.events";
 import { DiseaseReport } from "@omega/medical/core/domain/test/disease_report.domain";
-import { DiseaseReportDomainMapper } from "../../../mapper/medical/domain/disease_report.domain-mapper";
+import { DiseaseReportDomainMapper } from "../../../mapper/medical/domain/disease-report.domain-mapper";
 import { ResultFileAddedEventPayload, ResultFileRemovedEventPayload, ResultIsEvent } from "@omega/medical/core/domain/test/events/result.events";
 import { ResultDomainMapper } from "../../../mapper/medical/domain/result.domain-mapper";
 import { Result } from "@omega/medical/core/domain/test/result.domain";

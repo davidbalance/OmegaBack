@@ -2,7 +2,7 @@ import { Order } from "@omega/medical/core/domain/order/order.domain";
 import { OrderExternalKey } from "@omega/medical/core/domain/order/value_objects/order-external-key.value-object";
 import { MedicalOrder as PrismaOrder, MedicalOrderExternalKey as PrismaExternalKey, Prisma } from "@prisma/client";
 
-type PrismaOrderExtended = PrismaOrder & { externalKeys: PrismaExternalKey[] };
+export type PrismaOrderExtended = PrismaOrder & { externalKeys: PrismaExternalKey[] };
 
 export class OrderDomainMapper {
     static toPrisma(value: Order): Prisma.MedicalOrderUncheckedCreateInput {
