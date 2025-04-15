@@ -5,11 +5,12 @@ import { RecordDomainMapper } from "../record.domain-mapper";
 describe('RecordDomainMapper', () => {
     describe('toPrisma', () => {
         it('should correctly map an Record domain object to a Prisma input', () => {
+            const timestamp = new Date();
             const domainObj: Record = {
                 id: 'id-123',
                 filepath: '/path/to/file',
                 name: 'Test-Record',
-                createAt: new Date(),
+                createAt: timestamp,
                 clientId: 'client-123',
             } as unknown as Record;
 
@@ -17,7 +18,7 @@ describe('RecordDomainMapper', () => {
                 id: 'id-123',
                 filepath: '/path/to/file',
                 name: 'Test-Record',
-                createdAt: new Date(),
+                createdAt: timestamp,
                 clientId: 'client-123',
             }
 

@@ -4,7 +4,7 @@ import { AttributeDomainMapper } from "./attribute.domain-mapper";
 import { DoctorDomainMapper } from "./doctor.domain-mapper";
 import { PatientDomainMapper } from "./patient.domain-mapper";
 
-type PrismaUserWithAttributesAndDoctorAndPatient = PrismaUser & {
+export type PrismaUserWithAttributesAndDoctorAndPatient = PrismaUser & {
     patient: PrismaPatient | null | undefined,
     doctor: PrismaDoctor | null | undefined,
     attributes: PrismaAttribute[]

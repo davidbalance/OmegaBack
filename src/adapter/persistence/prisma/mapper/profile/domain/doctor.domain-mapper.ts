@@ -4,7 +4,6 @@ import { Doctor as PrismaDoctor, Prisma } from "@prisma/client";
 export class DoctorDomainMapper {
     static toPrisma(value: Doctor): Prisma.DoctorUncheckedCreateInput {
         return {
-            ...value,
             id: value.id,
             userId: value.userId,
             signature: value.signature
