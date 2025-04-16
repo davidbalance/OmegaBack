@@ -5,10 +5,10 @@ import { ApiKeyValueModelRepositoryToken, ApiKeyModelRepositoryToken, AuthResour
 import { AuthAggregateRepositoryProvider } from "./repository/auth/domain/auth.prisma-respository";
 import { LogoAggregateRepositoryProvider } from "./repository/auth/domain/logo.prisma-respository";
 import { ResourceAggregateRepositoryProvider } from "./repository/auth/domain/resource.prisma-respository";
-import { ApiKeyModelRepositoryProvider } from "./repository/auth/model/api_key.prisma-respository";
-import { ApiKeyValueModelRepositoryProvider } from "./repository/auth/model/api_key_value.prisma-respository";
+import { ApiKeyModelRepositoryProvider } from "./repository/auth/model/api-key.prisma-respository";
+import { ApiKeyValueModelRepositoryProvider } from "./repository/auth/model/api-key-value.prisma-respository";
 import { AuthModelRepositoryProvider } from "./repository/auth/model/auth.prisma-respository";
-import { AuthResourceModelRepositoryProvider } from "./repository/auth/model/auth_resource.prisma-respository";
+import { AuthResourceModelRepositoryProvider } from "./repository/auth/model/auth-resource.prisma-respository";
 import { LogoModelRepositoryProvider } from "./repository/auth/model/logo.prisma-respository";
 import { ResourceModelRepositoryProvider } from "./repository/auth/model/resource.prisma-respository";
 import { TokenModelRepositoryProvider } from "./repository/auth/model/token.prisma-respository";
