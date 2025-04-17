@@ -2,7 +2,6 @@ import { Logger } from "@nestjs/common";
 import { IncrementPrismaRepository } from "../increment.prisma-repository";
 import { Test, TestingModule } from "@nestjs/testing";
 import { PrismaService } from "../../../prisma.service";
-import { PrismaFilterMapper } from "../../../filter-mapper";
 import { IncrementDomainMapper } from "../../../mapper/increment/increment.mapper";
 import { RepositoryError } from "@shared/shared/domain/error";
 import { AggregateEvent } from "@shared/shared/domain";

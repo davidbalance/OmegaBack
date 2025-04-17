@@ -1,6 +1,6 @@
 import { DomainEvent } from "@shared/shared/domain";
 import { ExamSubtype } from "../exam-subtype.domain";
-import { ExamTypeExternalKey, ExamTypeExternalKeyProps } from "../value-objects/exam-type-external-key.value-object";
+import { ExamTypeExternalKeyProps } from "../value-objects/exam-type-external-key.value-object";
 
 const ExamTypeEventKeys = {
     Renamed: "examType.renamed",
