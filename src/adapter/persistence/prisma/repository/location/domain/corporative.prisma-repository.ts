@@ -107,17 +107,6 @@ export class CorporativePrismaRepository implements CorporativeRepository {
         }
     }
 
-    async addCorporativeExternalKey(value: CorporativeExternalKeyProps): Promise<void> {
-        try {
-            await this.prisma.corporativeExternalKey.create({
-                data: { owner: value.owner, value: value.value, corporativeId: value.corporativeId }
-            });
-        } catch (error) {
-            Logger.error(error);
-            throw new RepositoryError();
-        }
-    }
-
     async addCompany(value: Company): Promise<void> {
         try {
             const data = CompanyDomainMapper.toPrisma(value);
@@ -146,10 +135,10 @@ export class CorporativePrismaRepository implements CorporativeRepository {
         }
     }
 
-    async addCompanyExternalKey(value: CompanyExternalKeyProps): Promise<void> {
+    async addCorporativeExternalKey(value: CorporativeExternalKeyProps): Promise<void> {
         try {
-            await this.prisma.companyExternalKey.create({
-                data: { owner: value.owner, value: value.value, companyId: value.companyId }
+            await this.prisma.corporativeExternalKey.create({
+                data: { owner: value.owner, value: value.value, corporativeId: value.corporativeId }
             });
         } catch (error) {
             Logger.error(error);
@@ -179,6 +168,17 @@ export class CorporativePrismaRepository implements CorporativeRepository {
     async moveBranch(value: CompanyBranchMovedEventPayload): Promise<void> {
         try {
             await this.prisma.branch.update({ where: { id: value.branchId }, data: { companyId: value.toCompanyId } });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async addCompanyExternalKey(value: CompanyExternalKeyProps): Promise<void> {
+        try {
+            await this.prisma.companyExternalKey.create({
+                data: { owner: value.owner, value: value.value, companyId: value.companyId }
+            });
         } catch (error) {
             Logger.error(error);
             throw new RepositoryError();
