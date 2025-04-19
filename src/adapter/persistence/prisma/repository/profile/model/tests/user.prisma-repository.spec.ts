@@ -83,7 +83,9 @@ describe('UserPrismaRepository', () => {
             expect(PrismaFilterMapper.map).toHaveBeenCalledWith(mockFilter.filter);
             expect(prisma.userModel.findMany).toHaveBeenCalledWith({
                 where: mockPrismaWhere,
-                orderBy: { ...mockFilter.order }
+                skip: (mockFilter?.skip ?? 0) * (mockFilter?.limit ?? 1),
+                take: mockFilter.limit,
+                orderBy: mockFilter.order
             });
             expect(result).toEqual(Array.from({ length: prismaResults.length }).fill(modelResult));
         });
