@@ -50,7 +50,7 @@ import { OrderAggregateRepositoryProvider } from "./repository/medical/domain/or
 import { TestAggregateRepositoryProvider } from "./repository/medical/domain/test.prisma-repository";
 import { ClientAreaModelRepositoryProvider } from "./repository/medical/model/client-area.prisma-repository";
 import { ClientEmailModelRepositoryProvider } from "./repository/medical/model/client-email.prisma-repository";
-import { ClientJobPositionModelRepositoryProvider } from "./repository/medical/model/client-job.position.prisma-repository";
+import { ClientJobPositionModelRepositoryProvider } from "./repository/medical/model/client-job-position.prisma-repository";
 import { ClientManagementModelRepositoryProvider } from "./repository/medical/model/client-management.prisma-repository";
 import { ClientModelRepositoryProvider } from "./repository/medical/model/client.prisma-repository";
 import { OrderChecklistModelRepositoryProvider } from "./repository/medical/model/order-checklist.prisma-repository";
@@ -74,8 +74,8 @@ import { TestModelRepositoryProvider } from "./repository/medical/model/test.pri
 import { OrderDoctorModelRepositoryProvider } from "./repository/medical/model/order-doctor.prisma-repository";
 import { LoggerRepositoryProvider } from "./repository/logger/domain/logger.prisma-repository";
 import { LoggerRepositoryToken } from "@db-logger/db-logger/nest/inject/repository.inject";
-import { ClientDoctorModelRepositoryProvider } from "./repository/medical/model/client_doctor.prisma-repository";
-import { TestFileResultRepositoryProvider } from "./repository/medical/model/test_file_result.prisma_repository";
+import { ClientDoctorModelRepositoryProvider } from "./repository/medical/model/client-doctor.prisma-repository";
+import { TestFileResultRepositoryProvider } from "./repository/medical/model/test-file-result.prisma-repository";
 import { ClientRecordModelRepositoryProvider } from "./repository/medical/model/client-record.prisma-repository";
 import { IncrementDomainRepositoryProvider } from "./repository/increment/increment.prisma-repository";
 import { IncrementRepositoryToken } from "@local-increment/local-increment/repository/increment.repository";

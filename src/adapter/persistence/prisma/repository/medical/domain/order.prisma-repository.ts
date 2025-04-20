@@ -10,7 +10,7 @@ import { OrderDomainMapper } from "../../../mapper/medical/domain/order.domain-m
 import { OrderAggregateRepositoryToken } from "@omega/medical/nest/inject/aggregate-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
 import { OrderRemoveCommandPayload } from "@omega/medical/application/commands/order/order-remove.command";
-import { OrderExternalKey, OrderExternalKeyProps } from "@omega/medical/core/domain/order/value_objects/order-external-key.value-object";
+import { OrderExternalKey } from "@omega/medical/core/domain/order/value_objects/order-external-key.value-object";
 
 @Injectable()
 export class OrderPrismaRepository implements OrderRepository {
@@ -108,7 +108,6 @@ export class OrderPrismaRepository implements OrderRepository {
             throw new RepositoryError();
         }
     }
-
 }
 
 export const OrderAggregateRepositoryProvider: Provider = {

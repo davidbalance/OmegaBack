@@ -10,7 +10,7 @@ import { RepositoryError } from "@shared/shared/domain/error";
 import { ClientDoctorModelMapper } from "../../../mapper/medical/model/client-doctor.model-mapper";
 
 @Injectable()
-export class ClientPrismaRepository implements ClientDoctorRepository {
+export class ClientDoctorPrismaRepository implements ClientDoctorRepository {
     constructor(
         @Inject(PrismaService) private readonly prisma: PrismaService
     ) { }
@@ -56,5 +56,5 @@ export class ClientPrismaRepository implements ClientDoctorRepository {
 
 export const ClientDoctorModelRepositoryProvider: Provider = {
     provide: ClientDoctorModelRepositoryToken,
-    useClass: ClientPrismaRepository,
+    useClass: ClientDoctorPrismaRepository,
 }
