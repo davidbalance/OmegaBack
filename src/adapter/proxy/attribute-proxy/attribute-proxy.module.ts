@@ -1,6 +1,6 @@
 import { Global, Module } from "@nestjs/common";
 import { ProfileModule } from "@omega/profile/profile.module";
-import { AttributeProxyProvider } from "./attribute_proxy.service";
+import { AttributeProxyProvider } from "./attribute-proxy.service";
 import { ATTRIBUTE_INTERCEPTOR_TOKEN } from "@shared/shared/nest/interceptors/attribute.interceptor";
 
 @Global()

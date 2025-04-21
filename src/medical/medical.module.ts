@@ -60,7 +60,7 @@ import { TestFindOneQueryProvider } from "./nest/query/test/test-find-one.query"
 import { TestEditExamCommandProvider } from "./nest/command/test/test_edit_exam.nest-command";
 import { OrderCreatedStatusCommandProvider } from "./nest/command/order/order_created_status.nest_command";
 import { OrderValidatedStatusCommandProvider } from "./nest/command/order/order_validated_status.nest_command";
-import { PatientProxyModule } from "@omega/adapter/proxy/patient_proxy/patient_proxy.module";
+import { PatientProxyModule } from "@omega/adapter/proxy/patient-proxy/patient-proxy.module";
 import { TestCreateCommandProvider } from "./nest/command/test/test-create.nest-command";
 import { TestCheckCommandProvider } from "./nest/command/test/test_check.nest-command";
 import { TestUncheckCommandProvider } from "./nest/command/test/test_uncheck.nest_command";

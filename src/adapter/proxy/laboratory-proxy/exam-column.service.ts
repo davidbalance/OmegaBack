@@ -1,7 +1,7 @@
 import { Injectable, Provider } from "@nestjs/common";
 import { ExamTypeFindOptionsQuery } from "@omega/laboratory/application/query/exam/exam-type-find-options.query";
 import { InjectQuery } from "@omega/laboratory/nest/inject/query.inject";
-import { ExamColum, ExamColumnProvider } from "@omega/medical/application/providers/exam-column.provider";
+import { ExamColumn, ExamColumnProvider } from "@omega/medical/application/providers/exam-column.provider";
 import { ExamColumnToken } from "@omega/medical/nest/inject/provider.inject";
 
 @Injectable()
@@ -11,7 +11,7 @@ export class ExamColumnService implements ExamColumnProvider {
         @InjectQuery('ExamTypeFindOptions') private readonly options: ExamTypeFindOptionsQuery
     ) { }
 
-    async find(): Promise<ExamColum[]> {
+    async find(): Promise<ExamColumn[]> {
         const values = await this.options.handleAsync();
 
         return values.map(e => ({

@@ -11,7 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import serverConfig from './_setup/config/server.config';
 import serverSchema from './_setup/config/server.schema';
 import { ZodValidatorFactory } from '@shared/shared/nest/factories';
-import { AttributeProxyModule } from './adapter/proxy/attribute_proxy/attribute_proxy.module';
+import { AttributeProxyModule } from './adapter/proxy/attribute-proxy/attribute-proxy.module';
 import { WinstonModule } from '@db-logger/db-logger';
 import { HeartBeatModule } from '@heart-beat/heart-beat';
 import { ApiKeyProxyModule } from './adapter/proxy/api-key-proxy/api-key-proxy.module';
