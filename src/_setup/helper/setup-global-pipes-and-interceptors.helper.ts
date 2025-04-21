@@ -4,8 +4,12 @@ import { Reflector } from "@nestjs/core";
 export function setupGlobalPipesAndInterceptors<T>(app: INestApplication<T>) {
     app.useGlobalPipes(new ValidationPipe({
         whitelist: true,
-        skipMissingProperties: true,  // Skip properties that are missing in the request
-        transform: true,  // Transform payloads
+        forbidNonWhitelisted: true,
+        transform: true,
+        transformOptions: {
+            enableImplicitConversion: true,
+        },
+
     }));
     app.useGlobalInterceptors(
         new ClassSerializerInterceptor(app.get(Reflector), {
