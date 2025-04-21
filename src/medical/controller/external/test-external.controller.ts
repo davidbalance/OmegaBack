@@ -89,7 +89,6 @@ export class TestExternalController {
         @CurrentUser() app: string,
         @Body() body: CreateManyTestFromExternalSourceRequestDto
     ): Promise<TestOrderExternalResponseDto> {
-        console.log(body);
         const value = await this.createManyByExternalSource.createAsync({ ...body, owner: app });
         const data = TestOrderExternalModelMapper.toDTO(value);
         return plainToInstance(TestOrderExternalResponseDto, data);
