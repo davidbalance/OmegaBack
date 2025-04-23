@@ -1,7 +1,7 @@
 import { ApiKeyValueRepository } from "../../repository/auth/model.repositories";
 import { QueryHandlerAsync } from "@shared/shared/application";
-import { ApiKeyNotFoundError } from "@omega/auth/core/domain/auth/errors/api_key.errors";
-import { ApiKeyValueModel } from "@omega/auth/core/model/auth/api_key_value.model";
+import { ApiKeyNotFoundError } from "@omega/auth/core/domain/auth/errors/api-key.errors";
+import { ApiKeyValueModel } from "@omega/auth/core/model/auth/api-key-value.model";
 
 export type ApiKeyFindOneByValueQueryPayload = {
     value: string

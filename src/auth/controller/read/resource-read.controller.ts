@@ -5,7 +5,7 @@ import { InjectQuery } from "@omega/auth/nest/inject/query.inject";
 import { ResourceFindOneQuery } from "@omega/auth/application/query/resource/resource-find-one.query";
 import { ResourceFindManyQuery } from "@omega/auth/application/query/resource/resource-find-many.query";
 import { ResourceResponseDto } from "../dto/response/resource.dto";
-import { ResourceModelMapper } from "../mapper/resource_model.mapper";
+import { ResourceModelMapper } from "../mapper/resource-model.mapper";
 import { plainToInstance } from "class-transformer";
 
 @ApiTags('Auth', 'Read')

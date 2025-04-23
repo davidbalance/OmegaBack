@@ -4,7 +4,7 @@ import { AuthNotFoundError } from "@omega/auth/core/domain/auth/errors/auth.erro
 import { JwtProvider } from "@shared/shared/providers/jwt.provider";
 import { AuthGenerateTokenQuery, AuthGenerateTokenQueryPayload } from "../auth-generate-token.query";
 import { AuthModel } from "@omega/auth/core/model/auth/auth.model";
-import { AuthResourceModel } from "@omega/auth/core/model/auth/auth_resource.model";
+import { AuthResourceModel } from "@omega/auth/core/model/auth/auth-resource.model";
 
 describe("AuthGenerateTokenQuery", () => {
     let authRepository: jest.Mocked<AuthRepository>;

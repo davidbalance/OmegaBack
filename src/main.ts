@@ -28,6 +28,7 @@ async function bootstrap() {
   await app.listen(serverConfig.port, serverConfig.network);
   logger.debug(`Running in port: http://${serverConfig.network}:${serverConfig.port}`);
   if (serverConfig.nodeEnv === 'development') {
+    setupLogger(app);
     logger.debug(`API Reference running in http://${serverConfig.network}:${serverConfig.port}/reference`);
   }
 }

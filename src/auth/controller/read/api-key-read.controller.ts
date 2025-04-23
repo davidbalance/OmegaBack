@@ -6,7 +6,7 @@ import { plainToInstance } from "class-transformer";
 import { InjectQuery } from "@omega/auth/nest/inject/query.inject";
 import { ApiKeyResponseDto } from "../dto/response/api_key.dto";
 import { ApiKeyFindManyQuery } from "@omega/auth/application/query/auth/api-key-find-many.query";
-import { ApiKeyMapper } from "../mapper/api_key.mapper";
+import { ApiKeyMapper } from "../mapper/api-key.mapper";
 
 @ApiTags('Auth', 'Read')
 @ApiBearerAuth()

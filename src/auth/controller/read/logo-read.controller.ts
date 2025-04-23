@@ -4,7 +4,7 @@ import { AuthGuard } from "@shared/shared/nest/guard";
 import { InjectQuery } from "@omega/auth/nest/inject/query.inject";
 import { plainToInstance } from "class-transformer";
 import { LogoFindManyQuery } from "@omega/auth/application/query/logo/logo-find-many.query";
-import { LogoModelMapper } from "../mapper/logo_model.mapper";
+import { LogoModelMapper } from "../mapper/logo-model.mapper";
 import { LogoResponseDto } from "../dto/response/logo.dto";
 
 @ApiTags('Auth', 'Read')

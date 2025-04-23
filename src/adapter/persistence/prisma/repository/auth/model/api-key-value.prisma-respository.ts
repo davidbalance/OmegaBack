@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger, Provider } from "@nestjs/common";
 import { ApiKeyValueRepository } from "@omega/auth/application/repository/auth/model.repositories";
 import { PrismaService } from "../../../prisma.service";
 import { Filter, FilterGroup, SearchCriteria } from "@shared/shared/domain";
-import { ApiKeyValueModel } from "@omega/auth/core/model/auth/api_key_value.model";
+import { ApiKeyValueModel } from "@omega/auth/core/model/auth/api-key-value.model";
 import { Prisma } from "@prisma/client";
 import { ApiKeyValueModelMapper } from "../../../mapper/auth/model/api-key-value.model-mapper";
 import { PrismaFilterMapper } from "../../../filter-mapper";

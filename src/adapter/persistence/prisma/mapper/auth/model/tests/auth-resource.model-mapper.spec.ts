@@ -1,4 +1,4 @@
-import { AuthResourceModel } from "@omega/auth/core/model/auth/auth_resource.model";
+import { AuthResourceModel } from "@omega/auth/core/model/auth/auth-resource.model";
 import { AuthResourceModel as PrismaAuthResourceModel } from "@prisma/client";
 import { AuthResourceModelMapper } from "../auth-resource.model-mapper";
 

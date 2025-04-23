@@ -1,4 +1,4 @@
-import { ApiKeyModel } from "@omega/auth/core/model/auth/api_key.model";
+import { ApiKeyModel } from "@omega/auth/core/model/auth/api-key.model";
 import { ApiKeyRepository } from "../../repository/auth/model.repositories";
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { JwtProvider } from "@shared/shared/providers/jwt.provider";

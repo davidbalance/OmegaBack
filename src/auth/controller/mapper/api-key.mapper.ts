@@ -1,4 +1,4 @@
-import { ApiKeyModel } from "@omega/auth/core/model/auth/api_key.model";
+import { ApiKeyModel } from "@omega/auth/core/model/auth/api-key.model";
 import { ApiKeyResponseDto } from "../dto/response/api_key.dto";
 
 export class ApiKeyMapper {

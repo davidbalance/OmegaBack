@@ -10,7 +10,7 @@ import { AuthAddLogoCommandToken, AuthAddResourcesCommandToken, AuthCreateComman
 import { AuthFindManyResourcesQueryToken } from "@omega/auth/nest/inject/query.inject";
 import { JwtAccessProviderToken } from "@shared/shared/nest/inject";
 import { UserFindOneByAuthQueryToken } from "@omega/profile/nest/inject/query.inject";
-import { AuthResourceModel } from "@omega/auth/core/model/auth/auth_resource.model";
+import { AuthResourceModel } from "@omega/auth/core/model/auth/auth-resource.model";
 import { AuthPayload, AuthResourcePayload, CreateAuthPayload } from "@shared/shared/providers/auth.provider";
 import { AuthJwtPayload } from "@omega/auth/application/type/auth.type";
 import { UserModel } from "@omega/profile/core/model/user/user.model";

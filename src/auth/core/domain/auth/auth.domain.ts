@@ -3,8 +3,8 @@ import { ApiKey } from "./api-key.domain";
 import { Token } from "./token.domain";
 import { CreateAuthPayload } from "./payloads/auth.payloads";
 import { AuthResourceAddedEvent, AuthApikeyAddedEvent, AuthApikeyRemovedEvent, AuthLogoAddedEvent, AuthPasswordEditedEvent, AuthTokenAddedEvent, AuthTokenRemovedEvent, AuthResourceRemovedEvent } from "./events/auth.events";
-import { ApiKeyConflictError, ApiKeyInvalidError, ApiKeyNotFoundError } from "./errors/api_key.errors";
-import { AuthResourceConflictError, AuthResourceNotFoundError } from "./errors/auth_resource.errors";
+import { ApiKeyConflictError, ApiKeyInvalidError, ApiKeyNotFoundError } from "./errors/api-key.errors";
+import { AuthResourceConflictError, AuthResourceNotFoundError } from "./errors/auth-resource.errors";
 import { TokenNotFoundError } from "./errors/token.errors";
 
 export type AuthProps = AggregateProps & {

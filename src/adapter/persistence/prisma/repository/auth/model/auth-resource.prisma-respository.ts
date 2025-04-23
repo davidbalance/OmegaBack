@@ -1,6 +1,6 @@
 import { Injectable, Inject, Provider, Logger } from "@nestjs/common";
 import { AuthResourceRepository } from "@omega/auth/application/repository/auth/model.repositories";
-import { AuthResourceModel } from "@omega/auth/core/model/auth/auth_resource.model";
+import { AuthResourceModel } from "@omega/auth/core/model/auth/auth-resource.model";
 import { Prisma } from "@prisma/client";
 import { SearchCriteria, FilterGroup, Filter } from "@shared/shared/domain";
 import { PrismaFilterMapper } from "../../../filter-mapper";

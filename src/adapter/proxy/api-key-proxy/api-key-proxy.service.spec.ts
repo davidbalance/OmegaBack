@@ -2,7 +2,7 @@ import { ApiKeyFindOneByValueQuery } from "@omega/auth/application/query/auth/ap
 import { ApiKeyProxyService } from "./api-key-proxy.service";
 import { Test, TestingModule } from "@nestjs/testing";
 import { ApiKeyFindOneByValueQueryToken } from "@omega/auth/nest/inject/query.inject";
-import { ApiKeyValueModel } from "@omega/auth/core/model/auth/api_key_value.model";
+import { ApiKeyValueModel } from "@omega/auth/core/model/auth/api-key-value.model";
 
 describe("ApiKeyProxyService", () => {
     let service: ApiKeyProxyService;

@@ -2,7 +2,7 @@ import { Logger } from "@nestjs/common";
 import { AuthResourceModelPrismaRepository } from "../auth-resource.prisma-respository";
 import { Test, TestingModule } from "@nestjs/testing";
 import { PrismaService } from "@omega/adapter/persistence/prisma/prisma.service";
-import { AuthResourceModel } from "@omega/auth/core/model/auth/auth_resource.model";
+import { AuthResourceModel } from "@omega/auth/core/model/auth/auth-resource.model";
 import { Filter, SearchCriteria } from "@shared/shared/domain";
 import { PrismaFilterMapper } from "@omega/adapter/persistence/prisma/filter-mapper";
 import { AuthResourceModelMapper } from "@omega/adapter/persistence/prisma/mapper/auth/model/auth-resource.model-mapper";

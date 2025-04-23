@@ -1,6 +1,6 @@
 import { CommandHandlerAsync } from "@shared/shared/application";
 import { ApiKeyValueRepository } from "../../repository/auth/model.repositories";
-import { ApiKeyNotFoundError } from "@omega/auth/core/domain/auth/errors/api_key.errors";
+import { ApiKeyNotFoundError } from "@omega/auth/core/domain/auth/errors/api-key.errors";
 
 export type AuthValidateApiKeyCommandPayload = {
     apiKeyValue: string

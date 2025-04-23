@@ -1,4 +1,4 @@
-import { ApiKeyModel } from "@omega/auth/core/model/auth/api_key.model";
+import { ApiKeyModel } from "@omega/auth/core/model/auth/api-key.model";
 import { ApiKeyModel as PrismaApiKeyModel } from "@prisma/client";
 import { ApiKeyModelMapper } from "../api-key.model-mapper";
 

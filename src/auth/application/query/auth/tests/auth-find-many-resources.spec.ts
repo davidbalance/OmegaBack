@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { AuthResourceRepository } from "@omega/auth/application/repository/auth/model.repositories";
 import { AuthFindManyResourcesQuery, AuthFindManyResourcesQueryPayload } from "../auth-find-many-resources.query";
-import { AuthResourceModel } from "@omega/auth/core/model/auth/auth_resource.model";
+import { AuthResourceModel } from "@omega/auth/core/model/auth/auth-resource.model";
 
 describe("AuthFindManyResourcesQuery", () => {
     let repository: jest.Mocked<AuthResourceRepository>;

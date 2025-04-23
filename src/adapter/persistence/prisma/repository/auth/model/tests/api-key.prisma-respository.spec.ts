@@ -6,7 +6,7 @@ import { Logger } from "@nestjs/common";
 import { PrismaFilterMapper } from "@omega/adapter/persistence/prisma/filter-mapper";
 import { ApiKeyModel as PrismaApiKey } from "@prisma/client";
 import { ApiKeyModelMapper } from "@omega/adapter/persistence/prisma/mapper/auth/model/api-key.model-mapper";
-import { ApiKeyModel } from "@omega/auth/core/model/auth/api_key.model";
+import { ApiKeyModel } from "@omega/auth/core/model/auth/api-key.model";
 import { RepositoryError } from "@shared/shared/domain/error";
 
 describe('ApiKeyModelPrismaRepository', () => {

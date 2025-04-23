@@ -4,7 +4,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { PrismaService } from "@omega/adapter/persistence/prisma/prisma.service";
 import { PrismaFilterMapper } from "@omega/adapter/persistence/prisma/filter-mapper";
 import { ApiKeyValueModelMapper } from "@omega/adapter/persistence/prisma/mapper/auth/model/api-key-value.model-mapper";
-import { ApiKeyValueModel } from "@omega/auth/core/model/auth/api_key_value.model";
+import { ApiKeyValueModel } from "@omega/auth/core/model/auth/api-key-value.model";
 import { ApiKeyValueModel as PrismaApiKey } from "@prisma/client";
 import { Filter, SearchCriteria } from "@shared/shared/domain";
 import { RepositoryError } from "@shared/shared/domain/error";
