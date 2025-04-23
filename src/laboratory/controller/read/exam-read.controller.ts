@@ -5,9 +5,9 @@ import { ExamFindOneQuery } from "@omega/laboratory/application/query/exam/exam-
 import { InjectQuery } from "@omega/laboratory/nest/inject/query.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { ExamResponseDto } from "../dto/response/exam.dto";
-import { ExamModelMapper } from "../mapper/exam/exam_model.mapper";
+import { ExamModelMapper } from "../mapper/exam/exam-model.mapper";
 import { plainToInstance } from "class-transformer";
-import { ExamFindManyQueryDto } from "../dto/query/exam_query.dto";
+import { ExamFindManyQueryDto } from "../dto/query/exam-query.dto";
 
 @ApiTags('Laboratory', 'Read')
 @ApiBearerAuth()

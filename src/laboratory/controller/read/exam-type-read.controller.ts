@@ -5,9 +5,9 @@ import { AuthGuard } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
 import { ExamTypeFindOptionsQuery } from "@omega/laboratory/application/query/exam/exam-type-find-options.query";
 import { ExamTypeFindManyQuery } from "@omega/laboratory/application/query/exam/exam-type-find-many.query";
-import { ExamTypeFindManyQueryDto } from "../dto/query/exam_type_query.dto";
-import { ExamTypeModelMapper } from "../mapper/exam/exam_type_model.mapper";
-import { ExamTypeManyResponseDto, ExamTypeOptionResponseDto } from "../dto/response/exam_type.dto";
+import { ExamTypeFindManyQueryDto } from "../dto/query/exam-type-query.dto";
+import { ExamTypeModelMapper } from "../mapper/exam/exam-type-model.mapper";
+import { ExamTypeManyResponseDto, ExamTypeOptionResponseDto } from "../dto/response/exam-type.dto";
 
 @ApiTags('Laboratory', 'Read')
 @ApiBearerAuth()

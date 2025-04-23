@@ -5,8 +5,8 @@ import { plainToInstance } from "class-transformer";
 import { InjectQuery } from "@omega/location/nest/inject/query.inject";
 import { BranchFindManyQuery } from "@omega/location/application/query/corporative/branch-find-many.query";
 import { BranchResponseDto } from "../dto/response/branch.dto";
-import { BranchFindManyQueryDto } from "../dto/query/branch_query.dto";
-import { BranchModelMapper } from "../mapper/branch_model.mapper";
+import { BranchFindManyQueryDto } from "../dto/query/branch-query.dto";
+import { BranchModelMapper } from "../mapper/branch-model.mapper";
 
 @ApiTags('Location', 'Read')
 @ApiBearerAuth()

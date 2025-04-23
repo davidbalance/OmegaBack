@@ -11,7 +11,7 @@ import { BranchExternalResponseDto } from "../dto/response/branch-external.dto";
 import { BranchExternalModelMapper } from "../mapper/branch-external-model.mapper";
 import { CreateBranchFromExternalRequestDto } from "../dto/request/branch-external.dto";
 import { BranchResponseDto } from "../dto/response/branch.dto";
-import { BranchModelMapper } from "../mapper/branch_model.mapper";
+import { BranchModelMapper } from "../mapper/branch-model.mapper";
 
 @ApiTags('Location', 'External Connection')
 @OmegaApiKey()

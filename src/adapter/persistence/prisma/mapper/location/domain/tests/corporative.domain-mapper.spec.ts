@@ -1,6 +1,6 @@
 import { Prisma, CorporativeGroup as PrismaCorporativeGroup, CorporativeExternalKey as PrismaCorporativeExternalKey, } from "@prisma/client";
 import { Corporative } from "@omega/location/core/domain/corporative/corporative.domain";
-import { CorporativeExternalKey, CorporativeExternalKeyProps } from "@omega/location/core/domain/corporative/value_objects/corporative-external-key.value-object";
+import { CorporativeExternalKey, CorporativeExternalKeyProps } from "@omega/location/core/domain/corporative/value-objects/corporative-external-key.value-object";
 import { CorporativeDomainMapper, PrismaCorporativeExtended } from "../corporative.domain-mapper";
 import { CompanyDomainMapper, PrismaCompanyExtended } from "../company.domain-mapper";
 import { Company } from "@omega/location/core/domain/corporative/company.domain";

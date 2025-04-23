@@ -6,7 +6,7 @@ import { AggregateProps, Aggregate } from "@shared/shared/domain";
 import { CompanyConflictError, CompanyNotFoundError } from "./errors/company.errors";
 import { CorporativeForbiddenError, CorporativeInvalidError } from "./errors/corporative.errors";
 import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
-import { CorporativeExternalKey } from "./value_objects/corporative-external-key.value-object";
+import { CorporativeExternalKey } from "./value-objects/corporative-external-key.value-object";
 import { CorporativeExternalKeyConflictError } from "./errors/corporative-external-key.errors";
 import { BranchNotFoundError } from "./errors/branch.errors";
 import { BranchExternalKeyAddedEvent } from "./events/branch.events";

@@ -4,7 +4,7 @@ import { InjectCommand } from "@omega/laboratory/nest/inject/command.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { ExamSubtypeEditCommand } from "@omega/laboratory/application/command/exam/exam-subtype-edit.command";
 import { ExamSubtypeRemoveCommand } from "@omega/laboratory/application/command/exam/exam-subtype-remove.command";
-import { ExamSubtypeCreateRequestDto, ExamSubtypeEditRequestDto, ExamSubtypeMoveRequestDto } from "../dto/request/exam_subtype.dto";
+import { ExamSubtypeCreateRequestDto, ExamSubtypeEditRequestDto, ExamSubtypeMoveRequestDto } from "../dto/request/exam-subtype.dto";
 import { ExamSubtypeCreateCommand } from "@omega/laboratory/application/command/exam/exam-subtype-create.command";
 import { ExamSubtypeMoveCommand } from "@omega/laboratory/application/command/exam/exam-subtype-move.command";
 

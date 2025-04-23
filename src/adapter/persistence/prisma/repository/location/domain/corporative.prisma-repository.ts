@@ -15,9 +15,9 @@ import { Branch } from "@omega/location/core/domain/corporative/branch.domain";
 import { CorporativeAggregateRepositoryToken } from "@omega/location/nest/inject/aggregate-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
 import { BranchIsEvent } from "@omega/location/core/domain/corporative/events/branch.events";
-import { CorporativeExternalKeyProps } from "@omega/location/core/domain/corporative/value_objects/corporative-external-key.value-object";
-import { CompanyExternalKeyProps } from "@omega/location/core/domain/corporative/value_objects/company-external-key.value-object";
-import { BranchExternalKeyProps } from "@omega/location/core/domain/corporative/value_objects/branch-external-key.value-object";
+import { CorporativeExternalKeyProps } from "@omega/location/core/domain/corporative/value-objects/corporative-external-key.value-object";
+import { CompanyExternalKeyProps } from "@omega/location/core/domain/corporative/value-objects/company-external-key.value-object";
+import { BranchExternalKeyProps } from "@omega/location/core/domain/corporative/value-objects/branch-external-key.value-object";
 
 @Injectable()
 export class CorporativePrismaRepository implements CorporativeRepository {

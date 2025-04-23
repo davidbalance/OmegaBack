@@ -7,8 +7,8 @@ import { ManagementFindOneQuery } from "@omega/location/application/query/manage
 import { ManagementFindManyQuery } from "@omega/location/application/query/management/management-find-many.query";
 import { ManagementFindOptionsQuery } from "@omega/location/application/query/management/management-find-options.query";
 import { ManagementManyResponseDto, ManagementOptionResponseDto, ManagementResponseDto } from "../dto/response/management.dto";
-import { ManagementModelMapper } from "../mapper/management_model.mapper";
-import { ManagementFindManyQueryDto } from "../dto/query/management_query.dto";
+import { ManagementModelMapper } from "../mapper/management-model.mapper";
+import { ManagementFindManyQueryDto } from "../dto/query/management-query.dto";
 
 @ApiTags('Location', 'Read')
 @ApiBearerAuth()

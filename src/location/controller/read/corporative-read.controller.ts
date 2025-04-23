@@ -4,9 +4,9 @@ import { AuthGuard } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
 import { InjectQuery } from "@omega/location/nest/inject/query.inject";
 import { CorporativeFindManyQuery } from "@omega/location/application/query/corporative/corporative-find-many.query";
-import { CorporativeFindManyQueryDto } from "../dto/query/corporative_query.dto";
+import { CorporativeFindManyQueryDto } from "../dto/query/corporative-query.dto";
 import { CorporativeManyResponseDto, CorporativeOptionResponseDto } from "../dto/response/corporative.dto";
-import { CorporativeModelMapper } from "../mapper/corporative_model.mapper";
+import { CorporativeModelMapper } from "../mapper/corporative-model.mapper";
 import { CorporativeFindOptionsQuery } from "@omega/location/application/query/corporative/corporative-find-options.query";
 
 @ApiTags('Location', 'Read')

@@ -5,7 +5,7 @@ import { AuthGuard } from "@shared/shared/nest/guard";
 import { DiseaseGroupCreateCommand } from "@omega/disease/application/command/disease/disease-group-create.command";
 import { DiseaseGroupEditCommand } from "@omega/disease/application/command/disease/disease-group-edit.command";
 import { DiseaseGroupRemoveCommand } from "@omega/disease/application/command/disease/disease-group-remove.command";
-import { DiseaseGroupCreateRequestDto, DiseaseGroupEditRequestDto } from "../dto/request/disease_group.dto";
+import { DiseaseGroupCreateRequestDto, DiseaseGroupEditRequestDto } from "../dto/request/disease-group.dto";
 
 @ApiTags('Disease', 'Write')
 @ApiBearerAuth()

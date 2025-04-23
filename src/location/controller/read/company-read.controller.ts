@@ -4,9 +4,9 @@ import { AuthGuard } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
 import { InjectQuery } from "@omega/location/nest/inject/query.inject";
 import { CompanyFindManyQuery } from "@omega/location/application/query/corporative/company-find-many.query";
-import { CompanyFindManyQueryDto } from "../dto/query/company_query.dto";
+import { CompanyFindManyQueryDto } from "../dto/query/company-query.dto";
 import { CompanyManyResponseDto } from "../dto/response/company.dto";
-import { CompanyModelMapper } from "../mapper/company_model.mapper";
+import { CompanyModelMapper } from "../mapper/company-model.mapper";
 
 @ApiTags('Location', 'Read')
 @ApiBearerAuth()

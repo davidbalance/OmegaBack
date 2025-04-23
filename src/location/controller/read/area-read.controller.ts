@@ -2,13 +2,13 @@ import { Controller, Get, Param, Query, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
-import { AreaFindManyQueryDto } from "../dto/query/area_query.dto";
+import { AreaFindManyQueryDto } from "../dto/query/area-query.dto";
 import { InjectQuery } from "@omega/location/nest/inject/query.inject";
 import { AreaFindOneQuery } from "@omega/location/application/query/area/area-find-one.query";
 import { AreaFindManyQuery } from "@omega/location/application/query/area/area-find-many.query";
 import { AreaFindOptionsQuery } from "@omega/location/application/query/area/area-find-options.query";
 import { AreaManyResponseDto, AreaOptionResponseDto, AreaResponseDto } from "../dto/response/area.dto";
-import { AreaModelMapper } from "../mapper/area_model.mapper";
+import { AreaModelMapper } from "../mapper/area-model.mapper";
 
 @ApiTags('Location', 'Read')
 @ApiBearerAuth()

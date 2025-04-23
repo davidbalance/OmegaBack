@@ -1,5 +1,5 @@
 import { Branch } from "@omega/location/core/domain/corporative/branch.domain";
-import { BranchExternalKey, BranchExternalKeyProps } from "@omega/location/core/domain/corporative/value_objects/branch-external-key.value-object";
+import { BranchExternalKey, BranchExternalKeyProps } from "@omega/location/core/domain/corporative/value-objects/branch-external-key.value-object";
 import { BranchExternalKey as PrismaBranchExternalKey, Prisma } from "@prisma/client";
 import { BranchDomainMapper, PrismaBranchExtended } from "../branch.domain-mapper";
 

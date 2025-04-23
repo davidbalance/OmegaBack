@@ -8,7 +8,7 @@ import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorat
 import { ApiKeyGuard, OmegaApiKey } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
 import { CorporativeResponseDto } from "../dto/response/corporative.dto";
-import { CorporativeModelMapper } from "../mapper/corporative_model.mapper";
+import { CorporativeModelMapper } from "../mapper/corporative-model.mapper";
 import { CorporativeExternalResponseDto } from "../dto/response/corporative-external.dto";
 import { CorporativeExternalModelMapper } from "../mapper/corporative-external-model.mapper";
 import { CreateCorporativeFromExternalRequestDto } from "../dto/request/corporative-external.dto";

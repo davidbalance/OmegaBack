@@ -6,9 +6,9 @@ import { InjectQuery } from "@omega/location/nest/inject/query.inject";
 import { JobPositionFindOneQuery } from "@omega/location/application/query/job-position/job-position-find-one.query";
 import { JobPositionFindManyQuery } from "@omega/location/application/query/job-position/job-position-find-many.query";
 import { JobPositionFindOptionsQuery } from "@omega/location/application/query/job-position/job-position-find-options.query";
-import { JobPositionModelMapper } from "../mapper/job_position_model.mapper";
+import { JobPositionModelMapper } from "../mapper/job-position-model.mapper";
 import { JobPositionManyResponseDto, JobPositionOptionResponseDto, JobPositionResponseDto } from "../dto/response/job_position.dto";
-import { JobPositionFindManyQueryDto } from "../dto/query/job_position_query.dto";
+import { JobPositionFindManyQueryDto } from "../dto/query/job-position-query.dto";
 
 @ApiTags('Location', 'Read')
 @ApiBearerAuth()

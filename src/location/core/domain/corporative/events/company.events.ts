@@ -1,6 +1,6 @@
 import { DomainEvent } from "@shared/shared/domain";
 import { Branch } from "../branch.domain";
-import { CompanyExternalKeyProps } from "../value_objects/company-external-key.value-object";
+import { CompanyExternalKeyProps } from "../value-objects/company-external-key.value-object";
 
 const CompanyEventKeys = {
     BranchAdded: "company.branchAdded",

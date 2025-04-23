@@ -7,7 +7,7 @@ import { InjectService } from "@omega/location/nest/inject/service.inject";
 import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { ApiKeyGuard, OmegaApiKey } from "@shared/shared/nest/guard";
 import { CompanyResponseDto } from "../dto/response/company.dto";
-import { CompanyModelMapper } from "../mapper/company_model.mapper";
+import { CompanyModelMapper } from "../mapper/company-model.mapper";
 import { plainToInstance } from "class-transformer";
 import { CreateCompanyFromExternalRequestDto } from "../dto/request/company-external.dto";
 import { CompanyExternalResponseDto } from "../dto/response/company-external.dto";

@@ -6,7 +6,7 @@ import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorat
 import { ApiKeyGuard, OmegaApiKey } from "@shared/shared/nest/guard";
 import { ExamResponseDto } from "../dto/response/exam.dto";
 import { plainToInstance } from "class-transformer";
-import { ExamModelMapper } from "../mapper/exam/exam_model.mapper";
+import { ExamModelMapper } from "../mapper/exam/exam-model.mapper";
 import { CreateExamExternalRequestDto } from "../dto/request/exam-external.dto";
 import { InjectService } from "@omega/laboratory/nest/inject/service.inject";
 import { CreateExamFromExternalSourceService } from "@omega/laboratory/application/service/create-exam-from-external-source.service";

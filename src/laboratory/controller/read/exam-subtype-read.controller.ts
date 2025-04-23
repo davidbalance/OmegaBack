@@ -3,11 +3,11 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { InjectQuery } from "@omega/laboratory/nest/inject/query.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
-import { ExamSubtypeManyResponseDto, ExamSubtypeResponseDto } from "../dto/response/exam_subtype.dto";
+import { ExamSubtypeManyResponseDto, ExamSubtypeResponseDto } from "../dto/response/exam-subtype.dto";
 import { ExamSubtypeFindOneQuery } from "@omega/laboratory/application/query/exam/exam-subtype-find-one.query";
 import { ExamSubtypeFindManyQuery } from "@omega/laboratory/application/query/exam/exam-subtype-find-many.query";
-import { ExamSubtypeModelMapper } from "../mapper/exam/exam_subtype_model.mapper";
-import { ExamSubtypeFindManyQueryDto } from "../dto/query/exam_subtype_query.dto";
+import { ExamSubtypeModelMapper } from "../mapper/exam/exam-subtype-model.mapper";
+import { ExamSubtypeFindManyQueryDto } from "../dto/query/exam-subtype-query.dto";
 
 @ApiTags('Laboratory', 'Read')
 @ApiBearerAuth()
