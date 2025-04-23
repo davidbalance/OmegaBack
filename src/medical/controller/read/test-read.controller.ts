@@ -7,11 +7,11 @@ import { TestReportGetFileQuery } from "@omega/medical/application/queries/test/
 import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { DiseaseReportResponseDto, ReportResponseDto, TestFileResultCountResponseDto, TestResponseDto } from "../dto/response/test.dto";
-import { DiseaseReportModelMapper } from "../mapper/disease_report.mapper";
+import { DiseaseReportModelMapper } from "../mapper/disease-report.mapper";
 import { plainToInstance } from "class-transformer";
 import { ReportModelMapper } from "../mapper/report.mapper";
 import { TestModelMapper } from "../mapper/test.mapper";
-import { TestQueryDto, TestReportGetFileQueryDto } from "../dto/query/test_query.dto";
+import { TestQueryDto, TestReportGetFileQueryDto } from "../dto/query/test-query.dto";
 import { TestFindOneQuery } from "@omega/medical/application/queries/test/test-find-one.query";
 import { TestFileResultCountQuery } from "@omega/medical/application/queries/test/test-file-result-count.query";
 import { TestFileResultReportQuery } from "@omega/medical/application/queries/test/test-file-result-report.query";

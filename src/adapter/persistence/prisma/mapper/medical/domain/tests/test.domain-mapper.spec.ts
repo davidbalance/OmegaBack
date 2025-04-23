@@ -1,9 +1,9 @@
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 import { MedicalTest as PrismaTest, MedicalReport as PrismaReport, MedicalResult as PrismaResult, MedicalDiseaseReport as PrismaDisease, MedicalTestExternalKey as PrismaExternalKey, Prisma } from "@prisma/client";
-import { TestExternalKey } from "@omega/medical/core/domain/test/value_objects/test-external-key.value-object";
+import { TestExternalKey } from "@omega/medical/core/domain/test/value-objects/test-external-key.value-object";
 import { PrismaTestWithResultAndReportAndDiseases, TestDomainMapper } from "../test.domain-mapper";
 import { Result } from "@omega/medical/core/domain/test/result.domain";
-import { DiseaseReport } from "@omega/medical/core/domain/test/disease_report.domain";
+import { DiseaseReport } from "@omega/medical/core/domain/test/disease-report.domain";
 import { Report } from "@omega/medical/core/domain/test/report.domain";
 import { DiseaseReportDomainMapper } from "../disease-report.domain-mapper";
 import { ResultDomainMapper } from "../result.domain-mapper";

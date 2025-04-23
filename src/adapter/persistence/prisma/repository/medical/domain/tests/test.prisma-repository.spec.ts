@@ -12,9 +12,9 @@ import { TestCheckedEventPayload, TestDiseaseRemovedEventPayload, TestExamChange
 import { ResultFileAddedEventPayload, ResultFileRemovedEventPayload, ResultIsEvent } from "@omega/medical/core/domain/test/events/result.events";
 import { ReportAddedContentEventPayload, ReportAddedFilepathEventPayload, ReportIsEvent, ReportRemovedContentEventPayload } from "@omega/medical/core/domain/test/events/report.events";
 import { DiseaseReportIsEvent } from "@omega/medical/core/domain/test/events/disease.events";
-import { DiseaseReport } from "@omega/medical/core/domain/test/disease_report.domain";
+import { DiseaseReport } from "@omega/medical/core/domain/test/disease-report.domain";
 import { DiseaseReportDomainMapper } from "@omega/adapter/persistence/prisma/mapper/medical/domain/disease-report.domain-mapper";
-import { TestExternalKey } from "@omega/medical/core/domain/test/value_objects/test-external-key.value-object";
+import { TestExternalKey } from "@omega/medical/core/domain/test/value-objects/test-external-key.value-object";
 import { ResultDomainMapper } from "@omega/adapter/persistence/prisma/mapper/medical/domain/result.domain-mapper";
 import { Result } from "@omega/medical/core/domain/test/result.domain";
 import { Report } from "@omega/medical/core/domain/test/report.domain";

@@ -4,7 +4,7 @@ import { AuthGuard } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
 import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
 import { OrderYearResponseDto } from "../dto/response/order.dto";
-import { OrderYearModelMapper } from "../mapper/order_year.mapper";
+import { OrderYearModelMapper } from "../mapper/order-year.mapper";
 import { OrderYearFindManyQuery } from "@omega/medical/application/queries/order/order-year.find-many.query";
 
 @ApiTags('Medical', 'Read')

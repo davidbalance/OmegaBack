@@ -1,4 +1,4 @@
-import { DiseaseReport } from "@omega/medical/core/domain/test/disease_report.domain";
+import { DiseaseReport } from "@omega/medical/core/domain/test/disease-report.domain";
 import { MedicalDiseaseReport as MedicalDiseaseReport, Prisma } from "@prisma/client";
 import { DiseaseReportDomainMapper } from "../disease-report.domain-mapper";
 

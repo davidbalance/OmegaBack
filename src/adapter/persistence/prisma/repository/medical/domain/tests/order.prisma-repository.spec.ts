@@ -10,7 +10,7 @@ import { Order, OrderProps } from "@omega/medical/core/domain/order/order.domain
 import { OrderDomainMapper } from "@omega/adapter/persistence/prisma/mapper/medical/domain/order.domain-mapper";
 import { OrderIsEvent, OrderMailSendedEventPayload, OrderStatusChangedToCreatedEventPayload, OrderStatusChangedToValidatedEventPayload } from "@omega/medical/core/domain/order/events/order.events";
 import { OrderRemoveCommandPayload } from "@omega/medical/application/commands/order/order-remove.command";
-import { OrderExternalKey } from "@omega/medical/core/domain/order/value_objects/order-external-key.value-object";
+import { OrderExternalKey } from "@omega/medical/core/domain/order/value-objects/order-external-key.value-object";
 
 describe("OrderPrismaRepository", () => {
     let repository: OrderPrismaRepository;

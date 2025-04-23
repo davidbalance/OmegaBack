@@ -1,15 +1,15 @@
 import { Result } from "./result.domain";
-import { DiseaseReport } from "./disease_report.domain";
+import { DiseaseReport } from "./disease-report.domain";
 import { Report } from "./report.domain";
-import { ExamValueObject } from "./value_objects/exam.value_object";
+import { ExamValueObject } from "./value-objects/exam.value-object";
 import { ResultCreatedEvent, ResultFileAddedEvent, ResultFileRemovedEvent } from "./events/result.events";
 import { ReportAddedContentEvent, ReportAddedFilepathEvent, ReportCreatedEvent, ReportRemovedContentEvent } from "./events/report.events";
 import { TestCheckedEvent, TestDiseaseAddedEvent, TestDiseaseRemovedEvent, TestExamChangedEvent, TestExternalKeyAddedEvent, TestReactivatedEvent, TestRemovedEvent, TestUncheckedEvent } from "./events/test.events";
 import { AddTestExternalKeyPayload, CreateDiseaseReportPayload, CreateTestPayload, ExamPayload, UpdateDiseaseReportPayload } from "./payloads/test.payloads";
 import { DiseaseReportUpdatedEvent } from "./events/disease.events";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
-import { DiseaseReportConflictError, DiseaseReportNotFoundError } from "./errors/disease_report.errors";
-import { TestExternalKey } from "./value_objects/test-external-key.value-object";
+import { DiseaseReportConflictError, DiseaseReportNotFoundError } from "./errors/disease-report.errors";
+import { TestExternalKey } from "./value-objects/test-external-key.value-object";
 import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
 import { TestExternalKeyConflictError } from "./errors/test-external-key.errors";
 

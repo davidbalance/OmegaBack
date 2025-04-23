@@ -7,7 +7,7 @@ import { TestRepository } from "@omega/medical/application/repository/aggregate.
 import { Test, TestProps } from "@omega/medical/core/domain/test/test.domain";
 import { TestDomainMapper } from "../../../mapper/medical/domain/test.domain-mapper";
 import { TestCheckedEventPayload, TestDiseaseRemovedEventPayload, TestExamChangedEventPayload, TestIsEvent, TestReactivatedEventPayload, TestRemovedEventPayload, TestUncheckedEventPayload } from "@omega/medical/core/domain/test/events/test.events";
-import { DiseaseReport } from "@omega/medical/core/domain/test/disease_report.domain";
+import { DiseaseReport } from "@omega/medical/core/domain/test/disease-report.domain";
 import { DiseaseReportDomainMapper } from "../../../mapper/medical/domain/disease-report.domain-mapper";
 import { ResultFileAddedEventPayload, ResultFileRemovedEventPayload, ResultIsEvent } from "@omega/medical/core/domain/test/events/result.events";
 import { ResultDomainMapper } from "../../../mapper/medical/domain/result.domain-mapper";
@@ -18,7 +18,7 @@ import { ReportAddedContentEventPayload, ReportAddedFilepathEventPayload, Report
 import { DiseaseReportIsEvent } from "@omega/medical/core/domain/test/events/disease.events";
 import { TestAggregateRepositoryToken } from "@omega/medical/nest/inject/aggregate-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
-import { TestExternalKey } from "@omega/medical/core/domain/test/value_objects/test-external-key.value-object";
+import { TestExternalKey } from "@omega/medical/core/domain/test/value-objects/test-external-key.value-object";
 
 @Injectable()
 export class TestPrismaRepository implements TestRepository {

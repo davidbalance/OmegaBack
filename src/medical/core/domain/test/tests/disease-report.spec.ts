@@ -1,4 +1,4 @@
-import { DiseaseReport } from "../disease_report.domain";
+import { DiseaseReport } from "../disease-report.domain";
 
 describe('DiseaseReport Entity', () => {
 

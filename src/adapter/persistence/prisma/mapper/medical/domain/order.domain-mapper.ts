@@ -1,5 +1,5 @@
 import { Order } from "@omega/medical/core/domain/order/order.domain";
-import { OrderExternalKey } from "@omega/medical/core/domain/order/value_objects/order-external-key.value-object";
+import { OrderExternalKey } from "@omega/medical/core/domain/order/value-objects/order-external-key.value-object";
 import { MedicalOrder as PrismaOrder, MedicalOrderExternalKey as PrismaExternalKey, Prisma } from "@prisma/client";
 
 export type PrismaOrderExtended = PrismaOrder & { externalKeys: PrismaExternalKey[] };

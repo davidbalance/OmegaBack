@@ -1,7 +1,7 @@
 import { ExamPayload } from "../payloads/test.payloads";
-import { DiseaseReport } from "../disease_report.domain";
+import { DiseaseReport } from "../disease-report.domain";
 import { DomainEvent } from "@shared/shared/domain";
-import { TestExternalKey } from "../value_objects/test-external-key.value-object";
+import { TestExternalKey } from "../value-objects/test-external-key.value-object";
 
 const TestEventKeys = {
     Removed: "test.removed",

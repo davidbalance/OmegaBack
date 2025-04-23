@@ -3,7 +3,7 @@ import { MedicalTest as PrismaTest, MedicalReport as PrismaReport, MedicalResult
 import { ResultDomainMapper } from "./result.domain-mapper";
 import { ReportDomainMapper } from "./report.domain-mapper";
 import { DiseaseReportDomainMapper } from "./disease-report.domain-mapper";
-import { TestExternalKey } from "@omega/medical/core/domain/test/value_objects/test-external-key.value-object";
+import { TestExternalKey } from "@omega/medical/core/domain/test/value-objects/test-external-key.value-object";
 
 export type PrismaTestWithResultAndReportAndDiseases = PrismaTest & {
     result: PrismaResult,

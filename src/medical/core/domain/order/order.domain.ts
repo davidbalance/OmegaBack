@@ -1,9 +1,9 @@
-import { DoctorValueObject } from "./value_objects/doctor.value_object";
-import { LocationValueObject } from "./value_objects/location.value_object";
+import { DoctorValueObject } from "./value-objects/doctor.value-object";
+import { LocationValueObject } from "./value-objects/location.value-object";
 import { AddOrderExternalKeyPayload, CreateOrderPayload } from "./payloads/order.payloads";
 import { OrderMailSendedEvent, OrderStatusChangedToValidatedEvent, OrderStatusChangedToCreatedEvent, OrderRemovedEvent, OrderExternalKeyAddedEvent } from "./events/order.events";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
-import { OrderExternalKey } from "./value_objects/order-external-key.value-object";
+import { OrderExternalKey } from "./value-objects/order-external-key.value-object";
 import { OrderExternalKeyConflictError } from "./errors/order-external-key.errors";
 import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
 

@@ -1,7 +1,7 @@
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { ModelRepository } from "@shared/shared/providers/model.repository";
 import { DiseaseReportModel } from "@omega/medical/core/model/test/disease-report.model";
-import { DiseaseReportNotFoundError } from "@omega/medical/core/domain/test/errors/disease_report.errors";
+import { DiseaseReportNotFoundError } from "@omega/medical/core/domain/test/errors/disease-report.errors";
 
 export type DiseaseReportFindOneQueryPayload = {
     diseaseReportId: string;

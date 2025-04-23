@@ -5,7 +5,7 @@ import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
 import { ClientRecordModelMapper } from "../mapper/client-record.model.mapper";
 import { ClientRecordResponseDto } from "../dto/response/client.dto";
 import { plainToInstance } from "class-transformer";
-import { ClientReportQueryDto } from "../dto/query/client_query.dto";
+import { ClientReportQueryDto } from "../dto/query/client-query.dto";
 import { ClientRecordFindOneQuery } from "@omega/medical/application/queries/client/client-record-find-one.query";
 import { Response } from "express";
 import { AuthGuard } from "@shared/shared/nest/guard";

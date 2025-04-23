@@ -5,7 +5,7 @@ import { plainToInstance } from "class-transformer";
 import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
 import { OrderProcessResponseDto } from "../dto/response/order.dto";
 import { OrderProcessFindManyQuery } from "@omega/medical/application/queries/order/order-process.find-many.query";
-import { OrderProcessModelMapper } from "../mapper/order_process.mapper";
+import { OrderProcessModelMapper } from "../mapper/order-process.mapper";
 
 @ApiTags('Medical', 'Read')
 @ApiBearerAuth()

@@ -5,7 +5,7 @@ import { CreatePatientFromExternalSourceService } from "@omega/medical/applicati
 import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
 import { InjectService } from "@omega/medical/nest/inject/service.inject";
 import { ApiKeyGuard, OmegaApiKey } from "@shared/shared/nest/guard";
-import { ClientModelMapper } from "../mapper/client.model_mapper";
+import { ClientModelMapper } from "../mapper/client.model-mapper";
 import { plainToInstance } from "class-transformer";
 import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { CreatePatientFromExternalSourceDto } from "../dto/request/client-external.dto";
