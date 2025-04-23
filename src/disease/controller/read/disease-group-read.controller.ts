@@ -5,7 +5,7 @@ import { InjectQuery } from "@omega/disease/nest/inject/query.inject";
 import { plainToInstance } from "class-transformer";
 import { DiseaseGroupFindOneQuery } from "@omega/disease/application/query/disease/disease-group-find-one.query";
 import { DiseaseGroupFindManyQuery } from "@omega/disease/application/query/disease/disease-group-find-many.query";
-import { DiseaseGroupManyResponseDto, DiseaseGroupOptionResponseDto, DiseaseGroupResponseDto } from "../dto/response/disease_group.dto";
+import { DiseaseGroupManyResponseDto, DiseaseGroupOptionResponseDto, DiseaseGroupResponseDto } from "../dto/response/disease-group.dto";
 import { DiseaseGroupModelMapper } from "../mapper/disease/disease-group-model.mapper";
 import { DiseaseGroupFindManyQueryDto } from "../dto/query/disease-group-query.dto";
 import { DiseaseGroupFindOptionsQuery } from "@omega/disease/application/query/disease/disease-group-find-options.query";
