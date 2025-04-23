@@ -5,7 +5,7 @@ import { InjectCommand } from "@omega/profile/nest/inject/command.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { UserAddAuthRequestDto, UserAddResourcesRequestDto, UserCreateRequestDto, UserEditRequestDto } from "../dto/request/user.dto";
 import { UserAddAttributeCommand } from "@omega/profile/application/command/user/user-add-attribute.command";
-import { UserAddAttributeRequestDto } from "../dto/request/user_attribute.dto";
+import { UserAddAttributeRequestDto } from "../dto/request/user-attribute.dto";
 import { UserRemoveAttributeCommand } from "@omega/profile/application/command/user/user-remove-attribute.command";
 import { UserRemoveCommand } from "@omega/profile/application/command/user/user-remove.command";
 import { UserAddAuthCommand } from "@omega/profile/application/command/user/user-add-auth.command";
