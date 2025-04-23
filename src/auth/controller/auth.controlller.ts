@@ -2,7 +2,7 @@ import { Body, Controller, Post, Put, UseGuards } from "@nestjs/common";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { AuthAccessTokenCommand } from "@omega/auth/application/command/auth/auth-access-token.command";
 import { InjectCommand } from "@omega/auth/nest/inject/command.inject";
-import { CurrentUser } from "@shared/shared/nest/decorators/current_user.decorator";
+import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { LoginResponseDto } from "./dto/response/login.dto";
 import { LoginMapper } from "./mapper/login.mapper";
 import { plainToInstance } from "class-transformer";

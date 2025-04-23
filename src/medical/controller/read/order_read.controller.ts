@@ -8,7 +8,7 @@ import { OrderChecklistResponseDto, OrderCloudFileResponseDto, OrderDoctorManyRe
 import { OrderCloudFileModelMapper } from "../mapper/order_cloud_file.mapper";
 import { OrderDoctorFindManyQuery } from "@omega/medical/application/queries/order/order-doctor-find-many.query";
 import { DniInterceptor } from "@shared/shared/nest/interceptors/dni.interceptor";
-import { CurrentUser } from "@shared/shared/nest/decorators/current_user.decorator";
+import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { OrderFindManyQueryDto, OrderPatientFindManyQueryDto } from "../dto/query/order_query.dto";
 import { OrderModelMapper } from "../mapper/order.mapper";
 import { OrderFindManyQuery } from "@omega/medical/application/queries/order/order.find-many.query";

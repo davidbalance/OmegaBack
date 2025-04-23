@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { CompanyOption } from '@omega/location/core/models/corporative/company-option.model';
 import { CorporativeOption } from '@omega/location/core/models/corporative/corporative-option.model';
 import { Option } from '@shared/shared/domain/option';
-import { PaginationResponse } from '@shared/shared/nest/pagination_response';
+import { PaginationResponse } from '@shared/shared/nest/pagination-response';
 import { Expose, Type } from 'class-transformer'
 
 export class CorporativeResponseDto {

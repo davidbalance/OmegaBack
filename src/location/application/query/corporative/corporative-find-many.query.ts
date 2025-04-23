@@ -2,7 +2,7 @@ import { CorporativeModel } from "@omega/location/core/models/corporative/corpor
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Pagination, Order, Filter } from "@shared/shared/domain";
 import { CorporativeRepository } from "../../repository/model.repositories";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 
 export type CorporativeFindManyQueryPayload = {
     filter?: string;

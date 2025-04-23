@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { ExamFindOneByExternalKeyQuery } from "@omega/laboratory/application/query/exam/exam-find-one-by-external-key.query";
 import { InjectQuery } from "@omega/laboratory/nest/inject/query.inject";
-import { CurrentUser } from "@shared/shared/nest/decorators/current_user.decorator";
+import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { ApiKeyGuard, OmegaApiKey } from "@shared/shared/nest/guard";
 import { ExamResponseDto } from "../dto/response/exam.dto";
 import { plainToInstance } from "class-transformer";

@@ -4,7 +4,7 @@ import { CorporativeFindOneByExternalKeyQuery } from "@omega/location/applicatio
 import { CreateCorporativeFromExternalSourceService } from "@omega/location/application/service/create-corporative-from-external-source.service";
 import { InjectQuery } from "@omega/location/nest/inject/query.inject";
 import { InjectService } from "@omega/location/nest/inject/service.inject";
-import { CurrentUser } from "@shared/shared/nest/decorators/current_user.decorator";
+import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { ApiKeyGuard, OmegaApiKey } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
 import { CorporativeResponseDto } from "../dto/response/corporative.dto";

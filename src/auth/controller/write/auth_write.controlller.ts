@@ -5,7 +5,7 @@ import { AuthRemoveApiKeyCommand } from "@omega/auth/application/command/auth/au
 import { InjectCommand } from "@omega/auth/nest/inject/command.inject";
 import { AuthAddApiKeyRequestDto } from "../dto/request/auth.dto";
 import { JwtGuard } from "@shared/shared/nest/guard";
-import { CurrentUser } from "@shared/shared/nest/decorators/current_user.decorator";
+import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { InjectQuery } from "@omega/auth/nest/inject/query.inject";
 import { AuthIntrospectQuery } from "@omega/auth/application/query/auth/auth-introspect.query";
 

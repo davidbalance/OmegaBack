@@ -1,6 +1,6 @@
 import { JobPositionFindManyQueryPayload } from "@omega/location/application/query/job-position/job-position-find-many.query";
 import { JobPositionModel } from "@omega/location/core/models/jobPosition/job-position.model";
-import { OrderingQuery } from "@shared/shared/nest/pagination_response";
+import { OrderingQuery } from "@shared/shared/nest/pagination-response";
 import { Type } from "class-transformer";
 import { IsEnum, IsOptional, IsString, Min } from "class-validator";
 

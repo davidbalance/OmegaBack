@@ -1,5 +1,5 @@
 import { ApiResponseProperty } from "@nestjs/swagger";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 import { Expose, Type } from "class-transformer";
 
 export class ClientResponseDto {

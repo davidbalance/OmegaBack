@@ -1,6 +1,6 @@
 import { BranchFindManyQueryPayload } from "@omega/location/application/query/corporative/branch-find-many.query";
 import { BranchModel } from "@prisma/client";
-import { OrderingQuery } from "@shared/shared/nest/pagination_response";
+import { OrderingQuery } from "@shared/shared/nest/pagination-response";
 import { IsEnum, IsOptional, IsString } from "class-validator";
 
 export class BranchFindManyQueryDto implements OrderingQuery<BranchModel>, Omit<BranchFindManyQueryPayload, 'companyId'> {

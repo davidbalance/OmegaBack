@@ -1,6 +1,6 @@
 /* eslint-disable no-control-regex */
 import Transport, { TransportStreamOptions } from "winston-transport";
-import { WriteLoggerCommand } from "../application/command/write_logger.command";
+import { WriteLoggerCommand } from "../application/command/write-logger.command";
 
 export class PersistenceTransport extends Transport {
     constructor(
@@ -15,7 +15,7 @@ export class PersistenceTransport extends Transport {
 
         try {
             const level = info.level.replace(/\x1B\[[0-9;]*[A-Za-z]/g, '');
-            const message = info.message.replace(/\x1B\[[0-9;]*[A-Za-z]/g, '').trimStart();            
+            const message = info.message.replace(/\x1B\[[0-9;]*[A-Za-z]/g, '').trimStart();
             const timestamp = info.timestamp;
 
             await this.writter.handleAsync({ level, message, timestamp });

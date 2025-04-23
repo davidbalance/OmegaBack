@@ -2,7 +2,7 @@ import { DiseaseModel } from "@omega/disease/core/model/disease/disease.model";
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Filter, FilterGroup, Order, Pagination } from "@shared/shared/domain";
 import { DiseaseRepository } from "../../repository/model.repositories";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 
 export type DiseaseFindManyQueryPayload = {
     groupId: string;

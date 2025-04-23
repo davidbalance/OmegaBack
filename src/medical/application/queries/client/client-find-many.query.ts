@@ -1,7 +1,7 @@
 import { ClientModel } from "@omega/medical/core/model/client/client.model";
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Filter, Order, Pagination } from "@shared/shared/domain";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 import { ClientRepository } from "../../repository/model.repositories";
 
 export type ClientFindManyQueryPayload = {

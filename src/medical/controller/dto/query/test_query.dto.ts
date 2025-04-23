@@ -1,7 +1,7 @@
 import { TestFindManyQueryPayload } from "@omega/medical/application/queries/test/test-find-many.query";
 import { TestReportGetFileQueryPayload } from "@omega/medical/application/queries/test/test-report-get-file.query";
 import { TestModel } from "@omega/medical/core/model/test/test.model";
-import { OrderingQuery } from "@shared/shared/nest/pagination_response";
+import { OrderingQuery } from "@shared/shared/nest/pagination-response";
 import { Type } from "class-transformer";
 import { IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 

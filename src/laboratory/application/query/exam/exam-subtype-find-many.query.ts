@@ -2,7 +2,7 @@ import { ExamSubtypeModel } from "@omega/laboratory/core/model/exam/exam-subtype
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Filter, Order, Pagination } from "@shared/shared/domain";
 import { ExamSubtypeRepository } from "../../repository/model.repositories";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 
 export type ExamSubtypeFindManyQueryPayload = {
     typeId: string;

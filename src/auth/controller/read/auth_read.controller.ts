@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { AuthIntrospectQuery } from "@omega/auth/application/query/auth/auth-introspect.query";
-import { CurrentUser } from "@shared/shared/nest/decorators/current_user.decorator";
+import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { JwtGuard } from "@shared/shared/nest/guard";
 import { IntrospectResponseDto } from "../dto/response/login.dto";
 import { IntrospectMapper } from "../mapper/introspect.mapper";

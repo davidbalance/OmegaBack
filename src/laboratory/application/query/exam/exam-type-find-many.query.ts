@@ -1,7 +1,7 @@
 import { ExamTypeModel } from "@omega/laboratory/core/model/exam/exam-type.model";
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Filter, Order, Pagination } from "@shared/shared/domain";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 import { ExamTypeRepository } from "../../repository/model.repositories";
 
 export type ExamTypeFindManyQueryPayload = {

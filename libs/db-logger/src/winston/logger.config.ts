@@ -2,9 +2,9 @@ import { Injectable } from "@nestjs/common";
 import { WinstonModuleOptions, WinstonModuleOptionsFactory } from "nest-winston";
 import { format, transports } from 'winston';
 import { InjectCommand } from "../nest/inject/command.inject";
-import { WriteLoggerCommand } from "../application/command/write_logger.command";
 import { PersistenceTransport } from "./persistence.transport";
 import { formatDate } from "date-fns";
+import { WriteLoggerCommand } from "../application/command/write-logger.command";
 
 @Injectable()
 export class WinstonLoggerConfig implements WinstonModuleOptionsFactory {

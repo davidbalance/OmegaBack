@@ -1,5 +1,5 @@
 import { Option } from '@shared/shared/domain/option';
-import { PaginationResponse } from '@shared/shared/nest/pagination_response';
+import { PaginationResponse } from '@shared/shared/nest/pagination-response';
 import { Expose, Type } from 'class-transformer'
 
 export class AreaResponseDto {

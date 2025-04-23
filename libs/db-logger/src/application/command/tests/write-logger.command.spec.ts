@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { LoggerRepository } from "../../repository/logger.repository";
-import { WriteLoggerCommand, WriteLoggerCommandPayload } from "../write_logger.command";
+import { WriteLoggerCommand, WriteLoggerCommandPayload } from "../write-logger.command";
 
 describe('WriteCommand', () => {
     let handler: WriteLoggerCommand;

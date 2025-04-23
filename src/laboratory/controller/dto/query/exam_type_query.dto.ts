@@ -1,6 +1,6 @@
 import { ExamTypeFindManyQueryPayload } from "@omega/laboratory/application/query/exam/exam-type-find-many.query";
 import { ExamTypeModel } from "@omega/laboratory/core/model/exam/exam-type.model";
-import { OrderingQuery } from "@shared/shared/nest/pagination_response";
+import { OrderingQuery } from "@shared/shared/nest/pagination-response";
 import { Type } from "class-transformer";
 import { IsEnum, IsOptional, IsString, Min } from "class-validator";
 

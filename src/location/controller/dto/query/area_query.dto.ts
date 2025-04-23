@@ -1,6 +1,6 @@
 import { AreaFindManyQueryPayload } from "@omega/location/application/query/area/area-find-many.query";
 import { AreaModel } from "@omega/location/core/models/area/area.model";
-import { OrderingQuery } from "@shared/shared/nest/pagination_response";
+import { OrderingQuery } from "@shared/shared/nest/pagination-response";
 import { Type } from "class-transformer";
 import { IsEnum, IsOptional, IsString, Min } from "class-validator";
 

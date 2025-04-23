@@ -2,7 +2,7 @@ import { CompanyModel } from "@omega/location/core/models/corporative/company.mo
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Pagination, Order, Filter, FilterGroup } from "@shared/shared/domain";
 import { CompanyRepository } from "../../repository/model.repositories";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 
 export type CompanyFindManyQueryPayload = {
     corporativeId: string;

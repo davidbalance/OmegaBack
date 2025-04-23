@@ -2,7 +2,7 @@ import { AreaModel } from "@omega/location/core/models/area/area.model";
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Filter, Order, Pagination } from "@shared/shared/domain";
 import { AreaRepository } from "../../repository/model.repositories";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 
 export type AreaFindManyQueryPayload = {
     filter?: string;

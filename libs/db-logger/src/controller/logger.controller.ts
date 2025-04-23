@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { InjectQuery } from "../nest/inject/query.inject";
-import { ReadLoggerQuery } from "../application/query/read_logger.query";
+import { ReadLoggerQuery } from "../application/query/read-logger.query";
 import { LoggerQueryDto } from "./dto/query/logger_query.dto";
 import { LoggerLevelResponseDto, LoggerManyResponseDto } from "./dto/response/logger.dto";
 import { LoggerMapper } from "./dto/mapper/logger.mapper";

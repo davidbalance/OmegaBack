@@ -2,7 +2,7 @@ import { JobPositionModel } from "@omega/location/core/models/jobPosition/job-po
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Filter, Order, Pagination } from "@shared/shared/domain";
 import { JobPositionRepository } from "../../repository/model.repositories";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 
 export type JobPositionFindManyQueryPayload = {
     filter?: string;

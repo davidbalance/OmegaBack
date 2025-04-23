@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { CurrentUser } from "@shared/shared/nest/decorators/current_user.decorator";
+import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { JwtGuard } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
 import { InjectQuery } from "@omega/auth/nest/inject/query.inject";

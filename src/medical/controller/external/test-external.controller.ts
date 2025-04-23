@@ -4,7 +4,7 @@ import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
 import { InjectService } from "@omega/medical/nest/inject/service.inject";
 import { ApiKeyGuard, OmegaApiKey } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
-import { CurrentUser } from "@shared/shared/nest/decorators/current_user.decorator";
+import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { TestFindOneByExternalKeyQuery } from "@omega/medical/application/queries/test/test-find-one-by-external-key.query";
 import { CreateTestFromExternalSourceService } from "@omega/medical/application/service/create-test-from-external-source.service";
 import { TestModelMapper } from "../mapper/test.mapper";

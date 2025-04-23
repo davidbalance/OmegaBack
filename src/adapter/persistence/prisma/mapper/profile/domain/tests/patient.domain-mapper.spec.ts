@@ -5,16 +5,17 @@ import { PatientDomainMapper } from "../patient.domain-mapper";
 describe('PatientDomainMapper', () => {
     describe('toPrisma', () => {
         it('should correctly map an Patient domain object to a Prisma input', () => {
+            const birthday = new Date();
             const domainObj: Patient = {
                 id: 'patient-123',
                 userId: 'patient-123',
-                birthday: new Date()
+                birthday: birthday
             } as unknown as Patient;
 
             const expected: Prisma.PatientUncheckedCreateInput = {
                 id: 'patient-123',
                 userId: 'patient-123',
-                birthday: new Date()
+                birthday: birthday
             }
 
             const result = PatientDomainMapper.toPrisma(domainObj);

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { InjectQuery } from "@omega/laboratory/nest/inject/query.inject";
-import { CurrentUser } from "@shared/shared/nest/decorators/current_user.decorator";
+import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { ApiKeyGuard, OmegaApiKey } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
 import { InjectService } from "@omega/laboratory/nest/inject/service.inject";

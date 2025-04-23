@@ -1,6 +1,6 @@
 import { ManagementFindManyQueryPayload } from "@omega/location/application/query/management/management-find-many.query";
 import { ManagementModel } from "@prisma/client";
-import { OrderingQuery } from "@shared/shared/nest/pagination_response";
+import { OrderingQuery } from "@shared/shared/nest/pagination-response";
 import { Type } from "class-transformer";
 import { IsEnum, IsOptional, IsString, Min } from "class-validator";
 

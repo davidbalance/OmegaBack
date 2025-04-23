@@ -2,7 +2,7 @@ import { ClientFindManyQueryPayload } from "@omega/medical/application/queries/c
 import { ClientDoctorFindManyQueryPayload } from "@omega/medical/application/queries/client/client-doctor-find-many.query";
 import { ClientDoctorModel } from "@omega/medical/core/model/client/client-doctor.model";
 import { ClientModel } from "@omega/medical/core/model/client/client.model";
-import { OrderingQuery } from "@shared/shared/nest/pagination_response";
+import { OrderingQuery } from "@shared/shared/nest/pagination-response";
 import { Type } from "class-transformer";
 import { IsEnum, IsOptional, IsString, Min } from "class-validator";
 import { ClientRecordFindManyQueryPayload } from "@omega/medical/application/queries/client/client-record-find-many.query";

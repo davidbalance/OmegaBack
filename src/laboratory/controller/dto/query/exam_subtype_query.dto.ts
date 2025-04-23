@@ -1,6 +1,6 @@
 import { ExamSubtypeFindManyQueryPayload } from "@omega/laboratory/application/query/exam/exam-subtype-find-many.query";
 import { ExamSubtypeModel } from "@prisma/client";
-import { OrderingQuery } from "@shared/shared/nest/pagination_response";
+import { OrderingQuery } from "@shared/shared/nest/pagination-response";
 import { Type } from "class-transformer";
 import { IsEnum, IsOptional, IsString, Min } from "class-validator";
 

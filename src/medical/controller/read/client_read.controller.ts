@@ -5,7 +5,7 @@ import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { DniInterceptor } from "@shared/shared/nest/interceptors/dni.interceptor";
 import { ClientAreaResponseDto, ClientEmailResponseDto, ClientJobPositionResponseDto, ClientManagementResponseDto, ClientManyResponseDto, ClientResponseDto } from "../dto/response/client.dto";
-import { CurrentUser } from "@shared/shared/nest/decorators/current_user.decorator";
+import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { ClientDoctorFindManyQueryDto, ClientFindManyQueryDto } from "../dto/query/client_query.dto";
 import { plainToInstance } from "class-transformer";
 import { ClientEmailFindManyQuery } from "@omega/medical/application/queries/client/client-email-find-many.query";

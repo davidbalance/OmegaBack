@@ -1,4 +1,4 @@
-import { ReadLoggerQueryPayload } from "@db-logger/db-logger/application/query/read_logger.query";
+import { ReadLoggerQueryPayload } from "@db-logger/db-logger/application/query/read-logger.query";
 import { Type } from "class-transformer";
 import { IsNumber, IsOptional, IsString, Min } from "class-validator";
 

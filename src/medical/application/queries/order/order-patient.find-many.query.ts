@@ -1,7 +1,7 @@
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { FilterGroup, Order, Pagination } from "@shared/shared/domain";
 import { OrderPatientModel } from "@omega/medical/core/model/order/order-patient.model";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 import { OrderPatientRepository } from "../../repository/model.repositories";
 
 export type OrderPatientFindManyQueryPayload = {

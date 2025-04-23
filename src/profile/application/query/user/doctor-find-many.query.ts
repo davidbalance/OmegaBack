@@ -2,7 +2,7 @@ import { DoctorModel } from "@omega/profile/core/model/user/doctor.model";
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Filter, Order, Pagination } from "@shared/shared/domain";
 import { DoctorRepository } from "../../repository/model.repositories";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 
 export type DoctorFindManyQueryPayload = {
     filter?: string;

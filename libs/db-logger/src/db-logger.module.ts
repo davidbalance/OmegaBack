@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { WriteLoggerCommandProvider } from './nest/command/write_logger.nest-command';
+import { WriteLoggerCommandProvider } from './nest/command/write-logger.nest-command';
 import { ReadLoggerQueryProvider } from './nest/query/query_logger.nest-command';
 import { LoggerController } from './controller/logger.controller';
 import { WriteLoggerCommandToken } from './nest/inject/command.inject';

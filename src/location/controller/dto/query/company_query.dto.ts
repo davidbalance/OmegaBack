@@ -1,6 +1,6 @@
 import { CompanyFindManyQueryPayload } from "@omega/location/application/query/corporative/company-find-many.query";
 import { CompanyModel } from "@omega/location/core/models/corporative/company.model";
-import { OrderingQuery } from "@shared/shared/nest/pagination_response";
+import { OrderingQuery } from "@shared/shared/nest/pagination-response";
 import { Type } from "class-transformer";
 import { IsEnum, IsOptional, IsString, Min } from "class-validator";
 

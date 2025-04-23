@@ -2,7 +2,7 @@ import { LoggerModel } from "@db-logger/db-logger/core/model/logger.model";
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Filter, FilterGroup, Pagination } from "@shared/shared/domain";
 import { LoggerRepository } from "../repository/logger.repository";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 
 export type ReadLoggerQueryPayload = {
     level?: string;

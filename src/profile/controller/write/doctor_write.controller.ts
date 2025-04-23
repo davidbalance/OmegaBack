@@ -4,7 +4,7 @@ import { InjectCommand } from "@omega/profile/nest/inject/command.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { DoctorUploadFileCommand } from "@omega/profile/application/command/user/doctor-upload-file.command";
 import { FileInterceptor } from '@nestjs/platform-express'
-import { FileTypePipe } from "@shared/shared/nest/pipes/file_type.pipe";
+import { FileTypePipe } from "@shared/shared/nest/pipes/file-type.pipe";
 
 @ApiTags('Profile', 'Write')
 @ApiBearerAuth()
