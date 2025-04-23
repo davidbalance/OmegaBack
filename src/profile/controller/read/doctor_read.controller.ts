@@ -3,13 +3,13 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { InjectQuery } from "@omega/profile/nest/inject/query.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
-import { UserFindManyQueryDto } from "../dto/query/user_query.dto";
+import { UserFindManyQueryDto } from "../dto/query/user-query.dto";
 import { DoctorGetFileQuery } from "@omega/profile/application/query/user/doctor-get-file.query";
 import { DoctorFindOneByDniQuery } from "@omega/profile/application/query/user/doctor-find-one-by-dni.query";
 import { DoctorFindOptionsQuery } from "@omega/profile/application/query/user/doctor-find-options.query";
 import { DoctorFindManyQuery } from "@omega/profile/application/query/user/doctor-find-many.query";
 import { DoctorFindOneQuery } from "@omega/profile/application/query/user/doctor-find-one.query";
-import { DoctorModelMapper } from "../mapper/doctor_model.mapper";
+import { DoctorModelMapper } from "../mapper/doctor-model.mapper";
 import { DoctorManyResponseDto, DoctorOptionResponseDto, DoctorResponseDto } from "../dto/response/doctor.dto";
 import { Response } from "express";
 

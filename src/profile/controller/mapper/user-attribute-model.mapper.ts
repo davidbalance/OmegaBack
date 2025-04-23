@@ -1,4 +1,4 @@
-import { UserAttributeResponseDto } from "../dto/response/user_attribute.dto";
+import { UserAttributeResponseDto } from "../dto/response/user-attribute.dto";
 import { UserAttributeModel } from "@omega/profile/core/model/user/user-attribute.model";
 
 export class UserAttributeModelMapper {

@@ -4,14 +4,14 @@ import { UserFindManyQuery } from "@omega/profile/application/query/user/user-fi
 import { InjectQuery } from "@omega/profile/nest/inject/query.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
-import { UserFindManyQueryDto } from "../dto/query/user_query.dto";
+import { UserFindManyQueryDto } from "../dto/query/user-query.dto";
 import { UserAuthResourceResponseDto, UserManyResponseDto, UserResponseDto } from "../dto/response/user.dto";
-import { UserModelMapper } from "../mapper/user_model.mapper";
+import { UserModelMapper } from "../mapper/user-model.mapper";
 import { UserAttributeFindOneQuery } from "@omega/profile/application/query/user/user-attribute-find-one.query";
-import { UserAttributeResponseDto } from "../dto/response/user_attribute.dto";
+import { UserAttributeResponseDto } from "../dto/response/user-attribute.dto";
 import { UserFindOneQuery } from "@omega/profile/application/query/user/user-find-one.query";
 import { UserFindManyResourcesQuery } from "@omega/profile/application/query/user/user-find-many-resources.query";
-import { UserAuthResourceMapper } from "../mapper/user_auth_resource.mapper";
+import { UserAuthResourceMapper } from "../mapper/user-auth-resource.mapper";
 
 @ApiTags('Profile', 'Read')
 @ApiBearerAuth()
