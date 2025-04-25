@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { OrderProcessFindManyQuery } from "@omega/medical/application/queries/order/order-process.find-many.query";
+import { OrderProcessFindManyQueryImpl } from "@omega/medical/application/queries/order/order-process.find-many.query";
 import { OrderProcessRepository } from "@omega/medical/application/repository/model.repositories";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { OrderProcessFindManyQueryToken } from "../../inject/query.inject";
 
 @Injectable()
-class OrderProcessFindManyNestQuery extends OrderProcessFindManyQuery {
+class OrderProcessFindManyNestQuery extends OrderProcessFindManyQueryImpl {
     constructor(
         @InjectModelRepository("OrderProcess") repository: OrderProcessRepository
     ) {

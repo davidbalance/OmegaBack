@@ -1,5 +1,5 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { ResultGetFileQuery } from "@omega/medical/application/queries/test/result-get-file.query";
+import { ResultGetFileQueryImpl } from "@omega/medical/application/queries/test/result-get-file.query";
 import { InjectFile } from "@shared/shared/nest/inject";
 import { FileOperation } from "@shared/shared/providers";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
@@ -9,7 +9,7 @@ import { InjectAggregateRepository } from "../../inject/aggregate-repository.inj
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 
 @Injectable()
-class ResultGetFileNestQuery extends ResultGetFileQuery {
+class ResultGetFileNestQuery extends ResultGetFileQueryImpl {
     constructor(
         @InjectFile() file: FileOperation,
         @InjectModelRepository("TestFileResult") repository: TestFileResultRepository,

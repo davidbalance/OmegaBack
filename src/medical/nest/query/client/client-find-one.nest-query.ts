@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { ClientFindOneQuery } from "@omega/medical/application/queries/client/client-find-one.query";
+import { ClientFindOneQueryImpl } from "@omega/medical/application/queries/client/client-find-one.query";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { ClientFindOneQueryToken } from "../../inject/query.inject";
 import { ClientRepository } from "@omega/medical/application/repository/model.repositories";
 
 @Injectable()
-class ClientFindOneNestQuery extends ClientFindOneQuery {
+class ClientFindOneNestQuery extends ClientFindOneQueryImpl {
     constructor(
         @InjectModelRepository("Client") repository: ClientRepository
     ) {

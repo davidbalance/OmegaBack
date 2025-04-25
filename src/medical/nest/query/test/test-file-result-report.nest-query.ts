@@ -1,13 +1,13 @@
 import { Injectable, Provider } from "@nestjs/common";
 import { TestFileResultReportQueryToken } from "../../inject/query.inject";
 import { InjectSpreadSheet } from "@shared/shared/nest/inject";
-import { TestFileResultReportQuery } from "@omega/medical/application/queries/test/test-file-result-report.query";
+import { TestFileResultReportQueryImpl } from "@omega/medical/application/queries/test/test-file-result-report.query";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { TestFileResultRepository } from "@omega/medical/application/repository/model.repositories";
 import { SpreadsheetProvider } from "@shared/shared/providers";
 
 @Injectable()
-class TestFileResultReportNestQuery extends TestFileResultReportQuery {
+class TestFileResultReportNestQuery extends TestFileResultReportQueryImpl {
     constructor(
         @InjectModelRepository('TestFileResult') repository: TestFileResultRepository,
         @InjectSpreadSheet() spreadsheet: SpreadsheetProvider

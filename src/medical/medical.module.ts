@@ -63,7 +63,7 @@ import { OrderValidatedStatusCommandProvider } from "./nest/command/order/order-
 import { PatientProxyModule } from "@omega/adapter/proxy/patient-proxy/patient-proxy.module";
 import { TestCreateCommandProvider } from "./nest/command/test/test-create.nest-command";
 import { TestCheckCommandProvider } from "./nest/command/test/test-check.nest-command";
-import { TestUncheckCommandProvider } from "./nest/command/test/test-uncheck.nest_command";
+import { TestUncheckCommandProvider } from "./nest/command/test/test-uncheck.nest-command";
 import { TestGetZipQueryProvider } from "./nest/query/test/test_get_zip.nest_query";
 import { FileReadController } from "./controller/read/file-read.controller";
 import { LocalZipModule } from "@local-zip/local-zip";

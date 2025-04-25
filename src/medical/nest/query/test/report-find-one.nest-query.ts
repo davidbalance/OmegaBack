@@ -2,10 +2,10 @@ import { Injectable, Provider } from "@nestjs/common";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { ReportFindOneQueryToken } from "../../inject/query.inject";
 import { ReportRepository } from "@omega/medical/application/repository/model.repositories";
-import { ReportFindOneQuery } from "@omega/medical/application/queries/test/report-find-one.query";
+import { ReportFindOneQueryImpl } from "@omega/medical/application/queries/test/report-find-one.query";
 
 @Injectable()
-class ReportFindOneNestQuery extends ReportFindOneQuery {
+class ReportFindOneNestQuery extends ReportFindOneQueryImpl {
     constructor(
         @InjectModelRepository("Report") repository: ReportRepository
     ) {
