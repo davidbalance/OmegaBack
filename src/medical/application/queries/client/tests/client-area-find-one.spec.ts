@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { ClientAreaModel } from "@omega/medical/core/model/client/client-area.model";
-import { ClientAreaFindOneQuery, ClientAreaFindOneQueryPayload } from "../client-area-find-one.query";
+import { ClientAreaFindOneQuery, ClientAreaFindOneQueryImpl, ClientAreaFindOneQueryPayload } from "../client-area-find-one.query";
 import { ClientAreaRepository } from "@omega/medical/application/repository/model.repositories";
 
 describe("ClientAreaFindOneQuery", () => {
@@ -13,7 +13,7 @@ describe("ClientAreaFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ClientAreaRepository>;
 
-        handler = new ClientAreaFindOneQuery(repository);
+        handler = new ClientAreaFindOneQueryImpl(repository);
     });
 
     it("should return the client area when found", async () => {

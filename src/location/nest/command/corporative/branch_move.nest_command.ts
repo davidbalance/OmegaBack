@@ -2,10 +2,10 @@ import { Injectable, Provider } from "@nestjs/common";
 import { CorporativeRepository } from "@omega/location/application/repository/aggregate.repositories";
 import { InjectAggregateRepository } from "../../inject/aggregate-repository.inject";
 import { BranchMoveCommandToken } from "../../inject/command.inject";
-import { BranchMoveCommand } from "@omega/location/application/command/corporative/branch-move.command";
+import { BranchMoveCommandImpl } from "@omega/location/application/command/corporative/branch-move.command";
 
 @Injectable()
-class BranchMoveNestCommand extends BranchMoveCommand {
+class BranchMoveNestCommand extends BranchMoveCommandImpl {
     constructor(
         @InjectAggregateRepository("Corporative") repository: CorporativeRepository
     ) {

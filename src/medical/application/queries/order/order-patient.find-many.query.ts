@@ -7,7 +7,10 @@ import { OrderPatientRepository } from "../../repository/model.repositories";
 export type OrderPatientFindManyQueryPayload = {
     filter?: string;
 } & Required<Pagination> & Order<OrderPatientModel>;
-export class OrderPatientFindManyQuery implements QueryHandlerAsync<OrderPatientFindManyQueryPayload, PaginationResponse<OrderPatientModel>> {
+
+export interface OrderPatientFindManyQuery extends QueryHandlerAsync<OrderPatientFindManyQueryPayload, PaginationResponse<OrderPatientModel>> { }
+
+export class OrderPatientFindManyQueryImpl implements OrderPatientFindManyQuery {
     constructor(
         private readonly repository: OrderPatientRepository
     ) { }

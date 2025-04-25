@@ -10,8 +10,9 @@ export type OrderCreateBatch = (OrderCreateCommandPayload & { tests: Omit<TestCr
 export type OrderCreateManyCommandPayload = {
     data: OrderCreateBatch[]
 }
-export class OrderCreateManyCommand implements CommandHandlerAsync<OrderCreateManyCommandPayload, void> {
+export interface OrderCreateManyCommand extends CommandHandlerAsync<OrderCreateManyCommandPayload, void> { }
 
+export class OrderCreateManyCommandImpl implements OrderCreateManyCommand {
     constructor(
         private readonly order: OrderRepository,
         private readonly test: TestRepository,

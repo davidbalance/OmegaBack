@@ -6,7 +6,9 @@ import { ClientManagementModel } from "@omega/medical/core/model/client/client-m
 export type ClientManagementFindOneQueryPayload = {
     patientDni: string;
 };
-export class ClientManagementFindOneQuery implements QueryHandlerAsync<ClientManagementFindOneQueryPayload, ClientManagementModel> {
+export interface ClientManagementFindOneQuery extends QueryHandlerAsync<ClientManagementFindOneQueryPayload, ClientManagementModel> { }
+
+export class ClientManagementFindOneQueryImpl implements QueryHandlerAsync<ClientManagementFindOneQueryPayload, ClientManagementModel> {
     constructor(
         private readonly repository: ModelRepository<ClientManagementModel>
     ) { }

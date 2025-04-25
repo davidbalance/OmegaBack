@@ -6,7 +6,10 @@ import { TestFindManyQuery } from "./test-find-many.query";
 import { OrderExternalKeyNotFoundError } from "@omega/medical/core/domain/order/errors/order-external-key.errors";
 
 export type TestFindManyByExternalKeyQueryPayload = ExternalKeyProps;
-export class TestFindManyByExternalKeyQuery implements QueryHandlerAsync<TestFindManyByExternalKeyQueryPayload, TestModel[]> {
+
+export interface TestFindManyByExternalKeyQuery extends QueryHandlerAsync<TestFindManyByExternalKeyQueryPayload, TestModel[]> { }
+
+export class TestFindManyByExternalKeyQueryImpl implements TestFindManyByExternalKeyQuery {
     constructor(
         private readonly externalConnectionRepository: OrderExternalConnectionRepository,
         private readonly testQuery: TestFindManyQuery,

@@ -5,7 +5,9 @@ import { CommandHandlerAsync } from "@shared/shared/application";
 import { DiseaseGroupRepository } from "../../repository/aggregate.repositories";
 
 export type DiseaseGroupCreateCommandPayload = CreateDiseaseGroupPayload;
-export class DiseaseGroupCreateCommand implements CommandHandlerAsync<DiseaseGroupCreateCommandPayload, void> {
+export interface DiseaseGroupCreateCommand extends CommandHandlerAsync<DiseaseGroupCreateCommandPayload, void> { }
+
+export class DiseaseGroupCreateCommandImpl implements DiseaseGroupCreateCommand {
     constructor(
         private readonly repository: DiseaseGroupRepository
     ) { }

@@ -6,7 +6,9 @@ import { ClientRepository } from "../../repository/aggregate.repositories";
 export type ClientAddJobPositionCommandPayload = AddJobPositionPayload & {
     patientDni: string;
 }
-export class ClientAddJobPositionCommand implements CommandHandlerAsync<ClientAddJobPositionCommandPayload, void> {
+export interface ClientAddJobPositionCommand extends CommandHandlerAsync<ClientAddJobPositionCommandPayload, void> { }
+
+export class ClientAddJobPositionCommandImpl implements ClientAddJobPositionCommand {
     constructor(
         private readonly repository: ClientRepository
     ) { }

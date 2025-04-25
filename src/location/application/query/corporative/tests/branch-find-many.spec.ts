@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { BranchModel } from "@omega/location/core/models/corporative/branch.model";
-import { BranchFindManyQuery, BranchFindManyQueryPayload } from "../branch-find-many.query";
+import { BranchFindManyQuery, BranchFindManyQueryImpl, BranchFindManyQueryPayload } from "../branch-find-many.query";
 import { BranchRepository } from "@omega/location/application/repository/model.repositories";
 
 describe("BranchFindManyQuery", () => {
@@ -12,7 +12,7 @@ describe("BranchFindManyQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<BranchRepository>;
 
-        queryHandler = new BranchFindManyQuery(repository);
+        queryHandler = new BranchFindManyQueryImpl(repository);
     });
 
     it("should successfully fetch branches for a company with pagination and ordering", async () => {

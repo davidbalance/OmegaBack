@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { JobPositionOptionModel } from "@omega/location/core/models/jobPosition/job-position-option.model";
-import { JobPositionFindOptionsQuery } from "../job-position-find-options.query";
+import { JobPositionFindOptionsQuery, JobPositionFindOptionsQueryImpl } from "../job-position-find-options.query";
 import { JobPositionOptionRepository } from "@omega/location/application/repository/model.repositories";
 
 describe("JobPositionFindOptionsQuery", () => {
@@ -12,7 +12,7 @@ describe("JobPositionFindOptionsQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<JobPositionOptionRepository>;
 
-        handler = new JobPositionFindOptionsQuery(repository);
+        handler = new JobPositionFindOptionsQueryImpl(repository);
     });
 
     it("should return job position options when data exists", async () => {

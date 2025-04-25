@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { AuthRepository } from "@omega/auth/application/repository/auth/aggregate.repositories";
-import { AuthRefreshTokenCommand } from "../auth-refresh-token.command";
+import { AuthRefreshTokenCommand, AuthRefreshTokenCommandImpl } from "../auth-refresh-token.command";
 import { AuthGenerateTokenQuery } from "@omega/auth/application/query/auth/auth-generate-token.query";
 import { JwtProvider } from "@shared/shared/providers/jwt.provider";
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
@@ -20,7 +20,7 @@ describe('AuthRefreshTokenCommand', () => {
         accessJwt = { validateJwt: jest.fn() } as unknown as jest.Mocked<JwtProvider>;
         refreshJwt = { validateJwt: jest.fn(), createJwt: jest.fn() } as unknown as jest.Mocked<JwtProvider>;
 
-        command = new AuthRefreshTokenCommand(repository, generator, accessJwt, refreshJwt);
+        command = new AuthRefreshTokenCommandImpl(repository, generator, accessJwt, refreshJwt);
     });
 
     it('should refresh tokens successfully', async () => {

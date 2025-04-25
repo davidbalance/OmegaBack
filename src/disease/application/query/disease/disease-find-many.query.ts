@@ -8,7 +8,9 @@ export type DiseaseFindManyQueryPayload = {
     groupId: string;
     filter?: string;
 } & Required<Pagination> & Order<DiseaseModel>;
-export class DiseaseFindManyQuery implements QueryHandlerAsync<DiseaseFindManyQueryPayload, PaginationResponse<DiseaseModel>> {
+export interface DiseaseFindManyQuery extends QueryHandlerAsync<DiseaseFindManyQueryPayload, PaginationResponse<DiseaseModel>> { }
+
+export class DiseaseFindManyQueryImpl implements DiseaseFindManyQuery {
     constructor(
         private readonly repository: DiseaseRepository
     ) { }

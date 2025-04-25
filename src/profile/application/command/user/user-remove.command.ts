@@ -5,7 +5,9 @@ import { UserRepository } from "../../repository/aggregate.repositories";
 export type UserRemoveCommandPayload = {
     userId: string;
 };
-export class UserRemoveCommand implements CommandHandlerAsync<UserRemoveCommandPayload, void> {
+export interface UserRemoveCommand extends CommandHandlerAsync<UserRemoveCommandPayload, void> { }
+
+export class UserRemoveCommandImpl implements UserRemoveCommand {
     constructor(
         private readonly repository: UserRepository,
     ) { }

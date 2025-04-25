@@ -2,7 +2,7 @@
 import { ClientProps, Client } from "@omega/medical/core/domain/client/client.domain";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { AggregateRepository } from "@shared/shared/providers";
-import { EmailRemoveCommand, EmailRemoveCommandPayload } from "../email-remove.command";
+import { EmailRemoveCommand, EmailRemoveCommandImpl, EmailRemoveCommandPayload } from "../email-remove.command";
 
 describe("EmailRemoveCommand", () => {
     let repository: jest.Mocked<AggregateRepository<ClientProps, Client>>;
@@ -14,7 +14,7 @@ describe("EmailRemoveCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AggregateRepository<ClientProps, Client>>;
 
-        handler = new EmailRemoveCommand(repository);
+        handler = new EmailRemoveCommandImpl(repository);
     });
 
     it("should remove an email from the client when client exists", async () => {

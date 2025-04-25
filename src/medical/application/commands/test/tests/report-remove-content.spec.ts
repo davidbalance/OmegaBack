@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
-import { ReportRemoveContentCommand, ReportRemoveContentCommandPayload } from "../report-remove-content.command";
+import { ReportRemoveContentCommand, ReportRemoveContentCommandImpl, ReportRemoveContentCommandPayload } from "../report-remove-content.command";
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 
 describe("ReportRemoveContentCommand", () => {
@@ -14,7 +14,7 @@ describe("ReportRemoveContentCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<TestRepository>;
 
-        handler = new ReportRemoveContentCommand(repository);
+        handler = new ReportRemoveContentCommandImpl(repository);
     });
 
     it("should remove content from the report when test exists", async () => {

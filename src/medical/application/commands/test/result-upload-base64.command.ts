@@ -8,7 +8,9 @@ export type ResultUploadBase64CommandPayload = {
     testId: string;
     base64: string;
 }
-export class ResultUploadBase64Command implements CommandHandlerAsync<ResultUploadBase64CommandPayload, void> {
+export interface ResultUploadBase64Command extends CommandHandlerAsync<ResultUploadBase64CommandPayload, void> { }
+
+export class ResultUploadBase64CommandImpl implements ResultUploadBase64Command {
     constructor(
         private readonly file: FileOperation,
         private readonly repository: TestRepository,
@@ -29,5 +31,4 @@ export class ResultUploadBase64Command implements CommandHandlerAsync<ResultUplo
 
         await this.repository.saveAsync(test);
     }
-
 }

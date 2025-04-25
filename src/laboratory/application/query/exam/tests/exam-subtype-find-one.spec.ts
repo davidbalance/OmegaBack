@@ -2,7 +2,7 @@
 import { ExamSubtypeNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-subtype.errors";
 import { ExamSubtypeModel } from "@omega/laboratory/core/model/exam/exam-subtype.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { ExamSubtypeFindOneQuery, ExamSubtypeFindOneQueryPayload } from "../exam-subtype-find-one.query";
+import { ExamSubtypeFindOneQuery, ExamSubtypeFindOneQueryImpl, ExamSubtypeFindOneQueryPayload } from "../exam-subtype-find-one.query";
 
 describe("ExamSubtypeFindOneQuery", () => {
     let repository: jest.Mocked<ModelRepository<ExamSubtypeModel>>;
@@ -13,7 +13,7 @@ describe("ExamSubtypeFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<ExamSubtypeModel>>;
 
-        handler = new ExamSubtypeFindOneQuery(repository);
+        handler = new ExamSubtypeFindOneQueryImpl(repository);
     });
 
     it("should return the correct subtype when a valid subtypeId is provided", async () => {

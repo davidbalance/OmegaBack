@@ -6,7 +6,9 @@ import { CompanyNotFoundError } from "@omega/location/core/domain/corporative/er
 import { CompanyExternalKeyNotFoundError } from "@omega/location/core/domain/corporative/errors/company-external-key.errors";
 
 export type CompanyFindOneByExternalKeyQueryPayload = ExternalKeyProps;
-export class CompanyFindOneByExternalKeyQuery implements QueryHandlerAsync<CompanyFindOneByExternalKeyQueryPayload, CompanyModel> {
+export interface CompanyFindOneByExternalKeyQuery extends QueryHandlerAsync<CompanyFindOneByExternalKeyQueryPayload, CompanyModel> { }
+
+export class CompanyFindOneByExternalKeyQueryImpl implements CompanyFindOneByExternalKeyQuery {
     constructor(
         private readonly externalConnectionRepository: CompanyExternalConnectionRepository,
         private readonly modelRepository: CompanyRepository

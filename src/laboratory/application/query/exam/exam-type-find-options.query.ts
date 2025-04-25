@@ -3,7 +3,11 @@ import { ExamTypeOption } from "@omega/laboratory/core/model/exam/exam-type-opti
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { ExamSubtypeOptionRepository, ExamTypeOptionRepository } from "../../repository/model.repositories";
 
-export class ExamTypeFindOptionsQuery implements QueryHandlerAsync<undefined, ExamTypeOption[]> {
+export interface ExamTypeFindOptionsQuery extends QueryHandlerAsync<undefined, ExamTypeOption[]> {
+    handleAsync(): Promise<ExamTypeOption[]>;
+}
+
+export class ExamTypeFindOptionsQueryImpl implements ExamTypeFindOptionsQuery {
     constructor(
         private readonly subtypeRepository: ExamSubtypeOptionRepository,
         private readonly typeRepository: ExamTypeOptionRepository,

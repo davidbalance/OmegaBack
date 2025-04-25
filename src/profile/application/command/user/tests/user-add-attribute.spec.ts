@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { UserNotFoundError } from "@omega/profile/core/domain/user/errors/user.errors";
 import { User } from "@omega/profile/core/domain/user/user.domain";
-import { UserAddAttributeCommand, UserAddAttributeCommandPayload } from "../user-add-attribute.command";
+import { UserAddAttributeCommand, UserAddAttributeCommandImpl, UserAddAttributeCommandPayload } from "../user-add-attribute.command";
 import { UserRepository } from "@omega/profile/application/repository/aggregate.repositories";
 
 describe("UserAddAttributeCommand", () => {
@@ -14,7 +14,7 @@ describe("UserAddAttributeCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<UserRepository>;
 
-        handler = new UserAddAttributeCommand(repository);
+        handler = new UserAddAttributeCommandImpl(repository);
     });
 
     it("should add an attribute to the user when the user exists", async () => {

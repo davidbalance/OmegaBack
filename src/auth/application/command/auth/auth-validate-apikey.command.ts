@@ -5,7 +5,9 @@ import { ApiKeyNotFoundError } from "@omega/auth/core/domain/auth/errors/api-key
 export type AuthValidateApiKeyCommandPayload = {
     apiKeyValue: string
 };
-export class AuthValidateApiKeyCommand implements CommandHandlerAsync<AuthValidateApiKeyCommandPayload, void> {
+export interface AuthValidateApiKeyCommand extends CommandHandlerAsync<AuthValidateApiKeyCommandPayload, void> { }
+
+export class AuthValidateApiKeyCommandImpl implements AuthValidateApiKeyCommand {
     constructor(
         private readonly repository: ApiKeyValueRepository,
     ) { }

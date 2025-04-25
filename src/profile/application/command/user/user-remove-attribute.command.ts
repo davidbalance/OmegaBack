@@ -6,7 +6,9 @@ export type UserRemoveAttributeCommandPayload = {
     userId: string;
     attributeId: string;
 };
-export class UserRemoveAttributeCommand implements CommandHandlerAsync<UserRemoveAttributeCommandPayload, void> {
+export interface UserRemoveAttributeCommand extends CommandHandlerAsync<UserRemoveAttributeCommandPayload, void> { }
+
+export class UserRemoveAttributeCommandImpl implements UserRemoveAttributeCommand {
     constructor(
         private readonly repository: UserRepository,
     ) { }

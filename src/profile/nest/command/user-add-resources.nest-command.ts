@@ -4,10 +4,10 @@ import { InjectAggregateRepository } from "../inject/aggregate-repository.inject
 import { UserAddResourcesCommandToken } from "../inject/command.inject";
 import { InjectAuth } from "@shared/shared/nest/inject";
 import { AuthProvider } from "@shared/shared/providers/auth.provider";
-import { UserAddResourcesCommand } from "@omega/profile/application/command/user/user-add-resources.command";
+import { UserAddResourcesCommandImpl } from "@omega/profile/application/command/user/user-add-resources.command";
 
 @Injectable()
-class UserAddResourcesNestCommand extends UserAddResourcesCommand {
+class UserAddResourcesNestCommand extends UserAddResourcesCommandImpl {
     constructor(
         @InjectAggregateRepository("User") repository: UserRepository,
         @InjectAuth() auth: AuthProvider

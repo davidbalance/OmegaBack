@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
-import { TestEditExamCommand, TestEditExamCommandPayload } from "../test-edit-exam.command";
+import { TestEditExamCommand, TestEditExamCommandImpl, TestEditExamCommandPayload } from "../test-edit-exam.command";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 
@@ -14,7 +14,7 @@ describe("TestEditExamCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<TestRepository>;
 
-        commandHandler = new TestEditExamCommand(repository);
+        commandHandler = new TestEditExamCommandImpl(repository);
     });
 
     it("should successfully update the exam of the test", async () => {

@@ -3,7 +3,7 @@ import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.e
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 import { FileOperation } from "@shared/shared/providers";
 import { ResultFilepathRepository } from "@omega/medical/application/repository/model.repositories";
-import { ReportUploadBufferCommand } from "../report-upload-buffer.command";
+import { ReportUploadBufferCommand, ReportUploadBufferCommandImpl } from "../report-upload-buffer.command";
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
 
@@ -27,7 +27,7 @@ describe("ReportUploadBufferCommand", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ResultFilepathRepository>;
 
-        handler = new ReportUploadBufferCommand(file, repository, filepathRepository);
+        handler = new ReportUploadBufferCommandImpl(file, repository, filepathRepository);
     });
 
     it("should successfully upload a report and update the test", async () => {

@@ -6,7 +6,9 @@ import { DoctorRepository } from "../../repository/model.repositories";
 export type DoctorFindOneQueryPayload = {
     userId: string;
 }
-export class DoctorFindOneQuery implements QueryHandlerAsync<DoctorFindOneQueryPayload, DoctorModel> {
+export interface DoctorFindOneQuery extends QueryHandlerAsync<DoctorFindOneQueryPayload, DoctorModel> { }
+
+export class DoctorFindOneQueryImpl implements DoctorFindOneQuery {
     constructor(
         private readonly repository: DoctorRepository,
     ) { }

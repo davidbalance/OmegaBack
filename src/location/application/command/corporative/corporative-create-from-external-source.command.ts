@@ -1,18 +1,20 @@
 import { ExternalKeyCommandPayload } from "@shared/shared/domain/external-key.value-object";
-import { BaseCorporativeCreateCommand, BaseCorporativeCreateCommandPayload } from "./base.corporative-create.command";
 import { CorporativeRepository } from "../../repository/aggregate.repositories";
 import { CorporativeExternalConnectionRepository } from "../../repository/model.repositories";
 import { CorporativeExternalKeyConflictError } from "@omega/location/core/domain/corporative/errors/corporative-external-key.errors";
+import { Corporative } from "@omega/location/core/domain/corporative/corporative.domain";
+import { CorporativeCreateCommandPayload } from "./corporative-create.command";
+import { CommandHandlerAsync } from "@shared/shared/application";
 
-export type CorporativeCreateFromExternalSourceCommandPayload = BaseCorporativeCreateCommandPayload & ExternalKeyCommandPayload;
-export class CorporativeCreateFromExternalSourceCommand extends BaseCorporativeCreateCommand<CorporativeCreateFromExternalSourceCommandPayload> {
+export type CorporativeCreateFromExternalSourceCommandPayload = CorporativeCreateCommandPayload & ExternalKeyCommandPayload;
+export interface CorporativeCreateFromExternalSourceCommand extends CommandHandlerAsync<CorporativeCreateFromExternalSourceCommandPayload, void> { }
+
+export class CorporativeCreateFromExternalSourceCommandImpl implements CorporativeCreateFromExternalSourceCommand {
 
     constructor(
         private readonly externalConnectionRepository: CorporativeExternalConnectionRepository,
-        aggregateRepository: CorporativeRepository
-    ) {
-        super(aggregateRepository);
-    }
+        private readonly aggregateRepository: CorporativeRepository
+    ) { }
 
     async handleAsync(value: CorporativeCreateFromExternalSourceCommandPayload): Promise<void> {
         const externalConnection = await this.externalConnectionRepository.findOneAsync([
@@ -23,7 +25,7 @@ export class CorporativeCreateFromExternalSourceCommand extends BaseCorporativeC
 
         let corporative = await this.aggregateRepository.findOneAsync({ filter: [{ field: 'name', operator: 'eq', value: value.name }] });
         if (!corporative) {
-            corporative = this.createCorporative(value);
+            corporative = Corporative.create({ ...value });
         }
         corporative.addExternalKey({ owner: value.externalKeyOwner, value: value.externalKeyValue });
         await this.aggregateRepository.saveAsync(corporative);

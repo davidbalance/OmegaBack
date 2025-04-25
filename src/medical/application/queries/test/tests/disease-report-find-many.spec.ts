@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { DiseaseReportModel } from "@omega/medical/core/model/test/disease-report.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { DiseaseReportFindManyQuery, DiseaseReportFindManyQueryPayload } from "../disease-report-find-many.query";
+import { DiseaseReportFindManyQuery, DiseaseReportFindManyQueryImpl, DiseaseReportFindManyQueryPayload } from "../disease-report-find-many.query";
 
 describe("DiseaseReportFindManyQuery", () => {
     let repository: jest.Mocked<ModelRepository<DiseaseReportModel>>;
@@ -12,7 +12,7 @@ describe("DiseaseReportFindManyQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<DiseaseReportModel>>;
 
-        handler = new DiseaseReportFindManyQuery(repository);
+        handler = new DiseaseReportFindManyQueryImpl(repository);
     });
 
     it("should return a list of disease report models when testId is provided", async () => {

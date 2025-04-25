@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { ClientModel } from "@omega/medical/core/model/client/client.model";
-import { ClientFindOneByDniQuery, ClientFindOneByDniQueryPayload } from "../client-find-one-by-dni.query";
+import { ClientFindOneByDniQuery, ClientFindOneByDniQueryImpl, ClientFindOneByDniQueryPayload } from "../client-find-one-by-dni.query";
 import { ClientRepository } from "@omega/medical/application/repository/model.repositories";
 
 describe("ClientFindOneByDniQuery", () => {
@@ -13,7 +13,7 @@ describe("ClientFindOneByDniQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ClientRepository>;
 
-        handler = new ClientFindOneByDniQuery(repository);
+        handler = new ClientFindOneByDniQueryImpl(repository);
     });
 
     it("should return the client when patientDni exists", async () => {

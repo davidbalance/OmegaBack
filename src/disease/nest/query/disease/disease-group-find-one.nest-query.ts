@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { DiseaseGroupFindOneQueryToken } from "../../inject/query.inject";
-import { DiseaseGroupFindOneQuery } from "@omega/disease/application/query/disease/disease-group-find-one.query";
+import { DiseaseGroupFindOneQueryImpl } from "@omega/disease/application/query/disease/disease-group-find-one.query";
 import { DiseaseGroupRepository } from "@omega/disease/application/repository/model.repositories";
 
 @Injectable()
-class DiseaseGroupFindOneNestQuery extends DiseaseGroupFindOneQuery {
+class DiseaseGroupFindOneNestQuery extends DiseaseGroupFindOneQueryImpl {
     constructor(
         @InjectModelRepository("DiseaseGroup") repository: DiseaseGroupRepository,
     ) {

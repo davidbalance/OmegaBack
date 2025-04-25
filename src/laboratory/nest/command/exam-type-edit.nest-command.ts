@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { ExamTypeEditCommand } from "@omega/laboratory/application/command/exam/exam-type-edit.command";
+import { ExamTypeEditCommandImpl } from "@omega/laboratory/application/command/exam/exam-type-edit.command";
 import { ExamTypeRepository } from "@omega/laboratory/application/repository/aggregate.repositories";
 import { InjectAggregateRepository } from "../inject/aggregate-repository.inject";
 import { ExamTypeEditCommandToken } from "../inject/command.inject";
 
 @Injectable()
-class ExamTypeEditNestCommand extends ExamTypeEditCommand {
+class ExamTypeEditNestCommand extends ExamTypeEditCommandImpl {
     constructor(
         @InjectAggregateRepository("ExamType") repository: ExamTypeRepository
     ) {

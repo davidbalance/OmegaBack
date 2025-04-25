@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { DoctorOptionModel } from "@omega/profile/core/model/user/doctor-option.model";
-import { DoctorFindOptionsQuery } from "../doctor-find-options.query";
+import { DoctorFindOptionsQuery, DoctorFindOptionsQueryImpl } from "../doctor-find-options.query";
 import { DoctorOptionRepository } from "@omega/profile/application/repository/model.repositories";
 
 describe("DoctorFindOptionsQuery", () => {
@@ -12,7 +12,7 @@ describe("DoctorFindOptionsQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<DoctorOptionRepository>;
 
-        handler = new DoctorFindOptionsQuery(repository);
+        handler = new DoctorFindOptionsQueryImpl(repository);
     });
 
     it("should return a list of doctor options", async () => {

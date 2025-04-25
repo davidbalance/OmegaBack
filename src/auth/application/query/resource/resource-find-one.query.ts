@@ -6,7 +6,9 @@ import { ResourceNotFoundError } from "@omega/auth/core/domain/resource/errors/r
 export type ResourceFindOneQueryPayload = {
     resourceId: string;
 }
-export class ResourceFindOneQuery implements QueryHandlerAsync<ResourceFindOneQueryPayload, ResourceModel> {
+export interface ResourceFindOneQuery extends QueryHandlerAsync<ResourceFindOneQueryPayload, ResourceModel> { }
+
+export class ResourceFindOneQueryImpl implements ResourceFindOneQuery {
     constructor(
         private readonly repository: ResourceRepository
     ) { }

@@ -2,7 +2,7 @@
 import { ClientProps, Client } from "@omega/medical/core/domain/client/client.domain";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { AggregateRepository } from "@shared/shared/providers";
-import { EmailCreateCommand, EmailCreateCommandPayload } from "../email-create.command";
+import { EmailCreateCommand, EmailCreateCommandImpl, EmailCreateCommandPayload } from "../email-create.command";
 
 describe("EmailCreateCommand", () => {
     let repository: jest.Mocked<AggregateRepository<ClientProps, Client>>;
@@ -14,7 +14,7 @@ describe("EmailCreateCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AggregateRepository<ClientProps, Client>>;
 
-        handler = new EmailCreateCommand(repository);
+        handler = new EmailCreateCommandImpl(repository);
     });
 
     it("should add an email to the client when client exists", async () => {

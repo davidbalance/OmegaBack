@@ -5,7 +5,9 @@ import { OrderChecklistModel } from "@omega/medical/core/model/order/order-check
 export type OrderChecklistFindManyQueryPayload = {
     orderId: string;
 }
-export class OrderChecklistFindManyQuery implements QueryHandlerAsync<OrderChecklistFindManyQueryPayload, OrderChecklistModel[]> {
+export interface OrderChecklistFindManyQuery extends QueryHandlerAsync<OrderChecklistFindManyQueryPayload, OrderChecklistModel[]> { }
+
+export class OrderChecklistFindManyQueryImpl implements OrderChecklistFindManyQuery {
     constructor(
         private readonly repository: ModelRepository<OrderChecklistModel>
     ) { }

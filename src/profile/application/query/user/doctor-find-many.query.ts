@@ -7,7 +7,9 @@ import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 export type DoctorFindManyQueryPayload = {
     filter?: string;
 } & Required<Pagination> & Order<DoctorModel>
-export class DoctorFindManyQuery implements QueryHandlerAsync<DoctorFindManyQueryPayload, PaginationResponse<DoctorModel>> {
+export interface DoctorFindManyQuery extends QueryHandlerAsync<DoctorFindManyQueryPayload, PaginationResponse<DoctorModel>> { }
+
+export class DoctorFindManyQueryImpl implements DoctorFindManyQuery {
     constructor(
         private readonly repository: DoctorRepository,
     ) { }

@@ -9,7 +9,10 @@ export type OrderFindManyQueryPayload = {
     companyRuc?: string;
     filter?: string;
 } & Required<Pagination> & Order<OrderModel>;
-export class OrderFindManyQuery implements QueryHandlerAsync<OrderFindManyQueryPayload, PaginationResponse<OrderModel>> {
+
+export interface OrderFindManyQuery extends QueryHandlerAsync<OrderFindManyQueryPayload, PaginationResponse<OrderModel>> { }
+
+export class OrderFindManyQueryImpl implements OrderFindManyQuery {
     constructor(
         private readonly repository: OrderRepository
     ) { }

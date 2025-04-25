@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Corporative } from "@omega/location/core/domain/corporative/corporative.domain";
 import { CorporativeNotFoundError } from "@omega/location/core/domain/corporative/errors/corporative.errors";
-import { CompanyRemoveCommand, CompanyRemoveCommandPayload } from "../company-remove.command";
+import { CompanyRemoveCommand, CompanyRemoveCommandImpl, CompanyRemoveCommandPayload } from "../company-remove.command";
 import { CorporativeRepository } from "@omega/location/application/repository/aggregate.repositories";
 
 describe("CompanyRemoveCommand", () => {
@@ -14,7 +14,7 @@ describe("CompanyRemoveCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<CorporativeRepository>;
 
-        command = new CompanyRemoveCommand(repository);
+        command = new CompanyRemoveCommandImpl(repository);
     });
 
     it("should successfully remove a company from an existing corporative", async () => {

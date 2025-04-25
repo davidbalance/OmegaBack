@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { LogoFindManyQuery } from "@omega/auth/application/query/logo/logo-find-many.query";
+import { LogoFindManyQueryImpl } from "@omega/auth/application/query/logo/logo-find-many.query";
 import { LogoRepository } from "@omega/auth/application/repository/logo/model.repositories";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { LogoFindManyQueryToken } from "../../inject/query.inject";
 
 @Injectable()
-class LogoFindManyNestQuery extends LogoFindManyQuery {
+class LogoFindManyNestQuery extends LogoFindManyQueryImpl {
     constructor(
         @InjectModelRepository('Logo') repository: LogoRepository
     ) {

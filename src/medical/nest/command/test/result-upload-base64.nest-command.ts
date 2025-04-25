@@ -1,5 +1,5 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { ResultUploadBase64Command } from "@omega/medical/application/commands/test/result-upload-base64.command";
+import { ResultUploadBase64CommandImpl } from "@omega/medical/application/commands/test/result-upload-base64.command";
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { InjectAggregateRepository } from "../../inject/aggregate-repository.inject";
 import { ResultUploadBase64CommandToken } from "../../inject/command.inject";
@@ -9,7 +9,7 @@ import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { ResultFilepathRepository } from "@omega/medical/application/repository/model.repositories";
 
 @Injectable()
-class ResultUploadBase64NestCommand extends ResultUploadBase64Command {
+class ResultUploadBase64NestCommand extends ResultUploadBase64CommandImpl {
     constructor(
         @InjectFile() file: FileOperation,
         @InjectAggregateRepository("Test") repository: TestRepository,

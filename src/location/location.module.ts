@@ -36,7 +36,7 @@ import { JobPositionReadController } from "./controller/read/job-position-read.c
 import { ManagementReadController } from "./controller/read/management-read.controller";
 import { AreaWriteController } from "./controller/write/area-write.controller";
 import { ManagementWriteController } from "./controller/write/management-write.controller";
-import { CompanyMoveCommandProvider } from "./nest/command/corporative/company_move.nest_command";
+import { CompanyMoveCommandProvider } from "./nest/command/corporative/company-move.nest-command";
 import { BranchMoveCommandProvider } from "./nest/command/corporative/branch_move.nest_command";
 import { CorporativeWriteController } from "./controller/write/corporative-write.controller";
 import { CompanyWriteController } from "./controller/write/company-write.controller";

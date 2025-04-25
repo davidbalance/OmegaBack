@@ -5,7 +5,9 @@ import { ClientEmailRepository } from "../../repository/model.repositories";
 export type ClientEmailFindManyQueryPayload = {
     patientDni: string;
 };
-export class ClientEmailFindManyQuery implements QueryHandlerAsync<ClientEmailFindManyQueryPayload, ClientEmailModel[]> {
+export interface ClientEmailFindManyQuery extends QueryHandlerAsync<ClientEmailFindManyQueryPayload, ClientEmailModel[]> { }
+
+export class ClientEmailFindManyQueryImpl implements ClientEmailFindManyQuery {
     constructor(
         private readonly repository: ClientEmailRepository
     ) { }

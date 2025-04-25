@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { OrderCloudFileModel } from "@omega/medical/core/model/order/order-cloud-file.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { OrderCloudFindManyQuery, OrderCloudFindManyQueryPayload } from "../order-cloud-find-many.query";
+import { OrderCloudFindManyQuery, OrderCloudFindManyQueryImpl, OrderCloudFindManyQueryPayload } from "../order-cloud-find-many.query";
 
 describe("OrderCloudFindManyQuery", () => {
     let repository: jest.Mocked<ModelRepository<OrderCloudFileModel>>;
@@ -12,7 +12,7 @@ describe("OrderCloudFindManyQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<OrderCloudFileModel>>;
 
-        handler = new OrderCloudFindManyQuery(repository);
+        handler = new OrderCloudFindManyQueryImpl(repository);
     });
 
     it("should return a list of order cloud files when order exists", async () => {

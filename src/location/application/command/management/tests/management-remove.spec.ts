@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ManagementNotFoundError } from "@omega/location/core/domain/management/errors/management.errors";
 import { Management } from "@omega/location/core/domain/management/management.domain";
-import { ManagementRemoveCommand, ManagementRemoveCommandPayload } from "../management-remove.command";
+import { ManagementRemoveCommand, ManagementRemoveCommandImpl, ManagementRemoveCommandPayload } from "../management-remove.command";
 import { ManagementRepository } from "@omega/location/application/repository/aggregate.repositories";
 
 describe("ManagementRemoveCommand", () => {
@@ -14,7 +14,7 @@ describe("ManagementRemoveCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<ManagementRepository>;
 
-        command = new ManagementRemoveCommand(repository);
+        command = new ManagementRemoveCommandImpl(repository);
     });
 
     it("should successfully remove management", async () => {

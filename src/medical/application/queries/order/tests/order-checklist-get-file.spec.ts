@@ -3,7 +3,7 @@ import { OrderNotFoundError } from "@omega/medical/core/domain/order/errors/orde
 import { OrderChecklistModel } from "@omega/medical/core/model/order/order-checklist.model";
 import { ModelRepository } from "@shared/shared/providers";
 import { PdfProvider } from "@shared/shared/providers/pdf.provider";
-import { OrderChecklistGetFileQuery, OrderChecklistGetFileQueryPayload } from "../order-checklist-get-file.query";
+import { OrderChecklistGetFileQuery, OrderChecklistGetFileQueryImpl, OrderChecklistGetFileQueryPayload } from "../order-checklist-get-file.query";
 
 describe("OrderChecklistGetFileQuery", () => {
     let repository: jest.Mocked<ModelRepository<OrderChecklistModel>>;
@@ -22,7 +22,7 @@ describe("OrderChecklistGetFileQuery", () => {
 
         layoutFunc = jest.fn();
 
-        handler = new OrderChecklistGetFileQuery(repository, pdfProvider, layoutFunc);
+        handler = new OrderChecklistGetFileQueryImpl(repository, pdfProvider, layoutFunc);
     });
 
     it("should return a PDF buffer when order checklists are found", async () => {

@@ -6,7 +6,9 @@ export type DiseaseRemoveCommandPayload = {
     groupId: string;
     diseaseId: string;
 };
-export class DiseaseRemoveCommand implements CommandHandlerAsync<DiseaseRemoveCommandPayload, void> {
+export interface DiseaseRemoveCommand extends CommandHandlerAsync<DiseaseRemoveCommandPayload, void> { }
+
+export class DiseaseRemoveCommandImpl implements DiseaseRemoveCommand {
     constructor(
         private readonly repository: DiseaseGroupRepository
     ) { }

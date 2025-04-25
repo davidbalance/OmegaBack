@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ResultGetFileQuery } from "@omega/medical/application/queries/test/result-get-file.query";
 import { TestFileResultRepository } from "@omega/medical/application/repository/model.repositories";
-import { TestCheckFileCommand } from "../test-check-file.command";
+import { TestCheckFileCommand, TestCheckFileCommandImpl } from "../test-check-file.command";
 import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_result.model";
 
 describe("TestCheckFileCommand", () => {
@@ -19,7 +19,7 @@ describe("TestCheckFileCommand", () => {
             handleAsync: jest.fn(),
         } as unknown as jest.Mocked<ResultGetFileQuery>;
 
-        commandHandler = new TestCheckFileCommand(model, file);
+        commandHandler = new TestCheckFileCommandImpl(model, file);
     });
 
     it("should process files in batches with pagination", async () => {

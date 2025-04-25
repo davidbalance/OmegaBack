@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { JobPositionFindOneQuery } from "@omega/location/application/query/job-position/job-position-find-one.query";
+import { JobPositionFindOneQueryImpl } from "@omega/location/application/query/job-position/job-position-find-one.query";
 import { JobPositionRepository } from "@omega/location/application/repository/model.repositories";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { JobPositionFindOneQueryToken } from "../../inject/query.inject";
 
 @Injectable()
-class JobPositionFindOneNestQuery extends JobPositionFindOneQuery {
+class JobPositionFindOneNestQuery extends JobPositionFindOneQueryImpl {
     constructor(
         @InjectModelRepository("JobPosition") repository: JobPositionRepository
     ) {

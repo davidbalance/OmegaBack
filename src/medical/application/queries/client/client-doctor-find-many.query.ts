@@ -8,7 +8,10 @@ export type ClientDoctorFindManyQueryPayload = {
     doctorDni: string;
     filter?: string;
 } & Required<Pagination> & Order<ClientDoctorModel>;
-export class ClientDoctorFindManyQuery implements QueryHandlerAsync<ClientDoctorFindManyQueryPayload, PaginationResponse<ClientDoctorModel>> {
+
+export interface ClientDoctorFindManyQuery extends QueryHandlerAsync<ClientDoctorFindManyQueryPayload, PaginationResponse<ClientDoctorModel>> { }
+
+export class ClientDoctorFindManyQueryImpl implements ClientDoctorFindManyQuery {
     constructor(
         private readonly repository: ClientDoctorRepository
     ) { }

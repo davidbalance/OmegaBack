@@ -38,7 +38,9 @@ export type TestReportGetFileQueryPayload = {
     locationCorporative?: string;
     locationCompany?: string;
 }
-export class TestReportGetFileQuery implements QueryHandlerAsync<TestReportGetFileQueryPayload, Buffer> {
+export interface TestReportGetFileQuery extends QueryHandlerAsync<TestReportGetFileQueryPayload, Buffer> { }
+
+export class TestReportGetFileQueryImpl implements TestReportGetFileQuery {
     constructor(
         private readonly repository: ModelRepository<TestReportModel>,
         private readonly spreadsheet: SpreadsheetProvider

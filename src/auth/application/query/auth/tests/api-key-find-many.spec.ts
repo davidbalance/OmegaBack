@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ApiKeyRepository } from "@omega/auth/application/repository/auth/model.repositories";
 import { JwtProvider } from "@shared/shared/providers/jwt.provider";
-import { ApiKeyFindManyQuery, ApiKeyFindManyQueryPayload } from "../api-key-find-many.query";
+import { ApiKeyFindManyQuery, ApiKeyFindManyQueryImpl, ApiKeyFindManyQueryPayload } from "../api-key-find-many.query";
 import { ApiKeyModel } from "@omega/auth/core/model/auth/api-key.model";
 
 describe("ApiKeyFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("ApiKeyFindManyQuery", () => {
         jwt = { validateJwt: jest.fn() } as unknown as jest.Mocked<JwtProvider>;
         repository = { findManyAsync: jest.fn() } as unknown as jest.Mocked<ApiKeyRepository>;
 
-        query = new ApiKeyFindManyQuery(jwt, repository);
+        query = new ApiKeyFindManyQueryImpl(jwt, repository);
     });
 
     it("should return api keys when the JWT is valid", async () => {

@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { AuthFindManyResourcesQuery } from "@omega/auth/application/query/auth/auth-find-many-resources.query";
+import { AuthFindManyResourcesQueryImpl } from "@omega/auth/application/query/auth/auth-find-many-resources.query";
 import { AuthResourceRepository } from "@omega/auth/application/repository/auth/model.repositories";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { AuthFindManyResourcesQueryToken } from "../../inject/query.inject";
 
 @Injectable()
-class AuthFindManyResourcesNestQuery extends AuthFindManyResourcesQuery {
+class AuthFindManyResourcesNestQuery extends AuthFindManyResourcesQueryImpl {
     constructor(
         @InjectModelRepository('AuthResource') repository: AuthResourceRepository,
     ) {

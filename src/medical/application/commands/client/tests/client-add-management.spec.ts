@@ -2,7 +2,7 @@
 import { ClientProps, Client } from "@omega/medical/core/domain/client/client.domain";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { AggregateRepository } from "@shared/shared/providers";
-import { ClientAddManagementCommand, ClientAddManagementCommandPayload } from "../client-add-management.command";
+import { ClientAddManagementCommand, ClientAddManagementCommandImpl, ClientAddManagementCommandPayload } from "../client-add-management.command";
 
 describe("ClientAddManagementCommand", () => {
     let repository: jest.Mocked<AggregateRepository<ClientProps, Client>>;
@@ -14,7 +14,7 @@ describe("ClientAddManagementCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AggregateRepository<ClientProps, Client>>;
 
-        handler = new ClientAddManagementCommand(repository);
+        handler = new ClientAddManagementCommandImpl(repository);
     });
 
     it("should add a management to the client when client exists", async () => {

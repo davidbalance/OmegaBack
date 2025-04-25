@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Client } from "@omega/medical/core/domain/client/client.domain";
-import { ClientCreateCommand, ClientCreateCommandPayload } from "../client-create.command";
+import { ClientCreateCommand, ClientCreateCommandImpl, ClientCreateCommandPayload } from "../client-create.command";
 import { ClientConflictError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { ClientRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { CreateClientPayload } from "@omega/medical/core/domain/client/payloads/client.payloads";
@@ -21,7 +21,7 @@ describe("ClientCreateCommand", () => {
             emitAsync: jest.fn()
         } as unknown as jest.Mocked<NotificationProvider<CreateClientPayload>>
 
-        handler = new ClientCreateCommand(repository, userNotify);
+        handler = new ClientCreateCommandImpl(repository, userNotify);
     });
 
     it("should create a client when DNI does not exist", async () => {

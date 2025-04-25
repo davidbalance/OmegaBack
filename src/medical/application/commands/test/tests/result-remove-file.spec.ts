@@ -3,7 +3,7 @@ import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.e
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
 import { FileOperation } from "@shared/shared/providers";
-import { ResultRemoveFileCommand, ResultRemoveFileCommandPayload } from "../result-remove-file.command";
+import { ResultRemoveFileCommand, ResultRemoveFileCommandImpl, ResultRemoveFileCommandPayload } from "../result-remove-file.command";
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { ResultFilepathRepository } from "@omega/medical/application/repository/model.repositories";
 
@@ -27,7 +27,7 @@ describe("ResultRemoveFileCommand", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ResultFilepathRepository>;
 
-        handler = new ResultRemoveFileCommand(file, repository, filepathRepository);
+        handler = new ResultRemoveFileCommandImpl(file, repository, filepathRepository);
     });
 
     it("should remove the result file when test and filepath exist", async () => {

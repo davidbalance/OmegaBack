@@ -2,7 +2,7 @@
 import { OrderNotFoundError } from "@omega/medical/core/domain/order/errors/order.errors";
 import { OrderModel } from "@omega/medical/core/model/order/order.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { OrderFindOneQuery, OrderFindOneQueryPayload } from "../order.find-one.query";
+import { OrderFindOneQuery, OrderFindOneQueryImpl, OrderFindOneQueryPayload } from "../order.find-one.query";
 
 describe("OrderFindOneQuery", () => {
     let repository: jest.Mocked<ModelRepository<OrderModel>>;
@@ -13,7 +13,7 @@ describe("OrderFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<OrderModel>>;
 
-        handler = new OrderFindOneQuery(repository);
+        handler = new OrderFindOneQueryImpl(repository);
     });
 
     it("should return an order model when the order exists", async () => {

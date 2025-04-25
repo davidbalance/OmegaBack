@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { JobPosition } from "@omega/location/core/domain/job-position/job-position.domain";
-import { JobPositionCreateCommand, JobPositionCreateCommandPayload } from "../job-position-create.command";
+import { JobPositionCreateCommand, JobPositionCreateCommandImpl, JobPositionCreateCommandPayload } from "../job-position-create.command";
 import { JobPositionRepository } from "@omega/location/application/repository/aggregate.repositories";
 import { JobPositionConflictError } from "@omega/location/core/domain/job-position/errors/job-position.errors";
 
@@ -14,7 +14,7 @@ describe("JobPositionCreateCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<JobPositionRepository>;
 
-        command = new JobPositionCreateCommand(repository);
+        command = new JobPositionCreateCommandImpl(repository);
     });
 
     it("should successfully create a job position if the name is unique", async () => {

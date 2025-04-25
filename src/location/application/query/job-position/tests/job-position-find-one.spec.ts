@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { JobPositionNotFoundError } from "@omega/location/core/domain/job-position/errors/job-position.errors";
 import { JobPositionModel } from "@omega/location/core/models/jobPosition/job-position.model";
-import { JobPositionFindOneQuery, JobPositionFindOneQueryPayload } from "../job-position-find-one.query";
+import { JobPositionFindOneQuery, JobPositionFindOneQueryImpl, JobPositionFindOneQueryPayload } from "../job-position-find-one.query";
 import { JobPositionRepository } from "@omega/location/application/repository/model.repositories";
 
 describe("JobPositionFindOneQuery", () => {
@@ -13,7 +13,7 @@ describe("JobPositionFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<JobPositionRepository>;
 
-        handler = new JobPositionFindOneQuery(repository);
+        handler = new JobPositionFindOneQueryImpl(repository);
     });
 
     it("should retrieve a job position when it exists", async () => {

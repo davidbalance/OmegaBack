@@ -2,7 +2,7 @@
 import { AuthRepository, AuthResourceRepository } from "@omega/auth/application/repository/auth/model.repositories";
 import { AuthNotFoundError } from "@omega/auth/core/domain/auth/errors/auth.errors";
 import { JwtProvider } from "@shared/shared/providers/jwt.provider";
-import { AuthGenerateTokenQuery, AuthGenerateTokenQueryPayload } from "../auth-generate-token.query";
+import { AuthGenerateTokenQuery, AuthGenerateTokenQueryImpl, AuthGenerateTokenQueryPayload } from "../auth-generate-token.query";
 import { AuthModel } from "@omega/auth/core/model/auth/auth.model";
 import { AuthResourceModel } from "@omega/auth/core/model/auth/auth-resource.model";
 
@@ -25,7 +25,7 @@ describe("AuthGenerateTokenQuery", () => {
             createJwt: jest.fn(),
         } as unknown as jest.Mocked<JwtProvider>;
 
-        query = new AuthGenerateTokenQuery(authRepository, resourceRepository, jwtProvider);
+        query = new AuthGenerateTokenQueryImpl(authRepository, resourceRepository, jwtProvider);
     });
 
     it("should generate JWT token successfully when auth and resources exist", async () => {

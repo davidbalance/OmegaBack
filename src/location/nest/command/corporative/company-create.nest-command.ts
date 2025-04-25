@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { CompanyCreateCommand } from "@omega/location/application/command/corporative/company-create.command";
+import { CompanyCreateCommandImpl } from "@omega/location/application/command/corporative/company-create.command";
 import { CorporativeRepository } from "@omega/location/application/repository/aggregate.repositories";
 import { InjectAggregateRepository } from "../../inject/aggregate-repository.inject";
 import { CompanyCreateCommandToken } from "../../inject/command.inject";
 
 @Injectable()
-class CompanyCreateNestCommand extends CompanyCreateCommand {
+class CompanyCreateNestCommand extends CompanyCreateCommandImpl {
     constructor(
         @InjectAggregateRepository("Corporative") repository: CorporativeRepository
     ) {

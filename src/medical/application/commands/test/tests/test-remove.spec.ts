@@ -2,7 +2,7 @@
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
-import { TestRemoveCommand } from "../test-remove.command";
+import { TestRemoveCommand, TestRemoveCommandImpl } from "../test-remove.command";
 
 describe("TestRemoveCommand", () => {
     let repository: jest.Mocked<TestRepository>;
@@ -14,7 +14,7 @@ describe("TestRemoveCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<TestRepository>;
 
-        commandHandler = new TestRemoveCommand(repository);
+        commandHandler = new TestRemoveCommandImpl(repository);
     });
 
     it("should successfully remove and save the test", async () => {

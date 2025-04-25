@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { DiseaseGroupRepository } from "@omega/disease/application/repository/aggregate.repositories";
-import { DiseaseEditCommand, DiseaseEditCommandPayload } from "../disease-edit.command";
+import { DiseaseEditCommand, DiseaseEditCommandImpl, DiseaseEditCommandPayload } from "../disease-edit.command";
 import { DiseaseGroup } from "@omega/disease/core/domain/disease-group.domain";
 import { DiseaseGroupNotFoundError } from "@omega/disease/core/domain/errors/disease-group.errors";
 
@@ -14,7 +14,7 @@ describe("DiseaseEditCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<DiseaseGroupRepository>;
 
-        command = new DiseaseEditCommand(repository);
+        command = new DiseaseEditCommandImpl(repository);
     });
 
     it("should rename a disease in an existing group and save it successfully", async () => {

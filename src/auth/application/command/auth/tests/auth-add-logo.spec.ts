@@ -2,7 +2,7 @@
 import { AuthRepository } from "@omega/auth/application/repository/auth/aggregate.repositories";
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
 import { AuthNotFoundError } from "@omega/auth/core/domain/auth/errors/auth.errors";
-import { AuthAddLogoCommand, AuthAddLogoCommandPayload } from "../auth-add-logo.command";
+import { AuthAddLogoCommand, AuthAddLogoCommandImpl, AuthAddLogoCommandPayload } from "../auth-add-logo.command";
 
 describe("AuthAddLogoCommand", () => {
     let repository: jest.Mocked<AuthRepository>;
@@ -14,7 +14,7 @@ describe("AuthAddLogoCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AuthRepository>;
 
-        command = new AuthAddLogoCommand(repository);
+        command = new AuthAddLogoCommandImpl(repository);
     });
 
     it("should add a logo when auth exists", async () => {

@@ -6,7 +6,9 @@ import { ExamExternalKeyNotFoundError } from "@omega/laboratory/core/domain/exam
 import { ExamFindOneQuery } from "./exam-find-one.query";
 
 export type ExamFindOneByExternalKeyQueryPayload = ExternalKeyProps;
-export class ExamFindOneByExternalKeyQuery implements QueryHandlerAsync<ExamFindOneByExternalKeyQueryPayload, ExamModel> {
+export interface ExamFindOneByExternalKeyQuery extends QueryHandlerAsync<ExamFindOneByExternalKeyQueryPayload, ExamModel> { }
+
+export class ExamFindOneByExternalKeyQueryImpl implements ExamFindOneByExternalKeyQuery {
     constructor(
         private readonly externalConnectionRepository: ExamExternalConnectionRepository,
         private readonly findOneQuery: ExamFindOneQuery

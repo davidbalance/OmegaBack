@@ -8,7 +8,9 @@ export type ClientFindManyQueryPayload = {
     companyRuc?: string;
     filter?: string;
 } & Required<Pagination> & Order<ClientModel>
-export class ClientFindManyQuery implements QueryHandlerAsync<ClientFindManyQueryPayload, PaginationResponse<ClientModel>> {
+export interface ClientFindManyQuery extends QueryHandlerAsync<ClientFindManyQueryPayload, PaginationResponse<ClientModel>> { }
+
+export class ClientFindManyQueryImpl implements ClientFindManyQuery {
     constructor(
         private readonly repository: ClientRepository,
     ) { }

@@ -21,7 +21,11 @@ const ordering: { key: keyof TestFileResultModel }[] = [
     { key: 'resultFilepath' },
 ]
 
-export class TestFileResultReportQuery implements QueryHandlerAsync<undefined, Buffer> {
+export interface TestFileResultReportQuery extends QueryHandlerAsync<undefined, Buffer> {
+    handleAsync(): Promise<Buffer>;
+}
+
+export class TestFileResultReportQueryImpl implements TestFileResultReportQuery {
     constructor(
         private readonly repository: TestFileResultRepository,
         private readonly spreadsheet: SpreadsheetProvider

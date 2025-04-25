@@ -7,7 +7,9 @@ import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 export type DiseaseGroupFindManyQueryPayload = {
     filter?: string;
 } & Required<Pagination> & Order<DiseaseGroupModel>;
-export class DiseaseGroupFindManyQuery implements QueryHandlerAsync<DiseaseGroupFindManyQueryPayload, PaginationResponse<DiseaseGroupModel>> {
+export interface DiseaseGroupFindManyQuery extends QueryHandlerAsync<DiseaseGroupFindManyQueryPayload, PaginationResponse<DiseaseGroupModel>> { }
+
+export class DiseaseGroupFindManyQueryImpl implements DiseaseGroupFindManyQuery {
     constructor(
         private readonly repository: DiseaseGroupRepository
     ) { }

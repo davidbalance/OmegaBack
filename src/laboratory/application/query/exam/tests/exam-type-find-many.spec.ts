@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ExamTypeModel } from "@omega/laboratory/core/model/exam/exam-type.model";
-import { ExamTypeFindManyQuery, ExamTypeFindManyQueryPayload } from "../exam-type-find-many.query";
+import { ExamTypeFindManyQuery, ExamTypeFindManyQueryImpl, ExamTypeFindManyQueryPayload } from "../exam-type-find-many.query";
 import { ExamTypeRepository } from "@omega/laboratory/application/repository/model.repositories";
 
 describe("ExamTypeFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("ExamTypeFindManyQuery", () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<ExamTypeRepository>;
 
-        handler = new ExamTypeFindManyQuery(repository);
+        handler = new ExamTypeFindManyQueryImpl(repository);
     });
 
     it("should return a list of exam types when valid query parameters are provided", async () => {

@@ -6,7 +6,9 @@ import { AggregateRepository } from "@shared/shared/providers";
 export type ExamTypeRemoveCommandPayload = {
     testId: string;
 }
-export class ExamTypeRemoveCommand implements CommandHandlerAsync<ExamTypeRemoveCommandPayload, void> {
+export interface ExamTypeRemoveCommand extends CommandHandlerAsync<ExamTypeRemoveCommandPayload, void> { }
+
+export class ExamTypeRemoveCommandImpl implements ExamTypeRemoveCommand {
     constructor(
         private readonly repository: AggregateRepository<ExamTypeProps, ExamType>
     ) { }

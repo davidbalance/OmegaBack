@@ -5,7 +5,9 @@ import { TestRepository } from "../../repository/aggregate.repositories";
 export type TestRemoveCommandPayload = {
     testId: string;
 };
-export class TestRemoveCommand implements CommandHandlerAsync<TestRemoveCommandPayload, void> {
+export interface TestRemoveCommand extends CommandHandlerAsync<TestRemoveCommandPayload, void> { }
+
+export class TestRemoveCommandImpl implements TestRemoveCommand {
     constructor(
         private readonly repository: TestRepository,
     ) { }

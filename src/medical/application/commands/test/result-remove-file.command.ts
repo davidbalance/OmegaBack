@@ -7,7 +7,9 @@ import { ResultFilepathRepository } from "../../repository/model.repositories";
 export type ResultRemoveFileCommandPayload = {
     testId: string;
 }
-export class ResultRemoveFileCommand implements CommandHandlerAsync<ResultRemoveFileCommandPayload, void> {
+export interface ResultRemoveFileCommand extends CommandHandlerAsync<ResultRemoveFileCommandPayload, void> { }
+
+export class ResultRemoveFileCommandImpl implements CommandHandlerAsync<ResultRemoveFileCommandPayload, void> {
     constructor(
         private readonly file: FileOperation,
         private readonly repository: TestRepository,
@@ -27,5 +29,4 @@ export class ResultRemoveFileCommand implements CommandHandlerAsync<ResultRemove
             await this.repository.saveAsync(test);
         }
     }
-
 }

@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { ResourceFindOneQuery } from "@omega/auth/application/query/resource/resource-find-one.query";
+import { ResourceFindOneQueryImpl } from "@omega/auth/application/query/resource/resource-find-one.query";
 import { ResourceRepository } from "@omega/auth/application/repository/resource/model.repositories";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { ResourceFindOneQueryToken } from "../../inject/query.inject";
 
 @Injectable()
-class ResourceFindOneNestQuery extends ResourceFindOneQuery {
+class ResourceFindOneNestQuery extends ResourceFindOneQueryImpl {
     constructor(
         @InjectModelRepository('Resource') repository: ResourceRepository
     ) {

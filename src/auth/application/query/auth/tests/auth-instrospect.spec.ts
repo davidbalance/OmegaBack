@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { JwtProvider } from "@shared/shared/providers/jwt.provider";
-import { AuthIntrospectQuery, AuthIntrospectQueryPayload } from "../auth-introspect.query";
+import { AuthIntrospectQuery, AuthIntrospectQueryImpl, AuthIntrospectQueryPayload } from "../auth-introspect.query";
 import { AuthJwtPayload } from "@omega/auth/application/type/auth.type";
 
 describe("AuthIntrospectQuery", () => {
@@ -12,7 +12,7 @@ describe("AuthIntrospectQuery", () => {
             validateJwt: jest.fn(),
         } as unknown as jest.Mocked<JwtProvider>;
 
-        query = new AuthIntrospectQuery(jwtProvider);
+        query = new AuthIntrospectQueryImpl(jwtProvider);
     });
 
     it("should return an active introspection when JWT is valid", async () => {

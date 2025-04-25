@@ -7,7 +7,9 @@ export type ExamTypeEditCommandPayload = {
     testId: string;
     testName: string;
 }
-export class ExamTypeEditCommand implements CommandHandlerAsync<ExamTypeEditCommandPayload, void> {
+export interface ExamTypeEditCommand extends CommandHandlerAsync<ExamTypeEditCommandPayload, void> { }
+
+export class ExamTypeEditCommandImpl implements ExamTypeEditCommand {
     constructor(
         private readonly repository: AggregateRepository<ExamTypeProps, ExamType>
     ) { }

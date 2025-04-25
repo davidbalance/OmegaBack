@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { DiseaseGroupOptionRepository } from "@omega/disease/application/repository/model.repositories";
 import { DiseaseGroupOptionModel } from "@omega/disease/core/model/disease/disease-group-option.model";
-import { DiseaseGroupFindOptionsQuery } from "../disease-group-find-options.query";
+import { DiseaseGroupFindOptionsQuery, DiseaseGroupFindOptionsQueryImpl } from "../disease-group-find-options.query";
 
 describe("DiseaseGroupFindOptionsQuery", () => {
     let repository: jest.Mocked<DiseaseGroupOptionRepository>;
@@ -12,7 +12,7 @@ describe("DiseaseGroupFindOptionsQuery", () => {
             findManyAsync: jest.fn()
         } as unknown as jest.Mocked<DiseaseGroupOptionRepository>;
 
-        query = new DiseaseGroupFindOptionsQuery(repository);
+        query = new DiseaseGroupFindOptionsQueryImpl(repository);
     });
 
     it("should return grouped disease group options when repository finds data", async () => {

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Area } from "@omega/location/core/domain/area/area.domain";
 import { AreaNotFoundError } from "@omega/location/core/domain/area/errors/area.errors";
-import { AreaRemoveCommand } from "../area-remove.command";
+import { AreaRemoveCommand, AreaRemoveCommandImpl } from "../area-remove.command";
 import { AreaRepository } from "@omega/location/application/repository/aggregate.repositories";
 
 describe("AreaRemoveCommand", () => {
@@ -14,7 +14,7 @@ describe("AreaRemoveCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<AreaRepository>;
 
-        command = new AreaRemoveCommand(repository);
+        command = new AreaRemoveCommandImpl(repository);
     });
 
     it("should remove an existing area successfully", async () => {

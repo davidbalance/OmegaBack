@@ -22,9 +22,9 @@ import { UserWriteController } from "./controller/write/user-write.controller";
 import { UserAttributeFindOneQueryToken, UserFindOneByAuthQueryToken } from "./nest/inject/query.inject";
 import { UserFindOneByAuthQueryProvider } from "./nest/query/user-find-one-by-auth.nest-query";
 import { PatientCreateCommandToken } from "./nest/inject/command.inject";
-import { UserAddResourcesCommandProvider } from "./nest/command/user_add_resources.nest_command";
+import { UserAddResourcesCommandProvider } from "./nest/command/user-add-resources.nest-command";
 import { UserFindOneQueryProvider } from "./nest/query/user-find-one.nest-query";
-import { UserEditCommandProvider } from "./nest/command/user_edit.nest_command";
+import { UserEditCommandProvider } from "./nest/command/user-edit.nest-command";
 import { UserFindManyResourcesQueryProvider } from "./nest/query/user-find-many-resources.nest-query";
 
 @Module({

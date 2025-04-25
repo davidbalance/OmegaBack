@@ -2,7 +2,7 @@
 import { ResourceRepository } from "@omega/auth/application/repository/resource/aggregate.repositories";
 import { ResourceNotFoundError } from "@omega/auth/core/domain/resource/errors/resource.errors";
 import { Resource } from "@omega/auth/core/domain/resource/resource.domain";
-import { ResourceRemoveCommand, ResourceRemoveCommandPayload } from "../resource-remove.command";
+import { ResourceRemoveCommand, ResourceRemoveCommandImpl, ResourceRemoveCommandPayload } from "../resource-remove.command";
 
 describe("ResourceRemoveCommand", () => {
     let repository: jest.Mocked<ResourceRepository>;
@@ -14,7 +14,7 @@ describe("ResourceRemoveCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<ResourceRepository>;
 
-        command = new ResourceRemoveCommand(repository);
+        command = new ResourceRemoveCommandImpl(repository);
     });
 
     it("should remove resource successfully when resource exists", async () => {

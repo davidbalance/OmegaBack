@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { UserRepository } from "@omega/profile/application/repository/aggregate.repositories";
 import { AuthProvider } from "@shared/shared/providers/auth.provider";
-import { UserAddResourcesCommand } from "../user-add-resources.command";
+import { UserAddResourcesCommand, UserAddResourcesCommandImpl } from "../user-add-resources.command";
 import { User } from "@omega/profile/core/domain/user/user.domain";
 import { UserNotFoundError } from "@omega/profile/core/domain/user/errors/user.errors";
 
@@ -19,7 +19,7 @@ describe("UserAddResourcesCommand", () => {
             addResources: jest.fn(),
         } as unknown as jest.Mocked<AuthProvider>;
 
-        command = new UserAddResourcesCommand(repository, authProvider);
+        command = new UserAddResourcesCommandImpl(repository, authProvider);
     });
 
     it("should add resources when user exists and has authentication", async () => {

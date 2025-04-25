@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { ExamTypeFindOptionsQuery } from "@omega/laboratory/application/query/exam/exam-type-find-options.query";
+import { ExamTypeFindOptionsQueryImpl } from "@omega/laboratory/application/query/exam/exam-type-find-options.query";
 import { InjectModelRepository } from "../inject/model-repository.inject";
 import { ExamTypeFindOptionsQueryToken } from "../inject/query.inject";
 import { ExamSubtypeOptionRepository, ExamTypeOptionRepository } from "@omega/laboratory/application/repository/model.repositories";
 
 @Injectable()
-class ExamTypeFindOptionsNestQuery extends ExamTypeFindOptionsQuery {
+class ExamTypeFindOptionsNestQuery extends ExamTypeFindOptionsQueryImpl {
     constructor(
         @InjectModelRepository("ExamSubtypeOption") subtype: ExamSubtypeOptionRepository,
         @InjectModelRepository("ExamTypeOption") type: ExamTypeOptionRepository,

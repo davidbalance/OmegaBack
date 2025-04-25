@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ClientRecordRepository } from "@omega/medical/application/repository/model.repositories";
-import { ClientRecordFindManyQuery, ClientRecordFindManyQueryPayload } from "../client-record-find-many.query";
+import { ClientRecordFindManyQuery, ClientRecordFindManyQueryImpl, ClientRecordFindManyQueryPayload } from "../client-record-find-many.query";
 import { ClientRecordModel } from "@omega/medical/core/model/client/client-record.model";
 
 describe("ClientRecordFindManyQuery", () => {
@@ -12,7 +12,7 @@ describe("ClientRecordFindManyQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ClientRecordRepository>;
 
-        handler = new ClientRecordFindManyQuery(repository);
+        handler = new ClientRecordFindManyQueryImpl(repository);
     });
 
     it("should fetch records data without filter", async () => {

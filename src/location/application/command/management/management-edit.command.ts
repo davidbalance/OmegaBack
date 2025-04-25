@@ -6,11 +6,13 @@ export type ManagementEditCommandPayload = {
     managementId: string;
     managementName: string;
 };
-export class ManagementEditCommand implements CommandHandlerAsync<ManagementEditCommandPayload, void> {
+export interface ManagementEditCommand extends CommandHandlerAsync<ManagementEditCommandPayload, void> { }
+
+export class ManagementEditCommandImpl implements ManagementEditCommand {
     constructor(
         private readonly repository: ManagementRepository
     ) { }
-    
+
     async handleAsync(value: ManagementEditCommandPayload): Promise<void> {
         const management = await this.repository.findOneAsync({ filter: [{ field: 'id', operator: 'eq', value: value.managementId }] });
         if (!management) throw new ManagementNotFoundError(value.managementId);

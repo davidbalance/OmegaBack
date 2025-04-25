@@ -6,7 +6,9 @@ import { CorporativeRepository } from "../../repository/aggregate.repositories";
 export type BranchRemoveCommandPayload = {
     corporativeId: string;
 } & RemoveBranchFromCorporativePayload;
-export class BranchRemoveCommand implements CommandHandlerAsync<BranchRemoveCommandPayload, void> {
+export interface BranchRemoveCommand extends CommandHandlerAsync<BranchRemoveCommandPayload, void> { }
+
+export class BranchRemoveCommandImpl implements BranchRemoveCommand {
     constructor(
         private readonly repository: CorporativeRepository
     ) { }

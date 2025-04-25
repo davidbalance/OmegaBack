@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { DiseaseGroupRepository } from "@omega/disease/application/repository/aggregate.repositories";
-import { DiseaseGroupCreateCommand, DiseaseGroupCreateCommandPayload } from "../disease-group-create.command";
+import { DiseaseGroupCreateCommand, DiseaseGroupCreateCommandImpl, DiseaseGroupCreateCommandPayload } from "../disease-group-create.command";
 import { DiseaseGroup } from "@omega/disease/core/domain/disease-group.domain";
 import { DiseaseGroupConflictError } from "@omega/disease/core/domain/errors/disease-group.errors";
 
@@ -14,7 +14,7 @@ describe("DiseaseGroupCreateCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<DiseaseGroupRepository>;
 
-        command = new DiseaseGroupCreateCommand(repository);
+        command = new DiseaseGroupCreateCommandImpl(repository);
     });
 
     it("should create a new disease group when no conflict exists", async () => {

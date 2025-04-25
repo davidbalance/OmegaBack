@@ -2,7 +2,7 @@
 import { DoctorNotFoundError } from "@omega/profile/core/domain/user/errors/doctor.errors";
 import { DoctorModel } from "@omega/profile/core/model/user/doctor.model";
 import { FileOperation } from "@shared/shared/providers";
-import { DoctorGetFileQuery } from "../doctor-get-file.query";
+import { DoctorGetFileQuery, DoctorGetFileQueryImpl } from "../doctor-get-file.query";
 import { DoctorRepository } from "@omega/profile/application/repository/model.repositories";
 
 describe("DoctorGetFileQuery", () => {
@@ -19,7 +19,7 @@ describe("DoctorGetFileQuery", () => {
             read: jest.fn(),
         } as unknown as jest.Mocked<FileOperation>;
 
-        handler = new DoctorGetFileQuery(repository, file);
+        handler = new DoctorGetFileQueryImpl(repository, file);
     });
 
     it("should return the file buffer when doctor is found", async () => {

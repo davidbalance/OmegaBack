@@ -5,7 +5,9 @@ import { JobPositionRepository } from "../../repository/aggregate.repositories";
 export type JobPositionRemoveCommandPayload = {
     jobPositionId: string;
 };
-export class JobPositionRemoveCommand implements CommandHandlerAsync<JobPositionRemoveCommandPayload, void> {
+export interface JobPositionRemoveCommand extends CommandHandlerAsync<JobPositionRemoveCommandPayload, void> { }
+
+export class JobPositionRemoveCommandImpl implements JobPositionRemoveCommand {
     constructor(
         private readonly repository: JobPositionRepository
     ) { }

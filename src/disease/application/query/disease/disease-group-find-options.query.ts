@@ -2,7 +2,11 @@ import { DiseaseGroupOption } from "@omega/disease/core/model/disease/disease-gr
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { DiseaseGroupOptionRepository } from "../../repository/model.repositories";
 
-export class DiseaseGroupFindOptionsQuery implements QueryHandlerAsync<undefined, DiseaseGroupOption[]> {
+export interface DiseaseGroupFindOptionsQuery extends QueryHandlerAsync<undefined, DiseaseGroupOption[]> {
+    handleAsync(): Promise<DiseaseGroupOption[]>
+}
+
+export class DiseaseGroupFindOptionsQueryImpl implements QueryHandlerAsync<undefined, DiseaseGroupOption[]> {
     constructor(
         private readonly repository: DiseaseGroupOptionRepository
     ) { }

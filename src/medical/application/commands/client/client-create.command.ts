@@ -8,7 +8,9 @@ import { NotificationProvider } from "@shared/shared/providers/notification.prov
 export type ClientCreateCommandPayload = CreateClientPayload & {
     patientEmail: string;
 };
-export class ClientCreateCommand implements CommandHandlerAsync<ClientCreateCommandPayload, void> {
+export interface ClientCreateCommand extends CommandHandlerAsync<ClientCreateCommandPayload, void> { }
+
+export class ClientCreateCommandImpl implements ClientCreateCommand {
     constructor(
         private readonly repository: ClientRepository,
         private readonly userNotify: NotificationProvider<CreateClientPayload>

@@ -2,7 +2,7 @@
 import { AuthRepository } from "@omega/auth/application/repository/auth/aggregate.repositories";
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
 import { AuthNotFoundError } from "@omega/auth/core/domain/auth/errors/auth.errors";
-import { AuthAddApiKeyCommand, AuthAddApiKeyCommandPayload } from "../auth-add-apikey.command";
+import { AuthAddApiKeyCommand, AuthAddApiKeyCommandImpl, AuthAddApiKeyCommandPayload } from "../auth-add-apikey.command";
 
 describe("AuthAddApiKeyCommand", () => {
     let repository: jest.Mocked<AuthRepository>;
@@ -14,7 +14,7 @@ describe("AuthAddApiKeyCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<AuthRepository>;
 
-        handler = new AuthAddApiKeyCommand(repository);
+        handler = new AuthAddApiKeyCommandImpl(repository);
     });
 
     it("should add an API key when auth exists", async () => {

@@ -3,7 +3,11 @@ import { CorporativeOption } from "@omega/location/core/models/corporative/corpo
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { CompanyOptionRepository, CorporativeOptionRepository } from "../../repository/model.repositories";
 
-export class CorporativeFindOptionsQuery implements QueryHandlerAsync<undefined, CorporativeOption[]> {
+export interface CorporativeFindOptionsQuery extends QueryHandlerAsync<undefined, CorporativeOption[]> {
+    handleAsync(): Promise<CorporativeOption[]>;
+}
+
+export class CorporativeFindOptionsQueryImpl implements CorporativeFindOptionsQuery {
     constructor(
         private readonly companyRepository: CompanyOptionRepository,
         private readonly corporativeRepository: CorporativeOptionRepository,

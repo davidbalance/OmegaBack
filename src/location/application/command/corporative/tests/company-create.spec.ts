@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Corporative } from "@omega/location/core/domain/corporative/corporative.domain";
 import { CorporativeNotFoundError } from "@omega/location/core/domain/corporative/errors/corporative.errors";
-import { CompanyCreateCommand, CompanyCreateCommandPayload } from "../company-create.command";
+import { CompanyCreateCommand, CompanyCreateCommandImpl, CompanyCreateCommandPayload } from "../company-create.command";
 import { CorporativeRepository } from "@omega/location/application/repository/aggregate.repositories";
 
 describe("CompanyCreateCommand", () => {
@@ -14,7 +14,7 @@ describe("CompanyCreateCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<CorporativeRepository>;
 
-        command = new CompanyCreateCommand(repository);
+        command = new CompanyCreateCommandImpl(repository);
     });
 
     it("should successfully add a company to an existing corporative", async () => {

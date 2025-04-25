@@ -3,7 +3,7 @@ import { AuthRepository } from "@omega/auth/application/repository/auth/aggregat
 import { ResourceNotFoundError } from "@omega/auth/core/domain/resource/errors/resource.errors";
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
 import { AuthNotFoundError } from "@omega/auth/core/domain/auth/errors/auth.errors";
-import { AuthAddResourcesCommand, AuthAddResourcesCommandPayload } from "../auth-add-resources.command";
+import { AuthAddResourcesCommand, AuthAddResourcesCommandImpl, AuthAddResourcesCommandPayload } from "../auth-add-resources.command";
 import { ResourceRepository } from "@omega/auth/application/repository/resource/model.repositories";
 import { ResourceModel } from "@omega/auth/core/model/resource/resource.model";
 
@@ -22,7 +22,7 @@ describe("AuthAddResourcesCommand", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ResourceRepository>;
 
-        handler = new AuthAddResourcesCommand(repository, resourceRepository);
+        handler = new AuthAddResourcesCommandImpl(repository, resourceRepository);
     });
 
     it("should add resources when auth exists", async () => {

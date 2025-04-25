@@ -6,7 +6,9 @@ import { TestRepository } from "../../repository/model.repositories";
 export type TestFindOneQueryPayload = {
     testId: string
 }
-export class TestFindOneQuery implements QueryHandlerAsync<TestFindOneQueryPayload, TestModel> {
+export interface TestFindOneQuery extends QueryHandlerAsync<TestFindOneQueryPayload, TestModel> { }
+
+export class TestFindOneQueryImpl implements TestFindOneQuery {
     constructor(
         private readonly repository: TestRepository
     ) { }

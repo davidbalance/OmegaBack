@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ClientRepository } from "@omega/medical/application/repository/model.repositories";
-import { ClientFindManyByCompanyRucQuery, ClientFindManyByCompanyRucQueryPayload } from "../client-find-many-by-company-ruc.query";
+import { ClientFindManyByCompanyRucQuery, ClientFindManyByCompanyRucQueryImpl, ClientFindManyByCompanyRucQueryPayload } from "../client-find-many-by-company-ruc.query";
 import { ClientModel } from "@omega/medical/core/model/client/client.model";
 
 describe("ClientFindManyByCompanyRucQuery", () => {
@@ -12,7 +12,7 @@ describe("ClientFindManyByCompanyRucQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ClientRepository>;
 
-        queryHandler = new ClientFindManyByCompanyRucQuery(repository);
+        queryHandler = new ClientFindManyByCompanyRucQueryImpl(repository);
     });
 
     it("should fetch client data based on filter and companyRuc", async () => {

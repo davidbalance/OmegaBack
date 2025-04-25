@@ -6,7 +6,9 @@ import { RecordNotFoundError } from "@omega/medical/core/domain/client/errors/re
 export type ClientRecordFindOneQueryPayload = {
     recordId: string;
 };
-export class ClientRecordFindOneQuery implements QueryHandlerAsync<ClientRecordFindOneQueryPayload, Buffer> {
+export interface ClientRecordFindOneQuery extends QueryHandlerAsync<ClientRecordFindOneQueryPayload, Buffer> { }
+
+export class ClientRecordFindOneQueryImpl implements ClientRecordFindOneQuery {
     constructor(
         private readonly repository: ClientRecordRepository,
         private readonly file: FileOperation

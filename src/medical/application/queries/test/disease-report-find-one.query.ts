@@ -6,7 +6,9 @@ import { DiseaseReportNotFoundError } from "@omega/medical/core/domain/test/erro
 export type DiseaseReportFindOneQueryPayload = {
     diseaseReportId: string;
 }
-export class DiseaseReportFindOneQuery implements QueryHandlerAsync<DiseaseReportFindOneQueryPayload, DiseaseReportModel> {
+export interface DiseaseReportFindOneQuery extends QueryHandlerAsync<DiseaseReportFindOneQueryPayload, DiseaseReportModel> { }
+
+export class DiseaseReportFindOneQueryImpl implements DiseaseReportFindOneQuery {
     constructor(
         private readonly repository: ModelRepository<DiseaseReportModel>
     ) { }

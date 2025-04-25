@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestRepository } from "@omega/medical/application/repository/model.repositories";
-import { TestFindOneQuery } from "../test-find-one.query";
+import { TestFindOneQuery, TestFindOneQueryImpl } from "../test-find-one.query";
 import { TestModel } from "@omega/medical/core/model/test/test.model";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 
@@ -13,7 +13,7 @@ describe('TestFindOneQuery', () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<TestRepository>;
 
-        queryHandler = new TestFindOneQuery(repository);
+        queryHandler = new TestFindOneQueryImpl(repository);
     });
 
     it('should return the test model when found', async () => {

@@ -1,5 +1,5 @@
 import { ExamTypeExternalConnectionRepository } from "@omega/laboratory/application/repository/model.repositories";
-import { ExamTypeFindOneByExternalKeyQuery, ExamTypeFindOneByExternalKeyQueryPayload } from "../exam-type-find-one-by-external-key.query";
+import { ExamTypeFindOneByExternalKeyQuery, ExamTypeFindOneByExternalKeyQueryImpl, ExamTypeFindOneByExternalKeyQueryPayload } from "../exam-type-find-one-by-external-key.query";
 import { ExamTypeModel } from "@omega/laboratory/core/model/exam/exam-type.model";
 import { ExamTypeExternalConnectionModel } from "@omega/laboratory/core/model/exam/exam-type-external-connection.model";
 import { ExamTypeExternalKeyNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-type-external-key.errors";
@@ -20,7 +20,7 @@ describe("ExamTypeFindOneByExternalKeyQuery", () => {
             handleAsync: jest.fn(),
         } as unknown as jest.Mocked<ExamTypeFindOneQuery>;
 
-        handler = new ExamTypeFindOneByExternalKeyQuery(externalConnectionRepository, findOneQuery);
+        handler = new ExamTypeFindOneByExternalKeyQueryImpl(externalConnectionRepository, findOneQuery);
     });
 
     it("Should return an order model when the order exists", async () => {

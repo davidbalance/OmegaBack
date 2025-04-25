@@ -1,5 +1,5 @@
 import { TestExternalConnectionRepository } from "@omega/medical/application/repository/model.repositories";
-import { ResultGetFileFromExternalSourceQuery, ResultGetFileFromExternalSourceQueryPayload } from "../result-get-file-from-external-source.query";
+import { ResultGetFileFromExternalSourceQuery, ResultGetFileFromExternalSourceQueryImpl, ResultGetFileFromExternalSourceQueryPayload } from "../result-get-file-from-external-source.query";
 import { ResultGetFileQuery } from "../result-get-file.query";
 import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 import { TestExternalKeyNotFoundError } from "@omega/medical/core/domain/test/errors/test-external-key.errors";
@@ -18,7 +18,7 @@ describe("ResultGetFileFromExternalSourceQuery", () => {
             handleAsync: jest.fn(),
         } as unknown as jest.Mocked<ResultGetFileQuery>;
 
-        handler = new ResultGetFileFromExternalSourceQuery(externalConnectionRepository, getFileQuery);
+        handler = new ResultGetFileFromExternalSourceQueryImpl(externalConnectionRepository, getFileQuery);
     });
 
     it("should return the buffer from getFileQuery.handleAsync when external connection is found", async () => {

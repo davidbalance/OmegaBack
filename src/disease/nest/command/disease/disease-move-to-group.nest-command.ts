@@ -2,10 +2,10 @@ import { InjectAggregateRepository } from "../../inject/aggregate-repository.inj
 import { DiseaseGroupRepository } from "@omega/disease/application/repository/aggregate.repositories";
 import { Injectable, Provider } from "@nestjs/common";
 import { DiseaseMoveToGroupCommandToken } from "../../inject/command.inject";
-import { DiseaseMoveToGroupCommand } from "@omega/disease/application/command/disease/disease-move-to-group.command";
+import { DiseaseMoveToGroupCommandImpl } from "@omega/disease/application/command/disease/disease-move-to-group.command";
 
 @Injectable()
-class DiseaseMoveToGroupNestCommand extends DiseaseMoveToGroupCommand {
+class DiseaseMoveToGroupNestCommand extends DiseaseMoveToGroupCommandImpl {
     constructor(
         @InjectAggregateRepository("DiseaseGroup") repository: DiseaseGroupRepository
     ) {

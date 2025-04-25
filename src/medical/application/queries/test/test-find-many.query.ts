@@ -6,8 +6,11 @@ import { TestModel } from "@omega/medical/core/model/test/test.model";
 export type TestFindManyQueryPayload = {
     orderId: string;
     filter?: string;
-} & Order<TestModel>
-export class TestFindManyQuery implements QueryHandlerAsync<TestFindManyQueryPayload, TestModel[]> {
+} & Order<TestModel>;
+
+export interface TestFindManyQuery extends QueryHandlerAsync<TestFindManyQueryPayload, TestModel[]> { }
+
+export class TestFindManyQueryImpl implements TestFindManyQuery {
     constructor(
         private readonly repository: ModelRepository<TestModel>
     ) { }

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { CorporativeRepository } from "@omega/location/application/repository/model.repositories";
-import { CorporativeFindManyQuery, CorporativeFindManyQueryPayload } from "../corporative-find-many.query";
+import { CorporativeFindManyQuery, CorporativeFindManyQueryImpl, CorporativeFindManyQueryPayload } from "../corporative-find-many.query";
 import { CorporativeModel } from "@omega/location/core/models/corporative/corporative.model";
 
 describe("CorporativeFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("CorporativeFindManyQuery", () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<CorporativeRepository>;
 
-        queryHandler = new CorporativeFindManyQuery(repository);
+        queryHandler = new CorporativeFindManyQueryImpl(repository);
     });
 
     it("should successfully fetch corporatives with pagination and ordering", async () => {

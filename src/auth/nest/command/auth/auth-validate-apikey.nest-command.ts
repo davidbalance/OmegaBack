@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { AuthValidateApiKeyCommand } from "@omega/auth/application/command/auth/auth-validate-apikey.command";
+import { AuthValidateApiKeyCommandImpl } from "@omega/auth/application/command/auth/auth-validate-apikey.command";
 import { AuthValidateApiKeyCommandToken } from "../../inject/command.inject";
 import { ApiKeyValueRepository } from "@omega/auth/application/repository/auth/model.repositories";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 
 @Injectable()
-class AuthValidateApiKeyNestCommand extends AuthValidateApiKeyCommand {
+class AuthValidateApiKeyNestCommand extends AuthValidateApiKeyCommandImpl {
     constructor(
         @InjectModelRepository('ApiKeyValue') repository: ApiKeyValueRepository
     ) {

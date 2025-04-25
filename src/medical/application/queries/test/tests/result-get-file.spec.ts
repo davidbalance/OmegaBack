@@ -2,7 +2,7 @@
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { ResultFilepathRepository, TestFileResultRepository } from "@omega/medical/application/repository/model.repositories";
 import { FileOperation } from "@shared/shared/providers";
-import { ResultGetFileQuery, ResultGetFileQueryPayload } from "../result-get-file.query";
+import { ResultGetFileQuery, ResultGetFileQueryImpl, ResultGetFileQueryPayload } from "../result-get-file.query";
 import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
@@ -28,7 +28,7 @@ describe('ResultGetFileQuery', () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<TestRepository>;
 
-        queryHandler = new ResultGetFileQuery(file, repository, result);
+        queryHandler = new ResultGetFileQueryImpl(file, repository, result);
     });
 
     it('should return file buffer when filepath exists and file is readable', async () => {

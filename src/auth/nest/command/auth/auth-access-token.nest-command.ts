@@ -1,5 +1,5 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { AuthAccessTokenCommand } from "@omega/auth/application/command/auth/auth-access-token.command";
+import { AuthAccessTokenCommandImpl } from "@omega/auth/application/command/auth/auth-access-token.command";
 import { AuthAccessTokenCommandToken } from "../../inject/command.inject";
 import { InjectAggregateRepository } from "../../inject/aggregate-repository.inject";
 import { AuthRepository } from "@omega/auth/application/repository/auth/aggregate.repositories";
@@ -9,7 +9,7 @@ import { InjectQuery } from "../../inject/query.inject";
 import { AuthGenerateTokenQuery } from "@omega/auth/application/query/auth/auth-generate-token.query";
 
 @Injectable()
-class AuthAccessTokenNestCommand extends AuthAccessTokenCommand {
+class AuthAccessTokenNestCommand extends AuthAccessTokenCommandImpl {
     constructor(
         @InjectAggregateRepository('Auth') repository: AuthRepository,
         @InjectQuery('AuthGenerateToken') token: AuthGenerateTokenQuery,

@@ -6,7 +6,9 @@ import { ApiKeyValueModel } from "@omega/auth/core/model/auth/api-key-value.mode
 export type ApiKeyFindOneByValueQueryPayload = {
     value: string
 };
-export class ApiKeyFindOneByValueQuery implements QueryHandlerAsync<ApiKeyFindOneByValueQueryPayload, ApiKeyValueModel> {
+export interface ApiKeyFindOneByValueQuery extends QueryHandlerAsync<ApiKeyFindOneByValueQueryPayload, ApiKeyValueModel> { }
+
+export class ApiKeyFindOneByValueQueryImpl implements ApiKeyFindOneByValueQuery {
     constructor(
         private readonly repository: ApiKeyValueRepository,
     ) { }

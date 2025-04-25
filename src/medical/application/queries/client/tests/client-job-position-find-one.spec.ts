@@ -2,7 +2,7 @@
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { ClientJobPositionModel } from "@omega/medical/core/model/client/client-job-position.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { ClientJobPositionFindOneQuery, ClientJobPositionFindOneQueryPayload } from "../client-job-position-find-one.query";
+import { ClientJobPositionFindOneQuery, ClientJobPositionFindOneQueryImpl, ClientJobPositionFindOneQueryPayload } from "../client-job-position-find-one.query";
 
 describe("ClientJobPositionFindOneQuery", () => {
     let repository: jest.Mocked<ModelRepository<ClientJobPositionModel>>;
@@ -13,7 +13,7 @@ describe("ClientJobPositionFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<ClientJobPositionModel>>;
 
-        handler = new ClientJobPositionFindOneQuery(repository);
+        handler = new ClientJobPositionFindOneQueryImpl(repository);
     });
 
     it("should return a job position model when client job position exists", async () => {

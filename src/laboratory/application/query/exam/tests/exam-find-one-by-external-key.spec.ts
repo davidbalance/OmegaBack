@@ -1,5 +1,5 @@
 import { ExamExternalConnectionRepository } from "@omega/laboratory/application/repository/model.repositories";
-import { ExamFindOneByExternalKeyQuery, ExamFindOneByExternalKeyQueryPayload } from "../exam-find-one-by-external-key.query";
+import { ExamFindOneByExternalKeyQuery, ExamFindOneByExternalKeyQueryImpl, ExamFindOneByExternalKeyQueryPayload } from "../exam-find-one-by-external-key.query";
 import { ExamExternalConnectionModel } from "@omega/laboratory/core/model/exam/exam-external-connection.model";
 import { ExamModel } from "@omega/laboratory/core/model/exam/exam.model";
 import { ExamExternalKeyNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-external-key.errors";
@@ -19,7 +19,7 @@ describe("ExamFindOneByExternalKeyQuery", () => {
             handleAsync: jest.fn(),
         } as unknown as jest.Mocked<ExamFindOneQuery>;
 
-        handler = new ExamFindOneByExternalKeyQuery(externalConnectionRepository, findOneQuery);
+        handler = new ExamFindOneByExternalKeyQueryImpl(externalConnectionRepository, findOneQuery);
     });
 
     it("Should return an order model when the order exists", async () => {

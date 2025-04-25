@@ -5,7 +5,9 @@ import { LogoConflictError } from "@omega/auth/core/domain/logo/errors/logo.erro
 import { LogoRepository } from "../../repository/logo/aggregate.repositories";
 
 export type LogoCreateCommandPayload = CreateLogoPayload;
-export class LogoCreateCommand implements CommandHandlerAsync<LogoCreateCommandPayload, void> {
+export interface LogoCreateCommand extends CommandHandlerAsync<LogoCreateCommandPayload, void> { }
+
+export class LogoCreateCommandImpl implements LogoCreateCommand {
     constructor(
         private readonly repository: LogoRepository
     ) { }

@@ -2,7 +2,7 @@
 
 import { ExamTypeRepository } from "@omega/laboratory/application/repository/aggregate.repositories";
 import { ExamSubtypeExternalConnectionRepository, ExamSubtypeRepository } from "@omega/laboratory/application/repository/model.repositories";
-import { ExamSubtypeCreateFromExternalSourceCommand, ExamSubtypeCreateFromExternalSourceCommandPayload } from "../exam-subtype-create-from-external-source.command";
+import { ExamSubtypeCreateFromExternalSourceCommand, ExamSubtypeCreateFromExternalSourceCommandImpl, ExamSubtypeCreateFromExternalSourceCommandPayload } from "../exam-subtype-create-from-external-source.command";
 import { ExamType } from "@omega/laboratory/core/domain/exam/exam-type.domain";
 import { ExamSubtypeModel } from "@omega/laboratory/core/model/exam/exam-subtype.model";
 import { ExamSubtypeExternalConnectionModel } from "@omega/laboratory/core/model/exam/exam-subtype-external-connection.model";
@@ -29,7 +29,7 @@ describe("ExamSubtypeCreateFromExternalSourceCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<ExamTypeRepository>;
 
-        handler = new ExamSubtypeCreateFromExternalSourceCommand(
+        handler = new ExamSubtypeCreateFromExternalSourceCommandImpl(
             externalConnectionRepository,
             modelRepository,
             agggregateRepository

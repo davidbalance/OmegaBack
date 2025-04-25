@@ -7,7 +7,9 @@ import { ExamTypeRepository } from "../../repository/model.repositories";
 export type ExamTypeFindManyQueryPayload = {
     filter?: string;
 } & Order<ExamTypeModel> & Required<Pagination>
-export class ExamTypeFindManyQuery implements QueryHandlerAsync<ExamTypeFindManyQueryPayload, PaginationResponse<ExamTypeModel>> {
+export interface ExamTypeFindManyQuery extends QueryHandlerAsync<ExamTypeFindManyQueryPayload, PaginationResponse<ExamTypeModel>> { }
+
+export class ExamTypeFindManyQueryImpl implements ExamTypeFindManyQuery {
     constructor(
         private readonly repository: ExamTypeRepository
     ) { }

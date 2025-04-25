@@ -2,7 +2,7 @@
 import { TestExternalConnectionRepository, TestRepository } from "@omega/medical/application/repository/model.repositories";
 import { TestModel } from "@omega/medical/core/model/test/test.model";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
-import { TestFindOneByExternalKeyQuery, TestFindOneByExternalKeyQueryPayload } from "../test-find-one-by-external-key.query";
+import { TestFindOneByExternalKeyQuery, TestFindOneByExternalKeyQueryImpl, TestFindOneByExternalKeyQueryPayload } from "../test-find-one-by-external-key.query";
 import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 import { TestExternalKeyNotFoundError } from "@omega/medical/core/domain/test/errors/test-external-key.errors";
 
@@ -20,7 +20,7 @@ describe("TestFindOneByExternalKeyQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<TestRepository>;
 
-        handler = new TestFindOneByExternalKeyQuery(externalConnectionRepository, modelRepository);
+        handler = new TestFindOneByExternalKeyQueryImpl(externalConnectionRepository, modelRepository);
     });
 
     it("Should return an order model when the order exists", async () => {

@@ -3,7 +3,7 @@ import { AuthRepository } from "@omega/auth/application/repository/auth/aggregat
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
 import { AuthConflictError } from "@omega/auth/core/domain/auth/errors/auth.errors";
 import { PasswordProvider } from "@shared/shared/providers/password.provider";
-import { AuthCreateCommand, AuthCreateCommandPayload } from "../auth-create.command";
+import { AuthCreateCommand, AuthCreateCommandImpl, AuthCreateCommandPayload } from "../auth-create.command";
 
 describe("AuthCreateCommand", () => {
     let repository: jest.Mocked<AuthRepository>;
@@ -20,7 +20,7 @@ describe("AuthCreateCommand", () => {
             hash: jest.fn(),
         } as unknown as jest.Mocked<PasswordProvider>;
 
-        command = new AuthCreateCommand(repository, hash);
+        command = new AuthCreateCommandImpl(repository, hash);
     });
 
     it("should create a new auth when email does not exist", async () => {

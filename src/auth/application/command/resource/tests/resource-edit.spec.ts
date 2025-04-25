@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ResourceNotFoundError } from "@omega/auth/core/domain/resource/errors/resource.errors";
 import { Resource } from "@omega/auth/core/domain/resource/resource.domain";
-import { ResourceEditCommand, ResourceEditCommandPayload } from "../resource-edit.command";
+import { ResourceEditCommand, ResourceEditCommandImpl, ResourceEditCommandPayload } from "../resource-edit.command";
 import { ResourceRepository } from "@omega/auth/application/repository/resource/aggregate.repositories";
 
 describe("ResourceEditCommand", () => {
@@ -14,7 +14,7 @@ describe("ResourceEditCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<ResourceRepository>;
 
-        command = new ResourceEditCommand(repository);
+        command = new ResourceEditCommandImpl(repository);
     });
 
     it("should edit resource successfully when resource exists", async () => {

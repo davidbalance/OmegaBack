@@ -7,7 +7,9 @@ import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 export type AreaFindManyQueryPayload = {
     filter?: string;
 } & Required<Pagination> & Order<AreaModel>;
-export class AreaFindManyQuery implements QueryHandlerAsync<AreaFindManyQueryPayload, PaginationResponse<AreaModel>> {
+export interface AreaFindManyQuery extends QueryHandlerAsync<AreaFindManyQueryPayload, PaginationResponse<AreaModel>> { }
+
+export class AreaFindManyQueryImpl implements AreaFindManyQuery {
     constructor(
         private readonly repository: AreaRepository
     ) { }

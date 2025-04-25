@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { JobPositionRepository } from "@omega/location/application/repository/model.repositories";
-import { JobPositionFindManyQuery, JobPositionFindManyQueryPayload } from "../job-position-find-many.query";
+import { JobPositionFindManyQuery, JobPositionFindManyQueryImpl, JobPositionFindManyQueryPayload } from "../job-position-find-many.query";
 import { JobPositionModel } from "@omega/location/core/models/jobPosition/job-position.model";
 
 describe("JobPositionFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("JobPositionFindManyQuery", () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<JobPositionRepository>;
 
-        queryHandler = new JobPositionFindManyQuery(repository);
+        queryHandler = new JobPositionFindManyQueryImpl(repository);
     });
 
     it("should successfully fetch job positions with pagination and ordering", async () => {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { OrderRepository } from "@omega/medical/application/repository/aggregate.repositories";
-import { OrderCreatedStatusCommand } from "../order-created-status.command";
+import { OrderCreatedStatusCommand, OrderCreatedStatusCommandImpl } from "../order-created-status.command";
 import { OrderNotFoundError } from "@omega/medical/core/domain/order/errors/order.errors";
 import { Order } from "@omega/medical/core/domain/order/order.domain";
 
@@ -14,7 +14,7 @@ describe("OrderCreatedStatusCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<OrderRepository>;
 
-        commandHandler = new OrderCreatedStatusCommand(repository);
+        commandHandler = new OrderCreatedStatusCommandImpl(repository);
     });
 
     it("should successfully change order status to 'created' when order is found", async () => {

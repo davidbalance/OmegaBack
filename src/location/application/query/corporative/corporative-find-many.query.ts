@@ -6,8 +6,10 @@ import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 
 export type CorporativeFindManyQueryPayload = {
     filter?: string;
-} & Required<Pagination> & Order<CorporativeModel>
-export class CorporativeFindManyQuery implements QueryHandlerAsync<CorporativeFindManyQueryPayload, PaginationResponse<CorporativeModel>> {
+} & Required<Pagination> & Order<CorporativeModel>;
+export interface CorporativeFindManyQuery extends QueryHandlerAsync<CorporativeFindManyQueryPayload, PaginationResponse<CorporativeModel>> { }
+
+export class CorporativeFindManyQueryImpl implements CorporativeFindManyQuery {
     constructor(
         private readonly repository: CorporativeRepository
     ) { }

@@ -1,7 +1,7 @@
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { ResultFilepathRepository } from "@omega/medical/application/repository/model.repositories";
 import { FileOperation } from "@shared/shared/providers";
-import { ResultUploadBase64Command, ResultUploadBase64CommandPayload } from "../result-upload-base64.command";
+import { ResultUploadBase64Command, ResultUploadBase64CommandImpl, ResultUploadBase64CommandPayload } from "../result-upload-base64.command";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
@@ -28,7 +28,7 @@ describe("ResultUploadBase64Command", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ResultFilepathRepository>;
 
-        handler = new ResultUploadBase64Command(file, repository, filepathRepository);
+        handler = new ResultUploadBase64CommandImpl(file, repository, filepathRepository);
     });
 
     it("should upload the result file when test and filepath exist", async () => {

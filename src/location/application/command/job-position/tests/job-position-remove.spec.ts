@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { JobPositionNotFoundError } from "@omega/location/core/domain/job-position/errors/job-position.errors";
 import { JobPosition } from "@omega/location/core/domain/job-position/job-position.domain";
-import { JobPositionRemoveCommand, JobPositionRemoveCommandPayload } from "../job-position-remove.command";
+import { JobPositionRemoveCommand, JobPositionRemoveCommandImpl, JobPositionRemoveCommandPayload } from "../job-position-remove.command";
 import { JobPositionRepository } from "@omega/location/application/repository/aggregate.repositories";
 
 describe("JobPositionRemoveCommand", () => {
@@ -14,7 +14,7 @@ describe("JobPositionRemoveCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<JobPositionRepository>;
 
-        command = new JobPositionRemoveCommand(repository);
+        command = new JobPositionRemoveCommandImpl(repository);
     });
 
     it("should successfully remove the job position if it exists", async () => {

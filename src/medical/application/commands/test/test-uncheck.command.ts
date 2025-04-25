@@ -5,7 +5,9 @@ import { TestRepository } from "../../repository/aggregate.repositories";
 export type TestUncheckCommandPayload = {
     testId: string;
 };
-export class TestUncheckCommand implements CommandHandlerAsync<TestUncheckCommandPayload, void> {
+export interface TestUncheckCommand extends CommandHandlerAsync<TestUncheckCommandPayload, void> { }
+
+export class TestUncheckCommandImpl implements TestUncheckCommand {
     constructor(
         private readonly repository: TestRepository,
     ) { }

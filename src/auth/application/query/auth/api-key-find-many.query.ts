@@ -1,13 +1,15 @@
 import { ApiKeyModel } from "@omega/auth/core/model/auth/api-key.model";
-import { ApiKeyRepository } from "../../repository/auth/model.repositories";
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { JwtProvider } from "@shared/shared/providers/jwt.provider";
+import { ApiKeyRepository } from "../../repository/auth/model.repositories";
 import { AuthJwtPayload } from "../../type/auth.type";
 
 export type ApiKeyFindManyQueryPayload = {
     jwt: string
 };
-export class ApiKeyFindManyQuery implements QueryHandlerAsync<ApiKeyFindManyQueryPayload, ApiKeyModel[]> {
+export interface ApiKeyFindManyQuery extends QueryHandlerAsync<ApiKeyFindManyQueryPayload, ApiKeyModel[]> { }
+
+export class ApiKeyFindManyQueryImpl implements ApiKeyFindManyQuery {
     constructor(
         private readonly jwt: JwtProvider,
         private readonly repository: ApiKeyRepository,

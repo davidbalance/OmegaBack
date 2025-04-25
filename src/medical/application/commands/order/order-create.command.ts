@@ -1,11 +1,27 @@
-import { BaseOrderCreateCommand, BaseOrderCreateCommandPayload } from "./base.order-create.command";
+import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
+import { ClientRepository } from "../../repository/model.repositories";
+import { OrderRepository } from "../../repository/aggregate.repositories";
+import { CreateOrderPayload } from "@omega/medical/core/domain/order/payloads/order.payloads";
+import { CommandHandlerAsync } from "@shared/shared/application";
+import { Order } from "@omega/medical/core/domain/order/order.domain";
 
-export type OrderCreateCommandPayload = BaseOrderCreateCommandPayload;
-export class OrderCreateCommand extends BaseOrderCreateCommand<OrderCreateCommandPayload> {
+export type OrderCreateCommandPayload = Omit<CreateOrderPayload, 'patientId'> & {
+    patientDni: string;
+};
+export interface OrderCreateCommand extends CommandHandlerAsync<OrderCreateCommandPayload, void> { }
 
-    async handleAsync(value: BaseOrderCreateCommandPayload): Promise<void> {
-        const patientId = await this.getPatient(value);
-        const order = this.createOrder(value, patientId);
+export class OrderCreateCommandImpl implements OrderCreateCommand {
+    constructor(
+        protected readonly aggregateRepository: OrderRepository,
+        private readonly clientRepository: ClientRepository
+    ) { }
+
+    async handleAsync(value: OrderCreateCommandPayload): Promise<void> {
+        const patient = await this.clientRepository.findOneAsync([{ field: 'patientDni', operator: 'eq', value: value.patientDni }]);
+        if (!patient) throw new ClientNotFoundError(value.patientDni);
+        const patientId = patient.patientId;
+
+        const order = Order.create({ ...value, patientId });
         await this.aggregateRepository.saveAsync(order);
     }
 }

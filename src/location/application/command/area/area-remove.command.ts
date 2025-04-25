@@ -5,7 +5,9 @@ import { AreaRepository } from "../../repository/aggregate.repositories";
 export type AreaRemoveCommandPayload = {
     areaId: string;
 };
-export class AreaRemoveCommand implements CommandHandlerAsync<AreaRemoveCommandPayload, void> {
+export interface AreaRemoveCommand extends CommandHandlerAsync<AreaRemoveCommandPayload, void> { }
+
+export class AreaRemoveCommandImpl implements AreaRemoveCommand {
     constructor(
         private readonly repository: AreaRepository
     ) { }

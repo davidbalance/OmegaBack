@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Area } from "@omega/location/core/domain/area/area.domain";
 import { AreaConflictError, AreaNotFoundError } from "@omega/location/core/domain/area/errors/area.errors";
-import { AreaEditCommand } from "../area-edit.command";
+import { AreaEditCommand, AreaEditCommandImpl } from "../area-edit.command";
 import { AreaRepository } from "@omega/location/application/repository/aggregate.repositories";
 
 describe("AreaEditCommand", () => {
@@ -14,7 +14,7 @@ describe("AreaEditCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<AreaRepository>;
 
-        command = new AreaEditCommand(repository);
+        command = new AreaEditCommandImpl(repository);
     });
 
     it("should rename an existing area successfully", async () => {

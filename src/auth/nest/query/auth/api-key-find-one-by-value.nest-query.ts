@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
 import { ApiKeyValueRepository } from "@omega/auth/application/repository/auth/model.repositories";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
-import { ApiKeyFindOneByValueQuery } from "@omega/auth/application/query/auth/api-key-find-by-value.query";
+import { ApiKeyFindOneByValueQueryImpl } from "@omega/auth/application/query/auth/api-key-find-by-value.query";
 import { ApiKeyFindOneByValueQueryToken } from "../../inject/query.inject";
 
 @Injectable()
-class ApiKeyFindOneByValueNestQuery extends ApiKeyFindOneByValueQuery {
+class ApiKeyFindOneByValueNestQuery extends ApiKeyFindOneByValueQueryImpl {
     constructor(
         @InjectModelRepository('ApiKeyValue') repository: ApiKeyValueRepository,
     ) {

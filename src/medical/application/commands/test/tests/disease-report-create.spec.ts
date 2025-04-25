@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
-import { DiseaseReportCreateCommand, DiseaseReportCreateCommandPayload } from "../disease-report-create.command";
+import { DiseaseReportCreateCommand, DiseaseReportCreateCommandImpl, DiseaseReportCreateCommandPayload } from "../disease-report-create.command";
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 
 describe("DiseaseReportCreateCommand", () => {
@@ -14,7 +14,7 @@ describe("DiseaseReportCreateCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<TestRepository>;
 
-        handler = new DiseaseReportCreateCommand(repository);
+        handler = new DiseaseReportCreateCommandImpl(repository);
     });
 
     it("should add a disease report to the test when test exists", async () => {

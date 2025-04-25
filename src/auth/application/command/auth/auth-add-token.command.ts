@@ -6,7 +6,9 @@ export type AuthAddTokenCommandPayload = {
     authId: string;
     token: string;
 };
-export class AuthAddTokenCommand implements CommandHandlerAsync<AuthAddTokenCommandPayload, void> {
+export interface AuthAddTokenCommand extends CommandHandlerAsync<AuthAddTokenCommandPayload, void> { }
+
+export class AuthAddTokenCommandImpl implements AuthAddTokenCommand {
     constructor(
         private readonly repository: AuthRepository,
     ) { }

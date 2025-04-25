@@ -11,7 +11,10 @@ export type ReportLayoutFunc = (value: ReportContent) => unknown;
 export type ReportGetFileQueryPayload = {
     testId: string;
 }
-export class ReportGetFileQuery implements QueryHandlerAsync<ReportGetFileQueryPayload, Buffer> {
+
+export interface ReportGetFileQuery extends QueryHandlerAsync<ReportGetFileQueryPayload, Buffer> { }
+
+export class ReportGetFileQueryImpl implements ReportGetFileQuery {
     constructor(
         private readonly file: FileOperation,
         private readonly repository: ReportRepository,

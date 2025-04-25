@@ -5,7 +5,9 @@ import { OrderRepository } from "../../repository/aggregate.repositories";
 export type OrderValidatedStatusCommandPayload = {
     orderId: string;
 };
-export class OrderValidatedStatusCommand implements CommandHandlerAsync<OrderValidatedStatusCommandPayload, void> {
+export interface OrderValidatedStatusCommand extends CommandHandlerAsync<OrderValidatedStatusCommandPayload, void> { }
+
+export class OrderValidatedStatusCommandImpl implements OrderValidatedStatusCommand {
     constructor(
         private readonly repository: OrderRepository,
     ) { }

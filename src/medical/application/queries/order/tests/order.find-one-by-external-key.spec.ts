@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { OrderNotFoundError } from "@omega/medical/core/domain/order/errors/order.errors";
 import { OrderModel } from "@omega/medical/core/model/order/order.model";
-import { OrderFindOneByExternalKeyQuery, OrderFindOneByExternalKeyQueryPayload } from "../order.find-one-by-external-key.query";
+import { OrderFindOneByExternalKeyQuery, OrderFindOneByExternalKeyQueryImpl, OrderFindOneByExternalKeyQueryPayload } from "../order.find-one-by-external-key.query";
 import { OrderExternalConnectionRepository, OrderRepository } from "@omega/medical/application/repository/model.repositories";
 import { OrderExternalConnectionModel } from "@omega/medical/core/model/order/order-external-connection.model";
 import { OrderExternalKeyNotFoundError } from "@omega/medical/core/domain/order/errors/order-external-key.errors";
@@ -20,7 +20,7 @@ describe("OrderFindOneByExternalKeyQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<OrderRepository>;
 
-        handler = new OrderFindOneByExternalKeyQuery(externalConnectionRepository, modelRepository);
+        handler = new OrderFindOneByExternalKeyQueryImpl(externalConnectionRepository, modelRepository);
     });
 
     it("Should return an order model when the order exists", async () => {

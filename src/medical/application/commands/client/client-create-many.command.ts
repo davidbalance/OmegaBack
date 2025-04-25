@@ -4,7 +4,9 @@ import { ClientCreateCommand, ClientCreateCommandPayload } from "./client-create
 export type ClientCreateManyCommandPayload = {
     data: ClientCreateCommandPayload[];
 };
-export class ClientCreateManyCommand implements CommandHandlerAsync<ClientCreateManyCommandPayload, void> {
+export interface ClientCreateManyCommand extends CommandHandlerAsync<ClientCreateManyCommandPayload, void> { }
+
+export class ClientCreateManyCommandImpl implements ClientCreateManyCommand {
     constructor(
         private readonly command: ClientCreateCommand
     ) { }

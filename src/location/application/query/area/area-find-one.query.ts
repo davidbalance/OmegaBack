@@ -6,7 +6,9 @@ import { AreaRepository } from "../../repository/model.repositories";
 export type AreaFindOneQueryPayload = {
     areaId: string;
 }
-export class AreaFindOneQuery implements QueryHandlerAsync<AreaFindOneQueryPayload, AreaModel> {
+export interface AreaFindOneQuery extends QueryHandlerAsync<AreaFindOneQueryPayload, AreaModel> { }
+
+export class AreaFindOneQueryImpl implements AreaFindOneQuery {
     constructor(
         private readonly repository: AreaRepository
     ) { }

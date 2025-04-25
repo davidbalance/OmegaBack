@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { LogoRepository } from "@omega/auth/application/repository/logo/model.repositories";
-import { LogoFindManyQuery } from "../logo-find-many.query";
+import { LogoFindManyQuery, LogoFindManyQueryImpl } from "../logo-find-many.query";
 import { LogoModel } from "@omega/auth/core/model/logo/logo.model";
 
 describe("LogoFindManyQuery", () => {
@@ -12,7 +12,7 @@ describe("LogoFindManyQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<LogoRepository>;
 
-        query = new LogoFindManyQuery(logoRepository);
+        query = new LogoFindManyQueryImpl(logoRepository);
     });
 
     it("should return all logos when no filter is provided", async () => {

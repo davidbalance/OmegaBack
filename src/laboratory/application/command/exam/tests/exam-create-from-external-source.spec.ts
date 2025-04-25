@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ExamExternalConnectionRepository, ExamRepository } from "@omega/laboratory/application/repository/model.repositories";
 import { ExamTypeRepository } from "@omega/laboratory/application/repository/aggregate.repositories";
-import { ExamCreateFromExternalSourceCommand, ExamCreateFromExternalSourceCommandPayload } from "../exam-create-from-external-source.command";
+import { ExamCreateFromExternalSourceCommand, ExamCreateFromExternalSourceCommandImpl, ExamCreateFromExternalSourceCommandPayload } from "../exam-create-from-external-source.command";
 import { ExamType } from "@omega/laboratory/core/domain/exam/exam-type.domain";
 import { ExamModel } from "@omega/laboratory/core/model/exam/exam.model";
 import { ExamExternalConnectionModel } from "@omega/laboratory/core/model/exam/exam-external-connection.model";
@@ -28,7 +28,7 @@ describe("ExamCreateFromExternalSourceCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<ExamTypeRepository>;
 
-        handler = new ExamCreateFromExternalSourceCommand(
+        handler = new ExamCreateFromExternalSourceCommandImpl(
             externalConnectionRepository,
             modelRepository,
             aggregateRepository

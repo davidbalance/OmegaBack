@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { AggregateRepository } from "@shared/shared/providers";
 import { Client, ClientProps } from "@omega/medical/core/domain/client/client.domain";
-import { ClientAddAreaCommand, ClientAddAreaCommandPayload } from "../client-add-area.command";
+import { ClientAddAreaCommand, ClientAddAreaCommandImpl, ClientAddAreaCommandPayload } from "../client-add-area.command";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 
 describe("ClientAddAreaCommand", () => {
@@ -14,7 +14,7 @@ describe("ClientAddAreaCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AggregateRepository<ClientProps, Client>>;
 
-        handler = new ClientAddAreaCommand(repository);
+        handler = new ClientAddAreaCommandImpl(repository);
     });
 
     it("should add an area to the client when client exists", async () => {

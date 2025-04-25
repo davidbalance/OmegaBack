@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { ClientEmailFindManyQuery, ClientEmailFindManyQueryPayload } from "../client-email-find-many.query";
+import { ClientEmailFindManyQuery, ClientEmailFindManyQueryImpl, ClientEmailFindManyQueryPayload } from "../client-email-find-many.query";
 import { ClientEmailModel } from "@omega/medical/core/model/client/client-email.model";
 import { ClientEmailRepository } from "@omega/medical/application/repository/model.repositories";
 
@@ -12,7 +12,7 @@ describe("ClientEmailFindManyQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ClientEmailRepository>;
 
-        handler = new ClientEmailFindManyQuery(repository);
+        handler = new ClientEmailFindManyQueryImpl(repository);
     });
 
     it("should return a list of client emails when patientDni matches", async () => {

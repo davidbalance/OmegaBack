@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ManagementConflictError, ManagementNotFoundError } from "@omega/location/core/domain/management/errors/management.errors";
 import { Management } from "@omega/location/core/domain/management/management.domain";
-import { ManagementEditCommand, ManagementEditCommandPayload } from "../management-edit.command";
+import { ManagementEditCommand, ManagementEditCommandImpl, ManagementEditCommandPayload } from "../management-edit.command";
 import { ManagementRepository } from "@omega/location/application/repository/aggregate.repositories";
 
 describe("ManagementEditCommand", () => {
@@ -14,7 +14,7 @@ describe("ManagementEditCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<ManagementRepository>;
 
-        command = new ManagementEditCommand(repository);
+        command = new ManagementEditCommandImpl(repository);
     });
 
     it("should successfully edit management if name does not exist", async () => {

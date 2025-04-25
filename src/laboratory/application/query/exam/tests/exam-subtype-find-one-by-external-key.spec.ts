@@ -1,5 +1,5 @@
 import { ExamSubtypeExternalConnectionRepository } from "@omega/laboratory/application/repository/model.repositories";
-import { ExamSubtypeFindOneByExternalKeyQuery, ExamSubtypeFindOneByExternalKeyQueryPayload } from "../exam-subtype-find-one-by-external-key.query";
+import { ExamSubtypeFindOneByExternalKeyQuery, ExamSubtypeFindOneByExternalKeyQueryImpl, ExamSubtypeFindOneByExternalKeyQueryPayload } from "../exam-subtype-find-one-by-external-key.query";
 import { ExamSubtypeExternalConnectionModel } from "@omega/laboratory/core/model/exam/exam-subtype-external-connection.model";
 import { ExamSubtypeModel } from "@omega/laboratory/core/model/exam/exam-subtype.model";
 import { ExamSubtypeExternalKeyNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-subtype-external-key.errors";
@@ -19,7 +19,7 @@ describe("ExamSubtypeFindOneByExternalKeyQuery", () => {
             handleAsync: jest.fn(),
         } as unknown as jest.Mocked<ExamSubtypeFindOneQuery>;
 
-        handler = new ExamSubtypeFindOneByExternalKeyQuery(externalConnectionRepository, fidnOneQuery);
+        handler = new ExamSubtypeFindOneByExternalKeyQueryImpl(externalConnectionRepository, fidnOneQuery);
     });
 
     it("Should return an order model when the order exists", async () => {

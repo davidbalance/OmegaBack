@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
-import { TestUncheckCommand, TestUncheckCommandPayload } from "../test-uncheck.command";
+import { TestUncheckCommand, TestUncheckCommandImpl, TestUncheckCommandPayload } from "../test-uncheck.command";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 
@@ -14,7 +14,7 @@ describe("TestUncheckCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<TestRepository>;
 
-        commandHandler = new TestUncheckCommand(repository);
+        commandHandler = new TestUncheckCommandImpl(repository);
     });
 
     it("should successfully uncheck the test", async () => {

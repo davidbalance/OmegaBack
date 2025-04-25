@@ -2,7 +2,7 @@
 import { ClientProps, Client } from "@omega/medical/core/domain/client/client.domain";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { AggregateRepository } from "@shared/shared/providers";
-import { ClientDeleteCommand, ClientDeleteCommandPayload } from "../client-delete.command";
+import { ClientDeleteCommand, ClientDeleteCommandImpl, ClientDeleteCommandPayload } from "../client-delete.command";
 
 describe("ClientDeleteCommand", () => {
     let repository: jest.Mocked<AggregateRepository<ClientProps, Client>>;
@@ -14,7 +14,7 @@ describe("ClientDeleteCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AggregateRepository<ClientProps, Client>>;
 
-        handler = new ClientDeleteCommand(repository);
+        handler = new ClientDeleteCommandImpl(repository);
     });
 
     it("should delete the client when client exists", async () => {

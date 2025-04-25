@@ -2,7 +2,7 @@
 import { ClientProps, Client } from "@omega/medical/core/domain/client/client.domain";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { AggregateRepository } from "@shared/shared/providers";
-import { ClientAddJobPositionCommand, ClientAddJobPositionCommandPayload } from "../client-add-job-position.command";
+import { ClientAddJobPositionCommand, ClientAddJobPositionCommandImpl, ClientAddJobPositionCommandPayload } from "../client-add-job-position.command";
 
 describe("ClientAddJobPositionCommand", () => {
     let repository: jest.Mocked<AggregateRepository<ClientProps, Client>>;
@@ -14,7 +14,7 @@ describe("ClientAddJobPositionCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AggregateRepository<ClientProps, Client>>;
 
-        handler = new ClientAddJobPositionCommand(repository);
+        handler = new ClientAddJobPositionCommandImpl(repository);
     });
 
     it("should add a job position to the client when client exists", async () => {

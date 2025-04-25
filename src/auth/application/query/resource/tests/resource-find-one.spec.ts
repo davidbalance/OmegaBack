@@ -2,7 +2,7 @@
 import { ResourceRepository } from "@omega/auth/application/repository/resource/model.repositories";
 import { ResourceNotFoundError } from "@omega/auth/core/domain/resource/errors/resource.errors";
 import { ResourceModel } from "@omega/auth/core/model/resource/resource.model";
-import { ResourceFindOneQuery, ResourceFindOneQueryPayload } from "../resource-find-one.query";
+import { ResourceFindOneQuery, ResourceFindOneQueryImpl, ResourceFindOneQueryPayload } from "../resource-find-one.query";
 
 describe("ResourceFindOneQuery", () => {
     let resourceRepository: jest.Mocked<ResourceRepository>;
@@ -13,7 +13,7 @@ describe("ResourceFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ResourceRepository>;
 
-        query = new ResourceFindOneQuery(resourceRepository);
+        query = new ResourceFindOneQueryImpl(resourceRepository);
     });
 
     it("should return the resource when a valid resourceId is provided", async () => {

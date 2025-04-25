@@ -6,7 +6,9 @@ import { AuthProvider, AuthResource } from "@shared/shared/providers/auth.provid
 export type UserFindManyResourcesQueryPayload = {
     userId: string;
 };
-export class UserFindManyResourcesQuery implements QueryHandlerAsync<UserFindManyResourcesQueryPayload, AuthResource[]> {
+export interface UserFindManyResourcesQuery extends QueryHandlerAsync<UserFindManyResourcesQueryPayload, AuthResource[]> { }
+
+export class UserFindManyResourcesQueryImpl implements UserFindManyResourcesQuery {
     constructor(
         private readonly repository: UserRepository,
         private readonly auth: AuthProvider,

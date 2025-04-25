@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Management } from "@omega/location/core/domain/management/management.domain";
-import { ManagementCreateCommand, ManagementCreateCommandPayload } from "../management-create.command";
+import { ManagementCreateCommand, ManagementCreateCommandImpl, ManagementCreateCommandPayload } from "../management-create.command";
 import { ManagementRepository } from "@omega/location/application/repository/aggregate.repositories";
 import { ManagementConflictError } from "@omega/location/core/domain/management/errors/management.errors";
 
@@ -14,7 +14,7 @@ describe("ManagementCreateCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<ManagementRepository>;
 
-        command = new ManagementCreateCommand(repository);
+        command = new ManagementCreateCommandImpl(repository);
     });
 
     it("should successfully create management if name does not exist", async () => {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { OrderRepository } from "@omega/medical/application/repository/aggregate.repositories";
-import { OrderCreateCommand, OrderCreateCommandPayload } from "../order-create.command";
+import { OrderCreateCommand, OrderCreateCommandImpl, OrderCreateCommandPayload } from "../order-create.command";
 import { ClientRepository } from "@omega/medical/application/repository/model.repositories";
 import { ClientModel } from "@omega/medical/core/model/client/client.model";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
@@ -19,7 +19,7 @@ describe("OrderCreateCommand", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ClientRepository>;
 
-        commandHandler = new OrderCreateCommand(aggregateRepository, client);
+        commandHandler = new OrderCreateCommandImpl(aggregateRepository, client);
     });
 
     it("should successfully create an order when a valid patient is found", async () => {

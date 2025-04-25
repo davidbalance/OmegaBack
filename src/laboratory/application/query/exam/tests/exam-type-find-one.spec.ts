@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ExamTypeNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-type.errors";
 import { ExamTypeModel } from "@omega/laboratory/core/model/exam/exam-type.model";
-import { ExamTypeFindOneQuery, ExamTypeFindOneQueryPayload } from "../exam-type-find-one.query";
+import { ExamTypeFindOneQuery, ExamTypeFindOneQueryImpl, ExamTypeFindOneQueryPayload } from "../exam-type-find-one.query";
 import { ExamTypeRepository } from "@omega/laboratory/application/repository/model.repositories";
 
 describe("ExamTypeFindOneQuery", () => {
@@ -13,7 +13,7 @@ describe("ExamTypeFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ExamTypeRepository>;
 
-        handler = new ExamTypeFindOneQuery(repository);
+        handler = new ExamTypeFindOneQueryImpl(repository);
     });
 
     it("should return the correct exam type when a valid typeId is provided", async () => {

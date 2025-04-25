@@ -3,7 +3,7 @@ import { AuthRepository } from "@omega/auth/application/repository/auth/aggregat
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
 import { AuthNotFoundError } from "@omega/auth/core/domain/auth/errors/auth.errors";
 import { JwtProvider } from "@shared/shared/providers/jwt.provider";
-import { AuthRemoveTokenCommand } from "../auth-remove-token.command";
+import { AuthRemoveTokenCommand, AuthRemoveTokenCommandImpl } from "../auth-remove-token.command";
 
 describe("AuthRemoveTokenCommand", () => {
     let repository: jest.Mocked<AuthRepository>;
@@ -20,7 +20,7 @@ describe("AuthRemoveTokenCommand", () => {
             validateJwt: jest.fn(),
         } as unknown as jest.Mocked<JwtProvider>;
 
-        command = new AuthRemoveTokenCommand(repository, jwt);
+        command = new AuthRemoveTokenCommandImpl(repository, jwt);
     });
 
     it("should remove the token when auth exists and token is valid", async () => {

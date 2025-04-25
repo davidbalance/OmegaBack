@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Client } from "@omega/medical/core/domain/client/client.domain";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
-import { ClientAddRecordCommand, ClientAddRecordCommandPayload } from "../client-add-record.command";
+import { ClientAddRecordCommand, ClientAddRecordCommandImpl, ClientAddRecordCommandPayload } from "../client-add-record.command";
 import { ClientRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { PdfProvider } from "@shared/shared/providers/pdf.provider";
 import { FileOperation, IncrementProvider } from "@shared/shared/providers";
@@ -36,7 +36,7 @@ describe("ClientAddRecordCommand", () => {
         layoutHelper = jest.fn().mockReturnValue({});
         filenameHelper = jest.fn().mockReturnValue("report.pdf");
 
-        handler = new ClientAddRecordCommand(repository, pdf, file, layoutHelper, filenameHelper, increment);
+        handler = new ClientAddRecordCommandImpl(repository, pdf, file, layoutHelper, filenameHelper, increment);
     });
 
     it("should add a record to the client when client exists", async () => {

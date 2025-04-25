@@ -5,7 +5,10 @@ import { DiseaseReportModel } from "@omega/medical/core/model/test/disease-repor
 export type DiseaseReportFindManyQueryPayload = {
     testId: string;
 }
-export class DiseaseReportFindManyQuery implements QueryHandlerAsync<DiseaseReportFindManyQueryPayload, DiseaseReportModel[]> {
+
+export interface DiseaseReportFindManyQuery extends QueryHandlerAsync<DiseaseReportFindManyQueryPayload, DiseaseReportModel[]> { }
+
+export class DiseaseReportFindManyQueryImpl implements DiseaseReportFindManyQuery {
     constructor(
         private readonly repository: ModelRepository<DiseaseReportModel>
     ) { }

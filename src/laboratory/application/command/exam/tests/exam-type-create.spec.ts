@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { ExamTypeProps, ExamType } from "@omega/laboratory/core/domain/exam/exam-type.domain";
-import { AggregateRepository } from "@shared/shared/providers";
-import { ExamTypeCreateCommand, ExamTypeCreateCommandPayload } from "../exam-type-create.command";
+import { ExamType } from "@omega/laboratory/core/domain/exam/exam-type.domain";
+import { ExamTypeCreateCommand, ExamTypeCreateCommandImpl, ExamTypeCreateCommandPayload } from "../exam-type-create.command";
 import { ExamTypeConflictError } from "@omega/laboratory/core/domain/exam/errors/exam-type.errors";
+import { ExamTypeRepository } from "@omega/laboratory/application/repository/aggregate.repositories";
 
 describe("ExamTypeCreateCommand", () => {
-    let repository: jest.Mocked<AggregateRepository<ExamTypeProps, ExamType>>;
+    let repository: jest.Mocked<ExamTypeRepository>;
     let command: ExamTypeCreateCommand;
 
     beforeEach(() => {
         repository = {
             findOneAsync: jest.fn(),
             saveAsync: jest.fn(),
-        } as unknown as jest.Mocked<AggregateRepository<ExamTypeProps, ExamType>>;
+        } as unknown as jest.Mocked<ExamTypeRepository>;
 
-        command = new ExamTypeCreateCommand(repository);
+        command = new ExamTypeCreateCommandImpl(repository);
     });
 
     it("should successfully create a new exam type when the name does not already exist", async () => {

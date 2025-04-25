@@ -6,7 +6,9 @@ import { DoctorRepository } from "../../repository/model.repositories";
 export type DoctorFindOneByDniQueryPayload = {
     userDni: string;
 }
-export class DoctorFindOneByDniQuery implements QueryHandlerAsync<DoctorFindOneByDniQueryPayload, DoctorModel> {
+export interface DoctorFindOneByDniQuery extends QueryHandlerAsync<DoctorFindOneByDniQueryPayload, DoctorModel> { }
+
+export class DoctorFindOneByDniQueryImpl implements DoctorFindOneByDniQuery {
     constructor(
         private readonly repository: DoctorRepository,
     ) { }

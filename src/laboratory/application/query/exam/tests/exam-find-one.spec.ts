@@ -2,7 +2,7 @@
 import { ExamNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam.errors";
 import { ExamModel } from "@omega/laboratory/core/model/exam/exam.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { ExamFindOneQuery, ExamFindOneQueryPayload } from "../exam-find-one.query";
+import { ExamFindOneQuery, ExamFindOneQueryImpl, ExamFindOneQueryPayload } from "../exam-find-one.query";
 
 describe("ExamFindOneQuery", () => {
     let repository: jest.Mocked<ModelRepository<ExamModel>>;
@@ -13,7 +13,7 @@ describe("ExamFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<ExamModel>>;
 
-        handler = new ExamFindOneQuery(repository);
+        handler = new ExamFindOneQueryImpl(repository);
     });
 
     it("should return the exam when the exam exists", async () => {

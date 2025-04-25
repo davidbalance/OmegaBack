@@ -7,7 +7,9 @@ import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 export type JobPositionFindManyQueryPayload = {
     filter?: string;
 } & Order<JobPositionModel> & Required<Pagination>;
-export class JobPositionFindManyQuery implements QueryHandlerAsync<JobPositionFindManyQueryPayload, PaginationResponse<JobPositionModel>> {
+export interface JobPositionFindManyQuery extends QueryHandlerAsync<JobPositionFindManyQueryPayload, PaginationResponse<JobPositionModel>> { }
+
+export class JobPositionFindManyQueryImpl implements JobPositionFindManyQuery {
     constructor(
         private readonly repository: JobPositionRepository
     ) { }

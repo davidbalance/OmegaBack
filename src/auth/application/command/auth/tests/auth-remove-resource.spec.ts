@@ -2,7 +2,7 @@
 import { AuthRepository } from "@omega/auth/application/repository/auth/aggregate.repositories";
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
 import { AuthNotFoundError } from "@omega/auth/core/domain/auth/errors/auth.errors";
-import { AuthRemoveResourceCommand, AuthRemoveResourceCommandPayload } from "../auth-remove-resource.command";
+import { AuthRemoveResourceCommand, AuthRemoveResourceCommandImpl, AuthRemoveResourceCommandPayload } from "../auth-remove-resource.command";
 
 describe("AuthRemoveResourceCommand", () => {
     let repository: jest.Mocked<AuthRepository>;
@@ -14,7 +14,7 @@ describe("AuthRemoveResourceCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AuthRepository>;
 
-        command = new AuthRemoveResourceCommand(repository);
+        command = new AuthRemoveResourceCommandImpl(repository);
     });
 
     it("should remove the resource when auth exists", async () => {

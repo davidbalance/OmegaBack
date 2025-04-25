@@ -6,7 +6,9 @@ export type AreaEditCommandPayload = {
     areaId: string;
     areaName: string;
 };
-export class AreaEditCommand implements CommandHandlerAsync<AreaEditCommandPayload, void> {
+export interface AreaEditCommand extends CommandHandlerAsync<AreaEditCommandPayload, void> { }
+
+export class AreaEditCommandImpl implements AreaEditCommand {
     constructor(
         private readonly repository: AreaRepository
     ) { }

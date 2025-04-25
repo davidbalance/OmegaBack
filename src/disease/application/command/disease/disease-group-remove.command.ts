@@ -5,7 +5,9 @@ import { DiseaseGroupRepository } from "../../repository/aggregate.repositories"
 export type DiseaseGroupRemoveCommandPayload = {
     groupId: string;
 };
-export class DiseaseGroupRemoveCommand implements CommandHandlerAsync<DiseaseGroupRemoveCommandPayload, void> {
+export interface DiseaseGroupRemoveCommand extends CommandHandlerAsync<DiseaseGroupRemoveCommandPayload, void> { }
+
+export class DiseaseGroupRemoveCommandImpl implements DiseaseGroupRemoveCommand {
     constructor(
         private readonly repository: DiseaseGroupRepository
     ) { }

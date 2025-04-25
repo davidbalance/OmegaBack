@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
-import { ReportAddContentCommand, ReportAddContentCommandPayload } from "../report-add-content.command";
+import { ReportAddContentCommand, ReportAddContentCommandImpl, ReportAddContentCommandPayload } from "../report-add-content.command";
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 
 describe("ReportAddContentCommand", () => {
@@ -14,7 +14,7 @@ describe("ReportAddContentCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<TestRepository>;
 
-        handler = new ReportAddContentCommand(repository);
+        handler = new ReportAddContentCommandImpl(repository);
     });
 
     it("should add content to the report when test exists", async () => {

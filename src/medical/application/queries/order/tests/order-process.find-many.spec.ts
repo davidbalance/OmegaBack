@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { OrderProcessModel } from "@omega/medical/core/model/order/order-process.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { OrderProcessFindManyQuery } from "../order-process.find-many.query";
+import { OrderProcessFindManyQuery, OrderProcessFindManyQueryImpl } from "../order-process.find-many.query";
 
 describe("OrderProcessFindManyQuery", () => {
     let repository: jest.Mocked<ModelRepository<OrderProcessModel>>;
@@ -12,7 +12,7 @@ describe("OrderProcessFindManyQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<OrderProcessModel>>;
 
-        handler = new OrderProcessFindManyQuery(repository);
+        handler = new OrderProcessFindManyQueryImpl(repository);
     });
 
     it("should return a list of order process models", async () => {

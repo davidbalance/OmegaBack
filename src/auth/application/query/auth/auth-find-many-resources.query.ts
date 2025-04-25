@@ -5,7 +5,9 @@ import { AuthResourceModel } from "@omega/auth/core/model/auth/auth-resource.mod
 export type AuthFindManyResourcesQueryPayload = {
     authId: string
 };
-export class AuthFindManyResourcesQuery implements QueryHandlerAsync<AuthFindManyResourcesQueryPayload, AuthResourceModel[]> {
+export interface AuthFindManyResourcesQuery extends QueryHandlerAsync<AuthFindManyResourcesQueryPayload, AuthResourceModel[]> { }
+
+export class AuthFindManyResourcesQueryImpl implements AuthFindManyResourcesQuery {
     constructor(
         private readonly repository: AuthResourceRepository,
     ) { }

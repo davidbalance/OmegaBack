@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestFileResultRepository } from "@omega/medical/application/repository/model.repositories";
-import { TestFileResultCountQuery } from "../test-file-result-count.query";
+import { TestFileResultCountQuery, TestFileResultCountQueryImpl } from "../test-file-result-count.query";
 
 describe('TestFileResultCountQuery', () => {
     let repository: jest.Mocked<TestFileResultRepository>;
@@ -11,7 +11,7 @@ describe('TestFileResultCountQuery', () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<TestFileResultRepository>;
 
-        queryHandler = new TestFileResultCountQuery(repository);
+        queryHandler = new TestFileResultCountQueryImpl(repository);
     });
 
     it('should return correct count for tests with and without files', async () => {

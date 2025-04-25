@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { AreaOptionModel } from "@omega/location/core/models/area/area-option.model";
-import { AreaFindOptionsQuery } from "../area-find-options.query";
+import { AreaFindOptionsQuery, AreaFindOptionsQueryImpl } from "../area-find-options.query";
 import { AreaOptionRepository } from "@omega/location/application/repository/model.repositories";
 
 describe("AreaFindOptionsQuery", () => {
@@ -12,7 +12,7 @@ describe("AreaFindOptionsQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<AreaOptionRepository>;
 
-        queryHandler = new AreaFindOptionsQuery(repository);
+        queryHandler = new AreaFindOptionsQueryImpl(repository);
     });
 
     it("should successfully fetch and map area options to Option format", async () => {

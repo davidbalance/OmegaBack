@@ -7,7 +7,9 @@ export type EmailDefaultCommandPayload = {
     patientDni: string;
     emailId: string;
 }
-export class EmailDefaultCommand implements CommandHandlerAsync<EmailDefaultCommandPayload, void> {
+export interface EmailDefaultCommand extends CommandHandlerAsync<EmailDefaultCommandPayload, void> { }
+
+export class EmailDefaultCommandImpl implements EmailDefaultCommand {
     constructor(
         private readonly repository: AggregateRepository<ClientProps, Client>
     ) { }

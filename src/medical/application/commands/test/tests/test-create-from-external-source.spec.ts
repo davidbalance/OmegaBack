@@ -4,7 +4,7 @@ import { TestRepository as TestAggregateRepository } from "../../../repository/a
 import { TestConflictError, TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { TestExternalConnectionRepository, TestInnerRepository } from "@omega/medical/application/repository/model.repositories";
 import { TestInnerModel } from "@omega/medical/core/model/test/test-inner.model";
-import { TestCreateFromExternalSourceCommand, TestCreateFromExternalSourceCommandPayload } from "../test-create-from-external-source.command";
+import { TestCreateFromExternalSourceCommand, TestCreateFromExternalSourceCommandImpl, TestCreateFromExternalSourceCommandPayload } from "../test-create-from-external-source.command";
 import { TestExternalKeyConflictError } from "@omega/medical/core/domain/test/errors/test-external-key.errors";
 import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 
@@ -28,7 +28,7 @@ describe("TestCreateFromExternalSourceCommand", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<TestInnerRepository>;
 
-        commandHandler = new TestCreateFromExternalSourceCommand(
+        commandHandler = new TestCreateFromExternalSourceCommandImpl(
             externalConnectionRepository,
             aggregateRepository,
             modelRepository

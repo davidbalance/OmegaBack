@@ -7,7 +7,9 @@ export type BranchMoveCommandPayload = {
     fromCorporativeId: string;
     toCorporativeId: string;
 } & MoveBranchPayload;
-export class BranchMoveCommand implements CommandHandlerAsync<BranchMoveCommandPayload, void> {
+export interface BranchMoveCommand extends CommandHandlerAsync<BranchMoveCommandPayload, void> { }
+
+export class BranchMoveCommandImpl implements BranchMoveCommand {
     constructor(
         private readonly repository: CorporativeRepository
     ) { }

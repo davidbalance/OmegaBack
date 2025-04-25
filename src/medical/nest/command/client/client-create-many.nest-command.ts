@@ -1,10 +1,10 @@
 import { Injectable, Provider } from "@nestjs/common";
 import { ClientCreateManyCommandToken, InjectCommand } from "../../inject/command.inject";
-import { ClientCreateManyCommand } from "@omega/medical/application/commands/client/client-create-many.command";
+import { ClientCreateManyCommandImpl } from "@omega/medical/application/commands/client/client-create-many.command";
 import { ClientCreateCommand } from "@omega/medical/application/commands/client/client-create.command";
 
 @Injectable()
-class ClientCreateManyNestCommand extends ClientCreateManyCommand {
+class ClientCreateManyNestCommand extends ClientCreateManyCommandImpl {
     constructor(
         @InjectCommand("ClientCreate") command: ClientCreateCommand
     ) {

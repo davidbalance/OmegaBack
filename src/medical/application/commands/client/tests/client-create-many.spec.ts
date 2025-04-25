@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { ClientCreateManyCommand, ClientCreateManyCommandPayload } from "../client-create-many.command";
+import { ClientCreateManyCommand, ClientCreateManyCommandImpl, ClientCreateManyCommandPayload } from "../client-create-many.command";
 import { ClientCreateCommand } from "../client-create.command";
 
 describe("ClientCreateManyCommand", () => {
@@ -11,7 +11,7 @@ describe("ClientCreateManyCommand", () => {
             handleAsync: jest.fn(),
         } as unknown as jest.Mocked<ClientCreateCommand>;
 
-        handler = new ClientCreateManyCommand(command);
+        handler = new ClientCreateManyCommandImpl(command);
     });
 
     it("should process batches of 50 items at a time", async () => {

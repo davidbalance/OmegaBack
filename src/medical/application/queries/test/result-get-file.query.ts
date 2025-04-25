@@ -7,7 +7,9 @@ import { TestRepository } from "../../repository/aggregate.repositories";
 export type ResultGetFileQueryPayload = {
     testId: string;
 }
-export class ResultGetFileQuery implements QueryHandlerAsync<ResultGetFileQueryPayload, Buffer> {
+export interface ResultGetFileQuery extends QueryHandlerAsync<ResultGetFileQueryPayload, Buffer> { }
+
+export class ResultGetFileQueryImpl implements QueryHandlerAsync<ResultGetFileQueryPayload, Buffer> {
     constructor(
         private readonly file: FileOperation,
         private readonly repository: TestFileResultRepository,

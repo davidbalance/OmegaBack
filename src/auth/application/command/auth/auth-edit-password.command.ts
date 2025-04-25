@@ -7,7 +7,9 @@ export type AuthEditPasswordCommandPayload = {
     email: string;
     password: string;
 };
-export class AuthEditPasswordCommand implements CommandHandlerAsync<AuthEditPasswordCommandPayload, void> {
+export interface AuthEditPasswordCommand extends CommandHandlerAsync<AuthEditPasswordCommandPayload, void> { }
+
+export class AuthEditPasswordCommandImpl implements AuthEditPasswordCommand {
     constructor(
         private readonly repository: AuthRepository,
         private readonly hash: PasswordProvider

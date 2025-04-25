@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Corporative } from "@omega/location/core/domain/corporative/corporative.domain";
 import { CorporativeConflictError } from "@omega/location/core/domain/corporative/errors/corporative.errors";
-import { CorporativeCreateCommand, CorporativeCreateCommandPayload } from "../corporative-create.command";
+import { CorporativeCreateCommand, CorporativeCreateCommandImpl, CorporativeCreateCommandPayload } from "../corporative-create.command";
 import { CorporativeRepository } from "@omega/location/application/repository/aggregate.repositories";
 
 describe("CorporativeCreateCommand", () => {
@@ -14,7 +14,7 @@ describe("CorporativeCreateCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<CorporativeRepository>;
 
-        command = new CorporativeCreateCommand(repository);
+        command = new CorporativeCreateCommandImpl(repository);
     });
 
     it("should successfully create a corporative if the name is unique", async () => {
