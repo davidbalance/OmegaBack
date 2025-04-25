@@ -4,7 +4,7 @@ import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorat
 import { JwtGuard } from "@shared/shared/nest/guard";
 import { plainToInstance } from "class-transformer";
 import { InjectQuery } from "@omega/auth/nest/inject/query.inject";
-import { ApiKeyResponseDto } from "../dto/response/api_key.dto";
+import { ApiKeyResponseDto } from "../dto/response/api-key.dto";
 import { ApiKeyFindManyQuery } from "@omega/auth/application/query/auth/api-key-find-many.query";
 import { ApiKeyMapper } from "../mapper/api-key.mapper";
 

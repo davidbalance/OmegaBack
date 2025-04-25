@@ -2,7 +2,7 @@
 import { ResultGetFileQuery } from "@omega/medical/application/queries/test/result-get-file.query";
 import { TestFileResultRepository } from "@omega/medical/application/repository/model.repositories";
 import { TestCheckFileCommand, TestCheckFileCommandImpl } from "../test-check-file.command";
-import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_result.model";
+import { TestFileResultModel } from "@omega/medical/core/model/test/test-file-result.model";
 
 describe("TestCheckFileCommand", () => {
     let model: jest.Mocked<TestFileResultRepository>;

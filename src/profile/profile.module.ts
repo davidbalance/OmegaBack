@@ -15,8 +15,8 @@ import { DoctorGetFileQueryProvider } from "./nest/query/doctor-get-file.nest-qu
 import { UserAttributeFindOneQueryProvider } from "./nest/query/user-attribute-find-one.nest-query";
 import { UserFindManyQueryProvider } from "./nest/query/user-find-many.nest-query";
 import { LocalFileModule } from "local-file/local-file";
-import { UserReadController } from "./controller/read/user_read.controller";
-import { DoctorReadController } from "./controller/read/doctor_read.controller";
+import { UserReadController } from "./controller/read/user-read.controller";
+import { DoctorReadController } from "./controller/read/doctor-read.controller";
 import { DoctorWriteController } from "./controller/write/doctor-write.controller";
 import { UserWriteController } from "./controller/write/user-write.controller";
 import { UserAttributeFindOneQueryToken, UserFindOneByAuthQueryToken } from "./nest/inject/query.inject";

@@ -7,7 +7,7 @@ import { JobPositionFindOneQuery } from "@omega/location/application/query/job-p
 import { JobPositionFindManyQuery } from "@omega/location/application/query/job-position/job-position-find-many.query";
 import { JobPositionFindOptionsQuery } from "@omega/location/application/query/job-position/job-position-find-options.query";
 import { JobPositionModelMapper } from "../mapper/job-position-model.mapper";
-import { JobPositionManyResponseDto, JobPositionOptionResponseDto, JobPositionResponseDto } from "../dto/response/job_position.dto";
+import { JobPositionManyResponseDto, JobPositionOptionResponseDto, JobPositionResponseDto } from "../dto/response/job-position.dto";
 import { JobPositionFindManyQueryDto } from "../dto/query/job-position-query.dto";
 
 @ApiTags('Location', 'Read')

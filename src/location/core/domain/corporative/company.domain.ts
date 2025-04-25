@@ -1,6 +1,6 @@
 import { Entity, EntityProps } from "@shared/shared/domain";
 import { Branch } from "./branch.domain";
-import { RucValueObject } from "./value-objects/ruc.value_object";
+import { RucValueObject } from "./value-objects/ruc.value-object";
 import { AddBranchExternalKeyFromCompanyPayload, AddBranchToCompanyPayload, AddCompanyExternalKeyPayload, CreateCompanyPayload } from "./payloads/company.payloads";
 import { BranchConflictError, BranchNotFoundError } from "./errors/branch.errors";
 import { CompanyExternalKey } from "./value-objects/company-external-key.value-object";

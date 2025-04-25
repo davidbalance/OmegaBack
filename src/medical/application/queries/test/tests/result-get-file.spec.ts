@@ -6,7 +6,7 @@ import { ResultGetFileQuery, ResultGetFileQueryImpl, ResultGetFileQueryPayload }
 import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
-import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_result.model";
+import { TestFileResultModel } from "@omega/medical/core/model/test/test-file-result.model";
 
 describe('ResultGetFileQuery', () => {
     let file: jest.Mocked<FileOperation>;

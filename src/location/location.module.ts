@@ -37,7 +37,7 @@ import { ManagementReadController } from "./controller/read/management-read.cont
 import { AreaWriteController } from "./controller/write/area-write.controller";
 import { ManagementWriteController } from "./controller/write/management-write.controller";
 import { CompanyMoveCommandProvider } from "./nest/command/corporative/company-move.nest-command";
-import { BranchMoveCommandProvider } from "./nest/command/corporative/branch_move.nest_command";
+import { BranchMoveCommandProvider } from "./nest/command/corporative/branch-move.nest-command";
 import { CorporativeWriteController } from "./controller/write/corporative-write.controller";
 import { CompanyWriteController } from "./controller/write/company-write.controller";
 import { BranchWriteController } from "./controller/write/branch-write.controller";

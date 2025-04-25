@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger, Provider } from "@nestjs/common";
 import { PrismaService } from "../../../prisma.service";
 import { TestFileResultRepository } from "@omega/medical/application/repository/model.repositories";
 import { TestFileResultRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
-import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_result.model";
+import { TestFileResultModel } from "@omega/medical/core/model/test/test-file-result.model";
 import { SearchCriteria, FilterGroup, Filter } from "@shared/shared/domain";
 import { PrismaFilterMapper } from "../../../filter-mapper";
 import { Prisma } from "@prisma/client";

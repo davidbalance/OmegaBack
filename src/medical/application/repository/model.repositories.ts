@@ -20,7 +20,7 @@ import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test
 import { TestInnerModel } from "@omega/medical/core/model/test/test-inner.model";
 import { TestReportModel } from "@omega/medical/core/model/test/test-report.model";
 import { TestModel } from "@omega/medical/core/model/test/test.model";
-import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_result.model";
+import { TestFileResultModel } from "@omega/medical/core/model/test/test-file-result.model";
 import { CountRepository, ModelRepository } from "@shared/shared/providers";
 
 export type ClientAreaRepository = ModelRepository<ClientAreaModel>;

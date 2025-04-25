@@ -6,7 +6,7 @@ import { PrismaFilterMapper } from "@omega/adapter/persistence/prisma/filter-map
 import { PrismaService } from "@omega/adapter/persistence/prisma/prisma.service";
 import { RepositoryError } from "@shared/shared/domain/error";
 import { TestFileResultPrismaRepository } from "../test-file-result.prisma-repository";
-import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_result.model";
+import { TestFileResultModel } from "@omega/medical/core/model/test/test-file-result.model";
 import { TestFileResultModelMapper } from "@omega/adapter/persistence/prisma/mapper/medical/model/test-file-result.model-mapper";
 
 describe('TestFileResultPrismaRepository', () => {

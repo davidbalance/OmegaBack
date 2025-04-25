@@ -1,7 +1,7 @@
 import { CommandHandlerAsync } from "@shared/shared/application";
 import { TestFileResultRepository } from "../../repository/model.repositories";
 import { Filter, FilterGroup } from "@shared/shared/domain";
-import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_result.model";
+import { TestFileResultModel } from "@omega/medical/core/model/test/test-file-result.model";
 import { ResultGetFileQuery } from "../../queries/test/result-get-file.query";
 
 export interface TestCheckFileCommand extends CommandHandlerAsync<undefined, void> {

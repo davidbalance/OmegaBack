@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestFileResultRepository } from "@omega/medical/application/repository/model.repositories";
-import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_result.model";
+import { TestFileResultModel } from "@omega/medical/core/model/test/test-file-result.model";
 import { SpreadsheetProvider } from "@shared/shared/providers";
 import { reportSpreadsheet, TestFileResultReportQuery, TestFileResultReportQueryImpl } from "../test-file-result-report.query";
 
