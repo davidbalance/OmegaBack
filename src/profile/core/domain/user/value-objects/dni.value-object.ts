@@ -18,6 +18,7 @@ export class DniValueObject extends ValueObject<DniValueObjectProps> {
     }
 
     protected isValid(): boolean {
-        return this._props.dni.length === 10 && /^[0-9]*$/.test(this._props.dni);
+        // return this._props.dni.length === 10 && /^[0-9]*$/.test(this._props.dni);
+        return this._props.dni.length >= 9
     }
 }

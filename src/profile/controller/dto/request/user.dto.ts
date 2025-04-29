@@ -6,7 +6,7 @@ import { IsArray, IsEmail, IsNotEmpty, IsString, IsStrongPassword, IsUUID, Lengt
 export class UserCreateRequestDto implements UserCreateCommandPayload {
     @IsString()
     @IsNotEmpty()
-    @Length(10)
+    @Length(9, 10)
     public readonly dni: string;
 
     @IsEmail()
