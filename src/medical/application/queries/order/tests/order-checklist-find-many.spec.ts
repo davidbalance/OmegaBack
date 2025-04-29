@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { OrderChecklistModel } from "@omega/medical/core/model/order/order-checklist.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { OrderChecklistFindManyQuery, OrderChecklistFindManyQueryPayload } from "../order-checklist-find-many.query";
+import { OrderChecklistFindManyQuery, OrderChecklistFindManyQueryImpl, OrderChecklistFindManyQueryPayload } from "../order-checklist-find-many.query";
 
 describe("OrderChecklistFindManyQuery", () => {
     let repository: jest.Mocked<ModelRepository<OrderChecklistModel>>;
@@ -12,7 +12,7 @@ describe("OrderChecklistFindManyQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<OrderChecklistModel>>;
 
-        handler = new OrderChecklistFindManyQuery(repository);
+        handler = new OrderChecklistFindManyQueryImpl(repository);
     });
 
     it("should return a list of order checklist models when order exists", async () => {

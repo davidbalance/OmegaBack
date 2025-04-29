@@ -2,7 +2,7 @@
 import { DiseaseGroupRepository } from "@omega/disease/application/repository/model.repositories";
 import { DiseaseGroupNotFoundError } from "@omega/disease/core/domain/errors/disease-group.errors";
 import { DiseaseGroupModel } from "@omega/disease/core/model/disease/disease-group.model";
-import { DiseaseGroupFindOneQuery, DiseaseGroupFindOneQueryPayload } from "../disease-group-find-one.query";
+import { DiseaseGroupFindOneQuery, DiseaseGroupFindOneQueryImpl, DiseaseGroupFindOneQueryPayload } from "../disease-group-find-one.query";
 
 describe("DiseaseGroupFindOneQuery", () => {
     let repository: jest.Mocked<DiseaseGroupRepository>;
@@ -13,7 +13,7 @@ describe("DiseaseGroupFindOneQuery", () => {
             findOneAsync: jest.fn()
         } as unknown as jest.Mocked<DiseaseGroupRepository>;
 
-        query = new DiseaseGroupFindOneQuery(repository);
+        query = new DiseaseGroupFindOneQueryImpl(repository);
     });
 
     it("should return a disease group when a valid groupId is found", async () => {

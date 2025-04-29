@@ -6,7 +6,9 @@ import { OrderModel } from "@omega/medical/core/model/order/order.model";
 export type OrderFindOneQueryPayload = {
     orderId: string
 }
-export class OrderFindOneQuery implements QueryHandlerAsync<OrderFindOneQueryPayload, OrderModel> {
+export interface OrderFindOneQuery extends QueryHandlerAsync<OrderFindOneQueryPayload, OrderModel> { }
+
+export class OrderFindOneQueryImpl implements OrderFindOneQuery {
     constructor(
         private readonly repository: ModelRepository<OrderModel>
     ) { }
@@ -16,5 +18,4 @@ export class OrderFindOneQuery implements QueryHandlerAsync<OrderFindOneQueryPay
         if (!value) throw new OrderNotFoundError(query.orderId);
         return value;
     }
-
 }

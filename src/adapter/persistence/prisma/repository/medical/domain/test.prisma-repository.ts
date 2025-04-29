@@ -7,8 +7,8 @@ import { TestRepository } from "@omega/medical/application/repository/aggregate.
 import { Test, TestProps } from "@omega/medical/core/domain/test/test.domain";
 import { TestDomainMapper } from "../../../mapper/medical/domain/test.domain-mapper";
 import { TestCheckedEventPayload, TestDiseaseRemovedEventPayload, TestExamChangedEventPayload, TestIsEvent, TestReactivatedEventPayload, TestRemovedEventPayload, TestUncheckedEventPayload } from "@omega/medical/core/domain/test/events/test.events";
-import { DiseaseReport } from "@omega/medical/core/domain/test/disease_report.domain";
-import { DiseaseReportDomainMapper } from "../../../mapper/medical/domain/disease_report.domain-mapper";
+import { DiseaseReport } from "@omega/medical/core/domain/test/disease-report.domain";
+import { DiseaseReportDomainMapper } from "../../../mapper/medical/domain/disease-report.domain-mapper";
 import { ResultFileAddedEventPayload, ResultFileRemovedEventPayload, ResultIsEvent } from "@omega/medical/core/domain/test/events/result.events";
 import { ResultDomainMapper } from "../../../mapper/medical/domain/result.domain-mapper";
 import { Result } from "@omega/medical/core/domain/test/result.domain";
@@ -18,7 +18,7 @@ import { ReportAddedContentEventPayload, ReportAddedFilepathEventPayload, Report
 import { DiseaseReportIsEvent } from "@omega/medical/core/domain/test/events/disease.events";
 import { TestAggregateRepositoryToken } from "@omega/medical/nest/inject/aggregate-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
-import { TestExternalKey } from "@omega/medical/core/domain/test/value_objects/test-external-key.value-object";
+import { TestExternalKey } from "@omega/medical/core/domain/test/value-objects/test-external-key.value-object";
 
 @Injectable()
 export class TestPrismaRepository implements TestRepository {
@@ -69,13 +69,16 @@ export class TestPrismaRepository implements TestRepository {
                 await this.addDiseaseReport(event.value);
 
             else if (TestIsEvent.isTestDiseaseRemovedEvent(event))
-                await this.removeDiseaeReport(event.value);
+                await this.removeDiseaseReport(event.value);
 
-            else if (ResultIsEvent.isResultFileAddedEvent(event))
-                await this.addResult(event.value);
+            else if (TestIsEvent.isTestExternalKeyAddedEvent(event))
+                await this.addTestExternalKey(event.value);
 
             else if (ResultIsEvent.isResultCreatedEvent(event))
                 await this.createResult(event.value);
+
+            else if (ResultIsEvent.isResultFileAddedEvent(event))
+                await this.addResult(event.value);
 
             else if (ResultIsEvent.isResultFileRemovedEvent(event))
                 await this.removeResult(event.value);
@@ -94,9 +97,6 @@ export class TestPrismaRepository implements TestRepository {
 
             else if (DiseaseReportIsEvent.isDiseaseReportUpdatedEvent(event))
                 await this.editDiseaseReport(event.value);
-
-            else if (TestIsEvent.isTestExternalKeyAddedEvent(event))
-                await this.addTestExternalKey(event.value);
         }
     }
 
@@ -104,26 +104,6 @@ export class TestPrismaRepository implements TestRepository {
         try {
             const data = TestDomainMapper.toPrisma(value);
             await this.prisma.medicalTest.create({ data });
-        } catch (error) {
-            Logger.error(error);
-            throw new RepositoryError();
-        }
-    }
-
-    async createResult(value: Result): Promise<void> {
-        try {
-            const data = ResultDomainMapper.toPrisma(value);
-            await this.prisma.medicalResult.create({ data });
-        } catch (error) {
-            Logger.error(error);
-            throw new RepositoryError();
-        }
-    }
-
-    async createReport(value: Report): Promise<void> {
-        try {
-            const data = ReportDomainMapper.toPrisma(value);
-            await this.prisma.medicalReport.create({ data });
         } catch (error) {
             Logger.error(error);
             throw new RepositoryError();
@@ -169,7 +149,8 @@ export class TestPrismaRepository implements TestRepository {
     async changeExam(value: TestExamChangedEventPayload): Promise<void> {
         try {
             await this.prisma.medicalTest.update({
-                where: { id: value.testId }, data: {
+                where: { id: value.testId },
+                data: {
                     examName: value.examName,
                     examSubtype: value.examSubtype,
                     examType: value.examType
@@ -181,19 +162,30 @@ export class TestPrismaRepository implements TestRepository {
         }
     }
 
-    async addDiseaseReport(value: DiseaseReport): Promise<void> {
+    async removeDiseaseReport(value: TestDiseaseRemovedEventPayload): Promise<void> {
         try {
-            const data = DiseaseReportDomainMapper.toPrisma(value);
-            await this.prisma.medicalDiseaseReport.create({ data });
+            await this.prisma.medicalDiseaseReport.delete({ where: { id: value.diseaseId } });
         } catch (error) {
             Logger.error(error);
             throw new RepositoryError();
         }
     }
 
-    async removeDiseaeReport(value: TestDiseaseRemovedEventPayload): Promise<void> {
+    async addTestExternalKey(value: TestExternalKey): Promise<void> {
         try {
-            await this.prisma.medicalDiseaseReport.delete({ where: { id: value.diseaseId } });
+            await this.prisma.medicalTestExternalKey.create({
+                data: { owner: value.owner, value: value.value, testId: value.testId }
+            });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async createResult(value: Result): Promise<void> {
+        try {
+            const data = ResultDomainMapper.toPrisma(value);
+            await this.prisma.medicalResult.create({ data });
         } catch (error) {
             Logger.error(error);
             throw new RepositoryError();
@@ -215,6 +207,16 @@ export class TestPrismaRepository implements TestRepository {
     async removeResult(value: ResultFileRemovedEventPayload): Promise<void> {
         try {
             await this.prisma.medicalResult.update({ where: { id: value.resultId }, data: { hasFile: false } });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async createReport(value: Report): Promise<void> {
+        try {
+            const data = ReportDomainMapper.toPrisma(value);
+            await this.prisma.medicalReport.create({ data });
         } catch (error) {
             Logger.error(error);
             throw new RepositoryError();
@@ -248,6 +250,16 @@ export class TestPrismaRepository implements TestRepository {
         }
     }
 
+    async addDiseaseReport(value: DiseaseReport): Promise<void> {
+        try {
+            const data = DiseaseReportDomainMapper.toPrisma(value);
+            await this.prisma.medicalDiseaseReport.create({ data });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
     async editDiseaseReport(value: DiseaseReport): Promise<void> {
         try {
             await this.prisma.medicalDiseaseReport.update({
@@ -259,17 +271,6 @@ export class TestPrismaRepository implements TestRepository {
                     diseaseGroupId: value.diseaseGroupId,
                     diseaseGroupName: value.diseaseGroupName,
                 }
-            });
-        } catch (error) {
-            Logger.error(error);
-            throw new RepositoryError();
-        }
-    }
-
-    async addTestExternalKey(value: TestExternalKey): Promise<void> {
-        try {
-            await this.prisma.medicalTestExternalKey.create({
-                data: { owner: value.owner, value: value.value, testId: value.testId }
             });
         } catch (error) {
             Logger.error(error);

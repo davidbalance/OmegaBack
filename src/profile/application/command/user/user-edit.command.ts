@@ -6,7 +6,9 @@ import { EditUserPayload } from "@omega/profile/core/domain/user/payloads/user.p
 export type UserEditCommandPayload = EditUserPayload & {
     userId: string;
 };
-export class UserEditCommand implements CommandHandlerAsync<UserEditCommandPayload, void> {
+export interface UserEditCommand extends CommandHandlerAsync<UserEditCommandPayload, void> { }
+
+export class UserEditCommandImpl implements UserEditCommand {
     constructor(
         private readonly repository: UserRepository,
     ) { }

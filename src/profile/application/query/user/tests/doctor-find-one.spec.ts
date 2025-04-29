@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { DoctorNotFoundError } from "@omega/profile/core/domain/user/errors/doctor.errors";
 import { DoctorModel } from "@omega/profile/core/model/user/doctor.model";
-import { DoctorFindOneQuery, DoctorFindOneQueryPayload } from "../doctor-find-one.query";
+import { DoctorFindOneQuery, DoctorFindOneQueryImpl, DoctorFindOneQueryPayload } from "../doctor-find-one.query";
 import { DoctorRepository } from "@omega/profile/application/repository/model.repositories";
 
 describe("DoctorFindOneQuery", () => {
@@ -13,7 +13,7 @@ describe("DoctorFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<DoctorRepository>;
 
-        handler = new DoctorFindOneQuery(repository);
+        handler = new DoctorFindOneQueryImpl(repository);
     });
 
     it("should return a doctor when found by userId", async () => {

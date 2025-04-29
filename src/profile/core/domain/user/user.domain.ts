@@ -2,7 +2,7 @@ import { Doctor } from "./doctor.domain";
 import { Patient } from "./patient.domain";
 import { Attribute } from "./attribute.domain";
 import { AddAttributeToUserPayload, AddPatientToUserPayload, CreateUserPayload, EditUserPayload } from "./payloads/user.payload";
-import { DniValueObject } from "./value_objects/dni.value_object";
+import { DniValueObject } from "./value-objects/dni.value-object";
 import { UserAttributeAddedEvent, UserAttributeRemovedEvent, UserAttributeUpdatedValueEvent, UserAuthAddedEvent, UserAuthRemovedEvent, UserDoctorAddedEvent, UserDoctorAddFileEvent, UserEditedEvent, UserPatientAddedEvent, UserRemovedEvent } from "./events/user.events";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
 import { DoctorNotFoundError } from "./errors/doctor.errors";

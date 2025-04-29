@@ -7,7 +7,9 @@ import { ResultUploadBase64Command } from "./result-upload-base64.command";
 export type ResultUploadBase64FromExternalSourceCommandPayload = ExternalKeyProps & {
     base64: string
 }
-export class ResultUploadBase64FromExternalSourceCommand implements CommandHandlerAsync<ResultUploadBase64FromExternalSourceCommandPayload, void> {
+export interface ResultUploadBase64FromExternalSourceCommand extends CommandHandlerAsync<ResultUploadBase64FromExternalSourceCommandPayload, void> { }
+
+export class ResultUploadBase64FromExternalSourceCommandImpl implements ResultUploadBase64FromExternalSourceCommand {
     constructor(
         private readonly externalConnectionRepository: TestExternalConnectionRepository,
         private readonly uploadCommand: ResultUploadBase64Command

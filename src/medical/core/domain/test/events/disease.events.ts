@@ -1,5 +1,5 @@
 import { DomainEvent } from "@shared/shared/domain";
-import { DiseaseReport } from "../disease_report.domain";
+import { DiseaseReport } from "../disease-report.domain";
 
 const DiseaseReportEventKeys = {
     Updated: "report.updated",

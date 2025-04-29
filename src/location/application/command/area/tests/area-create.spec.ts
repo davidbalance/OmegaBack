@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Area } from "@omega/location/core/domain/area/area.domain";
-import { AreaCreateCommand } from "../area-create.command";
+import { AreaCreateCommand, AreaCreateCommandImpl } from "../area-create.command";
 import { AreaRepository } from "@omega/location/application/repository/aggregate.repositories";
 import { AreaConflictError } from "@omega/location/core/domain/area/errors/area.errors";
 
@@ -14,7 +14,7 @@ describe("AreaCreateCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<AreaRepository>;
 
-        command = new AreaCreateCommand(repository);
+        command = new AreaCreateCommandImpl(repository);
     });
 
     it("should create a new area when no conflict exists", async () => {

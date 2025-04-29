@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { DiseaseGroupRepository } from "@omega/disease/application/repository/model.repositories";
-import { DiseaseGroupFindManyQuery, DiseaseGroupFindManyQueryPayload } from "../disease-group-find-many.query";
+import { DiseaseGroupFindManyQuery, DiseaseGroupFindManyQueryImpl, DiseaseGroupFindManyQueryPayload } from "../disease-group-find-many.query";
 import { DiseaseGroupModel } from "@omega/disease/core/model/disease/disease-group.model";
 
 describe("DiseaseGroupFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("DiseaseGroupFindManyQuery", () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<DiseaseGroupRepository>;
 
-        query = new DiseaseGroupFindManyQuery(repository);
+        query = new DiseaseGroupFindManyQueryImpl(repository);
     });
 
     it("should return a list of disease groups when repository finds data", async () => {

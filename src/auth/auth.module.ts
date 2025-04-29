@@ -26,15 +26,15 @@ import { AuthAddLogoCommandToken, AuthAddResourcesCommandToken, AuthCreateComman
 import { LocalStrategy } from "./nest/strategy/local.strategy";
 import { AuthIntrospectQueryProvider } from "./nest/query/auth/auth-introspect.nest-query";
 import { AuthController } from "./controller/auth.controlller";
-import { AuthReadController } from "./controller/read/auth_read.controller";
-import { LogoReadController } from "./controller/read/logo_read.controller";
-import { ResourceReadController } from "./controller/read/resource_read.controller";
-import { AuthWriteController } from "./controller/write/auth_write.controlller";
-import { ResourceWriteController } from "./controller/write/resource_write.controlller";
-import { AuthFindManyResourcesQueryProvider } from "./nest/query/auth/auth_find_many_resources.nest_query";
+import { AuthReadController } from "./controller/read/auth-read.controller";
+import { LogoReadController } from "./controller/read/logo-read.controller";
+import { ResourceReadController } from "./controller/read/resource-read.controller";
+import { AuthWriteController } from "./controller/write/auth-write.controlller";
+import { ResourceWriteController } from "./controller/write/resource-write.controlller";
+import { AuthFindManyResourcesQueryProvider } from "./nest/query/auth/auth-find-many-resources.nest-query";
 import { ApiKeyFindOneByValueQueryToken, AuthFindManyResourcesQueryToken } from "./nest/inject/query.inject";
-import { ApiKeyReadController } from "./controller/read/api_key_read.controller";
-import { ApiKeyFindManyQueryProvider } from "./nest/query/auth/api_key_find_many.nest_query";
+import { ApiKeyReadController } from "./controller/read/api-key-read.controller";
+import { ApiKeyFindManyQueryProvider } from "./nest/query/auth/api-key-find-many.nest-query";
 import { ApiKeyFindOneByValueQueryProvider } from "./nest/query/auth/api-key-find-one-by-value.nest-query";
 
 @Module({

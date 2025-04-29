@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { AreaNotFoundError } from "@omega/location/core/domain/area/errors/area.errors";
 import { AreaModel } from "@omega/location/core/models/area/area.model";
-import { AreaFindOneQuery, AreaFindOneQueryPayload } from "../area-find-one.query";
+import { AreaFindOneQuery, AreaFindOneQueryImpl, AreaFindOneQueryPayload } from "../area-find-one.query";
 import { AreaRepository } from "@omega/location/application/repository/model.repositories";
 
 describe("AreaFindOneQuery", () => {
@@ -13,7 +13,7 @@ describe("AreaFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<AreaRepository>;
 
-        queryHandler = new AreaFindOneQuery(repository);
+        queryHandler = new AreaFindOneQueryImpl(repository);
     });
 
     it("should successfully fetch area by ID", async () => {

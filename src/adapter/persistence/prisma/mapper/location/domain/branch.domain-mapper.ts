@@ -1,10 +1,6 @@
 import { Branch } from "@omega/location/core/domain/corporative/branch.domain";
-import { BranchExternalKey } from "@omega/location/core/domain/corporative/value_objects/branch-external-key.value-object";
-import {
-    Branch as PrismaBranch,
-    BranchExternalKey as PrismaBranchExternalKey,
-    Prisma
-} from "@prisma/client";
+import { BranchExternalKey } from "@omega/location/core/domain/corporative/value-objects/branch-external-key.value-object";
+import { Branch as PrismaBranch, BranchExternalKey as PrismaBranchExternalKey, Prisma } from "@prisma/client";
 
 export type PrismaBranchExtended = PrismaBranch & { externalKeys: PrismaBranchExternalKey[] };
 

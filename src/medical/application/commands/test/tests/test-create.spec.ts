@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 import { TestRepository as TestAggregateRepository } from "../../../repository/aggregate.repositories";
-import { TestCreateCommand, TestCreateCommandPayload } from "../test-create.command";
+import { TestCreateCommand, TestCreateCommandImpl, TestCreateCommandPayload } from "../test-create.command";
 import { TestConflictError, TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { TestInnerRepository } from "@omega/medical/application/repository/model.repositories";
 import { TestInnerModel } from "@omega/medical/core/model/test/test-inner.model";
@@ -21,7 +21,7 @@ describe("TestCreateCommand", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<TestInnerRepository>;
 
-        commandHandler = new TestCreateCommand(repository, model);
+        commandHandler = new TestCreateCommandImpl(repository, model);
     });
 
     it("should successfully create a test if no conflict exists", async () => {

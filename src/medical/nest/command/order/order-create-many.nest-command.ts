@@ -3,11 +3,11 @@ import { OrderRepository, TestRepository } from "@omega/medical/application/repo
 import { InjectAggregateRepository } from "../../inject/aggregate-repository.inject";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { ClientRepository } from "@omega/medical/application/repository/model.repositories";
-import { OrderCreateManyCommand } from "@omega/medical/application/commands/order/order-create-many.command";
+import { OrderCreateManyCommandImpl } from "@omega/medical/application/commands/order/order-create-many.command";
 import { OrderCreateManyCommandToken } from "../../inject/command.inject";
 
 @Injectable()
-class OrderCreateManyNestCommand extends OrderCreateManyCommand {
+class OrderCreateManyNestCommand extends OrderCreateManyCommandImpl {
     constructor(
         @InjectAggregateRepository("Order") order: OrderRepository,
         @InjectAggregateRepository("Test") test: TestRepository,

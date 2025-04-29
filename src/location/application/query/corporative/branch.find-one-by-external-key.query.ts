@@ -6,7 +6,9 @@ import { BranchNotFoundError } from "@omega/location/core/domain/corporative/err
 import { BranchExternalKeyNotFoundError } from "@omega/location/core/domain/corporative/errors/branch-external-key.errors";
 
 export type BranchFindOneByExternalKeyQueryPayload = ExternalKeyProps;
-export class BranchFindOneByExternalKeyQuery implements QueryHandlerAsync<BranchFindOneByExternalKeyQueryPayload, BranchModel> {
+export interface BranchFindOneByExternalKeyQuery extends QueryHandlerAsync<BranchFindOneByExternalKeyQueryPayload, BranchModel> { }
+
+export class BranchFindOneByExternalKeyQueryImpl implements BranchFindOneByExternalKeyQuery {
     constructor(
         private readonly externalConnectionRepository: BranchExternalConnectionRepository,
         private readonly modelRepository: BranchRepository

@@ -1,5 +1,5 @@
 import { ExamTypeRepository } from "@omega/laboratory/application/repository/aggregate.repositories";
-import { ExamTypeCreateFromExternalSourceCommand, ExamTypeCreateFromExternalSourceCommandPayload } from "../exam-type-create-from-external-source.command";
+import { ExamTypeCreateFromExternalSourceCommand, ExamTypeCreateFromExternalSourceCommandImpl, ExamTypeCreateFromExternalSourceCommandPayload } from "../exam-type-create-from-external-source.command";
 import { ExamTypeExternalConnectionRepository } from "@omega/laboratory/application/repository/model.repositories";
 import { ExamType } from "@omega/laboratory/core/domain/exam/exam-type.domain";
 import { ExamTypeExternalConnectionModel } from "@omega/laboratory/core/model/exam/exam-type-external-connection.model";
@@ -20,7 +20,7 @@ describe("ExamTypeCreateFromExternalSourceCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<ExamTypeRepository>;
 
-        handler = new ExamTypeCreateFromExternalSourceCommand(externalConnectionRepository, aggregateRepository);
+        handler = new ExamTypeCreateFromExternalSourceCommandImpl(externalConnectionRepository, aggregateRepository);
     });
 
     it("should successfully create a new exam type and assigning an external key", async () => {

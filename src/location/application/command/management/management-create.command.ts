@@ -5,15 +5,17 @@ import { CommandHandlerAsync } from "@shared/shared/application";
 import { ManagementRepository } from "../../repository/aggregate.repositories";
 
 export type ManagementCreateCommandPayload = CreateManagementPayload;
-export class ManagementCreateCommand implements CommandHandlerAsync<ManagementCreateCommandPayload, void> {
+export interface ManagementCreateCommand extends CommandHandlerAsync<ManagementCreateCommandPayload, void> { }
+
+export class ManagementCreateCommandImpl implements ManagementCreateCommand {
     constructor(
         private readonly repository: ManagementRepository
     ) { }
-    
+
     async handleAsync(value: CreateManagementPayload): Promise<void> {
         const exists = await this.repository.findOneAsync({ filter: [{ field: 'name', operator: 'eq', value: value.name }] });
         if (exists) throw new ManagementConflictError(value.name);
-        
+
         const management = Management.create(value);
         await this.repository.saveAsync(management);
     }

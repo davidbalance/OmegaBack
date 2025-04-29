@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ResourceConflictError } from "@omega/auth/core/domain/resource/errors/resource.errors";
-import { ResourceCreateCommand } from "../resource-create.command";
+import { ResourceCreateCommand, ResourceCreateCommandImpl } from "../resource-create.command";
 import { Resource } from "@omega/auth/core/domain/resource/resource.domain";
 import { ResourceRepository } from "@omega/auth/application/repository/resource/aggregate.repositories";
 import { CreateResourcePayload } from "@omega/auth/core/domain/resource/payloads/resource.payload";
@@ -15,7 +15,7 @@ describe("ResourceCreateCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<ResourceRepository>;
 
-        command = new ResourceCreateCommand(repository);
+        command = new ResourceCreateCommandImpl(repository);
     });
 
     it("should create resource successfully when resource key does not exist", async () => {

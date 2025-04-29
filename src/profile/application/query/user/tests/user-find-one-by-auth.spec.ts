@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { UserRepository } from "@omega/profile/application/repository/model.repositories";
-import { UserFindOneByAuthQuery, UserFindOneByAuthQueryPayload } from "../user-find-one-by-auth.query";
+import { UserFindOneByAuthQuery, UserFindOneByAuthQueryImpl, UserFindOneByAuthQueryPayload } from "../user-find-one-by-auth.query";
 import { UserModel } from "@omega/profile/core/model/user/user.model";
 import { UserNotFoundError } from "@omega/profile/core/domain/user/errors/user.errors";
 
@@ -13,7 +13,7 @@ describe("UserFindOneByAuthQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<UserRepository>;
 
-        handler = new UserFindOneByAuthQuery(repository);
+        handler = new UserFindOneByAuthQueryImpl(repository);
     });
 
     it("should return a user when found by userId", async () => {

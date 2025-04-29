@@ -6,7 +6,9 @@ export type AuthRemoveResourceCommandPayload = {
     authId: string;
     accessId: string;
 };
-export class AuthRemoveResourceCommand implements CommandHandlerAsync<AuthRemoveResourceCommandPayload, void> {
+export interface AuthRemoveResourceCommand extends CommandHandlerAsync<AuthRemoveResourceCommandPayload, void> { }
+
+export class AuthRemoveResourceCommandImpl implements AuthRemoveResourceCommand {
     constructor(
         private readonly repository: AuthRepository
     ) { }

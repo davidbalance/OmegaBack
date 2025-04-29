@@ -5,7 +5,9 @@ import { ResourceRepository } from "../../repository/resource/aggregate.reposito
 export type ResourceRemoveCommandPayload = {
     resourceId: string
 };
-export class ResourceRemoveCommand implements CommandHandlerAsync<ResourceRemoveCommandPayload, void> {
+export interface ResourceRemoveCommand extends CommandHandlerAsync<ResourceRemoveCommandPayload, void> { }
+
+export class ResourceRemoveCommandImpl implements ResourceRemoveCommand {
     constructor(
         private readonly repository: ResourceRepository
     ) { }

@@ -6,8 +6,10 @@ import { BranchRepository } from "../../repository/model.repositories";
 export type BranchFindManyQueryPayload = {
     companyId: string;
     filter?: string;
-} & Order<BranchModel>
-export class BranchFindManyQuery implements QueryHandlerAsync<BranchFindManyQueryPayload, BranchModel[]> {
+} & Order<BranchModel>;
+export interface BranchFindManyQuery extends QueryHandlerAsync<BranchFindManyQueryPayload, BranchModel[]> { }
+
+export class BranchFindManyQueryImpl implements BranchFindManyQuery {
     constructor(
         private readonly repository: BranchRepository
     ) { }

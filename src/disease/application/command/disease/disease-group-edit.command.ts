@@ -6,7 +6,9 @@ export type DiseaseGroupEditCommandPayload = {
     groupId: string;
     groupName: string;
 };
-export class DiseaseGroupEditCommand implements CommandHandlerAsync<DiseaseGroupEditCommandPayload, void> {
+export interface DiseaseGroupEditCommand extends CommandHandlerAsync<DiseaseGroupEditCommandPayload, void> { }
+
+export class DiseaseGroupEditCommandImpl implements DiseaseGroupEditCommand {
     constructor(
         private readonly repository: DiseaseGroupRepository
     ) { }

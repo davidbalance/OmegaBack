@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { UserRepository } from "@omega/profile/application/repository/model.repositories";
-import { UserFindManyQuery, UserFindManyQueryPayload } from "../user-find-many.query";
+import { UserFindManyQuery, UserFindManyQueryImpl, UserFindManyQueryPayload } from "../user-find-many.query";
 import { UserModel } from "@omega/profile/core/model/user/user.model";
 
 describe("UserFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("UserFindManyQuery", () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<UserRepository>;
 
-        queryHandler = new UserFindManyQuery(repository);
+        queryHandler = new UserFindManyQueryImpl(repository);
     });
 
     it("should apply filter and fetch users when filter is provided", async () => {

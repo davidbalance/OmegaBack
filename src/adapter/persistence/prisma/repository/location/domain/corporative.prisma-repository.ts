@@ -15,9 +15,9 @@ import { Branch } from "@omega/location/core/domain/corporative/branch.domain";
 import { CorporativeAggregateRepositoryToken } from "@omega/location/nest/inject/aggregate-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
 import { BranchIsEvent } from "@omega/location/core/domain/corporative/events/branch.events";
-import { CorporativeExternalKeyProps } from "@omega/location/core/domain/corporative/value_objects/corporative-external-key.value-object";
-import { CompanyExternalKeyProps } from "@omega/location/core/domain/corporative/value_objects/company-external-key.value-object";
-import { BranchExternalKeyProps } from "@omega/location/core/domain/corporative/value_objects/branch-external-key.value-object";
+import { CorporativeExternalKeyProps } from "@omega/location/core/domain/corporative/value-objects/corporative-external-key.value-object";
+import { CompanyExternalKeyProps } from "@omega/location/core/domain/corporative/value-objects/company-external-key.value-object";
+import { BranchExternalKeyProps } from "@omega/location/core/domain/corporative/value-objects/branch-external-key.value-object";
 
 @Injectable()
 export class CorporativePrismaRepository implements CorporativeRepository {
@@ -107,17 +107,6 @@ export class CorporativePrismaRepository implements CorporativeRepository {
         }
     }
 
-    async addCorporativeExternalKey(value: CorporativeExternalKeyProps): Promise<void> {
-        try {
-            await this.prisma.corporativeExternalKey.create({
-                data: { owner: value.owner, value: value.value, corporativeId: value.corporativeId }
-            });
-        } catch (error) {
-            Logger.error(error);
-            throw new RepositoryError();
-        }
-    }
-
     async addCompany(value: Company): Promise<void> {
         try {
             const data = CompanyDomainMapper.toPrisma(value);
@@ -146,10 +135,10 @@ export class CorporativePrismaRepository implements CorporativeRepository {
         }
     }
 
-    async addCompanyExternalKey(value: CompanyExternalKeyProps): Promise<void> {
+    async addCorporativeExternalKey(value: CorporativeExternalKeyProps): Promise<void> {
         try {
-            await this.prisma.companyExternalKey.create({
-                data: { owner: value.owner, value: value.value, companyId: value.companyId }
+            await this.prisma.corporativeExternalKey.create({
+                data: { owner: value.owner, value: value.value, corporativeId: value.corporativeId }
             });
         } catch (error) {
             Logger.error(error);
@@ -179,6 +168,17 @@ export class CorporativePrismaRepository implements CorporativeRepository {
     async moveBranch(value: CompanyBranchMovedEventPayload): Promise<void> {
         try {
             await this.prisma.branch.update({ where: { id: value.branchId }, data: { companyId: value.toCompanyId } });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async addCompanyExternalKey(value: CompanyExternalKeyProps): Promise<void> {
+        try {
+            await this.prisma.companyExternalKey.create({
+                data: { owner: value.owner, value: value.value, companyId: value.companyId }
+            });
         } catch (error) {
             Logger.error(error);
             throw new RepositoryError();

@@ -7,7 +7,9 @@ import { ManagementRepository } from "../../repository/model.repositories";
 export type ManagementFindOneQueryPayload = {
     managementId: string;
 }
-export class ManagementFindOneQuery implements QueryHandlerAsync<ManagementFindOneQueryPayload, ManagementModel> {
+export interface ManagementFindOneQuery extends QueryHandlerAsync<ManagementFindOneQueryPayload, ManagementModel> { }
+
+export class ManagementFindOneQueryImpl implements ManagementFindOneQuery {
     constructor(
         private readonly repository: ManagementRepository
     ) { }

@@ -7,7 +7,9 @@ export type ClientRecordFindManyQueryPayload = {
     patientDni: string;
     filter?: string;
 };
-export class ClientRecordFindManyQuery implements QueryHandlerAsync<ClientRecordFindManyQueryPayload, ClientRecordModel[]> {
+export interface ClientRecordFindManyQuery extends QueryHandlerAsync<ClientRecordFindManyQueryPayload, ClientRecordModel[]> { }
+
+export class ClientRecordFindManyQueryImpl implements ClientRecordFindManyQuery {
     constructor(
         private readonly repository: ClientRecordRepository
     ) { }
@@ -24,6 +26,5 @@ export class ClientRecordFindManyQuery implements QueryHandlerAsync<ClientRecord
             }
         });
         return values;
-
     }
 }

@@ -6,7 +6,7 @@ import { Prisma } from "@prisma/client";
 import { OrderCloudFileRepository } from "@omega/medical/application/repository/model.repositories";
 import { OrderCloudFileModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
 import { OrderCloudFileModel } from "@omega/medical/core/model/order/order-cloud-file.model";
-import { OrderCloudFileModelMapper } from "../../../mapper/medical/model/order-cloud-file,model-mapper";
+import { OrderCloudFileModelMapper } from "../../../mapper/medical/model/order-cloud-file.model-mapper";
 import { RepositoryError } from "@shared/shared/domain/error";
 
 @Injectable()

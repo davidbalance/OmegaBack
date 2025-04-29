@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestModel } from "@omega/medical/core/model/test/test.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { TestFindManyQuery, TestFindManyQueryPayload } from "../test-find-many.query";
+import { TestFindManyQuery, TestFindManyQueryImpl, TestFindManyQueryPayload } from "../test-find-many.query";
 
 describe("TestFindManyQuery", () => {
     let repository: jest.Mocked<ModelRepository<TestModel>>;
@@ -12,7 +12,7 @@ describe("TestFindManyQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<TestModel>>;
 
-        handler = new TestFindManyQuery(repository);
+        handler = new TestFindManyQueryImpl(repository);
     });
 
     it("should return results when valid query is provided", async () => {

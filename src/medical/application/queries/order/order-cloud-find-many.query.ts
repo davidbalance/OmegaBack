@@ -5,7 +5,9 @@ import { OrderCloudFileModel } from "@omega/medical/core/model/order/order-cloud
 export type OrderCloudFindManyQueryPayload = {
     orderId: string
 }
-export class OrderCloudFindManyQuery implements QueryHandlerAsync<OrderCloudFindManyQueryPayload, OrderCloudFileModel[]> {
+export interface OrderCloudFindManyQuery extends QueryHandlerAsync<OrderCloudFindManyQueryPayload, OrderCloudFileModel[]> { }
+
+export class OrderCloudFindManyQueryImpl implements OrderCloudFindManyQuery {
     constructor(
         private readonly repository: ModelRepository<OrderCloudFileModel>
     ) { }

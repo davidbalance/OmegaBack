@@ -7,7 +7,9 @@ export type ReportAddContentCommandPayload = {
     testId: string;
     content: string;
 }
-export class ReportAddContentCommand implements CommandHandlerAsync<ReportAddContentCommandPayload, void> {
+export interface ReportAddContentCommand extends CommandHandlerAsync<ReportAddContentCommandPayload, void> { }
+
+export class ReportAddContentCommandImpl implements ReportAddContentCommand {
     constructor(
         private readonly repository: AggregateRepository<TestProps, Test>,
     ) { }

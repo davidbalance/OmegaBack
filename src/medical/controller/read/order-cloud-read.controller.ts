@@ -4,7 +4,7 @@ import { plainToInstance } from "class-transformer";
 import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
 import { OrderCloudFindManyQuery } from "@omega/medical/application/queries/order/order-cloud-find-many.query";
 import { OrderCloudFileResponseDto } from "../dto/response/order.dto";
-import { OrderCloudFileModelMapper } from "../mapper/order_cloud_file.mapper";
+import { OrderCloudFileModelMapper } from "../mapper/order-cloud-file.mapper";
 
 @ApiTags('Medical', 'Read')
 @Controller('medical-order-cloud')

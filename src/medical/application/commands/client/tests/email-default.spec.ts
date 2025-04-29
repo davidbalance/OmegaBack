@@ -2,7 +2,7 @@
 import { ClientProps, Client } from "@omega/medical/core/domain/client/client.domain";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { AggregateRepository } from "@shared/shared/providers";
-import { EmailDefaultCommand, EmailDefaultCommandPayload } from "../email-default.command";
+import { EmailDefaultCommand, EmailDefaultCommandImpl, EmailDefaultCommandPayload } from "../email-default.command";
 
 describe("EmailDefaultCommand", () => {
     let repository: jest.Mocked<AggregateRepository<ClientProps, Client>>;
@@ -14,7 +14,7 @@ describe("EmailDefaultCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AggregateRepository<ClientProps, Client>>;
 
-        handler = new EmailDefaultCommand(repository);
+        handler = new EmailDefaultCommandImpl(repository);
     });
 
     it("should set an email as default for the client when client exists", async () => {

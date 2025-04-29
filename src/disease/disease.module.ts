@@ -9,12 +9,12 @@ import { DiseaseFindManyQueryProvider } from "./nest/query/disease/disease-find-
 import { DiseaseFindOneQueryProvider } from "./nest/query/disease/disease-find-one.nest-query";
 import { DiseaseGroupFindManyQueryProvider } from "./nest/query/disease/disease-group-find-many.nest-query";
 import { DiseaseGroupFindOptionsQueryProvider } from "./nest/query/disease/disease-group-find-options.nest-query";
-import { DiseaseGroupWriteController } from "./controller/write/disease_group_write.controller";
-import { DiseaseWriteController } from "./controller/write/disease_write.controller";
-import { DiseaseGroupReadController } from "./controller/read/disease_group_read.controller";
-import { DiseaseReadController } from "./controller/read/disease_read.controller";
+import { DiseaseGroupWriteController } from "./controller/write/disease-group-write.controller";
+import { DiseaseWriteController } from "./controller/write/disease-write.controller";
+import { DiseaseGroupReadController } from "./controller/read/disease-group-read.controller";
+import { DiseaseReadController } from "./controller/read/disease-read.controller";
 import { DiseaseGroupFindOneQueryProvider } from "./nest/query/disease/disease-group-find-one.nest-query";
-import { DiseaseMoveToGroupCommandProvider } from "./nest/command/disease/disease_move_to_group.nest_command";
+import { DiseaseMoveToGroupCommandProvider } from "./nest/command/disease/disease-move-to-group.nest-command";
 
 @Module({
     controllers: [

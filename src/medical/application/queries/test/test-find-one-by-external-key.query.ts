@@ -6,7 +6,10 @@ import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-objec
 import { TestExternalConnectionRepository, TestRepository } from "../../repository/model.repositories";
 
 export type TestFindOneByExternalKeyQueryPayload = ExternalKeyProps;
-export class TestFindOneByExternalKeyQuery implements QueryHandlerAsync<TestFindOneByExternalKeyQueryPayload, TestModel> {
+
+export interface TestFindOneByExternalKeyQuery extends QueryHandlerAsync<TestFindOneByExternalKeyQueryPayload, TestModel> { }
+
+export class TestFindOneByExternalKeyQueryImpl implements TestFindOneByExternalKeyQuery {
     constructor(
         private readonly externalConnectionRepository: TestExternalConnectionRepository,
         private readonly modelRepository: TestRepository,

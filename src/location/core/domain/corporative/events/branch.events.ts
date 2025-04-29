@@ -1,5 +1,5 @@
 import { DomainEvent } from "@shared/shared/domain";
-import { BranchExternalKeyProps } from "../value_objects/branch-external-key.value-object";
+import { BranchExternalKeyProps } from "../value-objects/branch-external-key.value-object";
 
 const BranchEventKeys = {
     ExternalKeyAdded: "branch.externalKey.added"

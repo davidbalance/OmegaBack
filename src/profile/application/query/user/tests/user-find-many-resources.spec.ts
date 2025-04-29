@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { UserRepository } from "@omega/profile/application/repository/model.repositories";
 import { AuthProvider, AuthResource } from "@shared/shared/providers/auth.provider";
-import { UserFindManyResourcesQuery, UserFindManyResourcesQueryPayload } from "../user-find-many-resources.query";
+import { UserFindManyResourcesQuery, UserFindManyResourcesQueryImpl, UserFindManyResourcesQueryPayload } from "../user-find-many-resources.query";
 import { UserModel } from "@omega/profile/core/model/user/user.model";
 import { UserNotFoundError } from "@omega/profile/core/domain/user/errors/user.errors";
 
@@ -19,7 +19,7 @@ describe("UserFindManyResourcesQuery", () => {
             retriveResources: jest.fn(),
         } as unknown as jest.Mocked<AuthProvider>;
 
-        queryHandler = new UserFindManyResourcesQuery(repository, authProvider);
+        queryHandler = new UserFindManyResourcesQueryImpl(repository, authProvider);
     });
 
     it("should retrieve resources when user is found", async () => {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { CompanyRepository } from "@omega/location/application/repository/model.repositories";
-import { CompanyFindManyQuery, CompanyFindManyQueryPayload } from "../company-find-many.query";
+import { CompanyFindManyQuery, CompanyFindManyQueryImpl, CompanyFindManyQueryPayload } from "../company-find-many.query";
 import { CompanyModel } from "@omega/location/core/models/corporative/company.model";
 
 describe("CompanyFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("CompanyFindManyQuery", () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<CompanyRepository>;
 
-        queryHandler = new CompanyFindManyQuery(repository);
+        queryHandler = new CompanyFindManyQueryImpl(repository);
     });
 
     it("should successfully fetch companies for a corporative with pagination and ordering", async () => {

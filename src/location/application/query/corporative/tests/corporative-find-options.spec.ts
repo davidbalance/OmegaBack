@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { CompanyOptionModel } from "@omega/location/core/models/corporative/company-option.model";
 import { CorporativeOptionModel } from "@omega/location/core/models/corporative/corporative-option.model";
-import { CorporativeFindOptionsQuery } from "../corporative-find-options.query";
+import { CorporativeFindOptionsQuery, CorporativeFindOptionsQueryImpl } from "../corporative-find-options.query";
 import { CompanyOptionRepository, CorporativeOptionRepository } from "@omega/location/application/repository/model.repositories";
 
 describe("CorporativeFindOptionsQuery", () => {
@@ -18,7 +18,7 @@ describe("CorporativeFindOptionsQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<CorporativeOptionRepository>;
 
-        handler = new CorporativeFindOptionsQuery(companyRepository, corporativeRepository);
+        handler = new CorporativeFindOptionsQueryImpl(companyRepository, corporativeRepository);
     });
 
     it("should return combined company and corporative options", async () => {

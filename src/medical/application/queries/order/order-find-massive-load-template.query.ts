@@ -30,7 +30,11 @@ export const massiveLoadTemplateSpreadsheet: SpreadsheetCell[] = [
     { value: 'Periodo', rowSpan: 3, font: { color: "366092", bold: true } },
 ];
 
-export class OrderFindMassiveLoadTemplateQuery implements QueryHandlerAsync<undefined, Buffer> {
+export interface OrderFindMassiveLoadTemplateQuery extends QueryHandlerAsync<undefined, Buffer> {
+    handleAsync(): Promise<Buffer>;
+}
+
+export class OrderFindMassiveLoadTemplateQueryImpl implements OrderFindMassiveLoadTemplateQuery {
     constructor(
         private readonly spreadsheet: SpreadsheetProvider,
         private readonly provider: ExamColumnProvider

@@ -6,7 +6,9 @@ import { ExamTypeRepository } from "../../repository/model.repositories";
 export type ExamTypeFindOneQueryPayload = {
     typeId: string;
 }
-export class ExamTypeFindOneQuery implements QueryHandlerAsync<ExamTypeFindOneQueryPayload, ExamTypeModel> {
+export interface ExamTypeFindOneQuery extends QueryHandlerAsync<ExamTypeFindOneQueryPayload, ExamTypeModel> { }
+
+export class ExamTypeFindOneQueryImpl implements ExamTypeFindOneQuery {
     constructor(
         private readonly repository: ExamTypeRepository
     ) { }

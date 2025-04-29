@@ -27,7 +27,12 @@ export const massiveLoadTemplateSpreadsheet: SpreadsheetCell[] = [
     { value: 'Role', font: { color: "366092", bold: true } },
     { value: 'Cumpleaños', font: { color: "366092", bold: true } },
 ]
-export class ClientFindMassiveLoadTemplateQuery implements QueryHandlerAsync<undefined, Buffer> {
+
+export interface ClientFindMassiveLoadTemplateQuery extends QueryHandlerAsync<undefined, Buffer> {
+    handleAsync(): Promise<Buffer>;
+}
+
+export class ClientFindMassiveLoadTemplateQueryImpl implements QueryHandlerAsync<undefined, Buffer> {
     constructor(
         private readonly spreadsheet: SpreadsheetProvider
     ) { }

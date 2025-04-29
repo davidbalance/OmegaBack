@@ -2,7 +2,11 @@ import { QueryHandlerAsync } from "@shared/shared/application";
 import { ResourceRepository } from "../../repository/resource/model.repositories";
 import { ResourceModel } from "@omega/auth/core/model/resource/resource.model";
 
-export class ResourceFindManyQuery implements QueryHandlerAsync<undefined, ResourceModel[]> {
+export interface ResourceFindManyQuery extends QueryHandlerAsync<undefined, ResourceModel[]> {
+    handleAsync(): Promise<ResourceModel[]>
+}
+
+export class ResourceFindManyQueryImpl implements ResourceFindManyQuery {
     constructor(
         private readonly repository: ResourceRepository
     ) { }

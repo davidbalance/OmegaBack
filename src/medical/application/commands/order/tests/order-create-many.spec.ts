@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { OrderRepository, TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { ClientRepository } from "@omega/medical/application/repository/model.repositories";
-import { OrderCreateBatch, OrderCreateManyCommand, OrderCreateManyCommandPayload } from "../order-create-many.command";
+import { OrderCreateBatch, OrderCreateManyCommand, OrderCreateManyCommandImpl } from "../order-create-many.command";
 import { ClientModel } from "@omega/medical/core/model/client/client.model";
 import { Order } from "@omega/medical/core/domain/order/order.domain";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
@@ -25,7 +25,7 @@ describe("OrderCreateManyCommand", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ClientRepository>;
 
-        handler = new OrderCreateManyCommand(order, test, client);
+        handler = new OrderCreateManyCommandImpl(order, test, client);
     });
 
     const payload: OrderCreateBatch[] = [

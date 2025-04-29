@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { BranchRemoveCommand } from "@omega/location/application/command/corporative/branch-remove.command";
+import { BranchRemoveCommandImpl } from "@omega/location/application/command/corporative/branch-remove.command";
 import { CorporativeRepository } from "@omega/location/application/repository/aggregate.repositories";
 import { InjectAggregateRepository } from "../../inject/aggregate-repository.inject";
 import { BranchRemoveCommandToken } from "../../inject/command.inject";
 
 @Injectable()
-class BranchRemoveNestCommand extends BranchRemoveCommand {
+class BranchRemoveNestCommand extends BranchRemoveCommandImpl {
     constructor(
         @InjectAggregateRepository("Corporative") repository: CorporativeRepository
     ) {

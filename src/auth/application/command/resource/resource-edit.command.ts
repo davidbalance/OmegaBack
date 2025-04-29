@@ -6,7 +6,9 @@ import { EditResourcePayload } from "@omega/auth/core/domain/resource/payloads/r
 export type ResourceEditCommandPayload = EditResourcePayload & {
     resourceId: string
 };
-export class ResourceEditCommand implements CommandHandlerAsync<ResourceEditCommandPayload, void> {
+export interface ResourceEditCommand extends CommandHandlerAsync<ResourceEditCommandPayload, void> { }
+
+export class ResourceEditCommandImpl implements ResourceEditCommand {
     constructor(
         private readonly repository: ResourceRepository
     ) { }

@@ -7,7 +7,9 @@ import { AddAreaPayload } from "@omega/medical/core/domain/client/payloads/clien
 export type ClientAddAreaCommandPayload = AddAreaPayload & {
     patientDni: string;
 }
-export class ClientAddAreaCommand implements CommandHandlerAsync<ClientAddAreaCommandPayload, void> {
+export interface ClientAddAreaCommand extends CommandHandlerAsync<ClientAddAreaCommandPayload, void> { }
+
+export class ClientAddAreaCommandImpl implements ClientAddAreaCommand {
     constructor(
         private readonly repository: AggregateRepository<ClientProps, Client>
     ) { }

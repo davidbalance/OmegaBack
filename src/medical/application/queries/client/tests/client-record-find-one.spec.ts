@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ClientRecordRepository } from "@omega/medical/application/repository/model.repositories";
 import { ClientRecordModel } from "@omega/medical/core/model/client/client-record.model";
-import { ClientRecordFindOneQuery, ClientRecordFindOneQueryPayload } from "../client-record-find-one.query";
+import { ClientRecordFindOneQuery, ClientRecordFindOneQueryImpl, ClientRecordFindOneQueryPayload } from "../client-record-find-one.query";
 import { FileOperation } from "@shared/shared/providers";
 import { RecordNotFoundError } from "@omega/medical/core/domain/client/errors/record.errors";
 
@@ -19,7 +19,7 @@ describe("ClientRecordFindOneQuery", () => {
             read: jest.fn(),
         } as unknown as jest.Mocked<FileOperation>;
 
-        handler = new ClientRecordFindOneQuery(repository, file);
+        handler = new ClientRecordFindOneQueryImpl(repository, file);
     });
 
     it('should return file buffer when record exists', async () => {

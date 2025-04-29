@@ -6,7 +6,9 @@ import { JobPositionRepository } from "../../repository/model.repositories";
 export type JobPositionFindOneQueryPayload = {
     jobPositionId: string;
 }
-export class JobPositionFindOneQuery implements QueryHandlerAsync<JobPositionFindOneQueryPayload, JobPositionModel> {
+export interface JobPositionFindOneQuery extends QueryHandlerAsync<JobPositionFindOneQueryPayload, JobPositionModel> { }
+
+export class JobPositionFindOneQueryImpl implements JobPositionFindOneQuery {
     constructor(
         private readonly repository: JobPositionRepository
     ) { }

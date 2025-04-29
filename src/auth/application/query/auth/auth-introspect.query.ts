@@ -5,7 +5,9 @@ import { JwtProvider } from "@shared/shared/providers/jwt.provider";
 export type AuthIntrospectQueryPayload = {
     jwt: string
 };
-export class AuthIntrospectQuery implements QueryHandlerAsync<AuthIntrospectQueryPayload, AuthIntrospect> {
+export interface AuthIntrospectQuery extends QueryHandlerAsync<AuthIntrospectQueryPayload, AuthIntrospect> { }
+
+export class AuthIntrospectQueryImpl implements AuthIntrospectQuery {
     constructor(
         private readonly jwt: JwtProvider,
     ) { }

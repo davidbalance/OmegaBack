@@ -2,7 +2,7 @@
 import { DiseaseGroupRepository } from "@omega/disease/application/repository/aggregate.repositories";
 import { DiseaseGroup } from "@omega/disease/core/domain/disease-group.domain";
 import { DiseaseGroupNotFoundError } from "@omega/disease/core/domain/errors/disease-group.errors";
-import { DiseaseGroupEditCommand, DiseaseGroupEditCommandPayload } from "../disease-group-edit.command";
+import { DiseaseGroupEditCommand, DiseaseGroupEditCommandImpl, DiseaseGroupEditCommandPayload } from "../disease-group-edit.command";
 
 describe("DiseaseGroupEditCommand", () => {
     let repository: jest.Mocked<DiseaseGroupRepository>;
@@ -14,7 +14,7 @@ describe("DiseaseGroupEditCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<DiseaseGroupRepository>;
 
-        command = new DiseaseGroupEditCommand(repository);
+        command = new DiseaseGroupEditCommandImpl(repository);
     });
 
     it("should rename an existing disease group and save it successfully", async () => {

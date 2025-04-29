@@ -7,7 +7,9 @@ export type ExamSubtypeMoveCommandPayload = {
     toTypeId: string;
     subtypeId: string;
 };
-export class ExamSubtypeMoveCommand implements CommandHandlerAsync<ExamSubtypeMoveCommandPayload, void> {
+export interface ExamSubtypeMoveCommand extends CommandHandlerAsync<ExamSubtypeMoveCommandPayload, void> { }
+
+export class ExamSubtypeMoveCommandImpl implements ExamSubtypeMoveCommand {
     constructor(
         private readonly repository: ExamTypeRepository
     ) { }

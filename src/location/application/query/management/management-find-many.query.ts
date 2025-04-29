@@ -3,12 +3,14 @@ import { ManagementModel } from "@omega/location/core/models/management/manageme
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Filter, Order, Pagination } from "@shared/shared/domain";
 import { ManagementRepository } from "../../repository/model.repositories";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 
 export type ManagementFindManyQueryPayload = {
     filter?: string;
-} & Required<Pagination> & Order<ManagementModel>
-export class ManagementFindManyQuery implements QueryHandlerAsync<ManagementFindManyQueryPayload, PaginationResponse<ManagementModel>> {
+} & Required<Pagination> & Order<ManagementModel>;
+export interface ManagementFindManyQuery extends QueryHandlerAsync<ManagementFindManyQueryPayload, PaginationResponse<ManagementModel>> { }
+
+export class ManagementFindManyQueryImpl implements ManagementFindManyQuery {
     constructor(
         private readonly repository: ManagementRepository
     ) { }

@@ -6,7 +6,9 @@ import { ClientAreaRepository } from "../../repository/model.repositories";
 export type ClientAreaFindOneQueryPayload = {
     patientDni: string;
 };
-export class ClientAreaFindOneQuery implements QueryHandlerAsync<ClientAreaFindOneQueryPayload, ClientAreaModel> {
+export interface ClientAreaFindOneQuery extends QueryHandlerAsync<ClientAreaFindOneQueryPayload, ClientAreaModel> { }
+
+export class ClientAreaFindOneQueryImpl implements ClientAreaFindOneQuery {
     constructor(
         private readonly repository: ClientAreaRepository
     ) { }

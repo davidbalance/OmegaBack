@@ -2,13 +2,15 @@ import { ExamSubtypeModel } from "@omega/laboratory/core/model/exam/exam-subtype
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Filter, Order, Pagination } from "@shared/shared/domain";
 import { ExamSubtypeRepository } from "../../repository/model.repositories";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 
 export type ExamSubtypeFindManyQueryPayload = {
     typeId: string;
     filter?: string;
 } & Order<ExamSubtypeModel> & Required<Pagination>
-export class ExamSubtypeFindManyQuery implements QueryHandlerAsync<ExamSubtypeFindManyQueryPayload, PaginationResponse<ExamSubtypeModel>> {
+export interface ExamSubtypeFindManyQuery extends QueryHandlerAsync<ExamSubtypeFindManyQueryPayload, PaginationResponse<ExamSubtypeModel>> { }
+
+export class ExamSubtypeFindManyQueryImpl implements QueryHandlerAsync<ExamSubtypeFindManyQueryPayload, PaginationResponse<ExamSubtypeModel>> {
     constructor(
         private readonly repository: ExamSubtypeRepository
     ) { }
@@ -18,7 +20,7 @@ export class ExamSubtypeFindManyQuery implements QueryHandlerAsync<ExamSubtypeFi
         if (query.filter) {
             filter.push({ field: 'subtypeName', operator: 'like', value: query.filter });
         }
-        
+
         const data = await this.repository.findManyAsync({
             ...query,
             filter: filter

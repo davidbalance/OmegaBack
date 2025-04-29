@@ -1,7 +1,7 @@
 import { TestExternalConnectionRepository } from "@omega/medical/application/repository/model.repositories";
 import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 import { TestExternalKeyNotFoundError } from "@omega/medical/core/domain/test/errors/test-external-key.errors";
-import { ResultUploadBase64FromExternalSourceCommand, ResultUploadBase64FromExternalSourceCommandPayload } from "../result-upload-base64-from-external-source.command";
+import { ResultUploadBase64FromExternalSourceCommand, ResultUploadBase64FromExternalSourceCommandImpl, ResultUploadBase64FromExternalSourceCommandPayload } from "../result-upload-base64-from-external-source.command";
 import { ResultUploadBase64Command } from "../result-upload-base64.command";
 
 describe("ResultUploadBase64FromExternalSourceCommand", () => {
@@ -18,7 +18,7 @@ describe("ResultUploadBase64FromExternalSourceCommand", () => {
             handleAsync: jest.fn(),
         } as unknown as jest.Mocked<ResultUploadBase64Command>;
 
-        handler = new ResultUploadBase64FromExternalSourceCommand(externalConnectionRepository, findOneQuery);
+        handler = new ResultUploadBase64FromExternalSourceCommandImpl(externalConnectionRepository, findOneQuery);
     });
 
     it("should call uploadCommand.handleAsync with correct testId and buffer if external connection is found", async () => {

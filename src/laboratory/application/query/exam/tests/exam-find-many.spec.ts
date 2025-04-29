@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ExamModel } from "@omega/laboratory/core/model/exam/exam.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { ExamFindManyQuery, ExamFindManyQueryPayload } from "../exam-find-many.query";
+import { ExamFindManyQuery, ExamFindManyQueryImpl, ExamFindManyQueryPayload } from "../exam-find-many.query";
 
 describe("ExamFindManyQuery", () => {
     let repository: jest.Mocked<ModelRepository<ExamModel>>;
@@ -12,7 +12,7 @@ describe("ExamFindManyQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<ExamModel>>;
 
-        handler = new ExamFindManyQuery(repository);
+        handler = new ExamFindManyQueryImpl(repository);
     });
 
     it("should return a list of exams when valid query without filter is provided", async () => {

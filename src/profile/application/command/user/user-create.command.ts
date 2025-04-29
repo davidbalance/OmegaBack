@@ -11,7 +11,9 @@ export type UserCreateCommandPayload = Omit<CreateUserPayload, 'email'> & {
     logo: string;
     resources: string[];
 };
-export class UserCreateCommand implements CommandHandlerAsync<UserCreateCommandPayload, void> {
+export interface UserCreateCommand extends CommandHandlerAsync<UserCreateCommandPayload, void> { }
+
+export class UserCreateCommandImpl implements UserCreateCommand {
     constructor(
         private readonly repository: UserRepository,
         private readonly auth: AuthProvider
@@ -20,7 +22,7 @@ export class UserCreateCommand implements CommandHandlerAsync<UserCreateCommandP
     async handleAsync(value: UserCreateCommandPayload): Promise<void> {
         const exists = await this.repository.findOneAsync({ filter: [{ field: 'dni', operator: 'eq', value: value.dni }] });
         if (exists) throw new UserConflictError(value.dni);
-        
+
         const user = User.create(value);
         const auth = await this.auth.createAuth({ email: value.email, lastname: user.lastname, name: user.name, password: value.password });
         user.addAuth(auth);

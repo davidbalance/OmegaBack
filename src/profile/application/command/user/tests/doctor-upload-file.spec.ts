@@ -3,7 +3,7 @@ import { DoctorNotFoundError } from "@omega/profile/core/domain/user/errors/doct
 import { UserNotFoundError } from "@omega/profile/core/domain/user/errors/user.errors";
 import { User } from "@omega/profile/core/domain/user/user.domain";
 import { FileOperation } from "@shared/shared/providers";
-import { DoctorUploadFileCommand, DoctorUploadFileCommandPayload } from "../doctor-upload-file.command";
+import { DoctorUploadFileCommand, DoctorUploadFileCommandImpl, DoctorUploadFileCommandPayload } from "../doctor-upload-file.command";
 import { UserRepository } from "@omega/profile/application/repository/aggregate.repositories";
 
 describe("DoctorUploadFileCommand", () => {
@@ -21,7 +21,7 @@ describe("DoctorUploadFileCommand", () => {
             write: jest.fn(),
         } as unknown as jest.Mocked<FileOperation>;
 
-        handler = new DoctorUploadFileCommand(repository, file);
+        handler = new DoctorUploadFileCommandImpl(repository, file);
     });
 
     it("should upload the file when user is found and is a doctor", async () => {

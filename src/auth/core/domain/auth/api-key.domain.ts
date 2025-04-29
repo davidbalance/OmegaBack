@@ -1,5 +1,5 @@
 import { Entity, EntityProps } from "@shared/shared/domain";
-import { CreateApiKeyPayload } from "./payloads/api_key.payloads";
+import { CreateApiKeyPayload } from "./payloads/api-key.payloads";
 
 export type ApiKeyProps = EntityProps & {
     apikey: string;

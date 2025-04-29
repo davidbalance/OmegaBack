@@ -7,7 +7,9 @@ import { AggregateRepository } from "@shared/shared/providers";
 export type ExamSubtypeEditCommandPayload = {
     typeId: string;
 } & RenameSubtypeFromTypePayload;
-export class ExamSubtypeEditCommand implements CommandHandlerAsync<ExamSubtypeEditCommandPayload, void> {
+export interface ExamSubtypeEditCommand extends CommandHandlerAsync<ExamSubtypeEditCommandPayload, void> { }
+
+export class ExamSubtypeEditCommandImpl implements ExamSubtypeEditCommand {
     constructor(
         private readonly repository: AggregateRepository<ExamTypeProps, ExamType>
     ) { }

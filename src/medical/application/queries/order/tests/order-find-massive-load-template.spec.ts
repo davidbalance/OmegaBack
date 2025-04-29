@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { SpreadsheetProvider } from "@shared/shared/providers";
-import { OrderFindMassiveLoadTemplateQuery } from "../order-find-massive-load-template.query";
+import { OrderFindMassiveLoadTemplateQuery, OrderFindMassiveLoadTemplateQueryImpl } from "../order-find-massive-load-template.query";
 import { ExamColumnProvider } from "@omega/medical/application/providers/exam-column.provider";
 
 describe("OrderFindMassiveLoadTemplateQuery", () => {
@@ -17,7 +17,7 @@ describe("OrderFindMassiveLoadTemplateQuery", () => {
             find: jest.fn(),
         } as unknown as jest.Mocked<ExamColumnProvider>;
 
-        handler = new OrderFindMassiveLoadTemplateQuery(spreadsheet, provider);
+        handler = new OrderFindMassiveLoadTemplateQueryImpl(spreadsheet, provider);
     });
 
     it('should craft the spreadsheet correctly and return a Buffer', async () => {

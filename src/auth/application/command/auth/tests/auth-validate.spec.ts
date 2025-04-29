@@ -2,7 +2,7 @@
 import { AuthRepository } from "@omega/auth/application/repository/auth/aggregate.repositories";
 import { AuthInvalidCredencialError } from "@omega/auth/core/domain/auth/errors/auth.errors";
 import { PasswordProvider } from "@shared/shared/providers/password.provider";
-import { AuthValidateCommand } from "../auth-validate.command";
+import { AuthValidateCommand, AuthValidateCommandImpl } from "../auth-validate.command";
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
 
 describe("AuthValidateCommand", () => {
@@ -19,7 +19,7 @@ describe("AuthValidateCommand", () => {
             compare: jest.fn(),
         } as unknown as jest.Mocked<PasswordProvider>;
 
-        command = new AuthValidateCommand(repository, hash);
+        command = new AuthValidateCommandImpl(repository, hash);
     });
 
     it("should validate credentials successfully when email and password match", async () => {

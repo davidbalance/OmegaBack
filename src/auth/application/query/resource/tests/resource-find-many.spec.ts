@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ResourceRepository } from "@omega/auth/application/repository/resource/model.repositories";
-import { ResourceFindManyQuery } from "../resource-find-many.query";
+import { ResourceFindManyQuery, ResourceFindManyQueryImpl } from "../resource-find-many.query";
 import { ResourceModel } from "@omega/auth/core/model/resource/resource.model";
 
 describe("ResourceFindManyQuery", () => {
@@ -12,7 +12,7 @@ describe("ResourceFindManyQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ResourceRepository>;
 
-        query = new ResourceFindManyQuery(resourceRepository);
+        query = new ResourceFindManyQueryImpl(resourceRepository);
     });
 
     it("should return all resources when no filter is provided", async () => {

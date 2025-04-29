@@ -1,5 +1,5 @@
 import { DomainEvent } from "@shared/shared/domain";
-import { OrderExternalKey } from "../value_objects/order-external-key.value-object";
+import { OrderExternalKey } from "../value-objects/order-external-key.value-object";
 
 const OrderEventKeys = {
     Removed: "order.removed",

@@ -2,7 +2,7 @@
 import { ZipProvider } from "@shared/shared/providers/zip.provider";
 import { ResultGetFileQuery } from "../result-get-file.query";
 import { ReportGetFileQuery } from "../report-get-file.query";
-import { TestFile, TestGetZipQuery } from "../test-get-zip.query";
+import { TestFile, TestGetZipQuery, TestGetZipQueryImpl } from "../test-get-zip.query";
 
 describe('TestGetZipQuery', () => {
     let zipper: jest.Mocked<ZipProvider>;
@@ -23,7 +23,7 @@ describe('TestGetZipQuery', () => {
             handleAsync: jest.fn(),
         } as unknown as jest.Mocked<ReportGetFileQuery>;
 
-        queryHandler = new TestGetZipQuery(zipper, resultFileQuery, reportFileQuery);
+        queryHandler = new TestGetZipQueryImpl(zipper, resultFileQuery, reportFileQuery);
     });
 
     it('should handle valid files and create a zip', async () => {

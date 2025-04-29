@@ -1,5 +1,5 @@
-import { ManagementValueObject } from "./value_objects/management.value_object";
-import { AreaValueObject } from "./value_objects/area.value_object";
+import { ManagementValueObject } from "./value-objects/management.value-object";
+import { AreaValueObject } from "./value-objects/area.value-object";
 import { Email } from "./email.domain";
 import { AddAreaPayload, AddJobPositionPayload, AddManagementPayload, AddRecordPayload, CreateClientPayload, EditClientPayload } from "./payloads/client.payloads";
 import { ClientAddedEmailEvent, ClientAreaAddedEvent, ClientDeletedEvent, ClientEditedEvent, ClientEmailRemovedEvent, ClientEmailSettedAsDefaultEvent, ClientJobPositionAddedEvent, ClientManagementAddedEvent, ClientRecordAddedEvent } from "./events/client.events";

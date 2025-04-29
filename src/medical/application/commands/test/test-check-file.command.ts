@@ -1,10 +1,14 @@
 import { CommandHandlerAsync } from "@shared/shared/application";
 import { TestFileResultRepository } from "../../repository/model.repositories";
 import { Filter, FilterGroup } from "@shared/shared/domain";
-import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_result.model";
+import { TestFileResultModel } from "@omega/medical/core/model/test/test-file-result.model";
 import { ResultGetFileQuery } from "../../queries/test/result-get-file.query";
 
-export class TestCheckFileCommand implements CommandHandlerAsync<undefined, void> {
+export interface TestCheckFileCommand extends CommandHandlerAsync<undefined, void> {
+    handleAsync(): Promise<void>;
+}
+
+export class TestCheckFileCommandImpl implements TestCheckFileCommand {
     constructor(
         private readonly model: TestFileResultRepository,
         private readonly file: ResultGetFileQuery

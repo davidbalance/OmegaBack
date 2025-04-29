@@ -1,15 +1,16 @@
 import { CommandHandlerAsync } from "@shared/shared/application";
-import { AggregateRepository } from "@shared/shared/providers";
-import { Client, ClientProps } from "@omega/medical/core/domain/client/client.domain";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
+import { ClientRepository } from "../../repository/aggregate.repositories";
 
 export type EmailCreateCommandPayload = {
     patientDni: string;
     email: string;
 }
-export class EmailCreateCommand implements CommandHandlerAsync<EmailCreateCommandPayload, void> {
+export interface EmailCreateCommand extends CommandHandlerAsync<EmailCreateCommandPayload, void> { }
+
+export class EmailCreateCommandImpl implements EmailCreateCommand {
     constructor(
-        private readonly repository: AggregateRepository<ClientProps, Client>
+        private readonly repository: ClientRepository
     ) { }
 
     async handleAsync(value: EmailCreateCommandPayload): Promise<void> {

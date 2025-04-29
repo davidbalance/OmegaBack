@@ -7,7 +7,9 @@ export type UserAttributeFindOneQueryPayload = {
     userId: string;
     attributeName: string;
 }
-export class UserAttributeFindOneQuery implements QueryHandlerAsync<UserAttributeFindOneQueryPayload, UserAttributeModel> {
+export interface UserAttributeFindOneQuery extends QueryHandlerAsync<UserAttributeFindOneQueryPayload, UserAttributeModel> { }
+
+export class UserAttributeFindOneQueryImpl implements UserAttributeFindOneQuery {
     constructor(
         private readonly repository: UserAttributeRepository
     ) { }

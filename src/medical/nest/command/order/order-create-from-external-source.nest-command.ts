@@ -4,10 +4,10 @@ import { InjectAggregateRepository } from "../../inject/aggregate-repository.inj
 import { OrderCreateFromExternalSourceCommandToken } from "../../inject/command.inject";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { ClientRepository, OrderExternalConnectionRepository } from "@omega/medical/application/repository/model.repositories";
-import { OrderCreateFromExternalSourceCommand } from "@omega/medical/application/commands/order/order-create-from-external-source.command";
+import { OrderCreateFromExternalSourceCommandImpl } from "@omega/medical/application/commands/order/order-create-from-external-source.command";
 
 @Injectable()
-class OrderCreateFromExternalSourceNestCommand extends OrderCreateFromExternalSourceCommand {
+class OrderCreateFromExternalSourceNestCommand extends OrderCreateFromExternalSourceCommandImpl {
     constructor(
         @InjectModelRepository('OrderExternalConnection') externalConnectionRepository: OrderExternalConnectionRepository,
         @InjectAggregateRepository("Order") aggregateRepository: OrderRepository,

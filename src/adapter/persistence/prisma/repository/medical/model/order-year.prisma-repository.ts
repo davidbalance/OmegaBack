@@ -5,7 +5,7 @@ import { PrismaFilterMapper } from "../../../filter-mapper";
 import { Prisma } from "@prisma/client";
 import { OrderYearRepository } from "@omega/medical/application/repository/model.repositories";
 import { OrderYearModel } from "@omega/medical/core/model/order/order-year.model";
-import { OrderYearModelMapper } from "../../../mapper/medical/model/order-year,model-mapper";
+import { OrderYearModelMapper } from "../../../mapper/medical/model/order-year.model-mapper";
 import { OrderYearModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
 

@@ -6,7 +6,9 @@ import { DoctorRepository } from "../../repository/model.repositories";
 export type DoctorGetFileQueryPayload = {
     userId: string;
 }
-export class DoctorGetFileQuery implements QueryHandlerAsync<DoctorGetFileQueryPayload, Buffer> {
+export interface DoctorGetFileQuery extends QueryHandlerAsync<DoctorGetFileQueryPayload, Buffer> { }
+
+export class DoctorGetFileQueryImpl implements DoctorGetFileQuery {
     constructor(
         private readonly repository: DoctorRepository,
         private readonly file: FileOperation

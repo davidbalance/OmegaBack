@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestFileResultRepository } from "@omega/medical/application/repository/model.repositories";
-import { TestFileResultModel } from "@omega/medical/core/model/test/test_file_result.model";
+import { TestFileResultModel } from "@omega/medical/core/model/test/test-file-result.model";
 import { SpreadsheetProvider } from "@shared/shared/providers";
-import { reportSpreadsheet, TestFileResultReportQuery } from "../test-file-result-report.query";
+import { reportSpreadsheet, TestFileResultReportQuery, TestFileResultReportQueryImpl } from "../test-file-result-report.query";
 
 describe('TestFileResultReportQuery', () => {
     let repository: jest.Mocked<TestFileResultRepository>;
@@ -18,7 +18,7 @@ describe('TestFileResultReportQuery', () => {
             craft: jest.fn(),
         } as unknown as jest.Mocked<SpreadsheetProvider>;
 
-        queryHandler = new TestFileResultReportQuery(repository, spreadsheet);
+        queryHandler = new TestFileResultReportQueryImpl(repository, spreadsheet);
     });
 
     it('should generate the report with correct data', async () => {

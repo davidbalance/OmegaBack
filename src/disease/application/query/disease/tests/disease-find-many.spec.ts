@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { DiseaseRepository } from "@omega/disease/application/repository/model.repositories";
-import { DiseaseFindManyQuery, DiseaseFindManyQueryPayload } from "../disease-find-many.query";
+import { DiseaseFindManyQuery, DiseaseFindManyQueryImpl, DiseaseFindManyQueryPayload } from "../disease-find-many.query";
 import { DiseaseModel } from "@omega/disease/core/model/disease/disease.model";
 
 describe("DiseaseFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("DiseaseFindManyQuery", () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<DiseaseRepository>;
 
-        query = new DiseaseFindManyQuery(repository);
+        query = new DiseaseFindManyQueryImpl(repository);
     });
 
     it("should return a list of diseases for a valid groupId with pagination and ordering", async () => {

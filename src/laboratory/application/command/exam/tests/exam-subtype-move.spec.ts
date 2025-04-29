@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ExamTypeRepository } from "@omega/laboratory/application/repository/aggregate.repositories";
-import { ExamSubtypeMoveCommand, ExamSubtypeMoveCommandPayload } from "../exam-subtype-move.command";
+import { ExamSubtypeMoveCommand, ExamSubtypeMoveCommandImpl, ExamSubtypeMoveCommandPayload } from "../exam-subtype-move.command";
 import { ExamType } from "@omega/laboratory/core/domain/exam/exam-type.domain";
 import { ExamTypeNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-type.errors";
 
@@ -10,7 +10,7 @@ describe("ExamSubtypeMoveCommand", () => {
 
     beforeEach(() => {
         repository = { findOneAsync: jest.fn(), saveAsync: jest.fn() } as unknown as jest.Mocked<ExamTypeRepository>;
-        command = new ExamSubtypeMoveCommand(repository);
+        command = new ExamSubtypeMoveCommandImpl(repository);
     });
 
     it("should successfully move subtype from one exam type to another", async () => {

@@ -8,7 +8,9 @@ export type ResultUploadBufferCommandPayload = {
     testId: string;
     buffer: Buffer
 }
-export class ResultUploadBufferCommand implements CommandHandlerAsync<ResultUploadBufferCommandPayload, void> {
+export interface ResultUploadBufferCommand extends CommandHandlerAsync<ResultUploadBufferCommandPayload, void> { }
+
+export class ResultUploadBufferCommandImpl implements ResultUploadBufferCommand {
     constructor(
         private readonly file: FileOperation,
         private readonly repository: TestRepository,
@@ -27,5 +29,4 @@ export class ResultUploadBufferCommand implements CommandHandlerAsync<ResultUplo
 
         await this.repository.saveAsync(test);
     }
-
 }

@@ -8,7 +8,9 @@ import { AuthGenerateTokenQuery } from "../../query/auth/auth-generate-token.que
 export type AuthRefreshTokenCommandPayload = {
     jwt: string;
 };
-export class AuthRefreshTokenCommand implements CommandHandlerAsync<AuthRefreshTokenCommandPayload, { accessToken: string, refreshToken: string }> {
+export interface AuthRefreshTokenCommand extends CommandHandlerAsync<AuthRefreshTokenCommandPayload, { accessToken: string, refreshToken: string }> { }
+
+export class AuthRefreshTokenCommandImpl implements AuthRefreshTokenCommand {
     constructor(
         private readonly repository: AuthRepository,
         private readonly generator: AuthGenerateTokenQuery,

@@ -1,6 +1,6 @@
 import { ApiResponseProperty } from "@nestjs/swagger";
 import { OrderStatus } from "@omega/medical/core/domain/order/order.domain";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 import { Expose, Type } from "class-transformer";
 
 export class OrderCloudFileResponseDto {

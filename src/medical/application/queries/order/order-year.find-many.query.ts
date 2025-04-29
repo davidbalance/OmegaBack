@@ -2,7 +2,11 @@ import { QueryHandlerAsync } from "@shared/shared/application";
 import { ModelRepository } from "@shared/shared/providers";
 import { OrderYearModel } from "@omega/medical/core/model/order/order-year.model";
 
-export class OrderYearFindManyQuery implements QueryHandlerAsync<undefined, OrderYearModel[]> {
+export interface OrderYearFindManyQuery extends QueryHandlerAsync<undefined, OrderYearModel[]> {
+    handleAsync(): Promise<OrderYearModel[]>;
+}
+
+export class OrderYearFindManyQueryImpl implements OrderYearFindManyQuery {
     constructor(
         private readonly repository: ModelRepository<OrderYearModel>
     ) { }

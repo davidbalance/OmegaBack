@@ -7,7 +7,9 @@ export type ResultGetFilepathQueryPayload = {
     testId: string;
 }
 
-export class ResultGetFilepathQuery implements QueryHandlerAsync<ResultGetFilepathQueryPayload, string> {
+export interface ResultGetFilepathQuery extends QueryHandlerAsync<ResultGetFilepathQueryPayload, string> { }
+
+export class ResultGetFilepathQueryImpl implements ResultGetFilepathQuery {
     constructor(
         private readonly repository: ModelRepository<ResultFilepathModel>
     ) { }

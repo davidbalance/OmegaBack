@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { User } from "@omega/profile/core/domain/user/user.domain";
-import { PatientCreateCommand, PatientCreateCommandPayload } from "../patient-create.command";
+import { PatientCreateCommand, PatientCreateCommandImpl, PatientCreateCommandPayload } from "../patient-create.command";
 import { UserRepository } from "@omega/profile/application/repository/aggregate.repositories";
 
 describe("PatientCreateCommand", () => {
@@ -13,7 +13,7 @@ describe("PatientCreateCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<UserRepository>;
 
-        handler = new PatientCreateCommand(repository);
+        handler = new PatientCreateCommandImpl(repository);
     });
 
     it("should create a patient when no existing user with the same DNI", async () => {

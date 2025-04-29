@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { AuthResourceRepository } from "@omega/auth/application/repository/auth/model.repositories";
-import { AuthFindManyResourcesQuery, AuthFindManyResourcesQueryPayload } from "../auth-find-many-resources.query";
-import { AuthResourceModel } from "@omega/auth/core/model/auth/auth_resource.model";
+import { AuthFindManyResourcesQuery, AuthFindManyResourcesQueryImpl, AuthFindManyResourcesQueryPayload } from "../auth-find-many-resources.query";
+import { AuthResourceModel } from "@omega/auth/core/model/auth/auth-resource.model";
 
 describe("AuthFindManyResourcesQuery", () => {
     let repository: jest.Mocked<AuthResourceRepository>;
@@ -9,7 +9,7 @@ describe("AuthFindManyResourcesQuery", () => {
 
     beforeEach(() => {
         repository = { findManyAsync: jest.fn() } as unknown as jest.Mocked<AuthResourceRepository>;
-        query = new AuthFindManyResourcesQuery(repository);
+        query = new AuthFindManyResourcesQueryImpl(repository);
     });
 
     it("should return resources when valid authId is provided", async () => {

@@ -7,7 +7,9 @@ export type AuthValidateCommandPayload = {
     email: string;
     password: string;
 };
-export class AuthValidateCommand implements CommandHandlerAsync<AuthValidateCommandPayload, string> {
+export interface AuthValidateCommand extends CommandHandlerAsync<AuthValidateCommandPayload, string> { }
+
+export class AuthValidateCommandImpl implements AuthValidateCommand {
     constructor(
         private readonly repository: AuthRepository,
         private readonly hash: PasswordProvider

@@ -1,6 +1,6 @@
 import { DiseaseFindManyQueryPayload } from "@omega/disease/application/query/disease/disease-find-many.query";
 import { DiseaseModel } from "@omega/disease/core/model/disease/disease.model";
-import { OrderingQuery } from "@shared/shared/nest/pagination_response";
+import { OrderingQuery } from "@shared/shared/nest/pagination-response";
 import { Type } from "class-transformer";
 import { IsEnum, IsOptional, IsString, Min } from "class-validator";
 

@@ -2,7 +2,7 @@
 import { AuthRepository } from "@omega/auth/application/repository/auth/aggregate.repositories";
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
 import { AuthNotFoundError } from "@omega/auth/core/domain/auth/errors/auth.errors";
-import { AuthRemoveApiKeyCommand, AuthRemoveApiKeyCommandPayload } from "../auth-remove-apikey.command";
+import { AuthRemoveApiKeyCommand, AuthRemoveApiKeyCommandImpl, AuthRemoveApiKeyCommandPayload } from "../auth-remove-apikey.command";
 
 describe("AuthRemoveApiKeyCommand", () => {
     let repository: jest.Mocked<AuthRepository>;
@@ -14,7 +14,7 @@ describe("AuthRemoveApiKeyCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AuthRepository>;
 
-        command = new AuthRemoveApiKeyCommand(repository);
+        command = new AuthRemoveApiKeyCommandImpl(repository);
     });
 
     it("should remove the API key when auth exists", async () => {

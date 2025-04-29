@@ -1,5 +1,5 @@
 import { CompanyExternalConnectionRepository, CompanyRepository } from "@omega/location/application/repository/model.repositories";
-import { CompanyFindOneByExternalKeyQuery, CompanyFindOneByExternalKeyQueryPayload } from "../company.find-one-by-external-key.query";
+import { CompanyFindOneByExternalKeyQuery, CompanyFindOneByExternalKeyQueryImpl, CompanyFindOneByExternalKeyQueryPayload } from "../company.find-one-by-external-key.query";
 import { CompanyExternalConnectionModel } from "@omega/location/core/models/corporative/company-external-connection.model";
 import { CompanyModel } from "@omega/location/core/models/corporative/company.model";
 import { CompanyNotFoundError } from "@omega/location/core/domain/corporative/errors/company.errors";
@@ -19,7 +19,7 @@ describe("CompanyFindOneByExternalKeyQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<CompanyRepository>;
 
-        handler = new CompanyFindOneByExternalKeyQuery(externalConnectionRepository, modelRepository);
+        handler = new CompanyFindOneByExternalKeyQueryImpl(externalConnectionRepository, modelRepository);
     });
 
     it("Should return an company model when the company exists", async () => {

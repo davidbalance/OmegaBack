@@ -1,7 +1,7 @@
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Filter, Order, Pagination } from "@shared/shared/domain";
 import { OrderDoctorModel } from "@omega/medical/core/model/order/order-doctor.model";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 import { OrderDoctorRepository } from "../../repository/model.repositories";
 
 export type OrderDoctorFindManyQueryPayload = {
@@ -9,7 +9,10 @@ export type OrderDoctorFindManyQueryPayload = {
     doctorDni: string;
     filter?: string;
 } & Required<Pagination> & Order<OrderDoctorModel>;
-export class OrderDoctorFindManyQuery implements QueryHandlerAsync<OrderDoctorFindManyQueryPayload, PaginationResponse<OrderDoctorModel>> {
+
+export interface OrderDoctorFindManyQuery extends QueryHandlerAsync<OrderDoctorFindManyQueryPayload, PaginationResponse<OrderDoctorModel>> { }
+
+export class OrderDoctorFindManyQueryImpl implements OrderDoctorFindManyQuery {
     constructor(
         private readonly repository: OrderDoctorRepository
     ) { }

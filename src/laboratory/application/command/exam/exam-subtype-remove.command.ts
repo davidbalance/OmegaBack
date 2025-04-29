@@ -1,15 +1,16 @@
 import { ExamTypeNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-type.errors";
-import { ExamType, ExamTypeProps } from "@omega/laboratory/core/domain/exam/exam-type.domain";
 import { CommandHandlerAsync } from "@shared/shared/application";
-import { AggregateRepository } from "@shared/shared/providers";
+import { ExamTypeRepository } from "../../repository/aggregate.repositories";
 
 export type ExamSubtypeRemoveCommandPayload = {
     typeId: string;
     subtypeId: string;
 }
-export class ExamSubtypeRemoveCommand implements CommandHandlerAsync<ExamSubtypeRemoveCommandPayload, void> {
+export interface ExamSubtypeRemoveCommand extends CommandHandlerAsync<ExamSubtypeRemoveCommandPayload, void> { }
+
+export class ExamSubtypeRemoveCommandImpl implements ExamSubtypeRemoveCommand {
     constructor(
-        private readonly repository: AggregateRepository<ExamTypeProps, ExamType>
+        private readonly repository: ExamTypeRepository
     ) { }
 
     async handleAsync(value: ExamSubtypeRemoveCommandPayload): Promise<void> {

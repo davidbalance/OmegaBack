@@ -2,7 +2,7 @@
 import { AuthRepository } from "@omega/auth/application/repository/auth/aggregate.repositories";
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
 import { AuthNotFoundError } from "@omega/auth/core/domain/auth/errors/auth.errors";
-import { AuthAddTokenCommand, AuthAddTokenCommandPayload } from "../auth-add-token.command";
+import { AuthAddTokenCommand, AuthAddTokenCommandImpl, AuthAddTokenCommandPayload } from "../auth-add-token.command";
 
 describe("AuthAddTokenCommand", () => {
     let repository: jest.Mocked<AuthRepository>;
@@ -14,7 +14,7 @@ describe("AuthAddTokenCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AuthRepository>;
 
-        command = new AuthAddTokenCommand(repository);
+        command = new AuthAddTokenCommandImpl(repository);
     });
 
     it("should add token when auth exists", async () => {

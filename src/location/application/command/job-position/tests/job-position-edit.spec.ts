@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { JobPositionNotFoundError } from "@omega/location/core/domain/job-position/errors/job-position.errors";
 import { JobPosition } from "@omega/location/core/domain/job-position/job-position.domain";
-import { JobPositionEditCommand, JobPositionEditCommandPayload } from "../job-position-edit.command";
+import { JobPositionEditCommand, JobPositionEditCommandImpl, JobPositionEditCommandPayload } from "../job-position-edit.command";
 import { JobPositionRepository } from "@omega/location/application/repository/aggregate.repositories";
 
 describe("JobPositionEditCommand", () => {
@@ -14,7 +14,7 @@ describe("JobPositionEditCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<JobPositionRepository>;
 
-        command = new JobPositionEditCommand(repository);
+        command = new JobPositionEditCommandImpl(repository);
     });
 
     it("should successfully rename the job position if it exists", async () => {

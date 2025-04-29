@@ -6,7 +6,10 @@ import { OrderNotFoundError } from "@omega/medical/core/domain/order/errors/orde
 import { OrderExternalKeyNotFoundError } from "@omega/medical/core/domain/order/errors/order-external-key.errors";
 
 export type OrderFindOneByExternalKeyQueryPayload = ExternalKeyProps;
-export class OrderFindOneByExternalKeyQuery implements QueryHandlerAsync<OrderFindOneByExternalKeyQueryPayload, OrderModel> {
+
+export interface OrderFindOneByExternalKeyQuery extends QueryHandlerAsync<OrderFindOneByExternalKeyQueryPayload, OrderModel> { }
+
+export class OrderFindOneByExternalKeyQueryImpl implements OrderFindOneByExternalKeyQuery {
     constructor(
         private readonly externalConnectionRepository: OrderExternalConnectionRepository,
         private readonly modelRepository: OrderRepository

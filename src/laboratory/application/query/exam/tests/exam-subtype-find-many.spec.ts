@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ExamSubtypeModel } from "@omega/laboratory/core/model/exam/exam-subtype.model";
-import { ExamSubtypeFindManyQuery, ExamSubtypeFindManyQueryPayload } from "../exam-subtype-find-many.query";
+import { ExamSubtypeFindManyQuery, ExamSubtypeFindManyQueryImpl, ExamSubtypeFindManyQueryPayload } from "../exam-subtype-find-many.query";
 import { ExamSubtypeRepository } from "@omega/laboratory/application/repository/model.repositories";
 
 describe("ExamSubtypeFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("ExamSubtypeFindManyQuery", () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<ExamSubtypeRepository>;
 
-        handler = new ExamSubtypeFindManyQuery(repository);
+        handler = new ExamSubtypeFindManyQueryImpl(repository);
     });
 
     it("should return a list of subtypes when a valid query is provided", async () => {

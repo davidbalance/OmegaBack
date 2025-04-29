@@ -2,13 +2,15 @@ import { CompanyModel } from "@omega/location/core/models/corporative/company.mo
 import { QueryHandlerAsync } from "@shared/shared/application";
 import { Pagination, Order, Filter, FilterGroup } from "@shared/shared/domain";
 import { CompanyRepository } from "../../repository/model.repositories";
-import { PaginationResponse } from "@shared/shared/nest/pagination_response";
+import { PaginationResponse } from "@shared/shared/nest/pagination-response";
 
 export type CompanyFindManyQueryPayload = {
     corporativeId: string;
     filter?: string;
-} & Required<Pagination> & Order<CompanyModel>
-export class CompanyFindManyQuery implements QueryHandlerAsync<CompanyFindManyQueryPayload, PaginationResponse<CompanyModel>> {
+} & Required<Pagination> & Order<CompanyModel>;
+export interface CompanyFindManyQuery extends QueryHandlerAsync<CompanyFindManyQueryPayload, PaginationResponse<CompanyModel>> { }
+
+export class CompanyFindManyQueryImpl implements CompanyFindManyQuery {
     constructor(
         private readonly repository: CompanyRepository
     ) { }

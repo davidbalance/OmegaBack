@@ -3,7 +3,7 @@ import { OrderNotFoundError } from "@omega/medical/core/domain/order/errors/orde
 import { OrderProps, Order } from "@omega/medical/core/domain/order/order.domain";
 import { AggregateRepository } from "@shared/shared/providers";
 import { EmailAttachment, EmailProvider } from "@shared/shared/providers/email.provider";
-import { OrderSendMailCommand, OrderSendMailCommandPayload } from "../order-send-mail.command";
+import { OrderSendMailCommand, OrderSendMailCommandImpl, OrderSendMailCommandPayload } from "../order-send-mail.command";
 import { HtmlLoaderProvider } from "@shared/shared/providers/html-loader.provider";
 import { OrderPatientRepository } from "@omega/medical/application/repository/model.repositories";
 import { OrderPatientModel } from "@omega/medical/core/model/order/order-patient.model";
@@ -40,7 +40,7 @@ describe("OrderSendMailCommand", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<OrderPatientRepository>;
 
-        handler = new OrderSendMailCommand(repository, emailEmitter, layout, attachment, redirectURL, modelRepository);
+        handler = new OrderSendMailCommandImpl(repository, emailEmitter, layout, attachment, redirectURL, modelRepository);
     });
 
     it("should send an email when order exists", async () => {

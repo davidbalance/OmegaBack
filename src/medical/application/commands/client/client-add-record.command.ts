@@ -15,7 +15,9 @@ export type ClientRecordFilenameFunc = (name: string) => string;
 export type ClientAddRecordCommandPayload = GenericRecord & {
     patientDni: string;
 }
-export class ClientAddRecordCommand implements CommandHandlerAsync<ClientAddRecordCommandPayload, void> {
+export interface ClientAddRecordCommand extends CommandHandlerAsync<ClientAddRecordCommandPayload, void> { }
+
+export class ClientAddRecordCommandImpl implements ClientAddRecordCommand {
     constructor(
         private readonly repository: ClientRepository,
         private readonly pdf: PdfProvider,

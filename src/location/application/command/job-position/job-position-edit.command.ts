@@ -6,7 +6,9 @@ export type JobPositionEditCommandPayload = {
     jobPositionId: string;
     jobPositionName: string;
 };
-export class JobPositionEditCommand implements CommandHandlerAsync<JobPositionEditCommandPayload, void> {
+export interface JobPositionEditCommand extends CommandHandlerAsync<JobPositionEditCommandPayload, void> { }
+
+export class JobPositionEditCommandImpl implements JobPositionEditCommand {
     constructor(
         private readonly repository: JobPositionRepository
     ) { }

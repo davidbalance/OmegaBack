@@ -1,4 +1,4 @@
-import { PaginationResponse } from '@shared/shared/nest/pagination_response';
+import { PaginationResponse } from '@shared/shared/nest/pagination-response';
 import { AuthResource } from '@shared/shared/providers/auth.provider';
 import { Expose, Type } from 'class-transformer'
 

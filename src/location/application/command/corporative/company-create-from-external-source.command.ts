@@ -1,19 +1,21 @@
 import { ExternalKeyCommandPayload } from "@shared/shared/domain/external-key.value-object";
 import { CorporativeRepository } from "../../repository/aggregate.repositories";
 import { CompanyExternalConnectionRepository, CompanyRepository } from "../../repository/model.repositories";
-import { BaseCompanyCreateCommand, BaseCompanyCreateCommandPayload } from "./base.company-create.command";
 import { CompanyExternalKeyConflictError } from "@omega/location/core/domain/corporative/errors/company-external-key.errors";
+import { CorporativeNotFoundError } from "@omega/location/core/domain/corporative/errors/corporative.errors";
+import { CommandHandlerAsync } from "@shared/shared/application";
+import { CompanyCreateCommandPayload } from "./company-create.command";
 
-export type CompanyCreateFromExternalSourceCommandPayload = BaseCompanyCreateCommandPayload & ExternalKeyCommandPayload;
-export class CompanyCreateFromExternalSourceCommand extends BaseCompanyCreateCommand<CompanyCreateFromExternalSourceCommandPayload> {
+export type CompanyCreateFromExternalSourceCommandPayload = CompanyCreateCommandPayload & ExternalKeyCommandPayload;
+export interface CompanyCreateFromExternalSourceCommand extends CommandHandlerAsync<CompanyCreateFromExternalSourceCommandPayload, void> { }
+
+export class CompanyCreateFromExternalSourceCommandImpl implements CompanyCreateFromExternalSourceCommand {
 
     constructor(
         private readonly externalConnectionRepository: CompanyExternalConnectionRepository,
         private readonly modelRepository: CompanyRepository,
-        aggregateRepository: CorporativeRepository
-    ) {
-        super(aggregateRepository);
-    }
+        private readonly aggregateRepository: CorporativeRepository
+    ) { }
 
     async handleAsync(value: CompanyCreateFromExternalSourceCommandPayload): Promise<void> {
         const externalConnection = await this.externalConnectionRepository.findOneAsync([
@@ -22,7 +24,8 @@ export class CompanyCreateFromExternalSourceCommand extends BaseCompanyCreateCom
         ]);
         if (externalConnection) throw new CompanyExternalKeyConflictError(value.externalKeyOwner, value.externalKeyValue);
 
-        const corporative = await this.getAggregate(value);
+        const corporative = await this.aggregateRepository.findOneAsync({ filter: [{ field: 'id', operator: 'eq', value: value.corporativeId }] });
+        if (!corporative) throw new CorporativeNotFoundError(value.corporativeId);
 
         const company = await this.modelRepository.findOneAsync([
             { field: 'corporativeId', operator: 'eq', value: value.corporativeId },

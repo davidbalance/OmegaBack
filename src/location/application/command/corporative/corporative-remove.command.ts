@@ -5,7 +5,9 @@ import { CorporativeRepository } from "../../repository/aggregate.repositories";
 export type CorporativeRemoveCommandPayload = {
     corporativeId: string;
 };
-export class CorporativeRemoveCommand implements CommandHandlerAsync<CorporativeRemoveCommandPayload, void> {
+export interface CorporativeRemoveCommand extends CommandHandlerAsync<CorporativeRemoveCommandPayload, void> { }
+
+export class CorporativeRemoveCommandImpl implements CorporativeRemoveCommand {
     constructor(
         private readonly repository: CorporativeRepository
     ) { }

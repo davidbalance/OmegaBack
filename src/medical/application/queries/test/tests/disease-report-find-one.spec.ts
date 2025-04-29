@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { DiseaseReportModel } from "@omega/medical/core/model/test/disease-report.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { DiseaseReportFindOneQuery, DiseaseReportFindOneQueryPayload } from "../disease-report-find-one.query";
-import { DiseaseReportNotFoundError } from "@omega/medical/core/domain/test/errors/disease_report.errors";
+import { DiseaseReportFindOneQuery, DiseaseReportFindOneQueryImpl, DiseaseReportFindOneQueryPayload } from "../disease-report-find-one.query";
+import { DiseaseReportNotFoundError } from "@omega/medical/core/domain/test/errors/disease-report.errors";
 
 describe("DiseaseReportFindOneQuery", () => {
     let repository: jest.Mocked<ModelRepository<DiseaseReportModel>>;
@@ -13,7 +13,7 @@ describe("DiseaseReportFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<DiseaseReportModel>>;
 
-        handler = new DiseaseReportFindOneQuery(repository);
+        handler = new DiseaseReportFindOneQueryImpl(repository);
     });
 
     it("should return a disease report when diseaseReportId is valid", async () => {

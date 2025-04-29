@@ -1,10 +1,10 @@
-import { DiseaseReportConflictError, DiseaseReportNotFoundError } from "../errors/disease_report.errors";
+import { DiseaseReportConflictError, DiseaseReportNotFoundError } from "../errors/disease-report.errors";
 import { TestExternalKeyConflictError } from "../errors/test-external-key.errors";
 import { AddTestExternalKeyPayload, CreateDiseaseReportPayload, CreateTestPayload, ExamPayload, UpdateDiseaseReportPayload } from "../payloads/test.payloads";
 import { Report } from "../report.domain";
 import { Result } from "../result.domain";
 import { Test } from "../test.domain";
-import { TestExternalKey } from "../value_objects/test-external-key.value-object";
+import { TestExternalKey } from "../value-objects/test-external-key.value-object";
 
 describe('Test Aggregate', () => {
 

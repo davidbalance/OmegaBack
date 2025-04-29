@@ -6,7 +6,9 @@ import { Test, TestProps } from "@omega/medical/core/domain/test/test.domain";
 export type ReportRemoveContentCommandPayload = {
     testId: string;
 }
-export class ReportRemoveContentCommand implements CommandHandlerAsync<ReportRemoveContentCommandPayload, void> {
+export interface ReportRemoveContentCommand extends CommandHandlerAsync<ReportRemoveContentCommandPayload, void> { }
+
+export class ReportRemoveContentCommandImpl implements ReportRemoveContentCommandImpl {
     constructor(
         private readonly repository: AggregateRepository<TestProps, Test>,
     ) { }

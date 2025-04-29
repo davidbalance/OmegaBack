@@ -6,7 +6,9 @@ import { ModelRepository } from "@shared/shared/providers";
 export type ExamFindOneQueryPayload = {
     examId: string;
 }
-export class ExamFindOneQuery implements QueryHandlerAsync<ExamFindOneQueryPayload, ExamModel> {
+export interface ExamFindOneQuery extends QueryHandlerAsync<ExamFindOneQueryPayload, ExamModel> { }
+
+export class ExamFindOneQueryImpl implements ExamFindOneQuery {
     constructor(
         private readonly repository: ModelRepository<ExamModel>
     ) { }

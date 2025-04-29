@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { OrderYearModel } from "@omega/medical/core/model/order/order-year.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { OrderYearFindManyQuery } from "../order-year.find-many.query";
+import { OrderYearFindManyQuery, OrderYearFindManyQueryImpl } from "../order-year.find-many.query";
 
 describe("OrderYearFindManyQuery", () => {
     let repository: jest.Mocked<ModelRepository<OrderYearModel>>;
@@ -12,7 +12,7 @@ describe("OrderYearFindManyQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<OrderYearModel>>;
 
-        handler = new OrderYearFindManyQuery(repository);
+        handler = new OrderYearFindManyQueryImpl(repository);
     });
 
     it("should return a list of order year models", async () => {

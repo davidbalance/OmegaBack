@@ -2,7 +2,7 @@
 import { UserRepository } from "@omega/profile/application/repository/model.repositories";
 import { UserModel } from "@omega/profile/core/model/user/user.model";
 import { UserNotFoundError } from "@omega/profile/core/domain/user/errors/user.errors";
-import { UserFindOneQuery, UserFindOneQueryPayload } from "../user-find-one.query";
+import { UserFindOneQuery, UserFindOneQueryImpl, UserFindOneQueryPayload } from "../user-find-one.query";
 
 describe("UserFindOneQuery", () => {
     let repository: jest.Mocked<UserRepository>;
@@ -13,7 +13,7 @@ describe("UserFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<UserRepository>;
 
-        handler = new UserFindOneQuery(repository);
+        handler = new UserFindOneQueryImpl(repository);
     });
 
     it("should return a user when found by userId", async () => {

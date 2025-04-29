@@ -1,7 +1,7 @@
 import { Auth } from "../auth.domain";
-import { ApiKeyConflictError, ApiKeyInvalidError, ApiKeyNotFoundError } from "../errors/api_key.errors";
+import { ApiKeyConflictError, ApiKeyInvalidError, ApiKeyNotFoundError } from "../errors/api-key.errors";
 import { } from "../errors/auth.errors";
-import { AuthResourceConflictError, AuthResourceNotFoundError } from "../errors/auth_resource.errors";
+import { AuthResourceConflictError, AuthResourceNotFoundError } from "../errors/auth-resource.errors";
 import { TokenNotFoundError } from "../errors/token.errors";
 
 describe('Auth Entity', () => {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { OrderDoctorRepository } from "@omega/medical/application/repository/model.repositories";
-import { OrderDoctorFindManyQuery, OrderDoctorFindManyQueryPayload } from "../order-doctor-find-many.query";
+import { OrderDoctorFindManyQuery, OrderDoctorFindManyQueryImpl, OrderDoctorFindManyQueryPayload } from "../order-doctor-find-many.query";
 import { OrderDoctorModel } from "@omega/medical/core/model/order/order-doctor.model";
 
 describe("OrderDoctorFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("OrderDoctorFindManyQuery", () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<OrderDoctorRepository>;
 
-        handler = new OrderDoctorFindManyQuery(repository);
+        handler = new OrderDoctorFindManyQueryImpl(repository);
     });
 
     it("should fetch order doctor data based on filter, patientDni, and doctorDni", async () => {

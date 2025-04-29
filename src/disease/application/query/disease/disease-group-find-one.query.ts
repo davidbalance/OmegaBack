@@ -6,7 +6,9 @@ import { DiseaseGroupRepository } from "../../repository/model.repositories";
 export type DiseaseGroupFindOneQueryPayload = {
     groupId: string;
 };
-export class DiseaseGroupFindOneQuery implements QueryHandlerAsync<DiseaseGroupFindOneQueryPayload, DiseaseGroupModel> {
+export interface DiseaseGroupFindOneQuery extends QueryHandlerAsync<DiseaseGroupFindOneQueryPayload, DiseaseGroupModel> { }
+
+export class DiseaseGroupFindOneQueryImpl implements DiseaseGroupFindOneQuery {
     constructor(
         private readonly repository: DiseaseGroupRepository
     ) { }

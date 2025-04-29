@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ReportModel } from "@omega/medical/core/model/test/report.model";
-import { ReportFindOneQuery, ReportFindOneQueryPayload } from "../report-find-one.query";
+import { ReportFindOneQuery, ReportFindOneQueryImpl, ReportFindOneQueryPayload } from "../report-find-one.query";
 import { ReportRepository } from "@omega/medical/application/repository/model.repositories";
 import { ReportNotFoundError } from "@omega/medical/core/domain/test/errors/report.errors";
 
@@ -13,7 +13,7 @@ describe("ReportFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ReportRepository>;
 
-        handler = new ReportFindOneQuery(repository);
+        handler = new ReportFindOneQueryImpl(repository);
     });
 
     it("should return an report model when the report exists", async () => {

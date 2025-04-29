@@ -4,7 +4,7 @@ import { AuthRepository } from "@omega/auth/application/repository/auth/aggregat
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
 import { AuthNotFoundError } from "@omega/auth/core/domain/auth/errors/auth.errors";
 import { JwtProvider } from "@shared/shared/providers/jwt.provider";
-import { AuthAccessTokenCommand, AuthAccessTokenCommandPayload } from "../auth-access-token.command";
+import { AuthAccessTokenCommand, AuthAccessTokenCommandImpl, AuthAccessTokenCommandPayload } from "../auth-access-token.command";
 
 describe("AuthAccessTokenCommand", () => {
     let repository: jest.Mocked<AuthRepository>;
@@ -26,7 +26,7 @@ describe("AuthAccessTokenCommand", () => {
             createJwt: jest.fn(),
         } as unknown as jest.Mocked<JwtProvider>;
 
-        command = new AuthAccessTokenCommand(repository, generator, jwt);
+        command = new AuthAccessTokenCommandImpl(repository, generator, jwt);
     });
 
     it("should generate and save tokens when auth exists", async () => {

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { LogoConflictError } from "@omega/auth/core/domain/logo/errors/logo.errors";
 import { CreateLogoPayload } from "@omega/auth/core/domain/logo/payloads/logo.payload";
-import { LogoCreateCommand } from "../logo-create.command";
+import { LogoCreateCommand, LogoCreateCommandImpl } from "../logo-create.command";
 import { Logo } from "@omega/auth/core/domain/logo/logo.domain";
 import { LogoRepository } from "@omega/auth/application/repository/logo/aggregate.repositories";
 
@@ -15,7 +15,7 @@ describe("LogoCreateCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<LogoRepository>;
 
-        command = new LogoCreateCommand(repository);
+        command = new LogoCreateCommandImpl(repository);
     });
 
     it("should create logo successfully when logo name does not exist", async () => {

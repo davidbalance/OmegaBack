@@ -36,7 +36,7 @@ export const InjectIncrement = () => Inject(IncrementProviderToken);
 export const JwtAccessProviderToken = 'JwtAccessProvider';
 export const JwtRefreshProviderToken = 'JwtRefreshProvider';
 const jwtInjectToken = {
-    'Access': 'JwtAccessProvider',
-    'Refresh': 'JwtRefreshProvider',
+    'Access': JwtAccessProviderToken,
+    'Refresh': JwtRefreshProviderToken,
 }
 export const InjectJwt = (token: keyof typeof jwtInjectToken) => Inject(jwtInjectToken[token]);

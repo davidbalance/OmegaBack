@@ -8,7 +8,9 @@ export type OrderChecklistLayoutFunc = (value: OrderChecklistModel[]) => unknown
 export type OrderChecklistGetFileQueryPayload = {
     orderId: string;
 }
-export class OrderChecklistGetFileQuery implements QueryHandlerAsync<OrderChecklistGetFileQueryPayload, Buffer> {
+export interface OrderChecklistGetFileQuery extends QueryHandlerAsync<OrderChecklistGetFileQueryPayload, Buffer> { }
+
+export class OrderChecklistGetFileQueryImpl implements OrderChecklistGetFileQuery {
     constructor(
         private readonly repository: ModelRepository<OrderChecklistModel>,
         private readonly pdf: PdfProvider,

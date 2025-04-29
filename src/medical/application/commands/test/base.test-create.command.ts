@@ -1,4 +1,3 @@
-import { CommandHandlerAsync } from "@shared/shared/application";
 import { CreateTestPayload } from "@omega/medical/core/domain/test/payloads/test.payloads";
 import { TestRepository } from "../../repository/aggregate.repositories";
 import { TestInnerRepository } from "../../repository/model.repositories";
@@ -7,13 +6,13 @@ import { TestConflictError, TestNotFoundError } from "@omega/medical/core/domain
 import { TestInnerModel } from "@prisma/client";
 
 export type BaseTestCreateCommandPayload = CreateTestPayload;
-export abstract class BaseTestCreateCommand<T extends BaseTestCreateCommandPayload> implements CommandHandlerAsync<T, void> {
+export abstract class BaseTestCreateCommand<T extends BaseTestCreateCommandPayload> {
     constructor(
         protected readonly aggregateRepository: TestRepository,
         private readonly modelRepository: TestInnerRepository
     ) { }
 
-    protected async getTest(value: T): Promise<TestInnerModel | null> {
+    protected async getAggregate(value: T): Promise<TestInnerModel | null> {
         const exists = await this.modelRepository.findOneAsync([
             { field: 'orderId', operator: 'eq', value: value.orderId },
             { field: 'examName', operator: 'eq', value: value.examName },
@@ -32,10 +31,4 @@ export abstract class BaseTestCreateCommand<T extends BaseTestCreateCommandPaylo
         value.reactivate();
         return value;
     }
-
-    protected createTest(value: T, orderId: string): Test {
-        return Test.create({ ...value, orderId });
-    }
-
-    abstract handleAsync(value: T): Promise<void>;
 }

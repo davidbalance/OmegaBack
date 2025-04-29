@@ -2,7 +2,7 @@
 import { ExamTypeNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-type.errors";
 import { ExamTypeProps, ExamType } from "@omega/laboratory/core/domain/exam/exam-type.domain";
 import { AggregateRepository } from "@shared/shared/providers";
-import { ExamSubtypeRemoveCommand, ExamSubtypeRemoveCommandPayload } from "../exam-subtype-remove.command";
+import { ExamSubtypeRemoveCommand, ExamSubtypeRemoveCommandImpl, ExamSubtypeRemoveCommandPayload } from "../exam-subtype-remove.command";
 
 describe("ExamSubtypeRemoveCommand", () => {
     let repository: jest.Mocked<AggregateRepository<ExamTypeProps, ExamType>>;
@@ -14,7 +14,7 @@ describe("ExamSubtypeRemoveCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AggregateRepository<ExamTypeProps, ExamType>>;
 
-        command = new ExamSubtypeRemoveCommand(repository);
+        command = new ExamSubtypeRemoveCommandImpl(repository);
     });
 
     it("should successfully remove a subtype from the exam type when the exam type exists", async () => {

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { UserNotFoundError } from "@omega/profile/core/domain/user/errors/user.errors";
 import { User } from "@omega/profile/core/domain/user/user.domain";
-import { UserRemoveCommand, UserRemoveCommandPayload } from "../user-remove.command";
+import { UserRemoveCommand, UserRemoveCommandImpl, UserRemoveCommandPayload } from "../user-remove.command";
 import { UserRepository } from "@omega/profile/application/repository/aggregate.repositories";
 
 describe("UserRemoveCommand", () => {
@@ -14,7 +14,7 @@ describe("UserRemoveCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<UserRepository>;
 
-        handler = new UserRemoveCommand(repository);
+        handler = new UserRemoveCommandImpl(repository);
     });
 
     it("should remove the user and save changes", async () => {

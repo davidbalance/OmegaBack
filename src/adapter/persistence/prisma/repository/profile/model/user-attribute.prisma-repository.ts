@@ -5,7 +5,7 @@ import { PrismaFilterMapper } from "../../../filter-mapper";
 import { Prisma } from "@prisma/client";
 import { UserAttributeRepository } from "@omega/profile/application/repository/model.repositories";
 import { UserAttributeModel } from "@omega/profile/core/model/user/user-attribute.model";
-import { UserAttributeModelMapper } from "../../../mapper/profile/model/user-attribute,model-mapper";
+import { UserAttributeModelMapper } from "../../../mapper/profile/model/user-attribute.model-mapper";
 import { UserAttributeModelRepositoryToken } from "@omega/profile/nest/inject/model-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
 

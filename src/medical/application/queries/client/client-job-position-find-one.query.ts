@@ -6,7 +6,9 @@ import { ClientJobPositionModel } from "@omega/medical/core/model/client/client-
 export type ClientJobPositionFindOneQueryPayload = {
     patientDni: string;
 };
-export class ClientJobPositionFindOneQuery implements QueryHandlerAsync<ClientJobPositionFindOneQueryPayload, ClientJobPositionModel> {
+export interface ClientJobPositionFindOneQuery extends QueryHandlerAsync<ClientJobPositionFindOneQueryPayload, ClientJobPositionModel> { }
+
+export class ClientJobPositionFindOneQueryImpl implements ClientJobPositionFindOneQuery {
     constructor(
         private readonly repository: ModelRepository<ClientJobPositionModel>
     ) { }
@@ -15,6 +17,5 @@ export class ClientJobPositionFindOneQuery implements QueryHandlerAsync<ClientJo
         const value = await this.repository.findOneAsync([{ field: 'patientDni', operator: 'eq', value: query.patientDni }]);
         if (!value) throw new ClientNotFoundError(query.patientDni);
         return value;
-
     }
 }

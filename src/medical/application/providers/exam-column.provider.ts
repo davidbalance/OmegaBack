@@ -1,4 +1,4 @@
-export type ExamColum = {
+export type ExamColumn = {
     value: string;
     children: {
         value: string;
@@ -6,5 +6,5 @@ export type ExamColum = {
     }[];
 }
 export interface ExamColumnProvider {
-    find(): Promise<ExamColum[]>
+    find(): Promise<ExamColumn[]>
 }

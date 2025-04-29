@@ -7,7 +7,9 @@ import { TestExternalKeyNotFoundError } from "@omega/medical/core/domain/test/er
 export type ResultUploadBufferFromExternalSourceCommandPayload = ExternalKeyProps & {
     buffer: Buffer
 }
-export class ResultUploadBufferFromExternalSourceCommand implements CommandHandlerAsync<ResultUploadBufferFromExternalSourceCommandPayload, void> {
+export interface ResultUploadBufferFromExternalSourceCommand extends CommandHandlerAsync<ResultUploadBufferFromExternalSourceCommandPayload, void> { }
+
+export class ResultUploadBufferFromExternalSourceCommandImpl implements ResultUploadBufferFromExternalSourceCommand {
     constructor(
         private readonly externalConnectionRepository: TestExternalConnectionRepository,
         private readonly uploadCommand: ResultUploadBufferCommand

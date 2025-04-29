@@ -1,19 +1,20 @@
 import { ExamType } from "@omega/laboratory/core/domain/exam/exam-type.domain";
-import { BaseExamTypeCreateCommand, BaseExamTypeCreateCommandPayload } from "./base.exam-type-create.command";
 import { ExternalKeyCommandPayload } from "@shared/shared/domain/external-key.value-object";
 import { ExamTypeExternalConnectionRepository } from "../../repository/model.repositories";
 import { ExamTypeRepository } from "../../repository/aggregate.repositories";
 import { ExamTypeExternalKeyConflictError } from "@omega/laboratory/core/domain/exam/errors/exam-type-external-key.errors";
+import { ExamTypeCreateCommandPayload } from "./exam-type-create.command";
+import { CommandHandlerAsync } from "@shared/shared/application";
 
-export type ExamTypeCreateFromExternalSourceCommandPayload = BaseExamTypeCreateCommandPayload & ExternalKeyCommandPayload;
-export class ExamTypeCreateFromExternalSourceCommand extends BaseExamTypeCreateCommand<ExamTypeCreateFromExternalSourceCommandPayload> {
+export type ExamTypeCreateFromExternalSourceCommandPayload = ExamTypeCreateCommandPayload & ExternalKeyCommandPayload;
+export interface ExamTypeCreateFromExternalSourceCommand extends CommandHandlerAsync<ExamTypeCreateFromExternalSourceCommandPayload, void> { }
+
+export class ExamTypeCreateFromExternalSourceCommandImpl implements ExamTypeCreateFromExternalSourceCommand {
 
     constructor(
         private readonly externalConnectionRepository: ExamTypeExternalConnectionRepository,
-        aggregateRepository: ExamTypeRepository
-    ) {
-        super(aggregateRepository);
-    }
+        private readonly aggregateRepository: ExamTypeRepository
+    ) { }
 
     async handleAsync(value: ExamTypeCreateFromExternalSourceCommandPayload): Promise<void> {
         const externalConnection = await this.externalConnectionRepository.findOneAsync([

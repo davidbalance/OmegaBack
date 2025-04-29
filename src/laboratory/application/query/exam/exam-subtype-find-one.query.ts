@@ -6,7 +6,9 @@ import { ModelRepository } from "@shared/shared/providers";
 export type ExamSubtypeFindOneQueryPayload = {
     subtypeId: string;
 }
-export class ExamSubtypeFindOneQuery implements QueryHandlerAsync<ExamSubtypeFindOneQueryPayload, ExamSubtypeModel> {
+export interface ExamSubtypeFindOneQuery extends QueryHandlerAsync<ExamSubtypeFindOneQueryPayload, ExamSubtypeModel> { }
+
+export class ExamSubtypeFindOneQueryImpl implements ExamSubtypeFindOneQuery {
     constructor(
         private readonly repository: ModelRepository<ExamSubtypeModel>
     ) { }

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { CorporativeRepository } from "@omega/location/application/repository/aggregate.repositories";
-import { CompanyMoveCommand, CompanyMoveCommandPayload } from "../company-move.command";
+import { CompanyMoveCommand, CompanyMoveCommandImpl, CompanyMoveCommandPayload } from "../company-move.command";
 import { Corporative } from "@omega/location/core/domain/corporative/corporative.domain";
 import { CorporativeNotFoundError } from "@omega/location/core/domain/corporative/errors/corporative.errors";
 
@@ -14,7 +14,7 @@ describe("CompanyMoveCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<CorporativeRepository>;
 
-        handler = new CompanyMoveCommand(repository);
+        handler = new CompanyMoveCommandImpl(repository);
     });
 
     it("should successfully move a company between corporatives", async () => {

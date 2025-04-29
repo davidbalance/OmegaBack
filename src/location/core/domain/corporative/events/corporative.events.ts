@@ -1,6 +1,6 @@
 import { DomainEvent } from "@shared/shared/domain";
 import { Company } from "../company.domain";
-import { CorporativeExternalKeyProps } from "../value_objects/corporative-external-key.value-object";
+import { CorporativeExternalKeyProps } from "../value-objects/corporative-external-key.value-object";
 
 const CorporativeEventKeys = {
     Removed: "corporative.emoved",

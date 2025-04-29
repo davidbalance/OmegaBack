@@ -2,7 +2,7 @@
 import { ReportRepository } from "@omega/medical/application/repository/model.repositories";
 import { FileOperation } from "@shared/shared/providers";
 import { PdfProvider } from "@shared/shared/providers/pdf.provider";
-import { ReportGetFileQuery, ReportGetFileQueryPayload } from "../report-get-file.query";
+import { ReportGetFileQuery, ReportGetFileQueryImpl, ReportGetFileQueryPayload } from "../report-get-file.query";
 import { ReportModel } from "@omega/medical/core/model/test/report.model";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 
@@ -28,7 +28,7 @@ describe('ReportGetFileQuery', () => {
 
         layout = jest.fn();
 
-        queryHandler = new ReportGetFileQuery(file, repository, pdf, layout);
+        queryHandler = new ReportGetFileQueryImpl(file, repository, pdf, layout);
     });
 
     it('should return report file from file system if filepath exists', async () => {

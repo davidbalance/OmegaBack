@@ -5,7 +5,9 @@ import { JobPositionRepository } from "../../repository/aggregate.repositories";
 import { JobPositionConflictError } from "@omega/location/core/domain/job-position/errors/job-position.errors";
 
 export type JobPositionCreateCommandPayload = CreateJobPositionPayload;
-export class JobPositionCreateCommand implements CommandHandlerAsync<JobPositionCreateCommandPayload, void> {
+export interface JobPositionCreateCommand extends CommandHandlerAsync<JobPositionCreateCommandPayload, void> { }
+
+export class JobPositionCreateCommandImpl implements JobPositionCreateCommand {
     constructor(
         private readonly repository: JobPositionRepository
     ) { }

@@ -8,7 +8,9 @@ export type DoctorUploadFileCommandPayload = {
     userId: string;
     buffer: Buffer;
 }
-export class DoctorUploadFileCommand implements CommandHandlerAsync<DoctorUploadFileCommandPayload, void> {
+export interface DoctorUploadFileCommand extends CommandHandlerAsync<DoctorUploadFileCommandPayload, void> { }
+
+export class DoctorUploadFileCommandImpl implements DoctorUploadFileCommand {
     constructor(
         private readonly repository: UserRepository,
         private readonly file: FileOperation

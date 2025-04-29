@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { ReportRemoveContentCommand } from "@omega/medical/application/commands/test/report-remove-content.command";
+import { ReportRemoveContentCommandImpl } from "@omega/medical/application/commands/test/report-remove-content.command";
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { InjectAggregateRepository } from "../../inject/aggregate-repository.inject";
 import { ReportRemoveContentCommandToken } from "../../inject/command.inject";
 
 @Injectable()
-class ReportRemoveContentNestCommand extends ReportRemoveContentCommand {
+class ReportRemoveContentNestCommand extends ReportRemoveContentCommandImpl {
     constructor(
         @InjectAggregateRepository("Test") repository: TestRepository
     ) {

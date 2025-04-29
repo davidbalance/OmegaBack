@@ -10,7 +10,9 @@ export type OrderSendMailCommandPayload = {
     orderId: string;
     email: string;
 }
-export class OrderSendMailCommand implements CommandHandlerAsync<OrderSendMailCommandPayload, void> {
+export interface OrderSendMailCommand extends CommandHandlerAsync<OrderSendMailCommandPayload, void> { }
+
+export class OrderSendMailCommandImpl implements OrderSendMailCommand {
     constructor(
         private readonly repository: AggregateRepository<OrderProps, Order>,
         private readonly emailEmitter: EmailProvider,

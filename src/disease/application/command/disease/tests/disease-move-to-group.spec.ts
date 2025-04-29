@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { DiseaseGroupRepository } from "@omega/disease/application/repository/aggregate.repositories";
-import { DiseaseMoveToGroupCommand, DiseaseMoveToGroupCommandPayload } from "../disease-move-to-group.command";
+import { DiseaseMoveToGroupCommand, DiseaseMoveToGroupCommandImpl, DiseaseMoveToGroupCommandPayload } from "../disease-move-to-group.command";
 import { DiseaseGroup } from "@omega/disease/core/domain/disease-group.domain";
 import { DiseaseGroupNotFoundError } from "@omega/disease/core/domain/errors/disease-group.errors";
 
@@ -10,7 +10,7 @@ describe("DiseaseMoveToGroupCommand", () => {
 
     beforeEach(() => {
         repository = { findOneAsync: jest.fn(), saveAsync: jest.fn() } as unknown as jest.Mocked<DiseaseGroupRepository>;
-        command = new DiseaseMoveToGroupCommand(repository);
+        command = new DiseaseMoveToGroupCommandImpl(repository);
     });
 
     it("should successfully move disease from one group to another", async () => {

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { DoctorNotFoundError } from "@omega/profile/core/domain/user/errors/doctor.errors";
 import { DoctorModel } from "@omega/profile/core/model/user/doctor.model";
-import { DoctorFindOneByDniQuery, DoctorFindOneByDniQueryPayload } from "../doctor-find-one-by-dni.query";
+import { DoctorFindOneByDniQuery, DoctorFindOneByDniQueryImpl, DoctorFindOneByDniQueryPayload } from "../doctor-find-one-by-dni.query";
 import { DoctorRepository } from "@omega/profile/application/repository/model.repositories";
 
 describe("DoctorFindOneByDniQuery", () => {
@@ -13,7 +13,7 @@ describe("DoctorFindOneByDniQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<DoctorRepository>;
 
-        handler = new DoctorFindOneByDniQuery(repository);
+        handler = new DoctorFindOneByDniQueryImpl(repository);
     });
 
     it("should return a doctor when found by DNI", async () => {

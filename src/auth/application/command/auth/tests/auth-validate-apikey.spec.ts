@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ApiKeyValueRepository } from "@omega/auth/application/repository/auth/model.repositories";
-import { AuthValidateApiKeyCommand } from "../auth-validate-apikey.command";
-import { ApiKeyValueModel } from "@omega/auth/core/model/auth/api_key_value.model";
-import { ApiKeyNotFoundError } from "@omega/auth/core/domain/auth/errors/api_key.errors";
+import { AuthValidateApiKeyCommand, AuthValidateApiKeyCommandImpl } from "../auth-validate-apikey.command";
+import { ApiKeyValueModel } from "@omega/auth/core/model/auth/api-key-value.model";
+import { ApiKeyNotFoundError } from "@omega/auth/core/domain/auth/errors/api-key.errors";
 
 describe("AuthValidateApiKeyCommand", () => {
     let repository: jest.Mocked<ApiKeyValueRepository>;
@@ -13,7 +13,7 @@ describe("AuthValidateApiKeyCommand", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ApiKeyValueRepository>;
 
-        command = new AuthValidateApiKeyCommand(repository);
+        command = new AuthValidateApiKeyCommandImpl(repository);
     });
 
     it("should validate the API key successfully when it exists", async () => {

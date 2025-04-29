@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ExamTypeNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-type.errors";
-import { ExamTypeProps, ExamType } from "@omega/laboratory/core/domain/exam/exam-type.domain";
-import { AggregateRepository } from "@shared/shared/providers";
-import { ExamTypeRemoveCommand, ExamTypeRemoveCommandPayload } from "../exam-type-remove.command";
+import { ExamType } from "@omega/laboratory/core/domain/exam/exam-type.domain";
+import { ExamTypeRemoveCommand, ExamTypeRemoveCommandImpl, ExamTypeRemoveCommandPayload } from "../exam-type-remove.command";
+import { ExamTypeRepository } from "@omega/laboratory/application/repository/aggregate.repositories";
 
 describe("ExamTypeRemoveCommand", () => {
-    let repository: jest.Mocked<AggregateRepository<ExamTypeProps, ExamType>>;
+    let repository: jest.Mocked<ExamTypeRepository>;
     let command: ExamTypeRemoveCommand;
 
     beforeEach(() => {
         repository = {
             findOneAsync: jest.fn(),
             saveAsync: jest.fn(),
-        } as unknown as jest.Mocked<AggregateRepository<ExamTypeProps, ExamType>>;
+        } as unknown as jest.Mocked<ExamTypeRepository>;
 
-        command = new ExamTypeRemoveCommand(repository);
+        command = new ExamTypeRemoveCommandImpl(repository);
     });
 
     it("should successfully remove the exam type when the exam type exists", async () => {

@@ -6,7 +6,9 @@ import { UserRepository } from "../../repository/aggregate.repositories";
 export type UserAddAttributeCommandPayload = {
     userId: string;
 } & AddAttributeToUserPayload;
-export class UserAddAttributeCommand implements CommandHandlerAsync<UserAddAttributeCommandPayload, void> {
+export interface UserAddAttributeCommand extends CommandHandlerAsync<UserAddAttributeCommandPayload, void> { }
+
+export class UserAddAttributeCommandImpl implements UserAddAttributeCommand {
     constructor(
         private readonly repository: UserRepository
     ) { }

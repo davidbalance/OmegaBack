@@ -2,7 +2,7 @@
 import { OrderRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { OrderNotFoundError } from "@omega/medical/core/domain/order/errors/order.errors";
 import { Order } from "@omega/medical/core/domain/order/order.domain";
-import { OrderValidatedStatusCommand } from "../order-validated-status.command";
+import { OrderValidatedStatusCommand, OrderValidatedStatusCommandImpl } from "../order-validated-status.command";
 
 describe("OrderValidatedStatusCommand", () => {
     let repository: jest.Mocked<OrderRepository>;
@@ -14,7 +14,7 @@ describe("OrderValidatedStatusCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<OrderRepository>;
 
-        commandHandler = new OrderValidatedStatusCommand(repository);
+        commandHandler = new OrderValidatedStatusCommandImpl(repository);
     });
 
     it("should successfully change order status to 'created' when order is found", async () => {

@@ -4,10 +4,10 @@ import { InjectAggregateRepository } from "../../inject/aggregate-repository.inj
 import { TestCreateFromExternalSourceCommandToken } from "../../inject/command.inject";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { TestExternalConnectionRepository, TestInnerRepository } from "@omega/medical/application/repository/model.repositories";
-import { TestCreateFromExternalSourceCommand } from "@omega/medical/application/commands/test/test-create-from-external-source.command";
+import { TestCreateFromExternalSourceCommandImpl } from "@omega/medical/application/commands/test/test-create-from-external-source.command";
 
 @Injectable()
-class TestCreateFromExternalSourceNestCommand extends TestCreateFromExternalSourceCommand {
+class TestCreateFromExternalSourceNestCommand extends TestCreateFromExternalSourceCommandImpl {
     constructor(
         @InjectModelRepository("TestExternalConnection") externalConnectionRepository: TestExternalConnectionRepository,
         @InjectAggregateRepository("Test") aggregateRepository: TestAggregateRepository,

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Corporative } from "@omega/location/core/domain/corporative/corporative.domain";
 import { CorporativeNotFoundError } from "@omega/location/core/domain/corporative/errors/corporative.errors";
-import { BranchCreateCommand, BranchCreateCommandPayload } from "../branch-create.command";
+import { BranchCreateCommand, BranchCreateCommandImpl, BranchCreateCommandPayload } from "../branch-create.command";
 import { CorporativeRepository } from "@omega/location/application/repository/aggregate.repositories";
 
 describe("BranchCreateCommand", () => {
@@ -14,7 +14,7 @@ describe("BranchCreateCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<CorporativeRepository>;
 
-        command = new BranchCreateCommand(repository);
+        command = new BranchCreateCommandImpl(repository);
     });
 
     it("should successfully add a branch to an existing corporative", async () => {

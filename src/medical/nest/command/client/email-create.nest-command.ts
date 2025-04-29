@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { EmailCreateCommand } from "@omega/medical/application/commands/client/email-create.command";
+import { EmailCreateCommandImpl } from "@omega/medical/application/commands/client/email-create.command";
 import { ClientRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { InjectAggregateRepository } from "../../inject/aggregate-repository.inject";
 import { EmailCreateCommandToken } from "../../inject/command.inject";
 
 @Injectable()
-class EmailCreateNestCommand extends EmailCreateCommand {
+class EmailCreateNestCommand extends EmailCreateCommandImpl {
     constructor(
         @InjectAggregateRepository("Client") repository: ClientRepository
     ) {

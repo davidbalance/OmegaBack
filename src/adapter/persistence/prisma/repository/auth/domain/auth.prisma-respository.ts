@@ -7,7 +7,7 @@ import { AggregateEvent, SearchCriteria } from "@shared/shared/domain";
 import { Prisma } from "@prisma/client";
 import { AuthDomainMapper } from "../../../mapper/auth/domain/auth.domain-mapper";
 import { AuthApikeyRemovedEventPayload, AuthIsEvent, AuthLogoAddedEventPayload, AuthPasswordEditedEventPayload, AuthResourceAddedEventPayload, AuthResourceRemovedEventPayload, AuthTokenRemovedEventPayload } from "@omega/auth/core/domain/auth/events/auth.events";
-import { ApiKeyDomainMapper } from "../../../mapper/auth/domain/api_key.domain-mapper";
+import { ApiKeyDomainMapper } from "../../../mapper/auth/domain/api-key.domain-mapper";
 import { ApiKey } from "@omega/auth/core/domain/auth/api-key.domain";
 import { TokenDomainMapper } from "../../../mapper/auth/domain/token.domain-mapper";
 import { Token } from "@omega/auth/core/domain/auth/token.domain";

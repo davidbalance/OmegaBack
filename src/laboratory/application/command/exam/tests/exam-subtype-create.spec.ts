@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ExamTypeNotFoundError } from "@omega/laboratory/core/domain/exam/errors/exam-type.errors";
-import { ExamTypeProps, ExamType } from "@omega/laboratory/core/domain/exam/exam-type.domain";
-import { AggregateRepository } from "@shared/shared/providers";
-import { ExamSubtypeCreateCommand, ExamSubtypeCreateCommandPayload } from "../exam-subtype-create.command";
+import { ExamType } from "@omega/laboratory/core/domain/exam/exam-type.domain";
+import { ExamSubtypeCreateCommand, ExamSubtypeCreateCommandImpl, ExamSubtypeCreateCommandPayload } from "../exam-subtype-create.command";
+import { ExamTypeRepository } from "@omega/laboratory/application/repository/aggregate.repositories";
 
 describe("ExamSubtypeCreateCommand", () => {
-    let repository: jest.Mocked<AggregateRepository<ExamTypeProps, ExamType>>;
+    let repository: jest.Mocked<ExamTypeRepository>;
     let command: ExamSubtypeCreateCommand;
 
     beforeEach(() => {
         repository = {
             findOneAsync: jest.fn(),
             saveAsync: jest.fn(),
-        } as unknown as jest.Mocked<AggregateRepository<ExamTypeProps, ExamType>>;
+        } as unknown as jest.Mocked<ExamTypeRepository>;
 
-        command = new ExamSubtypeCreateCommand(repository);
+        command = new ExamSubtypeCreateCommandImpl(repository);
     });
 
     it("should successfully add a subtype to the exam type when the exam type exists", async () => {

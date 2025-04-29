@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ExamSubtypeOptionModel } from "@omega/laboratory/core/model/exam/exam-subtype-option.model";
 import { ExamTypeOptionModel } from "@omega/laboratory/core/model/exam/exam-type-option.model";
-import { ExamTypeFindOptionsQuery } from "../exam-type-find-options.query";
+import { ExamTypeFindOptionsQuery, ExamTypeFindOptionsQueryImpl } from "../exam-type-find-options.query";
 import { ExamSubtypeOptionRepository, ExamTypeOptionRepository } from "@omega/laboratory/application/repository/model.repositories";
 
 describe("ExamTypeFindOptionsQuery", () => {
@@ -18,7 +18,7 @@ describe("ExamTypeFindOptionsQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ExamTypeOptionRepository>;
 
-        handler = new ExamTypeFindOptionsQuery(subtypeRepository, typeRepository);
+        handler = new ExamTypeFindOptionsQueryImpl(subtypeRepository, typeRepository);
     });
 
     it("should return grouped exam type options with subtypes", async () => {

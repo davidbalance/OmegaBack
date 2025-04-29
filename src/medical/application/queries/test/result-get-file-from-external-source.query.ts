@@ -5,7 +5,10 @@ import { TestExternalKeyNotFoundError } from "@omega/medical/core/domain/test/er
 import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
 
 export type ResultGetFileFromExternalSourceQueryPayload = ExternalKeyProps;
-export class ResultGetFileFromExternalSourceQuery implements QueryHandlerAsync<ResultGetFileFromExternalSourceQueryPayload, Buffer> {
+
+export interface ResultGetFileFromExternalSourceQuery extends QueryHandlerAsync<ResultGetFileFromExternalSourceQueryPayload, Buffer> { }
+
+export class ResultGetFileFromExternalSourceQueryImpl implements ResultGetFileFromExternalSourceQuery {
     constructor(
         private readonly externalConnectionRepository: TestExternalConnectionRepository,
         private readonly getFileQuery: ResultGetFileQuery,

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { User } from "@omega/profile/core/domain/user/user.domain";
 import { AuthProvider } from "@shared/shared/providers/auth.provider";
-import { UserCreateCommand, UserCreateCommandPayload } from "../user-create.command";
+import { UserCreateCommand, UserCreateCommandImpl, UserCreateCommandPayload } from "../user-create.command";
 import { UserRepository } from "@omega/profile/application/repository/aggregate.repositories";
 import { UserConflictError } from "@omega/profile/core/domain/user/errors/user.errors";
 
@@ -22,7 +22,7 @@ describe("UserCreateCommand", () => {
             addLogo: jest.fn()
         } as unknown as jest.Mocked<AuthProvider>;
 
-        handler = new UserCreateCommand(repository, auth);
+        handler = new UserCreateCommandImpl(repository, auth);
     });
 
     it("should create a user with authentication details when the user does not already exist", async () => {

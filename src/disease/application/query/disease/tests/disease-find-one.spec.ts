@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { DiseaseRepository } from "@omega/disease/application/repository/model.repositories";
 import { DiseaseGroupNotFoundError } from "@omega/disease/core/domain/errors/disease-group.errors";
-import { DiseaseFindOneQuery, DiseaseFindOneQueryPayload } from "../disease-find-one.query";
+import { DiseaseFindOneQuery, DiseaseFindOneQueryImpl, DiseaseFindOneQueryPayload } from "../disease-find-one.query";
 import { DiseaseModel } from "@omega/disease/core/model/disease/disease.model";
 
 describe("DiseaseFindOneQuery", () => {
@@ -13,7 +13,7 @@ describe("DiseaseFindOneQuery", () => {
             findOneAsync: jest.fn()
         } as unknown as jest.Mocked<DiseaseRepository>;
 
-        query = new DiseaseFindOneQuery(repository);
+        query = new DiseaseFindOneQueryImpl(repository);
     });
 
     it("should return a disease when a valid diseaseId is found", async () => {

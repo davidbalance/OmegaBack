@@ -6,7 +6,9 @@ import { UserNotFoundError } from "@omega/profile/core/domain/user/errors/user.e
 export type UserFindOneQueryPayload = {
     userId: string;
 };
-export class UserFindOneQuery implements QueryHandlerAsync<UserFindOneQueryPayload, UserModel> {
+export interface UserFindOneQuery extends QueryHandlerAsync<UserFindOneQueryPayload, UserModel> { }
+
+export class UserFindOneQueryImpl implements UserFindOneQuery {
     constructor(
         private readonly repository: UserRepository
     ) { }

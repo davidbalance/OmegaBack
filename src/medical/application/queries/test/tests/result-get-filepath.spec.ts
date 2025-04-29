@@ -2,7 +2,7 @@
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { ResultGetFilepathQuery, ResultGetFilepathQueryPayload } from "../result-get-filepath.query";
+import { ResultGetFilepathQuery, ResultGetFilepathQueryImpl, ResultGetFilepathQueryPayload } from "../result-get-filepath.query";
 
 describe("ResultGetFilepathQuery", () => {
     let repository: jest.Mocked<ModelRepository<ResultFilepathModel>>;
@@ -13,7 +13,7 @@ describe("ResultGetFilepathQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<ResultFilepathModel>>;
 
-        handler = new ResultGetFilepathQuery(repository);
+        handler = new ResultGetFilepathQueryImpl(repository);
     });
 
     it("should return the filepath when testId is valid", async () => {

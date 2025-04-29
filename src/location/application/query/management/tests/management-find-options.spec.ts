@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ManagementOptionModel } from "@omega/location/core/models/management/management-option.model";
-import { ManagementFindOptionsQuery } from "../management-find-options.query";
+import { ManagementFindOptionsQuery, ManagementFindOptionsQueryImpl } from "../management-find-options.query";
 import { ManagementOptionRepository } from "@omega/location/application/repository/model.repositories";
 
 describe("ManagementFindOptionsQuery", () => {
@@ -12,7 +12,7 @@ describe("ManagementFindOptionsQuery", () => {
             findManyAsync: jest.fn(),
         } as unknown as jest.Mocked<ManagementOptionRepository>;
 
-        handler = new ManagementFindOptionsQuery(repository);
+        handler = new ManagementFindOptionsQueryImpl(repository);
     });
 
     it("should return management options when data exists", async () => {

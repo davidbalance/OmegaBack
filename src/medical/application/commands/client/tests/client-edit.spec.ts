@@ -2,7 +2,7 @@
 import { ClientProps, Client } from "@omega/medical/core/domain/client/client.domain";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { AggregateRepository } from "@shared/shared/providers";
-import { ClientEditCommand, ClientEditCommandPayload } from "../client-edit.command";
+import { ClientEditCommand, ClientEditCommandImpl, ClientEditCommandPayload } from "../client-edit.command";
 
 describe("ClientEditCommand", () => {
     let repository: jest.Mocked<AggregateRepository<ClientProps, Client>>;
@@ -14,7 +14,7 @@ describe("ClientEditCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<AggregateRepository<ClientProps, Client>>;
 
-        handler = new ClientEditCommand(repository);
+        handler = new ClientEditCommandImpl(repository);
     });
 
     it("should edit the client when client exists", async () => {

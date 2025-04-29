@@ -6,7 +6,9 @@ import { ReportNotFoundError } from "@omega/medical/core/domain/test/errors/repo
 export type ReportFindOneQueryPayload = {
     testId: string;
 }
-export class ReportFindOneQuery implements QueryHandlerAsync<ReportFindOneQueryPayload, ReportModel> {
+export interface ReportFindOneQuery extends QueryHandlerAsync<ReportFindOneQueryPayload, ReportModel> { }
+
+export class ReportFindOneQueryImpl implements ReportFindOneQuery {
     constructor(
         private readonly repository: ReportRepository
     ) { }

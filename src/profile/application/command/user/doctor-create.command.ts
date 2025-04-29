@@ -5,7 +5,9 @@ import { CommandHandlerAsync } from "@shared/shared/application";
 import { UserRepository } from "../../repository/aggregate.repositories";
 
 export type DoctorCreateCommandPayload = CreateUserPayload;
-export class DoctorCreateCommand implements CommandHandlerAsync<DoctorCreateCommandPayload, void> {
+export interface DoctorCreateCommand extends CommandHandlerAsync<DoctorCreateCommandPayload, void> { }
+
+export class DoctorCreateCommandImpl implements DoctorCreateCommand {
     constructor(
         private readonly repository: UserRepository
     ) { }

@@ -3,7 +3,7 @@ import { BranchExternalConnectionModel } from "@omega/location/core/models/corpo
 import { BranchModel } from "@omega/location/core/models/corporative/branch.model";
 import { BranchExternalKeyNotFoundError } from "@omega/location/core/domain/corporative/errors/branch-external-key.errors";
 import { BranchNotFoundError } from "@omega/location/core/domain/corporative/errors/branch.errors";
-import { BranchFindOneByExternalKeyQuery, BranchFindOneByExternalKeyQueryPayload } from "../branch.find-one-by-external-key.query";
+import { BranchFindOneByExternalKeyQuery, BranchFindOneByExternalKeyQueryImpl, BranchFindOneByExternalKeyQueryPayload } from "../branch.find-one-by-external-key.query";
 
 describe("BranchFindOneByExternalKeyQuery", () => {
     let externalConnectionRepository: jest.Mocked<BranchExternalConnectionRepository>;
@@ -19,7 +19,7 @@ describe("BranchFindOneByExternalKeyQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<BranchRepository>;
 
-        handler = new BranchFindOneByExternalKeyQuery(externalConnectionRepository, modelRepository);
+        handler = new BranchFindOneByExternalKeyQueryImpl(externalConnectionRepository, modelRepository);
     });
 
     it("Should return an branch model when the branch exists", async () => {

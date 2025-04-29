@@ -1,5 +1,5 @@
 import { CorporativeExternalConnectionRepository, CorporativeRepository } from "@omega/location/application/repository/model.repositories";
-import { CorporativeFindOneByExternalKeyQuery, CorporativeFindOneByExternalKeyQueryPayload } from "../corporative.find-one-by-external-key.query";
+import { CorporativeFindOneByExternalKeyQuery, CorporativeFindOneByExternalKeyQueryImpl, CorporativeFindOneByExternalKeyQueryPayload } from "../corporative.find-one-by-external-key.query";
 import { CorporativeModel } from "@omega/location/core/models/corporative/corporative.model";
 import { CorporativeExternalConnectionModel } from "@omega/location/core/models/corporative/corporative-external-connection.model";
 import { CorporativeExternalKeyNotFoundError } from "@omega/location/core/domain/corporative/errors/corporative-external-key.errors";
@@ -19,7 +19,7 @@ describe("CorporativeFindOneByExternalKeyQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<CorporativeRepository>;
 
-        handler = new CorporativeFindOneByExternalKeyQuery(externalConnectionRepository, modelRepository);
+        handler = new CorporativeFindOneByExternalKeyQueryImpl(externalConnectionRepository, modelRepository);
     });
 
     it("Should return an corporative model when the corporative exists", async () => {

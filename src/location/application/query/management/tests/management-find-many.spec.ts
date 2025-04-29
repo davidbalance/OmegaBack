@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ManagementRepository } from "@omega/location/application/repository/model.repositories";
-import { ManagementFindManyQuery, ManagementFindManyQueryPayload } from "../management-find-many.query";
+import { ManagementFindManyQuery, ManagementFindManyQueryImpl, ManagementFindManyQueryPayload } from "../management-find-many.query";
 import { ManagementModel } from "@omega/location/core/models/management/management.model";
 
 describe("ManagementFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("ManagementFindManyQuery", () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<ManagementRepository>;
 
-        handler = new ManagementFindManyQuery(repository);
+        handler = new ManagementFindManyQueryImpl(repository);
     });
 
     it("should successfully fetch managements with pagination and ordering", async () => {

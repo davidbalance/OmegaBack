@@ -2,10 +2,10 @@ import { Injectable, Provider } from "@nestjs/common";
 import { ClientRecordRepository } from "@omega/medical/application/repository/model.repositories";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { ClientRecordFindManyQueryToken } from "../../inject/query.inject";
-import { ClientRecordFindManyQuery } from "@omega/medical/application/queries/client/client-record-find-many.query";
+import { ClientRecordFindManyQueryImpl } from "@omega/medical/application/queries/client/client-record-find-many.query";
 
 @Injectable()
-class ClientRecordFindManyNestQuery extends ClientRecordFindManyQuery {
+class ClientRecordFindManyNestQuery extends ClientRecordFindManyQueryImpl {
     constructor(
         @InjectModelRepository("ClientRecord") repository: ClientRecordRepository
     ) {

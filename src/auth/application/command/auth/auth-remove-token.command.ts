@@ -7,7 +7,9 @@ import { AuthJwtPayload } from "../../type/auth.type";
 export type AuthRemoveTokenCommandPayload = {
     token: string;
 };
-export class AuthRemoveTokenCommand implements CommandHandlerAsync<AuthRemoveTokenCommandPayload, void> {
+export interface AuthRemoveTokenCommand extends CommandHandlerAsync<AuthRemoveTokenCommandPayload, void> { }
+
+export class AuthRemoveTokenCommandImpl implements AuthRemoveTokenCommand {
     constructor(
         private readonly repository: AuthRepository,
         private readonly jwt: JwtProvider,

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ClientDoctorRepository } from "@omega/medical/application/repository/model.repositories";
-import { ClientDoctorFindManyQuery, ClientDoctorFindManyQueryPayload } from "../client-doctor-find-many.query";
+import { ClientDoctorFindManyQuery, ClientDoctorFindManyQueryImpl, ClientDoctorFindManyQueryPayload } from "../client-doctor-find-many.query";
 import { ClientDoctorModel } from "@omega/medical/core/model/client/client-doctor.model";
 
 describe("ClientDoctorFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("ClientDoctorFindManyQuery", () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<ClientDoctorRepository>;
 
-        queryHandler = new ClientDoctorFindManyQuery(repository);
+        queryHandler = new ClientDoctorFindManyQueryImpl(repository);
     });
 
     it("should fetch client doctor data with filter and pagination", async () => {

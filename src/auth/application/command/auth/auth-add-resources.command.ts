@@ -8,7 +8,9 @@ export type AuthAddResourcesCommandPayload = {
     authId: string;
     resourceIds: string[];
 };
-export class AuthAddResourcesCommand implements CommandHandlerAsync<AuthAddResourcesCommandPayload, void> {
+export interface AuthAddResourcesCommand extends CommandHandlerAsync<AuthAddResourcesCommandPayload, void> { }
+
+export class AuthAddResourcesCommandImpl implements AuthAddResourcesCommand {
     constructor(
         private readonly repository: AuthRepository,
         private readonly resourceRepository: ResourceRepository

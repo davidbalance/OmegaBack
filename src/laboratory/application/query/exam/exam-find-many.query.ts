@@ -7,7 +7,9 @@ export type ExamFindManyQueryPayload = {
     subtypeId: string;
     filter?: string;
 } & Order<ExamModel>
-export class ExamFindManyQuery implements QueryHandlerAsync<ExamFindManyQueryPayload, ExamModel[]> {
+export interface ExamFindManyQuery extends QueryHandlerAsync<ExamFindManyQueryPayload, ExamModel[]> { }
+
+export class ExamFindManyQueryImpl implements ExamFindManyQuery {
     constructor(
         private readonly repository: ExamRepository
     ) { }

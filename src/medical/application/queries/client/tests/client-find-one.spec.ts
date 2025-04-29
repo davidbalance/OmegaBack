@@ -2,7 +2,7 @@
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
 import { ClientModel } from "@omega/medical/core/model/client/client.model";
 import { ModelRepository } from "@shared/shared/providers";
-import { ClientFindOneQuery, ClientFindOneQueryPayload } from "../client-find-one.query";
+import { ClientFindOneQuery, ClientFindOneQueryImpl, ClientFindOneQueryPayload } from "../client-find-one.query";
 
 describe("ClientFindOneQuery", () => {
     let repository: jest.Mocked<ModelRepository<ClientModel>>;
@@ -13,7 +13,7 @@ describe("ClientFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ModelRepository<ClientModel>>;
 
-        handler = new ClientFindOneQuery(repository);
+        handler = new ClientFindOneQueryImpl(repository);
     });
 
     it("should return a client model when client exists", async () => {

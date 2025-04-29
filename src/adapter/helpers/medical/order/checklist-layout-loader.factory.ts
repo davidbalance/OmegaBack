@@ -298,20 +298,6 @@ export const checklistLayoutLoader = (data: OrderChecklistModel[], image: string
                     ]
                 }
             }
-            /*             {
-                            stack: [
-                                {
-                                    text: '',
-                                    alignment: 'center',
-                                    style: 'signature'
-                                },
-                                {
-                                    text: 'FIRMA DEL PACIENTE',
-                                    alignment: 'center',
-                                    style: 'itemText'
-                                },
-                            ],
-                        } */
         ],
         styles: {
             header: {

@@ -5,7 +5,9 @@ import { OrderNotFoundError } from "@omega/medical/core/domain/order/errors/orde
 export type OrderCreatedStatusCommandPayload = {
     orderId: string;
 };
-export class OrderCreatedStatusCommand implements CommandHandlerAsync<OrderCreatedStatusCommandPayload, void> {
+export interface OrderCreatedStatusCommand extends CommandHandlerAsync<OrderCreatedStatusCommandPayload, void> { }
+
+export class OrderCreatedStatusCommandImpl implements OrderCreatedStatusCommand {
     constructor(
         private readonly repository: OrderRepository,
     ) { }

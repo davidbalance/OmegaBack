@@ -12,7 +12,9 @@ export type TestFile = {
 export type TestGetZipQueryPayload = {
     values: TestFile[]
 }
-export class TestGetZipQuery implements QueryHandlerAsync<TestGetZipQueryPayload, Buffer> {
+export interface TestGetZipQuery extends QueryHandlerAsync<TestGetZipQueryPayload, Buffer> { }
+
+export class TestGetZipQueryImpl implements TestGetZipQuery {
     constructor(
         private readonly zipper: ZipProvider,
         private readonly resultFileQuery: ResultGetFileQuery,

@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { JobPositionFindManyQuery } from "@omega/location/application/query/job-position/job-position-find-many.query";
+import { JobPositionFindManyQueryImpl } from "@omega/location/application/query/job-position/job-position-find-many.query";
 import { InjectModelRepository } from "../../inject/model-repository.inject";
 import { JobPositionRepository } from "@omega/location/application/repository/model.repositories";
 import { JobPositionFindManyQueryToken } from "../../inject/query.inject";
 
 @Injectable()
-class JobPositionFindManyNestQuery extends JobPositionFindManyQuery {
+class JobPositionFindManyNestQuery extends JobPositionFindManyQueryImpl {
     constructor(
         @InjectModelRepository("JobPosition") repository: JobPositionRepository
     ) {

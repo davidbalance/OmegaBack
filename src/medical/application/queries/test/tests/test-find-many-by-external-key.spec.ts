@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { OrderExternalConnectionRepository } from "@omega/medical/application/repository/model.repositories";
 import { TestModel } from "@omega/medical/core/model/test/test.model";
-import { TestFindManyByExternalKeyQuery, TestFindManyByExternalKeyQueryPayload } from "../test-find-many-by-external-key.query";
+import { TestFindManyByExternalKeyQuery, TestFindManyByExternalKeyQueryImpl, TestFindManyByExternalKeyQueryPayload } from "../test-find-many-by-external-key.query";
 import { OrderExternalConnectionModel } from "@omega/medical/core/model/order/order-external-connection.model";
 import { TestFindManyQuery } from "../test-find-many.query";
 import { OrderExternalKeyNotFoundError } from "@omega/medical/core/domain/order/errors/order-external-key.errors";
@@ -20,7 +20,7 @@ describe("TestFindManyByExternalKeyQuery", () => {
             handleAsync: jest.fn(),
         } as unknown as jest.Mocked<TestFindManyQuery>;
 
-        handler = new TestFindManyByExternalKeyQuery(externalConnectionRepository, testQuery);
+        handler = new TestFindManyByExternalKeyQueryImpl(externalConnectionRepository, testQuery);
     });
 
     it("Should return an order model when the order exists", async () => {

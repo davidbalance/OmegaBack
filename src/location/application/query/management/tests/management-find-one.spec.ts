@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ManagementNotFoundError } from "@omega/location/core/domain/management/errors/management.errors";
 import { ManagementModel } from "@omega/location/core/models/management/management.model";
-import { ManagementFindOneQuery, ManagementFindOneQueryPayload } from "../management-find-one.query";
+import { ManagementFindOneQuery, ManagementFindOneQueryImpl, ManagementFindOneQueryPayload } from "../management-find-one.query";
 import { ManagementRepository } from "@omega/location/application/repository/model.repositories";
 
 describe("ManagementFindOneQuery", () => {
@@ -13,7 +13,7 @@ describe("ManagementFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ManagementRepository>;
 
-        handler = new ManagementFindOneQuery(repository);
+        handler = new ManagementFindOneQueryImpl(repository);
     });
 
     it("should retrieve management entity by ID when it exists", async () => {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { TestRepository } from "@omega/medical/application/repository/aggregate.repositories";
-import { TestCheckCommand } from "../test-check.command";
+import { TestCheckCommand, TestCheckCommandImpl } from "../test-check.command";
 import { Test } from "@omega/medical/core/domain/test/test.domain";
 import { TestNotFoundError } from "@omega/medical/core/domain/test/errors/test.errors";
 
@@ -14,7 +14,7 @@ describe("TestCheckCommand", () => {
             saveAsync: jest.fn(),
         } as unknown as jest.Mocked<TestRepository>;
 
-        commandHandler = new TestCheckCommand(repository);
+        commandHandler = new TestCheckCommandImpl(repository);
     });
 
     it("should successfully check and save the test", async () => {

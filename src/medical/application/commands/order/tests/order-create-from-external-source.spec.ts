@@ -3,7 +3,7 @@ import { OrderRepository } from "@omega/medical/application/repository/aggregate
 import { ClientRepository, OrderExternalConnectionRepository } from "@omega/medical/application/repository/model.repositories";
 import { ClientModel } from "@omega/medical/core/model/client/client.model";
 import { ClientNotFoundError } from "@omega/medical/core/domain/client/errors/client.errors";
-import { OrderCreateFromExternalSourceCommand, OrderCreateFromExternalSourceCommandPayload } from "../order-create-from-external-source.command";
+import { OrderCreateFromExternalSourceCommand, OrderCreateFromExternalSourceCommandImpl, OrderCreateFromExternalSourceCommandPayload } from "../order-create-from-external-source.command";
 import { OrderExternalConnectionModel } from "@omega/medical/core/model/order/order-external-connection.model";
 import { OrderExternalKeyConflictError } from "@omega/medical/core/domain/order/errors/order-external-key.errors";
 
@@ -26,7 +26,7 @@ describe("OrderCreateFromExternalSourceCommand", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<ClientRepository>;
 
-        commandHandler = new OrderCreateFromExternalSourceCommand(
+        commandHandler = new OrderCreateFromExternalSourceCommandImpl(
             externalConnectionRepository,
             aggregateRepository,
             clientRepository

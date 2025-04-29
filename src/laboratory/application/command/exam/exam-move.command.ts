@@ -7,7 +7,9 @@ export type ExamMoveCommandPayload = {
     fromTypeId: string;
     toTypeId: string;
 } & MoveExamPayload;
-export class ExamMoveCommand implements CommandHandlerAsync<ExamMoveCommandPayload, void> {
+export interface ExamMoveCommand extends CommandHandlerAsync<ExamMoveCommandPayload, void> { }
+
+export class ExamMoveCommandImpl implements ExamMoveCommand {
     constructor(
         private readonly repository: ExamTypeRepository
     ) { }

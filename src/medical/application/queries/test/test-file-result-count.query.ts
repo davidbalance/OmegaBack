@@ -6,7 +6,11 @@ export type TestFileResultCount = {
     found: number;
     notFound: number;
 }
-export class TestFileResultCountQuery implements QueryHandlerAsync<undefined, TestFileResultCount> {
+export interface TestFileResultCountQuery extends QueryHandlerAsync<undefined, TestFileResultCount> {
+    handleAsync(): Promise<TestFileResultCount>;
+}
+
+export class TestFileResultCountQueryImpl implements TestFileResultCountQuery {
     constructor(
         private readonly repository: TestFileResultRepository,
     ) { }

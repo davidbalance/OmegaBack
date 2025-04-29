@@ -3,7 +3,7 @@ import { Corporative } from "@omega/location/core/domain/corporative/corporative
 import { CorporativeNotFoundError } from "@omega/location/core/domain/corporative/errors/corporative.errors";
 import { CorporativeRepository } from "@omega/location/application/repository/aggregate.repositories";
 import { CompanyExternalConnectionRepository, CompanyRepository } from "@omega/location/application/repository/model.repositories";
-import { CompanyCreateFromExternalSourceCommand, CompanyCreateFromExternalSourceCommandPayload } from "../company-create-from-external-source.command";
+import { CompanyCreateFromExternalSourceCommand, CompanyCreateFromExternalSourceCommandImpl, CompanyCreateFromExternalSourceCommandPayload } from "../company-create-from-external-source.command";
 import { CompanyModel } from "@omega/location/core/models/corporative/company.model";
 import { CompanyExternalConnectionModel } from "@omega/location/core/models/corporative/company-external-connection.model";
 import { CompanyExternalKeyConflictError } from "@omega/location/core/domain/corporative/errors/company-external-key.errors";
@@ -28,7 +28,7 @@ describe("CompanyCreateFromExternalSourceCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<CorporativeRepository>;
 
-        handler = new CompanyCreateFromExternalSourceCommand(
+        handler = new CompanyCreateFromExternalSourceCommandImpl(
             externalConnectionRepository,
             modelRepository,
             agggregateRepository

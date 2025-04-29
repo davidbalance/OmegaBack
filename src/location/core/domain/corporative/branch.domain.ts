@@ -1,6 +1,6 @@
 import { EntityProps, Entity } from "@shared/shared/domain";
 import { AddBranchExternalKeyPayload, CreateBranchPayload } from "./payloads/branch.payloads";
-import { BranchExternalKey } from "./value_objects/branch-external-key.value-object";
+import { BranchExternalKey } from "./value-objects/branch-external-key.value-object";
 import { ExternalKeyProps } from "@shared/shared/domain/external-key.value-object";
 import { BranchExternalKeyConflictError } from "./errors/branch-external-key.errors";
 

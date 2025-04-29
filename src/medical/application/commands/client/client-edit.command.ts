@@ -7,7 +7,9 @@ import { EditClientPayload } from "@omega/medical/core/domain/client/payloads/cl
 export type ClientEditCommandPayload = EditClientPayload & {
     patientDni: string;
 };
-export class ClientEditCommand implements CommandHandlerAsync<ClientEditCommandPayload, void> {
+export interface ClientEditCommand extends CommandHandlerAsync<ClientEditCommandPayload, void> { }
+
+export class ClientEditCommandImpl implements ClientEditCommand {
     constructor(
         private readonly repository: AggregateRepository<ClientProps, Client>
     ) { }

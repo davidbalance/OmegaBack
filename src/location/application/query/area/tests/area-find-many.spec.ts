@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { AreaRepository } from "@omega/location/application/repository/model.repositories";
-import { AreaFindManyQuery, AreaFindManyQueryPayload } from "../area-find-many.query";
+import { AreaFindManyQuery, AreaFindManyQueryImpl, AreaFindManyQueryPayload } from "../area-find-many.query";
 import { AreaModel } from "@omega/location/core/models/area/area.model";
 
 describe("AreaFindManyQuery", () => {
@@ -13,7 +13,7 @@ describe("AreaFindManyQuery", () => {
             countAsync: jest.fn(),
         } as unknown as jest.Mocked<AreaRepository>;
 
-        handler = new AreaFindManyQuery(repository);
+        handler = new AreaFindManyQueryImpl(repository);
     });
 
     it("should return a paginated list of areas when a valid query is provided", async () => {

@@ -2,7 +2,7 @@
 import { UserNotFoundError } from "@omega/profile/core/domain/user/errors/user.errors";
 import { User } from "@omega/profile/core/domain/user/user.domain";
 import { AuthProvider } from "@shared/shared/providers/auth.provider";
-import { UserAddAuthCommand, UserAddAuthCommandPayload } from "../user-add-auth.command";
+import { UserAddAuthCommand, UserAddAuthCommandImpl, UserAddAuthCommandPayload } from "../user-add-auth.command";
 import { UserRepository } from "@omega/profile/application/repository/aggregate.repositories";
 
 describe("UserAddAuthCommand", () => {
@@ -21,7 +21,7 @@ describe("UserAddAuthCommand", () => {
             addResources: jest.fn(),
         } as unknown as jest.Mocked<AuthProvider>;
 
-        handler = new UserAddAuthCommand(repository, auth);
+        handler = new UserAddAuthCommandImpl(repository, auth);
     });
 
     it("should add authentication to the user when the user exists", async () => {

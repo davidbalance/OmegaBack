@@ -1,11 +1,11 @@
 import { Injectable, Provider } from "@nestjs/common";
-import { ExamSubtypeFindOneQuery } from "@omega/laboratory/application/query/exam/exam-subtype-find-one.query";
+import { ExamSubtypeFindOneQueryImpl } from "@omega/laboratory/application/query/exam/exam-subtype-find-one.query";
 import { ExamSubtypeRepository } from "@omega/laboratory/application/repository/model.repositories";
 import { InjectModelRepository } from "../inject/model-repository.inject";
 import { ExamSubtypeFindOneQueryToken } from "../inject/query.inject";
 
 @Injectable()
-class ExamSubtypeFindOneNestQuery extends ExamSubtypeFindOneQuery {
+class ExamSubtypeFindOneNestQuery extends ExamSubtypeFindOneQueryImpl {
     constructor(
         @InjectModelRepository("ExamSubtype") repository: ExamSubtypeRepository
     ) {

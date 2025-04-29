@@ -3,7 +3,7 @@ import { AuthRepository } from "@omega/auth/application/repository/auth/aggregat
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
 import { AuthNotFoundError } from "@omega/auth/core/domain/auth/errors/auth.errors";
 import { PasswordProvider } from "@shared/shared/providers/password.provider";
-import { AuthEditPasswordCommand, AuthEditPasswordCommandPayload } from "../auth-edit-password.command";
+import { AuthEditPasswordCommand, AuthEditPasswordCommandImpl, AuthEditPasswordCommandPayload } from "../auth-edit-password.command";
 
 describe("AuthEditPasswordCommand", () => {
     let repository: jest.Mocked<AuthRepository>;
@@ -20,7 +20,7 @@ describe("AuthEditPasswordCommand", () => {
             hash: jest.fn(),
         } as unknown as jest.Mocked<PasswordProvider>;
 
-        command = new AuthEditPasswordCommand(repository, hash);
+        command = new AuthEditPasswordCommandImpl(repository, hash);
     });
 
     it("should update the password when auth exists", async () => {

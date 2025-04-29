@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { UserAttributeModel } from "@omega/profile/core/model/user/user-attribute.model";
-import { UserAttributeFindOneQuery } from "../user-attribute-find-one.query";
+import { UserAttributeFindOneQuery, UserAttributeFindOneQueryImpl } from "../user-attribute-find-one.query";
 import { UserAttributeRepository } from "@omega/profile/application/repository/model.repositories";
 import { AttributeNotFoundError } from "@omega/profile/core/domain/user/errors/attribute.errors";
 
@@ -13,7 +13,7 @@ describe("UserAttributeFindOneQuery", () => {
             findOneAsync: jest.fn(),
         } as unknown as jest.Mocked<UserAttributeRepository>;
 
-        handler = new UserAttributeFindOneQuery(repository);
+        handler = new UserAttributeFindOneQueryImpl(repository);
     });
 
     it("should return the user attribute when found", async () => {

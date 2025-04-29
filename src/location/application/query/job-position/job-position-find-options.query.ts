@@ -2,7 +2,11 @@ import { QueryHandlerAsync } from "@shared/shared/application";
 import { Option } from "@shared/shared/domain/option";
 import { JobPositionOptionRepository } from "../../repository/model.repositories";
 
-export class JobPositionFindOptionsQuery implements QueryHandlerAsync<undefined, Option[]> {
+export interface JobPositionFindOptionsQuery extends QueryHandlerAsync<undefined, Option[]> {
+    handleAsync(): Promise<Option[]>;
+}
+
+export class JobPositionFindOptionsQueryImpl implements JobPositionFindOptionsQuery {
     constructor(
         private readonly repository: JobPositionOptionRepository
     ) { }

@@ -7,8 +7,9 @@ export type DiseaseReportRemoveCommandPayload = {
     testId: string;
     diseaseId: string;
 }
-export class DiseaseReportRemoveCommand implements CommandHandlerAsync<DiseaseReportRemoveCommandPayload, void> {
+export interface DiseaseReportRemoveCommand extends CommandHandlerAsync<DiseaseReportRemoveCommandPayload, void> { }
 
+export class DiseaseReportRemoveCommandImpl implements DiseaseReportRemoveCommand {
     constructor(
         private readonly repository: AggregateRepository<TestProps, Test>
     ) { }

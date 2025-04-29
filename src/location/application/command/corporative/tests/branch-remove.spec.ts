@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Corporative } from "@omega/location/core/domain/corporative/corporative.domain";
 import { CorporativeNotFoundError } from "@omega/location/core/domain/corporative/errors/corporative.errors";
-import { BranchRemoveCommand, BranchRemoveCommandPayload } from "../branch-remove.command";
+import { BranchRemoveCommand, BranchRemoveCommandImpl, BranchRemoveCommandPayload } from "../branch-remove.command";
 import { CorporativeRepository } from "@omega/location/application/repository/aggregate.repositories";
 
 describe("BranchRemoveCommand", () => {
@@ -14,7 +14,7 @@ describe("BranchRemoveCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<CorporativeRepository>;
 
-        command = new BranchRemoveCommand(repository);
+        command = new BranchRemoveCommandImpl(repository);
     });
 
     it("should successfully remove a branch from an existing corporative", async () => {

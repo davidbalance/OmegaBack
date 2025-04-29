@@ -5,7 +5,9 @@ import { CommandHandlerAsync } from "@shared/shared/application";
 import { AreaRepository } from "../../repository/aggregate.repositories";
 
 export type AreaCreateCommandPayload = CreateAreaPayload;
-export class AreaCreateCommand implements CommandHandlerAsync<AreaCreateCommandPayload, void> {
+export interface AreaCreateCommand extends CommandHandlerAsync<AreaCreateCommandPayload, void> { }
+
+export class AreaCreateCommandImpl implements AreaCreateCommand {
     constructor(
         private readonly repository: AreaRepository
     ) { }

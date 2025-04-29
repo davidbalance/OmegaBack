@@ -1,9 +1,9 @@
 import { Auth } from "@omega/auth/core/domain/auth/auth.domain";
 import { ApiKey as PrismaApiKey, Token as PrismaToken, AuthResource as PrismaAuthResource, Auth as PrismaAuth, Prisma } from "@prisma/client";
-import { ApiKeyDomainMapper } from "./api_key.domain-mapper";
+import { ApiKeyDomainMapper } from "./api-key.domain-mapper";
 import { TokenDomainMapper } from "./token.domain-mapper";
 
-type PrismaAuthWithApiKeysAndToken = PrismaAuth & {
+export type PrismaAuthWithApiKeysAndToken = PrismaAuth & {
     apikeys: PrismaApiKey[],
     token: PrismaToken | null | undefined,
     authResource: PrismaAuthResource[]

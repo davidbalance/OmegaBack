@@ -7,7 +7,9 @@ export type CompanyMoveCommandPayload = {
     toCorporativeId: string;
     companyId: string
 };
-export class CompanyMoveCommand implements CommandHandlerAsync<CompanyMoveCommandPayload, void> {
+export interface CompanyMoveCommand extends CommandHandlerAsync<CompanyMoveCommandPayload, void> { }
+
+export class CompanyMoveCommandImpl implements CompanyMoveCommand {
     constructor(
         private readonly repository: CorporativeRepository
     ) { }

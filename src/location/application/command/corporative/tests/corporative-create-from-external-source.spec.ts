@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Corporative } from "@omega/location/core/domain/corporative/corporative.domain";
 import { CorporativeRepository } from "@omega/location/application/repository/aggregate.repositories";
-import { CorporativeCreateFromExternalSourceCommand, CorporativeCreateFromExternalSourceCommandPayload } from "../corporative-create-from-external-source.command";
+import { CorporativeCreateFromExternalSourceCommand, CorporativeCreateFromExternalSourceCommandImpl, CorporativeCreateFromExternalSourceCommandPayload } from "../corporative-create-from-external-source.command";
 import { CorporativeExternalConnectionRepository } from "@omega/location/application/repository/model.repositories";
 import { CorporativeExternalConnectionModel } from "@omega/location/core/models/corporative/corporative-external-connection.model";
 import { CorporativeExternalKeyConflictError } from "@omega/location/core/domain/corporative/errors/corporative-external-key.errors";
@@ -21,7 +21,7 @@ describe("CorporativeCreateFromExternalSourceCommand", () => {
             saveAsync: jest.fn()
         } as unknown as jest.Mocked<CorporativeRepository>;
 
-        handler = new CorporativeCreateFromExternalSourceCommand(externalConnectionRepository, aggregateRepository);
+        handler = new CorporativeCreateFromExternalSourceCommandImpl(externalConnectionRepository, aggregateRepository);
     });
 
     it("should successfully create a new corporative and assigning an external key", async () => {
