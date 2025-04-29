@@ -39,7 +39,7 @@ export class OrderMassiveLoadSpreadSheetMapper {
         } else if (typeof value === 'string') {
             return value.padStart(10, '0');
         }
-        throw new BadRequestException('Invalid dni');
+        throw new BadRequestException(`Invalid dni=${value}`);
     }
 
     public static validateRuc(value: unknown): string {
@@ -48,6 +48,6 @@ export class OrderMassiveLoadSpreadSheetMapper {
         } else if (typeof value === 'string') {
             return value;
         }
-        throw new BadRequestException('Invalid ruc');
+        throw new BadRequestException(`Invalid ruc=${value}`);
     }
 }

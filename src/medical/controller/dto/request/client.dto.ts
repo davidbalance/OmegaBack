@@ -64,14 +64,14 @@ export class ClientCreateRequestDto implements ClientCreateCommandPayload {
 
     @IsString()
     @IsNotEmpty()
-    @Length(10)
+    @Length(9, 10)
     public readonly patientDni: string;
 }
 
 export class ClientEmailCreateRequestDto implements EmailCreateCommandPayload {
     @IsString()
     @IsNotEmpty()
-    @Length(10)
+    @Length(9, 10)
     public readonly patientDni: string;
 
     @IsEmail()

@@ -7,6 +7,7 @@ import { IsArray, IsEmail, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString,
 export class OrderCreateRequestDto implements OrderCreateCommandPayload {
     @IsString()
     @IsNotEmpty()
+    @Length(9, 10)
     public readonly patientDni: string;
 
     @IsString()
@@ -69,7 +70,7 @@ class MassiveTestRequestDto implements Omit<TestCreateCommandPayload, 'orderId'>
 export class OrderMassiveLoadRequestDto implements OrderCreateCommandPayload {
     @IsString()
     @IsNotEmpty()
-    @Length(10, 10)
+    @Length(9, 10)
     public readonly patientDni: string;
 
     @IsString()
