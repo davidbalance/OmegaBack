@@ -4,7 +4,7 @@ import { Reflector } from "@nestjs/core";
 export function setupGlobalPipesAndInterceptors<T>(app: INestApplication<T>) {
     app.useGlobalPipes(new ValidationPipe({
         whitelist: true,
-        forbidNonWhitelisted: true,
+        // forbidNonWhitelisted: true,
         transform: true,
         transformOptions: {
             enableImplicitConversion: true,
