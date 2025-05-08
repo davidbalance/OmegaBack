@@ -42,7 +42,8 @@ export class CreateOrderFromExternalSourceDto
         postOcupacional: "Post-Ocupacional",
         periodico: "Periodico",
         preOcupacional: "Pre-Ocupacional",
-        especial: "Especial"
+        especial: "Especial",
+        consultaExterna: "Consulta Externa",
     })
     public readonly orderProcess: string;
 
