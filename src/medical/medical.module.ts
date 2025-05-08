@@ -109,6 +109,7 @@ import { TestExternalNotificationDispatcherProvider } from "./nest/notification-
 import { PatientExternalNotificationDispatcherProvider } from "./nest/notification-dispatcher/patient-external.nest-notification-dispatcher";
 import { CreateManyTestFromExternalSourceServiceProvider } from "./nest/service/create-many-test-from-external-source.nest-service";
 import { TestFindManyByExternalKeyQueryProvider } from "./nest/query/test/test-find-many-by-external-key.query";
+import { OrderUpdateProcessCommandProvider } from "./nest/command/order/order-create.nest-command copy";
 
 @Module({
     imports: [
@@ -173,6 +174,7 @@ import { TestFindManyByExternalKeyQueryProvider } from "./nest/query/test/test-f
         OrderCreateManyCommandProvider,
         OrderCreateFromExternalSourceCommandProvider,
         OrderCreateCommandProvider,
+        OrderUpdateProcessCommandProvider,
         OrderCreatedStatusCommandProvider,
         OrderSendMailCommandProvider,
         OrderValidatedStatusCommandProvider,

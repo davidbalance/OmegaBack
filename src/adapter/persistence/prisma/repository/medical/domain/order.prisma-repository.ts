@@ -5,7 +5,7 @@ import { PrismaFilterMapper } from "../../../filter-mapper";
 import { Prisma } from "@prisma/client";
 import { Order, OrderProps } from "@omega/medical/core/domain/order/order.domain";
 import { OrderRepository } from "@omega/medical/application/repository/aggregate.repositories";
-import { OrderIsEvent, OrderMailSendedEventPayload, OrderStatusChangedToValidatedEventPayload, OrderStatusChangedToCreatedEventPayload } from "@omega/medical/core/domain/order/events/order.events";
+import { OrderIsEvent, OrderMailSendedEventPayload, OrderStatusChangedToValidatedEventPayload, OrderStatusChangedToCreatedEventPayload, OrderProcessChangedEventPayload } from "@omega/medical/core/domain/order/events/order.events";
 import { OrderDomainMapper } from "../../../mapper/medical/domain/order.domain-mapper";
 import { OrderAggregateRepositoryToken } from "@omega/medical/nest/inject/aggregate-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
@@ -46,6 +46,9 @@ export class OrderPrismaRepository implements OrderRepository {
 
             else if (OrderIsEvent.isOrderRemovedEvent(event))
                 await this.removeOrder(event.value);
+
+            else if (OrderIsEvent.isOrderProcessChangedEvent(event))
+                await this.changeProcessOrder(event.value);
 
             else if (OrderIsEvent.isOrderExternalKeyAddedEvent(event))
                 await this.addOrderExternalKey(event.value);
@@ -92,6 +95,15 @@ export class OrderPrismaRepository implements OrderRepository {
     async removeOrder(value: OrderRemoveCommandPayload): Promise<void> {
         try {
             await this.prisma.medicalOrder.update({ where: { id: value.orderId }, data: { isActive: false } });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async changeProcessOrder(value: OrderProcessChangedEventPayload): Promise<void> {
+        try {
+            await this.prisma.medicalOrder.update({ where: { id: value.orderId }, data: { process: value.process } });
         } catch (error) {
             Logger.error(error);
             throw new RepositoryError();

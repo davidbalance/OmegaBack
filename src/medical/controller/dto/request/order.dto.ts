@@ -1,5 +1,6 @@
 import { OrderCreateCommandPayload } from "@omega/medical/application/commands/order/order-create.command";
 import { OrderSendMailCommandPayload } from "@omega/medical/application/commands/order/order-send-mail.command";
+import { OrderUpdateProcessCommandPayload } from "@omega/medical/application/commands/order/order-update-process.command";
 import { TestCreateCommandPayload } from "@omega/medical/application/commands/test/test-create.command";
 import { Transform, Type } from "class-transformer";
 import { IsArray, IsEmail, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, IsUUID, Length, Min, ValidateNested } from "class-validator";
@@ -43,6 +44,12 @@ export class OrderCreateRequestDto implements OrderCreateCommandPayload {
     @IsNumber()
     @Min(1900)
     public readonly year: number;
+}
+
+export class OrderUpdateProcessRequestDto implements Omit<OrderUpdateProcessCommandPayload, 'orderId'> {
+    @IsString()
+    @IsNotEmpty()
+    public readonly process: string;
 }
 
 export class OrderSendEmailRequestDto implements OrderSendMailCommandPayload {

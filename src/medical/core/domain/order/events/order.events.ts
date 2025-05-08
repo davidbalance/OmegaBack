@@ -3,6 +3,7 @@ import { OrderExternalKey } from "../value-objects/order-external-key.value-obje
 
 const OrderEventKeys = {
     Removed: "order.removed",
+    ProcessChanged: "order.process-changed",
     MailSended: "order.mailSended",
     StatusChangedToCreated: "order.statusChangedToOpen",
     StatusChangedToValidated: "order.statusChangedToValidated",
@@ -28,6 +29,10 @@ export class OrderIsEvent {
 
     public static isOrderExternalKeyAddedEvent(event: DomainEvent<unknown>): event is OrderExternalKeyAddedEvent {
         return event.key === OrderEventKeys.ExternalKeyAdded;
+    }
+
+    public static isOrderProcessChangedEvent(event: DomainEvent<unknown>): event is OrderProcessChangedEvent {
+        return event.key === OrderEventKeys.ProcessChanged;
     }
 }
 
@@ -70,5 +75,15 @@ export class OrderRemovedEvent extends DomainEvent<OrderRemovedEventPayload> {
 export class OrderExternalKeyAddedEvent extends DomainEvent<OrderExternalKey> {
     constructor(value: OrderExternalKey) {
         super({ key: OrderEventKeys.ExternalKeyAdded, value });
+    }
+}
+
+export type OrderProcessChangedEventPayload = {
+    orderId: string;
+    process: string;
+}
+export class OrderProcessChangedEvent extends DomainEvent<OrderProcessChangedEventPayload> {
+    constructor(value: OrderProcessChangedEventPayload) {
+        super({ key: OrderEventKeys.ProcessChanged, value });
     }
 }

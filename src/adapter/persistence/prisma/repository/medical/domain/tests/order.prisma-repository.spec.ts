@@ -8,7 +8,7 @@ import { Prisma } from "@prisma/client";
 import { OrderPrismaRepository } from "../order.prisma-repository";
 import { Order, OrderProps } from "@omega/medical/core/domain/order/order.domain";
 import { OrderDomainMapper } from "@omega/adapter/persistence/prisma/mapper/medical/domain/order.domain-mapper";
-import { OrderIsEvent, OrderMailSendedEventPayload, OrderStatusChangedToCreatedEventPayload, OrderStatusChangedToValidatedEventPayload } from "@omega/medical/core/domain/order/events/order.events";
+import { OrderIsEvent, OrderMailSendedEventPayload, OrderProcessChangedEventPayload, OrderStatusChangedToCreatedEventPayload, OrderStatusChangedToValidatedEventPayload } from "@omega/medical/core/domain/order/events/order.events";
 import { OrderRemoveCommandPayload } from "@omega/medical/application/commands/order/order-remove.command";
 import { OrderExternalKey } from "@omega/medical/core/domain/order/value-objects/order-external-key.value-object";
 
@@ -170,6 +170,19 @@ describe("OrderPrismaRepository", () => {
 
             expect(spy).toHaveBeenCalledWith(payload);
         });
+
+
+        it("should call changeProcessOrder when event is OrderProcessChangedEvent", async () => {
+            const payload = { medicalOrderId: "1", password: "secure" };
+            const aggregate = createFakeAggregate({ key: "OrderProcessChangedEvent", value: payload });
+
+            jest.spyOn(OrderIsEvent, "isOrderProcessChangedEvent").mockReturnValue(true);
+            const spy = jest.spyOn(repository, "changeProcessOrder").mockResolvedValue();
+
+            await repository.saveAsync(aggregate);
+
+            expect(spy).toHaveBeenCalledWith(payload);
+        });
     });
 
     describe('Internal Methods', () => {
@@ -289,6 +302,29 @@ describe("OrderPrismaRepository", () => {
                 prisma.medicalOrder.update.mockRejectedValue(Error);
 
                 await expect(repository.removeOrder(value)).rejects.toThrow(RepositoryError);
+            });
+        });
+
+        describe('changeProcessOrder', () => {
+            const value: OrderProcessChangedEventPayload = {
+                orderId: "order-id-123",
+                process: 'New Process'
+            };
+
+            it('should update the order with the new process Prisma', async () => {
+                await repository.changeProcessOrder(value);
+
+                expect(prisma.medicalOrder.update).toHaveBeenCalledWith({
+                    where: { id: value.orderId },
+                    data: { process: value.process }
+                });
+            });
+
+
+            it('should throw RepositoryError when Prisma throws an exception', async () => {
+                prisma.medicalOrder.update.mockRejectedValue(Error);
+
+                await expect(repository.changeProcessOrder(value)).rejects.toThrow(RepositoryError);
             });
         });
 

@@ -1,7 +1,7 @@
 import { DoctorValueObject } from "./value-objects/doctor.value-object";
 import { LocationValueObject } from "./value-objects/location.value-object";
 import { AddOrderExternalKeyPayload, CreateOrderPayload } from "./payloads/order.payloads";
-import { OrderMailSendedEvent, OrderStatusChangedToValidatedEvent, OrderStatusChangedToCreatedEvent, OrderRemovedEvent, OrderExternalKeyAddedEvent } from "./events/order.events";
+import { OrderMailSendedEvent, OrderStatusChangedToValidatedEvent, OrderStatusChangedToCreatedEvent, OrderRemovedEvent, OrderExternalKeyAddedEvent, OrderProcessChangedEvent } from "./events/order.events";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
 import { OrderExternalKey } from "./value-objects/order-external-key.value-object";
 import { OrderExternalKeyConflictError } from "./errors/order-external-key.errors";
@@ -119,5 +119,10 @@ export class Order extends Aggregate<OrderProps> {
         const newExternalKeys = [...this.props.externalKeys, newKey];
         this.updateProps({ externalKeys: newExternalKeys });
         this.emit(new OrderExternalKeyAddedEvent(newKey));
+    }
+
+    public changeProcess(process: string): void {
+        this.updateProps({ process: process });
+        this.emit(new OrderProcessChangedEvent({ orderId: this.id, process }));
     }
 }

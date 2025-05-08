@@ -14,6 +14,7 @@ export const EmailRemoveCommandToken = 'EmailRemoveCommand';
 
 export const OrderCreateManyCommandToken = 'OrderCreateManyCommand';
 export const OrderCreateCommandToken = 'OrderCreateCommand';
+export const OrderUpdateProcessCommandToken = 'OrderUpdateProcessCommand';
 export const OrderCreatedStatusCommandToken = 'OrderCreatedStatusCommand';
 export const OrderSendMailCommandToken = 'OrderSendMailCommand';
 export const OrderValidatedStatusCommandToken = 'OrderValidatedStatusCommand';
@@ -54,6 +55,7 @@ const command = {
 
     OrderCreateMany: OrderCreateManyCommandToken,
     OrderCreate: OrderCreateCommandToken,
+    OrderUpdateProcess: OrderUpdateProcessCommandToken,
     OrderCreatedStatus: OrderCreatedStatusCommandToken,
     OrderSendMail: OrderSendMailCommandToken,
     OrderValidatedStatus: OrderValidatedStatusCommandToken,
