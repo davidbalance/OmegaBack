@@ -1,5 +1,5 @@
 import { CreateOrderFromExternalSourcePayload } from "@omega/medical/application/service/create-order-from-external-source.service";
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Length, Min } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Length, MaxLength, Min } from "class-validator";
 import { CreatePatientFromExternalSourceDto } from "./client-external.dto";
 import { Transform } from "class-transformer";
 
@@ -18,6 +18,7 @@ export class CreateOrderFromExternalSourceDto
 
     @IsString()
     @IsNotEmpty()
+    @MaxLength(64)
     public readonly companyName: string;
 
     @IsString()

@@ -1,5 +1,5 @@
 import { CreateCompanyFromExternalSourcePayload } from "@omega/location/application/service/create-company-from-external-source.service";
-import { IsNotEmpty, IsString, Length } from "class-validator";
+import { IsNotEmpty, IsString, Length, MaxLength } from "class-validator";
 
 export class CreateCompanyFromExternalRequestDto implements Omit<CreateCompanyFromExternalSourcePayload, 'owner'> {
     @IsString()
@@ -16,6 +16,7 @@ export class CreateCompanyFromExternalRequestDto implements Omit<CreateCompanyFr
 
     @IsString()
     @IsNotEmpty()
+    @MaxLength(64)
     public readonly companyName: string;
 
     @IsString()
