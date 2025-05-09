@@ -7,7 +7,6 @@ import { plainToInstance } from "class-transformer";
 import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { OrderFindOneByExternalKeyQuery } from "@omega/medical/application/queries/order/order.find-one-by-external-key.query";
 import { CreateOrderFromExternalSourceService } from "@omega/medical/application/service/create-order-from-external-source.service";
-import { OrderModel } from "@omega/medical/core/model/order/order.model";
 import { OrderModelMapper } from "../mapper/order.mapper";
 import { CreateOrderFromExternalSourceDto } from "../dto/request/order-external.dto";
 import { OrderExternalResponseDto } from "../dto/response/order-external.dto";
