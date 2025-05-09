@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { InjectCommand } from "@omega/medical/nest/inject/command.inject";
 import { OrderSendMailCommand } from "@omega/medical/application/commands/order/order-send-mail.command";
-import { OrderCreateRequestDto, OrderSendEmailRequestDto } from "../dto/request/order.dto";
+import { OrderCreateRequestDto, OrderSendEmailRequestDto, OrderUpdateProcessRequestDto } from "../dto/request/order.dto";
 import { OrderCreateCommand } from "@omega/medical/application/commands/order/order-create.command";
 import { OrderCreatedStatusCommand } from "@omega/medical/application/commands/order/order-created-status.command";
 import { OrderValidatedStatusCommand } from "@omega/medical/application/commands/order/order-validated-status.command";
@@ -14,6 +14,7 @@ import { SpreadsheetProvider } from "@shared/shared/providers";
 import { OrderMassiveLoadSpreadSheetMapper } from "../mapper/order-massive-load.spreadsheet-mapper";
 import { OrderMassiveLoadSpreadSheetValidator } from "../validator/order-massive-load.spreadsheet-validator";
 import { OrderCreateManyCommand } from "@omega/medical/application/commands/order/order-create-many.command";
+import { OrderUpdateProcessCommand } from "@omega/medical/application/commands/order/order-update-process.command";
 
 @ApiTags('Medical', 'Write')
 @ApiBearerAuth()
@@ -22,6 +23,7 @@ import { OrderCreateManyCommand } from "@omega/medical/application/commands/orde
 export class OrderWriteController {
     constructor(
         @InjectCommand('OrderCreate') private readonly orderCreateCommand: OrderCreateCommand,
+        @InjectCommand('OrderUpdateProcess') private readonly orderUpdateProcessCommand: OrderUpdateProcessCommand,
         @InjectCommand('OrderRemove') private readonly orderRemoveCommand: OrderRemoveCommand,
         @InjectCommand('OrderSendMail') private readonly orderSendMailCommand: OrderSendMailCommand,
         @InjectCommand('OrderCreatedStatus') private readonly orderCreatedStatusCommand: OrderCreatedStatusCommand,
@@ -43,6 +45,15 @@ export class OrderWriteController {
         @Param('orderId') orderId: string
     ): Promise<string> {
         await this.orderRemoveCommand.handleAsync({ orderId });
+        return "ok";
+    }
+
+    @Put(':orderId/process')
+    async updateOrderProcess(
+        @Param('orderId') orderId: string,
+        @Body() body: OrderUpdateProcessRequestDto
+    ): Promise<string> {
+        await this.orderUpdateProcessCommand.handleAsync({ ...body, orderId });
         return "ok";
     }
 

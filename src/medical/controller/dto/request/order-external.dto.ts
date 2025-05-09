@@ -1,6 +1,7 @@
 import { CreateOrderFromExternalSourcePayload } from "@omega/medical/application/service/create-order-from-external-source.service";
-import { IsNotEmpty, IsNumber, IsOptional, IsString, Length, Min } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Length, MaxLength, Min } from "class-validator";
 import { CreatePatientFromExternalSourceDto } from "./client-external.dto";
+import { Transform } from "class-transformer";
 
 export class CreateOrderFromExternalSourceDto
     extends CreatePatientFromExternalSourceDto
@@ -17,6 +18,7 @@ export class CreateOrderFromExternalSourceDto
 
     @IsString()
     @IsNotEmpty()
+    @MaxLength(64)
     public readonly companyName: string;
 
     @IsString()
@@ -38,8 +40,22 @@ export class CreateOrderFromExternalSourceDto
     @IsNotEmpty()
     public readonly orderKey: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @Transform(({ value }) => {
+        const newValue = (value as string)
+            .toLowerCase()
+            .split(/[ -]/)
+            .map(e => `${e[0].toUpperCase()}${e.slice(1)}`)
+            .join("-")
+        if (newValue === 'Consulta-Externa') return "Consulta Externa";
+        return newValue;
+    })
+    @IsEnum({
+        postOcupacional: "Post-Ocupacional",
+        periodico: "Periodico",
+        preOcupacional: "Pre-Ocupacional",
+        especial: "Especial",
+        consultaExterna: "Consulta Externa",
+    })
     public readonly orderProcess: string;
 
     @IsNumber()

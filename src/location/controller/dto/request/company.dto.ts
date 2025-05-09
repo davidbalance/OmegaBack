@@ -1,6 +1,6 @@
 import { CompanyCreateCommandPayload } from "@omega/location/application/command/corporative/company-create.command";
 import { CompanyMoveCommandPayload } from "@omega/location/application/command/corporative/company-move.command";
-import { IsNotEmpty, IsString, IsUUID, Length } from "class-validator";
+import { IsNotEmpty, IsString, IsUUID, Length, MaxLength } from "class-validator";
 
 export class CompanyCreateRequestDto implements CompanyCreateCommandPayload {
     @IsUUID()
@@ -8,6 +8,7 @@ export class CompanyCreateRequestDto implements CompanyCreateCommandPayload {
 
     @IsString()
     @IsNotEmpty()
+    @MaxLength(64)
     public readonly name: string;
 
     @IsString()

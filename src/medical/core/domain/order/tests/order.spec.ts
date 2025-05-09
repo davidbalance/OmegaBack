@@ -101,4 +101,10 @@ describe('Order Aggregate', () => {
 
         expect(() => order.addExternalKey(payload)).toThrow(OrderExternalKeyConflictError);
     });
+
+    it('should change the process property', () => {
+        const newProcess = "Test Process";
+        order.changeProcess(newProcess);
+        expect(order.process).toBe(newProcess);
+    });
 });
