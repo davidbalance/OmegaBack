@@ -17,7 +17,7 @@ export class OrderCreateRequestDto implements OrderCreateCommandPayload {
 
     @IsString()
     @IsNotEmpty()
-    @Length(13)
+    @Length(13, 13)
     public readonly companyRuc: string;
 
     @IsString()
@@ -86,7 +86,7 @@ export class OrderMassiveLoadRequestDto implements OrderCreateCommandPayload {
 
     @IsString()
     @IsNotEmpty()
-    @Length(13)
+    @Length(13, 13)
     public readonly companyRuc: string;
 
     @IsString()
