@@ -4,18 +4,17 @@ import { craftCell, craftHeader, craftRow, craftSpacing, craftTitle, emptyCell }
 import { formatDate } from "date-fns";
 
 export const createCertificateRecord: CraftRecordFunc<CertificateRecord> = (record: CertificateRecord, {
-    clinicNumber,
     fileNumber,
 }) => flatRecord([
     craftHeader('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
-    institutionLayout({ ...record, clinicNumber, fileNumber }),
+    institutionLayout({ ...record, fileNumber }),
     craftRow(craftSpacing({ colSpan: 70 })),
     craftHeader('DATOS GENERALES'),
     generalDataLayout(record),
     craftRow(craftSpacing({ colSpan: 70 })),
     craftHeader('APTITUD MÉDICA LABORAL'),
     craftRow(craftCell('Después de la valoración médica ocupacional se certifica que la persona en mención, es calificada como:', { colSpan: 70 })),
-    craftMedicalFitnessForJob(record),
+    craftMedicalFitnessForJob(record, { hideLimitation: true }),
     craftRow(craftSpacing({ colSpan: 70 })),
     craftHeader('EVALUACIÓN MÉDICA DE RETIRO'),
     retireEvaluation(record),
@@ -25,7 +24,6 @@ export const createCertificateRecord: CraftRecordFunc<CertificateRecord> = (reco
 ]);
 
 const institutionLayout: CraftItemFunc<CertificateRecord & {
-    clinicNumber: number;
     fileNumber: number;
 }> = (record) => [
     craftRow(
@@ -39,9 +37,9 @@ const institutionLayout: CraftItemFunc<CertificateRecord & {
     craftRow(
         craftCell(record.companyName, { colSpan: 16 }),
         craftCell(record.companyRUC, { colSpan: 10 }),
-        craftCell(record.companyCIU, { colSpan: 5 }),
+        craftCell(record.companyCIIU ?? '', { colSpan: 5 }),
         craftCell(record.institutionHealthFacility, { colSpan: 15 }),
-        craftCell(record.clinicNumber.toString().padStart(12, '0'), { colSpan: 14 }),
+        craftCell(record.patientDni, { colSpan: 14 }),
         craftCell(record.fileNumber.toString().padStart(12, '0'), { colSpan: 10 }),
     ),
     craftRow(

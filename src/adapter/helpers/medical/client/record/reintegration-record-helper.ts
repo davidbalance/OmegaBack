@@ -3,9 +3,9 @@ import { ReintegrateRecord } from "@omega/medical/application/type/reintegrate-r
 import { craftCell, craftHeader, craftRow, craftSpacing, craftTitle } from "../table.helper";
 import { formatDate } from "date-fns";
 
-export const createReintegrationRecord: CraftRecordFunc<ReintegrateRecord> = (record: ReintegrateRecord, { clinicNumber, fileNumber, }) => flatRecord([
+export const createReintegrationRecord: CraftRecordFunc<ReintegrateRecord> = (record: ReintegrateRecord, { fileNumber, }) => flatRecord([
     craftHeader('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
-    institutionLayout({ ...record, clinicNumber, fileNumber }),
+    institutionLayout({ ...record, fileNumber }),
     craftRow(craftSpacing({ colSpan: 70 })),
     craftHeader('MOTIVO DE CONSULTA'),
     craftMedicalConsultation(record),
@@ -26,14 +26,13 @@ export const createReintegrationRecord: CraftRecordFunc<ReintegrateRecord> = (re
     craftMedicalDiagnostic(record.diagnostics),
     craftRow(craftSpacing({ colSpan: 70 })),
     craftHeader('APTITUD MÉDICA PARA EL TRABAJO'),
-    craftMedicalFitnessForJob(record),
+    craftMedicalFitnessForJob(record, { showReubication: true }),
     craftRow(craftSpacing({ colSpan: 70 })),
     craftHeader('RECOMENDACIONES Y/O TRATAMIENTO'),
     craftRecommendation(record)
 ]);
 
 const institutionLayout: CraftItemFunc<ReintegrateRecord & {
-    clinicNumber: number;
     fileNumber: number;
 }> = (record) => [
     craftRow(
@@ -47,9 +46,9 @@ const institutionLayout: CraftItemFunc<ReintegrateRecord & {
     craftRow(
         craftCell(record.companyName, { colSpan: 16 }),
         craftCell(record.companyRUC, { colSpan: 10 }),
-        craftCell(record.companyCIU, { colSpan: 5 }),
+        craftCell(record.companyCIIU ?? '', { colSpan: 5 }),
         craftCell(record.institutionHealthFacility, { colSpan: 15 }),
-        craftCell(record.clinicNumber.toString().padStart(12, '0'), { colSpan: 14 }),
+        craftCell(record.patientDni, { colSpan: 14 }),
         craftCell(record.fileNumber.toString().padStart(12, '0'), { colSpan: 10 }),
     ),
     craftRow(
@@ -79,40 +78,3 @@ const institutionLayout: CraftItemFunc<ReintegrateRecord & {
         craftCell(record.workingLeftCause.toString(), { colSpan: 12 }),
     ),
 ]
-
-/* export const createReintegrationRecord: CraftRecordFunc<ReintegrateRecord> = (record: ReintegrateRecord, {
-    clinicNumber,
-    fileNumber,
-    headerLayout: header,
-    subheaderLayout: subheader
-}) => [
-        header('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
-        institutionLayout({ ...record, clinicNumber, fileNumber }, subheader),
-        craftSpacing(),
-        header('MOTIVO DE CONSULTA'),
-        craftMedicalConsultation(record),
-        craftSpacing(),
-        header('ENFERMEDAD ACTUAL'),
-        craftCurrentDisease(record),
-        craftSpacing(),
-        header('CONSTANTES VITALES Y ANTROPOMETRÍA'),
-        craftVitalSignsAndAnthropometry(record, subheader),
-        craftSpacing(),
-        header('EXAMEN FÍSICO REGIONAL'),
-        craftPhysicalRegionalExam(record, subheader),
-        craftSpacing(),
-        header('RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)'),
-        craftSpecificAndGeneralResults(record, subheader),
-        craftSpacing(),
-        header('DIAGNÓSTICO'),
-        craftMedicalDiagnostic(record.diagnostics, subheader),
-        craftSpacing(),
-        header('APTITUD MÉDICA PARA EL TRABAJO'),
-        craftMedicalFitnessForJob(record, subheader),
-        craftSpacing(),
-        header('RECOMENDACIONES Y/O TRATAMIENTO'),
-        craftRecommendation(record),
-        craftSpacing(),
-    ];
-
- */

@@ -4,7 +4,7 @@ import { ClientRecordLayoutFunc } from "@omega/medical/application/commands/clie
 import { craftCell, craftRow, craftSpacing, craftTable } from "./table.helper";
 
 export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc =>
-    (e, clinicNumber, fileNumber) => {
+    (e, fileNumber) => {
 
         const date = new Date();
         const formatedDate = formatDate(date, 'yyyy/MM/dd');
@@ -21,7 +21,7 @@ export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc
                 })
             ),
             craftRow(craftSpacing({ colSpan: tableSize })),
-            ...createRecordLayout(e, { clinicNumber, fileNumber }),
+            ...createRecordLayout(e, { fileNumber }),
             craftRow(craftSpacing({ colSpan: tableSize })),
             craftRow(
                 craftCell("CERTIFICO QUE LO ANTERIORMENTE EXPRESADO EN RELACIÓN A MI ESTADO DE SALUD ES VERDAD. SE ME HA INFORMADO LAS MEDIDAS PREVENTIVAS A TOMAR PARA DISMINUIR O MITIGAR LOS RIESGOS RELACIONADOS CON MI ACTIVIDAD LABORAL.", {
@@ -36,7 +36,7 @@ export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc
                     style: 'tableHeader',
                 }),
                 craftSpacing({ colSpan: 2, rowSpan: 2 }),
-                craftCell("DATOS DEL PROFESIONAL", {
+                craftCell("FIRMA USUARIO", {
                     colSpan: 18,
                     style: 'tableHeader'
                 }),
@@ -61,7 +61,7 @@ export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc
                     colSpan: 3,
                     style: 'itemTitle'
                 }),
-                craftCell('', { colSpan: 5 }),
+                craftCell(e.patientDni, { colSpan: 5 }),
                 craftCell("FIRMA Y SELLO", {
                     colSpan: 3,
                     style: 'itemTitle'
@@ -117,98 +117,5 @@ export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc
                 fontSize: 5,
                 wrap: true
             }
-        }/* return {
-            pageSize: 'A4',
-            pageMargins: [30, 50, 30, 30],
-            content: [
-                ...createRecordLayout(e, { clinicNumber, fileNumber, headerLayout, subheaderLayout }),
-                {
-                    marginBottom: 5,
-                    text: "CERTIFICO QUE LO ANTERIORMENTE EXPRESADO EN RELACIÓN A MI ESTADO DE SALUD ES VERDAD. SE ME HA INFORMADO LAS MEDIDAS PREVENTIVAS A TOMAR PARA DISMINUIR O MITIGAR LOS RIESGOS RELACIONADOS CON MI ACTIVIDAD LABORAL.",
-                    style: {
-                        fontSize: 9,
-                        italics: true
-                    }
-                },
-                {
-                    width: '*',
-                    table: {
-                        widths: ["auto", "*", "auto", "*", "*", "*", "auto", "*", "auto", "15%"],
-                        body: [
-                            [{ text: 'DATOS DEL PROFESIONAL', style: 'tableHeader', colSpan: 10 }, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-                            ['FECHA', formatedDate, 'HORA', formatedHour, 'NOMBRES Y APELLIDOS', '', 'CODIGO', '', 'FIRMA Y SELLO', ''],
-                        ]
-                    },
-                    layout: {
-                        fillColor: headerLayout
-                    }
-
-                },
-                {
-                    marginTop: 60,
-                    width: '*',
-                    table: {
-                        widths: ["*", "*", "*"],
-                        body: [
-                            [
-                                {
-                                    border: [false, false, false, false],
-                                    text: ''
-                                },
-                                {
-                                    marginTop: 5,
-                                    border: [false, true, false, false],
-                                    text: 'FIRMA DEL USUARIO',
-                                    style: 'tableHeader',
-                                    alignment: 'center'
-                                },
-                                {
-                                    border: [false, false, false, false],
-                                    text: ''
-                                },
-                            ]
-                        ]
-                    },
-                }
-            ],
-            header: [
-                {
-                    margin: 5,
-                    alignment: 'center',
-                    image: headerBase64,
-                    fit: [100, 50],
-                },
-            ],
-            styles: {
-                itemElement: {
-                    marginTop: 2,
-                },
-                tableHeader: {
-                    bold: true,
-                    fontSize: 10,
-                    color: 'black'
-                },
-                itemHeader: {
-                    color: 'black',
-                    fontSize: 9,
-                },
-                descriptionItem: {
-                    bold: true,
-                    color: 'black',
-                    fontSize: 9,
-                },
-                verticalText: {
-                    textRenderer: (text: string) => {
-                        return {
-                            text: text,
-                            absolutePosition: { x: 0, y: 0 },
-                            rotation: Math.PI / 2 // 90 degrees in radians
-                        };
-                    }
-                }
-            },
-            defaultStyle: {
-                fontSize: 8
-            }
-        } */
+        }
     }

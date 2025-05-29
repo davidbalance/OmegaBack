@@ -18,7 +18,12 @@ export class ClientRecordPrismaRepository implements ClientRecordRepository {
     async findManyAsync(filter: SearchCriteria<ClientRecordModel>): Promise<ClientRecordModel[]> {
         try {
             const where = PrismaFilterMapper.map<ClientRecordModel, Prisma.ClientRecordModelWhereInput>(filter.filter);
-            const values = await this.prisma.clientRecordModel.findMany({ where });
+            const values = await this.prisma.clientRecordModel.findMany({
+                where,
+                orderBy: {
+                    recordEmissionDate: 'desc'
+                }
+            });
             return values.map(e => ClientRecordModelMapper.toModel(e));
         } catch (error) {
             Logger.error(error);

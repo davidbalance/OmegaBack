@@ -1,4 +1,4 @@
-import { CompanyRecord, GeneralExamResultAndSpecific, JobAccident, MedicalDiagnostic, OccupationalDisease, PatientRecord, PhysicalRegionalExam, RecordType, VitalSignsAndAnthropometry } from "./record.type";
+import { CompanyRecord, GeneralExamResultAndSpecific, InstitutionHealthRecord, JobAccident, MedicalAndSurgicalHistory, MedicalDiagnostic, OccupationalDisease, PatientRecord, PhysicalRegionalExam, RecordRecommendation, RecordType, VitalSignsAndAnthropometry } from "./record.type";
 
 export type RetirementInstitutionActivity = {
     activity: string;
@@ -6,27 +6,43 @@ export type RetirementInstitutionActivity = {
 }
 
 export type RetirementEvaluation = {
-    retirementDone: boolean;
-    retirementObservation: string;
+    retirementEvaluationDone: boolean;
+    retirementEvaluationObservation?: string;
 }
 
-export type RetirementRecord = RecordType<'retiro'> & PatientRecord & CompanyRecord &
-    JobAccident & OccupationalDisease & GeneralExamResultAndSpecific & VitalSignsAndAnthropometry & PhysicalRegionalExam &
-    RetirementEvaluation & {
-        /** Institution & Patient Information */
-        institutionHealthFacility: string;
+export type RetirementRecord = RecordType<'retiro'>
+    // Institution & Patient Information
+    & InstitutionHealthRecord
+    & CompanyRecord
+    & PatientRecord
+    // Patient history
+    & MedicalAndSurgicalHistory
+    & JobAccident
+    & OccupationalDisease
+    // Vital Signs and Anthropometry
+    & VitalSignsAndAnthropometry
+    // Physical Regional Exam
+    & PhysicalRegionalExam
+    // General Exam Result and Specific
+    & GeneralExamResultAndSpecific
+    // Retirement Evaluation
+    & RetirementEvaluation
+    // Recommendation
+    & RecordRecommendation
+    & {
+        /* --------------------------------------------------- Institution & Patient Information --------------------------------------------------- */
         institutionActivities: RetirementInstitutionActivity[];
         workStartDate: Date;
         workingTime: number;
         workingEndDate: Date;
         jobPosition: string;
 
-        /** Medical Consultation */
+        /* --------------------------------------------------- Medical Consultation --------------------------------------------------- */
         medicalAndSurgicalHistory: string;
 
-        /** Diagnostics */
+        /* --------------------------------------------------- Diagnostics --------------------------------------------------- */
         diagnostics: MedicalDiagnostic[];
 
-        /** Medical Recommendations */
+        /* --------------------------------------------------- Medical Recommendations --------------------------------------------------- */
         recommendationDescription: string;
     }

@@ -20,7 +20,6 @@ const isRetirementRecord = (record: GenericRecord): record is RetirementRecord =
 const isCertificateRecord = (record: GenericRecord): record is CertificateRecord => record.type === 'certificado';
 
 type RecordOption = {
-    clinicNumber: number;
     fileNumber: number;
 }
 export type CraftItemFunc<T extends GenericRecord> = (record: T) => Row[];
@@ -98,41 +97,41 @@ export const craftToxicHabitsAndLifeStyle = (toxic: { tobacco: Partial<ToxicDeta
     ),
     craftRow(
         craftCell('TABACO', { colSpan: 12 }),
-        craftCell(toxic.tobacco.consumed ? 'x' : '', { colSpan: 2 }),
-        craftCell(!toxic.tobacco.consumed ? 'x' : '', { colSpan: 2 }),
+        craftCell(toxic.tobacco.haveConsume ? 'x' : '', { colSpan: 2 }),
+        craftCell(!toxic.tobacco.haveConsume ? 'x' : '', { colSpan: 2 }),
         craftCell(toxic.tobacco.consumptionTime?.toString() ?? '', { colSpan: 5 }),
         craftCell(toxic.tobacco.quantity?.toString() ?? '', { colSpan: 4 }),
-        craftCell(toxic.tobacco.consumer ? 'Si' : 'No', { colSpan: 4 }),
+        craftCell(toxic.tobacco.isExConsumer ? 'Si' : 'No', { colSpan: 4 }),
         craftCell(toxic.tobacco.timeOfAbstinence?.toString() ?? '', { colSpan: 6 }),
 
         craftCell('ACTIVIDAD FÍSICA', { colSpan: 10 }),
-        craftCell(life.lifestylePhysicalActivityActive ? 'x' : '', { colSpan: 2 }),
-        craftCell(!life.lifestylePhysicalActivityActive ? 'x' : '', { colSpan: 2 }),
-        craftCell(life.lifestylePhysicalActivityDuration?.toString() ?? '', { colSpan: 17 }),
-        craftCell(life.lifestylePhysicalActivityType?.toString() ?? '', { colSpan: 4 })
+        life.lifestylePhysicalActivity !== undefined ? craftCell(life.lifestylePhysicalActivity ? 'x' : '', { colSpan: 2 }) : craftCell('', { colSpan: 2 }),
+        life.lifestylePhysicalActivity !== undefined ? craftCell(!life.lifestylePhysicalActivity ? 'x' : '', { colSpan: 2 }) : craftCell('', { colSpan: 2 }),
+        craftCell(life.lifestylePhysicalActivityType ?? '', { colSpan: 4 }),
+        craftCell(life.lifestylePhysicalActivityTimeQty ?? '', { colSpan: 17 }),
     ),
     craftRow(
         craftCell('ALCOCHOL', { colSpan: 12 }),
-        craftCell(toxic.alcohol.consumed ? 'x' : '', { colSpan: 2 }),
-        craftCell(!toxic.alcohol.consumed ? 'x' : '', { colSpan: 2 }),
+        craftCell(toxic.alcohol.haveConsume ? 'x' : '', { colSpan: 2 }),
+        craftCell(!toxic.alcohol.haveConsume ? 'x' : '', { colSpan: 2 }),
         craftCell(toxic.alcohol.consumptionTime?.toString() ?? '', { colSpan: 5 }),
         craftCell(toxic.alcohol.quantity?.toString() ?? '', { colSpan: 4 }),
-        craftCell(toxic.alcohol.consumer ? 'Si' : 'No', { colSpan: 4 }),
+        craftCell(toxic.alcohol.isExConsumer ? 'Si' : 'No', { colSpan: 4 }),
         craftCell(toxic.alcohol.timeOfAbstinence?.toString() ?? '', { colSpan: 6 }),
 
         craftCell('MEDICACIÓN HABITUAL', { rowSpan: 2, colSpan: 10 }),
-        craftCell(life.lifestyleMedicationTaking ? 'x' : '', { rowSpan: 2, colSpan: 2 }),
-        craftCell(!life.lifestyleMedicationTaking ? 'x' : '', { rowSpan: 2, colSpan: 2 }),
-        craftCell(life.lifestyleMedicationQuantity?.toString() ?? '', { rowSpan: 2, colSpan: 17 }),
-        craftCell(life.lifestyleMedicationName?.toString() ?? '', { rowSpan: 2, colSpan: 4 })
+        life.lifestyleMedication !== undefined ? craftCell(life.lifestyleMedication ? 'x' : '', { rowSpan: 2, colSpan: 2 }) : craftCell('', { rowSpan: 2, colSpan: 2 }),
+        life.lifestyleMedication !== undefined ? craftCell(!life.lifestyleMedication ? 'x' : '', { rowSpan: 2, colSpan: 2 }) : craftCell('', { rowSpan: 2, colSpan: 2 }),
+        craftCell(life.lifestyleMedicationTimeQty ?? '', { rowSpan: 2, colSpan: 17 }),
+        craftCell(life.lifestyleMedicationName ?? '', { rowSpan: 2, colSpan: 4 })
     ),
     craftRow(
-        craftCell(`OTRAS DROGAS: ${toxic.other.other ?? ''}`, { colSpan: 12 }),
-        craftCell(toxic.other.consumed ? 'x' : '', { colSpan: 2 }),
-        craftCell(!toxic.other.consumed ? 'x' : '', { colSpan: 2 }),
+        craftCell(`OTRAS DROGAS: ${toxic.other.name ?? ''}`, { colSpan: 12 }),
+        craftCell(toxic.other.haveConsume ? 'x' : '', { colSpan: 2 }),
+        craftCell(!toxic.other.haveConsume ? 'x' : '', { colSpan: 2 }),
         craftCell(toxic.other.consumptionTime?.toString() ?? '', { colSpan: 5 }),
         craftCell(toxic.other.quantity?.toString() ?? '', { colSpan: 4 }),
-        craftCell(toxic.other.consumer ? 'Si' : 'No', { colSpan: 4 }),
+        craftCell(toxic.other.isExConsumer ? 'Si' : 'No', { colSpan: 4 }),
         craftCell(toxic.other.timeOfAbstinence?.toString() ?? '', { colSpan: 6 })
     )
 ];
@@ -188,33 +187,33 @@ export const craftOccupationalDisease = (value: OccupationalDisease): Row[] => [
 export const craftFamilyHistory = (value: FamilyHistory): Row[] => {
 
     const values: string[] = [
-        !!value.familyHistoryCardioVascular ? `ENFERMEDAD CARDIO-VASCULAR: ${value.familyHistoryCardioVascular}` : undefined,
-        !!value.familyHistoryMetabolic ? `ENFERMEDAD METABÓLICA: ${value.familyHistoryMetabolic}` : undefined,
-        !!value.familyHistoryNeurologic ? `ENFERMEDAD NEUROLÓGICA: ${value.familyHistoryNeurologic}` : undefined,
-        !!value.familyHistoryOncologic ? `ENFERMEDAD ONCOLÓGICA: ${value.familyHistoryOncologic}` : undefined,
-        !!value.familyHistoryInfectious ? `ENFERMEDAD INFECCIOSA: ${value.familyHistoryInfectious}` : undefined,
-        !!value.familyHistoryHereditary ? `ENFERMEDAD HEREDITARIA/CONGÉNITA: ${value.familyHistoryHereditary}` : undefined,
-        !!value.familyHistoryDisability ? `DISCAPACIDADES: ${value.familyHistoryDisability}` : undefined,
-        !!value.familyHistoryOther ? `OTROS: ${value.familyHistoryOther}` : undefined
+        !!value.familyHistoryCardioVascular ? `1. ${value.familyHistoryCardioVascular}` : undefined,
+        !!value.familyHistoryMetabolic ? `2. ${value.familyHistoryMetabolic}` : undefined,
+        !!value.familyHistoryNeurologic ? `3. ${value.familyHistoryNeurologic}` : undefined,
+        !!value.familyHistoryOncologic ? `4. ${value.familyHistoryOncologic}` : undefined,
+        !!value.familyHistoryInfectious ? `5. ${value.familyHistoryInfectious}` : undefined,
+        !!value.familyHistoryHereditary ? `6. ${value.familyHistoryHereditary}` : undefined,
+        !!value.familyHistoryDisability ? `7. ${value.familyHistoryDisability}` : undefined,
+        !!value.familyHistoryOther ? `8. ${value.familyHistoryOther}` : undefined
     ].filter(e => e !== undefined);
 
     return [
         craftRow(
-            craftTitle('ENFERMEDAD CARDIO-VASCULAR', { colSpan: 7 }),
+            craftTitle('1. ENFERMEDAD CARDIO-VASCULAR', { colSpan: 7 }),
             craftCell(value.familyHistoryCardioVascular ? 'x' : '', { colSpan: 2 }),
-            craftTitle('ENFERMEDAD METABÓLICA', { colSpan: 7 }),
+            craftTitle('2. ENFERMEDAD METABÓLICA', { colSpan: 7 }),
             craftCell(value.familyHistoryMetabolic ? 'x' : '', { colSpan: 2 }),
-            craftTitle('ENFERMEDAD NEUROLÓGICA', { colSpan: 7 }),
+            craftTitle('3. ENFERMEDAD NEUROLÓGICA', { colSpan: 7 }),
             craftCell(value.familyHistoryNeurologic ? 'x' : '', { colSpan: 2 }),
-            craftTitle('ENFERMEDAD ONCOLÓGICA', { colSpan: 7 }),
+            craftTitle('4. ENFERMEDAD ONCOLÓGICA', { colSpan: 7 }),
             craftCell(value.familyHistoryOncologic ? 'x' : '', { colSpan: 2 }),
-            craftTitle('ENFERMEDAD INFECCIOSA', { colSpan: 7 }),
+            craftTitle('5. ENFERMEDAD INFECCIOSA', { colSpan: 7 }),
             craftCell(value.familyHistoryInfectious ? 'x' : '', { colSpan: 2 }),
-            craftTitle('ENFERMEDAD HEREDITARIA / CONGÉNITA', { colSpan: 7 }),
+            craftTitle('6. ENFERMEDAD HEREDITARIA / CONGÉNITA', { colSpan: 7 }),
             craftCell(value.familyHistoryHereditary ? 'x' : '', { colSpan: 2 }),
-            craftTitle('DISCAPACIDADES', { colSpan: 6 }),
+            craftTitle('7. DISCAPACIDADES', { colSpan: 6 }),
             craftCell(value.familyHistoryDisability ? 'x' : '', { colSpan: 2 }),
-            craftTitle('OTROS', { colSpan: 6 }),
+            craftTitle('8. OTROS', { colSpan: 6 }),
             craftCell(value.familyHistoryOther ? 'x' : '', { colSpan: 2 }),
         ),
         craftLabel('Observaciones:'),
@@ -224,57 +223,57 @@ export const craftFamilyHistory = (value: FamilyHistory): Row[] => {
 
 export const craftExtraActivity = (value: ExtraActivity): Row[] => [
     craftLabel('Observaciones:'),
-    craftRow(craftCell(value.extraActivityDescription, { border: ['left', 'right', 'bottom'], colSpan: 70 }))
+    craftRow(craftCell(value.extraActivityDescription ? value.extraActivityDescription : 'NINGUNA', { border: ['left', 'right', 'bottom'], colSpan: 70 }))
 ];
 
 
 export const craftCurrentDisease = (value: CurrentDisease): Row[] => [
     craftLabel('Observaciones:'),
-    craftRow(craftCell(value.currentDiseaseDescription, { border: ['left', 'right', 'bottom'], colSpan: 70 }))
+    craftRow(craftCell(value.currentDiseaseDescription ?? '', { border: ['left', 'right', 'bottom'], colSpan: 70 }))
 ];
 
 export const craftReviewOfOrgansAndSystem = (value: ReviewOfOrgansAndSystem): Row[] => {
 
     const values: string[] = [
-        !!value.reviewOfOrgansSkin ? `PIEL - ANEXOS: ${value.reviewOfOrgansSkin}` : undefined,
-        !!value.reviewOfOrgansSenseOrgans ? `ÓRGANOS DE LOS SENTIDOS: ${value.reviewOfOrgansSenseOrgans}` : undefined,
-        !!value.reviewOfOrgansBreath ? `RESPIRATORIO: ${value.reviewOfOrgansBreath}` : undefined,
-        !!value.reviewOfOrgansCardiovascular ? `CARDIO-VASCULAR: ${value.reviewOfOrgansCardiovascular}` : undefined,
-        !!value.reviewOfOrgansDigestive ? `DIGESTIVO: ${value.reviewOfOrgansDigestive}` : undefined,
-        !!value.reviewOfOrgansUrinary ? `GENITO - URINARIO: ${value.reviewOfOrgansUrinary}` : undefined,
-        !!value.reviewOfOrgansSkeletalMuscle ? `MÚSCULO ESQUELÉTICO: ${value.reviewOfOrgansSkeletalMuscle}` : undefined,
-        !!value.reviewOfOrgansEndocrinic ? `ENDOCRINO: ${value.reviewOfOrgansEndocrinic}` : undefined,
-        !!value.reviewOfOrgansHemoLymphatic ? `HEMO LINFÁTICO: ${value.reviewOfOrgansHemoLymphatic}` : undefined,
-        !!value.reviewOfOrgansHighlyStrung ? `NERVIOSO: ${value.reviewOfOrgansHighlyStrung}` : undefined,
+        !!value.reviewOfOrgansSkin ? `1. ${value.reviewOfOrgansSkin}` : undefined,
+        !!value.reviewOfOrgansSenseOrgans ? `2. ${value.reviewOfOrgansSenseOrgans}` : undefined,
+        !!value.reviewOfOrgansBreath ? `3. ${value.reviewOfOrgansBreath}` : undefined,
+        !!value.reviewOfOrgansCardiovascular ? `4. ${value.reviewOfOrgansCardiovascular}` : undefined,
+        !!value.reviewOfOrgansDigestive ? `5. ${value.reviewOfOrgansDigestive}` : undefined,
+        !!value.reviewOfOrgansUrinary ? `6. ${value.reviewOfOrgansUrinary}` : undefined,
+        !!value.reviewOfOrgansSkeletalMuscle ? `7. ${value.reviewOfOrgansSkeletalMuscle}` : undefined,
+        !!value.reviewOfOrgansEndocrinic ? `8. ${value.reviewOfOrgansEndocrinic}` : undefined,
+        !!value.reviewOfOrgansHemoLymphatic ? `9. ${value.reviewOfOrgansHemoLymphatic}` : undefined,
+        !!value.reviewOfOrgansHighlyStrung ? `10. ${value.reviewOfOrgansHighlyStrung}` : undefined,
     ].filter(e => e !== undefined);
 
     return [
         craftRow(
-            craftSubtitle('PIEL - ANEXOS', { colSpan: 12 }),
+            craftSubtitle('1. PIEL - ANEXOS', { colSpan: 12 }),
             craftCell(value.reviewOfOrgansSkin ? 'x' : ' ', { colSpan: 2 }),
-            craftSubtitle('RESPIRATORIO', { colSpan: 12 }),
+            craftSubtitle('2. RESPIRATORIO', { colSpan: 12 }),
             craftCell(value.reviewOfOrgansBreath ? 'x' : ' ', { colSpan: 2 }),
-            craftSubtitle('DIGESTIVO', { colSpan: 12 }),
+            craftSubtitle('3. DIGESTIVO', { colSpan: 12 }),
             craftCell(value.reviewOfOrgansDigestive ? 'x' : ' ', { colSpan: 2 }),
-            craftSubtitle('MÚSCULO ESQUELÉTICO', { colSpan: 12 }),
+            craftSubtitle('4. MÚSCULO ESQUELÉTICO', { colSpan: 12 }),
             craftCell(value.reviewOfOrgansSkeletalMuscle ? 'x' : ' ', { colSpan: 2 }),
-            craftSubtitle('HEMO LINFÁTICO', { colSpan: 12 }),
+            craftSubtitle('5. HEMO LINFÁTICO', { colSpan: 12 }),
             craftCell(value.reviewOfOrgansHemoLymphatic ? 'x' : ' ', { colSpan: 2 }),
         ),
         craftRow(
-            craftSubtitle('ÓRGANOS DE LOS SENTIDOS', { colSpan: 12 }),
+            craftSubtitle('6. ÓRGANOS DE LOS SENTIDOS', { colSpan: 12 }),
             craftCell(value.reviewOfOrgansSenseOrgans ? 'x' : ' ', { colSpan: 2 }),
-            craftSubtitle('CARDIO-VASCULAR', { colSpan: 12 }),
+            craftSubtitle('7. CARDIO-VASCULAR', { colSpan: 12 }),
             craftCell(value.reviewOfOrgansCardiovascular ? 'x' : ' ', { colSpan: 2 }),
-            craftSubtitle('GENITO - URINARIO', { colSpan: 12 }),
+            craftSubtitle('8. GENITO - URINARIO', { colSpan: 12 }),
             craftCell(value.reviewOfOrgansUrinary ? 'x' : ' ', { colSpan: 2 }),
-            craftSubtitle('ENDOCRINO', { colSpan: 12 }),
+            craftSubtitle('9. ENDOCRINO', { colSpan: 12 }),
             craftCell(value.reviewOfOrgansEndocrinic ? 'x' : ' ', { colSpan: 2 }),
-            craftSubtitle('NERVIOSO', { colSpan: 12 }),
+            craftSubtitle('10. NERVIOSO', { colSpan: 12 }),
             craftCell(value.reviewOfOrgansHighlyStrung ? 'x' : ' ', { colSpan: 2 }),
         ),
         craftLabel('Observaciones:'),
-        ...values.map((e, i) => craftRow(craftCell(e, { colSpan: 70, border: ['left', 'right', values.length - 1 === i ? 'bottom' : 'right'] }))).filter(e => !!e)
+        ...(values.length ? values : ['SIN PATOLOGIA APARENTE']).map((e, i) => craftRow(craftCell(e, { colSpan: 70, border: ['left', 'right', values.length - 1 === i ? 'bottom' : 'right'] }))).filter(e => !!e)
     ];
 };
 
@@ -305,64 +304,64 @@ export const craftVitalSignsAndAnthropometry = (value: VitalSignsAndAnthropometr
 
 export const craftPhysicalRegionalExam = (value: PhysicalRegionalExam): Row[] => {
     const values: string[] = [
-        !!value.examSkinScar ? `Piel - Cicatrices: ${value.examSkinScar}` : undefined,
-        !!value.examSkinTattoo ? `Piel - Tatuajes: ${value.examSkinTattoo}` : undefined,
-        !!value.examSkinLesions ? `Piel - Piel  y Faneras: ${value.examSkinLesions}` : undefined,
-        !!value.examEyeEyelids ? `Ojos - Párpados: ${value.examEyeEyelids}` : undefined,
-        !!value.examEyeConjunctiva ? `Ojos - Conjuntivas: ${value.examEyeConjunctiva}` : undefined,
-        !!value.examEyePupils ? `Ojos - Pupilas: ${value.examEyePupils}` : undefined,
-        !!value.examEyeCorneas ? `Ojos - Córnea: ${value.examEyeCorneas}` : undefined,
-        !!value.examEyeMotility ? `Ojos - Motilidad: ${value.examEyeMotility}` : undefined,
-        !!value.examEarAuditoryExternal ? `Oído - C. auditivo externo: ${value.examEarAuditoryExternal}` : undefined,
-        !!value.examEarAuricle ? `Oído - Pabellón: ${value.examEarAuricle}` : undefined,
-        !!value.examEarEardrum ? `Oído - Tímpanos: ${value.examEarEardrum}` : undefined,
-        !!value.examPharynxLips ? `Oro faringe - Labios: ${value.examPharynxLips}` : undefined,
-        !!value.examPharynxTongue ? `Oro faringe - Lengua: ${value.examPharynxTongue}` : undefined,
-        !!value.examPharynxPharynx ? `Oro faringe - Faringe: ${value.examPharynxPharynx}` : undefined,
-        !!value.examPharynxTonsils ? `Oro faringe - Amígdalas: ${value.examPharynxTonsils}` : undefined,
-        !!value.examPharynxTeeth ? `Oro faringe - Dentadura: ${value.examPharynxTeeth}` : undefined,
-        !!value.examNosePartition ? `Nariz - Tabique: ${value.examNosePartition}` : undefined,
-        !!value.examNoseTurbinates ? `Nariz - Cornetes: ${value.examNoseTurbinates}` : undefined,
-        !!value.examNoseMucousMembranes ? `Nariz - Mucosas: ${value.examNoseMucousMembranes}` : undefined,
-        !!value.examNoseParanasalSinuses ? `Nariz - Senos paranasales: ${value.examNoseParanasalSinuses}` : undefined,
-        !!value.examNeckThyroid ? `Cuello - Tiroides / masas: ${value.examNeckThyroid}` : undefined,
-        !!value.examNeckMobility ? `Cuello - Movilidad: ${value.examNeckMobility}` : undefined,
-        !!value.examChestBreast ? `Tórax - Mamas: ${value.examChestBreast}` : undefined,
-        !!value.examChestHeart ? `Tórax - Corazón: ${value.examChestHeart}` : undefined,
-        !!value.examChestLungs ? `Tórax - Pulmones: ${value.examChestLungs}` : undefined,
-        !!value.examChestRibCage ? `Tórax - Parrilla Costal: ${value.examChestRibCage}` : undefined,
-        !!value.examAbdomenViscera ? `Abdomen - Vísceras: ${value.examAbdomenViscera}` : undefined,
-        !!value.examAbdomenAbdominalWall ? `Abdomen - Pared abdominal: ${value.examAbdomenAbdominalWall}` : undefined,
-        !!value.examColumnFlexibility ? `Columna - Flexibilidad: ${value.examColumnFlexibility}` : undefined,
-        !!value.examColumnDeviation ? `Columna - Desviación: ${value.examColumnDeviation}` : undefined,
-        !!value.examColumnPain ? `Columna - Dolor: ${value.examColumnPain}` : undefined,
-        !!value.examPelvis ? `Pelvis - Pelvis: ${value.examPelvis}` : undefined,
-        !!value.examPelvisGenitals ? `Pelvis - Genitales: ${value.examPelvisGenitals}` : undefined,
-        !!value.examLimbVascular ? `Extremidades - Vascular: ${value.examLimbVascular}` : undefined,
-        !!value.examLimbUpper ? `Extremidades - Miembros superiores: ${value.examLimbUpper}` : undefined,
-        !!value.examLimbLower ? `Extremidades - Miembros inferiores: ${value.examLimbLower}` : undefined,
-        !!value.examNeurologicForce ? `Neurológico - Fuerza : ${value.examNeurologicForce}` : undefined,
-        !!value.examNeurologicSensitivity ? `Neurológico - Sensibilidad: ${value.examNeurologicSensitivity}` : undefined,
-        !!value.examNeurologicGait ? `Neurológico - Marcha: ${value.examNeurologicGait}` : undefined,
-        !!value.examNeurologicReflex ? `Neurológico - Reflejos: ${value.examNeurologicReflex}` : undefined,
+        !!value.examSkinScar ? `1 - a. ${value.examSkinScar}` : undefined,
+        !!value.examSkinTattoo ? `1 - b. ${value.examSkinTattoo}` : undefined,
+        !!value.examSkinLesions ? `1 - c. ${value.examSkinLesions}` : undefined,
+        !!value.examEyeEyelids ? `2 - a. ${value.examEyeEyelids}` : undefined,
+        !!value.examEyeConjunctiva ? `2 - b. ${value.examEyeConjunctiva}` : undefined,
+        !!value.examEyePupils ? `2 - c. ${value.examEyePupils}` : undefined,
+        !!value.examEyeCorneas ? `2 - d. ${value.examEyeCorneas}` : undefined,
+        !!value.examEyeMotility ? `2 - e. ${value.examEyeMotility}` : undefined,
+        !!value.examEarAuditoryExternal ? `3 - a. ${value.examEarAuditoryExternal}` : undefined,
+        !!value.examEarAuricle ? `3 - b. ${value.examEarAuricle}` : undefined,
+        !!value.examEarEardrum ? `3 - c. ${value.examEarEardrum}` : undefined,
+        !!value.examPharynxLips ? `4 - a. ${value.examPharynxLips}` : undefined,
+        !!value.examPharynxTongue ? `4 - b. ${value.examPharynxTongue}` : undefined,
+        !!value.examPharynxPharynx ? `4 - c. ${value.examPharynxPharynx}` : undefined,
+        !!value.examPharynxTonsils ? `4 - d. ${value.examPharynxTonsils}` : undefined,
+        !!value.examPharynxTeeth ? `4 - e. ${value.examPharynxTeeth}` : undefined,
+        !!value.examNosePartition ? `5 - a. ${value.examNosePartition}` : undefined,
+        !!value.examNoseTurbinates ? `5 - b. ${value.examNoseTurbinates}` : undefined,
+        !!value.examNoseMucousMembranes ? `5 - c. ${value.examNoseMucousMembranes}` : undefined,
+        !!value.examNoseParanasalSinuses ? `5 - d. ${value.examNoseParanasalSinuses}` : undefined,
+        !!value.examNeckThyroid ? `6 - a. ${value.examNeckThyroid}` : undefined,
+        !!value.examNeckMobility ? `6 - b. ${value.examNeckMobility}` : undefined,
+        !!value.examChestBreast ? `7 - a. ${value.examChestBreast}` : undefined,
+        !!value.examChestHeart ? `7 - b. ${value.examChestHeart}` : undefined,
+        !!value.examChestLungs ? `8 - a. ${value.examChestLungs}` : undefined,
+        !!value.examChestRibCage ? `8 - b. ${value.examChestRibCage}` : undefined,
+        !!value.examAbdomenViscera ? `9 - a. ${value.examAbdomenViscera}` : undefined,
+        !!value.examAbdomenAbdominalWall ? `9 - b. ${value.examAbdomenAbdominalWall}` : undefined,
+        !!value.examColumnFlexibility ? `10 - a. ${value.examColumnFlexibility}` : undefined,
+        !!value.examColumnDeviation ? `10 - b. ${value.examColumnDeviation}` : undefined,
+        !!value.examColumnPain ? `10 - c. ${value.examColumnPain}` : undefined,
+        !!value.examPelvis ? `11 - a. ${value.examPelvis}` : undefined,
+        !!value.examPelvisGenitals ? `11 - b. ${value.examPelvisGenitals}` : undefined,
+        !!value.examLimbVascular ? `12 - a. ${value.examLimbVascular}` : undefined,
+        !!value.examLimbUpper ? `12 - b. ${value.examLimbUpper}` : undefined,
+        !!value.examLimbLower ? `12 - c. ${value.examLimbLower}` : undefined,
+        !!value.examNeurologicForce ? `13 - a. ${value.examNeurologicForce}` : undefined,
+        !!value.examNeurologicSensitivity ? `13 - b. ${value.examNeurologicSensitivity}` : undefined,
+        !!value.examNeurologicGait ? `13 - c. ${value.examNeurologicGait}` : undefined,
+        !!value.examNeurologicReflex ? `13 - d. ${value.examNeurologicReflex}` : undefined,
     ].filter(e => e !== undefined);
 
     return [
         craftRow(craftTitle('REGIONES', { colSpan: 70 })),
         craftRow(
-            craftCell('Piel', { rowSpan: 3, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
+            craftCell('1. Piel', { rowSpan: 3, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
             craftSubtitle('a. Cicatrices', { colSpan: 10 }),
             craftCell(value.examSkinScar ? 'x' : '', { colSpan: 2 }),
-            craftCell('Oído', { rowSpan: 3, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
+            craftCell('3. Oído', { rowSpan: 3, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
             craftSubtitle('a. C. auditivo externo', { colSpan: 10 }),
             craftCell(value.examEarAuditoryExternal ? 'x' : '', { colSpan: 2 }),
-            craftCell('Nariz', { rowSpan: 4, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
+            craftCell('5. Nariz', { rowSpan: 4, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
             craftSubtitle('a. Tabique', { colSpan: 10 }),
             craftCell(value.examNosePartition ? 'x' : '', { colSpan: 2 }),
-            craftCell('Tórax', { rowSpan: 2, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
+            craftCell('8. Tórax', { rowSpan: 2, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
             craftSubtitle('a. Pulmones', { colSpan: 10 }),
             craftCell(value.examChestLungs ? 'x' : '', { colSpan: 2 }),
-            craftCell('Pelvis', { rowSpan: 2, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
+            craftCell('11. Pelvis', { rowSpan: 2, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
             craftSubtitle('a. Pelvis', { colSpan: 10 }),
             craftCell(value.examPelvis ? 'x' : '', { colSpan: 2 }),),
         craftRow(
@@ -383,17 +382,17 @@ export const craftPhysicalRegionalExam = (value: PhysicalRegionalExam): Row[] =>
             craftCell(value.examEarEardrum ? 'x' : '', { colSpan: 2 }),
             craftSubtitle('c. Mucosas', { colSpan: 10 }),
             craftCell(value.examNoseMucousMembranes ? 'x' : '', { colSpan: 2 }),
-            craftCell('Abdomen', { rowSpan: 2, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
+            craftCell('9. Abdomen', { rowSpan: 2, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
             craftSubtitle('a. Vísceras', { colSpan: 10 }),
             craftCell(value.examAbdomenViscera ? 'x' : '', { colSpan: 2 }),
-            craftCell('Extremidades', { rowSpan: 3, colSpan: 2, style: 'itemSubtitle', height: 30, orientation: 'vertical' }),
+            craftCell('12. Extremidades', { rowSpan: 3, colSpan: 2, style: 'itemSubtitle', height: 30, orientation: 'vertical' }),
             craftSubtitle('a. Vascular', { colSpan: 10 }),
             craftCell(value.examLimbVascular ? 'x' : '', { colSpan: 2 }),),
         craftRow(
-            craftCell('Ojos', { rowSpan: 5, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
+            craftCell('2. Ojos', { rowSpan: 5, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
             craftSubtitle('a. Párpados', { colSpan: 10 }),
             craftCell(value.examEyeEyelids ? 'x' : '', { colSpan: 2 }),
-            craftCell('Oro faringe', { rowSpan: 5, colSpan: 2, style: 'itemSubtitle', height: 45, orientation: 'vertical' }),
+            craftCell('4. Oro faringe', { rowSpan: 5, colSpan: 2, style: 'itemSubtitle', height: 45, orientation: 'vertical' }),
             craftSubtitle('a. Labios', { colSpan: 10 }),
             craftCell(value.examPharynxLips ? 'x' : '', { colSpan: 2 }),
             craftSubtitle('d. Senos paranasales', { colSpan: 10 }),
@@ -407,10 +406,10 @@ export const craftPhysicalRegionalExam = (value: PhysicalRegionalExam): Row[] =>
             craftCell(value.examEyeConjunctiva ? 'x' : '', { colSpan: 2 }),
             craftSubtitle('b. Lengua', { colSpan: 10 }),
             craftCell(value.examPharynxTongue ? 'x' : '', { colSpan: 2 }),
-            craftCell('Cuello', { rowSpan: 2, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
+            craftCell('6. Cuello', { rowSpan: 2, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
             craftSubtitle('a. Tiroides / masas', { colSpan: 10 }),
             craftCell(value.examNeckThyroid ? 'x' : '', { colSpan: 2 }),
-            craftCell('Columna', { rowSpan: 4, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
+            craftCell('10. Columna', { rowSpan: 4, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
             craftSubtitle('a. Flexibilidad', { colSpan: 10 }),
             craftCell(value.examColumnFlexibility ? 'x' : '', { colSpan: 2 }),
             craftSubtitle('c. Miembros inferiores', { colSpan: 10 }),
@@ -424,7 +423,7 @@ export const craftPhysicalRegionalExam = (value: PhysicalRegionalExam): Row[] =>
             craftCell(value.examNeckMobility ? 'x' : '', { colSpan: 2 }),
             craftSubtitle('b. Desviación', { colSpan: 10 }),
             craftCell(value.examColumnDeviation ? 'x' : '', { colSpan: 2 }),
-            craftCell('Neurológico', { rowSpan: 4, colSpan: 2, style: 'itemSubtitle', height: 45, orientation: 'vertical' }),
+            craftCell('13. Neurológico', { rowSpan: 4, colSpan: 2, style: 'itemSubtitle', height: 45, orientation: 'vertical' }),
             craftSubtitle('a. Fuerza ', { colSpan: 10 }),
             craftCell(value.examNeurologicForce ? 'x' : '', { colSpan: 2 }),),
         craftRow(
@@ -432,7 +431,7 @@ export const craftPhysicalRegionalExam = (value: PhysicalRegionalExam): Row[] =>
             craftCell(value.examEyeCorneas ? 'x' : '', { colSpan: 2 }),
             craftSubtitle('d. Amígdalas', { colSpan: 10 }),
             craftCell(value.examPharynxTonsils ? 'x' : '', { colSpan: 2 }),
-            craftCell('Tórax', { rowSpan: 2, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
+            craftCell('7. Tórax', { rowSpan: 2, colSpan: 2, style: 'itemSubtitle', height: 20, orientation: 'vertical' }),
             craftSubtitle('a. Mamas', { colSpan: 10 }),
             craftCell(value.examChestBreast ? 'x' : '', { colSpan: 2 }),
             craftSubtitle('c. Dolor', { rowSpan: 2, colSpan: 10 }),
@@ -453,7 +452,7 @@ export const craftPhysicalRegionalExam = (value: PhysicalRegionalExam): Row[] =>
             craftSubtitle('d. Reflejos', { colSpan: 10 }),
             craftCell(value.examNeurologicReflex ? 'x' : '', { colSpan: 2 }),),
         craftLabel('Observaciones:'),
-        ...values.map((e, i) => craftRow(craftCell(e, { colSpan: 70, border: ['left', 'right', values.length - 1 === i ? 'bottom' : 'right'] }))).filter(e => !!e)
+        ...(values.length ? values : ['EXAMEN FÍSICO NORMAL']).map((e, i) => craftRow(craftCell(e, { colSpan: 70, border: ['left', 'right', values.length - 1 === i ? 'bottom' : 'right'] }))).filter(e => !!e)
     ]
 };
 
@@ -469,7 +468,7 @@ export const craftSpecificAndGeneralResults = (value: GeneralExamResultAndSpecif
         craftCell(e.result, { colSpan: 40 })
     )),
     craftLabel('Observaciones'),
-    craftRow(craftCell(value.generalExamObservation, { border: ['left', 'right', 'bottom'], colSpan: 70 }))
+    craftRow(craftCell(value.generalExamObservation ?? '', { border: ['left', 'right', 'bottom'], colSpan: 70 }))
 ];
 
 export const craftDiagnosticHeader = (text?: string): Row => craftRow(
@@ -484,30 +483,44 @@ export const craftMedicalDiagnostic = (values: MedicalDiagnostic[]): Row[] => va
     craftTitle((i + 1).toString().padStart(2, '0'), { colSpan: 2 }),
     craftCell(e.description, { colSpan: 45 }),
     craftCell(e.cie, { colSpan: 13 }),
-    craftCell(e.pre ? 'x' : '', { colSpan: 5 }),
-    craftCell(e.def ? 'x' : '', { colSpan: 5 })
+    craftCell(e.flag === 'pre' ? 'x' : '', { colSpan: 5 }),
+    craftCell(e.flag === 'def' ? 'x' : '', { colSpan: 5 })
 ))
 
-export const craftMedicalFitnessForJob = (value: MedicalFitnessForJob): Row[] => [
-    craftRow(
-        craftTitle('APTO', { colSpan: 16 }),
-        craftCell(value.medicalFitnessType === 'fit' ? 'x' : '', { colSpan: 2 }),
-        craftTitle('APTO EN OBSERVACIÓN', { colSpan: 16 }),
-        craftCell(value.medicalFitnessType === 'fit-observation' ? 'x' : '', { colSpan: 2 }),
-        craftTitle('APTO CON LIMITACIONES', { colSpan: 15 }),
-        craftCell(value.medicalFitnessType === 'fit-limitation' ? 'x' : '', { colSpan: 2 }),
-        craftTitle('NO APTO', { colSpan: 15 }),
-        craftCell(value.medicalFitnessType === 'no-fit' ? 'x' : '', { colSpan: 2 }),
-    ),
-    craftRow(
-        craftSubtitle('Observación', { colSpan: 16 }),
-        craftCell(value.medicalFitnessObservation, { colSpan: 54 }),
-    ),
-    craftRow(
-        craftSubtitle('Limitación', { colSpan: 16 }),
-        craftCell(value.medicalFitnessLimitation, { colSpan: 54 }),
-    )
-];
+const defaultMedicalFitnessForJobOptions: { showReubication: boolean, hideLimitation: boolean } = {
+    showReubication: false,
+    hideLimitation: false
+}
+export const craftMedicalFitnessForJob = (value: MedicalFitnessForJob, options?: Partial<{ showReubication: boolean, hideLimitation: boolean }>): Row[] => {
+    const checkedOptions = { ...defaultMedicalFitnessForJobOptions, ...options };
+
+    return [
+        craftRow(
+            craftTitle('APTO', { colSpan: 16 }),
+            craftCell(value.medicalFitnessType === 'fit' ? 'x' : '', { colSpan: 2 }),
+            craftTitle('APTO EN OBSERVACIÓN', { colSpan: 16 }),
+            craftCell(value.medicalFitnessType === 'fit-observation' ? 'x' : '', { colSpan: 2 }),
+            craftTitle('APTO CON LIMITACIONES', { colSpan: 15 }),
+            craftCell(value.medicalFitnessType === 'fit-limitation' ? 'x' : '', { colSpan: 2 }),
+            craftTitle('NO APTO', { colSpan: 15 }),
+            craftCell(value.medicalFitnessType === 'no-fit' ? 'x' : '', { colSpan: 2 }),
+        ),
+        craftRow(
+            craftSubtitle('Observación', { colSpan: 16 }),
+            craftCell(value.medicalFitnessObservation ?? '', { colSpan: 54 }),
+        ),
+        checkedOptions.hideLimitation ? undefined : craftRow(
+            craftSubtitle('Limitacion', { colSpan: 16 }),
+            craftCell(value.medicalFitnessLimitation ?? '', { colSpan: 54 }),
+        ),
+        checkedOptions.showReubication
+            ? craftRow(
+                craftSubtitle('Reubicacion', { colSpan: 16 }),
+                craftCell(value.medicalFitnessReubication ?? '', { colSpan: 54 }),
+            )
+            : undefined
+    ].filter(e => !!e);
+}
 
 export const craftRecommendation = (value: RecordRecommendation): Row[] => [
     craftLabel('Descripcion'),

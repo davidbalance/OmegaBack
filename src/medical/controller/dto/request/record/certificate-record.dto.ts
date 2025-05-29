@@ -1,6 +1,6 @@
 import { CertificateRecord } from "@omega/medical/application/type/certificate-record";
 import { Type } from "class-transformer";
-import { IsBoolean, IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString, ValidateIf } from "class-validator";
 import { MedicalFitnessTypeEnum, PatientRecordGenderEnum } from "./_base.dto";
 
 // Enums
@@ -24,9 +24,12 @@ enum EvaluationConditionWithJobEnum {
 }
 
 
-// DTOs
-export class CertficateRecordRequestDto implements Omit<CertificateRecord, 'type'> {
-    /** Institution & Patient Information */
+export class CertficateRecordRequestDto implements Omit<CertificateRecord, 'type' | 'patientDni'> {
+    /* -------------------------------- Institution & Patient Information -------------------------------- */
+    @IsString()
+    @IsNotEmpty()
+    public readonly institutionHealthFacility: string;
+
     @IsString()
     @IsNotEmpty()
     public readonly companyName: string;
@@ -35,13 +38,9 @@ export class CertficateRecordRequestDto implements Omit<CertificateRecord, 'type
     @IsNotEmpty()
     public readonly companyRUC: string;
 
+    @IsOptional()
     @IsString()
-    @IsNotEmpty()
-    public readonly companyCIU: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly institutionHealthFacility: string;
+    public readonly companyCIIU?: string | undefined;
 
     @IsString()
     @IsNotEmpty()
@@ -60,40 +59,38 @@ export class CertficateRecordRequestDto implements Omit<CertificateRecord, 'type
     public readonly patientSecondLastName: string;
 
     @IsEnum(PatientRecordGenderEnum)
-    public readonly patientGender: PatientRecordGenderEnum;
+    public readonly patientGender: "male" | "female";
 
     @IsString()
     @IsNotEmpty()
     public readonly jobPosition: string;
 
-    /** General date */
+    /* -------------------------------- General Data -------------------------------- */
     @IsEnum(GeneralDataEnum)
-    public readonly generalData: GeneralDataEnum;
+    public readonly generalData: "entry" | "periodic" | "reintegrate" | "retirement";
 
-    /** Medical Fitness */
+    /* -------------------------------- Medical Fitness for Job -------------------------------- */
+    @ValidateIf(({ obj }) => !!obj && obj.generalData !== 'retirement')
     @IsEnum(MedicalFitnessTypeEnum)
-    public readonly medicalFitnessType: MedicalFitnessTypeEnum;
+    public readonly medicalFitnessType: "fit" | "fit-observation" | "fit-limitation" | "no-fit";
 
-    @IsString()
-    @IsNotEmpty()
-    public readonly medicalFitnessObservation: string;
+    @ValidateIf(({ obj }) => !!obj && obj.generalData !== 'retirement')
+    public readonly medicalFitnessObservation?: string | undefined;
 
-    @IsString()
-    @IsNotEmpty()
-    public readonly medicalFitnessLimitation: string;
-
-    /** Retirement Medical Evaluation */
+    /* -------------------------------- Retirement Evaluation -------------------------------- */
+    @ValidateIf(({ obj }) => !!obj && obj.generalData === 'retirement')
     @Type(() => Boolean)
     @IsBoolean()
     public readonly retirementEvaluationDone: boolean;
 
+    @ValidateIf(({ obj }) => !!obj && obj.generalData === 'retirement')
     @IsEnum(EvaluationConditionEnum)
-    public readonly retirementEvaluationCondition: EvaluationConditionEnum;
+    public readonly retirementEvaluationCondition: "presuntive" | "definitive" | "no-apply";
 
+    @ValidateIf(({ obj }) => !!obj && obj.generalData === 'retirement')
     @IsEnum(EvaluationConditionWithJobEnum)
-    public readonly retirementEvaluationConditionWithJob: EvaluationConditionWithJobEnum;
-
-    /** Recommendation */
+    public readonly retirementEvaluationConditionWithJob: "no-apply" | "yes" | "no";
+    /* -------------------------------- Recommendation -------------------------------- */
     @IsString()
     @IsNotEmpty()
     public readonly recommendationDescription: string;

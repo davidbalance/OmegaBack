@@ -10,11 +10,9 @@ import { PdfProvider } from "@shared/shared/providers/pdf.provider";
 import { FileOperation, IncrementProvider } from "@shared/shared/providers";
 
 export type GenericRecord = InitialRecord | PeriodicRecord | ReintegrateRecord | RetirementRecord | CertificateRecord;
-export type ClientRecordLayoutFunc = (value: GenericRecord, clinicNumber: number, fileNumber: number) => unknown;
+export type ClientRecordLayoutFunc = (value: GenericRecord, fileNumber: number) => unknown;
 export type ClientRecordFilenameFunc = (name: string) => string;
-export type ClientAddRecordCommandPayload = GenericRecord & {
-    patientDni: string;
-}
+export type ClientAddRecordCommandPayload = GenericRecord;
 export interface ClientAddRecordCommand extends CommandHandlerAsync<ClientAddRecordCommandPayload, void> { }
 
 export class ClientAddRecordCommandImpl implements ClientAddRecordCommand {
@@ -31,10 +29,9 @@ export class ClientAddRecordCommandImpl implements ClientAddRecordCommand {
         const client = await this.repository.findOneAsync({ filter: [{ field: 'patientDni', operator: 'eq', value: value.patientDni }] });
         if (!client) throw new ClientNotFoundError(value.patientDni);
 
-        const clinicNumber = await this.increment.next('clinic-history');
         const recordNumber = await this.increment.next(value.type);
 
-        const buffer = await this.pdf.craft(this.layoutHelper(value, clinicNumber, recordNumber));
+        const buffer = await this.pdf.craft(this.layoutHelper(value, recordNumber));
         const filepath = `medical_record/${client.patientDni}_${`${client.patientName} ${client.patientLastname}`.toLowerCase().replaceAll(' ', '_')}`;
         const filename = this.filenameHelper(value.type);
         const path = await this.file.write(filepath, filename, buffer);
