@@ -75,6 +75,17 @@ export const craftMedicalAndSurgicalHistory = (value: MedicalAndSurgicalHistory)
     craftRow(craftCell(value.medicalAndSurgicalHistory, { border: ['left', 'right', 'bottom'], colSpan: 70 })),
 ]
 
+
+const craftToxicHabit = (data: Partial<ToxicDetail>): Cell[] => [
+    craftCell(data.name ?? '', { colSpan: 12 }),
+    craftCell(data.haveConsume ? 'x' : '', { colSpan: 2 }),
+    craftCell(!data.haveConsume ? 'x' : '', { colSpan: 2 }),
+    craftCell(data.haveConsume ? data.consumptionTime?.toString() ?? '' : '', { colSpan: 5 }),
+    craftCell(data.haveConsume ? data.quantity?.toString() ?? '' : '', { colSpan: 4 }),
+    craftCell(data.haveConsume ? data.isExConsumer ? 'Si' : 'No' : '', { colSpan: 4 }),
+    craftCell(data.haveConsume ? data.timeOfAbstinence?.toString() ?? '' : '', { colSpan: 6 }),
+];
+
 export const craftToxicHabitsAndLifeStyle = (toxic: { tobacco: Partial<ToxicDetail>, alcohol: Partial<ToxicDetail>, other: Partial<ToxicDetail> }, life: LifeStyle): Row[] => [
     craftRow(
         craftTitle('HÁBITOS TÓXICOS', { colSpan: 35 }),
@@ -96,43 +107,25 @@ export const craftToxicHabitsAndLifeStyle = (toxic: { tobacco: Partial<ToxicDeta
         craftSubtitle('TIEMPO / CANTIDAD', { colSpan: 4 }),
     ),
     craftRow(
-        craftCell('TABACO', { colSpan: 12 }),
-        craftCell(toxic.tobacco.haveConsume ? 'x' : '', { colSpan: 2 }),
-        craftCell(!toxic.tobacco.haveConsume ? 'x' : '', { colSpan: 2 }),
-        craftCell(toxic.tobacco.consumptionTime?.toString() ?? '', { colSpan: 5 }),
-        craftCell(toxic.tobacco.quantity?.toString() ?? '', { colSpan: 4 }),
-        craftCell(toxic.tobacco.isExConsumer ? 'Si' : 'No', { colSpan: 4 }),
-        craftCell(toxic.tobacco.timeOfAbstinence?.toString() ?? '', { colSpan: 6 }),
+        ...craftToxicHabit({ ...toxic.tobacco, name: 'TABACCO' }),
 
         craftCell('ACTIVIDAD FÍSICA', { colSpan: 10 }),
         life.lifestylePhysicalActivity !== undefined ? craftCell(life.lifestylePhysicalActivity ? 'x' : '', { colSpan: 2 }) : craftCell('', { colSpan: 2 }),
         life.lifestylePhysicalActivity !== undefined ? craftCell(!life.lifestylePhysicalActivity ? 'x' : '', { colSpan: 2 }) : craftCell('', { colSpan: 2 }),
-        craftCell(life.lifestylePhysicalActivityType ?? '', { colSpan: 4 }),
-        craftCell(life.lifestylePhysicalActivityTimeQty ?? '', { colSpan: 17 }),
+        craftCell(life.lifestylePhysicalActivityType ?? '', { colSpan: 17 }),
+        craftCell(life.lifestylePhysicalActivityTimeQty ?? '', { colSpan: 4 }),
     ),
     craftRow(
-        craftCell('ALCOCHOL', { colSpan: 12 }),
-        craftCell(toxic.alcohol.haveConsume ? 'x' : '', { colSpan: 2 }),
-        craftCell(!toxic.alcohol.haveConsume ? 'x' : '', { colSpan: 2 }),
-        craftCell(toxic.alcohol.consumptionTime?.toString() ?? '', { colSpan: 5 }),
-        craftCell(toxic.alcohol.quantity?.toString() ?? '', { colSpan: 4 }),
-        craftCell(toxic.alcohol.isExConsumer ? 'Si' : 'No', { colSpan: 4 }),
-        craftCell(toxic.alcohol.timeOfAbstinence?.toString() ?? '', { colSpan: 6 }),
+        ...craftToxicHabit({ ...toxic.alcohol, name: 'ALCOCHOL' }),
 
         craftCell('MEDICACIÓN HABITUAL', { rowSpan: 2, colSpan: 10 }),
         life.lifestyleMedication !== undefined ? craftCell(life.lifestyleMedication ? 'x' : '', { rowSpan: 2, colSpan: 2 }) : craftCell('', { rowSpan: 2, colSpan: 2 }),
         life.lifestyleMedication !== undefined ? craftCell(!life.lifestyleMedication ? 'x' : '', { rowSpan: 2, colSpan: 2 }) : craftCell('', { rowSpan: 2, colSpan: 2 }),
-        craftCell(life.lifestyleMedicationTimeQty ?? '', { rowSpan: 2, colSpan: 17 }),
-        craftCell(life.lifestyleMedicationName ?? '', { rowSpan: 2, colSpan: 4 })
+        craftCell(life.lifestyleMedicationName ?? '', { rowSpan: 2, colSpan: 17 }),
+        craftCell(life.lifestyleMedicationTimeQty ?? '', { rowSpan: 2, colSpan: 4 }),
     ),
     craftRow(
-        craftCell(`OTRAS DROGAS: ${toxic.other.name ?? ''}`, { colSpan: 12 }),
-        craftCell(toxic.other.haveConsume ? 'x' : '', { colSpan: 2 }),
-        craftCell(!toxic.other.haveConsume ? 'x' : '', { colSpan: 2 }),
-        craftCell(toxic.other.consumptionTime?.toString() ?? '', { colSpan: 5 }),
-        craftCell(toxic.other.quantity?.toString() ?? '', { colSpan: 4 }),
-        craftCell(toxic.other.isExConsumer ? 'Si' : 'No', { colSpan: 4 }),
-        craftCell(toxic.other.timeOfAbstinence?.toString() ?? '', { colSpan: 6 })
+        ...craftToxicHabit({ ...toxic.alcohol, name: `OTRAS DROGAS: ${toxic.other.name ?? ''}` })
     )
 ];
 
@@ -148,9 +141,9 @@ export const craftJobAccident = (value: JobAccident): Row[] => [
         craftCell('NO', { border: [], colSpan: 2 }),
         craftCell(!value.jobAccidentHappened ? 'x' : ''),
         craftCell('FECHA:', { border: [], colSpan: 4 }),
-        craftCell(value.jobAccidentDate ? formatDate(value.jobAccidentDate, 'yyyy') : '', { colSpan: 3 }),
-        craftCell(value.jobAccidentDate ? formatDate(value.jobAccidentDate, 'MM') : '', { colSpan: 3 }),
-        craftCell(value.jobAccidentDate ? formatDate(value.jobAccidentDate, 'dd') : '', { colSpan: 3 }),
+        craftCell(value.jobAccidentDate && value.jobAccidentHappened ? formatDate(value.jobAccidentDate, 'yyyy') : '', { colSpan: 3 }),
+        craftCell(value.jobAccidentDate && value.jobAccidentHappened ? formatDate(value.jobAccidentDate, 'MM') : '', { colSpan: 3 }),
+        craftCell(value.jobAccidentDate && value.jobAccidentHappened ? formatDate(value.jobAccidentDate, 'dd') : '', { colSpan: 3 }),
         emptyCell({ border: ['right'], colSpan: 3 })
     ),
     craftRow(emptyCell({ colSpan: 70, border: ['bottom', 'left', 'right'] })),
@@ -172,9 +165,9 @@ export const craftOccupationalDisease = (value: OccupationalDisease): Row[] => [
         craftCell('NO', { border: [], colSpan: 2 }),
         craftCell(!value.occupationalDiseaseHappened ? 'x' : ''),
         craftCell('FECHA:', { border: [], colSpan: 4 }),
-        craftCell(value.occupationalDiseaseDate ? formatDate(value.occupationalDiseaseDate, 'yyyy') : '', { colSpan: 3 }),
-        craftCell(value.occupationalDiseaseDate ? formatDate(value.occupationalDiseaseDate, 'MM') : '', { colSpan: 3 }),
-        craftCell(value.occupationalDiseaseDate ? formatDate(value.occupationalDiseaseDate, 'dd') : '', { colSpan: 3 }),
+        craftCell(value.occupationalDiseaseDate && value.occupationalDiseaseHappened ? formatDate(value.occupationalDiseaseDate, 'yyyy') : '', { colSpan: 3 }),
+        craftCell(value.occupationalDiseaseDate && value.occupationalDiseaseHappened ? formatDate(value.occupationalDiseaseDate, 'MM') : '', { colSpan: 3 }),
+        craftCell(value.occupationalDiseaseDate && value.occupationalDiseaseHappened ? formatDate(value.occupationalDiseaseDate, 'dd') : '', { colSpan: 3 }),
         emptyCell({ border: ['right'], colSpan: 3 })
     ),
     craftRow(emptyCell({ colSpan: 70, border: ['bottom', 'left', 'right'] })),
@@ -217,7 +210,7 @@ export const craftFamilyHistory = (value: FamilyHistory): Row[] => {
             craftCell(value.familyHistoryOther ? 'x' : '', { colSpan: 2 }),
         ),
         craftLabel('Observaciones:'),
-        ...values.map((e, i) => craftRow(craftCell(e, { colSpan: 70, border: ['left', 'right', values.length - 1 === i ? 'bottom' : 'right'] }))).filter(e => !!e)
+        ...(values.length ? values : ["NINGUNA"]).map((e, i) => craftRow(craftCell(e, { colSpan: 70, border: ['left', 'right', !values.length || values.length - 1 === i ? 'bottom' : 'right'] }))).filter(e => !!e)
     ];
 };
 
@@ -229,7 +222,7 @@ export const craftExtraActivity = (value: ExtraActivity): Row[] => [
 
 export const craftCurrentDisease = (value: CurrentDisease): Row[] => [
     craftLabel('Observaciones:'),
-    craftRow(craftCell(value.currentDiseaseDescription ?? '', { border: ['left', 'right', 'bottom'], colSpan: 70 }))
+    craftRow(craftCell(!!value?.currentDiseaseDescription ? value.currentDiseaseDescription : 'NO REFIERE', { border: ['left', 'right', 'bottom'], colSpan: 70 }))
 ];
 
 export const craftReviewOfOrgansAndSystem = (value: ReviewOfOrgansAndSystem): Row[] => {
@@ -273,7 +266,9 @@ export const craftReviewOfOrgansAndSystem = (value: ReviewOfOrgansAndSystem): Ro
             craftCell(value.reviewOfOrgansHighlyStrung ? 'x' : ' ', { colSpan: 2 }),
         ),
         craftLabel('Observaciones:'),
-        ...(values.length ? values : ['SIN PATOLOGIA APARENTE']).map((e, i) => craftRow(craftCell(e, { colSpan: 70, border: ['left', 'right', values.length - 1 === i ? 'bottom' : 'right'] }))).filter(e => !!e)
+        ...(values.length ? values : ['SIN PATOLOGIA APARENTE'])
+            .map((e, i) => craftRow(craftCell(e, { colSpan: 70, border: ['left', 'right', !values.length || values.length - 1 === i ? 'bottom' : 'right'] })))
+            .filter(e => !!e)
     ];
 };
 
@@ -452,7 +447,7 @@ export const craftPhysicalRegionalExam = (value: PhysicalRegionalExam): Row[] =>
             craftSubtitle('d. Reflejos', { colSpan: 10 }),
             craftCell(value.examNeurologicReflex ? 'x' : '', { colSpan: 2 }),),
         craftLabel('Observaciones:'),
-        ...(values.length ? values : ['EXAMEN FÍSICO NORMAL']).map((e, i) => craftRow(craftCell(e, { colSpan: 70, border: ['left', 'right', values.length - 1 === i ? 'bottom' : 'right'] }))).filter(e => !!e)
+        ...(values.length ? values : ['EXAMEN FÍSICO NORMAL']).map((e, i) => craftRow(craftCell(e, { colSpan: 70, border: ['left', 'right', !values.length || values.length - 1 === i ? 'bottom' : 'right'] }))).filter(e => !!e)
     ]
 };
 

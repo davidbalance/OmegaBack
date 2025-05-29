@@ -370,6 +370,7 @@ export class InitialRecordRequestDto implements Omit<InitialRecord, 'type' | 'pa
     @Type(() => Number)
     @IsInt()
     @Min(1)
+    @Transform(({ obj, value }) => !obj && !!obj.patientDisabilityType ? value : undefined)
     public readonly patientDisabilityPercent?: number | undefined;
 
     @Type(() => Date)
@@ -532,11 +533,13 @@ export class InitialRecordRequestDto implements Omit<InitialRecord, 'type' | 'pa
     @ValidateIf(({ obj }) => !!obj && obj.lifestylePhysicalActivity)
     @IsString()
     @IsNotEmpty()
+    @Transform(({ obj, value }) => !!obj && obj.lifestylePhysicalActivity ? value : undefined)
     public readonly lifestylePhysicalActivityType?: string | undefined;
 
     @ValidateIf(({ obj }) => !!obj && obj.lifestylePhysicalActivity)
     @IsString()
     @IsNotEmpty()
+    @Transform(({ obj, value }) => !!obj && obj.lifestylePhysicalActivity ? value : undefined)
     public readonly lifestylePhysicalActivityTimeQty?: string | undefined;
 
     @Type(() => Boolean)
@@ -546,11 +549,13 @@ export class InitialRecordRequestDto implements Omit<InitialRecord, 'type' | 'pa
     @ValidateIf(({ obj }) => !!obj && obj.lifestyleMedication)
     @IsString()
     @IsNotEmpty()
+    @Transform(({ obj, value }) => !!obj && obj.lifestyleMedication ? value : undefined)
     public readonly lifestyleMedicationName?: string | undefined;
 
     @ValidateIf(({ obj }) => !!obj && obj.lifestyleMedication)
     @IsString()
     @IsNotEmpty()
+    @Transform(({ obj, value }) => !!obj && obj.lifestyleMedication ? value : undefined)
     public readonly lifestyleMedicationTimeQty?: string | undefined;
 
     /* ---------------------------- Job History ---------------------------- */
@@ -567,14 +572,16 @@ export class InitialRecordRequestDto implements Omit<InitialRecord, 'type' | 'pa
     @ValidateIf(({ obj }) => !!obj && obj.jobAccidentHappened)
     @IsString()
     @IsNotEmpty()
+    @Transform(({ obj, value }) => !!obj && obj.jobAccidentHappened ? value : undefined)
     public readonly jobAccidentDescription?: string | undefined;
 
     @ValidateIf(({ obj }) => !!obj && obj.jobAccidentHappened)
     @Type(() => Date)
     @IsDate()
+    @Transform(({ obj, value }) => !!obj && obj.jobAccidentHappened ? value : undefined)
     public readonly jobAccidentDate?: Date | undefined;
 
-    @IsOptional()
+    @ValidateIf(({ obj }) => !!obj && obj.jobAccidentHappened)
     @IsString()
     @IsNotEmpty()
     public readonly jobAccidentObservation?: string | undefined;
@@ -586,11 +593,13 @@ export class InitialRecordRequestDto implements Omit<InitialRecord, 'type' | 'pa
     @ValidateIf(({ obj }) => !!obj && obj.occupationalDiseaseHappened)
     @IsString()
     @IsNotEmpty()
+    @Transform(({ obj, value }) => !!obj && obj.occupationalDiseaseHappened ? value : undefined)
     public readonly occupationalDiseaseDescription?: string | undefined;
 
     @ValidateIf(({ obj }) => !!obj && obj.occupationalDiseaseHappened)
     @Type(() => Date)
     @IsDate()
+    @Transform(({ obj, value }) => !!obj && obj.occupationalDiseaseHappened ? value : undefined)
     public readonly occupationalDiseaseDate?: Date | undefined;
 
     @IsOptional()

@@ -1,7 +1,17 @@
 import { formatDate } from "date-fns";
 import { createRecordLayout } from "./generic-record-helper";
-import { ClientRecordLayoutFunc } from "@omega/medical/application/commands/client/client-add-record.command";
+import { ClientRecordLayoutFunc, GenericRecord } from "@omega/medical/application/commands/client/client-add-record.command";
 import { craftCell, craftRow, craftSpacing, craftTable } from "./table.helper";
+
+const recordTitle = (value: Pick<GenericRecord, 'type'>): string => {
+    switch (value.type) {
+        case "inicial": return "FORMULARIO DE EVALUACION PREOCUPACIONAL - INICIO";
+        case "periodico": return "FORMULARIO DE EVALUACION PERIODICA";
+        case "reintegrar": return "FORMULARIO DE EVALUACION REINTEGRO";
+        case "retiro": return "FORMULARIO DE EVALUACION RETIRO";
+        case "certificado": return "CERTIFICADO DE SALUD EN EL TRABAJO";
+    }
+}
 
 export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc =>
     (e, fileNumber) => {
@@ -14,7 +24,7 @@ export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc
 
         const table = craftTable(tableSize, 6,
             craftRow(
-                craftCell(`Ficha: ${e.type.toUpperCase()}`, {
+                craftCell(recordTitle(e), {
                     border: [],
                     colSpan: tableSize,
                     style: 'recordTitle',

@@ -55,7 +55,12 @@ describe('ClientRecordPrismaRepository', () => {
             const result = await repository.findManyAsync(mockFilter);
 
             expect(PrismaFilterMapper.map).toHaveBeenCalledWith(mockFilter.filter);
-            expect(prisma.clientRecordModel.findMany).toHaveBeenCalledWith({ where: mockPrismaWhere });
+            expect(prisma.clientRecordModel.findMany).toHaveBeenCalledWith({
+                where: mockPrismaWhere,
+                orderBy: {
+                    recordEmissionDate: "desc",
+                },
+            });
             expect(result).toEqual(Array.from({ length: prismaResults.length }).fill(modelResult));
         });
 

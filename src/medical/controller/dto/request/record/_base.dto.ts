@@ -1,7 +1,7 @@
 import { JobHistory } from '@omega/medical/application/type/initial-record';
 import { GeneralExamResult, MedicalDiagnostic, ToxicDetail } from '@omega/medical/application/type/record.type';
-import { Type } from 'class-transformer';
-import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsPositive, IsString, Min, ValidateIf } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, Min, ValidateIf } from 'class-validator';
 
 // Enums
 export enum PatientRecordGenderEnum {
@@ -31,23 +31,27 @@ export class ToxicDetailRequestDto implements ToxicDetail {
     @Type(() => Number)
     @IsNumber()
     @Min(0)
+    @Transform(({ obj, value }) => !!obj && obj.haveConsume ? value : undefined)
     public readonly consumptionTime: number | undefined;
 
     @ValidateIf((obj) => obj.haveConsume)
     @Type(() => Number)
     @IsNumber()
     @IsPositive()
+    @Transform(({ obj, value }) => !!obj && obj.haveConsume ? value : undefined)
     public readonly quantity: number | undefined;
 
     @ValidateIf((obj) => obj.haveConsume)
     @Type(() => Boolean)
     @IsBoolean()
+    @Transform(({ obj, value }) => !!obj && obj.haveConsume ? value : undefined)
     public readonly isExConsumer: boolean | undefined;
 
     @ValidateIf((obj) => obj.haveConsume && obj.isExConsumer)
     @Type(() => Number)
     @IsNumber()
     @Min(0)
+    @Transform(({ obj, value }) => !!obj && obj.haveConsume && obj.isExConsumer ? value : undefined)
     public readonly timeOfAbstinence: number | undefined;
 }
 
@@ -93,9 +97,9 @@ export class JobHistoryRequestDto implements JobHistory {
     @IsBoolean()
     public readonly jobHistoryRiskPsychosocial: boolean;
 
+    @IsOptional()
     @IsString()
-    @IsNotEmpty()
-    public readonly jobHistoryObservation: string;
+    public readonly jobHistoryObservation?: string;
 }
 
 export class GeneralExamResultRequestDto implements GeneralExamResult {

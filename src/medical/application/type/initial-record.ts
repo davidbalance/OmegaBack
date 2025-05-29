@@ -48,7 +48,7 @@ export type JobHistory = {
     jobHistoryRiskBiological: boolean;
     jobHistoryRiskErgonomic: boolean;
     jobHistoryRiskPsychosocial: boolean;
-    jobHistoryObservation: string;
+    jobHistoryObservation?: string;
 }
 
 export type JobRisk = Partial<PhysicalRisk<boolean>>

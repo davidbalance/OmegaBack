@@ -152,7 +152,7 @@ const institutionLayout: CraftItemFunc<InitialRecord & {
         craftCell(!!record.patientDisabilityType ? 'x' : '', { colSpan: 2 }),
         craftCell(!record.patientDisabilityType ? 'x' : '', { colSpan: 2 }),
         craftCell(record.patientDisabilityType ?? '', { colSpan: 6 }),
-        craftCell(record.patientDisabilityPercent?.toString() ?? '0', { colSpan: 3 }),
+        craftCell(record.patientDisabilityPercent?.toString() ?? '', { colSpan: 3 }),
         craftCell(formatDate(record.institutionJobStartDate, 'yyyy/MM/dd'), { colSpan: 5 }),
         craftCell(record.institutionJobPosition, { colSpan: 5 }),
         craftCell(record.institutionJobArea, { colSpan: 6 }),
@@ -377,7 +377,7 @@ const jobHistoryLayout: CraftItemFunc<InitialRecord> = (record) => [
         craftCell(e.jobHistoryRiskBiological ? 'x' : ' ', { colSpan: 2 }),
         craftCell(e.jobHistoryRiskErgonomic ? 'x' : ' ', { colSpan: 2 }),
         craftCell(e.jobHistoryRiskPsychosocial ? 'x' : ' ', { colSpan: 2 }),
-        craftCell(e.jobHistoryObservation, { colSpan: 15 }),
+        craftCell(e.jobHistoryObservation ?? '', { colSpan: 15 }),
     ))
 ];
 
