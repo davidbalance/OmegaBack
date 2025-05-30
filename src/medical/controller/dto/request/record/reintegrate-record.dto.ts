@@ -1,9 +1,13 @@
-import { IsArray, IsDate, IsEnum, IsInt, IsNotEmpty, IsNumber, IsObject, IsOptional, IsPositive, IsString, Min, ValidateNested } from "class-validator";
+import { IsArray, IsBoolean, IsDate, IsEnum, IsInt, IsNotEmpty, IsNumber, IsObject, IsOptional, IsPositive, IsString, Min, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, MedicalFitnessTypeEnum, PatientRecordGenderEnum } from "./_base.dto";
 import { ReintegrateRecord } from "@omega/medical/application/type/reintegrate-record";
 
-export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'type' | 'patientDni'> {
+export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'type' | 'patientDni' | 'authorFullname' | 'authorDni'> {
+    @IsOptional()
+    @IsBoolean()
+    public readonly hideLogo?: boolean;
+
     /* ---------------------------- Institution & Patient Information ---------------------------- */
     @IsString()
     @IsNotEmpty()

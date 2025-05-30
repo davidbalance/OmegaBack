@@ -24,7 +24,11 @@ enum EvaluationConditionWithJobEnum {
 }
 
 
-export class CertficateRecordRequestDto implements Omit<CertificateRecord, 'type' | 'patientDni'> {
+export class CertficateRecordRequestDto implements Omit<CertificateRecord, 'type' | 'patientDni' | 'authorFullname' | 'authorDni'> {
+    @IsOptional()
+    @IsBoolean()
+    public readonly hideLogo?: boolean;
+
     /* -------------------------------- Institution & Patient Information -------------------------------- */
     @IsString()
     @IsNotEmpty()

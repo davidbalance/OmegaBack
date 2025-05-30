@@ -13,7 +13,11 @@ class RetirementInstitutionActivityRequestDto implements RetirementInstitutionAc
     public readonly risk: string;
 }
 
-export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type' | 'patientDni'> {
+export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type' | 'patientDni' | 'authorFullname' | 'authorDni'> {
+    @IsOptional()
+    @IsBoolean()
+    public readonly hideLogo?: boolean;
+    
     /* --------------------------------------------------- Institution & Patient Information --------------------------------------------------- */
     @IsString()
     @IsNotEmpty()
@@ -100,16 +104,16 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     @Type(() => Boolean)
     @IsBoolean()
     public readonly occupationalDiseaseHappened: boolean;
-    
+
     @ValidateIf((obj) => obj.jobAccidentHappened)
     @IsString()
     public readonly occupationalDiseaseDescription?: string | undefined;
-    
+
     @ValidateIf((obj) => obj.jobAccidentHappened)
     @Type(() => Date)
     @IsDate()
     public readonly occupationalDiseaseDate?: Date | undefined;
-    
+
     @ValidateIf((obj) => obj.jobAccidentHappened)
     @IsString()
     @IsNotEmpty()

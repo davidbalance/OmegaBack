@@ -261,7 +261,11 @@ export class JobRiskRequestDto implements JobRisk {
 }
 
 
-export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type' | 'patientDni'> {
+export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type' | 'patientDni' | 'authorFullname' | 'authorDni'> {
+    @IsOptional()
+    @IsBoolean()
+    public readonly hideLogo?: boolean;
+    
     /* ---------------------------- Institution & Patient Information ---------------------------- */
     @IsString()
     @IsNotEmpty()

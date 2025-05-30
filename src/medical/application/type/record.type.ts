@@ -66,7 +66,7 @@ export type ToxicDetail = {
     /**
      * Mandatory if `haveConsume` is true.
      */
-    quantity?: number;
+    quantity?: string;
     /**
      * Mandatory if `haveConsume` is true / Default false.
      */
@@ -74,7 +74,7 @@ export type ToxicDetail = {
     /**
      * Mandatory if `haveConsume` and isExConsumer are true.
      */
-    timeOfAbstinence?: number;
+    timeOfAbstinence?: string;
 };
 
 export type LifeStyle = {
@@ -277,7 +277,7 @@ export type PhysicalRegionalExam = {
 export type MedicalDiagnostic = {
     description: string;
     cie: string;
-    flag: 'pre'|'def';
+    flag: 'pre' | 'def';
 };
 
 type MedicalFitnessType = 'fit' | 'fit-observation' | 'fit-limitation' | 'no-fit'

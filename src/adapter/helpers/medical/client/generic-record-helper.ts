@@ -13,17 +13,17 @@ import { createRetirementRecord } from "./record/retirement-record-helper"
 import { createReintegrationRecord } from "./record/reintegration-record-helper"
 import { createCertificateRecord } from "./record/certificate-record-helper"
 
-const isInitialRecord = (record: GenericRecord): record is InitialRecord => record.type === 'inicial';
-const isPeriodicRecord = (record: GenericRecord): record is PeriodicRecord => record.type === 'periodico';
-const isReintegrateRecord = (record: GenericRecord): record is ReintegrateRecord => record.type === 'reintegrar';
-const isRetirementRecord = (record: GenericRecord): record is RetirementRecord => record.type === 'retiro';
-const isCertificateRecord = (record: GenericRecord): record is CertificateRecord => record.type === 'certificado';
+const isInitialRecord = (record: Omit<GenericRecord, 'authorFullname' | 'authorDni'>): record is InitialRecord => record.type === 'inicial';
+const isPeriodicRecord = (record: Omit<GenericRecord, 'authorFullname' | 'authorDni'>): record is PeriodicRecord => record.type === 'periodico';
+const isReintegrateRecord = (record: Omit<GenericRecord, 'authorFullname' | 'authorDni'>): record is ReintegrateRecord => record.type === 'reintegrar';
+const isRetirementRecord = (record: Omit<GenericRecord, 'authorFullname' | 'authorDni'>): record is RetirementRecord => record.type === 'retiro';
+const isCertificateRecord = (record: Omit<GenericRecord, 'authorFullname' | 'authorDni'>): record is CertificateRecord => record.type === 'certificado';
 
 type RecordOption = {
     fileNumber: number;
 }
-export type CraftItemFunc<T extends GenericRecord> = (record: T) => Row[];
-export type CraftRecordFunc<T extends GenericRecord> = (record: T, option: RecordOption) => Row[];
+export type CraftItemFunc<T extends Omit<GenericRecord, 'authorFullname' | 'authorDni'>> = (record: T) => Row[];
+export type CraftRecordFunc<T extends Omit<GenericRecord, 'authorFullname' | 'authorDni'>> = (record: T, option: RecordOption) => Row[];
 export const createRecordLayout = (record: GenericRecord, option: RecordOption): Row[] => {
     if (isInitialRecord(record)) {
         return createInitialRecord(record, { ...option });
@@ -125,7 +125,7 @@ export const craftToxicHabitsAndLifeStyle = (toxic: { tobacco: Partial<ToxicDeta
         craftCell(life.lifestyleMedicationTimeQty ?? '', { rowSpan: 2, colSpan: 4 }),
     ),
     craftRow(
-        ...craftToxicHabit({ ...toxic.alcohol, name: `OTRAS DROGAS: ${toxic.other.name ?? ''}` })
+        ...craftToxicHabit({ ...toxic.other, name: `OTRAS DROGAS: ${toxic.other.name ?? ''}` })
     )
 ];
 
@@ -299,46 +299,46 @@ export const craftVitalSignsAndAnthropometry = (value: VitalSignsAndAnthropometr
 
 export const craftPhysicalRegionalExam = (value: PhysicalRegionalExam): Row[] => {
     const values: string[] = [
-        !!value.examSkinScar ? `1 - a. ${value.examSkinScar}` : undefined,
-        !!value.examSkinTattoo ? `1 - b. ${value.examSkinTattoo}` : undefined,
-        !!value.examSkinLesions ? `1 - c. ${value.examSkinLesions}` : undefined,
-        !!value.examEyeEyelids ? `2 - a. ${value.examEyeEyelids}` : undefined,
-        !!value.examEyeConjunctiva ? `2 - b. ${value.examEyeConjunctiva}` : undefined,
-        !!value.examEyePupils ? `2 - c. ${value.examEyePupils}` : undefined,
-        !!value.examEyeCorneas ? `2 - d. ${value.examEyeCorneas}` : undefined,
-        !!value.examEyeMotility ? `2 - e. ${value.examEyeMotility}` : undefined,
-        !!value.examEarAuditoryExternal ? `3 - a. ${value.examEarAuditoryExternal}` : undefined,
-        !!value.examEarAuricle ? `3 - b. ${value.examEarAuricle}` : undefined,
-        !!value.examEarEardrum ? `3 - c. ${value.examEarEardrum}` : undefined,
-        !!value.examPharynxLips ? `4 - a. ${value.examPharynxLips}` : undefined,
-        !!value.examPharynxTongue ? `4 - b. ${value.examPharynxTongue}` : undefined,
-        !!value.examPharynxPharynx ? `4 - c. ${value.examPharynxPharynx}` : undefined,
-        !!value.examPharynxTonsils ? `4 - d. ${value.examPharynxTonsils}` : undefined,
-        !!value.examPharynxTeeth ? `4 - e. ${value.examPharynxTeeth}` : undefined,
-        !!value.examNosePartition ? `5 - a. ${value.examNosePartition}` : undefined,
-        !!value.examNoseTurbinates ? `5 - b. ${value.examNoseTurbinates}` : undefined,
-        !!value.examNoseMucousMembranes ? `5 - c. ${value.examNoseMucousMembranes}` : undefined,
-        !!value.examNoseParanasalSinuses ? `5 - d. ${value.examNoseParanasalSinuses}` : undefined,
-        !!value.examNeckThyroid ? `6 - a. ${value.examNeckThyroid}` : undefined,
-        !!value.examNeckMobility ? `6 - b. ${value.examNeckMobility}` : undefined,
-        !!value.examChestBreast ? `7 - a. ${value.examChestBreast}` : undefined,
-        !!value.examChestHeart ? `7 - b. ${value.examChestHeart}` : undefined,
-        !!value.examChestLungs ? `8 - a. ${value.examChestLungs}` : undefined,
-        !!value.examChestRibCage ? `8 - b. ${value.examChestRibCage}` : undefined,
-        !!value.examAbdomenViscera ? `9 - a. ${value.examAbdomenViscera}` : undefined,
-        !!value.examAbdomenAbdominalWall ? `9 - b. ${value.examAbdomenAbdominalWall}` : undefined,
-        !!value.examColumnFlexibility ? `10 - a. ${value.examColumnFlexibility}` : undefined,
-        !!value.examColumnDeviation ? `10 - b. ${value.examColumnDeviation}` : undefined,
-        !!value.examColumnPain ? `10 - c. ${value.examColumnPain}` : undefined,
-        !!value.examPelvis ? `11 - a. ${value.examPelvis}` : undefined,
-        !!value.examPelvisGenitals ? `11 - b. ${value.examPelvisGenitals}` : undefined,
-        !!value.examLimbVascular ? `12 - a. ${value.examLimbVascular}` : undefined,
-        !!value.examLimbUpper ? `12 - b. ${value.examLimbUpper}` : undefined,
-        !!value.examLimbLower ? `12 - c. ${value.examLimbLower}` : undefined,
-        !!value.examNeurologicForce ? `13 - a. ${value.examNeurologicForce}` : undefined,
-        !!value.examNeurologicSensitivity ? `13 - b. ${value.examNeurologicSensitivity}` : undefined,
-        !!value.examNeurologicGait ? `13 - c. ${value.examNeurologicGait}` : undefined,
-        !!value.examNeurologicReflex ? `13 - d. ${value.examNeurologicReflex}` : undefined,
+        !!value.examSkinScar ? `1a. ${value.examSkinScar}` : undefined,
+        !!value.examSkinTattoo ? `1b. ${value.examSkinTattoo}` : undefined,
+        !!value.examSkinLesions ? `1c. ${value.examSkinLesions}` : undefined,
+        !!value.examEyeEyelids ? `2a. ${value.examEyeEyelids}` : undefined,
+        !!value.examEyeConjunctiva ? `2b. ${value.examEyeConjunctiva}` : undefined,
+        !!value.examEyePupils ? `2c. ${value.examEyePupils}` : undefined,
+        !!value.examEyeCorneas ? `2d. ${value.examEyeCorneas}` : undefined,
+        !!value.examEyeMotility ? `2e. ${value.examEyeMotility}` : undefined,
+        !!value.examEarAuditoryExternal ? `3a. ${value.examEarAuditoryExternal}` : undefined,
+        !!value.examEarAuricle ? `3b. ${value.examEarAuricle}` : undefined,
+        !!value.examEarEardrum ? `3c. ${value.examEarEardrum}` : undefined,
+        !!value.examPharynxLips ? `4a. ${value.examPharynxLips}` : undefined,
+        !!value.examPharynxTongue ? `4b. ${value.examPharynxTongue}` : undefined,
+        !!value.examPharynxPharynx ? `4c. ${value.examPharynxPharynx}` : undefined,
+        !!value.examPharynxTonsils ? `4d. ${value.examPharynxTonsils}` : undefined,
+        !!value.examPharynxTeeth ? `4e. ${value.examPharynxTeeth}` : undefined,
+        !!value.examNosePartition ? `5a. ${value.examNosePartition}` : undefined,
+        !!value.examNoseTurbinates ? `5b. ${value.examNoseTurbinates}` : undefined,
+        !!value.examNoseMucousMembranes ? `5c. ${value.examNoseMucousMembranes}` : undefined,
+        !!value.examNoseParanasalSinuses ? `5d. ${value.examNoseParanasalSinuses}` : undefined,
+        !!value.examNeckThyroid ? `6a. ${value.examNeckThyroid}` : undefined,
+        !!value.examNeckMobility ? `6b. ${value.examNeckMobility}` : undefined,
+        !!value.examChestBreast ? `7a. ${value.examChestBreast}` : undefined,
+        !!value.examChestHeart ? `7b. ${value.examChestHeart}` : undefined,
+        !!value.examChestLungs ? `8a. ${value.examChestLungs}` : undefined,
+        !!value.examChestRibCage ? `8b. ${value.examChestRibCage}` : undefined,
+        !!value.examAbdomenViscera ? `9a. ${value.examAbdomenViscera}` : undefined,
+        !!value.examAbdomenAbdominalWall ? `9b. ${value.examAbdomenAbdominalWall}` : undefined,
+        !!value.examColumnFlexibility ? `10a. ${value.examColumnFlexibility}` : undefined,
+        !!value.examColumnDeviation ? `10b. ${value.examColumnDeviation}` : undefined,
+        !!value.examColumnPain ? `10c. ${value.examColumnPain}` : undefined,
+        !!value.examPelvis ? `11a. ${value.examPelvis}` : undefined,
+        !!value.examPelvisGenitals ? `11b. ${value.examPelvisGenitals}` : undefined,
+        !!value.examLimbVascular ? `12a. ${value.examLimbVascular}` : undefined,
+        !!value.examLimbUpper ? `12b. ${value.examLimbUpper}` : undefined,
+        !!value.examLimbLower ? `12c. ${value.examLimbLower}` : undefined,
+        !!value.examNeurologicForce ? `13a. ${value.examNeurologicForce}` : undefined,
+        !!value.examNeurologicSensitivity ? `13b. ${value.examNeurologicSensitivity}` : undefined,
+        !!value.examNeurologicGait ? `13c. ${value.examNeurologicGait}` : undefined,
+        !!value.examNeurologicReflex ? `13d. ${value.examNeurologicReflex}` : undefined,
     ].filter(e => e !== undefined);
 
     return [

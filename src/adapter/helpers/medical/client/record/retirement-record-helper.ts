@@ -66,7 +66,7 @@ const institutionLayout: CraftItemFunc<RetirementRecord & {
         craftCell(record.patientSecondLastName, { colSpan: 8 }),
         craftCell(record.patientFirstName, { colSpan: 8 }),
         craftCell(record.patientMiddleName, { colSpan: 8 }),
-        craftCell(record.patientGender === 'male' ? 'Masculino' : 'Femenino', { colSpan: 6, fontSize: 5 }),
+        craftCell(record.patientGender === 'male' ? 'H' : 'M', { colSpan: 6, fontSize: 5 }),
         craftCell(formatDate(record.workStartDate, 'yyyy/MM/dd'), { colSpan: 8 }),
         craftCell(formatDate(record.workingEndDate, 'yyyy/MM/dd'), { colSpan: 8 }),
         craftCell(record.workingTime.toString(), { colSpan: 8 }),

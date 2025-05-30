@@ -81,7 +81,7 @@ const institutionLayout: CraftItemFunc<PeriodicRecord & {
         craftCell(record.patientSecondLastName, { colSpan: 13 }),
         craftCell(record.patientFirstName, { colSpan: 13 }),
         craftCell(record.patientMiddleName, { colSpan: 13 }),
-        craftCell(record.patientGender === 'male' ? 'Masculino' : 'Femenino', { colSpan: 5, fontSize: 5 }),
+        craftCell(record.patientGender === 'male' ? 'H' : 'M', { colSpan: 5, fontSize: 5 }),
         craftCell(record.jobPosition, { colSpan: 13 }),
     ),
 ];

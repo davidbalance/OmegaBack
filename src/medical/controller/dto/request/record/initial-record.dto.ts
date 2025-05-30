@@ -304,7 +304,11 @@ export class JobRiskRequestDto implements JobRisk {
 }
 
 
-export class InitialRecordRequestDto implements Omit<InitialRecord, 'type' | 'patientDni'> {
+export class InitialRecordRequestDto implements Omit<InitialRecord, 'type' | 'patientDni' | 'authorFullname' | 'authorDni'> {
+    @IsOptional()
+    @IsBoolean()
+    public readonly hideLogo?: boolean;
+
     /* ---------------------------- Institution & Patient Information ---------------------------- */
     @IsString()
     @IsNotEmpty()

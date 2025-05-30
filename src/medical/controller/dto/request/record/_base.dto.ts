@@ -35,11 +35,9 @@ export class ToxicDetailRequestDto implements ToxicDetail {
     public readonly consumptionTime: number | undefined;
 
     @ValidateIf((obj) => obj.haveConsume)
-    @Type(() => Number)
-    @IsNumber()
-    @IsPositive()
+    @IsString()
     @Transform(({ obj, value }) => !!obj && obj.haveConsume ? value : undefined)
-    public readonly quantity: number | undefined;
+    public readonly quantity: string | undefined;
 
     @ValidateIf((obj) => obj.haveConsume)
     @Type(() => Boolean)
@@ -48,11 +46,9 @@ export class ToxicDetailRequestDto implements ToxicDetail {
     public readonly isExConsumer: boolean | undefined;
 
     @ValidateIf((obj) => obj.haveConsume && obj.isExConsumer)
-    @Type(() => Number)
-    @IsNumber()
-    @Min(0)
+    @IsString()
     @Transform(({ obj, value }) => !!obj && obj.haveConsume && obj.isExConsumer ? value : undefined)
-    public readonly timeOfAbstinence: number | undefined;
+    public readonly timeOfAbstinence: string | undefined;
 }
 
 export class JobHistoryRequestDto implements JobHistory {

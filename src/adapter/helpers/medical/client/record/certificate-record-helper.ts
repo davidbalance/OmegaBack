@@ -55,7 +55,7 @@ const institutionLayout: CraftItemFunc<CertificateRecord & {
         craftCell(record.patientSecondLastName, { colSpan: 10 }),
         craftCell(record.patientFirstName, { colSpan: 10 }),
         craftCell(record.patientMiddleName, { colSpan: 10 }),
-        craftCell(record.patientGender === 'male' ? 'Masculino' : 'Femenino', { fontSize: 5, colSpan: 5 }),
+        craftCell(record.patientGender === 'male' ? 'H' : 'M', { fontSize: 5, colSpan: 5 }),
         craftCell(record.jobPosition, { colSpan: 25 })
     ),
 ];

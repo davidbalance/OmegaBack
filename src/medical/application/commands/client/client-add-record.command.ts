@@ -9,7 +9,11 @@ import { CertificateRecord } from "../../type/certificate-record";
 import { PdfProvider } from "@shared/shared/providers/pdf.provider";
 import { FileOperation, IncrementProvider } from "@shared/shared/providers";
 
-export type GenericRecord = InitialRecord | PeriodicRecord | ReintegrateRecord | RetirementRecord | CertificateRecord;
+export type GenericRecord = (InitialRecord | PeriodicRecord | ReintegrateRecord | RetirementRecord | CertificateRecord) & {
+    authorFullname: string;
+    authorDni: string;
+    hideLogo?: boolean;
+}
 export type ClientRecordLayoutFunc = (value: GenericRecord, fileNumber: number) => unknown;
 export type ClientRecordFilenameFunc = (name: string) => string;
 export type ClientAddRecordCommandPayload = GenericRecord;
