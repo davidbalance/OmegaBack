@@ -86,9 +86,9 @@ const medicalRetirementEvaluation: CraftItemFunc<RetirementRecord> = (record): R
     craftRow(
         craftTitle('SE REALIZÓ LA EVALUACIÓN', { colSpan: 15 }),
         craftTitle('SI', { colSpan: 5 }),
-        craftCell(record.retirementEvaluationDone ? 'x' : '', { colSpan: 5 }),
+        craftCell(record.retirementEvaluationDone ? 'x' : '', { colSpan: 5, alignment: 'center', fontSize: 10 }),
         craftTitle('NO', { colSpan: 5 }),
-        craftCell(!record.retirementEvaluationDone ? 'x' : '', { colSpan: 5 }),
+        craftCell(!record.retirementEvaluationDone ? 'x' : '', { colSpan: 5, alignment: 'center', fontSize: 10 }),
         emptyCell({ colSpan: 35 })
     ),
     craftLabel('Observaciones'),
