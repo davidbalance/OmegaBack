@@ -5,21 +5,21 @@ import { craftCell, craftRow, craftSpacing, craftTable } from "./table.helper";
 
 const recordTitle = (value: Pick<GenericRecord, 'type'>): string => {
     switch (value.type) {
-        case "inicial": return "FORMULARIO DE EVALUACION PREOCUPACIONAL - INICIO";
-        case "periodico": return "FORMULARIO DE EVALUACION PERIODICA";
-        case "reintegrar": return "FORMULARIO DE EVALUACION REINTEGRO";
-        case "retiro": return "FORMULARIO DE EVALUACION RETIRO";
-        case "certificado": return "CERTIFICADO DE SALUD EN EL TRABAJO";
+        case "inicial": return "Formulario de Evaluación Preocupacional - Inicio";
+        case "periodico": return "Formulario de Evaluación Periódica";
+        case "reintegrar": return "Formulario de Evaluación Reintegro";
+        case "retiro": return "Formulario de Evaluación Retiro";
+        case "certificado": return "Certificado de Salud en el Trabajo";
     }
 }
 
 const recordMessage = (value: Pick<GenericRecord, 'type'>): string => {
     switch (value.type) {
-        case "inicial": return "CERTIFICO QUE LO ANTERIORMENTE EXPRESADO EN RELACIÓN A MI ESTADO DE SALUD ES VERDAD. SE ME HA INFORMADO LAS MEDIDAS PREVENTIVAS A TOMAR PARA DISMINUIR O MITIGAR LOS RIESGOS RELACIONADOS CON MI ACTIVIDAD LABORAL.";
-        case "periodico": return "CERTIFICO QUE LO ANTERIORMENTE EXPRESADO EN RELACIÓN A MI ESTADO DE SALUD ES VERDAD. SE ME HA INFORMADO LAS MEDIDAS PREVENTIVAS A TOMAR PARA DISMINUIR O MITIGAR LOS RIESGOS RELACIONADOS CON MI ACTIVIDAD LABORAL.";
-        case "reintegrar": return "CERTIFICO QUE LO ANTERIORMENTE EXPRESADO EN RELACIÓN A MI ESTADO DE SALUD ES VERDAD. SE ME HA INFORMADO LAS MEDIDAS PREVENTIVAS A TOMAR PARA DISMINUIR O MITIGAR LOS RIESGOS RELACIONADOS CON MI ACTIVIDAD LABORAL.";
-        case "retiro": return "CERTIFICO QUE LO ANTERIORMENTE EXPRESADO EN RELACIÓN A MI ESTADO DE SALUD ES VERDAD. SE ME HA INFORMADO MI ESTADO ACTUAL DE SALUD Y LAS RECOMENDACIONES PERTINENTES.";
-        case "certificado": return "La presente certificación se expide con base en la historia ocupacional del usuario (a), la cual tiene carácter de confidencial.";
+        case "inicial": return "Certifico que lo anteriormente expresado en relación a mi estado de salud es verdad. Se me ha informado sobre las medidas preventivas a tomar para disminuir o mitigar los riesgos relacionados con mi actividad laboral.";
+        case "periodico": return "Certifico que lo anteriormente expresado en relación a mi estado de salud es verdad. Se me ha informado sobre las medidas preventivas a tomar para disminuir o mitigar los riesgos relacionados con mi actividad laboral.";
+        case "reintegrar": return "Certifico que lo anteriormente expresado en relación a mi estado de salud es verdad. Se me ha informado sobre las medidas preventivas a tomar para disminuir o mitigar los riesgos relacionados con mi actividad laboral.";
+        case "retiro": return "Certifico que lo anteriormente expresado en relación a mi estado de salud es verdad. Se me ha informado mi estado actual de salud y las recomendaciones pertinentes.";
+        case "certificado": return "La presente certificación se expide con base en la historia ocupacional del usuario(a), la cual tiene carácter de confidencialidad.";
     }
 }
 
@@ -30,17 +30,17 @@ const footer = (value: Pick<GenericRecord, 'authorDni' | 'authorFullname' | 'typ
 
     if (value.type === 'certificado') {
         return craftRow(
-            craftCell("NOMBRES Y APELLIDOS", {
+            craftCell("Nombres y Apellidos", {
                 colSpan: 4,
                 style: 'itemTitle'
             }),
             craftCell(`${value.authorFullname}`.replaceAll('  ', ' ').trim(), { colSpan: 12 }),
-            craftCell("CÓDIGO", {
+            craftCell("Código", {
                 colSpan: 6,
                 style: 'itemTitle'
             }),
             craftCell(value.authorDni, { colSpan: 10 }),
-            craftCell("FIRMA Y SELLO", {
+            craftCell("Firma y Sello", {
                 colSpan: 3,
                 style: 'itemTitle'
             }),
@@ -52,27 +52,27 @@ const footer = (value: Pick<GenericRecord, 'authorDni' | 'authorFullname' | 'typ
     }
 
     return craftRow(
-        craftCell("FECHA", {
+        craftCell("Fecha", {
             colSpan: 3,
             style: 'itemTitle'
         }),
         craftCell(formatedDate, { colSpan: 4 }),
-        craftCell("HORA", {
+        craftCell("Hora", {
             colSpan: 2,
             style: 'itemTitle'
         }),
         craftCell(formatedHour, { colSpan: 2 }),
-        craftCell("NOMBRES Y APELLIDOS", {
+        craftCell("Nombres y Apellidos", {
             colSpan: 4,
             style: 'itemTitle'
         }),
         craftCell(`${value.authorFullname}`.replaceAll('  ', ' ').trim(), { colSpan: 9 }),
-        craftCell("CÓDIGO", {
+        craftCell("Código", {
             colSpan: 3,
             style: 'itemTitle'
         }),
         craftCell(value.authorDni, { colSpan: 5 }),
-        craftCell("FIRMA Y SELLO", {
+        craftCell("Firma y Sello", {
             colSpan: 3,
             style: 'itemTitle'
         }),
@@ -100,7 +100,7 @@ export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc
             ...createRecordLayout(e, { fileNumber }),
             ...[craftRow(craftSpacing({ colSpan: tableSize })),
             e.type === 'certificado' ? craftRow(
-                craftCell("Con este documento certifico que el trabajador se ha sometido a la evaluación médica requerida para (el ingreso /la ejecución/ el reintegro y retiro) al puesto laboral y se ha informado sobre los riesgos relacionados con el trabajo emitiendo recomendaciones relacionadas con su estado de salud.", {
+                craftCell("Con este documento certifico que el trabajador se ha sometido a la evaluación médica requerida para (el ingreso, la ejecución, el reintegro y retiro) al puesto laboral, y que se le ha informado sobre los riesgos relacionados con el trabajo, emitiendo recomendaciones acordes a su estado de salud.", {
                     colSpan: tableSize,
                     style: 'itemTitle',
                 })
@@ -113,12 +113,12 @@ export const recordLayoutHelper = (headerBase64: string): ClientRecordLayoutFunc
                 })),
             craftRow(craftSpacing({ colSpan: tableSize })),
             craftRow(
-                craftCell("DATOS DEL PROFESIONAL", {
+                craftCell("Datos del Profesional", {
                     colSpan: 50,
                     style: 'tableHeader',
                 }),
                 craftSpacing({ colSpan: 2, rowSpan: 2 }),
-                craftCell("FIRMA USUARIO", {
+                craftCell("Firma Usuario", {
                     colSpan: 18,
                     style: 'tableHeader'
                 }),

@@ -135,11 +135,11 @@ export class ClientWriteController {
         @Body() body: InitialRecordRequestDto,
     ): Promise<string> {
         await this.addRecordCommand.handleAsync({
+            ...body,
             type: 'inicial',
             patientDni,
-            authorFullname: `${user.name} ${user.lastname}`,
-            authorDni: user.dni,
-            ...body
+            authorFullname: body.authorFullname ?? `${user.name} ${user.lastname}`,
+            authorDni: body.authorDni ?? user.dni,
         });
         return "ok";
     }
@@ -151,11 +151,11 @@ export class ClientWriteController {
         @Body() body: PeriodicRecordRequestDto,
     ): Promise<string> {
         await this.addRecordCommand.handleAsync({
+            ...body,
             type: 'periodico',
             patientDni,
-            authorFullname: `${user.name} ${user.lastname}`,
-            authorDni: user.dni,
-            ...body
+            authorFullname: body.authorFullname ?? `${user.name} ${user.lastname}`,
+            authorDni: body.authorDni ?? user.dni,
         });
         return "ok";
     }
@@ -167,11 +167,11 @@ export class ClientWriteController {
         @Body() body: ReintegrateRecordRequestDto,
     ): Promise<string> {
         await this.addRecordCommand.handleAsync({
+            ...body,
             type: 'reintegrar',
             patientDni,
-            authorFullname: `${user.name} ${user.lastname}`,
-            authorDni: user.dni,
-            ...body
+            authorFullname: body.authorFullname ?? `${user.name} ${user.lastname}`,
+            authorDni: body.authorDni ?? user.dni,
         });
         return "ok";
     }
@@ -183,11 +183,11 @@ export class ClientWriteController {
         @Body() body: RetirementRecordRequestDto,
     ): Promise<string> {
         await this.addRecordCommand.handleAsync({
+            ...body,
             type: 'retiro',
             patientDni,
-            authorFullname: `${user.name} ${user.lastname}`,
-            authorDni: user.dni,
-            ...body
+            authorFullname: body.authorFullname ?? `${user.name} ${user.lastname}`,
+            authorDni: body.authorDni ?? user.dni,
         });
         return "ok";
     }
@@ -199,11 +199,11 @@ export class ClientWriteController {
         @Body() body: CertficateRecordRequestDto,
     ): Promise<string> {
         await this.addRecordCommand.handleAsync({
+            ...body,
             type: 'certificado',
             patientDni,
-            authorFullname: `${user.name} ${user.lastname}`,
-            authorDni: user.dni,
-            ...body
+            authorFullname: body.authorFullname ?? `${user.name} ${user.lastname}`,
+            authorDni: body.authorDni ?? user.dni,
         });
         return "ok";
     }

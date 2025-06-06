@@ -4,13 +4,13 @@ import { formatDate } from "date-fns";
 import { Cell, craftCell, craftHeader, craftRow, craftSpacing, craftSubtitle, craftTitle, emptyCell, Row } from "../table.helper";
 
 export const createInitialRecord: CraftRecordFunc<InitialRecord> = (record: InitialRecord, { fileNumber }) => flatRecord([
-    craftHeader('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
+    craftHeader('Datos del Establecimiento - Empresa y Usuario'),
     institutionLayout({ ...record, fileNumber }),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('MOTIVO DE CONSULTA'),
+    craftHeader('Motivo de Consulta'),
     craftMedicalConsultation(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('ANTECEDENTES PERSONALES'),
+    craftHeader('Antecedentes Personales'),
     craftMedicalAndSurgicalHistory(record),
     gynecologicalHistoryLayout(record.patientGender === 'male' ? undefined : record),
     maleReproducitveHistoryLayout(record.patientGender === 'female' ? undefined : record),
@@ -20,44 +20,44 @@ export const createInitialRecord: CraftRecordFunc<InitialRecord> = (record: Init
         other: { ...record.toxicHabitOther },
     }, record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('ANTECEDENTES DE TRABAJO'),
+    craftHeader('Antecedentes de Trabajo'),
     jobHistoryLayout(record),
     craftJobAccident(record),
     craftOccupationalDisease(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('ANTECEDENTES FAMILIARES (DETALLAR EL PARENTESCO)'),
+    craftHeader('Antecedentes Familiares (detallar el parentesco)'),
     craftFamilyHistory(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('FACTORES DE RIESGOS DEL PUESTO DE TRABAJO ACTUAL'),
+    craftHeader('Factores de Riesgo del Puesto de Trabajo Actual'),
     jobRiskLayout(record),
     craftRow(emptyCell({ colSpan: 70 })),
     jobRiskPreventionLayout(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('ACTIVIDADES EXTRA LABORALES'),
+    craftHeader('Actividades Extra Laborales'),
     craftExtraActivity(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('ENFERMEDAD ACTUAL'),
+    craftHeader('Enfermedad Actual'),
     craftCurrentDisease(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('REVISIÓN ACTUAL DE ÓRGANOS Y SISTEMAS'),
+    craftHeader('Revisión Actual de Órganos y Sistemas'),
     craftReviewOfOrgansAndSystem(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('CONSTANTES VITALES Y ANTROPOMETRÍA'),
+    craftHeader('Constantes Vitales y Antropometría'),
     craftVitalSignsAndAnthropometry(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('EXAMEN FÍSICO REGIONAL'),
+    craftHeader('Examen Físico Regional'),
     craftPhysicalRegionalExam(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)'),
+    craftHeader('Resultados de Exámenes Generales y Específicos de Acuerdo al Riesgo y Puesto de Trabajo (imagen, laboratorio y otros)'),
     craftSpecificAndGeneralResults(record),
     craftRow(craftSpacing({ colSpan: 70 })),
     craftDiagnosticHeader(),
     craftMedicalDiagnostic(record.diagnostics),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('APTITUD MÉDICA PARA EL TRABAJO'),
+    craftHeader('Aptitud Médica para el Trabajo'),
     craftMedicalFitnessForJob(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('RECOMENDACIONES Y/O TRATAMIENTO'),
+    craftHeader('Recomendaciones y/o Tratamiento'),
     craftRecommendation(record)
 ]);
 
@@ -65,12 +65,12 @@ const institutionLayout: CraftItemFunc<InitialRecord & {
     fileNumber: number;
 }> = (record) => [
     craftRow(
-        craftTitle('INSTITUCIÓN DEL SISTEMA O NOMBRE DE LA EMPRESA', { colSpan: 16 }),
+        craftTitle('Institución del Sistema o Nombre de la Empresa', { colSpan: 16 }),
         craftTitle('RUC', { colSpan: 10 }),
-        craftTitle('CIU', { colSpan: 5 }),
-        craftTitle('ESTABLECIMIENTO DE SALUD', { colSpan: 15 }),
-        craftTitle('NÚMERO DE HISTORIA CLÍNICA', { colSpan: 14 }),
-        craftTitle('NÚMERO DE ARCHIVO', { colSpan: 10 }),
+        craftTitle('CIIU', { colSpan: 5 }),
+        craftTitle('Establecimiento de Salud', { colSpan: 15 }),
+        craftTitle('Número de Historia Clínica', { colSpan: 14 }),
+        craftTitle('Número de Archivo', { colSpan: 10 }),
     ),
     craftRow(
         craftCell(record.companyName, { colSpan: 16 }),
@@ -81,15 +81,15 @@ const institutionLayout: CraftItemFunc<InitialRecord & {
         craftCell(record.fileNumber.toString().padStart(12, '0'), { colSpan: 10 }),
     ),
     craftRow(
-        craftTitle('PRIMER APELLIDO', { rowSpan: 2, colSpan: 10 }),
-        craftTitle('SEGUNDO APELLIDO', { rowSpan: 2, colSpan: 10 }),
-        craftTitle('PRIMER NOMBRE', { rowSpan: 2, colSpan: 10 }),
-        craftTitle('SEGUNDO NOMBRE', { rowSpan: 2, colSpan: 10 }),
-        craftTitle('SEXO', { rowSpan: 2, colSpan: 3 }),
-        craftTitle('EDAD (AÑOS)', { rowSpan: 2, colSpan: 3 }),
-        craftTitle('RELIGIÓN', { colSpan: 10 }),
-        craftTitle('GRUPO SANGUÍNEO', { rowSpan: 2, colSpan: 6 }),
-        craftTitle('LATERALIDAD', { rowSpan: 2, colSpan: 8 }),
+        craftTitle('Primer apellido', { rowSpan: 2, colSpan: 10 }),
+        craftTitle('Segundo apellido', { rowSpan: 2, colSpan: 10 }),
+        craftTitle('Primer nombre', { rowSpan: 2, colSpan: 10 }),
+        craftTitle('Segundo nombre', { rowSpan: 2, colSpan: 10 }),
+        craftTitle('Sexo', { rowSpan: 2, colSpan: 3 }),
+        craftTitle('Edad (años)', { rowSpan: 2, colSpan: 3 }),
+        craftTitle('Religión', { colSpan: 10 }),
+        craftTitle('Grupo sanguíneo', { rowSpan: 2, colSpan: 6 }),
+        craftTitle('Lateralidad', { rowSpan: 2, colSpan: 8 }),
     ),
     craftRow(
         craftCell('Católica', { orientation: 'vertical', style: 'itemTitle', colSpan: 2, height: 50, fontSize: 5 }),
@@ -111,16 +111,16 @@ const institutionLayout: CraftItemFunc<InitialRecord & {
         craftCell(record.patientReligion === 'mormon' ? 'x' : '', { colSpan: 2, alignment: 'center', fontSize: 10 }),
         craftCell(record.patientReligion === 'other' ? 'x' : '', { colSpan: 2, alignment: 'center', fontSize: 10 }),
         craftCell(record.patientBloodType, { colSpan: 6 }),
-        craftCell(record.patientLaterality === 'right' ? 'DIESTRO' : 'ZURDO', { colSpan: 8 }),
+        craftCell(record.patientLaterality === 'right' ? 'Diestro' : 'Zurdo', { colSpan: 8 }),
     ),
     craftRow(
-        craftTitle('ORIENTACIÓN SEXUAL', { colSpan: 10 }),
-        craftTitle('IDENTIDAD DE GÉNERO', { colSpan: 10 }),
-        craftTitle('DISCAPACIDAD', { colSpan: 13 }),
-        craftTitle('FECHA DE INGRESO AL TRABAJO', { rowSpan: 2, colSpan: 5 }),
-        craftTitle('PUESTO DE TRABAJO (CIUO)', { rowSpan: 2, colSpan: 5 }),
-        craftTitle('ÁREA DE TRABAJO', { rowSpan: 2, colSpan: 6 }),
-        craftTitle('ACTIVIDADES RELEVANTES AL PUESTO DE TRABAJO A OCUPAR', { rowSpan: 2, colSpan: 21 }),
+        craftTitle('Orientación sexual', { colSpan: 10 }),
+        craftTitle('Identidad de género', { colSpan: 10 }),
+        craftTitle('Discapacidad', { colSpan: 13 }),
+        craftTitle('Fecha DE Ingreso al trabajo', { rowSpan: 2, colSpan: 5 }),
+        craftTitle('Puesto de trabajo (CIUO)', { rowSpan: 2, colSpan: 5 }),
+        craftTitle('Área de trabajo', { rowSpan: 2, colSpan: 6 }),
+        craftTitle('Actividades relevantes al puesto de trabajo a ocupar', { rowSpan: 2, colSpan: 21 }),
     ),
     craftRow(
         craftCell('Lesbiana', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
@@ -133,9 +133,9 @@ const institutionLayout: CraftItemFunc<InitialRecord & {
         craftCell('Trans-femenino', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
         craftCell('Trans-masculino', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
         craftCell('No sabe / No responde', { orientation: 'vertical', style: 'itemTitle', height: 50, fontSize: 5, colSpan: 2 }),
-        craftTitle('SI', { colSpan: 2 }),
-        craftTitle('NO', { colSpan: 2 }),
-        craftTitle('TIPO', { colSpan: 6 }),
+        craftTitle('Sí', { colSpan: 2 }),
+        craftTitle('No', { colSpan: 2 }),
+        craftTitle('Tipo', { colSpan: 6 }),
         craftTitle('%', { colSpan: 3 }),
     ),
     craftRow(
@@ -161,27 +161,27 @@ const institutionLayout: CraftItemFunc<InitialRecord & {
 ];
 
 const gynecologicalHistoryLayout = (record: InitialRecord | undefined) => [
-    craftRow(craftTitle('ANTECEDENTES GINECO OBSTÉTRICOS', { colSpan: 70 })),
+    craftRow(craftTitle('Antecedentes Gineco-Obstétricos', { colSpan: 70 })),
     craftRow(
-        craftSubtitle('MENARQUÍA', { rowSpan: 2, colSpan: 11 }),
-        craftSubtitle('CICLOS', { rowSpan: 2, colSpan: 6 }),
-        craftSubtitle('FECHA DE ULTIMA MENSTRUACIÓN', { rowSpan: 2, colSpan: 6 }),
-        craftSubtitle('GESTAS', { rowSpan: 2, colSpan: 4 }),
-        craftSubtitle('PARTOS', { rowSpan: 2, colSpan: 4 }),
-        craftSubtitle('CESÁREAS', { rowSpan: 2, colSpan: 4 }),
-        craftSubtitle('ABORTOS', { rowSpan: 2, colSpan: 4 }),
-        craftSubtitle('HIJOS', { colSpan: 8 }),
-        craftSubtitle('VIDA SEXUAL ACTIVA', { colSpan: 8 }),
-        craftSubtitle('MÉTODO DE PLANIFICACIÓN FAMILIAR', { colSpan: 15 }),
+        craftSubtitle('Menarquía', { rowSpan: 2, colSpan: 11 }),
+        craftSubtitle('Ciclos', { rowSpan: 2, colSpan: 6 }),
+        craftSubtitle('Fecha de última menstruación', { rowSpan: 2, colSpan: 6 }),
+        craftSubtitle('Gestas', { rowSpan: 2, colSpan: 4 }),
+        craftSubtitle('Partos', { rowSpan: 2, colSpan: 4 }),
+        craftSubtitle('Cesáreas', { rowSpan: 2, colSpan: 4 }),
+        craftSubtitle('Abortos', { rowSpan: 2, colSpan: 4 }),
+        craftSubtitle('Hijos', { colSpan: 8 }),
+        craftSubtitle('Vida sexual activa', { colSpan: 8 }),
+        craftSubtitle('Método de planificación familiar', { colSpan: 15 }),
     ),
     craftRow(
-        craftSubtitle('VIVOS', { colSpan: 4 }),
-        craftSubtitle('MUERTOS', { colSpan: 4 }),
-        craftSubtitle('SI', { colSpan: 4 }),
-        craftSubtitle('NO', { colSpan: 4 }),
-        craftSubtitle('SI', { colSpan: 4 }),
-        craftSubtitle('NO', { colSpan: 4 }),
-        craftSubtitle('TIPO', { colSpan: 7 }),
+        craftSubtitle('Vivos', { colSpan: 4 }),
+        craftSubtitle('Muertos', { colSpan: 4 }),
+        craftSubtitle('Sí', { colSpan: 4 }),
+        craftSubtitle('No', { colSpan: 4 }),
+        craftSubtitle('Sí', { colSpan: 4 }),
+        craftSubtitle('No', { colSpan: 4 }),
+        craftSubtitle('Tipo', { colSpan: 7 }),
     ),
     record ? craftRow(
         craftCell(record.gynecologicalMenarche, { colSpan: 11 }),
@@ -221,25 +221,25 @@ const gynecologicalHistoryLayout = (record: InitialRecord | undefined) => [
     record
         ? craftRow(
             ...patientHistoryExamLayout({
-                exam: 'PAPANICOLAOU',
+                exam: 'Papanicolaou',
                 done: record.gynecologicalExamPapanicolau.done ?? false,
                 time: record.gynecologicalExamPapanicolau.time ?? 0,
                 result: record.gynecologicalExamPapanicolau.result ?? ''
             }, { exam: 12, done: 2, time: 8, result: 11 }),
             ...patientHistoryExamLayout({
-                exam: 'ECO MAMARIO',
+                exam: 'Eco mamario',
                 done: record.gynecologicalExamBreastEcho.done ?? false,
                 time: record.gynecologicalExamBreastEcho.time ?? 0,
                 result: record.gynecologicalExamBreastEcho.result ?? ''
             }, { exam: 12, done: 2, time: 8, result: 11 }),
         )
         : craftRow(
-            craftCell('PAPANICOLAOU', { colSpan: 12 }),
+            craftCell('Papanicolaou', { colSpan: 12 }),
             craftCell('', { colSpan: 2 }),
             craftCell('', { colSpan: 2 }),
             craftCell('', { colSpan: 8 }),
             craftCell('', { colSpan: 11 }),
-            craftCell('ECO MAMARIO', { colSpan: 12 }),
+            craftCell('Eco mamario', { colSpan: 12 }),
             craftCell('', { colSpan: 2 }),
             craftCell('', { colSpan: 2 }),
             craftCell('', { colSpan: 8 }),
@@ -248,25 +248,25 @@ const gynecologicalHistoryLayout = (record: InitialRecord | undefined) => [
     record
         ? craftRow(
             ...patientHistoryExamLayout({
-                exam: 'COLPOSCOPIA',
+                exam: 'Colposcopia',
                 done: record.gynecologicalExamColposcopy.done ?? false,
                 time: record.gynecologicalExamColposcopy.time ?? 0,
                 result: record.gynecologicalExamColposcopy.result ?? ''
             }, { exam: 12, done: 2, time: 8, result: 11 }),
             ...patientHistoryExamLayout({
-                exam: 'MAMOGRAFÍA',
+                exam: 'Mamografía',
                 done: record.gynecologicalExamMammography.done ?? false,
                 time: record.gynecologicalExamMammography.time ?? 0,
                 result: record.gynecologicalExamMammography.result ?? ''
             }, { exam: 12, done: 2, time: 8, result: 11 }),
         )
         : craftRow(
-            craftCell('COLPOSCOPIA', { colSpan: 12 }),
+            craftCell('Colposcopia', { colSpan: 12 }),
             craftCell('', { colSpan: 2 }),
             craftCell('', { colSpan: 2 }),
             craftCell('', { colSpan: 8 }),
             craftCell('', { colSpan: 11 }),
-            craftCell('MAMOGRAFÍA', { colSpan: 12 }),
+            craftCell('Mamografía', { colSpan: 12 }),
             craftCell('', { colSpan: 2 }),
             craftCell('', { colSpan: 2 }),
             craftCell('', { colSpan: 8 }),
@@ -275,23 +275,23 @@ const gynecologicalHistoryLayout = (record: InitialRecord | undefined) => [
 ]
 
 const maleReproducitveHistoryLayout = (record: InitialRecord | undefined) => [
-    craftRow(craftTitle('ANTECEDENTES REPRODUCTIVOS MASCULINOS', { colSpan: 70 })),
+    craftRow(craftTitle('Antecedentes reproductivos masculinos', { colSpan: 70 })),
     craftRow(
         ...patientHistoryExamHeader({ exam: 12, done: 2, time: 8, result: 11 }, 2),
-        craftSubtitle('MÉTODO DE PLANIFICACIÓN FAMILIAR', { colSpan: 21 }),
-        craftSubtitle('HIJOS', { colSpan: 14 }),
+        craftSubtitle('Método de planificación familiar', { colSpan: 21 }),
+        craftSubtitle('Hijos', { colSpan: 14 }),
     ),
     craftRow(
-        craftSubtitle('SI', { colSpan: 6 }),
-        craftSubtitle('NO', { colSpan: 6 }),
-        craftSubtitle('TIPO', { colSpan: 9 }),
-        craftSubtitle('VIVOS', { colSpan: 7 }),
-        craftSubtitle('MUERTOS', { colSpan: 7 }),
+        craftSubtitle('Sí', { colSpan: 6 }),
+        craftSubtitle('No', { colSpan: 6 }),
+        craftSubtitle('Tipo', { colSpan: 9 }),
+        craftSubtitle('Vivos', { colSpan: 7 }),
+        craftSubtitle('Muertos', { colSpan: 7 }),
     ),
     record
         ? craftRow(
             ...patientHistoryExamLayout({
-                exam: 'ANTÍGENO PROSTÁTICO',
+                exam: 'Antígeno prostático',
                 done: record.maleReproductiveExamProstateAntigen.done ?? false,
                 time: record.maleReproductiveExamProstateAntigen.time ?? 0,
                 result: record.maleReproductiveExamProstateAntigen.result ?? ''
@@ -303,7 +303,7 @@ const maleReproducitveHistoryLayout = (record: InitialRecord | undefined) => [
             craftCell(record.maleReproductiveFamilyPlanningType ? record.maleReproductiveDeadChildren.toString() : '', { rowSpan: 2, colSpan: 7 }),
         )
         : craftRow(
-            craftCell('ANTÍGENO PROSTÁTICO', { colSpan: 12 }),
+            craftCell('Antígeno prostático', { colSpan: 12 }),
             craftCell('', { colSpan: 2 }),
             craftCell('', { colSpan: 2 }),
             craftCell('', { colSpan: 8 }),
@@ -317,14 +317,14 @@ const maleReproducitveHistoryLayout = (record: InitialRecord | undefined) => [
     record
         ? craftRow(
             ...patientHistoryExamLayout({
-                exam: 'ECO PROSTÁTICO',
+                exam: 'Eco prostático',
                 done: record.maleReproductiveExamProstateEcho.done ?? false,
                 time: record.maleReproductiveExamProstateEcho.time ?? 0,
                 result: record.maleReproductiveExamProstateEcho.result ?? ''
             }, { exam: 12, done: 2, time: 8, result: 11 }),
         )
         : craftRow(
-            craftCell('ECO PROSTÁTICO', { colSpan: 12 }),
+            craftCell('Eco prostático', { colSpan: 12 }),
             craftCell('', { colSpan: 2 }),
             craftCell('', { colSpan: 2 }),
             craftCell('', { colSpan: 8 }),
@@ -333,11 +333,11 @@ const maleReproducitveHistoryLayout = (record: InitialRecord | undefined) => [
 ];
 
 const patientHistoryExamHeader = (span: { exam: number, done: number, time: number, result: number }, rowSpan: number = 1): Cell[] => [
-    craftSubtitle('EXÁMENES REALIZADOS', { colSpan: span.exam, rowSpan }),
-    craftSubtitle('SI', { colSpan: span.done, rowSpan }),
-    craftSubtitle('NO', { colSpan: span.done, rowSpan }),
-    craftSubtitle('TIEMPO', { colSpan: span.time, rowSpan }),
-    craftSubtitle('RESULTADO', { colSpan: span.result, rowSpan }),
+    craftSubtitle('Exámenes realizados', { colSpan: span.exam, rowSpan }),
+    craftSubtitle('Sí', { colSpan: span.done, rowSpan }),
+    craftSubtitle('No', { colSpan: span.done, rowSpan }),
+    craftSubtitle('Tiempo', { colSpan: span.time, rowSpan }),
+    craftSubtitle('Resultado', { colSpan: span.result, rowSpan }),
 ];
 
 const patientHistoryExamLayout = (values: { exam: string, done: boolean, time: number, result: string }, span: { exam: number, done: number, time: number, result: number }) => [
@@ -365,22 +365,22 @@ const jobHistoryLayout: CraftItemFunc<InitialRecord> = (record) => {
     )) : [craftRow(craftCell('', { colSpan: 70 }))]
 
     return [
-        craftRow(craftTitle('ANTECEDENTES DE EMPLEOS ANTERIORES', { colSpan: 70 })),
+        craftRow(craftTitle('Antecedentes de empleos anteriores', { colSpan: 70 })),
         craftRow(
-            craftTitle('EMPRESA', { rowSpan: 2, colSpan: 12 }),
-            craftTitle('PUESTO DE TRABAJO', { rowSpan: 2, colSpan: 10 }),
-            craftTitle('ACTIVIDADES QUE DESEMPEÑABA', { rowSpan: 2, colSpan: 15 }),
-            craftTitle('TIEMPO DE TRABAJO (meses)', { rowSpan: 2, colSpan: 6 }),
-            craftTitle('RIESGO', { colSpan: 12 }),
-            craftTitle('OBSERVACIONES', { rowSpan: 2, colSpan: 15 }),
+            craftTitle('Empresa', { rowSpan: 2, colSpan: 12 }),
+            craftTitle('Puesto de trabajo', { rowSpan: 2, colSpan: 10 }),
+            craftTitle('Actividades que desempeñaba', { rowSpan: 2, colSpan: 15 }),
+            craftTitle('Tiempo de trabajo (meses)', { rowSpan: 2, colSpan: 6 }),
+            craftTitle('Riesgo', { colSpan: 12 }),
+            craftTitle('Observaciones', { rowSpan: 2, colSpan: 15 }),
         ),
         craftRow(
-            craftCell('FÍSICO', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
-            craftCell('MECÁNICO', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
-            craftCell('QUÍMICO', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
-            craftCell('BIOLÓGICO', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
-            craftCell('ERGONÓMICO', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
-            craftCell('PSICOSOCIAL', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
+            craftCell('Físico', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
+            craftCell('Mecánico', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
+            craftCell('Químico', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
+            craftCell('Biológico', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
+            craftCell('Ergonómico', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
+            craftCell('Psicosocial', { orientation: 'vertical', fontSize: 5, colSpan: 2, height: 50, style: 'itemTitle' }),
         ),
         ...content
     ];
@@ -388,11 +388,11 @@ const jobHistoryLayout: CraftItemFunc<InitialRecord> = (record) => {
 
 const jobRiskLayout: CraftItemFunc<InitialRecord> = (record) => [
     craftRow(
-        craftTitle('PUESTO DE TRABAJO / ÁREA', { rowSpan: 2, colSpan: 17 }),
-        craftTitle('ACTIVIDADES', { rowSpan: 2, colSpan: 19 }),
-        craftTitle('FISICO', { colSpan: 10 }),
-        craftTitle('MECÁNICO', { colSpan: 15 }),
-        craftTitle('QUÍMICO', { colSpan: 9 }),
+        craftTitle('Puesto de trabajo / Área', { rowSpan: 2, colSpan: 17 }),
+        craftTitle('Actividades', { rowSpan: 2, colSpan: 19 }),
+        craftTitle('Físico', { colSpan: 10 }),
+        craftTitle('Mecánico', { colSpan: 15 }),
+        craftTitle('Químico', { colSpan: 9 }),
     ),
     craftRow(
         craftCell('Temperaturas altas', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
@@ -475,12 +475,12 @@ const jobRiskLayout: CraftItemFunc<InitialRecord> = (record) => [
 
 const jobRiskPreventionLayout: CraftItemFunc<InitialRecord> = (record) => [
     craftRow(
-        craftTitle('PUESTO DE TRABAJO / ÁREA', { rowSpan: 2, colSpan: 13 }),
-        craftTitle('ACTIVIDADES', { rowSpan: 2, colSpan: 13 }),
-        craftTitle('BIOLÓGICO', { colSpan: 7 }),
-        craftTitle('ERGONÓMICO', { colSpan: 5 }),
-        craftTitle('PSICOSOCIAL', { colSpan: 13 }),
-        craftTitle('MEDIDAS PREVENTIVAS', { rowSpan: 2, colSpan: 19 }),
+        craftTitle('Puesto de trabajo / Área', { rowSpan: 2, colSpan: 13 }),
+        craftTitle('Actividades', { rowSpan: 2, colSpan: 13 }),
+        craftTitle('Biológico', { colSpan: 7 }),
+        craftTitle('Ergonómico', { colSpan: 5 }),
+        craftTitle('Psicosocial', { colSpan: 13 }),
+        craftTitle('Medidas preventivas', { rowSpan: 2, colSpan: 19 }),
     ),
     craftRow(
         craftCell('Virus', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
@@ -504,7 +504,7 @@ const jobRiskPreventionLayout: CraftItemFunc<InitialRecord> = (record) => [
         craftCell('Autonomía  en la toma de decisiones', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Supervisión y estilos de dirección deficiente', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Conflicto de rol', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
-        craftCell('Falta de Claridad en las funciones', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Falta de claridad en las funciones', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Incorrecta distribución del trabajo', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Turnos rotativos', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Relaciones interpersonales', { height: 175, orientation: 'vertical', style: 'itemTitle' }),

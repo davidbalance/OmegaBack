@@ -1,5 +1,5 @@
 import { RetirementInstitutionActivity, RetirementRecord } from "@omega/medical/application/type/retirement-record";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import { IsArray, IsBoolean, IsDate, IsEnum, IsInt, IsNotEmpty, IsObject, IsOptional, IsPositive, IsString, ValidateIf, ValidateNested } from "class-validator";
 import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, PatientRecordGenderEnum } from "./_base.dto";
 
@@ -13,11 +13,21 @@ class RetirementInstitutionActivityRequestDto implements RetirementInstitutionAc
     public readonly risk: string;
 }
 
-export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type' | 'patientDni' | 'authorFullname' | 'authorDni'> {
+export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type' | 'patientDni'> {
+    @ValidateIf(({ obj }) => !!obj && obj.authorDni)
+    @IsString()
+    @Transform(({ obj, value }) => !!obj && !!obj.authorFullname?.trim() ? value : undefined)
+    public readonly authorFullname?: string;
+
+    @ValidateIf(({ obj }) => !!obj && obj.authorFullname)
+    @IsString()
+    @Transform(({ obj, value }) => !!obj && !!obj.authorDni?.trim() ? value : undefined)
+    public readonly authorDni?: string;
+
     @IsOptional()
     @IsBoolean()
     public readonly hideLogo?: boolean;
-    
+
     /* --------------------------------------------------- Institution & Patient Information --------------------------------------------------- */
     @IsString()
     @IsNotEmpty()

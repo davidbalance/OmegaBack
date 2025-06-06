@@ -304,7 +304,17 @@ export class JobRiskRequestDto implements JobRisk {
 }
 
 
-export class InitialRecordRequestDto implements Omit<InitialRecord, 'type' | 'patientDni' | 'authorFullname' | 'authorDni'> {
+export class InitialRecordRequestDto implements Omit<InitialRecord, 'type' | 'patientDni'> {
+    @ValidateIf(({ obj }) => !!obj && obj.authorDni)
+    @IsString()
+    @Transform(({ obj, value }) => !!obj && !!obj.authorFullname?.trim() ? value : undefined)
+    public readonly authorFullname?: string;
+
+    @ValidateIf(({ obj }) => !!obj && obj.authorFullname)
+    @IsString()
+    @Transform(({ obj, value }) => !!obj && !!obj.authorDni?.trim() ? value : undefined)
+    public readonly authorDni?: string;
+
     @IsOptional()
     @IsBoolean()
     public readonly hideLogo?: boolean;

@@ -4,30 +4,30 @@ import { craftCell, craftHeader, craftRow, craftSpacing, craftTitle, emptyCell, 
 import { formatDate } from "date-fns";
 
 export const createRetirementRecord: CraftRecordFunc<RetirementRecord> = (record: RetirementRecord, { fileNumber, }) => flatRecord([
-    craftHeader('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
+    craftHeader('Datos del Establecimiento - Empresa y Usuario'),
     institutionLayout({ ...record, fileNumber }),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('ANTECEDENTES PERSONALES'),
+    craftHeader('Antecedentes Personales'),
     craftMedicalAndSurgicalHistory(record),
     craftJobAccident(record),
     craftOccupationalDisease(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('CONSTANTES VITALES Y ANTROPOMETRÍA'),
+    craftHeader('Constantes Vitales y Antropometría'),
     craftVitalSignsAndAnthropometry(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('EXAMEN FÍSICO REGIONAL'),
+    craftHeader('Examen Físico Regional'),
     craftPhysicalRegionalExam(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)'),
+    craftHeader('Resultados de Exámenes Generales y Específicos de Acuerdo al Riesgo y Puesto de Trabajo (imagen, laboratorio y otros)'),
     craftSpecificAndGeneralResults(record),
     craftRow(craftSpacing({ colSpan: 70 })),
     craftDiagnosticHeader(),
     craftMedicalDiagnostic(record.diagnostics),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('EVALUACIÓN MÉDICA DE RETIRO'),
+    craftHeader('Evaluación Médica de Retiro'),
     medicalRetirementEvaluation(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('RECOMENDACIONES Y/O TRATAMIENTO'),
+    craftHeader('Recomendaciones y/o Tratamiento'),
     craftRecommendation(record)
 ]);
 
@@ -35,12 +35,12 @@ const institutionLayout: CraftItemFunc<RetirementRecord & {
     fileNumber: number;
 }> = (record) => [
     craftRow(
-        craftTitle('INSTITUCIÓN DEL SISTEMA O NOMBRE DE LA EMPRESA', { colSpan: 16 }),
+        craftTitle('Institución del Sistema o Nombre de la Empresa', { colSpan: 16 }),
         craftTitle('RUC', { colSpan: 10 }),
-        craftTitle('CIU', { colSpan: 5 }),
-        craftTitle('ESTABLECIMIENTO DE SALUD', { colSpan: 15 }),
-        craftTitle('NÚMERO DE HISTORIA CLÍNICA', { colSpan: 14 }),
-        craftTitle('NÚMERO DE ARCHIVO', { colSpan: 10 }),
+        craftTitle('CIIU', { colSpan: 5 }),
+        craftTitle('Establecimiento de Salud', { colSpan: 15 }),
+        craftTitle('Número de Historia Clínica', { colSpan: 14 }),
+        craftTitle('Número de Archivo', { colSpan: 10 }),
     ),
     craftRow(
         craftCell(record.companyName, { colSpan: 16 }),
@@ -51,15 +51,15 @@ const institutionLayout: CraftItemFunc<RetirementRecord & {
         craftCell(record.fileNumber.toString().padStart(12, '0'), { colSpan: 10 }),
     ),
     craftRow(
-        craftTitle('PRIMER APELLIDO', { colSpan: 8 }),
-        craftTitle('SEGUNDO APELLIDO', { colSpan: 8 }),
-        craftTitle('PRIMER NOMBRE', { colSpan: 8 }),
-        craftTitle('SEGUNDO NOMBRE', { colSpan: 8 }),
-        craftTitle('SEXO', { colSpan: 6 }),
-        craftTitle('FECHA DE INICIO DE LABORES', { colSpan: 8 }),
-        craftTitle('FECHA DE SALIDA', { colSpan: 8 }),
-        craftTitle('TIEMPO (meses)', { colSpan: 8 }),
-        craftTitle('PUESTO DE TRABAJO (CIUO)', { colSpan: 8 }),
+        craftTitle('Primer apellido', { colSpan: 8 }),
+        craftTitle('Segundo apellido', { colSpan: 8 }),
+        craftTitle('Primer nombre', { colSpan: 8 }),
+        craftTitle('Segundo nombre', { colSpan: 8 }),
+        craftTitle('Sexo', { colSpan: 6 }),
+        craftTitle('Fecha de inicio de labores', { colSpan: 8 }),
+        craftTitle('Fecha de salida', { colSpan: 8 }),
+        craftTitle('Tiempo (meses)', { colSpan: 8 }),
+        craftTitle('Puesto de trabajo (CIUO)', { colSpan: 8 }),
     ),
     craftRow(
         craftCell(record.patientLastName, { colSpan: 8 }),
@@ -73,8 +73,8 @@ const institutionLayout: CraftItemFunc<RetirementRecord & {
         craftCell(record.jobPosition, { colSpan: 8 }),
     ),
     craftRow(
-        craftTitle('ACTIVIDADES', { colSpan: 15 }),
-        craftTitle('FACTORES DE RIESGO', { colSpan: 55 }),
+        craftTitle('Actividades', { colSpan: 15 }),
+        craftTitle('Factores de riesgo', { colSpan: 55 }),
     ),
     ...record.institutionActivities.map(e => craftRow(
         craftCell(e.activity, { colSpan: 15 }),
@@ -84,10 +84,10 @@ const institutionLayout: CraftItemFunc<RetirementRecord & {
 
 const medicalRetirementEvaluation: CraftItemFunc<RetirementRecord> = (record): Row[] => [
     craftRow(
-        craftTitle('SE REALIZÓ LA EVALUACIÓN', { colSpan: 15 }),
-        craftTitle('SI', { colSpan: 5 }),
+        craftTitle('Se realizó la evaluación', { colSpan: 15 }),
+        craftTitle('Sí', { colSpan: 5 }),
         craftCell(record.retirementEvaluationDone ? 'x' : '', { colSpan: 5, alignment: 'center', fontSize: 10 }),
-        craftTitle('NO', { colSpan: 5 }),
+        craftTitle('No', { colSpan: 5 }),
         craftCell(!record.retirementEvaluationDone ? 'x' : '', { colSpan: 5, alignment: 'center', fontSize: 10 }),
         emptyCell({ colSpan: 35 })
     ),

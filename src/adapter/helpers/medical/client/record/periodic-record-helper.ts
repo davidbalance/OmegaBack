@@ -3,12 +3,12 @@ import { PeriodicRecord } from "@omega/medical/application/type/periodic-record"
 import { craftCell, craftHeader, craftRow, craftSpacing, craftTitle, emptyCell, Row } from "../table.helper";
 
 export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: PeriodicRecord, { fileNumber }) => flatRecord([
-    craftHeader('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
+    craftHeader('Datos del Establecimiento - Empresa y Usuario'),
     institutionLayout({ ...record, fileNumber }),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('MOTIVO DE CONSULTA'),
+    craftHeader('Motivo de Consulta'),
     craftMedicalConsultation(record),
-    craftHeader('ANTECEDENTES PERSONALES'),
+    craftHeader('Antecedentes Personales'),
     craftMedicalAndSurgicalHistory(record),
     craftToxicHabitsAndLifeStyle({
         tobacco: { ...record.toxicHabitTobacco },
@@ -18,34 +18,34 @@ export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: Pe
     craftMedicalIncident(record),
     craftJobAccident(record),
     craftOccupationalDisease(record),
-    craftHeader('ANTECEDENTES FAMILIARES (DETALLAR EL PARENTESCO)'),
+    craftHeader('Antecedentes Familiares (detallar el parentesco)'),
     craftFamilyHistory(record),
-    craftHeader('FACTORES DE RIESGOS DEL PUESTO DE TRABAJO'),
+    craftHeader('Factores de riesgo del puesto de trabajo'),
     jobRiskLayout(record),
     craftRow(emptyCell({ colSpan: 70 })),
     jobRiskPreventionLayout(record),
-    craftHeader('ENFERMEDAD ACTUAL'),
+    craftHeader('Enfermedad Actual'),
     craftCurrentDisease(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('REVISIÓN ACTUAL DE ÓRGANOS Y SISTEMAS'),
+    craftHeader('Revisión Actual de Órganos y Sistemas'),
     craftReviewOfOrgansAndSystem(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('CONSTANTES VITALES Y ANTROPOMETRÍA'),
+    craftHeader('Constantes Vitales y Antropometría'),
     craftVitalSignsAndAnthropometry(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('EXAMEN FÍSICO REGIONAL'),
+    craftHeader('Examen Físico Regional'),
     craftPhysicalRegionalExam(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)'),
+    craftHeader('Resultados de Exámenes Generales y Específicos de Acuerdo al Riesgo y Puesto de Trabajo (imagen, laboratorio y otros)'),
     craftSpecificAndGeneralResults(record),
     craftRow(craftSpacing({ colSpan: 70 })),
     craftDiagnosticHeader(),
     craftMedicalDiagnostic(record.diagnostics),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('APTITUD MÉDICA PARA EL TRABAJO'),
+    craftHeader('Aptitud Médica para el Trabajo'),
     craftMedicalFitnessForJob(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('RECOMENDACIONES Y/O TRATAMIENTO'),
+    craftHeader('Recomendaciones y/o Tratamiento'),
     craftRecommendation(record)
 ]);
 
@@ -53,12 +53,12 @@ const institutionLayout: CraftItemFunc<PeriodicRecord & {
     fileNumber: number;
 }> = (record) => [
     craftRow(
-        craftTitle('INSTITUCIÓN DEL SISTEMA O NOMBRE DE LA EMPRESA', { colSpan: 16 }),
+        craftTitle('Institución del Sistema o Nombre de la Empresa', { colSpan: 16 }),
         craftTitle('RUC', { colSpan: 10 }),
-        craftTitle('CIU', { colSpan: 5 }),
-        craftTitle('ESTABLECIMIENTO DE SALUD', { colSpan: 15 }),
-        craftTitle('NÚMERO DE HISTORIA CLÍNICA', { colSpan: 14 }),
-        craftTitle('NÚMERO DE ARCHIVO', { colSpan: 10 }),
+        craftTitle('CIIU', { colSpan: 5 }),
+        craftTitle('Establecimiento de Salud', { colSpan: 15 }),
+        craftTitle('Número de Historia Clínica', { colSpan: 14 }),
+        craftTitle('Número de Archivo', { colSpan: 10 }),
     ),
     craftRow(
         craftCell(record.companyName, { colSpan: 16 }),
@@ -69,12 +69,12 @@ const institutionLayout: CraftItemFunc<PeriodicRecord & {
         craftCell(record.fileNumber.toString().padStart(12, '0'), { colSpan: 10 }),
     ),
     craftRow(
-        craftTitle('PRIMER APELLIDO', { colSpan: 13 }),
-        craftTitle('SEGUNDO APELLIDO', { colSpan: 13 }),
-        craftTitle('PRIMER NOMBRE', { colSpan: 13 }),
-        craftTitle('SEGUNDO NOMBRE', { colSpan: 13 }),
-        craftTitle('SEXO', { colSpan: 5 }),
-        craftTitle('PUESTO DE TRABAJO (CIUO)', { colSpan: 13 }),
+        craftTitle('Primer apellido', { colSpan: 13 }),
+        craftTitle('Segundo apellido', { colSpan: 13 }),
+        craftTitle('Primer nombre', { colSpan: 13 }),
+        craftTitle('Segundo nombre', { colSpan: 13 }),
+        craftTitle('Sexo', { colSpan: 5 }),
+        craftTitle('Puesto de trabajo (CIUO)', { colSpan: 13 }),
     ),
     craftRow(
         craftCell(record.patientLastName, { colSpan: 13 }),
@@ -87,21 +87,21 @@ const institutionLayout: CraftItemFunc<PeriodicRecord & {
 ];
 
 export const craftMedicalIncident: CraftItemFunc<PeriodicRecord> = (record): Row[] => [
-    craftRow(craftTitle('INCIDENTES', { colSpan: 70 })),
+    craftRow(craftTitle('Incidentes', { colSpan: 70 })),
     craftLabel('Describir los principales incidentes suscitados'),
     craftRow(craftCell(record.medicalConsultationDescription, { border: ['left', 'right', 'bottom'], colSpan: 70 }))
 ]
 
 const jobRiskLayout: CraftItemFunc<PeriodicRecord> = (record) => [
     craftRow(
-        craftTitle('PUESTO DE TRABAJO / ÁREA', { rowSpan: 2, colSpan: 9 }),
-        craftTitle('ACTIVIDADES', { rowSpan: 2, colSpan: 10 }),
-        craftTitle('TIEMPO DE TRABAJO (MESES)', { rowSpan: 2, colSpan: 5 }),
-        craftTitle('FISICO', { colSpan: 10 }),
-        craftTitle('MECÁNICO', { colSpan: 15 }),
-        craftTitle('QUÍMICO', { colSpan: 9 }),
-        craftTitle('BIOLÓGICO', { colSpan: 7 }),
-        craftTitle('ERGONÓMICO', { colSpan: 5 }),
+        craftTitle('Puesto de trabajo / Área', { rowSpan: 2, colSpan: 9 }),
+        craftTitle('Actividades', { rowSpan: 2, colSpan: 10 }),
+        craftTitle('Tiempo de trabajo (meses)', { rowSpan: 2, colSpan: 5 }),
+        craftTitle('Físico', { colSpan: 10 }),
+        craftTitle('Mecánico', { colSpan: 15 }),
+        craftTitle('Químico', { colSpan: 9 }),
+        craftTitle('Biológico', { colSpan: 7 }),
+        craftTitle('Ergonómico', { colSpan: 5 }),
     ),
     craftRow(
         craftCell('Temperaturas altas', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
@@ -211,11 +211,11 @@ const jobRiskLayout: CraftItemFunc<PeriodicRecord> = (record) => [
 
 const jobRiskPreventionLayout: CraftItemFunc<PeriodicRecord> = (record) => [
     craftRow(
-        craftTitle('PUESTO DE TRABAJO / ÁREA', { rowSpan: 2, colSpan: 15 }),
-        craftTitle('ACTIVIDADES', { rowSpan: 2, colSpan: 18 }),
-        craftTitle('TIEMPO DE TRABAJO (MESES)', { rowSpan: 2, colSpan: 5 }),
-        craftTitle('PSICOSOCIAL', { colSpan: 13 }),
-        craftTitle('MEDIDAS PREVENTIVAS', { rowSpan: 2, colSpan: 19 }),
+        craftTitle('Puesto de trabajo / Área', { rowSpan: 2, colSpan: 15 }),
+        craftTitle('Actividades', { rowSpan: 2, colSpan: 18 }),
+        craftTitle('Tiempo de trabajo (meses)', { rowSpan: 2, colSpan: 5 }),
+        craftTitle('Psicosocial', { colSpan: 13 }),
+        craftTitle('Medidas preventivas', { rowSpan: 2, colSpan: 19 }),
     ),
     craftRow(
         craftCell('Monotonía del trabajo', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
@@ -225,7 +225,7 @@ const jobRiskPreventionLayout: CraftItemFunc<PeriodicRecord> = (record) => [
         craftCell('Autonomía  en la toma de decisiones', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Supervisión y estilos de dirección deficiente', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Conflicto de rol', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
-        craftCell('Falta de Claridad en las funciones', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Falta de claridad en las funciones', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Incorrecta distribución del trabajo', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Turnos rotativos', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Relaciones interpersonales', { height: 175, orientation: 'vertical', style: 'itemTitle' }),

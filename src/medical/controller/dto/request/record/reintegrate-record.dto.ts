@@ -1,9 +1,19 @@
-import { IsArray, IsBoolean, IsDate, IsEnum, IsInt, IsNotEmpty, IsNumber, IsObject, IsOptional, IsPositive, IsString, Min, ValidateNested } from "class-validator";
-import { Type } from "class-transformer";
+import { IsArray, IsBoolean, IsDate, IsEnum, IsInt, IsNotEmpty, IsNumber, IsObject, IsOptional, IsPositive, IsString, Min, ValidateIf, ValidateNested } from "class-validator";
+import { Transform, Type } from "class-transformer";
 import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, MedicalFitnessTypeEnum, PatientRecordGenderEnum } from "./_base.dto";
 import { ReintegrateRecord } from "@omega/medical/application/type/reintegrate-record";
 
-export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'type' | 'patientDni' | 'authorFullname' | 'authorDni'> {
+export class ReintegrateRecordRequestDto implements Omit<ReintegrateRecord, 'type' | 'patientDni'> {
+    @ValidateIf(({ obj }) => !!obj && obj.authorDni)
+    @IsString()
+    @Transform(({ obj, value }) => !!obj && !!obj.authorFullname?.trim() ? value : undefined)
+    public readonly authorFullname?: string;
+
+    @ValidateIf(({ obj }) => !!obj && obj.authorFullname)
+    @IsString()
+    @Transform(({ obj, value }) => !!obj && !!obj.authorDni?.trim() ? value : undefined)
+    public readonly authorDni?: string;
+
     @IsOptional()
     @IsBoolean()
     public readonly hideLogo?: boolean;
