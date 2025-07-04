@@ -1,6 +1,13 @@
+import { ExamCreateCommandPayload } from "@omega/laboratory/application/command/exam/exam-create.command";
 import { ExamEditCommandPayload } from "@omega/laboratory/application/command/exam/exam-edit.command";
 import { ExamMoveCommandPayload } from "@omega/laboratory/application/command/exam/exam-move.command";
 import { IsNotEmpty, IsString, IsUUID } from "class-validator";
+
+export class ExamCreateRequestDto implements Omit<ExamCreateCommandPayload, 'typeId' | 'subtypeId'> {
+    @IsString()
+    @IsNotEmpty()
+    public readonly examName: string;
+}
 
 export class ExamEditRequestDto implements Omit<ExamEditCommandPayload, 'typeId' | 'subtypeId' | 'examId'> {
     @IsString()

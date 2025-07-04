@@ -132,7 +132,7 @@ export class ExamType extends Aggregate<ExamTypeProps> {
         newSubtypes[subtypeIndex].addExam({ examName: value.examName });
 
         this.updateProps({ subtypes: newSubtypes });
-        this.emit(new ExamSubtypeExamAddedEvent(newSubtypes[subtypeIndex].exams[0]));
+        this.emit(new ExamSubtypeExamAddedEvent(newSubtypes[subtypeIndex].exams.slice(-1)[0]));
     }
 
     public removeExamFromSubtype(value: RemoveExamFromTypePayload): void {
