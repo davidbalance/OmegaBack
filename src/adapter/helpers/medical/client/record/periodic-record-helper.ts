@@ -2,13 +2,13 @@ import { craftCurrentDisease, craftDiagnosticHeader, craftFamilyHistory, CraftIt
 import { PeriodicRecord } from "@omega/medical/application/type/periodic-record";
 import { craftCell, craftHeader, craftRow, craftSpacing, craftTitle, emptyCell, Row } from "../table.helper";
 
-export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: PeriodicRecord, { clinicNumber, fileNumber }) => flatRecord([
-    craftHeader('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
-    institutionLayout({ ...record, clinicNumber, fileNumber }),
+export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: PeriodicRecord, { fileNumber }) => flatRecord([
+    craftHeader('Datos del Establecimiento - Empresa y Usuario'),
+    institutionLayout({ ...record, fileNumber }),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('MOTIVO DE CONSULTA'),
+    craftHeader('Motivo de Consulta'),
     craftMedicalConsultation(record),
-    craftHeader('ANTECEDENTES PERSONALES'),
+    craftHeader('Antecedentes Personales'),
     craftMedicalAndSurgicalHistory(record),
     craftToxicHabitsAndLifeStyle({
         tobacco: { ...record.toxicHabitTobacco },
@@ -18,91 +18,90 @@ export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: Pe
     craftMedicalIncident(record),
     craftJobAccident(record),
     craftOccupationalDisease(record),
-    craftHeader('ANTECEDENTES FAMILIARES (DETALLAR EL PARENTESCO)'),
+    craftHeader('Antecedentes Familiares (detallar el parentesco)'),
     craftFamilyHistory(record),
-    craftHeader('FACTORES DE RIESGOS DEL PUESTO DE TRABAJO'),
+    craftHeader('Factores de riesgo del puesto de trabajo'),
     jobRiskLayout(record),
     craftRow(emptyCell({ colSpan: 70 })),
     jobRiskPreventionLayout(record),
-    craftHeader('ENFERMEDAD ACTUAL'),
+    craftHeader('Enfermedad Actual'),
     craftCurrentDisease(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('REVISIÓN ACTUAL DE ÓRGANOS Y SISTEMAS'),
+    craftHeader('Revisión Actual de Órganos y Sistemas'),
     craftReviewOfOrgansAndSystem(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('CONSTANTES VITALES Y ANTROPOMETRÍA'),
+    craftHeader('Constantes Vitales y Antropometría'),
     craftVitalSignsAndAnthropometry(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('EXAMEN FÍSICO REGIONAL'),
+    craftHeader('Examen Físico Regional'),
     craftPhysicalRegionalExam(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)'),
+    craftHeader('Resultados de Exámenes Generales y Específicos de Acuerdo al Riesgo y Puesto de Trabajo (imagen, laboratorio y otros)'),
     craftSpecificAndGeneralResults(record),
     craftRow(craftSpacing({ colSpan: 70 })),
     craftDiagnosticHeader(),
     craftMedicalDiagnostic(record.diagnostics),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('APTITUD MÉDICA PARA EL TRABAJO'),
+    craftHeader('Aptitud Médica para el Trabajo'),
     craftMedicalFitnessForJob(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('RECOMENDACIONES Y/O TRATAMIENTO'),
+    craftHeader('Recomendaciones y/o Tratamiento'),
     craftRecommendation(record)
 ]);
 
 const institutionLayout: CraftItemFunc<PeriodicRecord & {
-    clinicNumber: number;
     fileNumber: number;
 }> = (record) => [
     craftRow(
-        craftTitle('INSTITUCIÓN DEL SISTEMA O NOMBRE DE LA EMPRESA', { colSpan: 16 }),
+        craftTitle('Institución del Sistema o Nombre de la Empresa', { colSpan: 16 }),
         craftTitle('RUC', { colSpan: 10 }),
-        craftTitle('CIU', { colSpan: 5 }),
-        craftTitle('ESTABLECIMIENTO DE SALUD', { colSpan: 15 }),
-        craftTitle('NÚMERO DE HISTORIA CLÍNICA', { colSpan: 14 }),
-        craftTitle('NÚMERO DE ARCHIVO', { colSpan: 10 }),
+        craftTitle('CIIU', { colSpan: 5 }),
+        craftTitle('Establecimiento de Salud', { colSpan: 15 }),
+        craftTitle('Número de Historia Clínica', { colSpan: 14 }),
+        craftTitle('Número de Archivo', { colSpan: 10 }),
     ),
     craftRow(
         craftCell(record.companyName, { colSpan: 16 }),
         craftCell(record.companyRUC, { colSpan: 10 }),
-        craftCell(record.companyCIU, { colSpan: 5 }),
+        craftCell(record.companyCIIU ?? '', { colSpan: 5 }),
         craftCell(record.institutionHealthFacility, { colSpan: 15 }),
-        craftCell(record.clinicNumber.toString().padStart(12, '0'), { colSpan: 14 }),
+        craftCell(record.patientDni, { colSpan: 14 }),
         craftCell(record.fileNumber.toString().padStart(12, '0'), { colSpan: 10 }),
     ),
     craftRow(
-        craftTitle('PRIMER APELLIDO', { colSpan: 13 }),
-        craftTitle('SEGUNDO APELLIDO', { colSpan: 13 }),
-        craftTitle('PRIMER NOMBRE', { colSpan: 13 }),
-        craftTitle('SEGUNDO NOMBRE', { colSpan: 13 }),
-        craftTitle('SEXO', { colSpan: 5 }),
-        craftTitle('PUESTO DE TRABAJO (CIUO)', { colSpan: 13 }),
+        craftTitle('Primer apellido', { colSpan: 13 }),
+        craftTitle('Segundo apellido', { colSpan: 13 }),
+        craftTitle('Primer nombre', { colSpan: 13 }),
+        craftTitle('Segundo nombre', { colSpan: 13 }),
+        craftTitle('Sexo', { colSpan: 5 }),
+        craftTitle('Puesto de trabajo (CIUO)', { colSpan: 13 }),
     ),
     craftRow(
         craftCell(record.patientLastName, { colSpan: 13 }),
         craftCell(record.patientSecondLastName, { colSpan: 13 }),
         craftCell(record.patientFirstName, { colSpan: 13 }),
         craftCell(record.patientMiddleName, { colSpan: 13 }),
-        craftCell(record.patientGender === 'male' ? 'Masculino' : 'Femenino', { colSpan: 5, fontSize: 5 }),
+        craftCell(record.patientGender === 'male' ? 'H' : 'M', { colSpan: 5, fontSize: 5 }),
         craftCell(record.jobPosition, { colSpan: 13 }),
     ),
 ];
 
 export const craftMedicalIncident: CraftItemFunc<PeriodicRecord> = (record): Row[] => [
-    craftRow(craftTitle('INCIDENTES', { colSpan: 70 })),
+    craftRow(craftTitle('Incidentes', { colSpan: 70 })),
     craftLabel('Describir los principales incidentes suscitados'),
     craftRow(craftCell(record.medicalConsultationDescription, { border: ['left', 'right', 'bottom'], colSpan: 70 }))
 ]
 
 const jobRiskLayout: CraftItemFunc<PeriodicRecord> = (record) => [
     craftRow(
-        craftTitle('PUESTO DE TRABAJO / ÁREA', { rowSpan: 2, colSpan: 9 }),
-        craftTitle('ACTIVIDADES', { rowSpan: 2, colSpan: 10 }),
-        craftTitle('TIEMPO DE TRABAJO (MESES)', { rowSpan: 2, colSpan: 5 }),
-        craftTitle('FISICO', { colSpan: 10 }),
-        craftTitle('MECÁNICO', { colSpan: 15 }),
-        craftTitle('QUÍMICO', { colSpan: 9 }),
-        craftTitle('BIOLÓGICO', { colSpan: 7 }),
-        craftTitle('ERGONÓMICO', { colSpan: 5 }),
+        craftTitle('Puesto de trabajo / Área', { rowSpan: 2, colSpan: 9 }),
+        craftTitle('Actividades', { rowSpan: 2, colSpan: 10 }),
+        craftTitle('Tiempo de trabajo (meses)', { rowSpan: 2, colSpan: 5 }),
+        craftTitle('Físico', { colSpan: 10 }),
+        craftTitle('Mecánico', { colSpan: 15 }),
+        craftTitle('Químico', { colSpan: 9 }),
+        craftTitle('Biológico', { colSpan: 7 }),
+        craftTitle('Ergonómico', { colSpan: 5 }),
     ),
     craftRow(
         craftCell('Temperaturas altas', { height: 150, orientation: 'vertical', style: 'itemTitle' }),
@@ -161,62 +160,62 @@ const jobRiskLayout: CraftItemFunc<PeriodicRecord> = (record) => [
         craftCell(e.name, { colSpan: 7 }),
         craftCell(e.activity, { colSpan: 10 }),
         craftCell(e.months.toString(), { colSpan: 5 }),
-        craftCell(e.physicalRiskHighTemperature ? 'x' : ''),
-        craftCell(e.physicalRiskLowTemperature ? 'x' : ''),
-        craftCell(e.physicalRiskIonicRadiation ? 'x' : ''),
-        craftCell(e.physicalRiskNonIonicRadiation ? 'x' : ''),
-        craftCell(e.physicalRiskNoise ? 'x' : ''),
-        craftCell(e.physicalRiskVibration ? 'x' : ''),
-        craftCell(e.physicalRiskIllumination ? 'x' : ''),
-        craftCell(e.physicalRiskVentilation ? 'x' : ''),
-        craftCell(e.physicalRiskElectricFluid ? 'x' : ''),
-        craftCell(e.physicalRiskOther ? 'x' : ''),
-        craftCell(e.mechanicRiskEntrapmentBetweenMachines ? 'x' : ''),
-        craftCell(e.mechanicRiskTrappingBetweenSurfaces ? 'x' : ''),
-        craftCell(e.mechanicRiskEntrapmentBetweenObjects ? 'x' : ''),
-        craftCell(e.mechanicRiskObjectFalling ? 'x' : ''),
-        craftCell(e.mechanicRiskSameLevelFalling ? 'x' : ''),
-        craftCell(e.mechanicRiskDifferentLevelFalling ? 'x' : ''),
-        craftCell(e.mechanicRiskElectricContact ? 'x' : ''),
-        craftCell(e.mechanicRiskSurfacesContact ? 'x' : ''),
-        craftCell(e.mechanicRiskParticlesProjection ? 'x' : ''),
-        craftCell(e.mechanicRiskFluidProjection ? 'x' : ''),
-        craftCell(e.mechanicRiskJab ? 'x' : ''),
-        craftCell(e.mechanicRiskCut ? 'x' : ''),
-        craftCell(e.mechanicRiskHitByVehicles ? 'x' : ''),
-        craftCell(e.mechanicRiskVehicleCollision ? 'x' : ''),
-        craftCell(e.mechanicRiskOther ? 'x' : ''),
-        craftCell(e.chemicalRiskSolid ? 'x' : ''),
-        craftCell(e.chemicalRiskDust ? 'x' : ''),
-        craftCell(e.chemicalRiskSmoke ? 'x' : ''),
-        craftCell(e.chemicalRiskLiquid ? 'x' : ''),
-        craftCell(e.chemicalRiskSteam ? 'x' : ''),
-        craftCell(e.chemicalRiskAerosol ? 'x' : ''),
-        craftCell(e.chemicalRiskMist ? 'x' : ''),
-        craftCell(e.chemicalRiskGas ? 'x' : ''),
-        craftCell(e.chemicalRiskOther ? 'x' : ''),
-        craftCell(e.biologicalRiskVirus ? 'x' : ''),
-        craftCell(e.biologicalRiskFungus ? 'x' : ''),
-        craftCell(e.biologicalRiskBacteria ? 'x' : ''),
-        craftCell(e.biologicalRiskParasites ? 'x' : ''),
-        craftCell(e.biologicalRiskExposureToVectors ? 'x' : ''),
-        craftCell(e.biologicalRiskExposureToWildlifeAnimals ? 'x' : ''),
-        craftCell(e.biologicalRiskOther ? 'x' : ''),
-        craftCell(e.ergonomicRiskManualHandlingLoads ? 'x' : ''),
-        craftCell(e.ergonomicRiskRepetitiveMoves ? 'x' : ''),
-        craftCell(e.ergonomicRiskForcedPostures ? 'x' : ''),
-        craftCell(e.ergonomicRiskWorkWithPvd ? 'x' : ''),
-        craftCell(e.ergonomicRiskOther ? 'x' : ''),
+        craftCell(e.physicalRiskHighTemperature ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.physicalRiskLowTemperature ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.physicalRiskIonicRadiation ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.physicalRiskNonIonicRadiation ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.physicalRiskNoise ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.physicalRiskVibration ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.physicalRiskIllumination ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.physicalRiskVentilation ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.physicalRiskElectricFluid ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.physicalRiskOther ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskEntrapmentBetweenMachines ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskTrappingBetweenSurfaces ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskEntrapmentBetweenObjects ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskObjectFalling ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskSameLevelFalling ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskDifferentLevelFalling ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskElectricContact ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskSurfacesContact ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskParticlesProjection ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskFluidProjection ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskJab ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskCut ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskHitByVehicles ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskVehicleCollision ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.mechanicRiskOther ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.chemicalRiskSolid ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.chemicalRiskDust ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.chemicalRiskSmoke ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.chemicalRiskLiquid ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.chemicalRiskSteam ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.chemicalRiskAerosol ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.chemicalRiskMist ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.chemicalRiskGas ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.chemicalRiskOther ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.biologicalRiskVirus ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.biologicalRiskFungus ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.biologicalRiskBacteria ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.biologicalRiskParasites ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.biologicalRiskExposureToVectors ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.biologicalRiskExposureToWildlifeAnimals ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.biologicalRiskOther ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.ergonomicRiskManualHandlingLoads ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.ergonomicRiskRepetitiveMoves ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.ergonomicRiskForcedPostures ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.ergonomicRiskWorkWithPvd ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.ergonomicRiskOther ? 'x' : '', { alignment: 'center', fontSize: 10 }),
     ))
 ];
 
 const jobRiskPreventionLayout: CraftItemFunc<PeriodicRecord> = (record) => [
     craftRow(
-        craftTitle('PUESTO DE TRABAJO / ÁREA', { rowSpan: 2, colSpan: 15 }),
-        craftTitle('ACTIVIDADES', { rowSpan: 2, colSpan: 18 }),
-        craftTitle('TIEMPO DE TRABAJO (MESES)', { rowSpan: 2, colSpan: 5 }),
-        craftTitle('PSICOSOCIAL', { colSpan: 13 }),
-        craftTitle('MEDIDAS PREVENTIVAS', { rowSpan: 2, colSpan: 19 }),
+        craftTitle('Puesto de trabajo / Área', { rowSpan: 2, colSpan: 15 }),
+        craftTitle('Actividades', { rowSpan: 2, colSpan: 18 }),
+        craftTitle('Tiempo de trabajo (meses)', { rowSpan: 2, colSpan: 5 }),
+        craftTitle('Psicosocial', { colSpan: 13 }),
+        craftTitle('Medidas preventivas', { rowSpan: 2, colSpan: 19 }),
     ),
     craftRow(
         craftCell('Monotonía del trabajo', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
@@ -226,554 +225,31 @@ const jobRiskPreventionLayout: CraftItemFunc<PeriodicRecord> = (record) => [
         craftCell('Autonomía  en la toma de decisiones', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Supervisión y estilos de dirección deficiente', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Conflicto de rol', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
-        craftCell('Falta de Claridad en las funciones', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
+        craftCell('Falta de claridad en las funciones', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Incorrecta distribución del trabajo', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Turnos rotativos', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Relaciones interpersonales', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Inestabilidad laboral', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
         craftCell('Otros', { height: 175, orientation: 'vertical', style: 'itemTitle' }),
     ),
-    ...record.jobRiskWithPreventiveMeasure.map((e, i) => craftRow(
+    ...record.jobRisks.map((e, i) => craftRow(
         craftCell((i + 1).toString().padStart(2, '0'), { colSpan: 2 }),
         craftCell(e.name, { colSpan: 13 }),
         craftCell(e.activity, { colSpan: 18 }),
         craftCell(e.months.toString(), { colSpan: 5 }),
-        craftCell(e.psychosocialRiskMonotony ? 'x' : ''),
-        craftCell(e.psychosocialRiskWorkOverload ? 'x' : ''),
-        craftCell(e.psychosocialRiskThoroughnessOfTheTask ? 'x' : ''),
-        craftCell(e.psychosocialRiskHighResponsibility ? 'x' : ''),
-        craftCell(e.psychosocialRiskTakingResponsibilityAutonomy ? 'x' : ''),
-        craftCell(e.psychosocialRiskSupervision ? 'x' : ''),
-        craftCell(e.psychosocialRiskRoleConflict ? 'x' : ''),
-        craftCell(e.psychosocialRiskNonFunctionClarify ? 'x' : ''),
-        craftCell(e.psychosocialRiskBadWorkDistribution ? 'x' : ''),
-        craftCell(e.psychosocialRiskRotativeShift ? 'x' : ''),
-        craftCell(e.psychosocialRiskIntrapersonalRelations ? 'x' : ''),
-        craftCell(e.psychosocialRiskJobInstability ? 'x' : ''),
-        craftCell(e.psychosocialRiskOther ? 'x' : ''),
+        craftCell(e.psychosocialRiskMonotony ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.psychosocialRiskWorkOverload ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.psychosocialRiskThoroughnessOfTheTask ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.psychosocialRiskHighResponsibility ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.psychosocialRiskTakingResponsibilityAutonomy ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.psychosocialRiskSupervision ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.psychosocialRiskRoleConflict ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.psychosocialRiskNonFunctionClarify ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.psychosocialRiskBadWorkDistribution ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.psychosocialRiskRotativeShift ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.psychosocialRiskIntrapersonalRelations ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.psychosocialRiskJobInstability ? 'x' : '', { alignment: 'center', fontSize: 10 }),
+        craftCell(e.psychosocialRiskOther ? 'x' : '', { alignment: 'center', fontSize: 10 }),
         craftCell(e.preventiveMeasure, { colSpan: 19 }),
     ))
 ]
-
-/* export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: PeriodicRecord, {
-    clinicNumber,
-    fileNumber,
-    headerLayout: header,
-    subheaderLayout: subheader
-}) => [
-        header('DATOS DEL ESTABLECIMIENTO - EMPRESA Y USUARIO'),
-        institutionLayout({ ...record, clinicNumber, fileNumber }, subheader),
-        craftSpacing(),
-        header('MOTIVO DE CONSULTA'),
-        craftMedicalConsultation(record),
-        craftSpacing(),
-        header('ANTECEDENTES PERSONALES'),
-        craftMedicalAndSurgicalHistory(record, subheader),
-        craftToxicHabits([
-            { ...record.toxicHabitTobacco, name: 'Tabaco' },
-            { ...record.toxicHabitTobacco, name: 'Alcohol' },
-            { ...record.toxicHabitTobacco, name: 'other' },
-        ].filter(e => !!e), subheader),
-        craftMedicalIncident(record, subheader),
-        craftJobAccident(record, subheader),
-        craftOccupationalDisease(record, subheader),
-        craftSpacing(),
-        header('ANTECEDENTES FAMILIARES (DETALLAR EL PARENTESCO)'),
-        craftFamilyHistory(record, subheader),
-        craftSpacing(),
-        header('FACTORES DE RIESGOS DEL PUESTO DE TRABAJO'),
-        jobRiskLayout(record, subheader),
-        jobRiskPreventionLayout(record, subheader),
-        craftSpacing(),
-        header('ENFERMEDAD ACTUAL'),
-        craftCurrentDisease(record),
-        craftSpacing(),
-        header('REVISIÓN ACTUAL DE ÓRGANOS Y SISTEMAS'),
-        craftReviewOfOrgansAndSystem(record),
-        craftSpacing(),
-        header('CONSTANTES VITALES Y ANTROPOMETRÍA'),
-        craftVitalSignsAndAnthropometry(record, subheader),
-        craftSpacing(),
-        header('EXAMEN FÍSICO REGIONAL'),
-        craftPhysicalRegionalExam(record, subheader),
-        craftSpacing(),
-        header('RESULTADOS DE EXÁMENES GENERALES Y ESPECÍFICOS DE ACUERDO AL RIESGO Y PUESTO DE TRABAJO (IMAGEN, LABORATORIO Y OTROS)'),
-        craftSpecificAndGeneralResults(record, subheader),
-        craftSpacing(),
-        header('DIAGNÓSTICO'),
-        craftMedicalDiagnostic(record.diagnostics, subheader),
-        craftSpacing(),
-        header('APTITUD MÉDICA PARA EL TRABAJO'),
-        craftMedicalFitnessForJob(record, subheader),
-        craftSpacing(),
-        header('RECOMENDACIONES Y/O TRATAMIENTO'),
-        craftRecommendation(record),
-        craftSpacing(),
-    ];
-
-
-const institutionLayout: CratftRecordItemFunc<PeriodicRecord & {
-    clinicNumber: number;
-    fileNumber: number;
-}> = (record, subheader): any => [
-    {
-        width: '*',
-        style: 'itemElement',
-        table: {
-            widths: ["*", "*", "*", "*", "*", "*"],
-            body: [
-                [
-                    {
-                        style: 'itemHeader',
-                        text: 'INSTITUCIÓN DEL SISTEMA O NOMBRE DE LA EMPRESA',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'RUC',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'CIU',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'ESTABLECIMIENTO DE SALUD',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'NÚMERO DE HISTORIA CLÍNICA',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'NÚMERO DE ARCHIVO',
-                    }
-                ],
-                [
-                    record.companyName,
-                    record.companyRUC,
-                    record.companyCIU,
-                    record.institutionHealthFacility,
-                    record.clinicNumber.toString().padStart(12, '0'),
-                    record.fileNumber.toString().padStart(12, '0'),
-                ],
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["*", "*", "*", "*", "*", "*"],
-            body: [
-                [
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'PRIMER APELLIDO ',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'SEGUNDO APELLIDO ',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'PRIMER NOMBRE',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'SEGUNDO NOMBRE',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'SEXO ',
-                    },
-                    {
-                        border: [true, false, true, true],
-                        text: 'PUESTO DE TRABAJO (CIUO)',
-                        style: 'itemHeader',
-                    },
-                ],
-                [
-                    record.patientLastName,
-                    record.patientSecondLastName,
-                    record.patientFirstName,
-                    record.patientMiddleName,
-                    record.patientGender === 'male' ? 'Masculino' : 'Femenino',
-                    record.jobPosition,
-                ],
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-];
-
-const jobRiskLayout: CratftRecordItemFunc<PeriodicRecord> = (record, subheader) => [
-    {
-        style: 'itemElement',
-        width: '*',
-        table: {
-            widths: ["*"],
-            body: [[{
-                style: 'itemHeader',
-                border: [true, true, true, false],
-                text: 'RIESGOS DEL PUESTO DE TRABAJO'
-            }]]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "*", "*"],
-            body: [
-                [
-                    {
-                        style: 'itemHeader',
-                        text: 'No',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'PUESTO DE TRABAJO / ÁREA',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'ACTIVIDADES',
-                    }
-                ],
-                ...record.jobRisks.map((e, i) => [
-                    i.toString().padStart(2, '0'),
-                    e.name,
-                    e.activity,
-                ]),
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],
-            body: [
-                [
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'No',
-                    },
-                    {
-                        border: [true, false, true, false],
-                        style: 'itemHeader',
-                        text: 'FÍSICO',
-                        colSpan: 10
-                    }, {}, {}, {}, {}, {}, {}, {}, {}, {},
-                    {
-                        border: [true, false, true, false],
-                        style: 'itemHeader',
-                        text: 'MECÁNICO',
-                        colSpan: 15
-                    }, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-                    {
-                        border: [true, false, true, false],
-                        style: 'itemHeader',
-                        text: 'QUÍMICO',
-                        colSpan: 9
-                    }, {}, {}, {}, {}, {}, {}, {}, {},
-                ],
-                [
-                    '',
-                    verticalText('Temperaturas altas', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Temperaturas bajas', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Radiación Ionizante', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Radiación No Ionizante', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Ruido', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Vibración', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Iluminación', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Ventilación', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Fluido eléctrico', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Otros', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Atrapamiento entre máquinas', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Atrapamiento entre superficies', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Atrapamiento entre objetos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Caída de objetos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Caídas al mismo nivel', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Caídas a diferente nivel', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Contacto eléctrico', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Contacto con superficies de trabajos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Proyección de partículas/fragmentos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Proyección de fluidos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Pinchazos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Cortes', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Atropellamientos por vehículos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Choques/Colisión vehicular', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Otros', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Sólidos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Polvos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Humos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('líquidos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('vapores', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Aerosoles', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Neblinas', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Gaseosos', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                    verticalText('Otros', { maxHeight: 150, maxWidth: 5, fontSize: 6 }),
-                ],
-                ...record.jobRisks.map((e, i) => [
-                    i.toString().padStart(2, '0'),
-                    e.physicalRiskHighTemperature ? 'x' : '',
-                    e.physicalRiskLowTemperature ? 'x' : '',
-                    e.physicalRiskIonicRadiation ? 'x' : '',
-                    e.physicalRiskNonIonicRadiation ? 'x' : '',
-                    e.physicalRiskNoise ? 'x' : '',
-                    e.physicalRiskVibration ? 'x' : '',
-                    e.physicalRiskIllumination ? 'x' : '',
-                    e.physicalRiskVentilation ? 'x' : '',
-                    e.physicalRiskElectricFluid ? 'x' : '',
-                    e.physicalRiskOther ? 'x' : '',
-                    e.mechanicRiskEntrapmentBetweenMachines ? 'x' : '',
-                    e.mechanicRiskTrappingBetweenSurfaces ? 'x' : '',
-                    e.mechanicRiskEntrapmentBetweenObjects ? 'x' : '',
-                    e.mechanicRiskObjectFalling ? 'x' : '',
-                    e.mechanicRiskSameLevelFalling ? 'x' : '',
-                    e.mechanicRiskDifferentLevelFalling ? 'x' : '',
-                    e.mechanicRiskElectricContact ? 'x' : '',
-                    e.mechanicRiskSurfacesContact ? 'x' : '',
-                    e.mechanicRiskParticlesProjection ? 'x' : '',
-                    e.mechanicRiskFluidProjection ? 'x' : '',
-                    e.mechanicRiskJab ? 'x' : '',
-                    e.mechanicRiskCut ? 'x' : '',
-                    e.mechanicRiskHitByVehicles ? 'x' : '',
-                    e.mechanicRiskVehicleCollision ? 'x' : '',
-                    e.mechanicRiskOther ? 'x' : '',
-                    e.chemicalRiskSolid ? 'x' : '',
-                    e.chemicalRiskDust ? 'x' : '',
-                    e.chemicalRiskSmoke ? 'x' : '',
-                    e.chemicalRiskLiquid ? 'x' : '',
-                    e.chemicalRiskSteam ? 'x' : '',
-                    e.chemicalRiskAerosol ? 'x' : '',
-                    e.chemicalRiskMist ? 'x' : '',
-                    e.chemicalRiskGas ? 'x' : '',
-                    e.chemicalRiskOther ? 'x' : '',
-                ]),
-                ...record.jobRisks.map((e, i) => [
-                    i.toString().padStart(2, '0'),
-                    {
-                        text: e.physicalRiskOther ?? '',
-                        colSpan: 10
-                    }, {}, {}, {}, {}, {}, {}, {}, {}, {},
-                    {
-                        text: e.mechanicRiskOther ?? '',
-                        colSpan: 15
-                    }, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-                    {
-                        text: e.chemicalRiskOther ?? '',
-                        colSpan: 9
-                    }, {}, {}, {}, {}, {}, {}, {}, {}
-                ])
-            ]
-        },
-        layout: {
-            fillColor: (index) => subheader(index === 1 ? 0 : index)
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],
-            body: [
-                [
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'No',
-                        rowSpan: 2
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'BIOLÓGICO',
-                        colSpan: 7
-                    }, {}, {}, {}, {}, {}, {},
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'ERGONÓMICO',
-                        colSpan: 5
-                    }, {}, {}, {}, {},
-                ],
-                [
-                    '',
-                    verticalText('Virus', { maxHeight: 175 }),
-                    verticalText('Hongos', { maxHeight: 175 }),
-                    verticalText('Bacterias', { maxHeight: 175 }),
-                    verticalText('Parásitos', { maxHeight: 175 }),
-                    verticalText('Exposición a vectores', { maxHeight: 175 }),
-                    verticalText('Exposición a animales selváticos', { maxHeight: 175 }),
-                    verticalText('Otros', { maxHeight: 175 }),
-                    verticalText('Manejo manual de cargas', { maxHeight: 175 }),
-                    verticalText('Movimiento repetitivos', { maxHeight: 175 }),
-                    verticalText('Posturas forzadas', { maxHeight: 175 }),
-                    verticalText('Trabajos con PVD', { maxHeight: 175 }),
-                    verticalText('Otros', { maxHeight: 175 }),
-                ],
-                ...record.jobRisks.map((e, i) => [
-                    i.toString().padStart(2, '0'),
-                    e.biologicalRiskVirus ? 'x' : '',
-                    e.biologicalRiskFungus ? 'x' : '',
-                    e.biologicalRiskBacteria ? 'x' : '',
-                    e.biologicalRiskParasites ? 'x' : '',
-                    e.biologicalRiskExposureToVectors ? 'x' : '',
-                    e.biologicalRiskExposureToWildlifeAnimals ? 'x' : '',
-                    e.biologicalRiskOther ? 'x' : '',
-                    e.ergonomicRiskManualHandlingLoads ? 'x' : '',
-                    e.ergonomicRiskRepetitiveMoves ? 'x' : '',
-                    e.ergonomicRiskForcedPostures ? 'x' : '',
-                    e.ergonomicRiskWorkWithPvd ? 'x' : '',
-                    e.ergonomicRiskOther ? 'x' : '',
-                ]),
-                ...record.jobRisks.map((e, i) => [
-                    i.toString().padStart(2, '0'),
-                    {
-                        text: e.biologicalRiskOther ?? '',
-                        colSpan: 7
-                    }, {}, {}, {}, {}, {}, {},
-                    {
-                        text: e.ergonomicRiskOther ?? '',
-                        colSpan: 5
-                    }, {}, {}, {}, {},
-                ])
-            ]
-        },
-        layout: {
-            fillColor: (index) => subheader(index === 1 ? 0 : index)
-        }
-    },
-];
-
-const jobRiskPreventionLayout: CratftRecordItemFunc<PeriodicRecord> = (record, subheader) => [
-    {
-        style: 'itemElement',
-        width: '*',
-        table: {
-            widths: ["*"],
-            body: [[{
-                style: 'itemHeader',
-                border: [true, true, true, false],
-                text: 'RIESGOS DEL PUESTO DE TRABAJO CON MEDIDAS PREVENTIVAS'
-            }]]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "*", "*", "*"],
-            body: [
-                [
-                    {
-                        style: 'itemHeader',
-                        text: 'No',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'PUESTO DE TRABAJO/ÁREA',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'ACTIVIDADES',
-                    },
-                    {
-                        style: 'itemHeader',
-                        text: 'MEDIDAS PREVENTIVAS'
-                    }
-                ],
-                ...record.jobRiskWithPreventiveMeasure.map((e, i) => [
-                    i.toString().padStart(2, '0'),
-                    e.name,
-                    e.activity,
-                    e.preventiveMeasure
-                ]),
-            ]
-        },
-        layout: {
-            fillColor: subheader
-        }
-    },
-    {
-        width: '*',
-        table: {
-            widths: ["auto", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*",],
-            body: [
-                [
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'No',
-                        rowSpan: 2
-                    },
-                    {
-                        border: [true, false, true, true],
-                        style: 'itemHeader',
-                        text: 'PSICOSOCIAL',
-                        colSpan: 13
-                    }, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-                ],
-                [
-                    '',
-                    verticalText('Monotonía del trabajo', { maxHeight: 175, }),
-                    verticalText('Sobrecarga laboral', { maxHeight: 175, }),
-                    verticalText('Minuciosidad de la tarea', { maxHeight: 175, }),
-                    verticalText('Alta responsabilidad', { maxHeight: 175, }),
-                    verticalText('Autonomía  en la toma de decisiones', { maxHeight: 175, }),
-                    verticalText('Supervisión y estilos de dirección deficiente', { maxHeight: 175, }),
-                    verticalText('Conflicto de rol', { maxHeight: 175, }),
-                    verticalText('Falta de Claridad en las funciones', { maxHeight: 175, }),
-                    verticalText('Incorrecta distribución del trabajo', { maxHeight: 175, }),
-                    verticalText('Turnos rotativos', { maxHeight: 175, }),
-                    verticalText('Relaciones interpersonales', { maxHeight: 175, }),
-                    verticalText('inestabilidad laboral', { maxHeight: 175, }),
-                    verticalText('Otros', { maxHeight: 175, }),
-                ],
-                ...record.jobRiskWithPreventiveMeasure.map((e, i) => [
-                    i.toString().padStart(2, '0'),
-
-                    e.psychosocialRiskMonotony ? 'x' : '',
-                    e.psychosocialRiskWorkOverload ? 'x' : '',
-                    e.psychosocialRiskThoroughnessOfTheTask ? 'x' : '',
-                    e.psychosocialRiskHighResponsibility ? 'x' : '',
-                    e.psychosocialRiskTakingResponsibilityAutonomy ? 'x' : '',
-                    e.psychosocialRiskSupervision ? 'x' : '',
-                    e.psychosocialRiskRoleConflict ? 'x' : '',
-                    e.psychosocialRiskNonFunctionClarify ? 'x' : '',
-                    e.psychosocialRiskBadWorkDistribution ? 'x' : '',
-                    e.psychosocialRiskRotativeShift ? 'x' : '',
-                    e.psychosocialRiskIntrapersonalRelations ? 'x' : '',
-                    e.psychosocialRiskJobInstability ? 'x' : '',
-                    e.psychosocialRiskOther ? 'x' : '',
-                ]),
-                ...record.jobRiskWithPreventiveMeasure.map((e, i) => [
-                    i.toString().padStart(2, '0'),
-                    {
-                        text: e.psychosocialRiskOther ?? '',
-                        colSpan: 13
-                    }, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-                ])
-            ]
-        },
-        layout: {
-            fillColor: (index) => subheader(index === 1 ? 0 : index)
-        }
-    },
-]; */

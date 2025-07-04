@@ -40,7 +40,7 @@ export const checklistLayoutLoader = (data: OrderChecklistModel[], image: string
                     body: [
                         [
                             {
-                                text: 'FECHA DE INGRESO',
+                                text: 'FECHA DE Ingreso',
                                 style: 'itemTitle',
                                 marginTop: 3,
                                 marginBottom: 3
@@ -52,7 +52,7 @@ export const checklistLayoutLoader = (data: OrderChecklistModel[], image: string
                                 marginBottom: 3
                             },
                             {
-                                text: 'HORA DE INGRESO PACIENTE',
+                                text: 'HORA DE Ingreso PACIENTE',
                                 style: 'itemTitle',
                                 marginTop: 3,
                                 marginBottom: 3

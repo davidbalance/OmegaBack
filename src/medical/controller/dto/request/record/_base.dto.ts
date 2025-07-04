@@ -1,7 +1,7 @@
 import { JobHistory } from '@omega/medical/application/type/initial-record';
 import { GeneralExamResult, MedicalDiagnostic, ToxicDetail } from '@omega/medical/application/type/record.type';
 import { Transform, Type } from 'class-transformer';
-import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, Min } from 'class-validator';
+import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, Min, ValidateIf } from 'class-validator';
 
 // Enums
 export enum PatientRecordGenderEnum {
@@ -20,79 +20,82 @@ export enum MedicalFitnessTypeEnum {
 export class ToxicDetailRequestDto implements ToxicDetail {
     @Type(() => Boolean)
     @IsBoolean()
-    public readonly consumed: boolean;
+    public readonly haveConsume: boolean;
 
+    @ValidateIf((obj) => obj.haveConsume)
+    @IsString()
+    @IsNotEmpty()
+    public readonly name: string | undefined;
+
+    @ValidateIf((obj) => obj.haveConsume)
     @Type(() => Number)
     @IsNumber()
     @Min(0)
-    public readonly consumptionTime: number;
+    @Transform(({ obj, value }) => !!obj && obj.haveConsume ? value : undefined)
+    public readonly consumptionTime: number | undefined;
 
-    @Type(() => Number)
-    @IsNumber()
-    @IsPositive()
-    public readonly quantity: number;
+    @ValidateIf((obj) => obj.haveConsume)
+    @IsString()
+    @Transform(({ obj, value }) => !!obj && obj.haveConsume ? value : undefined)
+    public readonly quantity: string | undefined;
 
+    @ValidateIf((obj) => obj.haveConsume)
     @Type(() => Boolean)
     @IsBoolean()
-    public readonly consumer: boolean;
+    @Transform(({ obj, value }) => !!obj && obj.haveConsume ? value : undefined)
+    public readonly isExConsumer: boolean | undefined;
 
-    @Type(() => Number)
-    @IsNumber()
-    @Min(0)
-    public readonly timeOfAbstinence: number;
-
-    @IsOptional()
+    @ValidateIf((obj) => obj.haveConsume && obj.isExConsumer)
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
-    public readonly other?: string | undefined;
-
+    @Transform(({ obj, value }) => !!obj && obj.haveConsume && obj.isExConsumer ? value : undefined)
+    public readonly timeOfAbstinence: string | undefined;
 }
 
 export class JobHistoryRequestDto implements JobHistory {
     @IsString()
     @IsNotEmpty()
-    public readonly lastJobCompany: string;
+    public readonly jobHistoryCompany: string;
 
     @IsString()
     @IsNotEmpty()
-    public readonly lastJobPosition: string;
+    public readonly jobHistoryPosition: string;
 
     @IsString()
     @IsNotEmpty()
-    public readonly lastJobActivity: string;
+    public readonly jobHistoryActivity: string;
 
     @Type(() => Number)
     @IsNumber()
     @Min(0)
-    public readonly lastJobTime: number;
+    public readonly jobHistoryTime: number;
 
     @Type(() => Boolean)
     @IsBoolean()
-    public readonly lastJobRiskPhysical: boolean;
+    public readonly jobHistoryRiskPhysical: boolean;
 
     @Type(() => Boolean)
     @IsBoolean()
-    public readonly lastJobRiskMechanical: boolean;
+    public readonly jobHistoryRiskMechanical: boolean;
 
     @Type(() => Boolean)
     @IsBoolean()
-    public readonly lastJobRiskChemical: boolean;
+    public readonly jobHistoryRiskChemical: boolean;
 
     @Type(() => Boolean)
     @IsBoolean()
-    public readonly lastJobRiskBiological: boolean;
+    public readonly jobHistoryRiskBiological: boolean;
 
     @Type(() => Boolean)
     @IsBoolean()
-    public readonly lastJobRiskErgonomic: boolean;
+    public readonly jobHistoryRiskErgonomic: boolean;
 
     @Type(() => Boolean)
     @IsBoolean()
-    public readonly lastJobRiskPsychosocial: boolean;
+    public readonly jobHistoryRiskPsychosocial: boolean;
 
+    @IsOptional()
     @IsString()
-    @IsNotEmpty()
-    public readonly lastJobObservation: string;
+    public readonly jobHistoryObservation?: string;
 }
 
 export class GeneralExamResultRequestDto implements GeneralExamResult {
@@ -118,11 +121,6 @@ export class MedicalDiagnosticRequestDto implements MedicalDiagnostic {
     @IsNotEmpty()
     public readonly cie: string;
 
-    @Type(() => Boolean)
-    @IsBoolean()
-    public readonly pre: boolean;
-
-    @Type(() => Boolean)
-    @IsBoolean()
-    public readonly def: boolean;
+    @IsEnum({ pre: 'pre', def: 'def' })
+    public readonly flag: 'pre' | 'def';
 }

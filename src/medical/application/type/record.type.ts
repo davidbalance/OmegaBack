@@ -2,8 +2,13 @@ export type RecordType<T = string> = {
     type: T
 }
 
+export type InstitutionHealthRecord = {
+    institutionHealthFacility: string;
+}
+
 type PatientRecordGender = 'male' | 'female';
 export type PatientRecord = {
+    patientDni: string;
     patientFirstName: string;
     patientMiddleName: string;
     patientLastName: string;
@@ -14,7 +19,7 @@ export type PatientRecord = {
 export type CompanyRecord = {
     companyName: string;
     companyRUC: string;
-    companyCIU: string;
+    companyCIIU?: string;
 };
 
 export type MedicalConsultation = {
@@ -22,11 +27,11 @@ export type MedicalConsultation = {
 }
 
 export type ExtraActivity = {
-    extraActivityDescription: string;
+    extraActivityDescription?: string;
 }
 
 export type CurrentDisease = {
-    currentDiseaseDescription: string;
+    currentDiseaseDescription?: string;
 }
 
 export type GeneralExamResult = {
@@ -37,45 +42,84 @@ export type GeneralExamResult = {
 
 export type GeneralExamResultAndSpecific = {
     generalExamResults: GeneralExamResult[];
-    generalExamObservation: string;
+    generalExamObservation?: string;
 }
 
 export type MedicalAndSurgicalHistory = {
     medicalAndSurgicalHistory: string;
 }
 
-export type IndentRecord = {
+export type IncidentRecord = {
     incidentDescription: string;
 }
 
 export type ToxicDetail = {
-    consumed: boolean;
-    consumptionTime: number;
-    quantity: number;
-    consumer: boolean;
-    timeOfAbstinence: number;
-    other?: string;
+    haveConsume: boolean;
+    /**
+     * Mandatory if `haveConsume` is true.
+     */
+    name?: string;
+    /**
+     * Mandatory if `haveConsume` is true.
+     */
+    consumptionTime?: number;
+    /**
+     * Mandatory if `haveConsume` is true.
+     */
+    quantity?: string;
+    /**
+     * Mandatory if `haveConsume` is true / Default false.
+     */
+    isExConsumer?: boolean;
+    /**
+     * Mandatory if `haveConsume` and isExConsumer are true.
+     */
+    timeOfAbstinence?: string;
 };
 
 export type LifeStyle = {
-    lifestylePhysicalActivityActive: boolean;
+    lifestylePhysicalActivity: boolean;
+    /**
+     * Mandatory if `lifestylePhysicalActivity` is true
+     */
     lifestylePhysicalActivityType?: string;
-    lifestylePhysicalActivityDuration?: number;
-    lifestyleMedicationTaking: boolean;
+    /**
+     * Mandatory if `lifestylePhysicalActivity` is true
+     */
+    lifestylePhysicalActivityTimeQty?: string;
+    lifestyleMedication: boolean;
+    /**
+     * Mandatory if `lifestyleMedication` is true
+     */
     lifestyleMedicationName?: string;
-    lifestyleMedicationQuantity?: number;
+    /**
+     * Mandatory if `lifestyleMedication` is true
+     */
+    lifestyleMedicationTimeQty?: string;
 };
 
 export type JobAccident = {
     jobAccidentHappened: boolean;
+    /**
+     * Mandatory if `jobAccidentHappened`is true.
+     */
     jobAccidentDescription?: string;
+    /**
+     * Mandatory if `jobAccidentHappened`is true.
+     */
     jobAccidentDate?: Date;
     jobAccidentObservation?: string;
 };
 
 export type OccupationalDisease = {
     occupationalDiseaseHappened: boolean;
+    /**
+     * Mandatory if `occupationalDiseaseHappened`is true.
+     */
     occupationalDiseaseDescription?: string;
+    /**
+     * Mandatory if `occupationalDiseaseHappened`is true.
+     */
     occupationalDiseaseDate?: Date;
     occupationalDiseaseObservation?: string;
 };
@@ -176,15 +220,15 @@ export type ReviewOfOrgansAndSystem = {
 }
 
 export type VitalSignsAndAnthropometry = {
-    vitalSignsBloodPressure: number;
-    vitalSignsTemperature: number;
-    vitalSignsHeartRate: number;
-    vitalSignsOxygenSaturation: number;
-    vitalSignsRespiratoryRate: number;
-    vitalSignsWeight: number;
-    vitalSignsSize: number;
-    vitalSignsMassIndex: number;
-    vitalSignsAbdominalPerimeter: number;
+    vitalSignsBloodPressure: string;
+    vitalSignsTemperature: string;
+    vitalSignsHeartRate: string;
+    vitalSignsOxygenSaturation: string;
+    vitalSignsRespiratoryRate: string;
+    vitalSignsWeight: string;
+    vitalSignsSize: string;
+    vitalSignsMassIndex: string;
+    vitalSignsAbdominalPerimeter: string;
 };
 
 export type PhysicalRegionalExam = {
@@ -233,15 +277,21 @@ export type PhysicalRegionalExam = {
 export type MedicalDiagnostic = {
     description: string;
     cie: string;
-    pre: boolean;
-    def: boolean;
+    flag: 'pre' | 'def';
 };
 
 type MedicalFitnessType = 'fit' | 'fit-observation' | 'fit-limitation' | 'no-fit'
 export type MedicalFitnessForJob = {
     medicalFitnessType: MedicalFitnessType;
-    medicalFitnessObservation: string;
-    medicalFitnessLimitation: string;
+    /**
+     * If `fit-observation` then this field is mandatory
+     */
+    medicalFitnessObservation?: string;
+    /**
+     * If `fit-limitation` then this field is mandatory
+     */
+    medicalFitnessLimitation?: string;
+    medicalFitnessReubication?: string;
 };
 
 export type RecordRecommendation = {

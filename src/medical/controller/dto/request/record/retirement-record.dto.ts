@@ -1,6 +1,6 @@
 import { RetirementInstitutionActivity, RetirementRecord } from "@omega/medical/application/type/retirement-record";
 import { Transform, Type } from "class-transformer";
-import { IsArray, IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, Min, ValidateIf, ValidateNested } from "class-validator";
+import { IsArray, IsBoolean, IsDate, IsEnum, IsInt, IsNotEmpty, IsObject, IsOptional, IsPositive, IsString, ValidateIf, ValidateNested } from "class-validator";
 import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, PatientRecordGenderEnum } from "./_base.dto";
 
 class RetirementInstitutionActivityRequestDto implements RetirementInstitutionActivity {
@@ -13,8 +13,26 @@ class RetirementInstitutionActivityRequestDto implements RetirementInstitutionAc
     public readonly risk: string;
 }
 
-export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'> {
-    /** Institution & Patient Information */
+export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type' | 'patientDni'> {
+    @ValidateIf(({ obj }) => !!obj && obj.authorDni)
+    @IsString()
+    @Transform(({ obj, value }) => !!obj && !!obj.authorFullname?.trim() ? value : undefined)
+    public readonly authorFullname?: string;
+
+    @ValidateIf(({ obj }) => !!obj && obj.authorFullname)
+    @IsString()
+    @Transform(({ obj, value }) => !!obj && !!obj.authorDni?.trim() ? value : undefined)
+    public readonly authorDni?: string;
+
+    @IsOptional()
+    @IsBoolean()
+    public readonly hideLogo?: boolean;
+
+    /* --------------------------------------------------- Institution & Patient Information --------------------------------------------------- */
+    @IsString()
+    @IsNotEmpty()
+    public readonly institutionHealthFacility: string;
+
     @IsString()
     @IsNotEmpty()
     public readonly companyName: string;
@@ -23,13 +41,9 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     @IsNotEmpty()
     public readonly companyRUC: string;
 
+    @IsOptional()
     @IsString()
-    @IsNotEmpty()
-    public readonly companyCIU: string;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly institutionHealthFacility: string;
+    public readonly companyCIIU?: string | undefined;
 
     @IsString()
     @IsNotEmpty()
@@ -48,15 +62,21 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     public readonly patientSecondLastName: string;
 
     @IsEnum(PatientRecordGenderEnum)
-    public readonly patientGender: PatientRecordGenderEnum;
+    public readonly patientGender: "male" | "female";
+
+    @IsArray()
+    @IsObject({ each: true })
+    @ValidateNested({ each: true })
+    @Type(() => RetirementInstitutionActivityRequestDto)
+    public readonly institutionActivities: RetirementInstitutionActivityRequestDto[];
 
     @Type(() => Date)
     @IsDate()
     public readonly workStartDate: Date;
 
     @Type(() => Number)
-    @IsNumber()
-    @Min(0)
+    @IsInt()
+    @IsPositive()
     public readonly workingTime: number;
 
     @Type(() => Date)
@@ -67,13 +87,7 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     @IsNotEmpty()
     public readonly jobPosition: string;
 
-    @IsArray()
-    @IsObject({ each: true })
-    @ValidateNested({ each: true })
-    @Type(() => RetirementInstitutionActivityRequestDto)
-    public readonly institutionActivities: RetirementInstitutionActivityRequestDto[];
-
-    /** Personal information */
+    /* --------------------------------------------------- Patient history --------------------------------------------------- */
     @IsString()
     @IsNotEmpty()
     public readonly medicalAndSurgicalHistory: string;
@@ -83,327 +97,264 @@ export class RetirementRecordRequestDto implements Omit<RetirementRecord, 'type'
     public readonly jobAccidentHappened: boolean;
 
     @ValidateIf((obj) => obj.jobAccidentHappened)
-    @IsOptional()
     @IsString()
     @IsNotEmpty()
-    @Transform(({ value, obj }) => obj.jobAccidentHappened ? value : undefined)
     public readonly jobAccidentDescription?: string | undefined;
 
     @ValidateIf((obj) => obj.jobAccidentHappened)
-    @IsOptional()
     @Type(() => Date)
     @IsDate()
-    @Transform(({ value, obj }) => obj.jobAccidentHappened ? value : undefined)
     public readonly jobAccidentDate?: Date | undefined;
 
     @ValidateIf((obj) => obj.jobAccidentHappened)
-    @IsOptional()
     @IsString()
     @IsNotEmpty()
-    @Transform(({ value, obj }) => obj.jobAccidentHappened ? value : undefined)
     public readonly jobAccidentObservation?: string | undefined;
 
     @Type(() => Boolean)
     @IsBoolean()
     public readonly occupationalDiseaseHappened: boolean;
 
-    @ValidateIf((obj) => obj.occupationalDiseaseHappened)
-    @IsOptional()
+    @ValidateIf((obj) => obj.jobAccidentHappened)
     @IsString()
-    @IsNotEmpty()
-    @Transform(({ value, obj }) => obj.occupationalDiseaseHappened ? value : undefined)
     public readonly occupationalDiseaseDescription?: string | undefined;
 
-    @ValidateIf((obj) => obj.occupationalDiseaseHappened)
-    @IsOptional()
+    @ValidateIf((obj) => obj.jobAccidentHappened)
     @Type(() => Date)
     @IsDate()
-    @Transform(({ value, obj }) => obj.occupationalDiseaseHappened ? value : undefined)
     public readonly occupationalDiseaseDate?: Date | undefined;
 
-    @ValidateIf((obj) => obj.occupationalDiseaseHappened)
-    @IsOptional()
+    @ValidateIf((obj) => obj.jobAccidentHappened)
     @IsString()
     @IsNotEmpty()
-    @Transform(({ value, obj }) => obj.occupationalDiseaseHappened ? value : undefined)
     public readonly occupationalDiseaseObservation?: string | undefined;
 
-    /** Vital Signs and Anthropometry */
-    @Type(() => Number)
-    @IsNumber()
-    @Min(0)
-    public readonly vitalSignsBloodPressure: number;
+    /* --------------------------------------------------- Vital Signs and Anthropometry --------------------------------------------------- */
+    @IsString()
+    @IsNotEmpty()
+    public readonly vitalSignsBloodPressure: string;
 
-    @Type(() => Number)
-    @IsNumber()
-    @Min(0)
-    public readonly vitalSignsTemperature: number;
+    @IsString()
+    @IsNotEmpty()
+    public readonly vitalSignsTemperature: string;
 
-    @Type(() => Number)
-    @IsNumber()
-    @Min(0)
-    public readonly vitalSignsHeartRate: number;
+    @IsString()
+    @IsNotEmpty()
+    public readonly vitalSignsHeartRate: string;
 
-    @Type(() => Number)
-    @IsNumber()
-    @Min(0)
-    public readonly vitalSignsOxygenSaturation: number;
+    @IsString()
+    @IsNotEmpty()
+    public readonly vitalSignsOxygenSaturation: string;
 
-    @Type(() => Number)
-    @IsNumber()
-    @Min(0)
-    public readonly vitalSignsRespiratoryRate: number;
+    @IsString()
+    @IsNotEmpty()
+    public readonly vitalSignsRespiratoryRate: string;
 
-    @Type(() => Number)
-    @IsNumber()
-    @Min(0)
-    public readonly vitalSignsWeight: number;
+    @IsString()
+    @IsNotEmpty()
+    public readonly vitalSignsWeight: string;
 
-    @Type(() => Number)
-    @IsNumber()
-    @Min(0)
-    public readonly vitalSignsSize: number;
+    @IsString()
+    @IsNotEmpty()
+    public readonly vitalSignsSize: string;
 
-    @Type(() => Number)
-    @IsNumber()
-    @Min(0)
-    public readonly vitalSignsMassIndex: number;
+    @IsString()
+    @IsNotEmpty()
+    public readonly vitalSignsMassIndex: string;
 
-    @Type(() => Number)
-    @IsNumber()
-    @Min(0)
-    public readonly vitalSignsAbdominalPerimeter: number;
+    @IsString()
+    @IsNotEmpty()
+    public readonly vitalSignsAbdominalPerimeter: string;
 
-    /** Physical Regional Exam */
+    /* --------------------------------------------------- Physical Regional Exam --------------------------------------------------- */
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examSkinScar?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examSkinTattoo?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examSkinLesions?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEyeEyelids?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEyeConjunctiva?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEyePupils?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEyeCorneas?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEyeMotility?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEarAuditoryExternal?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEarAuricle?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examEarEardrum?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPharynxLips?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPharynxTongue?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPharynxPharynx?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPharynxTonsils?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPharynxTeeth?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNosePartition?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNoseTurbinates?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNoseMucousMembranes?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNoseParanasalSinuses?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNeckThyroid?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNeckMobility?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examChestBreast?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examChestHeart?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examChestLungs?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examChestRibCage?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examAbdomenViscera?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examAbdomenAbdominalWall?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examColumnFlexibility?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examColumnDeviation?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examColumnPain?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPelvis?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examPelvisGenitals?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examLimbVascular?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examLimbUpper?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examLimbLower?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNeurologicForce?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNeurologicSensitivity?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNeurologicGait?: string | undefined;
 
     @IsOptional()
     @IsString()
-    @Transform(({ value }) => value.trim() !== '' ? value : undefined)
     public readonly examNeurologicReflex?: string | undefined;
 
-    /** General Exam and Specific */
+    /* --------------------------------------------------- General Exam Result and Specific --------------------------------------------------- */
     @IsArray()
     @IsObject({ each: true })
     @ValidateNested({ each: true })
     @Type(() => GeneralExamResultRequestDto)
     public readonly generalExamResults: GeneralExamResultRequestDto[];
 
+    @IsOptional()
     @IsString()
-    @IsNotEmpty()
-    public readonly generalExamObservation: string;
+    public readonly generalExamObservation?: string | undefined;
 
-    /** Diagnostic */
+    /* --------------------------------------------------- Diagnostics --------------------------------------------------- */
+    @Type(() => Boolean)
+    @IsBoolean()
+    public readonly retirementEvaluationDone: boolean;
+
+    @IsOptional()
+    @IsString()
+    public readonly retirementEvaluationObservation?: string | undefined;
+
+    /* --------------------------------------------------- Diagnostics --------------------------------------------------- */
     @IsArray()
     @IsObject({ each: true })
     @ValidateNested({ each: true })
     @Type(() => MedicalDiagnosticRequestDto)
     public readonly diagnostics: MedicalDiagnosticRequestDto[];
 
-    /** Retirement Evaluation */
-
-    @Type(() => Boolean)
-    @IsBoolean()
-    public readonly retirementDone: boolean;
-
-    @IsString()
-    @IsNotEmpty()
-    public readonly retirementObservation: string;
-
-    /** Recommendation */
+    /* --------------------------------------------------- Recommendation --------------------------------------------------- */
     @IsString()
     @IsNotEmpty()
     public readonly recommendationDescription: string;

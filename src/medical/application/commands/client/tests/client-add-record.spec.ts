@@ -68,9 +68,9 @@ describe("ClientAddRecordCommand", () => {
         expect(repository.findOneAsync).toHaveBeenCalledWith({
             filter: [{ field: "patientDni", operator: "eq", value: payload.patientDni }],
         });
-        expect(increment.next).toHaveBeenCalledWith('clinic-history');
         expect(increment.next).toHaveBeenCalledWith(payload.type);
-        expect(layoutHelper).toHaveBeenCalledWith(payload, mockedNext, mockedNext);
+        expect(increment.next).toHaveBeenCalledTimes(1);
+        expect(layoutHelper).toHaveBeenCalledWith(payload, mockedNext);
         expect(pdf.craft).toHaveBeenCalledWith({});
         expect(filenameHelper).toHaveBeenCalledWith(payload.type);
         expect(file.write).toHaveBeenCalledWith(expectedFilepath, "report.pdf", mockFile);
