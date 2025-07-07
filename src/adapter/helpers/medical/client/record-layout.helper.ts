@@ -24,9 +24,8 @@ const recordMessage = (value: Pick<GenericRecord, 'type'>): string => {
     }
 }
 
-TZDate.tz("America/Guayaquil");
 const footer = (value: Pick<GenericRecord, 'authorDni' | 'authorFullname' | 'type'>) => {
-    const date = new TZDate();
+    const date = TZDate.tz("America/Guayaquil");
     const formatedDate = formatDate(date, 'yyyy/MM/dd');
     const formatedHour = formatDate(date, 'HH:mm');
 
