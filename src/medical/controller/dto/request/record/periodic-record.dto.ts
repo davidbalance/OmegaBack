@@ -2,7 +2,7 @@ import { Transform, Type } from "class-transformer";
 import { IsArray, IsBoolean, IsDate, IsEnum, IsInt, IsNotEmpty, IsObject, IsOptional, IsString, Min, ValidateIf, ValidateNested } from "class-validator";
 import { GeneralExamResultRequestDto, MedicalDiagnosticRequestDto, MedicalFitnessTypeEnum, ToxicDetailRequestDto } from "./_base.dto";
 import { JobRisk, PeriodicRecord } from "@omega/medical/application/type/periodic-record";
-import { GeneralExamResult, MedicalDiagnostic, ToxicDetail } from "@omega/medical/application/type/record.type";
+import { ToxicDetail } from "@omega/medical/application/type/record.type";
 import { GenderIdentityEnum } from "./initial-record.dto";
 
 // DTOs
@@ -369,9 +369,9 @@ export class PeriodicRecordRequestDto implements Omit<PeriodicRecord, 'type' | '
     @IsNotEmpty()
     public readonly lifestyleMedicationTimeQty?: string | undefined;
 
+    @IsOptional()
     @IsString()
-    @IsNotEmpty()
-    public readonly incidentDescription: string;
+    public readonly incidentDescription?: string;
 
     @Type(() => Boolean)
     @IsBoolean()

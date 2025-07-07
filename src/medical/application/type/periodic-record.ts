@@ -29,7 +29,7 @@ export type PeriodicRecord = RecordType<'periodico'>
     // Patient History
     & MedicalAndSurgicalHistory
     & LifeStyle
-    & IncidentRecord
+    & Partial<IncidentRecord>
     & JobAccident
     & OccupationalDisease
     // Family history

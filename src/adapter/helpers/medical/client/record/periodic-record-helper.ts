@@ -3,12 +3,12 @@ import { PeriodicRecord } from "@omega/medical/application/type/periodic-record"
 import { craftCell, craftHeader, craftRow, craftSpacing, craftTitle, emptyCell, Row } from "../table.helper";
 
 export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: PeriodicRecord, { fileNumber }) => flatRecord([
-    craftHeader('Datos del Establecimiento - Empresa y Usuario'),
+    craftHeader('A. Datos del Establecimiento - Empresa y Usuario'),
     institutionLayout({ ...record, fileNumber }),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('Motivo de Consulta'),
+    craftHeader('B. Motivo de Consulta'),
     craftMedicalConsultation(record),
-    craftHeader('Antecedentes Personales'),
+    craftHeader('C. Antecedentes Personales'),
     craftMedicalAndSurgicalHistory(record),
     craftToxicHabitsAndLifeStyle({
         tobacco: { ...record.toxicHabitTobacco },
@@ -18,34 +18,34 @@ export const createPeriodicRecord: CraftRecordFunc<PeriodicRecord> = (record: Pe
     craftMedicalIncident(record),
     craftJobAccident(record),
     craftOccupationalDisease(record),
-    craftHeader('Antecedentes Familiares (detallar el parentesco)'),
+    craftHeader('D. Antecedentes Familiares (detallar el parentesco)'),
     craftFamilyHistory(record),
-    craftHeader('Factores de riesgo del puesto de trabajo'),
+    craftHeader('E. Factores de riesgo del puesto de trabajo'),
     jobRiskLayout(record),
     craftRow(emptyCell({ colSpan: 70 })),
     jobRiskPreventionLayout(record),
-    craftHeader('Enfermedad Actual'),
+    craftHeader('F. Enfermedad Actual'),
     craftCurrentDisease(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('Revisión Actual de Órganos y Sistemas'),
+    craftHeader('G. Revisión Actual de Órganos y Sistemas'),
     craftReviewOfOrgansAndSystem(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('Constantes Vitales y Antropometría'),
+    craftHeader('H. Constantes Vitales y Antropometría'),
     craftVitalSignsAndAnthropometry(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('Examen Físico Regional'),
+    craftHeader('I. Examen Físico Regional'),
     craftPhysicalRegionalExam(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('Resultados de Exámenes Generales y Específicos de Acuerdo al Riesgo y Puesto de Trabajo (imagen, laboratorio y otros)'),
+    craftHeader('J. Resultados de Exámenes Generales y Específicos de Acuerdo al Riesgo y Puesto de Trabajo (imagen, laboratorio y otros)'),
     craftSpecificAndGeneralResults(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftDiagnosticHeader(),
+    craftDiagnosticHeader('K. Diagnóstico'),
     craftMedicalDiagnostic(record.diagnostics),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('Aptitud Médica para el Trabajo'),
+    craftHeader('L. Aptitud Médica para el Trabajo'),
     craftMedicalFitnessForJob(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('Recomendaciones y/o Tratamiento'),
+    craftHeader('M. Recomendaciones y/o Tratamiento'),
     craftRecommendation(record)
 ]);
 
@@ -89,7 +89,7 @@ const institutionLayout: CraftItemFunc<PeriodicRecord & {
 export const craftMedicalIncident: CraftItemFunc<PeriodicRecord> = (record): Row[] => [
     craftRow(craftTitle('Incidentes', { colSpan: 70 })),
     craftLabel('Describir los principales incidentes suscitados'),
-    craftRow(craftCell(record.medicalConsultationDescription, { border: ['left', 'right', 'bottom'], colSpan: 70 }))
+    craftRow(craftCell(record.incidentDescription ?? '', { border: ['left', 'right', 'bottom'], colSpan: 70 }))
 ]
 
 const jobRiskLayout: CraftItemFunc<PeriodicRecord> = (record) => [

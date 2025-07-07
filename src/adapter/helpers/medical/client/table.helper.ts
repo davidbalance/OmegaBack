@@ -22,7 +22,7 @@ const defaultVerticalContentOption: VerticalContentOption = {
 const createVerticalContent = (text: string, options: Partial<VerticalContentOption>): VerticalContent => {
     const { fontSize, height, width }: VerticalContentOption = { ...defaultVerticalContentOption, ...options };
     const xPos = 6;
-    const yPos = height - 1;
+    const yPos = height;
 
     return {
         svg: `<svg width="${width}" height="${height}">

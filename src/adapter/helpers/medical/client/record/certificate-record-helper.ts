@@ -6,20 +6,20 @@ import { formatDate } from "date-fns";
 export const createCertificateRecord: CraftRecordFunc<CertificateRecord> = (record: CertificateRecord, {
     fileNumber,
 }) => flatRecord([
-    craftHeader('Datos del Establecimiento - Empresa y Usuario'),
+    craftHeader('A. Datos del Establecimiento - Empresa y Usuario'),
     institutionLayout({ ...record, fileNumber }),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('Datos Generales'),
+    craftHeader('B. Datos Generales'),
     generalDataLayout(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('Aptitud Médica Laboral'),
+    craftHeader('C. Aptitud Médica Laboral'),
     craftRow(craftCell('Después de la valoración médica ocupacional, se certifica que la persona mencionada ha sido calificada como:', { colSpan: 70 })),
     craftMedicalFitnessForJob(record, { hideLimitation: true }),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('Evaluación Médica de Retiro'),
+    craftHeader('D. Evaluación Médica de Retiro'),
     retireEvaluation(record),
     craftRow(craftSpacing({ colSpan: 70 })),
-    craftHeader('Recomendaciones y/o Tratamiento'),
+    craftHeader('E. Recomendaciones y/o Tratamiento'),
     craftRecommendation(record)
 ]);
 
