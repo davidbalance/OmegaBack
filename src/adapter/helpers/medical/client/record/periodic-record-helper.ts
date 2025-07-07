@@ -89,7 +89,7 @@ const institutionLayout: CraftItemFunc<PeriodicRecord & {
 export const craftMedicalIncident: CraftItemFunc<PeriodicRecord> = (record): Row[] => [
     craftRow(craftTitle('Incidentes', { colSpan: 70 })),
     craftLabel('Describir los principales incidentes suscitados'),
-    craftRow(craftCell(record.medicalConsultationDescription, { border: ['left', 'right', 'bottom'], colSpan: 70 }))
+    craftRow(craftCell(record.incidentDescription ?? '', { border: ['left', 'right', 'bottom'], colSpan: 70 }))
 ]
 
 const jobRiskLayout: CraftItemFunc<PeriodicRecord> = (record) => [
