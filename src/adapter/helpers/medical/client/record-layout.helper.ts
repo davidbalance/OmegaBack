@@ -2,6 +2,7 @@ import { formatDate } from "date-fns";
 import { createRecordLayout } from "./generic-record-helper";
 import { ClientRecordLayoutFunc, GenericRecord } from "@omega/medical/application/commands/client/client-add-record.command";
 import { craftCell, craftRow, craftSpacing, craftTable } from "./table.helper";
+import { TZDate } from "@date-fns/tz";
 
 const recordTitle = (value: Pick<GenericRecord, 'type'>): string => {
     switch (value.type) {
@@ -24,7 +25,7 @@ const recordMessage = (value: Pick<GenericRecord, 'type'>): string => {
 }
 
 const footer = (value: Pick<GenericRecord, 'authorDni' | 'authorFullname' | 'type'>) => {
-    const date = new Date();
+    const date = TZDate.tz("America/Guayaquil");
     const formatedDate = formatDate(date, 'yyyy/MM/dd');
     const formatedHour = formatDate(date, 'HH:mm');
 
