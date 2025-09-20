@@ -28,7 +28,6 @@ export class DiseaseReportCreateRequestDto implements DiseaseReportCreateCommand
     public readonly diseaseGroupName: string;
 
     @IsString()
-    @IsNotEmpty()
     public readonly commentary: string;
 }
 
@@ -48,7 +47,6 @@ export class DiseaseReportEditRequestDto implements Omit<DiseaseReportEditComman
     public readonly diseaseGroupName: string;
 
     @IsString()
-    @IsNotEmpty()
     public readonly commentary: string;
 }
 
