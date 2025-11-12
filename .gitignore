@@ -4,6 +4,8 @@ docker-compose.yml
 /.disk/**
 migration.**.sql
 
+*.values.sql
+
 *.code-workspace
 
 /dist
