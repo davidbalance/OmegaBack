@@ -27,7 +27,7 @@ export class ResultFilepathModel extends Model<ResultFilepathModelProps> {
     }
 
     public get filename(): Readonly<string> {
-        const filename = this.props.exam.toLocaleLowerCase().replaceAll(/\s/ig, '_');
+        const filename = this.props.exam.toLocaleLowerCase().replaceAll(/[\s/]/ig, '_');
         return `${filename}.pdf`
     }
 
