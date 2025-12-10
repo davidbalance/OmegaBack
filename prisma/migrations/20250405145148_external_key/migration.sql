@@ -113,48 +113,48 @@ ALTER TABLE `tbl_lo_branch_external_keys` ADD CONSTRAINT `tbl_lo_branch_external
 -- CreateView
 CREATE VIEW v_m_order_external_connection AS
 SELECT tmoek.external_owner, tmoek.external_value, tmoek.medical_order_id AS order_id, tmc.patient_dni
-FROM omega.tbl_m_order_external_keys tmoek
-INNER JOIN omega.tbl_m_orders tmo ON tmo.medical_order_id = tmoek.medical_order_id
-INNER JOIN omega.tbl_m_clients tmc ON tmc.medical_client_id = tmo.medical_client_id;
+FROM tbl_m_order_external_keys tmoek
+INNER JOIN tbl_m_orders tmo ON tmo.medical_order_id = tmoek.medical_order_id
+INNER JOIN tbl_m_clients tmc ON tmc.medical_client_id = tmo.medical_client_id;
 
 -- CreateView
 CREATE VIEW v_m_test_external_connection AS
 SELECT tmtek.external_owner, tmtek.external_value, tmtek.medical_test_id AS test_id
-FROM omega.tbl_m_test_external_keys tmtek
-INNER JOIN omega.tbl_m_tests tmt ON tmt.medical_test_id = tmtek.medical_test_id;
+FROM tbl_m_test_external_keys tmtek
+INNER JOIN tbl_m_tests tmt ON tmt.medical_test_id = tmtek.medical_test_id;
 
 -- CreateView
 CREATE VIEW v_lab_exam_external_connection AS
 SELECT tleek.external_owner, tleek.external_value, tleek.exam_id, tle.exam_subtype_id
-FROM omega.tbl_lab_exam_external_keys tleek
-INNER JOIN omega.tbl_lab_exams tle ON tle.exam_id = tleek.exam_id;
+FROM tbl_lab_exam_external_keys tleek
+INNER JOIN tbl_lab_exams tle ON tle.exam_id = tleek.exam_id;
 
 -- CreateView
 CREATE VIEW v_lab_exam_subtype_external_connection AS
 SELECT tlesek.external_owner, tlesek.external_value, tlesek.exam_subtype_id, tles.exam_type_id
-FROM omega.tbl_lab_exam_subtype_external_keys tlesek
-INNER JOIN omega.tbl_lab_exam_subtypes tles ON tles.exam_subtype_id = tlesek.exam_subtype_id;
+FROM tbl_lab_exam_subtype_external_keys tlesek
+INNER JOIN tbl_lab_exam_subtypes tles ON tles.exam_subtype_id = tlesek.exam_subtype_id;
 
 -- CreateView
 CREATE VIEW v_lab_exam_type_external_connection AS
 SELECT tletek.external_owner, tletek.external_value, tletek.exam_type_id
-FROM omega.tbl_lab_exam_type_external_keys tletek
-INNER JOIN omega.tbl_lab_exam_types tlet ON tlet.exam_type_id = tletek.exam_type_id;
+FROM tbl_lab_exam_type_external_keys tletek
+INNER JOIN tbl_lab_exam_types tlet ON tlet.exam_type_id = tletek.exam_type_id;
 
 -- CreateView
 CREATE VIEW v_lo_branch_external_connection AS
 SELECT tlbek.external_owner, tlbek.external_value, tlbek.branch_id, tlb.company_id
-FROM omega.tbl_lo_branch_external_keys tlbek
-INNER JOIN omega.tbl_lo_branches tlb ON tlb.branch_id = tlbek.branch_id;
+FROM tbl_lo_branch_external_keys tlbek
+INNER JOIN tbl_lo_branches tlb ON tlb.branch_id = tlbek.branch_id;
 
 -- CreateView
 CREATE VIEW v_lo_company_external_connection AS
 SELECT tlcek.external_owner, tlcek.external_value, tlcek.company_id, tlc.corporative_id
-FROM omega.tbl_lo_company_external_keys tlcek
-INNER JOIN omega.tbl_lo_companies tlc ON tlc.company_id = tlcek.company_id;
+FROM tbl_lo_company_external_keys tlcek
+INNER JOIN tbl_lo_companies tlc ON tlc.company_id = tlcek.company_id;
 
 -- CreateView
 CREATE VIEW v_lo_corporative_external_connection AS
 SELECT tlcek.external_owner, tlcek.external_value, tlc.corporative_id
-FROM omega.tbl_lo_corporative_external_keys tlcek
-INNER JOIN omega.tbl_lo_corporative_groups tlc ON tlc.corporative_id = tlcek.corporative_id;
+FROM tbl_lo_corporative_external_keys tlcek
+INNER JOIN tbl_lo_corporative_groups tlc ON tlc.corporative_id = tlcek.corporative_id;
