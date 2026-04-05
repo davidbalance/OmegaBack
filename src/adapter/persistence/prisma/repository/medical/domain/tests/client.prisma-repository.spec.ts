@@ -12,6 +12,7 @@ import { ClientAreaAddedEventPayload, ClientDeletedEventPayload, ClientEditedEve
 import { Email } from "@omega/medical/core/domain/client/email.domain";
 import { Record } from "@omega/medical/core/domain/client/record.domain";
 import { RecordDomainMapper } from "@omega/adapter/persistence/prisma/mapper/medical/domain/record.domain-mapper";
+import { UpdateRecordFilepathPayload, UpdateRecordMetadataPayload } from "@omega/medical/core/domain/client/payloads/client.payloads";
 
 describe("ClientPrismaRepository", () => {
     let repository: ClientPrismaRepository;
@@ -34,6 +35,7 @@ describe("ClientPrismaRepository", () => {
             },
             medicalRecord: {
                 create: jest.fn(),
+                update: jest.fn()
             },
         };
 
@@ -456,6 +458,77 @@ describe("ClientPrismaRepository", () => {
                 await expect(repository.addRecord(value)).rejects.toThrow(RepositoryError);
             });
 
+        });
+
+        describe('updateRecordMetadata', () => {
+            const value: UpdateRecordMetadataPayload = {
+                metadata: { "hello": "value" },
+                recordId: ""
+            }
+
+            it('should update record metadata', async () => {
+                await repository.updateRecordMetadata(value);
+
+                expect(prisma.medicalRecord.update).toHaveBeenCalledWith({ where: { id: value.recordId }, data: { metadata: value.metadata } });
+            });
+
+            it('should throw RepositoryError when Prisma throws an exception', async () => {
+                prisma.medicalRecord.update.mockRejectedValue(Error);
+
+                await expect(repository.updateRecordMetadata(value)).rejects.toThrow(RepositoryError);
+            });
+
+        });
+
+        describe('uncompleteRecord', () => {
+            const value: string = "temp-id";
+
+            it('should set record status to started', async () => {
+                await repository.uncompleteRecord(value);
+
+                expect(prisma.medicalRecord.update).toHaveBeenCalledWith({ where: { id: value }, data: { status: "started" } });
+            });
+
+            it('should throw RepositoryError when Prisma throws an exception', async () => {
+                prisma.medicalRecord.update.mockRejectedValue(Error);
+
+                await expect(repository.uncompleteRecord(value)).rejects.toThrow(RepositoryError);
+            });
+        });
+
+        describe('updateRecordFilepath', () => {
+            const value: UpdateRecordFilepathPayload = {
+                filepath: "/path/to/file.template",
+                recordId: "temp-id"
+            };
+
+            it('should update record filepath', async () => {
+                await repository.updateRecordFilepath(value);
+
+                expect(prisma.medicalRecord.update).toHaveBeenCalledWith({ where: { id: value.recordId }, data: { filepath: value.filepath } });
+            });
+
+            it('should throw RepositoryError when Prisma throws an exception', async () => {
+                prisma.medicalRecord.update.mockRejectedValue(Error);
+
+                await expect(repository.updateRecordFilepath(value)).rejects.toThrow(RepositoryError);
+            });
+        });
+
+        describe('completeRecord', () => {
+            const value: string = "temp-id";
+
+            it('should set record status to completed', async () => {
+                await repository.completeRecord(value);
+
+                expect(prisma.medicalRecord.update).toHaveBeenCalledWith({ where: { id: value }, data: { status: "completed" } });
+            });
+
+            it('should throw RepositoryError when Prisma throws an exception', async () => {
+                prisma.medicalRecord.update.mockRejectedValue(Error);
+
+                await expect(repository.completeRecord(value)).rejects.toThrow(RepositoryError);
+            });
         });
     });
 });

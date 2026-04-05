@@ -1,0 +1,312 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certificado de Evaluación Médica Ocupacional</title>
+</head>
+
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    /* Weighted outer border */
+    border: 2px solid #000;
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+  }
+
+  .border-heavy-left {
+    border-left: 2px solid #000 !important;
+  }
+
+  .border-heavy-right {
+    border-right: 2px solid #000 !important;
+  }
+
+  .border-heavy-top {
+    border-top: 2px solid #000 !important;
+  }
+
+  .border-heavy-bottom {
+    border-bottom: 2px solid #000 !important;
+  }
+
+  td,
+  th {
+    /* Soft/Thin inner borders */
+    border: 1px solid #d8d8d8;
+    padding: 1px 3px;
+    font-size: 7px;
+    height: 14px;
+    word-wrap: break-word;
+    overflow: hidden;
+  }
+
+  /* White inner borders for colored headers to mimic Excel */
+  .section-title td,
+  .item-title,
+  .item-subtitle {
+    border: 1px solid #d8d8d8;
+  }
+
+  .section-title {
+    font-size: 10px;
+    font-weight: bold;
+    background: #ccf;
+    text-transform: uppercase;
+  }
+
+  .item-title {
+    background-color: #ccffcc;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .item-subtitle {
+    background-color: #ccffff;
+    text-align: center;
+  }
+
+  .text-vertical {
+    writing-mode: sideways-lr;
+    text-align: center;
+    width: 15px;
+    height: auto;
+    white-space: nowrap;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  .left {
+    text-align: left;
+  }
+
+  .right {
+    text-align: right;
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .border-none {
+    border: none !important;
+  }
+
+  .no-border-top {
+    border-top: none !important;
+  }
+
+  .no-border-bottom {
+    border-bottom: none !important;
+  }
+
+  .no-border-left {
+    border-left: none !important;
+  }
+
+  .no-border-right {
+    border-right: none !important;
+  }
+</style>
+
+<body>
+  {{#if logo}}
+  <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
+    <img src="{{logo}}" alt="" style="height: 30px;">
+  </div>
+  {{/if}}
+  <!-- Main Title -->
+  <table>
+    <thead>
+      <tr>
+        <th class="section-title" colspan="12">CERTIFICADO - EVALUACIÓN MÉDICA OCUPACIONAL</th>
+      </tr>
+    </thead>
+  </table>
+
+  <!-- Section A: Establishment and User Data -->
+  <table>
+    <thead>
+      <tr>
+        <td class="section-title" colspan="12">A. Datos del establecimiento</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="item-title" colspan="2">Institución del Sistema</td>
+        <td class="item-title" colspan="2">RUC</td>
+        <td class="item-title" colspan="2">CIIU</td>
+        <td class="item-title" colspan="2">Establecimiento / Centro de Trabajo</td>
+        <td class="item-title" colspan="2">Número de Historia Clinica</td>
+        <td class="item-title" colspan="2">Número de Archivo</td>
+      </tr>
+      <tr>
+        <td colspan="2">{{establishment.institutionName}}</td>
+        <td colspan="2">{{establishment.ruc}}</td>
+        <td colspan="2">{{establishment.ciiu}}</td>
+        <td colspan="2">{{establishment.healthFacility}}</td>
+        <td colspan="2">{{establishment.clinicalHistoryNumber}}</td>
+        <td colspan="2">{{establishment.fileNumber}}</td>
+      </tr>
+      <tr>
+        <td class="item-title" colspan="2">Primer Apellido</td>
+        <td class="item-title" colspan="2">Segundo Apellido</td>
+        <td class="item-title" colspan="2">Primer Nombre</td>
+        <td class="item-title" colspan="2">Segundo Nombre</td>
+        <td class="item-title" colspan="2">Sexo</td>
+        <td class="item-title" colspan="2">Puesto de Trabajo (CIUO)</td>
+      </tr>
+      <tr>
+        <td colspan="2">{{patient.firstName}}</td>
+        <td colspan="2">{{patient.middleName}}</td>
+        <td colspan="2">{{patient.lastName}}</td>
+        <td colspan="2">{{patient.secondLastName}}</td>
+        <td colspan="2">{{patient.gender}}</td>
+        <td colspan="2">{{patient.jobPosition}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Section B: General Data -->
+  <table>
+    <thead>
+      <tr>
+        <td class="section-title" colspan="12">B. Datos Generales</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="border-none" colspan="12"></td>
+      </tr>
+      <tr>
+        <td class="border-none" colspan="3" rowspan="2">Fecha de Emisión</td>
+        <td>{{generalData.emision.year}}</td>
+        <td>{{generalData.emision.month}}</td>
+        <td>{{generalData.emision.date}}</td>
+        <td class="border-none" colspan="6" rowspan="2"></td>
+      </tr>
+      <tr>
+        <td class="border-none">aaaa</td>
+        <td class="border-none">mm</td>
+        <td class="border-none">dd</td>
+      </tr>
+      <tr>
+        <td class="border-none" colspan="12"></td>
+      </tr>
+      <tr>
+        <td class="border-none">Evaluación:</td>
+        <td class="border-none right">Ingreso</td>
+        <td>{{#if generalData.evaluationType.isEntry}}x{{/if}}</td>
+        <td class="border-none right">Periodico</td>
+        <td>{{#if generalData.evaluationType.isPeriodic}}x{{/if}}</td>
+        <td class="border-none right">Reintegro</td>
+        <td>{{#if generalData.evaluationType.isReturn}}x{{/if}}</td>
+        <td class="border-none right">Retiro</td>
+        <td>{{#if generalData.evaluationType.isRetirement}}x{{/if}}</td>
+        <td class="border-none" colspan="3"></td>
+      </tr>
+
+      <tr>
+        <td class="border-none" colspan="12"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Section C: Medical Fitness Assessment -->
+  <table>
+    <thead>
+      <tr>
+        <td class="section-title" colspan="12">C. Aptitud Médica para el Trabajo</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="12">
+          Después de la valoración médica ocupacional se certifica que la persona en mención, es calificada como:
+        </td>
+      </tr>
+      <tr>
+        <td class="item-title" colspan="2">Apto</td>
+        <td>{{#if fitness.isFit}}x{{/if}}</td>
+        <td class="item-title" colspan="2">Apto con Restricciones</td>
+        <td>{{#if fitness.isFitObservation}}x{{/if}}</td>
+        <td class="item-title" colspan="2">No Apto Temporal</td>
+        <td>{{#if fitness.isFitLimitation}}x{{/if}}</td>
+        <td class="item-title" colspan="2">No Apto Permanente</td>
+        <td>{{#if fitness.isNoFit}}x{{/if}}</td>
+      </tr>
+      <tr>
+        <td class="border-none" colspan="12">DETALLE DE OBSERVACIONES:</td>
+      </tr>
+      <tr>
+        <td class="border-none" colspan="12">{{fitness.observation}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Section D: Recommendations and Observations -->
+  <table>
+    <thead>
+      <tr>
+        <td class="section-title" colspan="12">D. Recomendaciones/Observaciones</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="border-none bold" colspan="12">Descripción:</td>
+      </tr>
+      <tr>
+        <td class="border-none" colspan="12">{{recommendation.observation}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table>
+    <tbody>
+      <tr>
+        <td class="item-title left">
+          Con este documento certifico que el trabajador se ha sometido a la evaluación médica
+          requerida para (el
+          ingreso /la ejecución/ el reingreso y retiro) al puesto laboral y se le ha informado sobre los riesgos
+          relacionados con el trabajo emitiendo recomendaciones relacionadas con su estado de salud.</td>
+      </tr>
+      <tr>
+        <td class="left">
+          La presente certificación se expide con base en el formulario de Evaluación Ocupacional , el cual tiene
+          carácter de confidencial.
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="border-none">
+    <tbody>
+      <tr>
+        <td class="section-title border-heavy-top border-heavy-left border-heavy-right" colspan="8">E. DATOS DEL
+          PROFESIONAL</td>
+        <td class="border-none" rowspan="2"></td>
+        <td class="section-title border-heavy-top border-heavy-left border-heavy-right" colspan="3">F. FIRMA O HUELLA
+          DEL TRABAJADOR</td>
+      </tr>
+      <tr>
+        <td class="border-heavy-bottom border-heavy-left item-title left" colspan="2">Nombre y Apellido:</td>
+        <td class="border-heavy-bottom" colspan="2">{{professionalData.fullName}}
+        </td>
+        <td class="border-heavy-bottom item-title left">Código
+          Médico:</td>
+        <td class="border-heavy-bottom">
+          {{professionalData.medicalCode}}</td>
+        <td class="border-heavy-bottom item-title left">Firma y Sello
+          Médico:</td>
+        <td class="border-heavy-bottom border-heavy-right"></td>
+        <td class="border-heavy-bottom border-heavy-left border-heavy-right" colspan="3" style="height: 48px;"></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>

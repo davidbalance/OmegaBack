@@ -24,6 +24,16 @@ enum MedicalOrderStatus {
   validated
 }
 
+enum MedicalRecordVersion {
+  v1
+  v2
+}
+
+enum MedicalRecordStatus {
+  completed
+  started
+}
+
 // Logger Module
 model Logger {
   id        String   @id @default(uuid()) @map("logger_id") @db.Char(36)
@@ -182,9 +192,12 @@ model MedicalEmail {
 }
 
 model MedicalRecord {
-  id       String @id @default(uuid()) @map("medical_record_id") @db.Char(36)
-  filepath String @map("medical_record_filepath") @db.Text
-  name     String @map("medical_record_name") @db.VarChar(64)
+  id       String               @id @default(uuid()) @map("medical_record_id") @db.Char(36)
+  filepath String               @map("medical_record_filepath") @db.Text
+  name     String               @map("medical_record_name") @db.VarChar(64)
+  metadata Json?                @default("{}") @map("medical_record_metadata")
+  version  MedicalRecordVersion @default(v1) @map("medical_record_version")
+  status   MedicalRecordStatus  @default(completed) @map("medical_record_status")
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
@@ -253,7 +266,6 @@ model MedicalTest {
   orderId String       @map("medical_order_id") @db.Char(36)
 
   result       MedicalResult?
-  report       MedicalReport?
   diseases     MedicalDiseaseReport[]
   externalKeys MedicalTestExternalKey[]
 
@@ -286,21 +298,6 @@ model MedicalResult {
   testId String      @unique @map("medical_test_id") @db.Char(36)
 
   @@map("tbl_m_results")
-}
-
-model MedicalReport {
-  id       String   @id @default(uuid()) @map("medical_report_id") @db.Char(36)
-  content  String?  @map("medical_report_content") @db.LongText
-  filepath String?  @map("medical_report_filepath") @db.VarChar(512)
-  createAt DateTime @default(now()) @map("medical_report_create_at")
-
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime? @updatedAt @map("updated_at")
-
-  test   MedicalTest @relation(fields: [testId], references: [id], onDelete: Restrict)
-  testId String      @unique @map("medical_test_id") @db.Char(36)
-
-  @@map("tbl_m_reports")
 }
 
 model MedicalDiseaseReport {
@@ -763,11 +760,14 @@ view ClientEmailModel {
 }
 
 view ClientRecordModel {
-  recordId           String   @unique @map("medical_record_id") @db.Char(36)
-  recordFilepath     String   @map("medical_record_filepath") @db.Text
-  recordName         String   @map("medical_record_name") @db.VarChar(64)
-  recordEmissionDate DateTime @map("medical_record_create_at")
-  patientDni         String   @map("patient_dni") @db.VarChar(16)
+  recordId           String               @unique @map("medical_record_id") @db.Char(36)
+  recordFilepath     String               @map("medical_record_filepath") @db.Text
+  recordMetadata     Json?                @map("medical_record_metadata")
+  recordName         String               @map("medical_record_name") @db.VarChar(64)
+  recordEmissionDate DateTime             @map("medical_record_create_at")
+  patientDni         String               @map("patient_dni") @db.VarChar(16)
+  version            MedicalRecordVersion @map("version")
+  status             MedicalRecordStatus  @map("status")
 
   @@map("v_m_client_records")
 }
