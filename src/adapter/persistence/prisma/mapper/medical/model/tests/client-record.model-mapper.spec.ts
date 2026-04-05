@@ -8,16 +8,25 @@ describe('ClientRecordModelMapper', () => {
             patientDni: "123456789",
             recordEmissionDate: new Date(),
             recordFilepath: '/path/to/file',
+            recordMetadata: { "new": "value" },
             recordId: 'record-123',
-            recordName: 'Record'
+            recordName: 'Record',
+            version: "v2",
+            status: "completed"
         };
 
-        const expectedValue = new ClientRecordModel({ ...prismaValue, });
+        const expectedValue = new ClientRecordModel({
+            ...prismaValue,
+            recordMetadata: prismaValue.recordMetadata as any
+        });
         const result = ClientRecordModelMapper.toModel(prismaValue);
-        expect(result.patientDni).toBe(expectedValue.patientDni);
-        expect(result.recordEmissionDate).toBe(expectedValue.recordEmissionDate);
-        expect(result.recordFilepath).toBe(expectedValue.recordFilepath);
         expect(result.recordId).toBe(expectedValue.recordId);
+        expect(result.recordFilepath).toBe(expectedValue.recordFilepath);
+        expect(result.recordMetadata).toBe(expectedValue.recordMetadata);
         expect(result.recordName).toBe(expectedValue.recordName);
+        expect(result.recordEmissionDate).toBe(expectedValue.recordEmissionDate);
+        expect(result.patientDni).toBe(expectedValue.patientDni);
+        expect(result.version).toBe(expectedValue.version);
+        expect(result.status).toBe(expectedValue.status);
     });
 });

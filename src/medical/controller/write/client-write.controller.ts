@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { InjectCommand } from "@omega/medical/nest/inject/command.inject";
@@ -11,11 +11,6 @@ import { EmailCreateCommand } from "@omega/medical/application/commands/client/e
 import { EmailDefaultCommand } from "@omega/medical/application/commands/client/email-default.command";
 import { EmailRemoveCommand } from "@omega/medical/application/commands/client/email-remove.command";
 import { ClientAddRecordCommand } from "@omega/medical/application/commands/client/client-add-record.command";
-import { InitialRecordRequestDto } from "../dto/request/record/initial-record.dto";
-import { PeriodicRecordRequestDto } from "../dto/request/record/periodic-record.dto";
-import { ReintegrateRecordRequestDto } from "../dto/request/record/reintegrate-record.dto";
-import { RetirementRecordRequestDto } from "../dto/request/record/retirement-record.dto";
-import { CertficateRecordRequestDto } from "../dto/request/record/certificate-record.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { InjectSpreadSheet } from "@shared/shared/nest/inject";
 import { SpreadsheetProvider } from "@shared/shared/providers";
@@ -25,6 +20,9 @@ import { ClientCreateManyCommand } from "@omega/medical/application/commands/cli
 import { ClientEditCommand } from "@omega/medical/application/commands/client/client-edit.command";
 import { CurrentUser } from "@shared/shared/nest/decorators/current-user.decorator";
 import { AuthPayload } from "@shared/shared/providers/auth.provider";
+import { ClientUpdateRecordCommand } from "@omega/medical/application/commands/client/client-update-record.command";
+import { RecordRequestDTO } from "../dto/request/record.dto";
+import { ClientCompleteRecordCommand } from "@omega/medical/application/commands/client/client-complete-record.command";
 
 @ApiTags('Medical', 'Write')
 @ApiBearerAuth()
@@ -41,6 +39,8 @@ export class ClientWriteController {
         @InjectCommand('EmailDefault') private readonly emailDefaultCommand: EmailDefaultCommand,
         @InjectCommand('EmailRemove') private readonly emailRemoveCommand: EmailRemoveCommand,
         @InjectCommand('ClientAddRecord') private readonly addRecordCommand: ClientAddRecordCommand,
+        @InjectCommand('ClientUpdateRecord') private readonly updateRecordCommand: ClientUpdateRecordCommand,
+        @InjectCommand('ClientCompleteRecord') private readonly completeRecordCommand: ClientCompleteRecordCommand,
         @InjectCommand('ClientCreateMany') private readonly createManyCommand: ClientCreateManyCommand,
         @InjectSpreadSheet() private readonly spreadsheet: SpreadsheetProvider
     ) { }
@@ -127,83 +127,57 @@ export class ClientWriteController {
         return "ok";
     }
 
-
-    @Post(':patientDni/record/initial')
-    async addRecordInitial(
+    @Post(':patientDni/record/:recordType')
+    async addRecord(
         @CurrentUser() user: AuthPayload,
         @Param('patientDni') patientDni: string,
-        @Body() body: InitialRecordRequestDto,
+        @Param('recordType') recordType: string,
+        @Body() { metadata }: RecordRequestDTO,
     ): Promise<string> {
+        if (!["certificado", "femo"].includes(recordType)) {
+            throw new BadRequestException('Invalid record');
+        }
+
         await this.addRecordCommand.handleAsync({
-            ...body,
-            type: 'inicial',
             patientDni,
-            authorFullname: body.authorFullname ?? `${user.name} ${user.lastname}`,
-            authorDni: body.authorDni ?? user.dni,
+            name: recordType,
+            metadata: {
+                ...metadata,
+                professionalData: {
+                    fullName: !!metadata?.author.fullname ? metadata?.author.fullname : `${user.name} ${user.lastname}`,
+                    medicalCode: !!metadata?.author.dni ? metadata?.author.dni : user.dni,
+                }
+            }
         });
         return "ok";
     }
 
-    @Post(':patientDni/record/periodic')
-    async addRecordPeriodic(
-        @CurrentUser() user: AuthPayload,
+    @Put(':patientDni/record/:recordId')
+    async updateRecord(
         @Param('patientDni') patientDni: string,
-        @Body() body: PeriodicRecordRequestDto,
+        @Param('recordId') recordId: string,
+        @Body() { metadata }: RecordRequestDTO,
     ): Promise<string> {
-        await this.addRecordCommand.handleAsync({
-            ...body,
-            type: 'periodico',
+        await this.updateRecordCommand.handleAsync({
+            recordId: recordId,
             patientDni,
-            authorFullname: body.authorFullname ?? `${user.name} ${user.lastname}`,
-            authorDni: body.authorDni ?? user.dni,
+            metadata
         });
         return "ok";
     }
 
-    @Post(':patientDni/record/reintegrate')
-    async addRecordReintegrate(
-        @CurrentUser() user: AuthPayload,
+    @Put(':patientDni/complete/record/:recordType/:recordId')
+    async completeRecord(
         @Param('patientDni') patientDni: string,
-        @Body() body: ReintegrateRecordRequestDto,
+        @Param('recordType') recordType: string,
+        @Param('recordId') recordId: string,
+        @Body() { metadata }: RecordRequestDTO,
     ): Promise<string> {
-        await this.addRecordCommand.handleAsync({
-            ...body,
-            type: 'reintegrar',
+        await this.completeRecordCommand.handleAsync({
+            type: recordType,
             patientDni,
-            authorFullname: body.authorFullname ?? `${user.name} ${user.lastname}`,
-            authorDni: body.authorDni ?? user.dni,
-        });
-        return "ok";
-    }
-
-    @Post(':patientDni/record/retirement')
-    async addRecordRetirement(
-        @CurrentUser() user: AuthPayload,
-        @Param('patientDni') patientDni: string,
-        @Body() body: RetirementRecordRequestDto,
-    ): Promise<string> {
-        await this.addRecordCommand.handleAsync({
-            ...body,
-            type: 'retiro',
-            patientDni,
-            authorFullname: body.authorFullname ?? `${user.name} ${user.lastname}`,
-            authorDni: body.authorDni ?? user.dni,
-        });
-        return "ok";
-    }
-
-    @Post(':patientDni/record/certificate')
-    async addRecordCertificate(
-        @CurrentUser() user: AuthPayload,
-        @Param('patientDni') patientDni: string,
-        @Body() body: CertficateRecordRequestDto,
-    ): Promise<string> {
-        await this.addRecordCommand.handleAsync({
-            ...body,
-            type: 'certificado',
-            patientDni,
-            authorFullname: body.authorFullname ?? `${user.name} ${user.lastname}`,
-            authorDni: body.authorDni ?? user.dni,
+            recordId,
+            metadata
         });
         return "ok";
     }
