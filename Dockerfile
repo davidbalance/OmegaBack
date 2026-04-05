@@ -25,12 +25,22 @@ RUN npx prisma generate && npm run build && npm prune --omit=dev
 FROM node:23-alpine AS production
 
 # Install dependencies needed for runtime
-RUN apk add --no-cache libc6-compat bash
+RUN apk add --no-cache \ 
+    libc6-compat bash \
+    chromium \
+    nss \
+    freetype \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont \
+    fontconfig
 
 WORKDIR /usr/src/app
 
 # Set environment variable for production stage
 ENV NODE_ENV=production
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+ENV CHROMIUM_PATH=/usr/bin/chromium-browser
 
 # Switch to root to create directories and ensure correct permissions
 RUN mkdir -p .disk/medical_file \

@@ -16,7 +16,6 @@ export const OrderYearModelRepositoryToken = 'OrderYearModelRepository';
 export const OrderModelRepositoryToken = 'OrderModelRepository';
 export const OrderExternalConnectionModelRepositoryToken = 'OrderExternalConnectionModelRepository';
 export const DiseaseReportModelRepositoryToken = 'DiseaseReportModelRepository';
-export const ReportModelRepositoryToken = 'ReportModelRepository';
 export const ResultFilepathModelRepositoryToken = 'ResultFilepathModelRepository';
 export const TestDoctorModelRepositoryToken = 'TestDoctorModelRepository';
 export const TestReportModelRepositoryToken = 'TestReportModelRepository';
@@ -42,7 +41,6 @@ const repository = {
     Order: OrderModelRepositoryToken,
     OrderExternalConnection: OrderExternalConnectionModelRepositoryToken,
     DiseaseReport: DiseaseReportModelRepositoryToken,
-    Report: ReportModelRepositoryToken,
     ResultFilepath: ResultFilepathModelRepositoryToken,
     TestDoctor: TestDoctorModelRepositoryToken,
     TestReport: TestReportModelRepositoryToken,
