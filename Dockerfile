@@ -40,7 +40,7 @@ WORKDIR /usr/src/app
 # Set environment variable for production stage
 ENV NODE_ENV=production
 ENV PUPPETEER_SKIP_DOWNLOAD=true
-ENV CHROMIUM_PATH=/usr/bin/chromium-browser
+ENV CHROMIUM_PATH=/usr/bin/chromium
 
 # Switch to root to create directories and ensure correct permissions
 RUN mkdir -p .disk/medical_file \
