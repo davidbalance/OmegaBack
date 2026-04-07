@@ -203,6 +203,7 @@ type TemplateFemo = {
     riskFactors: {
         jobPosition: string;
         activitiesRange: number[];
+        activities: string[]
         sections: {
             title: string;
             rowCount: number;
@@ -243,6 +244,7 @@ type TemplateFemo = {
     };
 
     diagnoses: {
+        index: number
         cie: string;
         description: string;
         presumptive: boolean;
@@ -282,7 +284,7 @@ const MAX_EXAM_RESULT_LENGTH: number = 6;
 const MAX_EMPLOYEMENT_HISTORY_LENGTH: number = 19;
 const MAX_EXTRA_LABORAL_ACTIVITIES_LENGTH: number = 3;
 const MAX_LIFE_STYLE_LENGTH: number = 3;
-const MAX_RISK_FACTOR_LENGTH: number = 6;
+const MAX_RISK_FACTOR_LENGTH: number = 7;
 
 const RISK_FACTOR_PHYSICAL = "Físico"
 const RISK_FACTOR_SAFETY = "De Seguridad"
@@ -295,19 +297,24 @@ const RISK_FACTORS = [RISK_FACTOR_PHYSICAL, RISK_FACTOR_SAFETY, RISK_FACTOR_CHEM
 
 const mapFemoDiagnoses = (diagnoses: any): TemplateFemo["diagnoses"] => {
     const base: TemplateFemo["diagnoses"] = Array<TemplateFemo["diagnoses"][0]>(MAX_DIAGNOSES_LENGTH).fill({
+        index: 0,
         cie: "",
         description: "",
         presumptive: false,
         definitive: false
     })
     const mapped: TemplateFemo["diagnoses"] = diagnoses && Array.isArray(diagnoses) ? diagnoses.map(e => ({
+        index: 0,
         cie: e.cie,
         description: e.description,
         presumptive: e.diagnosis === 'pre',
         definitive: e.diagnosis === 'def'
     })) : [];
 
-    return [...mapped, ...base].slice(0, MAX_DIAGNOSES_LENGTH)
+    return [...mapped, ...base].slice(0, MAX_DIAGNOSES_LENGTH).map((e, i) => ({
+        ...e,
+        index: i + 1
+    }))
 }
 
 const mapFemoExamResults = (exams: any): TemplateFemo["examResults"]["exams"] => {
@@ -465,7 +472,14 @@ const mapFemoLifeStyle = (toxicHabit: any, lifeStyles: any, preexistingCondition
         }
     }))
 
-    return [...mapped, ...base].slice(0, MAX_LIFE_STYLE_LENGTH)
+    const temp = [...mapped, ...base].slice(0, MAX_LIFE_STYLE_LENGTH)
+
+    const substance = temp[MAX_LIFE_STYLE_LENGTH - 1].substanceConsumption;
+    substance.substance = `OTRAS: ¿Cúal? ${substance.substance}`;
+
+    temp[MAX_LIFE_STYLE_LENGTH - 1].substanceConsumption = substance;
+
+    return temp;
 }
 
 const mapFemoRiskFactorSections = (riskFactors: any): TemplateFemo["riskFactors"]["sections"] => {
@@ -600,6 +614,13 @@ const mapFemoRiskFactorSections = (riskFactors: any): TemplateFemo["riskFactors"
             ]
         },
     ]
+}
+
+const mapFemoRiskFactorActivities = (riskFactors: any): TemplateFemo["riskFactors"]["activities"] => {
+    const base: string[] = Array(MAX_RISK_FACTOR_LENGTH).fill("");
+    if (!riskFactors || !Array.isArray(riskFactors)) return base;
+
+    return riskFactors.map(e => e.activity ?? "").concat(...Array(MAX_RISK_FACTOR_LENGTH).fill("")).slice(0, MAX_RISK_FACTOR_LENGTH)
 }
 
 const mapFemoRiskFactorPreventiveMeasures = (riskFactors: any): TemplateFemo["riskFactors"]["preventiveMeasures"] => {
@@ -834,7 +855,8 @@ export const mapMetadataToFemo = (metadata: any): object => {
         },
         riskFactors: {
             jobPosition: metadata?.consultation.jobPosition ?? "",
-            activitiesRange: Array(RISK_FACTORS.length).fill(1).map((_, i) => i + 1),
+            activitiesRange: Array(MAX_RISK_FACTOR_LENGTH).fill(1).map((_, i) => i + 1),
+            activities: mapFemoRiskFactorActivities(metadata?.riskFactors),
             sections: mapFemoRiskFactorSections(metadata?.riskFactors),
             preventiveMeasures: mapFemoRiskFactorPreventiveMeasures(metadata?.riskFactors)
         },
