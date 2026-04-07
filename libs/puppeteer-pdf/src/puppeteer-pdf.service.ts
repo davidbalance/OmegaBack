@@ -51,7 +51,7 @@ export class PuppeteerPdfService implements PdfProvider, OnApplicationShutdown {
     private async getBrowser(): Promise<Browser> {
         if (!this.browser) {
             this.browser = await puppeteer.launch({
-                executablePath: process.env.CHROMIUM_PATH,
+                executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium',
                 headless: true,
                 args: [
                     '--no-sandbox',
