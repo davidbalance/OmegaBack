@@ -25,7 +25,7 @@ RUN npx prisma generate && npm run build && npm prune --omit=dev
 FROM node:23-alpine AS production
 
 # Install dependencies needed for runtime
-RUN apk add --no-cache \ 
+RUN apk add --no-cache \
     libc6-compat bash \
     chromium \
     nss \
@@ -33,7 +33,9 @@ RUN apk add --no-cache \
     harfbuzz \
     ca-certificates \
     ttf-freefont \
-    fontconfig
+    fontconfig \
+    dumb-init \
+    udev
 
 WORKDIR /usr/src/app
 
@@ -57,6 +59,8 @@ COPY --from=builder --chown=node:node /usr/src/app/node_modules ./node_modules/
 COPY --from=builder --chown=node:node /usr/src/app/dist ./dist/
 COPY --from=builder --chown=node:node /usr/src/app/static ./static/
 COPY --from=builder --chown=node:node /usr/src/app/prisma ./prisma/
+
+USER node
 
 # Default command to run the app
 CMD ["node", "dist/main.js"]
