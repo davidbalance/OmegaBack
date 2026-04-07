@@ -1,9 +1,6 @@
 # -------------------------------- DEVELOPMENT STAGE --------------------------------
 FROM node:20-slim AS builder
 
-# Install dependencies for building
-RUN apk add --no-cache libc6-compat bash
-
 WORKDIR /usr/src/app
 
 # Set environment variable for build stage
@@ -25,17 +22,16 @@ RUN npx prisma generate && npm run build && npm prune --omit=dev
 FROM node:20-slim AS production
 
 # Install dependencies needed for runtime
-RUN apk add --no-cache \
-    libc6-compat bash \
+RUN apt-get update && apt-get install -y \
     chromium \
-    nss \
-    freetype \
-    harfbuzz \
-    ca-certificates \
-    ttf-freefont \
-    fontconfig \
-    dumb-init \
-    udev
+    fonts-liberation \
+    libatk-bridge2.0-0 \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    libxshmfence1 \
+    libgbm1 \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
 
