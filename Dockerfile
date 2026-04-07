@@ -1,5 +1,5 @@
 # -------------------------------- DEVELOPMENT STAGE --------------------------------
-FROM node:23-alpine AS builder
+FROM node:20-slim AS builder
 
 # Install dependencies for building
 RUN apk add --no-cache libc6-compat bash
@@ -22,7 +22,7 @@ COPY --chown=node:node . ./
 RUN npx prisma generate && npm run build && npm prune --omit=dev
 
 # -------------------------------- PRODUCTION STAGE --------------------------------
-FROM node:23-alpine AS production
+FROM node:20-slim AS production
 
 # Install dependencies needed for runtime
 RUN apk add --no-cache \
