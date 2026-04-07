@@ -3,6 +3,11 @@ on:
   push:
     branches:
       - develop
+# on:
+#   pull_request:
+#     branches:
+#       - develop
+#     types: [opened, synchronize, reopened]
 jobs:
   test:
     runs-on: ubuntu-latest
