@@ -1,6 +1,6 @@
 import { DomainEvent } from "@shared/shared/domain";
 import { Email } from "../email.domain";
-import { EditClientPayload, UpdateRecordFilepathPayload, UpdateRecordMetadataPayload } from "../payloads/client.payloads";
+import { EditClientPayload } from "../payloads/client.payloads";
 import { Record } from "../record.domain";
 
 const ClientEventKeys = {
@@ -13,10 +13,6 @@ const ClientEventKeys = {
     AddedArea: "client.addedArea",
     AddedJobPosition: "client.addedJobPosition",
     AddedRecord: "client.addedRecord",
-    RecordMetadataUpdated: "client.record.metadataUpdated",
-    RecordFilepathUpdated: "client.record.filepathUpdated",
-    RecordCompleted: "client.record.completed",
-    RecordUncompleted: "client.record.uncompleted",
 }
 
 export class ClientIsEvent {
@@ -54,22 +50,6 @@ export class ClientIsEvent {
 
     public static isClientRecordAddedEvent(event: DomainEvent<unknown>): event is ClientRecordAddedEvent {
         return event.key === ClientEventKeys.AddedRecord;
-    }
-
-    public static isClientRecordMetadataUpdatedEvent(event: DomainEvent<unknown>): event is ClientRecordMetadataUpdatedEvent {
-        return event.key === ClientEventKeys.RecordMetadataUpdated;
-    }
-
-    public static isClientRecordUncompletedEvent(event: DomainEvent<unknown>): event is ClientRecordUncompleted {
-        return event.key === ClientEventKeys.RecordUncompleted;
-    }
-
-    public static isClientRecordFilepathUpdatedEvent(event: DomainEvent<unknown>): event is ClientRecordFilepathUpdated {
-        return event.key === ClientEventKeys.RecordFilepathUpdated;
-    }
-
-    public static isClientRecordCompletedEvent(event: DomainEvent<unknown>): event is ClientRecordCompleted {
-        return event.key === ClientEventKeys.RecordCompleted;
     }
 }
 
@@ -151,29 +131,5 @@ export class ClientJobPositionAddedEvent extends DomainEvent<ClientJobPositionAd
 export class ClientRecordAddedEvent extends DomainEvent<Record> {
     constructor(value: Record) {
         super({ key: ClientEventKeys.AddedRecord, value });
-    }
-}
-
-export class ClientRecordMetadataUpdatedEvent extends DomainEvent<UpdateRecordMetadataPayload> {
-    constructor(value: UpdateRecordMetadataPayload) {
-        super({ key: ClientEventKeys.RecordMetadataUpdated, value });
-    }
-}
-
-export class ClientRecordFilepathUpdated extends DomainEvent<UpdateRecordFilepathPayload> {
-    constructor(value: UpdateRecordFilepathPayload) {
-        super({ key: ClientEventKeys.RecordFilepathUpdated, value });
-    }
-}
-
-export class ClientRecordCompleted extends DomainEvent<string> {
-    constructor(recordId: string) {
-        super({ key: ClientEventKeys.RecordCompleted, value: recordId });
-    }
-}
-
-export class ClientRecordUncompleted extends DomainEvent<string> {
-    constructor(recordId: string) {
-        super({ key: ClientEventKeys.RecordUncompleted, value: recordId });
     }
 }

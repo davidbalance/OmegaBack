@@ -4,8 +4,6 @@ export const ClientAddAreaCommandToken = 'ClientAddAreaCommand';
 export const ClientAddJobPositionCommandToken = 'ClientAddJobPositionCommand';
 export const ClientAddManagementCommandToken = 'ClientAddManagementCommand';
 export const ClientAddRecordCommandToken = 'ClientAddRecordCommand';
-export const ClientUpdateRecordCommandToken = 'ClientUpdateRecordCommand';
-export const ClientCompleteRecordCommandToken = 'ClientCompleteRecordCommand';
 export const ClientCreateManyCommandToken = 'ClientCreateManyCommand';
 export const ClientCreateCommandToken = 'ClientCreateCommand';
 export const ClientDeleteCommandToken = 'ClientDeleteCommand';
@@ -26,6 +24,9 @@ export const OrderCreateFromExternalSourceCommandToken = 'OrderCreateFromExterna
 export const DiseaseReportCreateCommandToken = 'DiseaseReportCreateCommand';
 export const DiseaseReportEditCommandToken = 'DiseaseReportEditCommand';
 export const DiseaseReportRemoveCommandToken = 'DiseaseReportRemoveCommand';
+export const ReportAddContentCommandToken = 'ReportAddContentCommand';
+export const ReportUploadBufferCommandToken = 'ReportUploadBufferCommand';
+export const ReportRemoveContentCommandToken = 'ReportRemoveContentCommand';
 export const ResultRemoveFileCommandToken = 'ResultRemoveFileCommand';
 export const ResultUploadBase64CommandToken = 'ResultUploadBase64Command';
 export const ResultUploadBase64FromExternalSourceCommandToken = 'ResultUploadBase64FromExternalSourceCommand';
@@ -44,8 +45,6 @@ const command = {
     ClientAddJobPosition: ClientAddJobPositionCommandToken,
     ClientAddManagement: ClientAddManagementCommandToken,
     ClientAddRecord: ClientAddRecordCommandToken,
-    ClientUpdateRecord: ClientUpdateRecordCommandToken,
-    ClientCompleteRecord: ClientCompleteRecordCommandToken,
     ClientCreate: ClientCreateCommandToken,
     ClientDelete: ClientDeleteCommandToken,
     ClientEdit: ClientEditCommandToken,
@@ -66,6 +65,9 @@ const command = {
     DiseaseReportCreate: DiseaseReportCreateCommandToken,
     DiseaseReportEdit: DiseaseReportEditCommandToken,
     DiseaseReportRemove: DiseaseReportRemoveCommandToken,
+    ReportAddContent: ReportAddContentCommandToken,
+    ReportUploadBuffer: ReportUploadBufferCommandToken,
+    ReportRemoveContent: ReportRemoveContentCommandToken,
     ResultRemoveFile: ResultRemoveFileCommandToken,
     ResultUploadBase64: ResultUploadBase64CommandToken,
     ResultUploadBase64FromExternalSource: ResultUploadBase64FromExternalSourceCommandToken,

@@ -6,7 +6,8 @@ export class EmailDomainMapper {
         return {
             id: value.id,
             email: value.email,
-            clientId: value.clientId
+            clientId: value.clientId,
+            default: value.default
         };
     }
 

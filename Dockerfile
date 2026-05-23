@@ -1,5 +1,8 @@
 # -------------------------------- DEVELOPMENT STAGE --------------------------------
-FROM node:20-slim AS builder
+FROM node:23-alpine AS builder
+
+# Install dependencies for building
+RUN apk add --no-cache libc6-compat bash
 
 WORKDIR /usr/src/app
 
@@ -19,26 +22,15 @@ COPY --chown=node:node . ./
 RUN npx prisma generate && npm run build && npm prune --omit=dev
 
 # -------------------------------- PRODUCTION STAGE --------------------------------
-FROM node:20-slim AS production
+FROM node:23-alpine AS production
 
 # Install dependencies needed for runtime
-RUN apt-get update && apt-get install -y \
-    chromium \
-    fonts-liberation \
-    libatk-bridge2.0-0 \
-    libnss3 \
-    libxss1 \
-    libasound2 \
-    libxshmfence1 \
-    libgbm1 \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache libc6-compat bash
 
 WORKDIR /usr/src/app
 
 # Set environment variable for production stage
 ENV NODE_ENV=production
-ENV PUPPETEER_SKIP_DOWNLOAD=true
-ENV CHROMIUM_PATH=/usr/bin/chromium
 
 # Switch to root to create directories and ensure correct permissions
 RUN mkdir -p .disk/medical_file \
@@ -55,8 +47,6 @@ COPY --from=builder --chown=node:node /usr/src/app/node_modules ./node_modules/
 COPY --from=builder --chown=node:node /usr/src/app/dist ./dist/
 COPY --from=builder --chown=node:node /usr/src/app/static ./static/
 COPY --from=builder --chown=node:node /usr/src/app/prisma ./prisma/
-
-USER node
 
 # Default command to run the app
 CMD ["node", "dist/main.js"]

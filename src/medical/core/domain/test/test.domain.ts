@@ -1,7 +1,9 @@
 import { Result } from "./result.domain";
 import { DiseaseReport } from "./disease-report.domain";
+import { Report } from "./report.domain";
 import { ExamValueObject } from "./value-objects/exam.value-object";
 import { ResultCreatedEvent, ResultFileAddedEvent, ResultFileRemovedEvent } from "./events/result.events";
+import { ReportAddedContentEvent, ReportAddedFilepathEvent, ReportCreatedEvent, ReportRemovedContentEvent } from "./events/report.events";
 import { TestCheckedEvent, TestDiseaseAddedEvent, TestDiseaseRemovedEvent, TestExamChangedEvent, TestExternalKeyAddedEvent, TestReactivatedEvent, TestRemovedEvent, TestUncheckedEvent } from "./events/test.events";
 import { AddTestExternalKeyPayload, CreateDiseaseReportPayload, CreateTestPayload, ExamPayload, UpdateDiseaseReportPayload } from "./payloads/test.payloads";
 import { DiseaseReportUpdatedEvent } from "./events/disease.events";
@@ -15,6 +17,7 @@ export type TestProps = AggregateProps & {
     orderId: string;
     exam: ExamValueObject;
     result: Result;
+    report: Report;
     diseases: DiseaseReport[];
     checklist: boolean;
     externalKeys: TestExternalKey[];
@@ -24,12 +27,17 @@ export type RehydrateDiseaseReportPayload = CreateTestPayload & {
     diseases: DiseaseReport[];
     checklist: boolean;
     result: Result;
+    report: Report;
     externalKeys: TestExternalKey[];
 };
 export class Test extends Aggregate<TestProps> {
 
     public get result(): Readonly<Result> {
         return this.props.result;
+    }
+
+    public get report(): Readonly<Report> {
+        return this.props.report;
     }
 
     public get diseases(): ReadonlyArray<DiseaseReport> {
@@ -66,11 +74,13 @@ export class Test extends Aggregate<TestProps> {
         });
 
         const newResult = Result.create({ testId: testId });
+        const newReport = Report.create({ testId: testId });
 
         const test = new Test({
             id: testId,
             exam: exam,
             result: newResult,
+            report: newReport,
             diseases: [],
             checklist: false,
             externalKeys: [],
@@ -78,6 +88,7 @@ export class Test extends Aggregate<TestProps> {
         });
 
         test.emit(new ResultCreatedEvent(newResult));
+        test.emit(new ReportCreatedEvent(newReport));
 
         return test;
     }
@@ -105,6 +116,7 @@ export class Test extends Aggregate<TestProps> {
             this.removeDisease(disease.id);
         }
         this.removeResult();
+        this.removeReport();
     }
 
     public addResult(filepath: string): void {
@@ -119,6 +131,27 @@ export class Test extends Aggregate<TestProps> {
         result.removeFile();
         this.updateProps({ result });
         this.emit(new ResultFileRemovedEvent(result.id));
+    }
+
+    public addReport(content: string): void {
+        const report = this.props.report;
+        report.addContent(content);
+        this.updateProps({ report });
+        this.emit(new ReportAddedContentEvent({ reportId: report.id, content }));
+    }
+
+    public addReportFile(filepath: string): void {
+        const report = this.props.report;
+        report.addFile(filepath);
+        this.updateProps({ report });
+        this.emit(new ReportAddedFilepathEvent({ reportId: report.id, filepath }));
+    }
+
+    public removeReport(): void {
+        const report = this.props.report;
+        report.removeContent();
+        this.updateProps({ report });
+        this.emit(new ReportRemovedContentEvent(report.id));
     }
 
     public check(): void {

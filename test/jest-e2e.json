@@ -27,8 +27,6 @@
     "@local-pdf/local-pdf/(.*)": "<rootDir>/../libs/local-pdf/src/$1",
     "@local-zip/local-zip": "<rootDir>/../libs/local-zip/src",
     "@local-zip/local-zip/(.*)": "<rootDir>/../libs/local-zip/src/$1",
-    "@pdf/puppeteer-pdf": "<rootDir>/../libs/puppeteer-pdf/src",
-    "@pdf/puppeteer-pdf/(.*)": "<rootDir>/../libs/puppeteer-pdf/src/$1",
     "@shared/shared": "<rootDir>/../libs/shared/src",
     "@shared/shared/(.*)": "<rootDir>/../libs/shared/src/$1",
     "local-file/local-file": "<rootDir>/../libs/local-file/src",

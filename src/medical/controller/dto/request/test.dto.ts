@@ -1,6 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiResponseProperty } from "@nestjs/swagger";
 import { DiseaseReportCreateCommandPayload } from "@omega/medical/application/commands/test/disease-report-create.command";
 import { DiseaseReportEditCommandPayload } from "@omega/medical/application/commands/test/disease-report-edit.command";
+import { ReportAddContentCommandPayload } from "@omega/medical/application/commands/test/report-add-content.command";
 import { ResultUploadBase64CommandPayload } from "@omega/medical/application/commands/test/result-upload-base64.command";
 import { TestCreateCommandPayload } from "@omega/medical/application/commands/test/test-create.command";
 import { TestEditExamCommandPayload } from "@omega/medical/application/commands/test/test-edit-exam.command";
@@ -47,6 +48,12 @@ export class DiseaseReportEditRequestDto implements Omit<DiseaseReportEditComman
 
     @IsString()
     public readonly commentary: string;
+}
+
+export class ReportRequestDto implements Omit<ReportAddContentCommandPayload, 'testId'> {
+    @IsString()
+    @IsNotEmpty()
+    public readonly content: string;
 }
 
 export class ResultUploadBase64RequestDto implements Omit<ResultUploadBase64CommandPayload, 'testId'> {

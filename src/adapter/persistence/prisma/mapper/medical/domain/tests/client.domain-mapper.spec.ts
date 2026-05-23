@@ -90,7 +90,7 @@ describe('ClientDomainMapper', () => {
         } as MedicalClientWithEmailAndRecords;
 
         let spyEmailDomainMapper: jest.SpyInstance<Email, [value: { default: boolean; id: string; createdAt: Date; updatedAt: Date | null; email: string; clientId: string; }], any>;
-        let spyRecordDomainMapper: jest.SpyInstance<Record, [value: {}], any>;
+        let spyRecordDomainMapper: jest.SpyInstance<Record, [value: { name: string; id: string; createdAt: Date; updatedAt: Date | null; clientId: string; filepath: string; }], any>;
 
         beforeEach(() => {
             jest.clearAllMocks();
