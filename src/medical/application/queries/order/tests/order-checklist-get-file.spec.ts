@@ -8,8 +8,7 @@ import { OrderChecklistGetFileQuery, OrderChecklistGetFileQueryImpl, OrderCheckl
 describe("OrderChecklistGetFileQuery", () => {
     let repository: jest.Mocked<ModelRepository<OrderChecklistModel>>;
     let pdfProvider: jest.Mocked<PdfProvider>;
-    let parserFunc: jest.Mock;
-    const templatePath: string = "/path/to/template.template"
+    let layoutFunc: jest.Mock;
     let handler: OrderChecklistGetFileQuery;
 
     beforeEach(() => {
@@ -21,9 +20,9 @@ describe("OrderChecklistGetFileQuery", () => {
             craft: jest.fn(),
         } as unknown as jest.Mocked<PdfProvider>;
 
-        parserFunc = jest.fn();
+        layoutFunc = jest.fn();
 
-        handler = new OrderChecklistGetFileQueryImpl(repository, pdfProvider, templatePath, parserFunc);
+        handler = new OrderChecklistGetFileQueryImpl(repository, pdfProvider, layoutFunc);
     });
 
     it("should return a PDF buffer when order checklists are found", async () => {
@@ -36,7 +35,7 @@ describe("OrderChecklistGetFileQuery", () => {
         const mockPdfBuffer = Buffer.from("mocked PDF");
 
         repository.findManyAsync.mockResolvedValue(mockOrderChecklists);
-        parserFunc.mockReturnValue(mockLayout);
+        layoutFunc.mockReturnValue(mockLayout);
         pdfProvider.craft.mockResolvedValue(mockPdfBuffer);
 
         const query: OrderChecklistGetFileQueryPayload = {
@@ -48,8 +47,8 @@ describe("OrderChecklistGetFileQuery", () => {
         expect(repository.findManyAsync).toHaveBeenCalledWith({
             filter: [{ field: "orderId", operator: "eq", value: query.orderId }],
         });
-        expect(parserFunc).toHaveBeenCalledWith(mockOrderChecklists);
-        expect(pdfProvider.craft).toHaveBeenCalled();
+        expect(layoutFunc).toHaveBeenCalledWith(mockOrderChecklists);
+        expect(pdfProvider.craft).toHaveBeenCalledWith(mockLayout);
         expect(result).toEqual(mockPdfBuffer);
     });
 

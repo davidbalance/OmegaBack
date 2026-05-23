@@ -10,12 +10,15 @@ import { TestDomainMapper } from "@omega/adapter/persistence/prisma/mapper/medic
 import { Test, TestingModule } from "@nestjs/testing";
 import { TestCheckedEventPayload, TestDiseaseRemovedEventPayload, TestExamChangedEventPayload, TestIsEvent, TestReactivatedEventPayload, TestRemovedEventPayload, TestUncheckedEventPayload } from "@omega/medical/core/domain/test/events/test.events";
 import { ResultFileAddedEventPayload, ResultFileRemovedEventPayload, ResultIsEvent } from "@omega/medical/core/domain/test/events/result.events";
+import { ReportAddedContentEventPayload, ReportAddedFilepathEventPayload, ReportIsEvent, ReportRemovedContentEventPayload } from "@omega/medical/core/domain/test/events/report.events";
 import { DiseaseReportIsEvent } from "@omega/medical/core/domain/test/events/disease.events";
 import { DiseaseReport } from "@omega/medical/core/domain/test/disease-report.domain";
 import { DiseaseReportDomainMapper } from "@omega/adapter/persistence/prisma/mapper/medical/domain/disease-report.domain-mapper";
 import { TestExternalKey } from "@omega/medical/core/domain/test/value-objects/test-external-key.value-object";
 import { ResultDomainMapper } from "@omega/adapter/persistence/prisma/mapper/medical/domain/result.domain-mapper";
 import { Result } from "@omega/medical/core/domain/test/result.domain";
+import { Report } from "@omega/medical/core/domain/test/report.domain";
+import { ReportDomainMapper } from "@omega/adapter/persistence/prisma/mapper/medical/domain/report.domain-mapper";
 
 describe("TestPrismaRepository", () => {
     let repository: TestPrismaRepository;
@@ -81,7 +84,7 @@ describe("TestPrismaRepository", () => {
             expect(PrismaFilterMapper.map).toHaveBeenCalledWith(mockFilter.filter);
             expect(prisma.medicalTest.findFirst).toHaveBeenCalledWith({
                 where: mockPrismaWhere,
-                include: { result: true, diseases: true, externalKeys: true },
+                include: { result: true, report: true, diseases: true, externalKeys: true },
             });
             expect(TestDomainMapper.toDomain).toHaveBeenCalledWith(prismaResult);
             expect(result).toEqual(domainResult);
@@ -122,6 +125,10 @@ describe("TestPrismaRepository", () => {
             jest.spyOn(ResultIsEvent, "isResultCreatedEvent").mockReturnValue(false);
             jest.spyOn(ResultIsEvent, "isResultFileAddedEvent").mockReturnValue(false);
             jest.spyOn(ResultIsEvent, "isResultFileRemovedEvent").mockReturnValue(false);
+            jest.spyOn(ReportIsEvent, "isReportCreatedEvent").mockReturnValue(false);
+            jest.spyOn(ReportIsEvent, "isReportAddedContentEvent").mockReturnValue(false);
+            jest.spyOn(ReportIsEvent, "isReportAddedFilepathEvent").mockReturnValue(false);
+            jest.spyOn(ReportIsEvent, "isReportRemovedContentEvent").mockReturnValue(false);
             jest.spyOn(DiseaseReportIsEvent, "isDiseaseReportUpdatedEvent").mockReturnValue(false);
         });
 
@@ -262,6 +269,42 @@ describe("TestPrismaRepository", () => {
 
             jest.spyOn(ResultIsEvent, "isResultFileRemovedEvent").mockReturnValue(true);
             const spy = jest.spyOn(repository, "removeResult").mockResolvedValue();
+
+            await repository.saveAsync(aggregate);
+
+            expect(spy).toHaveBeenCalledWith(payload);
+        });
+
+        it("should call createReport when event is ReportCreatedEvent", async () => {
+            const payload = {};
+            const aggregate = createFakeAggregate({ key: "ReportCreatedEvent", value: payload });
+
+            jest.spyOn(ReportIsEvent, "isReportCreatedEvent").mockReturnValue(true);
+            const spy = jest.spyOn(repository, "createReport").mockResolvedValue();
+
+            await repository.saveAsync(aggregate);
+
+            expect(spy).toHaveBeenCalledWith(payload);
+        });
+
+        it("should call addReport when event is ReportAddedContentEvent", async () => {
+            const payload = {};
+            const aggregate = createFakeAggregate({ key: "ReportAddedContentEvent", value: payload });
+
+            jest.spyOn(ReportIsEvent, "isReportAddedContentEvent").mockReturnValue(true);
+            const spy = jest.spyOn(repository, "addReport").mockResolvedValue();
+
+            await repository.saveAsync(aggregate);
+
+            expect(spy).toHaveBeenCalledWith(payload);
+        });
+
+        it("should call removeReport when event is ReportRemovedContentEvent", async () => {
+            const payload = {};
+            const aggregate = createFakeAggregate({ key: "ReportRemovedContentEvent", value: payload });
+
+            jest.spyOn(ReportIsEvent, "isReportRemovedContentEvent").mockReturnValue(true);
+            const spy = jest.spyOn(repository, "removeReport").mockResolvedValue();
 
             await repository.saveAsync(aggregate);
 
@@ -534,6 +577,95 @@ describe("TestPrismaRepository", () => {
                 prisma.medicalResult.update.mockRejectedValue(Error);
 
                 await expect(repository.removeResult(value)).rejects.toThrow(RepositoryError);
+            });
+        });
+
+        describe('createReport', () => {
+            const value: Report = {} as unknown as Report;
+            const mapped: Prisma.MedicalReportUncheckedCreateInput = {
+                testId: "test-id-123"
+            };
+
+            it('should call Prisma create with mapped report domain data', async () => {
+                jest.spyOn(ReportDomainMapper, "toPrisma").mockReturnValue(mapped);
+
+                await repository.createReport(value);
+
+                expect(ReportDomainMapper.toPrisma).toHaveBeenCalledWith(value);
+                expect(prisma.medicalReport.create).toHaveBeenCalledWith({ data: mapped });
+            });
+
+            it('should throw RepositoryError when Prisma throws an exception', async () => {
+                prisma.medicalReport.create.mockRejectedValue(Error);
+
+                jest.spyOn(ReportDomainMapper, "toPrisma").mockReturnValue(mapped);
+
+                await expect(repository.createReport(value)).rejects.toThrow(RepositoryError);
+            });
+        });
+
+        describe('addReport', () => {
+            const value: ReportAddedContentEventPayload = {
+                reportId: "report-id-123",
+                content: "Test content..."
+            }
+
+            it('should update the report with content and nullify filepath', async () => {
+                await repository.addReport(value);
+
+                expect(prisma.medicalReport.update).toHaveBeenCalledWith({
+                    where: { id: value.reportId },
+                    data: { content: value.content, filepath: null }
+                });
+            });
+
+            it('should throw RepositoryError when Prisma throws an exception', async () => {
+                prisma.medicalReport.update.mockRejectedValue(Error);
+
+                await expect(repository.addReport(value)).rejects.toThrow(RepositoryError);
+            });
+        });
+
+        describe('addReportFilepath', () => {
+            const value: ReportAddedFilepathEventPayload = {
+                reportId: "report-id-123",
+                filepath: "/path/to/file"
+            }
+
+            it('should update the report with a filepath', async () => {
+                await repository.addReportFilepath(value);
+
+                expect(prisma.medicalReport.update).toHaveBeenCalledWith({
+                    where: { id: value.reportId },
+                    data: { filepath: value.filepath }
+                });
+            });
+
+            it('should throw RepositoryError when Prisma throws an exception', async () => {
+                prisma.medicalReport.update.mockRejectedValue(Error);
+
+                await expect(repository.addReportFilepath(value)).rejects.toThrow(RepositoryError);
+            });
+        });
+
+        describe('removeReport', () => {
+            const value: ReportRemovedContentEventPayload = {
+                reportId: "report-id-123"
+            }
+
+            it('should nullify both content and filepath on the report', async () => {
+                await repository.removeReport(value);
+
+                expect(prisma.medicalReport.update).toHaveBeenCalledWith({
+                    where: { id: value.reportId },
+                    data: { content: null, filepath: null }
+                });
+            });
+
+            it('should throw RepositoryError when Prisma throws an exception', async () => {
+                prisma.medicalReport.update.mockRejectedValue(Error);
+
+                await expect(repository.removeReport(value)).rejects.toThrow(RepositoryError);
             });
         });
 

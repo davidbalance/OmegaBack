@@ -1,20 +1,21 @@
 import { Module } from "@nestjs/common";
+import { ChecklistLayoutToken, EmailAttachmentToken, RedirectEmailUrlToken } from "@omega/medical/nest/inject/function.inject";
 import { EmailAttachment } from "@shared/shared/providers/email.provider";
+import { checklistLayoutLoader } from "./checklist-layout-loader.factory";
+import { OrderChecklistModel } from "@omega/medical/core/model/order/order-checklist.model";
+import { OrderChecklistLayoutFunc } from "@omega/medical/application/queries/order/order-checklist-get-file.query";
 import { FileToken, FileType, FSModule, PathModule, PathToken, PathType } from "@shared/shared/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import orderHelperConfig, { OrderHelper, OrderHelperName } from "./config/order-helper.config";
-import orderHelperSchema from "./config/order-helper.schema";
+import redirectUrlEmailConfig, { RedirectUrlEmail, RedirectUrlEmailName } from "./config/redirect-url-email.config";
+import redirectUrlEmailConfigSchema from "./config/redirect-url-email.schema";
 import { ZodValidatorFactory } from "@shared/shared/nest/factories";
-import { ChecklistDataParserToken, ChecklistTemplateToken, EmailAttachmentToken, RedirectEmailUrlToken } from "@omega/medical/nest/inject/function.inject";
-import { OrderChecklistDataParseFunc } from "@omega/medical/application/queries/order/order-checklist-get-file.query";
-import { checklistParser } from "./helper/checklist-parser.helper";
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             cache: true,
-            validate: ZodValidatorFactory(orderHelperSchema),
-            load: [orderHelperConfig]
+            validate: ZodValidatorFactory(redirectUrlEmailConfigSchema),
+            load: [redirectUrlEmailConfig]
         }),
         PathModule,
         FSModule
@@ -30,38 +31,28 @@ import { checklistParser } from "./helper/checklist-parser.helper";
             inject: [PathToken]
         },
         {
-            provide: ChecklistTemplateToken,
-            useFactory: (config: ConfigService): string => {
-                return config.getOrThrow<OrderHelper>(OrderHelperName).templatePath;
+            provide: ChecklistLayoutToken,
+            useFactory: (fileService: FileType, pathService: PathType): OrderChecklistLayoutFunc => {
+                const imagePath = pathService.resolve('static/images/omega-variant.png');
+                const imgBuffer = fileService.readFileSync(imagePath);
+                const logo = `data:image/png;base64,${imgBuffer.toString('base64')}`
+                return (value: OrderChecklistModel[]) => {
+                    return checklistLayoutLoader(value, logo);
+                }
             },
-            inject: [ConfigService]
-        },
-        {
-            provide: ChecklistDataParserToken,
-            useFactory: (config: ConfigService, pathService: PathType, fileService: FileType): OrderChecklistDataParseFunc => {
-
-                const logoBasePath = config.getOrThrow<OrderHelper>(OrderHelperName).logoPath;
-
-                const logoPath = pathService.resolve(logoBasePath);
-                const logoBuffer = fileService.readFileSync(logoPath);
-                const logoBase64 = `data:image/png;base64,${logoBuffer.toString('base64')}`
-
-                return checklistParser(logoBase64)
-            },
-            inject: [ConfigService, PathToken, FileToken]
+            inject: [FileToken, PathToken]
         },
         {
             provide: RedirectEmailUrlToken,
             useFactory: (config: ConfigService) => {
-                return config.getOrThrow<OrderHelper>(OrderHelperName).redirectUrl;
+                return config.getOrThrow<RedirectUrlEmail>(RedirectUrlEmailName).redirect_url;
             },
             inject: [ConfigService]
         }
     ],
     exports: [
         EmailAttachmentToken,
-        ChecklistTemplateToken,
-        ChecklistDataParserToken,
+        ChecklistLayoutToken,
         RedirectEmailUrlToken
     ]
 })

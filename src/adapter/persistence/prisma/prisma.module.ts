@@ -44,7 +44,7 @@ import { JobPositionModelRepositoryProvider } from "./repository/location/model/
 import { ManagementOptionModelRepositoryProvider } from "./repository/location/model/management-option.prisma-repository";
 import { ManagementModelRepositoryProvider } from "./repository/location/model/management.prisma-repository";
 import { ClientAggregateRepositoryToken, OrderAggregateRepositoryToken, TestAggregateRepositoryToken } from "@omega/medical/nest/inject/aggregate-repository.inject";
-import { ClientAreaModelRepositoryToken, ClientDoctorModelRepositoryToken, ClientEmailModelRepositoryToken, ClientJobPositionModelRepositoryToken, ClientManagementModelRepositoryToken, ClientModelRepositoryToken, OrderChecklistModelRepositoryToken, OrderCloudFileModelRepositoryToken, OrderPatientModelRepositoryToken, OrderProcessModelRepositoryToken, OrderYearModelRepositoryToken, OrderModelRepositoryToken, DiseaseReportModelRepositoryToken, ResultFilepathModelRepositoryToken, TestReportModelRepositoryToken, TestModelRepositoryToken, OrderDoctorModelRepositoryToken, TestFileResultRepositoryToken, ClientRecordModelRepositoryToken, TestInnerModelRepositoryToken, TestExternalConnectionModelRepositoryToken, OrderExternalConnectionModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
+import { ClientAreaModelRepositoryToken, ClientDoctorModelRepositoryToken, ClientEmailModelRepositoryToken, ClientJobPositionModelRepositoryToken, ClientManagementModelRepositoryToken, ClientModelRepositoryToken, OrderChecklistModelRepositoryToken, OrderCloudFileModelRepositoryToken, OrderPatientModelRepositoryToken, OrderProcessModelRepositoryToken, OrderYearModelRepositoryToken, OrderModelRepositoryToken, DiseaseReportModelRepositoryToken, ReportModelRepositoryToken, ResultFilepathModelRepositoryToken, TestReportModelRepositoryToken, TestModelRepositoryToken, OrderDoctorModelRepositoryToken, TestFileResultRepositoryToken, ClientRecordModelRepositoryToken, TestInnerModelRepositoryToken, TestExternalConnectionModelRepositoryToken, OrderExternalConnectionModelRepositoryToken } from "@omega/medical/nest/inject/model-repository.inject";
 import { ClientAggregateRepositoryProvider } from "./repository/medical/domain/client.prisma-repository";
 import { OrderAggregateRepositoryProvider } from "./repository/medical/domain/order.prisma-repository";
 import { TestAggregateRepositoryProvider } from "./repository/medical/domain/test.prisma-repository";
@@ -67,6 +67,7 @@ import { DoctorModelRepositoryProvider } from "./repository/profile/model/doctor
 import { UserAttributeModelRepositoryProvider } from "./repository/profile/model/user-attribute.prisma-repository";
 import { UserModelRepositoryProvider } from "./repository/profile/model/user.prisma-repository";
 import { DiseaseReportModelRepositoryProvider } from "./repository/medical/model/disease-report.prisma-repository";
+import { ReportModelRepositoryProvider } from "./repository/medical/model/report.prisma-repository";
 import { ResultFilepathModelRepositoryProvider } from "./repository/medical/model/result-filepath.prisma-repository";
 import { TestReportModelRepositoryProvider } from "./repository/medical/model/test-report.prisma-repository";
 import { TestModelRepositoryProvider } from "./repository/medical/model/test.prisma-repository";
@@ -158,6 +159,7 @@ import { CorporativeExternalConnectionModelRepositoryProvider } from "./reposito
         DoctorModelRepositoryProvider,
         UserAttributeModelRepositoryProvider,
         UserModelRepositoryProvider,
+        ReportModelRepositoryProvider,
         ResultFilepathModelRepositoryProvider,
         TestFileResultRepositoryProvider,
         TestExternalConnectionModelRepositoryProvider,
@@ -233,6 +235,7 @@ import { CorporativeExternalConnectionModelRepositoryProvider } from "./reposito
         DoctorModelRepositoryToken,
         UserAttributeModelRepositoryToken,
         UserModelRepositoryToken,
+        ReportModelRepositoryToken,
         ResultFilepathModelRepositoryToken,
         TestFileResultRepositoryToken,
         TestExternalConnectionModelRepositoryToken,

@@ -1,8 +1,8 @@
 import { ManagementValueObject } from "./value-objects/management.value-object";
 import { AreaValueObject } from "./value-objects/area.value-object";
 import { Email } from "./email.domain";
-import { AddAreaPayload, AddJobPositionPayload, AddManagementPayload, AddRecordPayload, CreateClientPayload, EditClientPayload, UpdateRecordFilepathPayload, UpdateRecordMetadataPayload } from "./payloads/client.payloads";
-import { ClientAddedEmailEvent, ClientAreaAddedEvent, ClientDeletedEvent, ClientEditedEvent, ClientEmailRemovedEvent, ClientEmailSettedAsDefaultEvent, ClientJobPositionAddedEvent, ClientManagementAddedEvent, ClientRecordAddedEvent, ClientRecordFilepathUpdated, ClientRecordMetadataUpdatedEvent, ClientRecordCompleted, ClientRecordUncompleted } from "./events/client.events";
+import { AddAreaPayload, AddJobPositionPayload, AddManagementPayload, AddRecordPayload, CreateClientPayload, EditClientPayload } from "./payloads/client.payloads";
+import { ClientAddedEmailEvent, ClientAreaAddedEvent, ClientDeletedEvent, ClientEditedEvent, ClientEmailRemovedEvent, ClientEmailSettedAsDefaultEvent, ClientJobPositionAddedEvent, ClientManagementAddedEvent, ClientRecordAddedEvent } from "./events/client.events";
 import { AggregateProps, Aggregate } from "@shared/shared/domain";
 import { EmailConflictError, EmailNotFoundError } from "./errors/email.errors";
 import { Record } from "./record.domain";
@@ -189,24 +189,5 @@ export class Client extends Aggregate<ClientProps> {
         const newRecord = Record.create({ ...value, clientId: this.id });
         this.updateProps({ records: [...this.props.records, newRecord] })
         this.emit(new ClientRecordAddedEvent(newRecord));
-    }
-
-    public updateRecordMetadata(payload: UpdateRecordMetadataPayload): void {
-        const recordIndex = this.props.records.findIndex(e => e.id == payload.recordId)
-
-        this.props.records[recordIndex].updateMetadata(payload.metadata);
-        this.props.records[recordIndex].uncomplete();
-        this.emit(new ClientRecordMetadataUpdatedEvent(payload))
-        this.emit(new ClientRecordUncompleted(payload.recordId))
-    }
-
-    public completeRecord(payload: UpdateRecordFilepathPayload): void {
-        const recordIndex = this.props.records.findIndex(e => e.id == payload.recordId)
-
-        this.props.records[recordIndex].updateFilepath(payload.filepath);
-        this.props.records[recordIndex].complete();
-
-        this.emit(new ClientRecordFilepathUpdated(payload))
-        this.emit(new ClientRecordCompleted(payload.recordId))
     }
 }

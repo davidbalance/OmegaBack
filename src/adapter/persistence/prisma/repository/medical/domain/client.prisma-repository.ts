@@ -6,14 +6,13 @@ import { Prisma } from "@prisma/client";
 import { Client, ClientProps } from "@omega/medical/core/domain/client/client.domain";
 import { ClientRepository } from "@omega/medical/application/repository/aggregate.repositories";
 import { ClientDomainMapper } from "../../../mapper/medical/domain/client.domain-mapper";
-import { ClientAreaAddedEventPayload, ClientDeletedEventPayload, ClientEditedEventPayload, ClientEmailRemovedEventPayload, ClientEmailSettedAsDefaultEventPayload, ClientIsEvent, ClientJobPositionAddedEventPayload, ClientManagementAddedEventPayload, ClientRecordMetadataUpdatedEvent } from "@omega/medical/core/domain/client/events/client.events";
+import { ClientAreaAddedEventPayload, ClientDeletedEventPayload, ClientEditedEventPayload, ClientEmailRemovedEventPayload, ClientEmailSettedAsDefaultEventPayload, ClientIsEvent, ClientJobPositionAddedEventPayload, ClientManagementAddedEventPayload } from "@omega/medical/core/domain/client/events/client.events";
 import { Email } from "@omega/medical/core/domain/client/email.domain";
 import { EmailDomainMapper } from "../../../mapper/medical/domain/email.domain-mapper";
 import { ClientAggregateRepositoryToken } from "@omega/medical/nest/inject/aggregate-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
 import { Record } from "@omega/medical/core/domain/client/record.domain";
 import { RecordDomainMapper } from "../../../mapper/medical/domain/record.domain-mapper";
-import { UpdateRecordFilepathPayload, UpdateRecordMetadataPayload } from "@omega/medical/core/domain/client/payloads/client.payloads";
 
 @Injectable()
 export class ClientPrismaRepository implements ClientRepository {
@@ -67,18 +66,6 @@ export class ClientPrismaRepository implements ClientRepository {
 
             else if (ClientIsEvent.isClientRecordAddedEvent(event))
                 await this.addRecord(event.value);
-
-            else if (ClientIsEvent.isClientRecordMetadataUpdatedEvent(event))
-                await this.updateRecordMetadata(event.value);
-
-            else if (ClientIsEvent.isClientRecordUncompletedEvent(event))
-                await this.uncompleteRecord(event.value);
-
-            else if (ClientIsEvent.isClientRecordFilepathUpdatedEvent(event))
-                await this.updateRecordFilepath(event.value);
-
-            else if (ClientIsEvent.isClientRecordCompletedEvent(event))
-                await this.completeRecord(event.value);
         }
     }
 
@@ -170,42 +157,6 @@ export class ClientPrismaRepository implements ClientRepository {
         try {
             const data = RecordDomainMapper.toPrisma(value);
             await this.prisma.medicalRecord.create({ data });
-        } catch (error) {
-            Logger.error(error);
-            throw new RepositoryError();
-        }
-    }
-
-    async updateRecordMetadata(value: UpdateRecordMetadataPayload): Promise<void> {
-        try {
-            await this.prisma.medicalRecord.update({ where: { id: value.recordId }, data: { metadata: value.metadata } });
-        } catch (error) {
-            Logger.error(error);
-            throw new RepositoryError();
-        }
-    }
-
-    async uncompleteRecord(value: string): Promise<void> {
-        try {
-            await this.prisma.medicalRecord.update({ where: { id: value }, data: { status: "started" } });
-        } catch (error) {
-            Logger.error(error);
-            throw new RepositoryError();
-        }
-    }
-
-    async updateRecordFilepath(value: UpdateRecordFilepathPayload): Promise<void> {
-        try {
-            await this.prisma.medicalRecord.update({ where: { id: value.recordId }, data: { filepath: value.filepath } });
-        } catch (error) {
-            Logger.error(error);
-            throw new RepositoryError();
-        }
-    }
-
-    async completeRecord(value: string): Promise<void> {
-        try {
-            await this.prisma.medicalRecord.update({ where: { id: value }, data: { status: "completed" } });
         } catch (error) {
             Logger.error(error);
             throw new RepositoryError();

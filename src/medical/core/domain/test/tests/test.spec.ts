@@ -1,6 +1,7 @@
 import { DiseaseReportConflictError, DiseaseReportNotFoundError } from "../errors/disease-report.errors";
 import { TestExternalKeyConflictError } from "../errors/test-external-key.errors";
 import { AddTestExternalKeyPayload, CreateDiseaseReportPayload, CreateTestPayload, ExamPayload, UpdateDiseaseReportPayload } from "../payloads/test.payloads";
+import { Report } from "../report.domain";
 import { Result } from "../result.domain";
 import { Test } from "../test.domain";
 import { TestExternalKey } from "../value-objects/test-external-key.value-object";
@@ -38,6 +39,7 @@ describe('Test Aggregate', () => {
             examType: 'Type1',
             diseases: [],
             checklist: false,
+            report: Report.create({ testId: testId }),
             result: Result.create({ testId: testId }),
             externalKeys: [TestExternalKey.create({ owner: 'app', testId: testId, value: 'key' })]
         });
@@ -62,6 +64,23 @@ describe('Test Aggregate', () => {
         test.removeResult();
         expect(test.result.filepath).toEqual('');
         expect(test.result.hasFile).toBeFalsy()
+    });
+
+    it('should add a report to the Test aggregate', () => {
+        test.addReport('My report content');
+        expect(test.report?.content).toEqual('My report content');
+        expect(test.report?.filepath).toBeNull();
+    });
+
+    it('should remove a report file to the Test aggregate', () => {
+        test.addReportFile("/path/to/file.pdf");
+        expect(test.report?.filepath).toEqual("/path/to/file.pdf");
+    });
+
+    it('should remove a report to the Test aggregate', () => {
+        test.removeReport();
+        expect(test.report?.content).toBeNull();
+        expect(test.report?.filepath).toBeNull();
     });
 
     it('should check Test aggregate', () => {

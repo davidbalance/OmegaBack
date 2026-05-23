@@ -1,4 +1,4 @@
-import { ClientRecordFilenameFunc } from "@omega/medical/application/commands/client/client-complete-record.command";
+import { ClientRecordFilenameFunc } from "@omega/medical/application/commands/client/client-add-record.command";
 import { formatDate } from "date-fns";
 
 export const reportFilenameHelper: ClientRecordFilenameFunc = (e) => {

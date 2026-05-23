@@ -5,14 +5,17 @@ import { InjectCommand } from "@omega/medical/nest/inject/command.inject";
 import { DiseaseReportCreateCommand } from "@omega/medical/application/commands/test/disease-report-create.command";
 import { DiseaseReportEditCommand } from "@omega/medical/application/commands/test/disease-report-edit.command";
 import { DiseaseReportRemoveCommand } from "@omega/medical/application/commands/test/disease-report-remove.command";
+import { ReportAddContentCommand } from "@omega/medical/application/commands/test/report-add-content.command";
+import { ReportRemoveContentCommand } from "@omega/medical/application/commands/test/report-remove-content.command";
 import { ResultRemoveFileCommand } from "@omega/medical/application/commands/test/result-remove-file.command";
 import { ResultUploadBufferCommand } from "@omega/medical/application/commands/test/result-upload-buffer.command";
-import { DiseaseReportCreateRequestDto, DiseaseReportEditRequestDto, TestCreateRequestDto, TestEditExamRequestDto } from "../dto/request/test.dto";
+import { DiseaseReportCreateRequestDto, DiseaseReportEditRequestDto, ReportRequestDto, TestCreateRequestDto, TestEditExamRequestDto } from "../dto/request/test.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { TestEditExamCommand } from "@omega/medical/application/commands/test/test-edit-exam.command";
 import { TestCreateCommand } from "@omega/medical/application/commands/test/test-create.command";
 import { TestCheckCommand } from "@omega/medical/application/commands/test/test-check.command";
 import { TestUncheckCommand } from "@omega/medical/application/commands/test/test-uncheck.command";
+import { ReportUploadBufferCommand } from "@omega/medical/application/commands/test/report-upload-buffer.command";
 import { TestCheckFileCommand } from "@omega/medical/application/commands/test/test-check-file.command";
 import { TestRemoveCommand } from "@omega/medical/application/commands/test/test-remove.command";
 
@@ -25,6 +28,9 @@ export class TestWriteController {
         @InjectCommand('DiseaseReportCreate') private readonly diseaseReportCreateCommand: DiseaseReportCreateCommand,
         @InjectCommand('DiseaseReportEdit') private readonly diseaseReportEditCommand: DiseaseReportEditCommand,
         @InjectCommand('DiseaseReportRemove') private readonly diseaseReportRemoveCommand: DiseaseReportRemoveCommand,
+        @InjectCommand('ReportAddContent') private readonly reportAddContentCommand: ReportAddContentCommand,
+        @InjectCommand('ReportUploadBuffer') private readonly reportUploadFromStreamCommand: ReportUploadBufferCommand,
+        @InjectCommand('ReportRemoveContent') private readonly reportRemoveContentCommand: ReportRemoveContentCommand,
         @InjectCommand('ResultRemoveFile') private readonly resultRemoveFileCommand: ResultRemoveFileCommand,
         @InjectCommand('ResultUploadBuffer') private readonly resultUploadFromStreamCommand: ResultUploadBufferCommand,
         @InjectCommand('TestCheckFile') private readonly testCheckFileCommand: TestCheckFileCommand,
@@ -101,6 +107,43 @@ export class TestWriteController {
         @Param('diseaseReportId') diseaseReportId: string
     ): Promise<string> {
         await this.diseaseReportRemoveCommand.handleAsync({ diseaseId: diseaseReportId, testId });
+        return "ok";
+    }
+
+    @Put(':testId/report')
+    async addReportContent(
+        @Param('testId') testId: string,
+        @Body() body: ReportRequestDto
+    ): Promise<string> {
+        await this.reportAddContentCommand.handleAsync({
+            ...body,
+            testId
+        });
+        return "ok";
+    }
+
+    @ApiConsumes('multipart/form-data')
+    @UseInterceptors(FileInterceptor('file'))
+    @Post(':testId/report')
+    async addReportFile(
+        @Param('testId') testId: string,
+        @UploadedFile() file: Express.Multer.File
+    ): Promise<string> {
+        if (!file) throw new BadRequestException('File not found on request.');
+        await this.reportUploadFromStreamCommand.handleAsync({
+            testId,
+            buffer: file.buffer
+        });
+        return "ok";
+    }
+
+    @Delete(':testId/report')
+    async removeRemoveContent(
+        @Param('testId') testId: string
+    ): Promise<string> {
+        await this.reportRemoveContentCommand.handleAsync({
+            testId,
+        });
         return "ok";
     }
 
