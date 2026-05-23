@@ -1,6 +1,7 @@
 import { Client } from "../client.domain";
 import { EmailConflictError, EmailNotFoundError } from "../errors/email.errors";
 import { EditClientPayload } from "../payloads/client.payloads";
+import { RECORD_STATUS_COMPLETED, RECORD_STATUS_STARTED } from "../record.domain";
 
 describe("Client Aggregate", () => {
     let client: Client;
@@ -92,7 +93,37 @@ describe("Client Aggregate", () => {
     });
 
     test("should add a new record to the client", () => {
-        client.addRecord({ filepath: '/path/to/record.pdf', name: 'record' });
+        client.addRecord({ name: 'record', metadata: { "meta": "value" } });
         expect(client.records).toHaveLength(1);
+    });
+
+    test("should update metadata record", () => {
+        const originalMetadata = { "meta": "value" };
+        client.addRecord({ name: 'record', metadata: originalMetadata });
+        expect(client.records).toHaveLength(1);
+        expect(client.records[0].metadata).toEqual(originalMetadata);
+
+        const id = client.records[0].id;
+        const newMetadata = { "new": "metadata" };
+
+        client.updateRecordMetadata({ recordId: id, metadata: newMetadata });
+        expect(client.records[0].metadata).toEqual(newMetadata);
+        expect(client.records[0].status).toEqual(RECORD_STATUS_STARTED);
+    });
+
+    test("should update filepath and status record", () => {
+        const originalMetadata = { "meta": "value" };
+        const filepath = "/path/to/record";
+        client.addRecord({ name: 'record', metadata: originalMetadata });
+        expect(client.records).toHaveLength(1);
+
+        const id = client.records[0].id
+
+        client.completeRecord({
+            recordId: id,
+            filepath: filepath
+        })
+        expect(client.records[0].filepath).toEqual(filepath);
+        expect(client.records[0].status).toBe(RECORD_STATUS_COMPLETED);
     });
 });
