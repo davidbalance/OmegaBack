@@ -131,7 +131,7 @@
   <table>
     <thead>
       <tr>
-        <td class="section-title" colspan="12">A. Datos del establecimiento - Datos del Usuario</td>
+        <td class="section-title" colspan="12">A. Datos del establecimiento</td>
       </tr>
     </thead>
     <tbody>
@@ -466,11 +466,11 @@
         <td class="item-title">Temperatura (°C)</td>
         <td class="item-title">Presión Arterial (mmHg)</td>
         <td class="item-title">Frecuencia Cardíaca (lpm)</td>
-        <td class="item-title">Frecuencia Respiratoria (fr/min)</td>
+        <td class="item-title">Frecuencia Respiratoria (rpm)</td>
         <td class="item-title">Saturación de Oxígeno (%)</td>
         <td class="item-title">Peso (kg)</td>
-        <td class="item-title">Talla (cm)</td>
-        <td class="item-title">IMC (kg/m2)</td>
+        <td class="item-title">Talla (m)</td>
+        <td class="item-title">IMC</td>
         <td class="item-title">Perímetro Abdominal (cm)</td>
       </tr>
       <tr>
@@ -670,20 +670,17 @@
   <table>
     <thead>
       <tr>
-        <td class="section-title" colspan="10">G. FACTORES DE RIESGO DEL TRABAJO ACTUAL</td>
+        <td class="section-title" colspan="9">G. FACTORES DE RIESGO DEL TRABAJO ACTUAL</td>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td class="item-title" colspan="3">Puesto de Trabajo</td>
-        <td colspan="7">{{riskFactors.jobPosition}}</td>
+        <td colspan="6">{{riskFactors.jobPosition}}</td>
       </tr>
       <tr>
-        <td class="item-title" colspan="3" rowspan="2">Actividades importantes jornada laboral</td>
+        <td class="item-title" colspan="3">Actividades importantes jornada laboral</td>
         {{#each riskFactors.activitiesRange}} <td class="item-title bold center">{{this}}</td> {{/each}}
-      </tr>
-      <tr>
-        {{#each riskFactors.activities}} <td>{{this}}</td> {{/each}}
       </tr>
 
       {{#each riskFactors.sections}}
@@ -869,8 +866,7 @@
 
       {{#each diagnoses}}
       <tr>
-        <td class="center bold no-border-right">{{this.index}}. </td>
-        <td class="center no-border-left" colspan="2">{{this.cie}}</td>
+        <td class="center" colspan="3">{{this.cie}}</td>
         <td class="left" colspan="6">{{this.description}}</td>
         <td class="center">
           {{#if this.presumptive}}X{{/if}}
