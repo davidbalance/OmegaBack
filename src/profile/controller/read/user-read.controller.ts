@@ -12,7 +12,6 @@ import { UserAttributeResponseDto } from "../dto/response/user-attribute.dto";
 import { UserFindOneQuery } from "@omega/profile/application/query/user/user-find-one.query";
 import { UserFindManyResourcesQuery } from "@omega/profile/application/query/user/user-find-many-resources.query";
 import { UserAuthResourceMapper } from "../mapper/user-auth-resource.mapper";
-import { UserFindOneByDniQuery } from "@omega/profile/application/query/user/user-find-one-by-dni.query";
 
 @ApiTags('Profile', 'Read')
 @ApiBearerAuth()
@@ -24,7 +23,6 @@ export class UserReadController {
         @InjectQuery('UserFindOne') private readonly findOneQuery: UserFindOneQuery,
         @InjectQuery('UserFindManyResources') private readonly findManyResourcesQuery: UserFindManyResourcesQuery,
         @InjectQuery('UserAttributeFindOne') private readonly findOneAttributeQuery: UserAttributeFindOneQuery,
-        @InjectQuery('UserFindOneByDniQuery') private readonly findOneByDni: UserFindOneByDniQuery,
     ) { }
 
     @Get()
@@ -56,15 +54,6 @@ export class UserReadController {
         const values = await this.findManyResourcesQuery.handleAsync({ userId });
         const data = values.map(e => UserAuthResourceMapper.toDTO(e));
         return plainToInstance(UserAuthResourceResponseDto, data);
-    }
-
-    @Get(':dni/dni')
-    async findUserByDni(
-        @Param('dni') dni: string
-    ): Promise<UserResponseDto> {
-        const value = await this.findOneByDni.handleAsync({ userDni: dni });
-        const data = UserModelMapper.toDTO(value);
-        return plainToInstance(UserResponseDto, data);
     }
 
     @Get(':userId/attribute/:attributeName')

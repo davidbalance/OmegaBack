@@ -10,7 +10,6 @@ export const UserFindManyQueryToken = 'UserFindManyQuery';
 export const UserFindManyResourcesQueryToken = 'UserFindManyResourcesQuery';
 export const UserFindOneQueryToken = 'UserFindOneQuery';
 export const UserFindOneByAuthQueryToken = 'UserFindOneByAuthQuery';
-export const UserFindOneByDniQueryToken = 'UserFindOneByDniQuery';
 
 const query = {
     DoctorFindMany: DoctorFindManyQueryToken,
@@ -23,7 +22,6 @@ const query = {
     UserFindMany: UserFindManyQueryToken,
     UserFindOne: UserFindOneQueryToken,
     UserFindOneByAuth: UserFindOneByAuthQueryToken,
-    UserFindOneByDniQuery: UserFindOneByDniQueryToken,
 }
 
 export const InjectQuery = (token: keyof typeof query) => Inject(query[token]);

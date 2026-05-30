@@ -11,6 +11,7 @@ import { UserRemoveCommand } from "@omega/profile/application/command/user/user-
 import { UserAddAuthCommand } from "@omega/profile/application/command/user/user-add-auth.command";
 import { UserAddResourcesCommand } from "@omega/profile/application/command/user/user-add-resources.command";
 import { UserEditCommand } from "@omega/profile/application/command/user/user-edit.command";
+import { UserEditByDniCommand } from "@omega/profile/application/command/user/user-edit-by-dni.command";
 
 @ApiTags('Profile', 'Write')
 @ApiBearerAuth()
@@ -20,6 +21,7 @@ export class UserWriteController {
     constructor(
         @InjectCommand('UserCreate') private readonly createCommand: UserCreateCommand,
         @InjectCommand('UserEdit') private readonly editCommand: UserEditCommand,
+        @InjectCommand('UserEditByDni') private readonly editByDniCommand: UserEditByDniCommand,
         @InjectCommand('UserRemove') private readonly removeCommand: UserRemoveCommand,
         @InjectCommand('UserAddAuth') private readonly addAuthCommand: UserAddAuthCommand,
         @InjectCommand('UserAddResources') private readonly addResourcesCommand: UserAddResourcesCommand,
@@ -41,6 +43,15 @@ export class UserWriteController {
         @Body() body: UserEditRequestDto
     ): Promise<string> {
         await this.editCommand.handleAsync({ userId, ...body });
+        return "ok";
+    }
+
+    @Put(':userDni/dni')
+    async editUserDyDni(
+        @Param('userDni') userDni: string,
+        @Body() body: UserEditRequestDto
+    ): Promise<string> {
+        await this.editByDniCommand.handleAsync({ userDni, ...body });
         return "ok";
     }
 
