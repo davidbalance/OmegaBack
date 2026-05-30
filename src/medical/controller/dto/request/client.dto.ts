@@ -37,6 +37,16 @@ export class ClientChangeRoleRequestDto implements Pick<ClientEditCommandPayload
     public readonly patientRole: string;
 }
 
+export class ClientUpdateNameRequestDto implements Pick<ClientEditCommandPayload, 'patientName' | 'patientLastname'> {
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientName: string;
+
+    @IsString()
+    @IsNotEmpty()
+    public readonly patientLastname: string;
+}
+
 export class ClientCreateRequestDto implements ClientCreateCommandPayload {
     @IsEmail()
     public readonly patientEmail: string;
