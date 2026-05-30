@@ -6,7 +6,7 @@ import { ClientAddAreaCommand } from "@omega/medical/application/commands/client
 import { ClientAddJobPositionCommand } from "@omega/medical/application/commands/client/client-add-job-position.command";
 import { ClientAddManagementCommand } from "@omega/medical/application/commands/client/client-add-management.command";
 import { ClientCreateCommand } from "@omega/medical/application/commands/client/client-create.command";
-import { ClientAddAreaRequestDto, ClientAddJobPositionRequestDto, ClientAddManagementRequestDto, ClientChangeRoleRequestDto, ClientCreateRequestDto, ClientEmailCreateRequestDto } from "../dto/request/client.dto";
+import { ClientAddAreaRequestDto, ClientAddJobPositionRequestDto, ClientAddManagementRequestDto, ClientChangeRoleRequestDto, ClientCreateRequestDto, ClientEmailCreateRequestDto, ClientUpdateNameRequestDto } from "../dto/request/client.dto";
 import { EmailCreateCommand } from "@omega/medical/application/commands/client/email-create.command";
 import { EmailDefaultCommand } from "@omega/medical/application/commands/client/email-default.command";
 import { EmailRemoveCommand } from "@omega/medical/application/commands/client/email-remove.command";
@@ -59,6 +59,18 @@ export class ClientWriteController {
         @Body() body: ClientAddAreaRequestDto
     ): Promise<string> {
         await this.addAreaCommand.handleAsync({
+            ...body,
+            patientDni: dni
+        });
+        return "ok";
+    }
+
+    @Put(':dni/name')
+    async updateName(
+        @Param('dni') dni: string,
+        @Body() body: ClientUpdateNameRequestDto
+    ): Promise<string> {
+        await this.editCommand.handleAsync({
             ...body,
             patientDni: dni
         });
