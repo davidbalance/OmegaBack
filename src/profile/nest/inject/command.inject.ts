@@ -9,6 +9,7 @@ export const UserAddAttributeCommandToken = 'UserAddAttributeCommand';
 export const UserRemoveAttributeCommandToken = 'UserRemoveAttributeCommand';
 export const UserCreateCommandToken = 'UserCreateCommand';
 export const UserEditCommandToken = 'UserEditCommand';
+export const UserEditByDniCommandToken = 'UserEditByDniCommand';
 export const UserRemoveCommandToken = 'UserRemoveCommand';
 
 const command = {
@@ -21,6 +22,7 @@ const command = {
     UserRemoveAttribute: UserRemoveAttributeCommandToken,
     UserCreate: UserCreateCommandToken,
     UserEdit: UserEditCommandToken,
+    UserEditByDni: UserEditByDniCommandToken,
     UserRemove: UserRemoveCommandToken,
 }
 

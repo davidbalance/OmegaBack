@@ -26,6 +26,7 @@ import { UserAddResourcesCommandProvider } from "./nest/command/user-add-resourc
 import { UserFindOneQueryProvider } from "./nest/query/user-find-one.nest-query";
 import { UserEditCommandProvider } from "./nest/command/user-edit.nest-command";
 import { UserFindManyResourcesQueryProvider } from "./nest/query/user-find-many-resources.nest-query";
+import { UserEditByDniCommandProvider } from "./nest/command/user-edit-by-dni.nest-command";
 
 @Module({
     imports: [
@@ -46,6 +47,7 @@ import { UserFindManyResourcesQueryProvider } from "./nest/query/user-find-many-
         UserAddAuthCommandProvider,
         UserCreateCommandProvider,
         UserEditCommandProvider,
+        UserEditByDniCommandProvider,
         UserRemoveAttributeCommandProvider,
         UserRemoveCommandProvider,
         DoctorFindManyQueryProvider,
@@ -57,7 +59,7 @@ import { UserFindManyResourcesQueryProvider } from "./nest/query/user-find-many-
         UserFindOneQueryProvider,
         UserAttributeFindOneQueryProvider,
         UserFindManyQueryProvider,
-        UserFindOneByAuthQueryProvider
+        UserFindOneByAuthQueryProvider,
     ],
     exports: [
         UserFindOneByAuthQueryToken,
