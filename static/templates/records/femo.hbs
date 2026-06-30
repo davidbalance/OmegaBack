@@ -952,24 +952,42 @@
       <tr>
         <td class="item-subtitle left" colspan="3">Se realiza la evaluación</td>
         <td class="item-subtitle center">SÍ</td>
-        <td class="center">{{#if retirementEvaluation.isPerformed}}X{{/if}}</td>
+        <td class="center">
+          {{#if consultation.evaluationType.isRetirement}}
+          {{#if retirementEvaluation.isPerformed}}X{{/if}}
+          {{/if}}
+        </td>
         <td class="item-subtitle center">NO</td>
-        <td class="center">{{#if retirementEvaluation.isNotPerformed}}X{{/if}}</td>
+        <td class="center">
+          {{#if consultation.evaluationType.isRetirement}}
+          {{#if retirementEvaluation.isNotPerformed}}X{{/if}}
+          {{/if}}
+        </td>
       </tr>
       <tr>
         <td class="item-subtitle left" colspan="3">La condición de salud está relacionada con el trabajo
         </td>
         <td class="item-subtitle center">SÍ</td>
-        <td class="center">{{#if retirementEvaluation.isWorkRelated}}X{{/if}}</td>
+        <td class="center">
+          {{#if consultation.evaluationType.isRetirement}}
+          {{#if retirementEvaluation.isWorkRelated}}X{{/if}}
+          {{/if}}
+        </td>
         <td class="item-subtitle center">NO</td>
-        <td class="center">{{#if retirementEvaluation.isNotWorkRelated}}X{{/if}}</td>
+        <td class="center">
+          {{#if consultation.evaluationType.isRetirement}}
+          {{#if retirementEvaluation.isNotWorkRelated}}X{{/if}}
+          {{/if}}
+        </td>
       </tr>
       <tr>
         <td class="bold left border-none" colspan="7">OBSERVACIÓN:</td>
       </tr>
       <tr>
         <td colspan="7" class="border-none">
+          {{#if consultation.evaluationType.isRetirement}}
           {{retirementEvaluation.observation}}
+          {{/if}}
         </td>
       </tr>
     </tbody>

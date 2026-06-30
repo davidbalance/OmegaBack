@@ -286,15 +286,6 @@ const MAX_EXTRA_LABORAL_ACTIVITIES_LENGTH: number = 3;
 const MAX_LIFE_STYLE_LENGTH: number = 3;
 const MAX_RISK_FACTOR_LENGTH: number = 7;
 
-const RISK_FACTOR_PHYSICAL = "Físico"
-const RISK_FACTOR_SAFETY = "De Seguridad"
-const RISK_FACTOR_CHEMICAL = "Químico"
-const RISK_FACTOR_BIOLOGICAL = "Biológico"
-const RISK_FACTOR_ERGONOMIC = "Ergonómico"
-const RISK_FACTOR_PSYCHOSOCIAL = "Psicosocial"
-
-const RISK_FACTORS = [RISK_FACTOR_PHYSICAL, RISK_FACTOR_SAFETY, RISK_FACTOR_CHEMICAL, RISK_FACTOR_BIOLOGICAL, RISK_FACTOR_ERGONOMIC, RISK_FACTOR_PSYCHOSOCIAL]
-
 const mapFemoDiagnoses = (diagnoses: any): TemplateFemo["diagnoses"] => {
     const base: TemplateFemo["diagnoses"] = Array<TemplateFemo["diagnoses"][0]>(MAX_DIAGNOSES_LENGTH).fill({
         index: 0,

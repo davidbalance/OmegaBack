@@ -1,14 +1,23 @@
-import { Injectable, Logger, OnApplicationShutdown, Provider } from '@nestjs/common';
+import { Inject, Injectable, Logger, OnApplicationShutdown, Provider } from '@nestjs/common';
 import { InternalError } from '@shared/shared/domain/error';
 import { PdfProviderToken } from '@shared/shared/nest/inject';
 import { PdfProvider } from '@shared/shared/providers/pdf.provider';
 import puppeteer, { Browser } from 'puppeteer';
 import * as Handlebars from 'handlebars';
+import { ConfigService } from '@nestjs/config';
+import { PuppeteerPdfConfig, PuppeteerPdfConfigName } from './config/puppeteer-pdf.config';
 
 @Injectable()
 export class PuppeteerPdfService implements PdfProvider, OnApplicationShutdown {
 
     private browser: Browser | null = null;
+    private chromiumPath: string;
+
+    public constructor(
+        @Inject(ConfigService) config: ConfigService
+    ) {
+        this.chromiumPath = config.getOrThrow<PuppeteerPdfConfig>(PuppeteerPdfConfigName).chromium_path
+    }
 
     async onApplicationShutdown(signal?: string) {
         if (this.browser) {
@@ -50,8 +59,9 @@ export class PuppeteerPdfService implements PdfProvider, OnApplicationShutdown {
 
     private async getBrowser(): Promise<Browser> {
         if (!this.browser) {
+            console.log(this.chromiumPath)
             this.browser = await puppeteer.launch({
-                executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium',
+                executablePath: this.chromiumPath,
                 headless: true,
                 args: [
                     '--no-sandbox',
