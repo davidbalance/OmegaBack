@@ -19,26 +19,27 @@ COPY --chown=node:node . ./
 RUN npx prisma generate && npm run build && npm prune --omit=dev
 
 # -------------------------------- PRODUCTION STAGE --------------------------------
-FROM node:20-slim AS production
+FROM node:20-bookworm-slim
 
-# Install dependencies needed for runtime
-RUN apt-get update && apt-get install -y \
-    chromium \
-    fonts-liberation \
-    libatk-bridge2.0-0 \
-    libnss3 \
-    libxss1 \
-    libasound2 \
-    libxshmfence1 \
-    libgbm1 \
+# Install latest Chrome dependencies and fonts
+RUN apt-get update \
+    && apt-get install -y wget gnupg ca-certificates procps libxss1 \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
+    --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
+
+# Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome \
+    CHROMIUM_PATH=/usr/bin/google-chrome
 
 WORKDIR /usr/src/app
 
 # Set environment variable for production stage
 ENV NODE_ENV=production
-ENV PUPPETEER_SKIP_DOWNLOAD=true
-ENV CHROMIUM_PATH=/usr/bin/chromium
 
 # Switch to root to create directories and ensure correct permissions
 RUN mkdir -p .disk/medical_file \
@@ -56,7 +57,7 @@ COPY --from=builder --chown=node:node /usr/src/app/dist ./dist/
 COPY --from=builder --chown=node:node /usr/src/app/static ./static/
 COPY --from=builder --chown=node:node /usr/src/app/prisma ./prisma/
 
-USER node
+# USER node
 
 # Default command to run the app
 CMD ["node", "dist/main.js"]
