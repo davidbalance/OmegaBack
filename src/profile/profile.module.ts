@@ -19,7 +19,7 @@ import { UserReadController } from "./controller/read/user-read.controller";
 import { DoctorReadController } from "./controller/read/doctor-read.controller";
 import { DoctorWriteController } from "./controller/write/doctor-write.controller";
 import { UserWriteController } from "./controller/write/user-write.controller";
-import { UserAttributeFindOneQueryToken, UserFindOneByAuthQueryToken } from "./nest/inject/query.inject";
+import { CompanyFilterFindManyQueryToken, CorporativeFilterFindManyQueryToken, UserAttributeFindOneQueryToken, UserFindOneByAuthQueryToken } from "./nest/inject/query.inject";
 import { UserFindOneByAuthQueryProvider } from "./nest/query/user-find-one-by-auth.nest-query";
 import { PatientCreateCommandToken } from "./nest/inject/command.inject";
 import { UserAddResourcesCommandProvider } from "./nest/command/user-add-resources.nest-command";
@@ -27,6 +27,12 @@ import { UserFindOneQueryProvider } from "./nest/query/user-find-one.nest-query"
 import { UserEditCommandProvider } from "./nest/command/user-edit.nest-command";
 import { UserFindManyResourcesQueryProvider } from "./nest/query/user-find-many-resources.nest-query";
 import { UserEditByDniCommandProvider } from "./nest/command/user-edit-by-dni.nest-command";
+import { AddCompanyFilterCommandProvider } from "./nest/command/add-company-filter.nest-command";
+import { AddCorporativeFilterCommandProvider } from "./nest/command/add-corporative-filter.nest-command";
+import { RemoveCompanyFilterCommandProvider } from "./nest/command/remove-company-filter.nest-command";
+import { RemoveCorporativeFilterCommandProvider } from "./nest/command/remove-corporative-filter.nest-command";
+import { CompanyFilterFindManyQueryProvider } from "./nest/query/company-filter-find-many.nest-query";
+import { CorporativeFilterFindManyQueryProvider } from "./nest/query/corporative-filter-find-many.nest-query";
 
 @Module({
     imports: [
@@ -50,6 +56,10 @@ import { UserEditByDniCommandProvider } from "./nest/command/user-edit-by-dni.ne
         UserEditByDniCommandProvider,
         UserRemoveAttributeCommandProvider,
         UserRemoveCommandProvider,
+        AddCompanyFilterCommandProvider,
+        AddCorporativeFilterCommandProvider,
+        RemoveCompanyFilterCommandProvider,
+        RemoveCorporativeFilterCommandProvider,
         DoctorFindManyQueryProvider,
         DoctorFindOneByDniQueryProvider,
         DoctorFindOneQueryProvider,
@@ -60,11 +70,15 @@ import { UserEditByDniCommandProvider } from "./nest/command/user-edit-by-dni.ne
         UserAttributeFindOneQueryProvider,
         UserFindManyQueryProvider,
         UserFindOneByAuthQueryProvider,
+        CompanyFilterFindManyQueryProvider,
+        CorporativeFilterFindManyQueryProvider
     ],
     exports: [
         UserFindOneByAuthQueryToken,
         UserAttributeFindOneQueryToken,
-        PatientCreateCommandToken
+        PatientCreateCommandToken,
+        CompanyFilterFindManyQueryToken,
+        CorporativeFilterFindManyQueryToken
     ]
 })
 export class ProfileModule { }
