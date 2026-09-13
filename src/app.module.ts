@@ -16,6 +16,8 @@ import { WinstonModule } from '@db-logger/db-logger';
 import { HeartBeatModule } from '@heart-beat/heart-beat';
 import { ApiKeyProxyModule } from './adapter/proxy/api-key-proxy/api-key-proxy.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { CorporativeFilterProxyModule } from './adapter/proxy/corporative-filter-proxy/corporative-filter-proxy.module';
+import { CompanyFilterProxyModule } from './adapter/proxy/company-filter-proxy/company-filter-proxy.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     AuthProxyModule,
     ApiKeyProxyModule,
     AttributeProxyModule,
+    CompanyFilterProxyModule,
+    CorporativeFilterProxyModule,
     AuthModule,
     DiseaseModule,
     LaboratoryModule,

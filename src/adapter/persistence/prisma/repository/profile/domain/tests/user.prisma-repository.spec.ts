@@ -76,7 +76,13 @@ describe("UserPrismaRepository", () => {
             expect(PrismaFilterMapper.map).toHaveBeenCalledWith(mockFilter.filter);
             expect(prisma.user.findFirst).toHaveBeenCalledWith({
                 where: mockPrismaWhere,
-                include: { attributes: true, doctor: true, patient: true },
+                include: {
+                    attributes: true,
+                    doctor: true,
+                    patient: true,
+                    companyFilters: true,
+                    corporativeFilters: true
+                },
             });
             expect(UserDomainMapper.toDomain).toHaveBeenCalledWith(prismaResult);
             expect(result).toEqual(domainResult);
