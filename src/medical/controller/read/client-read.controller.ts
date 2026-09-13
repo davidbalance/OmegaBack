@@ -18,11 +18,10 @@ import { ClientManagementModelMapper } from "../mapper/client-management.model-m
 import { ClientManagementFindOneQuery } from "@omega/medical/application/queries/client/client-management-find-one.query";
 import { ClientFindManyQuery } from "@omega/medical/application/queries/client/client-find-many.query";
 import { ClientModelMapper } from "../mapper/client.model-mapper";
-import { AttributeInterceptor } from "@shared/shared/nest/interceptors/attribute.interceptor";
-import { Attribute } from "@shared/shared/nest/decorators/attribute.decorator";
 import { ClientFindOneByDniQuery } from "@omega/medical/application/queries/client/client-find-one-by-dni.query";
 import { Response } from "express";
 import { ClientFindMassiveLoadTemplateQuery } from "@omega/medical/application/queries/client/client-find-massive-load-template.query";
+import { CompanyFilterInterceptor, CompanyInterceptorPayload } from "@shared/shared/nest/interceptors/company-filter.interceptor";
 
 @ApiTags('Medical', 'Read')
 @ApiBearerAuth()
@@ -62,16 +61,15 @@ export class ClientReadController {
         return plainToInstance(ClientManyResponseDto, { ...values, data });
     }
 
-    @Attribute('look_for_company')
-    @UseInterceptors(AttributeInterceptor)
+    @UseInterceptors(CompanyFilterInterceptor)
     @Get('company')
     async findManyClientByCompany(
-        @CurrentUser() companyRuc: string,
+        @CurrentUser() filterInterceptor: CompanyInterceptorPayload[],
         @Query() query: ClientFindManyQueryDto
     ): Promise<ClientManyResponseDto> {
         const values = await this.findManyQuery.handleAsync({
             ...query,
-            companyRuc,
+            companies: filterInterceptor.map(e => ({ companyRuc: e.companyRuc, corporativeName: e.corporativeName })),
             order: query.orderField && query.orderValue ? { [query.orderField]: query.orderValue } : undefined
         });
         const data = values.data.map(e => ClientModelMapper.toDTO(e));
@@ -85,7 +83,7 @@ export class ClientReadController {
         const companyRuc: string = '1790053881001';
         const values = await this.findManyQuery.handleAsync({
             ...query,
-            companyRuc,
+            companies: [{ companyRuc: companyRuc, corporativeName: 'EEQ' }],
             order: query.orderField && query.orderValue ? { [query.orderField]: query.orderValue } : undefined
         });
         const data = values.data.map(e => ClientModelMapper.toDTO(e));

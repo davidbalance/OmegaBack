@@ -1,3 +1,5 @@
+import { CompanyFilterModel } from "@omega/profile/core/model/user/company-filter.model";
+import { CorporativeFilterModel } from "@omega/profile/core/model/user/corporative-filter.model";
 import { DoctorOptionModel } from "@omega/profile/core/model/user/doctor-option.model";
 import { DoctorModel } from "@omega/profile/core/model/user/doctor.model";
 import { UserAttributeModel } from "@omega/profile/core/model/user/user-attribute.model";
@@ -8,3 +10,5 @@ export type DoctorOptionRepository = ModelRepository<DoctorOptionModel>;
 export type DoctorRepository = ModelRepository<DoctorModel> & CountRepository<DoctorModel>;
 export type UserAttributeRepository = ModelRepository<UserAttributeModel>;
 export type UserRepository = ModelRepository<UserModel> & CountRepository<UserModel>;
+export type CompanyFilterRepository = ModelRepository<CompanyFilterModel>;
+export type CorporativeFilterRepository = ModelRepository<CorporativeFilterModel>;

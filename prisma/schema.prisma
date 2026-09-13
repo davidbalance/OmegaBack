@@ -596,9 +596,11 @@ model User {
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
-  attributes Attribute[]
-  doctor     Doctor?
-  patient    Patient?
+  attributes         Attribute[]
+  doctor             Doctor?
+  patient            Patient?
+  companyFilters     CompanyFilter[]
+  corporativeFilters CorporativeFilter[]
 
   @@map("tbl_u_users")
 }
@@ -644,6 +646,34 @@ model Attribute {
 
   @@unique(fields: [name, userId], map: "unq_u_attribute_name")
   @@map("tbl_u_attributes")
+}
+
+model CompanyFilter {
+  id              String @id @default(uuid()) @map("company_filter_id") @db.Char(36)
+  corporativeId   String @map("corporative_id") @db.Char(36)
+  corporativeName String @map("corporative_name") @db.VarChar(64)
+  companyId       String @map("company_id") @db.Char(36)
+  companyRuc      String @map("company_ruc") @db.Char(36)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id") @db.Char(36)
+
+  @@map("tbl_u_company_filter")
+}
+
+model CorporativeFilter {
+  id              String @id @default(uuid()) @map("corporative_filter_id") @db.Char(36)
+  corporativeId   String @map("corporative_id") @db.Char(36)
+  corporativeName String @map("corporative_name") @db.VarChar(64)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id") @db.Char(36)
+
+  @@map("tbl_u_corporative_filter")
 }
 
 // ------------------------------------------------- Views ------------------------------------------------- 
@@ -1181,6 +1211,28 @@ view UserModel {
   authId       String @map("auth_id") @db.Char(36)
 
   @@map("v_u_users")
+}
+
+view CompanyFilterModel {
+  id              String @map("company_filter_id") @db.Char(36)
+  corporativeId   String @map("corporative_id") @db.Char(36)
+  corporativeName String @map("corporative_name") @db.VarChar(64)
+  companyId       String @map("company_id") @db.Char(36)
+  companyRuc      String @map("company_ruc") @db.Char(36)
+  userId          String @map("user_id") @db.Char(36)
+
+  @@unique(fields: [corporativeId, companyId, userId], map: "unq_v_u_company_filter")
+  @@map("v_u_company_filter")
+}
+
+view CorporativeFilterModel {
+  id              String @map("corporative_filter_id") @db.Char(36)
+  corporativeId   String @map("corporative_id") @db.Char(36)
+  corporativeName String @map("corporative_name") @db.VarChar(64)
+  userId          String @map("user_id") @db.Char(36)
+
+  @@unique(fields: [corporativeId, userId], map: "unq_v_u_corporative_filter")
+  @@map("v_u_corporative_filter")
 }
 
 // External Connection
