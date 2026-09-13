@@ -108,7 +108,7 @@ describe("OrderFindManyQuery", () => {
     it("should handle case with no companyRuc", async () => {
         const queryPayload: OrderFindManyQueryPayload = {
             patientDni: "patient-123",
-            companyRuc: "123456789001",
+            companiesRuc: ["123456789001"],
             skip: 0,
             limit: 10,
             order: { orderEmissionDate: "desc" },
@@ -126,7 +126,7 @@ describe("OrderFindManyQuery", () => {
         expect(repository.findManyAsync).toHaveBeenCalledWith({
             filter: [
                 { field: 'patientDni', operator: 'eq', value: queryPayload.patientDni },
-                { field: 'companyRuc', operator: 'eq', value: queryPayload.companyRuc },
+                { field: 'companyRuc', operator: 'in', value: queryPayload.companiesRuc },
             ],
             skip: queryPayload.skip,
             limit: queryPayload.limit,

@@ -112,7 +112,9 @@ describe('User Aggregate', () => {
             doctor: undefined,
             patient: undefined,
             auth: undefined,
-            email: "stub@email.com"
+            email: "stub@email.com",
+            companyFilters: [],
+            corporativeFilters: []
         });
 
         expect(rehydrated.id).toEqual(userId);

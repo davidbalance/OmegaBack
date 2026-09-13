@@ -59,7 +59,9 @@ describe('UserDomainMapper', () => {
             doctor: { id: 'doctor-123' } as unknown as PrismaDoctor,
             patient: { id: 'patient-123' } as unknown as PrismaPatient,
             createdAt: new Date(),
-            updatedAt: null
+            updatedAt: null,
+            companyFilters: [],
+            corporativeFilters: []
         };
 
         let spyDoctorDomainMapper: jest.SpyInstance<Doctor, [value: { id: string; createdAt: Date; updatedAt: Date | null; userId: string; signature: string; hasFile: boolean; }], any>;
