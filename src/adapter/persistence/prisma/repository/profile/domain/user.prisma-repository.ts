@@ -5,7 +5,7 @@ import { PrismaFilterMapper } from "../../../filter-mapper";
 import { Prisma } from "@prisma/client";
 import { User, UserProps } from "@omega/profile/core/domain/user/user.domain";
 import { UserRepository } from "@omega/profile/application/repository/aggregate.repositories";
-import { UserAttributeRemovedEventPayload, UserAttributeUpdatedValueEventPayload, UserAuthAddedEventPayload, UserAuthRemovedEventPayload, UserDoctorAddFileEventPayload, UserEditedEventPayload, UserIsEvent, UserRemovedEventPayload } from "@omega/profile/core/domain/user/events/user.events";
+import { CompanyFilterRemovedEventPayload, CorporativeFilterRemovedEventPayload, UserAttributeRemovedEventPayload, UserAttributeUpdatedValueEventPayload, UserAuthAddedEventPayload, UserAuthRemovedEventPayload, UserDoctorAddFileEventPayload, UserEditedEventPayload, UserIsEvent, UserRemovedEventPayload } from "@omega/profile/core/domain/user/events/user.events";
 import { UserDomainMapper } from "../../../mapper/profile/domain/user.domain-mapper";
 import { Attribute } from "@omega/profile/core/domain/user/attribute.domain";
 import { AttributeDomainMapper } from "../../../mapper/profile/domain/attribute.domain-mapper";
@@ -15,6 +15,10 @@ import { Doctor } from "@omega/profile/core/domain/user/doctor.domain";
 import { DoctorDomainMapper } from "../../../mapper/profile/domain/doctor.domain-mapper";
 import { UserAggregateRepositoryToken } from "@omega/profile/nest/inject/aggregate-repository.inject";
 import { RepositoryError } from "@shared/shared/domain/error";
+import { CorporativeFilterDomainMapper } from "../../../mapper/profile/domain/corporative-filter.domain-mapper";
+import { CompanyFilter } from "@omega/profile/core/domain/user/company-filter.domain";
+import { CompanyFilterDomainMapper } from "../../../mapper/profile/domain/company-filter.domain-mapper";
+import { CorporativeFilter } from "@omega/profile/core/domain/user/corporative-filter.domain";
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
@@ -26,7 +30,13 @@ export class UserPrismaRepository implements UserRepository {
         try {
             const where = PrismaFilterMapper.map<UserProps, Prisma.UserWhereInput>(filter.filter);
             const value = await this.prisma.user.findFirst({
-                include: { attributes: true, doctor: true, patient: true },
+                include: {
+                    attributes: true,
+                    doctor: true,
+                    patient: true,
+                    companyFilters: true,
+                    corporativeFilters: true
+                },
                 where: where
             });
             return value ? UserDomainMapper.toDomain(value) : null;
@@ -71,6 +81,18 @@ export class UserPrismaRepository implements UserRepository {
 
             else if (UserIsEvent.isUserDoctorAddFileEvent(event))
                 await this.addDoctorFile(event.value);
+
+            else if (UserIsEvent.isCompanyFilterAddedEvent(event))
+                await this.addCompanyFilter(event.value);
+
+            else if (UserIsEvent.isCorporativeFilterAddedEvent(event))
+                await this.addCorporativeFilter(event.value);
+
+            else if (UserIsEvent.isCompanyFilterRemovedEvent(event))
+                await this.removeCompanyFilter(event.value);
+
+            else if (UserIsEvent.isCorporativeFilterRemovedEvent(event))
+                await this.removeCorporativeFilter(event.value);
         }
     }
 
@@ -185,6 +207,45 @@ export class UserPrismaRepository implements UserRepository {
             throw new RepositoryError();
         }
     }
+
+    async addCompanyFilter(value: CompanyFilter): Promise<void> {
+        try {
+            const data = CompanyFilterDomainMapper.toPrisma(value);
+            await this.prisma.companyFilter.create({ data });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async addCorporativeFilter(value: CorporativeFilter): Promise<void> {
+        try {
+            const data = CorporativeFilterDomainMapper.toPrisma(value);
+            await this.prisma.corporativeFilter.create({ data });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async removeCompanyFilter(value: CompanyFilterRemovedEventPayload): Promise<void> {
+        try {
+            await this.prisma.companyFilter.delete({ where: { id: value.filterId } });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
+    async removeCorporativeFilter(value: CorporativeFilterRemovedEventPayload): Promise<void> {
+        try {
+            await this.prisma.corporativeFilter.delete({ where: { id: value.filterId } });
+        } catch (error) {
+            Logger.error(error);
+            throw new RepositoryError();
+        }
+    }
+
 }
 
 export const UserAggregateRepositoryProvider: Provider = {

@@ -60,7 +60,7 @@ import { OrderProcessModelRepositoryProvider } from "./repository/medical/model/
 import { OrderYearModelRepositoryProvider } from "./repository/medical/model/order-year.prisma-repository";
 import { OrderModelRepositoryProvider } from "./repository/medical/model/order.prisma-repository";
 import { UserAggregateRepositoryToken } from "@omega/profile/nest/inject/aggregate-repository.inject";
-import { DoctorOptionModelRepositoryToken, DoctorModelRepositoryToken, UserAttributeModelRepositoryToken, UserModelRepositoryToken } from "@omega/profile/nest/inject/model-repository.inject";
+import { DoctorOptionModelRepositoryToken, DoctorModelRepositoryToken, UserAttributeModelRepositoryToken, UserModelRepositoryToken, CompanyFilterModelRepositoryToken, CorporativeFilterModelRepositoryToken } from "@omega/profile/nest/inject/model-repository.inject";
 import { UserAggregateRepositoryProvider } from "./repository/profile/domain/user.prisma-repository";
 import { DoctorOptionModelRepositoryProvider } from "./repository/profile/model/doctor-option.prisma-repository";
 import { DoctorModelRepositoryProvider } from "./repository/profile/model/doctor.prisma-repository";
@@ -88,6 +88,8 @@ import { ExamTypeExternalConnectionModelRepositoryProvider } from "./repository/
 import { BranchExternalConnectionModelRepositoryProvider } from "./repository/location/model/branch-external-connection.prisma-repository";
 import { CompanyExternalConnectionModelRepositoryProvider } from "./repository/location/model/company-external-connection.prisma-repository";
 import { CorporativeExternalConnectionModelRepositoryProvider } from "./repository/location/model/corporative-external-connection.prisma-repository";
+import { CompanyFilterRepositoryProvider } from "./repository/profile/model/company-filter.prisma-repository";
+import { CorporativeFilterRepositoryProvider } from "./repository/profile/model/corporative-filter.prisma-repository";
 
 @Global()
 @Module({
@@ -159,6 +161,8 @@ import { CorporativeExternalConnectionModelRepositoryProvider } from "./reposito
         DoctorModelRepositoryProvider,
         UserAttributeModelRepositoryProvider,
         UserModelRepositoryProvider,
+        CompanyFilterRepositoryProvider,
+        CorporativeFilterRepositoryProvider,
         ReportModelRepositoryProvider,
         ResultFilepathModelRepositoryProvider,
         TestFileResultRepositoryProvider,
@@ -235,6 +239,8 @@ import { CorporativeExternalConnectionModelRepositoryProvider } from "./reposito
         DoctorModelRepositoryToken,
         UserAttributeModelRepositoryToken,
         UserModelRepositoryToken,
+        CompanyFilterModelRepositoryToken,
+        CorporativeFilterModelRepositoryToken,
         ReportModelRepositoryToken,
         ResultFilepathModelRepositoryToken,
         TestFileResultRepositoryToken,

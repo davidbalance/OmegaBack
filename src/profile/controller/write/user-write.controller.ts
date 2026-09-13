@@ -5,13 +5,17 @@ import { InjectCommand } from "@omega/profile/nest/inject/command.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
 import { UserAddAuthRequestDto, UserAddResourcesRequestDto, UserCreateRequestDto, UserEditRequestDto } from "../dto/request/user.dto";
 import { UserAddAttributeCommand } from "@omega/profile/application/command/user/user-add-attribute.command";
-import { UserAddAttributeRequestDto } from "../dto/request/user-attribute.dto";
+import { AddCompanyFilterRequestDto, AddCorporativeFilterRequestDto, UserAddAttributeRequestDto } from "../dto/request/user-attribute.dto";
 import { UserRemoveAttributeCommand } from "@omega/profile/application/command/user/user-remove-attribute.command";
 import { UserRemoveCommand } from "@omega/profile/application/command/user/user-remove.command";
 import { UserAddAuthCommand } from "@omega/profile/application/command/user/user-add-auth.command";
 import { UserAddResourcesCommand } from "@omega/profile/application/command/user/user-add-resources.command";
 import { UserEditCommand } from "@omega/profile/application/command/user/user-edit.command";
 import { UserEditByDniCommand } from "@omega/profile/application/command/user/user-edit-by-dni.command";
+import { AddCompanyFilterCommand } from "@omega/profile/application/command/user/add-company-filter.command";
+import { AddCorporativeFilterCommand } from "@omega/profile/application/command/user/add-corporative-filter.command";
+import { RemoveCompanyFilterCommand } from "@omega/profile/application/command/user/remove-company-filter.command";
+import { RemoveCorporativeFilterCommand } from "@omega/profile/application/command/user/remove-corporative-filter.command";
 
 @ApiTags('Profile', 'Write')
 @ApiBearerAuth()
@@ -27,6 +31,10 @@ export class UserWriteController {
         @InjectCommand('UserAddResources') private readonly addResourcesCommand: UserAddResourcesCommand,
         @InjectCommand('UserAddAttribute') private readonly addAttributeCommand: UserAddAttributeCommand,
         @InjectCommand('UserRemoveAttribute') private readonly removeAttributeCommand: UserRemoveAttributeCommand,
+        @InjectCommand('AddCompanyFilter') private readonly addCompanyFilterCommand: AddCompanyFilterCommand,
+        @InjectCommand('AddCorporativeFilter') private readonly addCorporativeFilterCommand: AddCorporativeFilterCommand,
+        @InjectCommand('RemoveCompanyFilter') private readonly removeCompanyFilterCommand: RemoveCompanyFilterCommand,
+        @InjectCommand('RemoveCorporativeFilter') private readonly removeCorporativeFilterCommand: RemoveCorporativeFilterCommand,
     ) { }
 
     @Post()
@@ -84,6 +92,40 @@ export class UserWriteController {
         @Body() body: UserAddAttributeRequestDto
     ): Promise<string> {
         await this.addAttributeCommand.handleAsync({ ...body });
+        return "ok";
+    }
+
+    @Post('company-filter')
+    async addCompanyFilter(
+        @Body() body: AddCompanyFilterRequestDto
+    ): Promise<string> {
+        await this.addCompanyFilterCommand.handleAsync({ ...body });
+        return "ok";
+    }
+
+    @Post('corporative-filter')
+    async addCorporativeFilter(
+        @Body() body: AddCorporativeFilterRequestDto
+    ): Promise<string> {
+        await this.addCorporativeFilterCommand.handleAsync({ ...body });
+        return "ok";
+    }
+
+    @Delete('company-filter/:userId/:filterId')
+    async removeCompanyFilter(
+        @Param('userId') userId: string,
+        @Param('filterId') filterId: string,
+    ): Promise<string> {
+        await this.removeCompanyFilterCommand.handleAsync({ userId, filterId });
+        return "ok";
+    }
+
+    @Delete('corporative-filter/:userId/:filterId')
+    async removeCorporativeFilter(
+        @Param('userId') userId: string,
+        @Param('filterId') filterId: string,
+    ): Promise<string> {
+        await this.removeCorporativeFilterCommand.handleAsync({ userId, filterId });
         return "ok";
     }
 
