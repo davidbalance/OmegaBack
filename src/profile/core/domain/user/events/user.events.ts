@@ -2,6 +2,8 @@ import { DomainEvent } from "@shared/shared/domain";
 import { Attribute } from "../attribute.domain";
 import { Patient } from "../patient.domain";
 import { Doctor } from "../doctor.domain";
+import { CompanyFilter } from "../company-filter.domain";
+import { CorporativeFilter } from "../corporative-filter.domain";
 
 const UserEventKeys = {
     Removed: "user.removed",
@@ -14,6 +16,10 @@ const UserEventKeys = {
     PatientAdded: "user.patientAdded",
     DoctorAdded: "user.doctorAdded",
     DoctorAddFile: "user.doctorAddFile",
+    CompanyFilterAdded: "user.companyFilterAdded",
+    CompanyFilterRemoved: "user.companyFilterRemoved",
+    CorporativeFilterAdded: "user.corporativeFilterAdded",
+    CorporativeFilterRemoved: "user.corporativeFilterRemoved",
 }
 
 export class UserIsEvent {
@@ -58,6 +64,21 @@ export class UserIsEvent {
         return event.key === UserEventKeys.DoctorAddFile;
     }
 
+    public static isCompanyFilterAddedEvent(event: DomainEvent<unknown>): event is CompanyFilterAddedEvent {
+        return event.key === UserEventKeys.CompanyFilterAdded;
+    }
+
+    public static isCompanyFilterRemovedEvent(event: DomainEvent<unknown>): event is CompanyFilterRemovedEvent {
+        return event.key === UserEventKeys.CompanyFilterRemoved;
+    }
+
+    public static isCorporativeFilterAddedEvent(event: DomainEvent<unknown>): event is CorporativeFilterAddedEvent {
+        return event.key === UserEventKeys.CorporativeFilterAdded;
+    }
+
+    public static isCorporativeFilterRemovedEvent(event: DomainEvent<unknown>): event is CorporativeFilterRemovedEvent {
+        return event.key === UserEventKeys.CorporativeFilterRemoved;
+    }
 
 }
 
@@ -142,5 +163,35 @@ export type UserDoctorAddFileEventPayload = {
 export class UserDoctorAddFileEvent extends DomainEvent<UserDoctorAddFileEventPayload> {
     constructor(doctorId: string) {
         super({ key: UserEventKeys.DoctorAddFile, value: { doctorId } });
+    }
+}
+
+export class CompanyFilterAddedEvent extends DomainEvent<CompanyFilter> {
+    constructor(value: CompanyFilter) {
+        super({ key: UserEventKeys.CompanyFilterAdded, value });
+    }
+}
+
+export type CompanyFilterRemovedEventPayload = {
+    filterId: string;
+}
+export class CompanyFilterRemovedEvent extends DomainEvent<CompanyFilterRemovedEventPayload> {
+    constructor(filterId: string) {
+        super({ key: UserEventKeys.CompanyFilterRemoved, value: { filterId } });
+    }
+}
+
+export class CorporativeFilterAddedEvent extends DomainEvent<CorporativeFilter> {
+    constructor(value: CorporativeFilter) {
+        super({ key: UserEventKeys.CorporativeFilterAdded, value });
+    }
+}
+
+export type CorporativeFilterRemovedEventPayload = {
+    filterId: string;
+}
+export class CorporativeFilterRemovedEvent extends DomainEvent<CorporativeFilterRemovedEventPayload> {
+    constructor(filterId: string) {
+        super({ key: UserEventKeys.CorporativeFilterRemoved, value: { filterId } });
     }
 }

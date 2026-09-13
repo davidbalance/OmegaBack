@@ -8,10 +8,14 @@ import { UserFindManyQueryDto } from "../dto/query/user-query.dto";
 import { UserAuthResourceResponseDto, UserManyResponseDto, UserResponseDto } from "../dto/response/user.dto";
 import { UserModelMapper } from "../mapper/user-model.mapper";
 import { UserAttributeFindOneQuery } from "@omega/profile/application/query/user/user-attribute-find-one.query";
-import { UserAttributeResponseDto } from "../dto/response/user-attribute.dto";
+import { CompanyFilterFindManyResponseDto, CorporativeFilterFindManyResponseDto, UserAttributeResponseDto } from "../dto/response/user-attribute.dto";
 import { UserFindOneQuery } from "@omega/profile/application/query/user/user-find-one.query";
 import { UserFindManyResourcesQuery } from "@omega/profile/application/query/user/user-find-many-resources.query";
 import { UserAuthResourceMapper } from "../mapper/user-auth-resource.mapper";
+import { CompanyFilterFindManyQuery } from "@omega/profile/application/query/user/company-filter-find-many.query";
+import { CorporativeFilterFindManyQuery } from "@omega/profile/application/query/user/corporative-filter-find-many.query";
+import { CompanyFilterModelMapper } from "../mapper/company-filter-model.mapper";
+import { CorporativeFilterModelMapper } from "../mapper/corporative-filter-model.mapper";
 
 @ApiTags('Profile', 'Read')
 @ApiBearerAuth()
@@ -23,6 +27,8 @@ export class UserReadController {
         @InjectQuery('UserFindOne') private readonly findOneQuery: UserFindOneQuery,
         @InjectQuery('UserFindManyResources') private readonly findManyResourcesQuery: UserFindManyResourcesQuery,
         @InjectQuery('UserAttributeFindOne') private readonly findOneAttributeQuery: UserAttributeFindOneQuery,
+        @InjectQuery('CompanyFilterFindMany') private readonly findManyCompanyFiltersQuery: CompanyFilterFindManyQuery,
+        @InjectQuery('CorporativeFilterFindMany') private readonly findManyCorporativeFiltersQuery: CorporativeFilterFindManyQuery,
     ) { }
 
     @Get()
@@ -63,5 +69,23 @@ export class UserReadController {
     ): Promise<UserAttributeResponseDto> {
         const data = await this.findOneAttributeQuery.handleAsync({ userId, attributeName });
         return plainToInstance(UserAttributeResponseDto, data);
+    }
+
+    @Get(':userId/company-filters')
+    async findManyCompanyFilters(
+        @Param('userId') userId: string
+    ): Promise<CompanyFilterFindManyResponseDto> {
+        const values = await this.findManyCompanyFiltersQuery.handleAsync({ userId });
+        const data = values.data.map(e => CompanyFilterModelMapper.toDTO(e));
+        return plainToInstance(CompanyFilterFindManyResponseDto, { ...values, data });
+    }
+
+    @Get(':userId/corporative-filters')
+    async findManyCorporativeFilters(
+        @Param('userId') userId: string,
+    ): Promise<CorporativeFilterFindManyResponseDto> {
+        const values = await this.findManyCorporativeFiltersQuery.handleAsync({ userId });
+        const data = values.data.map(e => CorporativeFilterModelMapper.toDTO(e));
+        return plainToInstance(CorporativeFilterFindManyResponseDto, { ...values, data });
     }
 }
