@@ -18,7 +18,10 @@ describe("ClientFindManyQuery", () => {
 
     it("should fetch client data with filter, companyRuc, and pagination", async () => {
         const query: ClientFindManyQueryPayload = {
-            companyRuc: "12345678901",
+            companies: [{
+                corporativeName: "TESTING CORPORATIVE",
+                companyRuc: "12345678901"
+            }],
             filter: "John",
             skip: 0,
             limit: 10,
@@ -46,7 +49,7 @@ describe("ClientFindManyQuery", () => {
                         { field: 'patientRole', operator: 'like', value: query.filter },
                     ]
                 },
-                { field: 'companyRuc', operator: 'eq', value: query.companyRuc }
+                { field: 'companyRuc', operator: 'in', value: query.companies?.map(e => e.companyRuc) }
             ]
         });
         expect(result).toEqual({ data: mockData, amount: mockData.length });
@@ -59,13 +62,16 @@ describe("ClientFindManyQuery", () => {
                     { field: 'patientRole', operator: 'like', value: query.filter },
                 ]
             },
-            { field: 'companyRuc', operator: 'eq', value: query.companyRuc }
+            { field: 'companyRuc', operator: 'in', value: query.companies?.map(e => e.companyRuc) }
         ]);
     });
 
     it("should return empty array if no matching data found", async () => {
         const query: ClientFindManyQueryPayload = {
-            companyRuc: "12345678901",
+            companies: [{
+                corporativeName: "TESTING CORPORATIVE",
+                companyRuc: "12345678901"
+            }],
             filter: "Unknown",
             skip: 0,
             limit: 10,
@@ -83,7 +89,10 @@ describe("ClientFindManyQuery", () => {
 
     it("should handle case without filter", async () => {
         const query: ClientFindManyQueryPayload = {
-            companyRuc: "12345678901",
+            companies: [{
+                corporativeName: "TESTING CORPORATIVE",
+                companyRuc: "12345678901"
+            }],
             skip: 0,
             limit: 10,
             order: { patientName: "asc" }
@@ -102,12 +111,12 @@ describe("ClientFindManyQuery", () => {
             ...query,
             filter: [
                 { operator: "or", filter: [] },
-                { field: 'companyRuc', operator: 'eq', value: query.companyRuc }
+                { field: 'companyRuc', operator: 'in', value: query.companies?.map(e => e.companyRuc) }
             ]
         });
         expect(repository.countAsync).toHaveBeenCalledWith([
             { operator: "or", filter: [] },
-            { field: 'companyRuc', operator: 'eq', value: query.companyRuc }
+            { field: 'companyRuc', operator: 'in', value: query.companies?.map(e => e.companyRuc) }
         ]);
         expect(result).toEqual({ data: mockData, amount: mockData.length });
     });

@@ -6,7 +6,7 @@ import { OrderRepository } from "../../repository/model.repositories";
 
 export type OrderFindManyQueryPayload = {
     patientDni: string;
-    companyRuc?: string;
+    companiesRuc?: string[];
     filter?: string;
 } & Required<Pagination> & Order<OrderModel>;
 
@@ -22,8 +22,8 @@ export class OrderFindManyQueryImpl implements OrderFindManyQuery {
         if (query.filter) {
             filter.push({ field: 'orderProcess', operator: 'like', value: query.filter });
         }
-        if (query.companyRuc) {
-            filter.push({ field: 'companyRuc', operator: 'eq', value: query.companyRuc });
+        if (query.companiesRuc?.length) {
+            filter.push({ field: 'companyRuc', operator: 'in', value: query.companiesRuc });
         }
         const data = await this.repository.findManyAsync({
             filter: filter,
