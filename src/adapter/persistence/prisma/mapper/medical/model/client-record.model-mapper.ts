@@ -3,6 +3,10 @@ import { ClientRecordModel as PrismaClientRecordModel } from "@prisma/client";
 
 export class ClientRecordModelMapper {
     static toModel(value: PrismaClientRecordModel): ClientRecordModel {
-        return new ClientRecordModel({ ...value });
+        return new ClientRecordModel({
+            ...value,
+            recordMetadata: value.recordMetadata as any,
+            recordFilepath: value.recordFilepath,
+        });
     }
 }

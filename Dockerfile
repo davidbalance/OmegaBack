@@ -1,8 +1,5 @@
 # -------------------------------- DEVELOPMENT STAGE --------------------------------
-FROM node:23-alpine AS builder
-
-# Install dependencies for building
-RUN apk add --no-cache libc6-compat bash
+FROM node:20-slim AS builder
 
 WORKDIR /usr/src/app
 
@@ -22,10 +19,22 @@ COPY --chown=node:node . ./
 RUN npx prisma generate && npm run build && npm prune --omit=dev
 
 # -------------------------------- PRODUCTION STAGE --------------------------------
-FROM node:23-alpine AS production
+FROM node:20-bookworm-slim
 
-# Install dependencies needed for runtime
-RUN apk add --no-cache libc6-compat bash
+# Install latest Chrome dependencies and fonts
+RUN apt-get update \
+    && apt-get install -y wget gnupg ca-certificates procps libxss1 \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
+    --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
+# Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome \
+    CHROMIUM_PATH=/usr/bin/google-chrome
 
 WORKDIR /usr/src/app
 
@@ -47,6 +56,8 @@ COPY --from=builder --chown=node:node /usr/src/app/node_modules ./node_modules/
 COPY --from=builder --chown=node:node /usr/src/app/dist ./dist/
 COPY --from=builder --chown=node:node /usr/src/app/static ./static/
 COPY --from=builder --chown=node:node /usr/src/app/prisma ./prisma/
+
+# USER node
 
 # Default command to run the app
 CMD ["node", "dist/main.js"]

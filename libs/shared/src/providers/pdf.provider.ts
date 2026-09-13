@@ -1,4 +1,4 @@
 
 export interface PdfProvider {
-    craft(data: unknown): Promise<Buffer>;
+    craft(data: unknown, template: string): Promise<Buffer>;
 }

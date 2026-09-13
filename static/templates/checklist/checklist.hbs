@@ -1,0 +1,138 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certificado de Evaluación Médica Ocupacional</title>
+</head>
+
+<style>
+  * {
+    font-family: system-ui;
+    font-size: 9px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+  }
+
+  td,
+  th {
+    border: 0.5px solid #444444a4;
+    padding: 3px 5px;
+    height: 14px;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .item-section {
+    font-weight: bold;
+  }
+
+  .no-border-top {
+    border-top: none !important;
+  }
+
+  .no-border-bottom {
+    border-bottom: none !important;
+  }
+</style>
+
+<body style="height: 90%; display: flex; flex-direction: column;">
+
+  <div style="flex:1; display: flex; flex-direction: column; gap:2rem">
+    <h1 style="text-align: center; font-weight: bold; font-size: 16px;">CHECKLIST DE EXAMENES</h1>
+
+    <table>
+      <tbody>
+        <tr>
+          <td class="item-section">FECHA DE INGRESO</td>
+          <td></td>
+          <td class="item-section">HORA DE INGRESO</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="item-section">FECHA DE ATENCIÓN</td>
+          <td></td>
+          <td class="item-section">HORA DE SALIDA</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <tbody>
+        <tr>
+          <td class="item-section no-border-bottom" colspan="2">PUESTO</td>
+          <td rowspan="6" style="border: none; width:5px"></td>
+          <td class="item-section no-border-bottom" colspan="2">PACIENTE</td>
+          <td rowspan="6" style="border: none; width:5px"></td>
+          <td class="item-section no-border-bottom" colspan="2">EMPRESA</td>
+        </tr>
+        <tr>
+          <td class="no-border-top" colspan="2" rowspan="2"></td>
+          <td class="no-border-top" colspan="2"></td>
+          <td class="no-border-top" colspan="2" rowspan="2"></td>
+        </tr>
+        <tr>
+          <td class="item-section no-border-bottom" colspan="2">CEDULA</td>
+        </tr>
+        <tr>
+          <td class="item-section no-border-bottom" colspan="2">TIPO</td>
+          <td class="no-border-top" colspan="2"></td>
+          <td class="item-section no-border-bottom" colspan="2">RUC</td>
+        </tr>
+        <tr>
+          <td class="no-border-top" colspan="2" rowspan="2"></td>
+          <td class="item-section" rowspan="2">EDAD</td>
+          <td rowspan="2"></td>
+          <td class="no-border-top" colspan="2" rowspan="2"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <br />
+
+    <table>
+      <tbody>
+        {{#each checklist}}
+        <tr>
+          <td style="padding-bottom: 1rem; border:none; width: 15px;">
+            <input type="checkbox" {{#if this.isChecked}}checked{{/if}} />
+          </td>
+          <td style="padding-bottom: 1rem; border:none; text-align: left;">
+            {{this.name}}
+          </td>
+          <td style="padding-bottom: 1rem; border:none; text-align: left;">
+            Resp:________________________
+          </td>
+          <td style="padding-bottom: 1rem; border:none; text-align: left;">
+            Observación:_____________________________________________
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+
+  <footer>
+    <table>
+      <tr>
+        <td colspan="4" style="border: none;"></td>
+        <td colspan="2" style="text-align: center; border-left: none; border-right: none; border-bottom: none;">
+          FIRMA DEL PACIENTE
+        </td>
+        <td colspan="4" style="border: none;"></td>
+      </tr>
+    </table>
+  </footer>
+
+</body>
+
+</html>
