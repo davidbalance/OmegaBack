@@ -31,10 +31,13 @@ import { checklistParser } from "./helper/checklist-parser.helper";
         },
         {
             provide: ChecklistTemplateToken,
-            useFactory: (config: ConfigService): string => {
-                return config.getOrThrow<OrderHelper>(OrderHelperName).templatePath;
+            useFactory: (config: ConfigService, pathService: PathType, fileService: FileType): Buffer => {
+                const directory = config.getOrThrow<OrderHelper>(OrderHelperName).templatePath;
+                const fullPath = pathService.resolve(directory);
+                const buffer = fileService.readFileSync(fullPath);
+                return buffer;
             },
-            inject: [ConfigService]
+            inject: [ConfigService, PathToken, FileToken]
         },
         {
             provide: ChecklistDataParserToken,

@@ -11,5 +11,11 @@ export type ChecklistFormat = {
     companyName: string;
     companyRuc: string;
     orderProcess: string;
-    checklist: string[]
+    checklist: ChecklistItem[]
+}
+
+export type ChecklistItem = {
+  name: string;
+  isChecked: boolean;
+  hexColor: string;
 }
