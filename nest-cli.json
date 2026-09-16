@@ -82,15 +82,6 @@
         "tsConfigPath": "libs/local-jwt/tsconfig.lib.json"
       }
     },
-    "local-pdf": {
-      "type": "library",
-      "root": "libs/local-pdf",
-      "entryFile": "index",
-      "sourceRoot": "libs/local-pdf/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/local-pdf/tsconfig.lib.json"
-      }
-    },
     "local-spreadsheet": {
       "type": "library",
       "root": "libs/local-spreadsheet",
@@ -107,6 +98,15 @@
       "sourceRoot": "libs/local-zip/src",
       "compilerOptions": {
         "tsConfigPath": "libs/local-zip/tsconfig.lib.json"
+      }
+    },
+    "puppeteer-pdf": {
+      "type": "library",
+      "root": "libs/puppeteer-pdf",
+      "entryFile": "index",
+      "sourceRoot": "libs/puppeteer-pdf/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/puppeteer-pdf/tsconfig.lib.json"
       }
     },
     "shared": {

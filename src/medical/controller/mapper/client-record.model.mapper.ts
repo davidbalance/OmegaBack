@@ -6,7 +6,9 @@ export class ClientRecordModelMapper {
         return {
             recordEmissionDate: value.recordEmissionDate,
             recordId: value.recordId,
-            recordName: value.recordName
+            recordName: value.recordName,
+            recordVersion: value.version,
+            recordStatus: value.status
         }
     }
 }
