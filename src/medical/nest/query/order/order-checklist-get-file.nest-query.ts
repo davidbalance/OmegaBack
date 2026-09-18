@@ -12,7 +12,7 @@ class OrderChecklistGetFileNestQuery extends OrderChecklistGetFileQueryImpl {
     constructor(
         @InjectModelRepository("OrderChecklist") repository: OrderChecklistRepository,
         @InjectPdf() pdf: PdfProvider,
-        @Inject(ChecklistTemplateToken) templatePath: string,
+        @Inject(ChecklistTemplateToken) templatePath: Buffer,
         @Inject(ChecklistDataParserToken) parser: OrderChecklistDataParseFunc
     ) {
         super(repository, pdf, templatePath, parser);

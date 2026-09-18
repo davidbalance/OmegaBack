@@ -102,18 +102,21 @@
       <tbody>
         {{#each checklist}}
         <tr>
-          <td style="padding-bottom: 1rem; border:none; width: 15px;">
+          <td style="border:none; width: 15px;">
             <input type="checkbox" {{#if this.isChecked}}checked{{/if}} />
           </td>
-          <td style="padding-bottom: 1rem; border:none; text-align: left;">
+          <td style="border-color: #161616; min-width: 4rem;text-align: left; background-color: {{{this.hexColor}}};">
             {{this.name}}
           </td>
-          <td style="padding-bottom: 1rem; border:none; text-align: left;">
+          <td style="margin-left: 1rem; border:none; text-align: left;">
             Resp:________________________
           </td>
-          <td style="padding-bottom: 1rem; border:none; text-align: left;">
+          <td style="border:none; text-align: left;">
             Observación:_____________________________________________
           </td>
+        </tr>
+        <tr>
+          <td style="border:none; height: 1rem;" colspan="4"></td>
         </tr>
         {{/each}}
       </tbody>

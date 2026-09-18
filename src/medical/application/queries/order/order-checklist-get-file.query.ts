@@ -14,7 +14,7 @@ export class OrderChecklistGetFileQueryImpl implements OrderChecklistGetFileQuer
     constructor(
         private readonly repository: ModelRepository<OrderChecklistModel>,
         private readonly pdf: PdfProvider,
-        private readonly templatePath: string,
+        private readonly template: Buffer,
         private readonly parser: OrderChecklistDataParseFunc
     ) { }
 
@@ -24,7 +24,7 @@ export class OrderChecklistGetFileQueryImpl implements OrderChecklistGetFileQuer
 
         const data = this.parser(values);
 
-        const buffer = await this.pdf.craft(data, this.templatePath);
+        const buffer = await this.pdf.craft(data, this.template.toString());
         return buffer;
     }
 

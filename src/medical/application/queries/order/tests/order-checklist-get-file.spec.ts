@@ -9,7 +9,7 @@ describe("OrderChecklistGetFileQuery", () => {
     let repository: jest.Mocked<ModelRepository<OrderChecklistModel>>;
     let pdfProvider: jest.Mocked<PdfProvider>;
     let parserFunc: jest.Mock;
-    const templatePath: string = "/path/to/template.template"
+    const template: Buffer = Buffer.from("<h1></h1>");
     let handler: OrderChecklistGetFileQuery;
 
     beforeEach(() => {
@@ -23,7 +23,7 @@ describe("OrderChecklistGetFileQuery", () => {
 
         parserFunc = jest.fn();
 
-        handler = new OrderChecklistGetFileQueryImpl(repository, pdfProvider, templatePath, parserFunc);
+        handler = new OrderChecklistGetFileQueryImpl(repository, pdfProvider, template, parserFunc);
     });
 
     it("should return a PDF buffer when order checklists are found", async () => {
