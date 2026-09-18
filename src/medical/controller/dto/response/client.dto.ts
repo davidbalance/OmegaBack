@@ -1,6 +1,6 @@
 import { ApiResponseProperty } from "@nestjs/swagger";
 import { PaginationResponse } from "@shared/shared/nest/pagination-response";
-import { Expose, Type } from "class-transformer";
+import { Expose, Transform, Type } from "class-transformer";
 
 export class ClientResponseDto {
     @Expose() public readonly patientDni: string;
@@ -10,7 +10,7 @@ export class ClientResponseDto {
 
     @ApiResponseProperty({ enum: { male: 'male', female: 'female' } })
     @Expose() public readonly patientGender: 'male' | 'female';
-    
+
     @Expose() public readonly patientRole: string | null;
 }
 
@@ -48,4 +48,11 @@ export class ClientRecordResponseDto {
     @Expose() public readonly recordId: string;
     @Expose() public readonly recordName: string;
     @Expose() public readonly recordEmissionDate: Date;
+    @Expose() public readonly recordVersion: string;
+    @Expose() public readonly recordStatus: string;
+}
+
+export class ClientRecordMetadataResponseDto {
+    @Expose() public readonly patientDni: string;
+    @Expose() public readonly metadata: object;
 }
