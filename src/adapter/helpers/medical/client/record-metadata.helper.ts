@@ -281,6 +281,7 @@ const FORMAT_DATE = "yyyy/MM/dd"
 const MAX_DIAGNOSES_LENGTH: number = 6;
 const MAX_PATIENT_HISTORY_EXAM_LENGTH: number = 2;
 const MAX_EXAM_RESULT_LENGTH: number = 6;
+const DEFAULT_EMPLOYEMENT_HISTORY_LENGTH: number = 5;
 const MAX_EMPLOYEMENT_HISTORY_LENGTH: number = 19;
 const MAX_EXTRA_LABORAL_ACTIVITIES_LENGTH: number = 3;
 const MAX_LIFE_STYLE_LENGTH: number = 3;
@@ -324,7 +325,7 @@ const mapFemoExamResults = (exams: any): TemplateFemo["examResults"]["exams"] =>
 }
 
 const mapFemoEmploymentHistory = (history: any): TemplateFemo["employmentHistory"] => {
-    const base: TemplateFemo["employmentHistory"] = Array<TemplateFemo["employmentHistory"][0]>(MAX_EMPLOYEMENT_HISTORY_LENGTH).fill({
+    const base: TemplateFemo["employmentHistory"] = Array<TemplateFemo["employmentHistory"][0]>(DEFAULT_EMPLOYEMENT_HISTORY_LENGTH).fill({
         workplace: "",
         activities: "",
         lastWork: "",
