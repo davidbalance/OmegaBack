@@ -30,6 +30,18 @@
     text-align: center;
   }
 
+  table.checklist {
+    border-collapse: separate;
+    border-spacing: 1rem;
+  }
+
+  table.checklist td,
+  table.checklist th {
+    border: 0.5px solid #444444a4;
+    height: 8px;
+    padding: 0!important;
+  }
+
   .item-section {
     font-weight: bold;
   }
@@ -98,25 +110,22 @@
 
     <br />
 
-    <table>
+    <table class="checklist">
       <tbody>
         {{#each checklist}}
         <tr>
           <td style="border:none; width: 15px;">
             <input type="checkbox" {{#if this.isChecked}}checked{{/if}} />
           </td>
-          <td style="border-color: #161616; min-width: 3rem;text-align: left; background-color: {{{this.hexColor}}};">
+          <td style="border-color: #161616; text-align: left; background-color: {{{this.hexColor}}};">
             {{this.name}}
           </td>
-          <td style="margin-left: 0.5rem; border:none; text-align: left;">
+          <td style="border:none; text-align: left; width: 16rem">
             Resp:________________________
           </td>
-          <td style="border:none; text-align: left;">
+          <td style="border:none; text-align: left; width: 28rem">
             Observación:_____________________________________________
           </td>
-        </tr>
-        <tr>
-          <td style="border:none; height: 1rem;" colspan="4"></td>
         </tr>
         {{/each}}
       </tbody>
