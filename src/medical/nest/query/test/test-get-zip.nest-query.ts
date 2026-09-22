@@ -4,16 +4,14 @@ import { TestGetZipQueryImpl } from "@omega/medical/application/queries/test/tes
 import { InjectZipper } from "@shared/shared/nest/inject";
 import { ZipProvider } from "@shared/shared/providers/zip.provider";
 import { ResultGetFileQuery } from "@omega/medical/application/queries/test/result-get-file.query";
-import { ReportGetFileQuery } from "@omega/medical/application/queries/test/report-get-file.query";
 
 @Injectable()
 class TestGetZipNestQuery extends TestGetZipQueryImpl {
     constructor(
         @InjectZipper() zipper: ZipProvider,
         @InjectQuery("ResultGetFile") resultFileQuery: ResultGetFileQuery,
-        @InjectQuery("ReportGetFile") reportFileQuery: ReportGetFileQuery
     ) {
-        super(zipper, resultFileQuery, reportFileQuery);
+        super(zipper, resultFileQuery);
     }
 }
 
