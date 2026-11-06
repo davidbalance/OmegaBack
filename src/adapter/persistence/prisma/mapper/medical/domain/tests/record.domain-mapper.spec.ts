@@ -61,13 +61,16 @@ describe('RecordDomainMapper', () => {
     });
 
     describe('toDomain', () => {
-        it('should correctly map a Prisma API key object to the Record domain', () => {
+        it('should correctly map a Prisma Record object to the RecordV1 domain', () => {
             const prismaObj: PrismaRecord = {
                 id: 'id-123',
                 filepath: '/path/to/file',
+                metadata: { "hello": "world" },
                 name: 'Test-Record',
                 createdAt: new Date(),
                 clientId: 'client-123',
+                version: "v1",
+                status: "completed",
                 updatedAt: null
             };
 

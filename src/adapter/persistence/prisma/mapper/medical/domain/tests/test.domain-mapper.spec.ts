@@ -1,13 +1,11 @@
 import { Test } from "@omega/medical/core/domain/test/test.domain";
-import { MedicalTest as PrismaTest, MedicalReport as PrismaReport, MedicalResult as PrismaResult, MedicalDiseaseReport as PrismaDisease, MedicalTestExternalKey as PrismaExternalKey, Prisma } from "@prisma/client";
+import { MedicalResult as PrismaResult, MedicalDiseaseReport as PrismaDisease, MedicalTestExternalKey as PrismaExternalKey, Prisma } from "@prisma/client";
 import { TestExternalKey } from "@omega/medical/core/domain/test/value-objects/test-external-key.value-object";
 import { PrismaTestWithResultAndReportAndDiseases, TestDomainMapper } from "../test.domain-mapper";
 import { Result } from "@omega/medical/core/domain/test/result.domain";
 import { DiseaseReport } from "@omega/medical/core/domain/test/disease-report.domain";
-import { Report } from "@omega/medical/core/domain/test/report.domain";
 import { DiseaseReportDomainMapper } from "../disease-report.domain-mapper";
 import { ResultDomainMapper } from "../result.domain-mapper";
-import { ReportDomainMapper } from "../report.domain-mapper";
 import { CreateTestExternalKeyPayload } from "@omega/medical/core/domain/test/payloads/test-external-key.payloads";
 
 describe('TestDomainMapper', () => {
@@ -68,7 +66,6 @@ describe('TestDomainMapper', () => {
             checklist: true,
             isActive: true,
             diseases: [{ id: 'disease-report-123' }] as unknown as PrismaDisease[],
-            report: { id: 'report-123' } as unknown as PrismaReport,
             result: { id: 'result-123' } as unknown as PrismaResult,
             externalKeys: [{ id: 'external-key-123' }] as unknown as PrismaExternalKey[],
             createdAt: new Date(),
@@ -84,7 +81,6 @@ describe('TestDomainMapper', () => {
             jest.clearAllMocks();
             spyDiseaseReportDomainMapper = jest.spyOn(DiseaseReportDomainMapper, 'toDomain').mockReturnValue({ mapped: 'email' } as unknown as DiseaseReport);
             spyResultDomainMapper = jest.spyOn(ResultDomainMapper, 'toDomain').mockReturnValue({ mapped: 'record' } as unknown as Result);
-            spyReportDomainMapper = jest.spyOn(ReportDomainMapper, 'toDomain').mockReturnValue({ mapped: 'record' } as unknown as Report);
             spyTestExternalKey = jest.spyOn(TestExternalKey, 'create').mockReturnValue({ mapped: 'record' } as unknown as TestExternalKey);
         });
 
@@ -106,11 +102,6 @@ describe('TestDomainMapper', () => {
         it('should map records using ResultDomainMapper', () => {
             TestDomainMapper.toDomain(basePrismaObj);
             expect(spyResultDomainMapper).toHaveBeenCalledWith({ ...basePrismaObj.result });
-        });
-
-        it('should map records using ReportDomainMapper', () => {
-            TestDomainMapper.toDomain(basePrismaObj);
-            expect(spyReportDomainMapper).toHaveBeenCalledWith({ ...basePrismaObj.report });
         });
 
         it('should map emails using TestExternalKey', () => {
