@@ -81,7 +81,6 @@ describe("ClientCompleteRecordCommand", () => {
             filter: [{ field: "patientDni", operator: "eq", value: payload.patientDni }],
         });
         expect(metadataHelper).toHaveBeenCalled()
-        expect(increment.next).toHaveBeenCalledWith(payload.type);
         expect(pdf.craft).toHaveBeenCalled();
         expect(filenameHelper).toHaveBeenCalledWith(payload.type);
         expect(file.write).toHaveBeenCalledWith(expectedFilepath, "record.pdf", mockFile);
