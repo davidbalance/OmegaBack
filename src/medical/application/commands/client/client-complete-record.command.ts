@@ -40,7 +40,6 @@ export class ClientCompleteRecordCommandImpl implements ClientCompleteRecordComm
         const record = client.records.find(e => e.id === value.recordId);
         if (!record) throw new RecordNotFoundError(value.recordId);
 
-        const recordNumber = await this.increment.next(value.type);
         const fileNumber = await this.increment.next(RECORD_FILE_COUNT_KEY);
         const template = this.template[value.type];
 
@@ -48,7 +47,7 @@ export class ClientCompleteRecordCommandImpl implements ClientCompleteRecordComm
             ...value.metadata,
             establishment: {
                 ...(value.metadata.establishment ? value.metadata.establishment : {}),
-                clinicalHistoryNumber: recordNumber,
+                clinicalHistoryNumber: client.patientDni,
                 fileNumber: fileNumber,
             }
         }

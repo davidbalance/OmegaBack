@@ -351,7 +351,7 @@ const mapFemoEmploymentHistory = (history: any): TemplateFemo["employmentHistory
         disease: e?.disease ?? "",
         isQualified: e?.isQualified,
         notQualified: e?.notQualified,
-        date: e?.date ? formatDate(e.date, FORMAT_DATE) : "",
+        date: (e?.incident || e?.accident || e?.disease) && e?.date ? formatDate(e.date, FORMAT_DATE) : "",
         specification: e?.specification,
         observations: e?.observations,
     })) : [];
@@ -422,6 +422,11 @@ const mapFemoRegionObservation = (region: any): string => Object.
         map(([key, description]) => `${regionMap[key]}: ${description}`)).
     reduce((acc, curr) => [...acc, ...curr], []).
     join("<br />")
+ 
+const SUBTANCE_DICTIONARY = {
+    "tabacco": "Tabaco",
+    "alcohol": "Alcohol"
+}
 
 const mapFemoLifeStyle = (toxicHabit: any, lifeStyles: any, preexistingConditions: any): FemoLifeStyle[] => {
     const base: FemoLifeStyle[] = Array<FemoLifeStyle>(MAX_LIFE_STYLE_LENGTH).fill({
@@ -446,23 +451,30 @@ const mapFemoLifeStyle = (toxicHabit: any, lifeStyles: any, preexistingCondition
     const lifeStyleArr = lifeStyles && Array.isArray(lifeStyles) ? lifeStyles : [lifeStyles];
     const preexistingConditionArr = preexistingConditions && Array.isArray(preexistingConditions) ? preexistingConditions : [preexistingConditions];
 
-    const mapped: FemoLifeStyle[] = Array.from({ length: MAX_LIFE_STYLE_LENGTH }).fill("").map<FemoLifeStyle>((_, i) => ({
-        substanceConsumption: {
-            substance: toxicHabitArr[i]?.name ?? "",
-            abstinenceMonths: toxicHabitArr[i]?.abstinenceDuration ?? "",
-            consumptionTime: toxicHabitArr[i]?.substanceUseDuration ?? "",
-            doesNotConsume: toxicHabitArr[i]?.status === "NON_USER",
-            exConsumer: toxicHabitArr[i]?.status === "FORMER_USER",
-        },
-        lifestyle: {
-            activity: lifeStyleArr[i]?.type ?? "",
-            duration: lifeStyleArr[i]?.duration ?? "",
-        },
-        preexistingCondition: {
-            medication: preexistingConditionArr[i]?.type ?? "",
-            quantity: preexistingConditionArr[i]?.duration ?? "",
+    const mapped: FemoLifeStyle[] = Array.from({ length: MAX_LIFE_STYLE_LENGTH }).fill("").map<FemoLifeStyle>((_, i) => {
+        let substanceName = toxicHabitArr[i]?.name ?? ""
+        if (substanceName in SUBTANCE_DICTIONARY) {
+            substanceName = SUBTANCE_DICTIONARY[substanceName]
         }
-    }))
+
+        return {
+            substanceConsumption: {
+                substance: substanceName,
+                abstinenceMonths: toxicHabitArr[i]?.abstinenceDuration ?? "",
+                consumptionTime: toxicHabitArr[i]?.substanceUseDuration ?? "",
+                doesNotConsume: toxicHabitArr[i]?.status === "NON_USER",
+                exConsumer: toxicHabitArr[i]?.status === "FORMER_USER",
+            },
+            lifestyle: {
+                activity: lifeStyleArr[i]?.type ?? "",
+                duration: lifeStyleArr[i]?.duration ?? "",
+            },
+            preexistingCondition: {
+                medication: preexistingConditionArr[i]?.type ?? "",
+                quantity: preexistingConditionArr[i]?.duration ?? "",
+            }
+        }
+    })
 
     const temp = [...mapped, ...base].slice(0, MAX_LIFE_STYLE_LENGTH)
 
