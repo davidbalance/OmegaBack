@@ -9,7 +9,6 @@ export class OrderCloudFileResponseDto {
     @Expose() public readonly patientFullname: string;
     @Expose() public readonly examName: string;
     @Expose() public readonly resultHasFile: boolean;
-    @Expose() public readonly reportHasContent: boolean;
 }
 
 export class OrderResponseDto {
@@ -30,7 +29,6 @@ export class OrderManyResponseDto implements PaginationResponse<OrderPatientResp
 
 
 export class OrderDoctorResponseDto extends OrderResponseDto {
-    @Expose() public readonly orderLeftReport: number;
 }
 
 export class OrderDoctorManyResponseDto implements PaginationResponse<OrderDoctorResponseDto> {
