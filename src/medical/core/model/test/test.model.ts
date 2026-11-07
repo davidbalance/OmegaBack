@@ -4,7 +4,6 @@ export type TestModelProps = {
     testId: string;
     testCheck: boolean;
     resultHasFile: boolean;
-    reportHasContent: boolean;
     orderId: string;
     examName: string;
     examSubtype: string;
@@ -24,10 +23,6 @@ export class TestModel extends Model<TestModelProps> {
 
     public get resultHasFile(): Readonly<boolean> {
         return this.props.resultHasFile;
-    }
-
-    public get reportHasContent(): Readonly<boolean> {
-        return this.props.reportHasContent;
     }
 
     public get orderId(): Readonly<string> {

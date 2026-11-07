@@ -9,7 +9,6 @@ export class OrderDoctorModelMapper {
             orderMail: value.orderMail,
             orderProcess: value.orderProcess,
             orderStatus: value.orderStatus,
-            orderLeftReport: value.orderLeftReport
         }
     }
 }

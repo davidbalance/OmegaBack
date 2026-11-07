@@ -7,7 +7,7 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["views"]
-  binaryTargets = ["native", "debian-openssl-3.0.x"]
+  binaryTargets   = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -836,13 +836,12 @@ view OrderChecklistModel {
 }
 
 view OrderCloudFileModel {
-  testId           String  @unique @map("test_id") @db.Char(36)
-  patientDni       String  @map("patient_dni") @db.VarChar(16)
-  patientFullname  String  @map("patient_fullname") @db.VarChar(128)
-  orderId          String  @map("order_id") @db.Char(36)
-  examName         String  @map("exam_name") @db.VarChar(128)
-  resultHasFile    Boolean @map("result_has_file") @db.TinyInt
-  reportHasContent Boolean @map("report_has_content") @db.TinyInt
+  testId          String  @unique @map("test_id") @db.Char(36)
+  patientDni      String  @map("patient_dni") @db.VarChar(16)
+  patientFullname String  @map("patient_fullname") @db.VarChar(128)
+  orderId         String  @map("order_id") @db.Char(36)
+  examName        String  @map("exam_name") @db.VarChar(128)
+  resultHasFile   Boolean @map("result_has_file") @db.TinyInt
 
   @@map("v_m_order_cloud_file_items")
 }
@@ -852,7 +851,6 @@ view OrderDoctorModel {
   orderProcess      String             @map("medical_order_process") @db.VarChar(64)
   orderMail         Boolean            @map("medical_order_email") @db.TinyInt
   orderStatus       MedicalOrderStatus @map("medical_order_status")
-  orderLeftReport   Int                @map("medical_order_left_reports") @db.Int
   orderEmissionDate DateTime           @map("medical_order_emission_date") @db.Date
   doctorDni         String             @map("doctor_dni") @db.VarChar(10)
   patientDni        String             @map("patient_dni") @db.VarChar(16)
@@ -914,23 +912,6 @@ view DiseaseReportModel {
   @@map("v_m_disease_reports")
 }
 
-view ReportModel {
-  testId              String   @unique @map("medical_test_id") @db.Char(36)
-  reportContent       String?  @map("medical_report_content") @db.LongText
-  reportFilepath      String?  @map("medical_report_filepath") @db.VarChar(512)
-  reportEmissionDate  DateTime @map("medical_report_create_at")
-  patientFullname     String   @map("patient_fullname") @db.VarChar(128)
-  patientAge          Int      @map("patient_age") @db.Int
-  patientDni          String   @map("patient_dni") @db.VarChar(16)
-  locationCompanyName String   @map("location_company_name") @db.VarChar(64)
-  examName            String   @map("exam_name") @db.VarChar(128)
-  doctorDni           String   @map("doctor_dni") @db.VarChar(10)
-  doctorFullname      String   @map("doctor_fullname") @db.VarChar(128)
-  doctorSignature     String   @map("doctor_signature") @db.VarChar(512)
-
-  @@map("v_m_reports")
-}
-
 view ResultFilepathModel {
   testId              String @unique @map("medical_test_id") @db.Char(36)
   orderYear           Int    @map("medical_order_year") @db.Int
@@ -977,15 +958,14 @@ view TestReportModel {
 }
 
 view TestModel {
-  testId           String  @unique @map("medical_test_id") @db.Char(36)
-  testCheck        Boolean @map("test_checklist") @db.TinyInt
-  resultHasFile    Boolean @map("result_has_file") @db.TinyInt
-  reportHasContent Boolean @map("report_has_file") @db.TinyInt
-  orderId          String  @map("medical_order_id") @db.Char(36)
-  examName         String  @map("exam_name") @db.VarChar(128)
-  examSubtype      String  @map("exam_subtype") @db.VarChar(64)
-  examType         String  @map("exam_type") @db.VarChar(64)
-  diseases         String? @map("medical_test_diseases") @db.VarChar(512)
+  testId        String  @unique @map("medical_test_id") @db.Char(36)
+  testCheck     Boolean @map("test_checklist") @db.TinyInt
+  resultHasFile Boolean @map("result_has_file") @db.TinyInt
+  orderId       String  @map("medical_order_id") @db.Char(36)
+  examName      String  @map("exam_name") @db.VarChar(128)
+  examSubtype   String  @map("exam_subtype") @db.VarChar(64)
+  examType      String  @map("exam_type") @db.VarChar(64)
+  diseases      String? @map("medical_test_diseases") @db.VarChar(512)
 
   @@map("v_m_tests")
 }
