@@ -79,6 +79,12 @@
       "@omega/*": [
         "src/*"
       ],
+      "@pdf/puppeteer-pdf": [
+        "libs/puppeteer-pdf/src"
+      ],
+      "@pdf/puppeteer-pdf/*": [
+        "libs/puppeteer-pdf/src/*"
+      ],
       "@shared/shared": [
         "libs/shared/src"
       ],

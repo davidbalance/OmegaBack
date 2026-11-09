@@ -1,15 +1,13 @@
 import { Controller, Get, Param, Query, Res, StreamableFile, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { DiseaseReportFindOneQuery } from "@omega/medical/application/queries/test/disease-report-find-one.query";
-import { ReportFindOneQuery } from "@omega/medical/application/queries/test/report-find-one.query";
 import { TestFindManyQuery } from "@omega/medical/application/queries/test/test-find-many.query";
 import { TestReportGetFileQuery } from "@omega/medical/application/queries/test/test-report-get-file.query";
 import { InjectQuery } from "@omega/medical/nest/inject/query.inject";
 import { AuthGuard } from "@shared/shared/nest/guard";
-import { DiseaseReportResponseDto, ReportResponseDto, TestFileResultCountResponseDto, TestResponseDto } from "../dto/response/test.dto";
+import { DiseaseReportResponseDto, TestFileResultCountResponseDto, TestResponseDto } from "../dto/response/test.dto";
 import { DiseaseReportModelMapper } from "../mapper/disease-report.mapper";
 import { plainToInstance } from "class-transformer";
-import { ReportModelMapper } from "../mapper/report.mapper";
 import { TestModelMapper } from "../mapper/test.mapper";
 import { TestQueryDto, TestReportGetFileQueryDto } from "../dto/query/test-query.dto";
 import { TestFindOneQuery } from "@omega/medical/application/queries/test/test-find-one.query";
@@ -26,7 +24,6 @@ export class TestReadController {
     constructor(
         @InjectQuery('DiseaseReportFindOne') private readonly diseaseReportFindOneQuery: DiseaseReportFindOneQuery,
         @InjectQuery('DiseaseReportFindMany') private readonly diseaseReportFindManyQuery: DiseaseReportFindManyQuery,
-        @InjectQuery('ReportFindOne') private readonly reportFindOneQuery: ReportFindOneQuery,
         @InjectQuery('TestFindMany') private readonly testFindManyQuery: TestFindManyQuery,
         @InjectQuery('TestFindOne') private readonly testFindOneQuery: TestFindOneQuery,
         @InjectQuery('TestReportGetFile') private readonly testReportGetFileQuery: TestReportGetFileQuery,
@@ -68,15 +65,6 @@ export class TestReadController {
             'Content-Disposition': 'attachment;filename="medical_file.xslx"'
         });
         return new StreamableFile(buffer);
-    }
-
-    @Get(':testId/report')
-    async findOneReport(
-        @Param('testId') testId: string
-    ): Promise<ReportResponseDto> {
-        const values = await this.reportFindOneQuery.handleAsync({ testId });
-        const data = ReportModelMapper.toDTO(values);
-        return plainToInstance(ReportResponseDto, data);
     }
 
     @Get(':orderId')

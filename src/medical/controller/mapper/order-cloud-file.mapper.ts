@@ -8,7 +8,6 @@ export class OrderCloudFileModelMapper {
             examName: value.examName,
             patientDni: value.patientDni,
             patientFullname: value.patientFullname,
-            reportHasContent: value.reportHasContent,
             resultHasFile: value.resultHasFile,
         }
     }

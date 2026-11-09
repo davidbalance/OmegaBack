@@ -13,8 +13,7 @@ export function setupGlobalPipesAndInterceptors<T>(app: INestApplication<T>) {
     }));
     app.useGlobalInterceptors(
         new ClassSerializerInterceptor(app.get(Reflector), {
-            strategy: 'excludeAll',
-            excludeExtraneousValues: true
+            excludeExtraneousValues: false
         })
     );
 }

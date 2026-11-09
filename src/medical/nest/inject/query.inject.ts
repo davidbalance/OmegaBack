@@ -10,7 +10,8 @@ export const ClientFindOneByDniQueryToken = 'ClientFindOneByDniQuery';
 export const ClientFindOneQueryToken = 'ClientFindOneQuery';
 export const ClientJobPositionFindOneQueryToken = 'ClientJobPositionFindOneQuery';
 export const ClientRecordFindManyQueryToken = 'ClientRecordFindManyQuery';
-export const ClientRecordFindOneQueryToken = 'ClientRecordFindOneQuery';
+export const ClientRecordFindOneFileQueryToken = 'ClientRecordFindOneFileQuery';
+export const ClientRecordFindOneMetadataQueryToken = 'ClientRecordFindOneMetadataQuery';
 export const ClientManagementFindOneQueryToken = 'ClientManagementFindOneQuery';
 export const OrderChecklistFindManyQueryToken = 'OrderChecklistFindManyQuery';
 export const OrderChecklistGetFileQueryToken = 'OrderChecklistGetFileQuery';
@@ -25,8 +26,6 @@ export const OrderFindManyQueryToken = 'OrderFindManyQuery';
 export const OrderFindOneByExternalKeyQueryToken = 'OrderFindOneByExternalKeyQuery';
 export const DiseaseReportFindManyQueryToken = 'DiseaseReportFindManyQuery';
 export const DiseaseReportFindOneQueryToken = 'DiseaseReportFindOneQuery';
-export const ReportFindOneQueryToken = 'ReportFindOneQuery';
-export const ReportGetFileQueryToken = 'ReportGetFileQuery';
 export const ResultGetFileFromExternalSourceQueryToken = 'ResultGetFileFromExternalSourceQuery';
 export const ResultGetFileQueryToken = 'ResultGetFileQuery';
 export const ResultGetFilepathQueryToken = 'ResultGetFilepathQuery';
@@ -50,7 +49,8 @@ const query = {
     ClientFindOne: ClientFindOneQueryToken,
     ClientJobPositionFindOne: ClientJobPositionFindOneQueryToken,
     ClientRecordFindMany: ClientRecordFindManyQueryToken,
-    ClientRecordFindOne: ClientRecordFindOneQueryToken,
+    ClientRecordFindOneFile: ClientRecordFindOneFileQueryToken,
+    ClientRecordFindOneMetadata: ClientRecordFindOneMetadataQueryToken,
     ClientManagementFindOne: ClientManagementFindOneQueryToken,
     OrderChecklistFindMany: OrderChecklistFindManyQueryToken,
     OrderChecklistGetFile: OrderChecklistGetFileQueryToken,
@@ -65,8 +65,6 @@ const query = {
     OrderFindOneByExternalKey: OrderFindOneByExternalKeyQueryToken,
     DiseaseReportFindMany: DiseaseReportFindManyQueryToken,
     DiseaseReportFindOne: DiseaseReportFindOneQueryToken,
-    ReportFindOne: ReportFindOneQueryToken,
-    ReportGetFile: ReportGetFileQueryToken,
     ResultGetFileFromExternalSource: ResultGetFileFromExternalSourceQueryToken,
     ResultGetFile: ResultGetFileQueryToken,
     ResultGetFilepath: ResultGetFilepathQueryToken,

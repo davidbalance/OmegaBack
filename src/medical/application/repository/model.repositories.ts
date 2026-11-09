@@ -14,7 +14,6 @@ import { OrderProcessModel } from "@omega/medical/core/model/order/order-process
 import { OrderYearModel } from "@omega/medical/core/model/order/order-year.model";
 import { OrderModel } from "@omega/medical/core/model/order/order.model";
 import { DiseaseReportModel } from "@omega/medical/core/model/test/disease-report.model";
-import { ReportModel } from "@omega/medical/core/model/test/report.model";
 import { ResultFilepathModel } from "@omega/medical/core/model/test/result-filepath.model";
 import { TestExternalConnectionModel } from "@omega/medical/core/model/test/test-external-connection.model";
 import { TestInnerModel } from "@omega/medical/core/model/test/test-inner.model";
@@ -41,7 +40,6 @@ export type OrderRepository = ModelRepository<OrderModel> & CountRepository<Orde
 export type OrderExternalConnectionRepository = ModelRepository<OrderExternalConnectionModel>;
 
 export type DiseaseReportRepository = ModelRepository<DiseaseReportModel>;
-export type ReportRepository = ModelRepository<ReportModel>;
 export type ResultFilepathRepository = ModelRepository<ResultFilepathModel>;
 export type TestReportRepository = ModelRepository<TestReportModel>;
 export type TestRepository = ModelRepository<TestModel>;

@@ -11,7 +11,6 @@ describe('OrderCloudFileModelMapper', () => {
             orderId: "order-123",
             examName: "Exam",
             resultHasFile: true,
-            reportHasContent: true
         };
 
         const expectedValue = new OrderCloudFileModel({ ...prismaValue });
@@ -22,7 +21,6 @@ describe('OrderCloudFileModelMapper', () => {
         expect(result.orderId).toBe(expectedValue.orderId);
         expect(result.examName).toBe(expectedValue.examName);
         expect(result.resultHasFile).toBe(expectedValue.resultHasFile);
-        expect(result.reportHasContent).toBe(expectedValue.reportHasContent);
 
     });
 });

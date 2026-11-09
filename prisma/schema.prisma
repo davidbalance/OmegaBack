@@ -7,6 +7,7 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["views"]
+  binaryTargets   = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -22,6 +23,16 @@ enum PatientGender {
 enum MedicalOrderStatus {
   created
   validated
+}
+
+enum MedicalRecordVersion {
+  v1
+  v2
+}
+
+enum MedicalRecordStatus {
+  completed
+  started
 }
 
 // Logger Module
@@ -182,9 +193,12 @@ model MedicalEmail {
 }
 
 model MedicalRecord {
-  id       String @id @default(uuid()) @map("medical_record_id") @db.Char(36)
-  filepath String @map("medical_record_filepath") @db.Text
-  name     String @map("medical_record_name") @db.VarChar(64)
+  id       String               @id @default(uuid()) @map("medical_record_id") @db.Char(36)
+  filepath String               @map("medical_record_filepath") @db.Text
+  name     String               @map("medical_record_name") @db.VarChar(64)
+  metadata Json?                @default("{}") @map("medical_record_metadata")
+  version  MedicalRecordVersion @default(v1) @map("medical_record_version")
+  status   MedicalRecordStatus  @default(completed) @map("medical_record_status")
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
@@ -253,7 +267,6 @@ model MedicalTest {
   orderId String       @map("medical_order_id") @db.Char(36)
 
   result       MedicalResult?
-  report       MedicalReport?
   diseases     MedicalDiseaseReport[]
   externalKeys MedicalTestExternalKey[]
 
@@ -286,21 +299,6 @@ model MedicalResult {
   testId String      @unique @map("medical_test_id") @db.Char(36)
 
   @@map("tbl_m_results")
-}
-
-model MedicalReport {
-  id       String   @id @default(uuid()) @map("medical_report_id") @db.Char(36)
-  content  String?  @map("medical_report_content") @db.LongText
-  filepath String?  @map("medical_report_filepath") @db.VarChar(512)
-  createAt DateTime @default(now()) @map("medical_report_create_at")
-
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime? @updatedAt @map("updated_at")
-
-  test   MedicalTest @relation(fields: [testId], references: [id], onDelete: Restrict)
-  testId String      @unique @map("medical_test_id") @db.Char(36)
-
-  @@map("tbl_m_reports")
 }
 
 model MedicalDiseaseReport {
@@ -793,11 +791,14 @@ view ClientEmailModel {
 }
 
 view ClientRecordModel {
-  recordId           String   @unique @map("medical_record_id") @db.Char(36)
-  recordFilepath     String   @map("medical_record_filepath") @db.Text
-  recordName         String   @map("medical_record_name") @db.VarChar(64)
-  recordEmissionDate DateTime @map("medical_record_create_at")
-  patientDni         String   @map("patient_dni") @db.VarChar(16)
+  recordId           String               @unique @map("medical_record_id") @db.Char(36)
+  recordFilepath     String               @map("medical_record_filepath") @db.Text
+  recordMetadata     Json?                @map("medical_record_metadata")
+  recordName         String               @map("medical_record_name") @db.VarChar(64)
+  recordEmissionDate DateTime             @map("medical_record_create_at")
+  patientDni         String               @map("patient_dni") @db.VarChar(16)
+  version            MedicalRecordVersion @map("version")
+  status             MedicalRecordStatus  @map("status")
 
   @@map("v_m_client_records")
 }
@@ -835,13 +836,12 @@ view OrderChecklistModel {
 }
 
 view OrderCloudFileModel {
-  testId           String  @unique @map("test_id") @db.Char(36)
-  patientDni       String  @map("patient_dni") @db.VarChar(16)
-  patientFullname  String  @map("patient_fullname") @db.VarChar(128)
-  orderId          String  @map("order_id") @db.Char(36)
-  examName         String  @map("exam_name") @db.VarChar(128)
-  resultHasFile    Boolean @map("result_has_file") @db.TinyInt
-  reportHasContent Boolean @map("report_has_content") @db.TinyInt
+  testId          String  @unique @map("test_id") @db.Char(36)
+  patientDni      String  @map("patient_dni") @db.VarChar(16)
+  patientFullname String  @map("patient_fullname") @db.VarChar(128)
+  orderId         String  @map("order_id") @db.Char(36)
+  examName        String  @map("exam_name") @db.VarChar(128)
+  resultHasFile   Boolean @map("result_has_file") @db.TinyInt
 
   @@map("v_m_order_cloud_file_items")
 }
@@ -851,7 +851,6 @@ view OrderDoctorModel {
   orderProcess      String             @map("medical_order_process") @db.VarChar(64)
   orderMail         Boolean            @map("medical_order_email") @db.TinyInt
   orderStatus       MedicalOrderStatus @map("medical_order_status")
-  orderLeftReport   Int                @map("medical_order_left_reports") @db.Int
   orderEmissionDate DateTime           @map("medical_order_emission_date") @db.Date
   doctorDni         String             @map("doctor_dni") @db.VarChar(10)
   patientDni        String             @map("patient_dni") @db.VarChar(16)
@@ -913,23 +912,6 @@ view DiseaseReportModel {
   @@map("v_m_disease_reports")
 }
 
-view ReportModel {
-  testId              String   @unique @map("medical_test_id") @db.Char(36)
-  reportContent       String?  @map("medical_report_content") @db.LongText
-  reportFilepath      String?  @map("medical_report_filepath") @db.VarChar(512)
-  reportEmissionDate  DateTime @map("medical_report_create_at")
-  patientFullname     String   @map("patient_fullname") @db.VarChar(128)
-  patientAge          Int      @map("patient_age") @db.Int
-  patientDni          String   @map("patient_dni") @db.VarChar(16)
-  locationCompanyName String   @map("location_company_name") @db.VarChar(64)
-  examName            String   @map("exam_name") @db.VarChar(128)
-  doctorDni           String   @map("doctor_dni") @db.VarChar(10)
-  doctorFullname      String   @map("doctor_fullname") @db.VarChar(128)
-  doctorSignature     String   @map("doctor_signature") @db.VarChar(512)
-
-  @@map("v_m_reports")
-}
-
 view ResultFilepathModel {
   testId              String @unique @map("medical_test_id") @db.Char(36)
   orderYear           Int    @map("medical_order_year") @db.Int
@@ -976,15 +958,14 @@ view TestReportModel {
 }
 
 view TestModel {
-  testId           String  @unique @map("medical_test_id") @db.Char(36)
-  testCheck        Boolean @map("test_checklist") @db.TinyInt
-  resultHasFile    Boolean @map("result_has_file") @db.TinyInt
-  reportHasContent Boolean @map("report_has_file") @db.TinyInt
-  orderId          String  @map("medical_order_id") @db.Char(36)
-  examName         String  @map("exam_name") @db.VarChar(128)
-  examSubtype      String  @map("exam_subtype") @db.VarChar(64)
-  examType         String  @map("exam_type") @db.VarChar(64)
-  diseases         String? @map("medical_test_diseases") @db.VarChar(512)
+  testId        String  @unique @map("medical_test_id") @db.Char(36)
+  testCheck     Boolean @map("test_checklist") @db.TinyInt
+  resultHasFile Boolean @map("result_has_file") @db.TinyInt
+  orderId       String  @map("medical_order_id") @db.Char(36)
+  examName      String  @map("exam_name") @db.VarChar(128)
+  examSubtype   String  @map("exam_subtype") @db.VarChar(64)
+  examType      String  @map("exam_type") @db.VarChar(64)
+  diseases      String? @map("medical_test_diseases") @db.VarChar(512)
 
   @@map("v_m_tests")
 }

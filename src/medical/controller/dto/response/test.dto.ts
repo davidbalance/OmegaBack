@@ -19,7 +19,6 @@ export class TestResponseDto {
     @Expose() public readonly testId: string;
     @Expose() public readonly testCheck: boolean;
     @Expose() public readonly resultHasFile: boolean;
-    @Expose() public readonly reportHasContent: boolean;
     @Expose() public readonly orderId: string;
     @Expose() public readonly examName: string;
     @Expose() public readonly examSubtype: string;
