@@ -351,7 +351,7 @@ const mapFemoEmploymentHistory = (history: any): TemplateFemo["employmentHistory
         disease: e?.disease ?? "",
         isQualified: e?.isQualified,
         notQualified: e?.notQualified,
-        date: (e?.incident || e?.accident || e?.disease) && e?.date ? formatDate(e.date, FORMAT_DATE) : "",
+        date: e?.isQualified && (e?.incident || e?.accident || e?.disease) && e?.date ? formatDate(e.date, FORMAT_DATE) : "",
         specification: e?.specification,
         observations: e?.observations,
     })) : [];
