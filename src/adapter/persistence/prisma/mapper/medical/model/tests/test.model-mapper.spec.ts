@@ -8,7 +8,6 @@ describe('TestModelMapper', () => {
             testId: "test-123",
             testCheck: false,
             resultHasFile: false,
-            reportHasContent: false,
             orderId: "order-123",
             examName: "Exam",
             examSubtype: "Subtype",
@@ -24,7 +23,6 @@ describe('TestModelMapper', () => {
         expect(result.testId).toBe(expectedValue.testId);
         expect(result.testCheck).toBe(expectedValue.testCheck);
         expect(result.resultHasFile).toBe(expectedValue.resultHasFile);
-        expect(result.reportHasContent).toBe(expectedValue.reportHasContent);
         expect(result.orderId).toBe(expectedValue.orderId);
         expect(result.examName).toBe(expectedValue.examName);
         expect(result.examSubtype).toBe(expectedValue.examSubtype);

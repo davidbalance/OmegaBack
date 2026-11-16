@@ -7,7 +7,6 @@ export type OrderCloudFileModelProps = {
     orderId: string;
     examName: string;
     resultHasFile: boolean;
-    reportHasContent: boolean;
 }
 export class OrderCloudFileModel extends Model<OrderCloudFileModelProps> {
     public get orderId(): Readonly<string> {
@@ -32,9 +31,5 @@ export class OrderCloudFileModel extends Model<OrderCloudFileModelProps> {
 
     public get resultHasFile(): Readonly<boolean> {
         return this.props.resultHasFile;
-    }
-
-    public get reportHasContent(): Readonly<boolean> {
-        return this.props.reportHasContent;
     }
 }

@@ -24,6 +24,16 @@ export type AddJobPositionPayload = {
 }
 
 export type AddRecordPayload = {
-    filepath: string;
     name: string;
+    metadata: any
+}
+
+export type UpdateRecordMetadataPayload = {
+    recordId: string;
+    metadata: any
+}
+
+export type UpdateRecordFilepathPayload = {
+    recordId: string;
+    filepath: string;
 }

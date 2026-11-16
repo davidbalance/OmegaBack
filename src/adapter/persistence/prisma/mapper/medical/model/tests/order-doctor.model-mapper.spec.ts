@@ -9,7 +9,6 @@ describe('OrderDoctorModelMapper', () => {
             orderProcess: "Post-Ocupacional",
             orderMail: false,
             orderStatus: "created",
-            orderLeftReport: 0,
             orderEmissionDate: new Date(),
             doctorDni: "0123456789",
             patientDni: "0123456789"
@@ -21,7 +20,6 @@ describe('OrderDoctorModelMapper', () => {
         expect(result.orderProcess).toBe(expectedValue.orderProcess);
         expect(result.orderMail).toBe(expectedValue.orderMail);
         expect(result.orderStatus).toBe(expectedValue.orderStatus);
-        expect(result.orderLeftReport).toBe(expectedValue.orderLeftReport);
         expect(result.orderEmissionDate).toBe(expectedValue.orderEmissionDate);
         expect(result.doctorDni).toBe(expectedValue.doctorDni);
         expect(result.patientDni).toBe(expectedValue.patientDni);

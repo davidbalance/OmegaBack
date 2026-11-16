@@ -7,7 +7,6 @@ export class TestModelMapper {
             testId: value.testId,
             testCheck: value.testCheck,
             resultHasFile: value.resultHasFile,
-            reportHasContent: value.reportHasContent,
             orderId: value.orderId,
             examName: value.examName,
             examSubtype: value.examSubtype,
